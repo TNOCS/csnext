@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/cs-client/src/index.js",
   "types": "./dist/cs-client/src/index.d.ts",
   "license": "MIT",
@@ -8,8 +8,11 @@
     "link": "yarn link",
     "dev": "tsc -w"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.1",
+    "@csnext/cs-core": "^0.0.2",
     "cors": "^2.8.3",
     "express": "^4.15.2",
     "http-proxy": "^1.16.2",

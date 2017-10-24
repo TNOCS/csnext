@@ -1,14 +1,16 @@
 {
   "name": "@csnext/cs-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "cscore",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
-    "dev": "tsc -w",
-    "publish": "npm public --access=public"
+    "dev": "tsc -w"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "typescript": "^2.5.3"
