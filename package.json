@@ -1,0 +1,11 @@
+{
+	"private": true,
+	"scripts": {
+		"postinstall": "lerna bootstrap --hoist && lerna run link",
+		"dev": "lerna run --parallel dev",
+		"compile": "lerna run --parallel compile"
+	},
+	"devDependencies": {
+		"lerna": "^2.2.0"
+	}
+}

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+    <script src="../../../lib/csclient.cs.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
+</head>
+
+<body>
+    <div id="main">
+        <csdashboard :dashboard="dashboard"></csdashboard>
+    </div>
+
+    <script>
+
+        let intro = Vue.component('introduction', {
+            template: '<div>this is an introduction widget</div>'
+        })
+
+        Vue.use(Vuetify);
+
+        var main = new Vue({
+            el: '#main',
+            components: {
+                csdashboard: csclient.csdashboard
+            },
+            data: {
+                dashboard: { manager: 'grid', widgets: [{ id: 'test', component: intro }] }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

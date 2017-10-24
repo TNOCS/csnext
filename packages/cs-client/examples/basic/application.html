@@ -1,0 +1,125 @@
+<html>
+
+
+<head>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> -->
+
+    <script src="../../../lib/csclient.cs.js"></script>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
+</head>
+
+<body>
+
+    <style>
+        .maintitle {
+            text-align: center;
+        }
+    </style>
+    <div id="main">
+        <csapp></csapp>
+    </div>
+
+    <script>
+
+        let intro = Vue.component('introduction', {
+            template: '<h1 class="maintitle">this is an introduction widget</h1>'
+        });
+
+        let about = Vue.component('about', {
+            template: '<h1 class="maintitle">this is an about widget</h1>'
+        })
+
+        let flexbox = Vue.component('flexbox', {
+            template: '\
+                    <div>\
+                    <v-container fluid grid-list-md>\
+                        <v-layout row wrap>\
+                            <v-flex d-flex xs12 sm6 md4>\
+                                <v-card color="purple" dark>\
+                                    <v-card-title primary class="title">Lorem</v-card-title>\
+                                    <v-card-text text="lorem">\
+                                    </v-card-text>\
+                                </v-card>\
+                            </v-flex>\
+                            <v-flex d-flex xs12 sm6 md3>\
+                                <v-layout row wrap>\
+                                    <v-flex d-flex>\
+                                        <v-card color="indigo" dark>\
+                                            <v-card-text text="test">\
+                                            </v-card-text>\
+                                        </v-card>\
+                                    </v-flex>\
+                                    <v-flex d-flex>\
+                                        <v-layout row wrap>\
+                                            <v-flex d-flex v-for="n in 2" :key="n" xs12>\
+                                                <v-card color="red lighten-2" dark>\
+                                                    <v-card-text text="test">\
+                                                    </v-card-text>\
+                                                </v-card>\
+                                            </v-flex>\
+                                        </v-layout>\
+                                    </v-flex>\
+                                </v-layout>\
+                            </v-flex>\
+                            <v-flex d-flex xs12 sm6 md2 child-flex>\
+                                <v-card color="green lighten-2" dark>\
+                                    <v-card-text text="test">\
+                                    </v-card-text>\
+                                </v-card>\
+                            </v-flex>\
+                            <v-flex d-flex xs12 sm6 md3>\
+                                <v-card color="blue lighten-2" dark>\
+                                    <v-card-text text="test">\
+                                    </v-card-text>\
+                                </v-card>\
+                            </v-flex>\
+                        </v-layout>\
+                    </v-container>\
+                </div>'
+        });
+
+        Vue.use(Vuetify);
+
+        new Vue({
+            el: '#main',
+            render: h => h(csclient.csapp)
+            
+          });
+
+          var app = csclient.AppState.Instance;
+          app.project = {
+              title: 'Test Project',
+              navigation: {
+                  style: "left"
+              },
+              left: {
+                  open: true,
+                  title: 'Dashboards'
+              },
+              footer: {
+                  enabled: true,
+                  text: 'Test footer'
+              },
+              dashboards: [
+                  { path: '/', manager: 'single', title: 'Home', widgets: [{ component: intro }] },
+                  { path: '/flex', manager: 'grid', title: 'Flex', widgets: [{ component: flexbox }] },
+                  { path: '/about', manager: 'grid', title: 'About', widgets: [{ component: about }] }
+              ]
+          };
+  
+          app.Init();
+        
+
+    </script>
+</body>
+
+</html>

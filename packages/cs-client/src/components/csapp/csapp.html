@@ -1,0 +1,60 @@
+<v-app id="inspire" v-if="app.isInitialized">
+    <v-navigation-drawer disable-route-watcher v-model="app.project.left.open" app>
+        <v-toolbar v-if="app.project.left.title">
+            <v-list dense>
+                <v-list-tile>
+                    <v-list-tile-title class="title">{{app.project.left.title}}</v-list-tile-title>
+                </v-list-tile>
+            </v-list>
+        </v-toolbar>
+        <v-divider v-if="app.project.left.title"></v-divider>
+        <div v-if="app.project.left.component">
+            <component :is="app.project.left.component"></component>
+        </div>
+        <div v-else-if="app.project.navigation.style==='left'">
+            <v-list>
+                <v-list-tile v-for="dashboard in app.project.dashboards" :key="dashboard.id" @click.trigger="SelectDashboard(dashboard)">
+                    <v-list-tile-action>
+                        <v-icon>home</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </div>
+    </v-navigation-drawer>
+    <v-toolbar color="indigo" dark app>
+        <v-toolbar-side-icon @click.stop="app.project.left.open = !app.project.left.open"></v-toolbar-side-icon>
+        <v-toolbar-title>{{app.project.title}}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items v-if="app.project.navigation.style==='top'" class="hidden-sm-and-down" v-for="dashboard in app.project.dashboards"
+            :key="dashboard.id">
+            <v-btn @click.trigger="SelectDashboard(dashboard)" flat>{{ dashboard.title }}</v-btn>
+        </v-toolbar-items>
+
+    </v-toolbar>
+    <v-tabs color="indigo" v-if="app.project.navigation.style==='tabs'" dark app>
+        <v-tabs-bar>
+            <v-tabs-item v-for="dashboard in app.project.dashboards" :key="dashboard.id" @click.trigger="SelectDashboard(dashboard)">
+                {{ dashboard.title }}
+            </v-tabs-item>
+        </v-tabs-bar>
+    </v-tabs>
+    <main>
+        <v-content>
+            <v-container fluid>
+                <router-view :key="$route.path">
+
+                </router-view>
+            </v-container>
+        </v-content>
+    </main>
+    <v-footer v-if="app.project.footer.enabled" color="indigo" app>
+        <span class="white--text">{{app.project.footer.text}}</span>
+    </v-footer>
+
+
+
+
+</v-app>
