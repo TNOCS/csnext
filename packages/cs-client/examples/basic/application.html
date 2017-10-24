@@ -10,11 +10,13 @@
     <!--
     <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> -->
 
-    <script src="../csclient.cs.js"></script>
-
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
+   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
+
+
+    <script src="./../../lib/csclient.cs.js"></script>
 </head>
 
 <body>
@@ -87,7 +89,7 @@
                 </div>'
         });
 
-        Vue.use(Vuetify);
+        // Vue.use(Vuetify);
 
         new Vue({
             el: '#main',
@@ -101,7 +103,7 @@
               navigation: {
                   style: "left"
               },
-              left: {
+              leftSidebar: {
                   open: true,
                   title: 'Dashboards'
               },

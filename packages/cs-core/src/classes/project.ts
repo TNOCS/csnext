@@ -11,7 +11,7 @@ export class Project {
     public dataSources? : { [id : string] : IDataSource} = {};
     public dashboards?: Dashboard[] =[];
     public services? : { [id: string] : IServiceConfig} = {};
-    public left? : SidebarOptions = { };
+    public leftSidebar? : SidebarOptions = { };
     
     public constructor() {                    
     }

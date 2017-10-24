@@ -99,8 +99,9 @@ function buildConfig(entry, externals, analyzer) {
             externals: externals,
             resolve: {
                 extensions: ['.ts', '.js', '.html'],
+                // ,
                 alias: {
-                    'vue$': 'vue/dist/vue.esm.js'
+                    'vue$': 'vue'
                 }
             },
             plugins: plugins.concat(pl)
@@ -108,8 +109,8 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ["./src/index.ts"] }, { 'vue$' : 'vue', 'vue-router$': 'vue-router' }, 'cs'),
-    buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
+    buildConfig({ cs: ["./src/index.ts"] }, { 'vue$' : 'vue', 'vue':'Vue', 'vue-router$': 'vue-router' }, 'cs')
+    // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 
 module.exports = config;
