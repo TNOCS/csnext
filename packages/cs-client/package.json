@@ -8,36 +8,37 @@
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "webpack --watch --env dev",
-    "build": "webpack --watch --env build"
+    "build": "webpack --watch --env build",
+    "publish": "npm public --access=public"
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.1",
     "axios": "^0.16.2"
   },
   "devDependencies": {
-    "vue": "^2.5.2",
-    "vue-class-component": "^6.0.0",
-    "vue-property-decorator": "^6.0.0",
-    "vuetify": "^0.16.7",    
-    "concurrently": "^3.4.0",
-    "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "~2.7.1",
-    "ipaddr.js": "^1.5.2",
-    "cpx": "^1.5.0",
-    "webpack": "~3.5.5",
-    "yargs": "^9.0.1",
-    "style-loader": "^0.18.2",
-    "css-loader": "^0.28.7",
     "awesome-typescript-loader": "~3.2.3",
+    "concurrently": "^3.4.0",
+    "cpx": "^1.5.0",
+    "css-loader": "^0.28.7",
+    "http-server": "~0.10.0",
+    "ipaddr.js": "^1.5.2",
     "postcss-loader": "^2.0.6",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.18.2",
     "tslint": "~5.6.0",
     "tslint-loader": "~3.5.3",
-    "http-server": "~0.10.0",
     "typescript": "^2.5.3",
     "url-loader": "^0.5.9",
+    "vue": "^2.5.2",
+    "vue-class-component": "^6.0.0",
     "vue-loader": "^13.0.5",
-    "raw-loader": "^0.5.1"
+    "vue-property-decorator": "^6.0.0",
+    "vuetify": "^0.16.7",
+    "webpack": "~3.5.5",
+    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-dev-server": "~2.7.1",
+    "yargs": "^9.0.1"
   }
 }

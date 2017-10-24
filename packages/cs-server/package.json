@@ -8,18 +8,17 @@
     "link": "yarn link",
     "dev": "tsc -w"
   },
-  "dependencies": {    
+  "dependencies": {
+    "@csnext/cs-core": "^0.0.1",
     "cors": "^2.8.3",
     "express": "^4.15.2",
     "http-proxy": "^1.16.2",
-    "@csnext/cs-core": "^0.0.1",
+    "nodejs-websocket": "^1.7.1",
     "request": "^2.81.0",
-    "winston":"^2.3.1",
-    "nodejs-websocket":"^1.7.1"
+    "winston": "^2.3.1"
   },
   "devDependencies": {
-    
-    "@types/winston":"^2.3.3",
+    "@types/winston": "^2.3.3",
     "typescript": "^2.5.3"
   }
 }

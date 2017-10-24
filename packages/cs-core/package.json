@@ -7,9 +7,9 @@
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "publish": "npm public --access=public"
   },
-  "dependencies": {},
   "devDependencies": {
     "typescript": "^2.5.3"
   }
