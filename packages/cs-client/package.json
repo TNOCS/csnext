@@ -4,12 +4,16 @@
   "main": "./lib/csclient.cs.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
+  "url": "https://github.com/TNOCS/csnext",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
   "scripts": {
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "webpack --watch --env dev",
-    "build": "webpack --watch --env build",
-    "publish": "npm public --access=public"
+    "build": "webpack --watch --env build"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.2",

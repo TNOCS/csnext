@@ -4,6 +4,8 @@
   "description": "cscore",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "url": "https://github.com/TNOCS/csnext",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
