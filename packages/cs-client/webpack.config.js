@@ -98,18 +98,15 @@ function buildConfig(entry, externals, analyzer) {
             module: mod,
             externals: externals,
             resolve: {
-                extensions: ['.ts', '.js', '.html'],
-                // ,
-                alias: {
-                    'vue$': 'vue'
-                }
+                extensions: ['.ts', '.js', '.html']
+               
             },
             plugins: plugins.concat(pl)
         };
 }
 
 const config = [
-    buildConfig({ cs: ["./src/index.ts"] }, { 'vue$' : 'vue', 'vue':'Vue', 'vue-router$': 'vue-router' }, 'cs')
+    buildConfig({ cs: ["./src/index.ts"] }, { 'vue':'Vue' }, 'cs')
     // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

@@ -9,7 +9,7 @@
   "scripts": {
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
-    "dev": "webpack --watch --env dev",
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
     "build": "webpack --watch --env build"
   },
   "publishConfig": {
@@ -36,6 +36,7 @@
     "typescript": "^2.5.3",
     "url-loader": "^0.5.9",
     "vue": "^2.5.2",
+    "vue-router": "^3.0.1",
     "vue-class-component": "^6.0.0",
     "vue-loader": "^13.0.5",
     "vue-property-decorator": "^6.0.0",

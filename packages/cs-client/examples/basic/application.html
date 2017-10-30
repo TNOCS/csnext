@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
-     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> -->
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
-   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
+
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
+
 
 
     <script src="./../../lib/csclient.cs.js"></script>
@@ -89,19 +89,16 @@
                 </div>'
         });
 
-        // Vue.use(Vuetify);
-
         new Vue({
             el: '#main',
-            render: h => h(csclient.csapp)
-            
+            render: h => h(csclient.csapp)            
           });
 
           var app = csclient.AppState.Instance;
           app.project = {
-              title: 'Test Project',
+              title: 'Basic Example',
               navigation: {
-                  style: "left"
+                  style: "top"
               },
               leftSidebar: {
                   open: true,
