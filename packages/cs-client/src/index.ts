@@ -27,6 +27,7 @@ export * from './components/csdashboard/csdashboard';
 
 // widgets
 export * from './widgets/mdwidget';
+export * from './widgets/iframewidget';
 
 // export default {
 //     install(Vue) {
