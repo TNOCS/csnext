@@ -21,13 +21,6 @@ export class Project {
 
 export class AppTheme {
     dark = false;
-    primary =  "$blue.darken-2"
-    accent = "$blue.accent-2"
-    secondary = "$grey.darken-3"
-    info = "$blue.base"
-    warning= "$amber.base"
-    error = "$red.base"
-    success = "$green.base"
 }
 
 export class SidebarOptions {
