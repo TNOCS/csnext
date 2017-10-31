@@ -1,6 +1,5 @@
 <html>
 
-
 <head>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -10,11 +9,9 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
 
-     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> 
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
-
-
 
     <script src="./../../lib/csclient.cs.js"></script>
 </head>
@@ -27,7 +24,6 @@
         }
     </style>
     <div id="main">
-        <csapp></csapp>
     </div>
 
     <script>
@@ -91,32 +87,36 @@
 
         new Vue({
             el: '#main',
-            render: h => h(csclient.csapp)            
-          });
+            render: h => h(csclient.csapp)
+        });
 
-          var app = csclient.AppState.Instance;
-          app.project = {
-              title: 'Basic Example',
-              navigation: {
-                  style: "top"
-              },
-              leftSidebar: {
-                  open: true,
-                  title: 'Dashboards'
-              },
-              footer: {
-                  enabled: true,
-                  text: 'Test footer'
-              },
-              dashboards: [
-                  { path: '/', manager: 'single', title: 'Home', widgets: [{ component: intro }] },
-                  { path: '/flex', manager: 'grid', title: 'Flex', widgets: [{ component: flexbox }] },
-                  { path: '/about', manager: 'grid', title: 'About', widgets: [{ component: about }] }
-              ]
-          };
-  
-          app.Init();
-        
+        const app = csclient.AppState.Instance;
+        app.project = {
+            title: 'Basic Example',
+            theme: {
+                dark: false,
+                clipped: true
+            },
+            navigation: {
+                style: "top"
+            },
+            leftSidebar: {
+                open: true,
+                title: 'Dashboards'
+            },
+            footer: {
+                enabled: true,
+                text: 'Test footer'
+            },
+            dashboards: [
+                { path: '/', manager: 'single', title: 'Home', widgets: [{ component: intro }] },
+                { path: '/flex', manager: 'grid', title: 'Flex', widgets: [{ component: flexbox }] },
+                { path: '/about', manager: 'grid', title: 'About', widgets: [{ component: about }] }
+            ]
+        };
+
+        app.Init();
+
 
     </script>
 </body>

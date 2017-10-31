@@ -1615,9 +1615,6 @@ var csapp = /** @class */ (function (_super) {
         if (router && d.path) {
             router.push(d.path);
         }
-        if (this.app.project && this.app.project.leftSidebar) {
-            this.app.project.leftSidebar.open = false;
-        }
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_5_vue_property_decorator__["Watch"])('app.project.dashboards'),
@@ -3038,6 +3035,19 @@ class Project {
     }
 }
 exports.Project = Project;
+class AppTheme {
+    constructor() {
+        this.dark = false;
+        this.primary = "$blue.darken-2";
+        this.accent = "$blue.accent-2";
+        this.secondary = "$grey.darken-3";
+        this.info = "$blue.base";
+        this.warning = "$amber.base";
+        this.error = "$red.base";
+        this.success = "$green.base";
+    }
+}
+exports.AppTheme = AppTheme;
 class SidebarOptions {
 }
 exports.SidebarOptions = SidebarOptions;
@@ -22877,7 +22887,7 @@ function unbind(el, binding) {
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app id=\"inspire\" v-if=\"app.isInitialized\">\r\n    <v-navigation-drawer disable-route-watcher v-model=\"app.project.leftSidebar.open\" app>\r\n        <v-toolbar v-if=\"app.project.leftSidebar.title\">                               \r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>        \r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <v-list>\r\n                <v-list-tile v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                    <v-list-tile-action>\r\n                        <v-icon>home</v-icon>\r\n                    </v-list-tile-action>\r\n                    <v-list-tile-content>\r\n                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                    </v-list-tile-content>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n    <v-toolbar color=\"indigo\" dark app>\r\n        <v-toolbar-side-icon @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n        <v-toolbar-title>{{app.project.title}}</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items v-if=\"app.project.navigation.style==='top'\" class=\"hidden-sm-and-down\" v-for=\"dashboard in app.project.dashboards\"\r\n            :key=\"dashboard.id\">\r\n            <v-btn @click.trigger=\"SelectDashboard(dashboard)\" flat>{{ dashboard.title }}</v-btn>\r\n        </v-toolbar-items>\r\n\r\n    </v-toolbar>\r\n    <v-tabs color=\"indigo\" v-if=\"app.project.navigation.style==='tabs'\" dark app>\r\n        <v-tabs-bar>\r\n            <v-tabs-item v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                {{ dashboard.title }}\r\n            </v-tabs-item>\r\n        </v-tabs-bar>\r\n    </v-tabs>\r\n    <main>\r\n        <v-content>\r\n            <v-container fluid>\r\n                <router-view :key=\"$route.path\">\r\n\r\n                </router-view>\r\n            </v-container>\r\n        </v-content>\r\n    </main>\r\n    <v-footer v-if=\"app.project.footer.enabled\" color=\"indigo\" app>\r\n        <span class=\"white--text\">{{app.project.footer.text}}</span>\r\n    </v-footer>\r\n\r\n\r\n\r\n\r\n</v-app>"
+module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\r\n\r\n    <!-- <v-navigation-drawer persistent clipped disable-route-watcher v-model=\"app.project.leftSidebar.open\" app> -->\r\n    <v-navigation-drawer :mini-variant=\"app.project.leftSidebar.mini\" absolute overflow persistent :clipped=\"app.project.theme.clipped\"\r\n        app v-model=\"app.project.leftSidebar.open\">\r\n        <v-toolbar :clipped-left=\"app.project.theme.clipped\" v-if=\"app.project.leftSidebar.title\">\r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <v-list>\r\n                <v-list-tile v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                    <v-list-tile-action><v-icon v-if=\"app.project.navigation.icons\">home</v-icon></v-list-tile-action>\r\n                    <v-list-tile-content>\r\n                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                    </v-list-tile-content>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n    <v-toolbar :clipped-left=\"app.project.theme.clipped\" color=\"indigo\" app>\r\n        <v-toolbar-side-icon @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n        <v-toolbar-title>{{app.project.title}}</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items v-if=\"app.project.navigation.style==='top'\" class=\"hidden-sm-and-down\" v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\">\r\n            <v-btn @click.trigger=\"SelectDashboard(dashboard)\" flat><v-icon v-if=\"app.project.navigation.icons\">home</v-icon> {{ dashboard.title }}</v-btn>\r\n        </v-toolbar-items>\r\n\r\n    </v-toolbar>\r\n    <v-toolbar v-if=\"app.project.navigation.style==='tabs'\" :clipped-left=\"app.project.theme.clipped\" app>\r\n        <v-tabs app>\r\n            <v-tabs-bar>\r\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                        <v-icon>home</v-icon> {{ dashboard.title }}\r\n                </v-tabs-item>\r\n            </v-tabs-bar>\r\n        </v-tabs>\r\n    </v-toolbar>\r\n    <main>\r\n        <v-content>\r\n            <v-container fluid>\r\n                <router-view :key=\"$route.path\">\r\n\r\n                </router-view>\r\n            </v-container>\r\n        </v-content>\r\n    </main>\r\n    <v-footer :absolute=\"app.project.footer.absolute\" v-if=\"app.project.footer.enabled\" color=\"indigo\" app>\r\n        <span class=\"white--text\">{{app.project.footer.text}}</span>\r\n    </v-footer>\r\n</v-app>"
 
 /***/ }),
 /* 54 */

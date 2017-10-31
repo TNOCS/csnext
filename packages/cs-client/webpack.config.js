@@ -10,21 +10,21 @@ let libraryName = 'csclient';
 let plugins = [], outputFile;
 
 if (env === 'build') {
-    // plugins.push(
-    //     new webpack.optimize.UglifyJsPlugin({
-    //         comments: false,
-    //         compress: {
-    //             unused: true,
-    //             dead_code: true,
-    //             warnings: false,
-    //             drop_debugger: true,
-    //             conditionals: true,
-    //             evaluate: true,
-    //             drop_console: true,
-    //             sequences: true,
-    //             booleans: true,
-    //         }
-    //     }));
+    plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            comments: false,
+            compress: {
+                unused: true,
+                dead_code: true,
+                warnings: false,
+                drop_debugger: true,
+                conditionals: true,
+                evaluate: true,
+                drop_console: true,
+                sequences: true,
+                booleans: true,
+            }
+        }));
     outputFile = libraryName + '.[name].min.js';
 } else {
     outputFile = libraryName + '.[name].js';
@@ -98,8 +98,7 @@ function buildConfig(entry, externals, analyzer) {
             module: mod,
             externals: externals,
             resolve: {
-                extensions: ['.ts', '.js', '.html']
-               
+                extensions: ['.ts', '.js', '.html']               
             },
             plugins: plugins.concat(pl)
         };

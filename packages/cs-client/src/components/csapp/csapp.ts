@@ -50,6 +50,5 @@ export class csapp extends Vue {
 
     public SelectDashboard(d: Dashboard) {
         if (router && d.path) { router.push(d.path); }
-        if (this.app.project && this.app.project.leftSidebar) { this.app.project.leftSidebar.open = false; }
     }
 }
