@@ -8,18 +8,6 @@ export class DashboardBase extends Vue {
     protected L = Logger.Instance;
     public dashboard: Dashboard;
 
-    public initNavBars() {
-        this.L.info('dashboard', 'init navigation bars');
-        this.app.sideBarComponents = [];
-        if (this.dashboard.widgets) {
-            this.dashboard.widgets.forEach((w: Widget) => {
-                if (w.sideBar === 'left') {
-                    this.app.sideBarComponents.push(w.component);
-                }
-            });
-        }
-    }
-
     public created() {
         this.L.info('dashboard', 'init dashboard');
         if (this.$route && this.$route.meta && this.$route.meta.widgets) {
@@ -27,7 +15,5 @@ export class DashboardBase extends Vue {
         } else {
             if (this.$parent.$attrs.hasOwnProperty('dashboard')) { this.dashboard = <Dashboard>(<any>this.$parent.$attrs['dashboard']); }
         }
-
-        this.initNavBars();
     }
 } 

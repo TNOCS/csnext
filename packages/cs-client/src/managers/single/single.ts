@@ -26,7 +26,6 @@ export class Single extends DashboardBase {
         this.L.info('single manager', 'init');
 
         if (!this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
-
         this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
         if (this.widget) { this.cswidget = this.widget.component; }
     }

@@ -1,5 +1,5 @@
 <div class="card-layout">
     <div class="column">
-        <component v-for="widget in dashboard.widgets" :key="widget.id" :is="cswidget" :widget="widget"></component>
+        <component v-for="widget in dashboard.widgets" v-if="widget" :key="widget.id" :is="cswidget" :widget="widget"></component>
     </div>
 </div>

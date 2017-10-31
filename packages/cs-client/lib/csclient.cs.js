@@ -917,18 +917,6 @@ var DashboardBase = /** @class */ (function (_super) {
         _this.L = __WEBPACK_IMPORTED_MODULE_1__index__["Logger"].Instance;
         return _this;
     }
-    DashboardBase.prototype.initNavBars = function () {
-        var _this = this;
-        this.L.info('dashboard', 'init navigation bars');
-        this.app.sideBarComponents = [];
-        if (this.dashboard.widgets) {
-            this.dashboard.widgets.forEach(function (w) {
-                if (w.sideBar === 'left') {
-                    _this.app.sideBarComponents.push(w.component);
-                }
-            });
-        }
-    };
     DashboardBase.prototype.created = function () {
         this.L.info('dashboard', 'init dashboard');
         if (this.$route && this.$route.meta && this.$route.meta.widgets) {
@@ -939,7 +927,6 @@ var DashboardBase = /** @class */ (function (_super) {
                 this.dashboard = this.$parent.$attrs['dashboard'];
             }
         }
-        this.initNavBars();
     };
     return DashboardBase;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
@@ -1052,49 +1039,72 @@ module.exports = defaults;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppState; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_csdashboard_csdashboard__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index__ = __webpack_require__(3);
 
 
 
+/** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 var AppState = /** @class */ (function () {
     function AppState() {
+        /** Project definition */
         this.project = {};
+        /** Available dashboard managers for layouting */
         this.dashboardManagers = {};
+        /** Available datasource handlers  */
         this.dataSourceHandlers = {};
-        this.data = {};
+        /** Logger */
         this.L = __WEBPACK_IMPORTED_MODULE_2__index__["Logger"].Instance;
-        this.EventBus = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a();
-        this.sideBarComponents = [];
+        /** Event bus for publish/subscribe events in application */
+        this.EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+        /** True if the application has been initialized */
         this.isInitialized = false;
     }
     Object.defineProperty(AppState, "Instance", {
+        /** Get singleton instance of appstate */
         get: function () {
-            // Do you need arguments? Make it a regular method instead.
             return this._instance || (this._instance = new this());
         },
         enumerable: true,
         configurable: true
     });
+    /** Initialize the project state, dashboard managers and data source handlers */
     AppState.prototype.Init = function () {
         this.L.info('appstate', 'Init AppState');
-        this.AddManager({ id: 'single', name: 'single page', component: __WEBPACK_IMPORTED_MODULE_2__index__["Single"] });
-        this.AddManager({ id: 'grid', name: 'grid page', component: __WEBPACK_IMPORTED_MODULE_2__index__["Grid"] });
+        this.AddDashboardManager({ id: 'single', name: 'single page', component: __WEBPACK_IMPORTED_MODULE_2__index__["Single"] });
+        this.AddDashboardManager({ id: 'grid', name: 'grid page', component: __WEBPACK_IMPORTED_MODULE_2__index__["Grid"] });
         this.AddDataSourceHandler(new __WEBPACK_IMPORTED_MODULE_2__index__["WebRequestDataSourceHandler"]());
+        if (!this.project) {
+            this.project = new __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__["Project"]();
+        }
+        ;
+        if (!this.project.theme) {
+            this.project.theme = new __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__["AppTheme"]();
+        }
+        if (!this.project.footer) {
+            this.project.footer = new __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__["FooterOptions"]();
+        }
+        if (!this.project.dashboards) {
+            this.project.dashboards = [];
+        }
+        if (!this.project.navigation) {
+            this.project.navigation = new __WEBPACK_IMPORTED_MODULE_1__csnext_cs_core__["NavigationOptions"]();
+        }
         this.isInitialized = true;
         this.EventBus.$emit('init');
     };
-    AppState.prototype.AddManager = function (manager) {
+    /** Registration of a new dashboard manager */
+    AppState.prototype.AddDashboardManager = function (manager) {
         this.dashboardManagers[manager.id] = manager;
     };
+    /** Registration of a new data source handler */
     AppState.prototype.AddDataSourceHandler = function (handler) {
         this.dataSourceHandlers[handler.id] = handler;
     };
-    AppState.prototype.AddDashboard = function (elementId, dashboard) {
-        var dash = __WEBPACK_IMPORTED_MODULE_0__components_csdashboard_csdashboard__["a" /* csdashboard */];
-    };
+    /** Load a data source using the assigned data source handler */
     AppState.prototype.LoadDataSource = function (source) {
         var _this = this;
         return new Promise(function (resolve, reject) {
@@ -1122,6 +1132,7 @@ var AppState = /** @class */ (function () {
             }
         });
     };
+    /** load all data sources */
     AppState.prototype.LoadDataSources = function () {
         if (this.project.dataSources) {
             for (var ds in this.project.dataSources) {
@@ -3035,16 +3046,11 @@ class Project {
     }
 }
 exports.Project = Project;
+// Application look and feel
 class AppTheme {
     constructor() {
         this.dark = false;
-        this.primary = "$blue.darken-2";
-        this.accent = "$blue.accent-2";
-        this.secondary = "$grey.darken-3";
-        this.info = "$blue.base";
-        this.warning = "$amber.base";
-        this.error = "$red.base";
-        this.success = "$green.base";
+        this.primary = "red";
     }
 }
 exports.AppTheme = AppTheme;
@@ -3192,7 +3198,7 @@ var Single = /** @class */ (function (_super) {
 /* 28 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n    <!-- <h1>test</h1> -->\r\n    <component :is=\"cswidget\"></component>\r\n</div>\r\n"
+module.exports = "<div>\r\n    <component :is=\"cswidget\"></component>\r\n</div>\r\n"
 
 /***/ }),
 /* 29 */
@@ -3250,7 +3256,7 @@ var Grid = /** @class */ (function (_super) {
 /* 30 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card-layout\">\r\n    <div class=\"column\">\r\n        <component v-for=\"widget in dashboard.widgets\" :key=\"widget.id\" :is=\"cswidget\" :widget=\"widget\"></component>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"card-layout\">\r\n    <div class=\"column\">\r\n        <component v-for=\"widget in dashboard.widgets\" v-if=\"widget\" :key=\"widget.id\" :is=\"cswidget\" :widget=\"widget\"></component>\r\n    </div>\r\n</div>"
 
 /***/ }),
 /* 31 */
@@ -22887,7 +22893,7 @@ function unbind(el, binding) {
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\r\n\r\n    <!-- <v-navigation-drawer persistent clipped disable-route-watcher v-model=\"app.project.leftSidebar.open\" app> -->\r\n    <v-navigation-drawer :mini-variant=\"app.project.leftSidebar.mini\" absolute overflow persistent :clipped=\"app.project.theme.clipped\"\r\n        app v-model=\"app.project.leftSidebar.open\">\r\n        <v-toolbar :clipped-left=\"app.project.theme.clipped\" v-if=\"app.project.leftSidebar.title\">\r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <v-list>\r\n                <v-list-tile v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                    <v-list-tile-action><v-icon v-if=\"app.project.navigation.icons\">home</v-icon></v-list-tile-action>\r\n                    <v-list-tile-content>\r\n                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                    </v-list-tile-content>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n    <v-toolbar :clipped-left=\"app.project.theme.clipped\" color=\"indigo\" app>\r\n        <v-toolbar-side-icon @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n        <v-toolbar-title>{{app.project.title}}</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items v-if=\"app.project.navigation.style==='top'\" class=\"hidden-sm-and-down\" v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\">\r\n            <v-btn @click.trigger=\"SelectDashboard(dashboard)\" flat><v-icon v-if=\"app.project.navigation.icons\">home</v-icon> {{ dashboard.title }}</v-btn>\r\n        </v-toolbar-items>\r\n\r\n    </v-toolbar>\r\n    <v-toolbar v-if=\"app.project.navigation.style==='tabs'\" :clipped-left=\"app.project.theme.clipped\" app>\r\n        <v-tabs app>\r\n            <v-tabs-bar>\r\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                        <v-icon>home</v-icon> {{ dashboard.title }}\r\n                </v-tabs-item>\r\n            </v-tabs-bar>\r\n        </v-tabs>\r\n    </v-toolbar>\r\n    <main>\r\n        <v-content>\r\n            <v-container fluid>\r\n                <router-view :key=\"$route.path\">\r\n\r\n                </router-view>\r\n            </v-container>\r\n        </v-content>\r\n    </main>\r\n    <v-footer :absolute=\"app.project.footer.absolute\" v-if=\"app.project.footer.enabled\" color=\"indigo\" app>\r\n        <span class=\"white--text\">{{app.project.footer.text}}</span>\r\n    </v-footer>\r\n</v-app>"
+module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\r\n\r\n    <!-- <v-navigation-drawer persistent clipped disable-route-watcher v-model=\"app.project.leftSidebar.open\" app> -->\r\n    <v-navigation-drawer :mini-variant=\"app.project.leftSidebar.mini\" absolute overflow persistent :clipped=\"app.project.theme.clipped\"\r\n        app v-model=\"app.project.leftSidebar.open\">\r\n        <v-toolbar :clipped-left=\"app.project.theme.clipped\" v-if=\"app.project.leftSidebar.title\">\r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <v-list>\r\n                <v-list-tile v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                    <v-list-tile-action><v-icon v-if=\"app.project.navigation.icons\">home</v-icon></v-list-tile-action>\r\n                    <v-list-tile-content>\r\n                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                    </v-list-tile-content>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n    <v-toolbar :clipped-left=\"app.project.theme.clipped\" :color=\"app.project.theme.primary\"  app>\r\n        <v-toolbar-side-icon @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n        <v-toolbar-title>{{app.project.title}}</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items v-if=\"app.project.navigation.style==='top'\" class=\"hidden-sm-and-down\" v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\">\r\n            <v-btn @click.trigger=\"SelectDashboard(dashboard)\" flat><v-icon v-if=\"app.project.navigation.icons\">home</v-icon> {{ dashboard.title }}</v-btn>\r\n        </v-toolbar-items>\r\n\r\n    </v-toolbar>\r\n    <v-toolbar v-if=\"app.project.navigation.style==='tabs'\" :clipped-left=\"app.project.theme.clipped\" app>\r\n        <v-tabs app>\r\n            <v-tabs-bar>\r\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" :key=\"dashboard.id\" @click.trigger=\"SelectDashboard(dashboard)\">\r\n                        <v-icon>home</v-icon> {{ dashboard.title }}\r\n                </v-tabs-item>\r\n            </v-tabs-bar>\r\n        </v-tabs>\r\n    </v-toolbar>\r\n    <main>\r\n        <v-content>\r\n            <v-container fluid>\r\n                <router-view :key=\"$route.path\">\r\n\r\n                </router-view>\r\n            </v-container>\r\n        </v-content>\r\n    </main>\r\n    <v-footer :absolute=\"app.project.footer.absolute\" v-if=\"app.project.footer.enabled\" app>\r\n        <span class=\"white--text\">{{app.project.footer.text}}</span>\r\n    </v-footer>\r\n</v-app>"
 
 /***/ }),
 /* 54 */

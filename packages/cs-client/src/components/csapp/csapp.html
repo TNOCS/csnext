@@ -26,7 +26,7 @@
             </v-list>
         </div>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="app.project.theme.clipped" color="indigo" app>
+    <v-toolbar :clipped-left="app.project.theme.clipped" :color="app.project.theme.primary"  app>
         <v-toolbar-side-icon @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
         <v-toolbar-title>{{app.project.title}}</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -53,7 +53,7 @@
             </v-container>
         </v-content>
     </main>
-    <v-footer :absolute="app.project.footer.absolute" v-if="app.project.footer.enabled" color="indigo" app>
+    <v-footer :absolute="app.project.footer.absolute" v-if="app.project.footer.enabled" app>
         <span class="white--text">{{app.project.footer.text}}</span>
     </v-footer>
 </v-app>

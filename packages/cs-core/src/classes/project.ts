@@ -16,11 +16,12 @@ export class Project {
     
     public constructor() {                    
     }
-
 }
 
+// Application look and feel
 export class AppTheme {
     dark = false;
+    primary = "red";
 }
 
 export class SidebarOptions {
@@ -28,6 +29,7 @@ export class SidebarOptions {
     public title?: string;
     public component?: any;
     public mini?: boolean;
+    public clipped?: boolean;
 }
 
 export class NavigationOptions {
