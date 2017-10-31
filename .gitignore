@@ -61,3 +61,4 @@ typings/
 packages/cs-core/dist
 packages/cs-client/dist
 packages/cs-server/dist
+packages/cs-client/lib/reports/
