@@ -1,4 +1,3 @@
-
 // services
 import { AppState } from './services/appstate';
 
@@ -19,11 +18,10 @@ import { csapp } from './components/csapp/csapp';
 import { cswidget } from './components/cswidget/cswidget';
 import { csdashboard } from './components/csdashboard/csdashboard';
 
-
-
 export * from './components/csapp/csapp'
 export * from './components/cswidget/cswidget';
 export * from './components/csdashboard/csdashboard';
+export * from './components/cssettings/cssettings';
 
 // widgets
 export * from './widgets/mdwidget';

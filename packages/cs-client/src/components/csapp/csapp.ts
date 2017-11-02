@@ -24,7 +24,8 @@ Vue.use(Vuetify);
 // tslint:disable-next-line:class-name
 export class csapp extends Vue {
     public app = AppState.Instance;
-    public L = Logger.Instance;    
+    public L = Logger.Instance;   
+    public settingsDialog = false; 
 
     constructor()
     {
@@ -50,5 +51,9 @@ export class csapp extends Vue {
 
     public SelectDashboard(d: Dashboard) {
         if (router && d.path) { router.push(d.path); }
+    }
+
+    public OpenSettings() {
+        this.settingsDialog = true;
     }
 }

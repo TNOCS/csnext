@@ -28,12 +28,14 @@
     </v-navigation-drawer>
     <v-toolbar :clipped-left="app.project.theme.clipped" :color="app.project.theme.primary"  app>
         <v-toolbar-side-icon @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
+     
         <v-toolbar-title>{{app.project.title}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items v-if="app.project.navigation.style==='top'" class="hidden-sm-and-down" v-for="dashboard in app.project.dashboards" :key="dashboard.id">
             <v-btn @click.trigger="SelectDashboard(dashboard)" flat><v-icon v-if="app.project.navigation.icons">home</v-icon> {{ dashboard.title }}</v-btn>
         </v-toolbar-items>
-
+        <v-btn flat @click.trigger="OpenSettings()"><v-icon>settings</v-icon></v-btn>
+        
     </v-toolbar>
     <v-toolbar v-if="app.project.navigation.style==='tabs'" :clipped-left="app.project.theme.clipped" app>
         <v-tabs app>
@@ -48,7 +50,6 @@
         <v-content>
             <v-container fluid>
                 <router-view :key="$route.path">
-
                 </router-view>
             </v-container>
         </v-content>

@@ -5,7 +5,7 @@ import { Logger, cswidget } from './../../index';
 import Component from 'vue-class-component';
 
 // import './home.scss';
-@Component({
+@Component(<any>{
     template: require('./grid.html')   
 })
 export class Grid extends DashboardBase {

@@ -9,7 +9,7 @@ export class WebRequestDataSourceHandler implements IDataSourceHandler {
         throw new Error("Method not implemented.");
     }
 
-    static Create(url: string) : IDataSource {
+    static Create(url: string): IDataSource {
         let wds: IDataSource = {};
         wds.handler = 'webrequest';
         wds.source = url;
@@ -21,12 +21,14 @@ export class WebRequestDataSourceHandler implements IDataSourceHandler {
             if (ds.source === undefined) { reject('No source defined'); return; }
             axios
                 .get(ds.source)
-                .then(response => {
-                    ds.data = response.data;
-                    resolve(ds.data);
-                })
                 .catch(e => {
                     reject(e)
+                })
+                .then(response => {
+                    if (response) {
+                        ds.data = response.data;
+                    }
+                    resolve(ds.data);
                 });
         });
     }
