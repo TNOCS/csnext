@@ -1,6 +1,19 @@
+import { Dashboard } from "../index";
+
 export enum WidgetType {
     component,
     html
+}
+
+
+export interface WidgetOptions {
+    card?: boolean;
+    class?: string;
+    width?: number;
+    height?: number;
+    x?: number;
+    y?: number;
+    background?: boolean;
 }
 
 export interface Widget {
@@ -10,5 +23,7 @@ export interface Widget {
     reference?: string;
     component?: any;
     data?: any;
-    sideBar?: 'left' | 'right';
+    options?: WidgetOptions;
+    _dashboard?: Dashboard;
+
 }

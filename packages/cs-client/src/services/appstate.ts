@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { csdashboard } from './../components/csdashboard/csdashboard';
-import { Project, IDataSourceHandler, Dashboard, IDataSource, AppTheme, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
-import { Single, Grid, Logger, IManagerConfig, WebRequestDataSourceHandler } from '../index';
+import { IManagerConfig, Project, IDataSourceHandler, Dashboard, IDataSource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
+import { Single, Grid, Logger, WebRequestDataSourceHandler } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState {
@@ -37,17 +37,16 @@ export class AppState {
     /** Initialize the project state, dashboard managers and data source handlers */
     public Init() {
         this.L.info('appstate', 'Init AppState');
-        this.AddDashboardManager(<IManagerConfig>{ id: 'single', name: 'single page', component: Single });
-        this.AddDashboardManager(<IManagerConfig>{ id: 'grid', name: 'grid page', component: Grid });
-        this.AddDataSourceHandler(new WebRequestDataSourceHandler());
 
         if (!this.project) { this.project = new Project(); };
         if (!this.project.theme) { this.project.theme = new AppTheme(); }
+        if (!this.project.theme.colors) { this.project.theme.colors = new ThemeColors()}
         if (!this.project.footer) { this.project.footer = new FooterOptions(); }
         if (!this.project.dashboards) { this.project.dashboards = []; }
-        if (!this.project.navigation) { this.project.navigation = new NavigationOptions(); }
-        if (!this.project.leftSidebar) { this.project.leftSidebar = new SidebarOptions(); }
-
+        if (!this.project.navigation) { 
+            this.project.navigation = new NavigationOptions();
+            this.project.navigation.style = 'right';
+        }
         this.isInitialized = true;
         this.EventBus.$emit('init');
     }

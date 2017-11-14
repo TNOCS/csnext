@@ -2,7 +2,7 @@
   "name": "@csnext/cs-client",
   "version": "0.0.4",
   "main": "./lib/csclient.cs.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/cs-client/src/index.d.ts",
   "license": "MIT",
   "url": "https://github.com/TNOCS/csnext",
   "bugs": "https://github.com/TNOCS/csnext/issues",
@@ -27,10 +27,12 @@
     "http-server": "~0.10.0",
     "ipaddr.js": "^1.5.2",
     "postcss-loader": "^2.0.6",
+    "node-sass": "^4.6.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.18.2",
+    "sass-loader": "^6.0.6",
     "tslint": "~5.6.0",
     "tslint-loader": "~3.5.3",
     "typescript": "^2.5.3",
@@ -40,10 +42,12 @@
     "vue-loader": "^13.0.5",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^0.16.7",
+    "vuetify": "^0.17.0-beta.3",
     "webpack": "~3.5.5",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "~2.7.1",
     "yargs": "^9.0.1"
+
+
   }
 }

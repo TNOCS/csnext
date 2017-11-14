@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Dashboard, Widget } from '@csnext/cs-core';
+import { Dashboard, Widget, WidgetOptions } from '@csnext/cs-core';
 
 @Component(<any>{
     name: 'cswidget',
@@ -10,8 +10,21 @@ import { Dashboard, Widget } from '@csnext/cs-core';
 export class cswidget extends Vue {
 
     widget: Widget;
-    
+
+    constructor() {
+        super();
+    }
+
+    get computedOptions() {
+        if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
+            return this.widget._dashboard.defaultWidgetOptions;
+        }
+        return this.widget.options;
+    }
+
+
     created() {
+
         this.widget = <Widget>this.$attrs['widget'];
     }
 

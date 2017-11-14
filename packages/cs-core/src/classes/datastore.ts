@@ -3,7 +3,8 @@ export interface IDataSource {
     id?: string;
     handler?: string;
     source?: string;
-    data?: object;   
+    data?: any;   
+    options?: any;
 }
 
 export interface IDataSourceHandler { 

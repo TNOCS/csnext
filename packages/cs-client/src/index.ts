@@ -1,6 +1,10 @@
 // services
 import { AppState } from './services/appstate';
 
+// utils
+export * from './utils/guid';
+
+// services
 export * from './services/appstate';
 export * from './services/logger';
 
@@ -8,7 +12,6 @@ export * from './services/logger';
 export * from './managers/single/single';
 export * from './managers/dashboardbase';
 export * from './managers/grid/grid';
-export * from './managers/IManagerConfig';
 
 // datasources
 export * from './datasources/webrequestdatasource';
@@ -24,8 +27,12 @@ export * from './components/csdashboard/csdashboard';
 export * from './components/cssettings/cssettings';
 
 // widgets
+export * from './widgets/widgetbase';
 export * from './widgets/mdwidget';
 export * from './widgets/iframewidget';
+export * from './widgets/youtubebackgroundwidget';
+export * from './widgets/imagewidget';
+
 
 // export default {
 //     install(Vue) {

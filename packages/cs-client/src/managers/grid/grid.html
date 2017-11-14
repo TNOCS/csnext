@@ -1,4 +1,4 @@
-<div class="card-layout">
+<div>
     <div class="column">
         <component v-for="widget in dashboard.widgets" v-if="widget" :key="widget.id" :is="cswidget" :widget="widget"></component>
     </div>

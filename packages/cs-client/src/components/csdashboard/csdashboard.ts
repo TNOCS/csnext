@@ -19,11 +19,6 @@ export class csdashboard extends Vue {
     public dashboard: Dashboard;
     public component: Vue;
 
-    @Watch('$attrs.dashboard')
-    dashboardChanged(data: any) {
-        // alert('changed');
-    }
-
     beforeMount() {     
         if (!this.app.isInitialized) { this.app.Init(); }
         if (this.$attrs.hasOwnProperty('dashboard')) { this.dashboard = <Dashboard>(<any>this.$attrs['dashboard']); }

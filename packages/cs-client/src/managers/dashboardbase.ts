@@ -15,5 +15,10 @@ export class DashboardBase extends Vue {
         } else {
             if (this.$parent.$attrs.hasOwnProperty('dashboard')) { this.dashboard = <Dashboard>(<any>this.$parent.$attrs['dashboard']); }
         }
+        if (this.dashboard && this.dashboard.widgets) {
+            this.dashboard.widgets.forEach(w => {
+                w._dashboard = this.dashboard;
+            } );
+        }
     }
 } 

@@ -1,7 +1,7 @@
-import { Widget, Dashboard } from '@csnext/cs-core';
+import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
 import { DashboardBase } from './../dashboardbase';
-import { Logger, cswidget } from './../../index';
+import { Logger, cswidget, AppState } from './../../index';
 import Component from 'vue-class-component';
 
 // import './home.scss';
@@ -24,3 +24,5 @@ export class Grid extends DashboardBase {
     }
 
 }
+
+AppState.Instance.AddDashboardManager(<IManagerConfig>{ id: 'grid', name: 'grid page', component: Grid });

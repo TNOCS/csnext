@@ -1,3 +1,5 @@
-<div>
-    <component :is="widget.component"></component>
-</div>
+
+    <v-card :class="computedOptions.class" style="height:100%">
+        <component :is="widget.component"></component>
+    </v-card>
+    <!-- <component :is="widget.component" style="background:red; height:100%"></component> -->

@@ -9,10 +9,6 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.1/vue-router.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/vue-property-decorator@6.0.0/lib/vue-property-decorator.umd.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
-
     <script src="./../../lib/csclient.cs.js"></script>
 </head>
 
@@ -27,6 +23,7 @@
     </div>
 
     <script>
+
 
         let intro = Vue.component('introduction', {
             template: '<h1 class="maintitle">this is an introduction widget</h1>'
@@ -91,27 +88,49 @@
         });
 
         const app = csclient.AppState.Instance;
+
         app.project = {
-            title: 'Basic Example',
-            theme: {
-                dark: false,
-                clipped: true
-            },
+            title: "csnext demo",
             navigation: {
-                style: "top"
+                style: "tabs"
+            },
+            dataSources: {
             },
             leftSidebar: {
-                open: true,
-                title: 'Dashboards'
+                open: false,
+                clipped: true,
+                permanent: false,
+                persistent: true,
+                mini: false,
+                temporary: false
             },
-            footer: {
-                enabled: true,
-                text: 'Test footer'
+            theme: {
+                dark: false
             },
             dashboards: [
-                { path: '/', manager: 'single', title: 'Home', widgets: [{ component: intro }] },
-                { path: '/flex', manager: 'grid', title: 'Flex', widgets: [{ component: flexbox }] },
-                { path: '/about', manager: 'grid', title: 'About', widgets: [{ component: about }] }
+                {
+                    path: "/",
+                    icon: "info",
+                    manager: "single",
+                    title: "Intro",
+                    widgets: [{ component: intro, id: 'mdTest', data: 'intro' }]
+                },
+                {
+                    path: "/about",
+                    icon: "store",
+                    manager: "grid",
+                    title: "About",
+                    defaultWidgetOptions: {
+                        card: true,
+                        class: 'gray'
+                    },
+                    widgets: [
+                        { component: csclient.mdwidget, data: 'widget 1', options: { width: 2, height: 2 } },
+                        { component: csclient.mdwidget, data: 'widget 2', options: { width: 4, height: 4 } },
+                        { component: csclient.mdwidget, data: 'widget 3', options: { width: 2, height: 4 } }
+                    ]
+                }
+
             ]
         };
 

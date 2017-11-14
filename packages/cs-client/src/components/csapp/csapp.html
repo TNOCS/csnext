@@ -1,8 +1,67 @@
 <v-app v-if="app.isInitialized" id="inspire" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
 
-    <!-- <v-navigation-drawer persistent clipped disable-route-watcher v-model="app.project.leftSidebar.open" app> -->
-    <v-navigation-drawer :mini-variant="app.project.leftSidebar.mini" absolute overflow persistent :clipped="app.project.theme.clipped"
-        app v-model="app.project.leftSidebar.open">
+    <v-navigation-drawer v-if="app.project.leftSidebar" v-model="app.project.leftSidebar.open" :mini-variant="app.project.leftSidebar.mini"
+        :clipped="app.project.leftSidebar.clipped" :permanent="app.project.leftSidebar.permanent" :persistent="app.project.leftSidebar.persistent"
+        :temporary="app.project.leftSidebar.temporary" :floating="app.project.leftSidebar.floating" absolute overflow app>
+
+        <v-toolbar v-if="app.project.leftSidebar.title">
+            <v-list dense>
+                <v-list-tile>
+                    <v-icon v-if="app.project.navigation.icons">home</v-icon>
+                    <v-list-tile-title class="title">{{app.project.leftSidebar.title}}</v-list-tile-title>
+                </v-list-tile>
+            </v-list>
+        </v-toolbar>
+
+        <v-divider v-if="app.project.leftSidebar.title"></v-divider>
+        <div v-if="app.project.leftSidebar.component">
+            <component :is="app.project.leftSidebar.component"></component>
+        </div>
+        <div v-else-if="app.project.navigation.style==='left'">
+            <v-list>
+                <v-list-tile v-for="dashboard in app.project.dashboards" :key="dashboard.id" @click.trigger="SelectDashboard(dashboard)">
+                    <v-list-tile-action>
+                        <v-icon v-if="dashboard.icon">{{dashboard.icon}}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </div>
+    </v-navigation-drawer>
+
+    <v-navigation-drawer right v-if="app.project.rightSidebar" :class="app.project.theme.sidebar" v-model="app.project.rightSidebar.open"
+        :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"
+        :persistent="app.project.rightSidebar.persistent" :temporary="app.project.rightSidebar.temporary" :floating="app.project.rightSidebar.floating"
+        absolute overflow app>
+    </v-navigation-drawer>
+    <v-tabs style="height:100%">
+        <v-toolbar color="primary" :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute overflow dense
+            app>
+            <v-toolbar-side-icon v-if="app.project.leftSidebar" @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
+            <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
+            <v-tabs-bar v-if="app.project.navigation.style==='tabs'" :class="app.project.theme.navigation" slot="extension">
+                <v-tabs-slider color="yellow"></v-tabs-slider>
+                <v-tabs-item v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">
+                    {{ dashboard.title }}
+                </v-tabs-item>
+            </v-tabs-bar>
+        </v-toolbar>
+
+
+
+        <v-content>
+            <v-container fluid>
+                <router-view :key="$route.path">
+                </router-view>
+            </v-container>
+        </v-content>
+
+    </v-tabs>
+
+    <!-- 
+    <v-navigation-drawer v-model="app.project.leftSidebar.open" :mini-variant="app.project.leftSidebar.mini" absolute overflow persistent :clipped="app.project.theme.clipped" app >
         <v-toolbar :clipped-left="app.project.theme.clipped" v-if="app.project.leftSidebar.title">
             <v-list dense>
                 <v-list-tile>
@@ -18,7 +77,9 @@
         <div v-else-if="app.project.navigation.style==='left'">
             <v-list>
                 <v-list-tile v-for="dashboard in app.project.dashboards" :key="dashboard.id" @click.trigger="SelectDashboard(dashboard)">
-                    <v-list-tile-action><v-icon v-if="app.project.navigation.icons">home</v-icon></v-list-tile-action>
+                    <v-list-tile-action>
+                        <v-icon v-if="app.project.navigation.icons">home</v-icon>
+                    </v-list-tile-action>
                     <v-list-tile-content>
                         <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>
                     </v-list-tile-content>
@@ -26,25 +87,33 @@
             </v-list>
         </div>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="app.project.theme.clipped" :color="app.project.theme.primary"  app>
+    <v-toolbar :clipped-left="app.project.theme.clipped" :color="app.project.theme.primary" app>
         <v-toolbar-side-icon @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
-     
+
         <v-toolbar-title>{{app.project.title}}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-items v-if="app.project.navigation.style==='top'" class="hidden-sm-and-down" v-for="dashboard in app.project.dashboards" :key="dashboard.id">
-            <v-btn @click.trigger="SelectDashboard(dashboard)" flat><v-icon v-if="app.project.navigation.icons">home</v-icon> {{ dashboard.title }}</v-btn>
-        </v-toolbar-items>
-        <v-btn flat @click.trigger="OpenSettings()"><v-icon>settings</v-icon></v-btn>
-        
-    </v-toolbar>
-    <v-toolbar v-if="app.project.navigation.style==='tabs'" :clipped-left="app.project.theme.clipped" app>
-        <v-tabs app>
+
+        <v-tabs>
             <v-tabs-bar>
-                <v-tabs-item v-for="dashboard in app.project.dashboards" :key="dashboard.id" @click.trigger="SelectDashboard(dashboard)">
-                        <v-icon>home</v-icon> {{ dashboard.title }}
+                <v-tabs-slider color="yellow"></v-tabs-slider>
+                <v-tabs-item v-for="dashboard in app.project.dashboards" :key="dashboard.id" :to="{path:dashboard.path}">
+                    <span style="color:white">{{ dashboard.title }}</span>
                 </v-tabs-item>
             </v-tabs-bar>
         </v-tabs>
+
+
+        <v-toolbar-items v-if="app.project.navigation.style==='top'" class="hidden-sm-and-down" v-for="dashboard in app.project.dashboards"
+            :key="dashboard.id">
+            <v-btn @click.trigger="SelectDashboard(dashboard)" flat>
+                <v-icon v-if="app.project.navigation.icons">home</v-icon> {{ dashboard.title }}</v-btn>
+        </v-toolbar-items>
+        <v-btn flat @click.trigger="OpenSettings()">
+            <v-icon>settings</v-icon>
+        </v-btn>
+    </v-toolbar>
+    <v-toolbar v-if="app.project.navigation.style==='tabs'"  :color="app.project.theme.primary" :clipped-left="app.project.theme.clipped" app>
+       
     </v-toolbar>
     <main>
         <v-content>
@@ -56,5 +125,5 @@
     </main>
     <v-footer :absolute="app.project.footer.absolute" v-if="app.project.footer.enabled" app>
         <span class="white--text">{{app.project.footer.text}}</span>
-    </v-footer>
+    </v-footer> -->
 </v-app>

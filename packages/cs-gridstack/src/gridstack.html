@@ -1,0 +1,15 @@
+<div>
+    <div class="gridstack-background-widget" v-for="widget in backgroundWidgets" :key="widget.id">
+        <component :id="widget.id" v-if="widget" :is="cswidget" :widget="widget"></component>
+    </div>
+
+    <div class="grid-stack" id="gridstack" data-gs-animate="false" data-gs-width="10">
+        <div class="grid-stack-item" v-for="widget in widgets" :key="widget.id" :data-gs-id="widget.id" :data-gs-x="widget.options.x"
+            :data-gs-y="widget.options.y" :data-gs-width="widget.options.width" :data-gs-auto-position="gridoptions.autoposition"
+            :data-gs-height="widget.options.height">
+            <div class="grid-stack-item-content">
+                <component :id="widget.id" v-if="widget" :is="cswidget" :widget="widget"></component>
+            </div>
+        </div>
+    </div>
+</div>
