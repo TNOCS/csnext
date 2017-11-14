@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-gridstack",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "cs-gridstack",
   "main": "./lib/csgridstack.cs.js",
   "types": "./dist/gridstack.d.ts",
@@ -16,18 +16,18 @@
     "access": "public"
   },
   "devDependencies": {
-    "raw-loader": "^0.5.1",
-    "style-loader": "^0.18.2",
-    "sass-loader": "^6.0.6",
-    "postcss-loader": "^2.0.6",
-    "webpack": "~3.5.5",
-    "webpack-bundle-analyzer": "^2.9.0",
-    "typescript": "^2.5.3",
+    "@csnext/cs-client": "^0.0.5",
+    "@csnext/cs-core": "^0.0.5",
     "gridstack": "^0.3.0",
-    "lodash": "^3.5.0",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
-    "@csnext/cs-core": "^0.0.4",
-    "@csnext/cs-client": "^0.0.4"
+    "lodash": "^3.5.0",
+    "postcss-loader": "^2.0.6",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "typescript": "^2.5.3",
+    "webpack": "~3.5.5",
+    "webpack-bundle-analyzer": "^2.9.0"
   }
 }
