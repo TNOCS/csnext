@@ -1,26 +1,25 @@
 
 import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
-import { DashboardBase } from './../dashboardbase';
 import { Logger, cswidget, AppState } from './../../index';
 import Component from 'vue-class-component';
+import { Watch, Prop } from 'vue-property-decorator';
 
-// import './home.scss';
 @Component(<any>{
-    template: require('./single.html')
+    name: 'single',
+    template: require('./single.html'),
+    props: {
+        dashboard: null
+    }
 })
-export class Single extends DashboardBase {
-
+/** Single layout manager. Only shows first widget full screen */
+export class Single extends Vue {
+    public dashboard: Dashboard;
     private widget: Widget | undefined;
-
-    public cswidget = null;
-
+    
     created() {
-        this.created();
-        this.L.info('single manager', 'init');
         if (!this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
         this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
-        if (this.widget) { this.cswidget = this.widget.component; }
     }
 }
 

@@ -3,6 +3,20 @@
     background-color: white;
 }
 
+.content--wrap {
+  height: 100%;
+}
+
+.content {
+  height: 100%;
+  padding:0;
+}
+
+.dashboard-fullscreen {
+  margin: 0;
+  height:100%;
+}
+
 .tabsdemoDynamicTabs md-content {
     background-color: transparent !important; }
     .tabsdemoDynamicTabs md-content md-tabs {

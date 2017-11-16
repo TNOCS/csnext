@@ -7,10 +7,11 @@ export * from './utils/guid';
 // services
 export * from './services/appstate';
 export * from './services/logger';
+export * from './services/notification';
 
 // managers
 export * from './managers/single/single';
-export * from './managers/dashboardbase';
+// export * from './managers/dashboardbase';
 export * from './managers/grid/grid';
 
 // datasources
@@ -45,12 +46,13 @@ export * from './widgets/imagewidget';
 export var csnext =
     {
         install: (Vue) => {
+            
             let a = AppState.Instance;
             a.Init();
-            Vue.component('csapp', csapp);
-            Vue.component('csdashboard', csdashboard);
+            Vue.component('csdashboard', csdashboard);            
             Vue.component('cswidget', cswidget);
-
+            Vue.component('csapp', csapp);
+            
             console.log('install csnext');
 
             // this.g = {};

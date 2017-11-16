@@ -1,21 +1,21 @@
-import { ThemeColors } from './../../../../cs-core/src/classes/project';
-import { csdashboard } from './../csdashboard/csdashboard';
-import { Dashboard } from '@csnext/cs-core';
+
+import { Dashboard, ThemeColors } from '@csnext/cs-core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueRouter from 'vue-router';
-import { AppState, Logger } from '../../index';
+import { AppState, Logger, Notification, csdashboard } from '../../index';
 import { RouteConfig } from 'vue-router/types/router';
-import { Watch } from 'vue-property-decorator';
+import { Watch, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
+import { setInterval } from 'timers';
 import './main.scss';
-
-let router = new VueRouter({ routes: [] });
-
 
 // register needed plugins
 Vue.use(VueRouter);
 Vue.use(Vuetify);
+
+const router = new VueRouter({ routes: [] });
+
 
 @Component(<any>{
     name: 'csapp',
@@ -30,14 +30,7 @@ export class csapp extends Vue {
     public app = AppState.Instance;
     public L = Logger.Instance;
     public settingsDialog = false;
-
-
-
-    public items = [
-        'web', 'shopping', 'videos', 'images', 'news'
-    ];
-    public text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
-
+    public lastNotification: Notification = <Notification>{ _visible: false};
 
     constructor() {
         super();
@@ -56,22 +49,46 @@ export class csapp extends Vue {
         }
     }
 
+    // Add a dashboard as a route 
+    public AddDashboardRoute(d: Dashboard) {
+        if (d.dashboards && d.dashboards.length > 0) {
+            d.dashboards.forEach(dash => this.AddDashboardRoute(dash));
+        } else if (d.path) {
+            router.addRoutes([<RouteConfig>{ name: d.id, path: d.path, component: csdashboard, props: (route) => ({ dashboard: d }), alias: d.title, meta: d }]); // 
+        }
+    }
+
+    // Make sure all dashboards are available as routes
     public InitNavigation() {
         if (!this.app || !this.app.project || !this.app.project.dashboards) { return; }
+
         // create routes for dashboards
         this.app.project.dashboards.forEach(d => {
-            let dash = csdashboard;
-            router.addRoutes([<RouteConfig>{ name: d.id, path: d.path, component: dash, props: { dashboard: d }, alias: d.title, meta: d }]);
+            this.AddDashboardRoute(d);
         });
 
         this.L.info('navigation', 'navigation initialized');
+
     }
 
     public SelectDashboard(d: Dashboard) {
-        if (router && d.path) { router.push(d.path); }
+        console.log(d.path);
+        if (router && d.path && !d.dashboards) { router.push(d.path); }
     }
 
     public OpenSettings() {
         this.settingsDialog = true;
+    }
+
+    public created() {
+        this.InitNotifications();
+    }
+
+    public InitNotifications() {
+        if (this.app.EventBus) {
+            this.app.EventBus.$on('notification.new', (not: Notification) => {
+                this.lastNotification = not;
+            });
+        }
     }
 }

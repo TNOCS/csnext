@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { csdashboard } from './../components/csdashboard/csdashboard';
 import { IManagerConfig, Project, IDataSourceHandler, Dashboard, IDataSource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
-import { Single, Grid, Logger, WebRequestDataSourceHandler } from '../index';
+import { Single, Grid, Logger, cswidget, WebRequestDataSourceHandler, Notification } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState {
@@ -24,6 +24,9 @@ export class AppState {
     /** True if the application has been initialized */
     public isInitialized = false;
 
+    /** list of past notifications */
+    public notifications: Notification[] = [];
+
     /** used for singleton  */
     private static _instance: AppState;
 
@@ -38,17 +41,29 @@ export class AppState {
     public Init() {
         this.L.info('appstate', 'Init AppState');
 
+        Vue.component('csdashboard', csdashboard);            
+        Vue.component('cswidget', cswidget);
+
+        // TODO: use object.assign 
         if (!this.project) { this.project = new Project(); };
         if (!this.project.theme) { this.project.theme = new AppTheme(); }
-        if (!this.project.theme.colors) { this.project.theme.colors = new ThemeColors()}
+        if (!this.project.theme.colors) { this.project.theme.colors = new ThemeColors() }
         if (!this.project.footer) { this.project.footer = new FooterOptions(); }
         if (!this.project.dashboards) { this.project.dashboards = []; }
-        if (!this.project.navigation) { 
+        if (!this.project.navigation) {
             this.project.navigation = new NavigationOptions();
             this.project.navigation.style = 'right';
         }
+
         this.isInitialized = true;
         this.EventBus.$emit('init');
+    }
+
+    public TriggerNotification(notification: Notification) {
+        notification._visible = true;
+        if (!notification.timeout) { notification.timeout = 1000; }
+        this.EventBus.$emit('notification.new', notification);
+        if (notification.remember) { this.notifications.push(notification); }
     }
 
     /** Registration of a new dashboard manager */

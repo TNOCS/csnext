@@ -1,10 +1,8 @@
-import { GridStackOptions } from './gridstackoptions';
 import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, DashboardBase, Logger, cswidget, AppState } from '@csnext/cs-client';
+import { WidgetBase, Logger, cswidget, AppState } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 import * as $ from 'jquery';
-import { gridstack } from 'gridstack';
 
 import "./../../../node_modules/gridstack/dist/gridstack.css";
 import * as _ from 'lodash';
@@ -13,23 +11,46 @@ import 'lodash';
 import 'gridstack/dist/gridstack.all';
 import './gridstack.css';
 
-@Component({
-    template: require('./gridstack.html')
-})
-export class GridStack extends DashboardBase {
+import { DashboardOptions } from '@csnext/cs-core'
 
-    public cswidget = cswidget;
+export interface GridStackOptions extends DashboardOptions {
+    /** height of each cell unit */
+    cellHeight?: number;
+    /**  vertical gap size (default: 20). */
+    verticalMargin?: number;
+    /** amount of columns (default: 12) */
+    width?: number;
+    /** disallows dragging of widgets (default: false). */
+    disableDrag?: boolean;
+    /** disallows resizing of widgets (default: false). */
+    disableResize?: boolean;
+    /** maximum rows amount. Default is 0 which means no maximum rows */
+    height?: number;
+    /** enable floating widgets (default: false) */
+    float?: boolean;
+    /* tells to ignore data-gs-x and data-gs-y attributes and to place element to the first available position */
+    autoposition?: boolean;
+    /** makes grid static (default false). If true widgets are not movable/resizable. You don't even need jQueryUI draggable/resizable. A CSS class grid-stack-static is also added to the container. */
+    staticGrid? : boolean;
+    resizable?: any;
+}
+
+@Component({
+    template: require('./gridstack.html'),
+    props : {
+        dashboard: null
+    }
+})
+export class GridStack extends Vue {
     public mode: any;
     public dashboard: Dashboard;
     public gridoptions: GridStackOptions;    
 
-    get widgets() {
-        debugger;
+    get widgets() {        
         return this.dashboard.widgets.filter(w => { return !w.options.background; });
     }
 
-    get backgroundWidgets() {
-        debugger;
+    get backgroundWidgets() {        
         return this.dashboard.widgets.filter(w => { return w.options.background; });
     }
 
@@ -39,10 +60,7 @@ export class GridStack extends DashboardBase {
     }
 
     created() {
-        this.created();
         if (!this.dashboard) { return; }
-
-
         Vue.nextTick(() => {
             if (!this.dashboard.options) {
                 this.gridoptions = {};
@@ -74,21 +92,8 @@ export class GridStack extends DashboardBase {
                         }
                     }
                 })
-                console.log(event);
-                console.log(items);
-            })
-
-
-            this.dashboard.widgets.forEach((w: Widget) => {
-                console.log(w.id);
             });
-
         });
-
-
-        // if (!this.$route.meta || !this.$route.meta.widgets) return;
-        // this.dashboard = this.$route.meta;
-
     }
 
 }
