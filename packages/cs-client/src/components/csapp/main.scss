@@ -3,8 +3,24 @@
     background-color: white;
 }
 
+.floating {
+  margin-top: -48px !important;
+}
+
+// .content {
+//   padding-top: 0 !important;
+// }
+
+// .content :not(.floating) {
+//   padding-top: 48px !important;
+// }
+
 .content--wrap {
   height: 100%;
+}
+
+.floating-toolbar{
+  margin-top:10px !important;
 }
 
 .content {

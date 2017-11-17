@@ -65,7 +65,7 @@
         absolute overflow app>
     </v-navigation-drawer>
     <v-tabs style="height:100%">
-        <v-toolbar color="primary" :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute overflow dense
+        <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense
             app>
             <v-toolbar-side-icon v-if="app.project.leftSidebar" @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
             <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
@@ -76,7 +76,7 @@
                 </v-tabs-item>
             </v-tabs-bar>
         </v-toolbar>
-        <v-content>
+        <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }">
             <router-view :key="$route.path">
             </router-view>
         </v-content>

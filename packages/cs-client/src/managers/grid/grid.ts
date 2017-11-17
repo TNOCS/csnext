@@ -4,7 +4,7 @@ import { Logger, cswidget, AppState } from './../../index';
 import Component from 'vue-class-component';
 import { Watch, Prop } from 'vue-property-decorator';
 
-// import './home.scss';
+import './grid.css';
 @Component(<any>{
     template: require('./grid.html'),
     props: {

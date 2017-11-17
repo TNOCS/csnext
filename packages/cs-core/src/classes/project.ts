@@ -54,6 +54,7 @@ export class NavigationOptions {
     public style?: string;
     public hideTitle?: boolean;
     public hideMenuToggle?: boolean;
+    public floating?: boolean;
 }
 
 export class FooterOptions {
