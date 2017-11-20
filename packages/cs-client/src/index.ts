@@ -11,7 +11,8 @@ export * from './services/notification';
 
 // managers
 export * from './managers/single/single';
-// export * from './managers/dashboardbase';
+export { Tiles} from './managers/tiles/tiles';
+export { TileDashboardOptions } from './managers/tiles/tiledashboardoptions';
 export * from './managers/grid/grid';
 
 // datasources

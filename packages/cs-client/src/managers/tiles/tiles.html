@@ -1,0 +1,3 @@
+<div class="tiles-manager">
+        <cswidget :style="widgetClass(widget)" v-for="widget in dashboard.widgets" v-if="widget" :key="widget.id" :widget="widget"></cswidget>
+</div>

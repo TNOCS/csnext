@@ -21,7 +21,7 @@ export class Dashboard {
     public options?: DashboardOptions;
 
     // list of widgets
-    public widgets?: Widget[];
+    public widgets: Widget[] = [];
     public active?: boolean;
 
     public icon?: string;
