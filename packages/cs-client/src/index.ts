@@ -8,6 +8,10 @@ export * from './utils/guid';
 export * from './services/appstate';
 export * from './services/logger';
 export * from './services/notification';
+export * from './services/project-manager';
+export * from './services/datasource-manager';
+export * from './services/dashboard-manager';
+
 
 // managers
 export * from './managers/single/single';

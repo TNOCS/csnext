@@ -1,7 +1,8 @@
+import { ProjectManager } from './project-manager';
 import Vue from 'vue';
 import { csdashboard } from './../components/csdashboard/csdashboard';
-import { IManagerConfig, Project, IDataSourceHandler, Dashboard, IDataSource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
-import { Single, Grid, Logger, cswidget, WebRequestDataSourceHandler, Notification } from '../index';
+import { IManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
+import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, Notification, DashboardManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState {
@@ -9,12 +10,9 @@ export class AppState {
     /** Project definition */
     public project: Project = {};
 
-    /** Available dashboard managers for layouting */
-    public dashboardManagers: { [id: string]: IManagerConfig } = {};
-
-    /** Available datasource handlers  */
-    public dataSourceHandlers: { [id: string]: IDataSourceHandler } = {};
-
+    /** Manages active project */
+    public projectManager : ProjectManager;
+        
     /** Logger */
     public L = Logger.Instance;
 
@@ -36,6 +34,10 @@ export class AppState {
     }
 
     public data: { [id: string]: any } = {};
+
+    constructor() {
+        this.projectManager = new ProjectManager(this.project);
+    }
 
     /** Initialize the project state, dashboard managers and data source handlers */
     public Init() {
@@ -66,48 +68,5 @@ export class AppState {
         if (notification.remember) { this.notifications.push(notification); }
     }
 
-    /** Registration of a new dashboard manager */
-    public AddDashboardManager(manager: IManagerConfig) {
-        this.dashboardManagers[manager.id] = manager;
-    }
-
-    /** Registration of a new data source handler */
-    public AddDataSourceHandler(handler: IDataSourceHandler) {
-        this.dataSourceHandlers[handler.id] = handler;
-    }
-
-    /** Load a data source using the assigned data source handler */
-    public LoadDataSource(source: IDataSource | string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let src: IDataSource;
-            if (typeof (source) === 'string') {
-                if (this.project.dataSources && this.project.dataSources.hasOwnProperty(source)) {
-                    src = this.project.dataSources[source];
-                } else {
-                    reject('data source not found');
-                    return;
-                }
-            } else { src = source };
-
-            if (src.handler && this.dataSourceHandlers.hasOwnProperty(src.handler)) {
-                this.dataSourceHandlers[src.handler].load(src).then(data => {
-                    resolve(data);
-                    this.EventBus.$emit('data-' + source, 'loaded');
-                }).catch(e => {
-                    reject(e);
-                });
-            }
-        });
-    }
-
-    /** load all data sources */
-    public LoadDataSources() {
-        if (this.project.dataSources) {
-            for (let ds in this.project.dataSources) {
-                let source = this.project.dataSources[ds];
-                this.LoadDataSource(source);
-            }
-        }
-    }
 
 }

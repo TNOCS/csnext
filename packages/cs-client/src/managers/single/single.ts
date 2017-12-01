@@ -1,4 +1,3 @@
-
 import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
 import { Logger, cswidget, AppState } from './../../index';
@@ -22,5 +21,4 @@ export class Single extends Vue {
         this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
     }
 }
-
-AppState.Instance.AddDashboardManager(<IManagerConfig>{ id: 'single', name: 'single page', component: Single });
+AppState.Instance.projectManager.dashboardManager.add(<IManagerConfig>{ id: 'single', name: 'single page', component: Single });

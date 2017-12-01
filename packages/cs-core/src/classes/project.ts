@@ -1,6 +1,4 @@
-import { Dashboard } from './dashboard';
-import { IDataSource } from './datastore';
-import { IServiceConfig } from "./serviceconfig";
+import { IDatasource, Dashboard, IServiceConfig } from './../index';
 
 export class Project {
 
@@ -9,13 +7,12 @@ export class Project {
     public logo?: string;
     public navigation?: NavigationOptions = {};
     public footer?: FooterOptions = {};
-    public dataSources?: { [id: string]: IDataSource } = {};
+    public dataSources?: { [id: string]: IDatasource } = {};
     public dashboards?: Dashboard[] = [];
     public services?: { [id: string]: IServiceConfig } = {};
     public leftSidebar?: SidebarOptions = {};
     public rightSidebar?: SidebarOptions = {};
     public theme?: AppTheme;
-
     public constructor() {
     }
 }

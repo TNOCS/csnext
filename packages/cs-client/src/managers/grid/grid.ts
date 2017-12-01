@@ -15,4 +15,4 @@ export class Grid extends Vue {
     dashboard: Dashboard;
 }
 
-AppState.Instance.AddDashboardManager(<IManagerConfig>{ id: 'grid', name: 'grid page', component: Grid });
+AppState.Instance.projectManager.dashboardManager.add((<IManagerConfig>{ id: 'grid', name: 'grid page', component: Grid }));

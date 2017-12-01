@@ -1,5 +1,5 @@
 
-import { IDataSource, IDataSourceHandler } from '@csnext/cs-core';
+import { IDatasource, IDatasourceHandler, IDatasourceProcessor } from '@csnext/cs-core';
 import { AppState } from './../index';
 import axios from 'axios';
 
@@ -8,22 +8,19 @@ export interface WebRequestOptions {
     interval?: number;
 }
 
-export class WebRequestDataSourceHandler implements IDataSourceHandler {
+export class WebRequestDatasourceProcessor implements IDatasourceProcessor {
     id = "webrequest";
 
-    save(): Promise<any> {
-        throw new Error("Method not implemented.");
-    }
+    // static Create(options: WebRequestOptions): IDatasource {
+    //     let wds: IDatasource = {};
+    //     wds.handler = 'webrequest';
+    //     wds.options = options;
+    //     wds.source = options.url;
+    //     return wds;
+    // }
 
-    static Create(options: WebRequestOptions): IDataSource {
-        let wds: IDataSource = {};
-        wds.handler = 'webrequest';
-        wds.options = options;
-        wds.source = options.url;
-        return wds;
-    }
 
-    load(ds: IDataSource): Promise<any> {
+    execute(ds: IDatasource): Promise<any> {
         return new Promise((resolve, reject) => {
             if (ds.source === undefined) { reject('No source defined'); return; }
             axios.get(ds.source).catch(e => { reject(e) }).then(response => {
@@ -36,4 +33,4 @@ export class WebRequestDataSourceHandler implements IDataSourceHandler {
     }
 }
 
-AppState.Instance.AddDataSourceHandler(new WebRequestDataSourceHandler());
+AppState.Instance.projectManager.datasourceManager.add(new WebRequestDatasourceProcessor());

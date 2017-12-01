@@ -33,8 +33,8 @@ export class csdashboard extends Vue {
 
     public get component(): Vue {
         if (this.dashboard && this.dashboard.manager) {
-            if (this.app.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-                return this.app.dashboardManagers[this.dashboard.manager].component;
+            if (this.app.projectManager.dashboardManager.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
+                return this.app.projectManager.dashboardManager.dashboardManagers[this.dashboard.manager].component;
             }
         }
         return new Vue();
