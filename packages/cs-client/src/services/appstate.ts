@@ -18,7 +18,7 @@ export class AppState {
   public projectManager: ProjectManager;
 
   /** Logger */
-  public L = Logger.Instance;
+  public logger = Logger.Instance;
 
   /** Event bus for publish/subscribe events in application */
   public EventBus = new Vue();
@@ -39,8 +39,8 @@ export class AppState {
   private constructor() {}
 
   /** Initialize the project state, dashboard managers and data source handlers */
-  public Init(project: Project) {
-    this.L.info('appstate', 'Init AppState');
+  public init(project: Project) {
+    this.logger.info('appstate', 'Init AppState');
 
     this.project = Object.assign({
       theme: new AppTheme(),
