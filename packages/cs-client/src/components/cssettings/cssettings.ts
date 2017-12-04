@@ -1,4 +1,4 @@
-import { csdashboard } from './../csdashboard/csdashboard';
+import { csdashboard } from '../csdashboard/csdashboard';
 import { Dashboard } from '@csnext/cs-core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
@@ -8,15 +8,13 @@ import { RouteConfig } from 'vue-router/types/router';
 import { Watch } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
 
-@Component(<any>{
-    name: 'csapp',
-    template: require('./cssettings.html'),
-    components: { }
-})
-
+@Component({
+  name: 'csapp',
+  template: require('./cssettings.html'),
+  components: {}
+} as any)
 // tslint:disable-next-line:class-name
 export class cssettings extends Vue {
-    public app = AppState.Instance;
-    public L = Logger.Instance;    
-   
+  public app = AppState.Instance;
+  public L = Logger.Instance;
 }

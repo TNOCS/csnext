@@ -1,72 +1,67 @@
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
-import { csdashboard } from './../components/csdashboard/csdashboard';
+import { csdashboard } from '../components/csdashboard/csdashboard';
 import { IManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
 import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, Notification, DashboardManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
+// TODO Should we use idiomatic Typescript instead, as in
+// https://github.com/Badacadabra/JavaScript-Design-Patterns/blob/master/GoF/idiomatic/Creational/Singleton/TypeScript/API/me.ts
 export class AppState {
+  /** used for singleton  */
+  private static pInstance: AppState;
 
-    /** Project definition */
-    public project: Project = {};
+  /** Project definition */
+  public project: Project = {};
 
-    /** Manages active project */
-    public projectManager : ProjectManager;
-        
-    /** Logger */
-    public L = Logger.Instance;
+  /** Manages active project */
+  public projectManager: ProjectManager;
 
-    /** Event bus for publish/subscribe events in application */
-    public EventBus = new Vue();
+  /** Logger */
+  public L = Logger.Instance;
 
-    /** True if the application has been initialized */
-    public isInitialized = false;
+  /** Event bus for publish/subscribe events in application */
+  public EventBus = new Vue();
 
-    /** list of past notifications */
-    public notifications: Notification[] = [];
+  /** True if the application has been initialized */
+  public isInitialized = false;
 
-    /** used for singleton  */
-    private static _instance: AppState;
+  /** list of past notifications */
+  public notifications: Notification[] = [];
 
-    /** Get singleton instance of appstate */
-    public static get Instance() {
-        return this._instance || (this._instance = new this());
-    }
+  /** Get singleton instance of appstate */
+  public static get Instance() {
+    return this.pInstance || (this.pInstance = new this());
+  }
 
-    public data: { [id: string]: any } = {};
+  public data: { [id: string]: any } = {};
 
-    constructor() {
-        this.projectManager = new ProjectManager(this.project);
-    }
+  private constructor() {}
 
-    /** Initialize the project state, dashboard managers and data source handlers */
-    public Init() {
-        this.L.info('appstate', 'Init AppState');
+  /** Initialize the project state, dashboard managers and data source handlers */
+  public Init(project: Project) {
+    this.L.info('appstate', 'Init AppState');
 
-        Vue.component('csdashboard', csdashboard);            
-        Vue.component('cswidget', cswidget);
+    this.project = Object.assign({
+      theme: new AppTheme(),
+      footer: new FooterOptions(),
+      dashboards: [],
+      navigation: new NavigationOptions()
+    }, project);
 
-        // TODO: use object.assign 
-        if (!this.project) { this.project = new Project(); };
-        if (!this.project.theme) { this.project.theme = new AppTheme(); }
-        if (!this.project.theme.colors) { this.project.theme.colors = new ThemeColors() }
-        if (!this.project.footer) { this.project.footer = new FooterOptions(); }
-        if (!this.project.dashboards) { this.project.dashboards = []; }
-        if (!this.project.navigation) {
-            this.project.navigation = new NavigationOptions();
-            this.project.navigation.style = 'right';
-        }
+    this.projectManager = new ProjectManager(this.project);
 
-        this.isInitialized = true;
-        this.EventBus.$emit('init');
-    }
+    Vue.component('csdashboard', csdashboard);
+    Vue.component('cswidget', cswidget);
 
-    public TriggerNotification(notification: Notification) {
-        notification._visible = true;
-        if (!notification.timeout) { notification.timeout = 1000; }
-        this.EventBus.$emit('notification.new', notification);
-        if (notification.remember) { this.notifications.push(notification); }
-    }
+    this.isInitialized = true;
+    this.EventBus.$emit('init');
+  }
 
-
+  public TriggerNotification(notification: Notification) {
+    notification._visible = true;
+    if (!notification.timeout) { notification.timeout = 1000; }
+    this.EventBus.$emit('notification.new', notification);
+    if (notification.remember) { this.notifications.push(notification); }
+  }
 }

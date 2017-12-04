@@ -30638,10 +30638,10 @@ __webpack_require__(28);
 __webpack_require__(39);
 let GridStack = class GridStack extends vue_1.default {
     get widgets() {
-        return this.dashboard.widgets.filter(w => { return !w.options.background; });
+        return this.dashboard.widgets.filter(w => !w.options.background);
     }
     get backgroundWidgets() {
-        return this.dashboard.widgets.filter(w => { return w.options.background; });
+        return this.dashboard.widgets.filter(w => w.options.background);
     }
     beforeMount() {
         this.gridoptions = this.dashboard.options;
@@ -30657,24 +30657,28 @@ let GridStack = class GridStack extends vue_1.default {
             if (!this.dashboard.options) {
                 this.gridoptions = {};
             }
-            var options = {
+            const options = {
+                // tslint:disable-next-line:no-bitwise
                 cellHeight: this.gridoptions.cellHeight | 20,
+                // tslint:disable-next-line:no-bitwise
                 verticalMargin: this.gridoptions.verticalMargin | 10,
+                // tslint:disable-next-line:no-bitwise
                 width: this.gridoptions.width | 12,
                 disableDrag: this.gridoptions.disableDrag || false,
                 disableResize: this.gridoptions.disableResize || false,
+                // tslint:disable-next-line:no-bitwise
                 height: this.gridoptions.height | 0,
                 float: this.gridoptions.float || false,
                 staticGrid: this.gridoptions.staticGrid || false,
                 resizable: this.gridoptions.resizable || { handles: 'e, se, s, sw, w' }
             };
-            let gs = $('#gridstack');
+            const gs = $('#gridstack');
             gs.gridstack(options);
             gs.on('change', (event, items) => {
                 items.forEach(i => {
                     if (i.id) {
                         this.gridoptions.autoposition = false;
-                        let widget = this.dashboard.widgets.find(k => k.id === i.id);
+                        const widget = this.dashboard.widgets.find(k => k.id === i.id);
                         if (widget) {
                             widget.options.width = i.width;
                             widget.options.height = i.height;

@@ -1,36 +1,25 @@
-
 import { IDatasource, IDatasourceHandler, IDatasourceProcessor } from '@csnext/cs-core';
-import { AppState } from './../index';
+import { AppState, DatasourceManager } from '../index';
 import axios from 'axios';
 
-export interface WebRequestOptions {
-    url: string;
-    interval?: number;
-}
+// export interface IWebRequestOptions {
+//   url: string;
+//   interval?: number;
+// }
 
 export class WebRequestDatasourceProcessor implements IDatasourceProcessor {
-    id = "webrequest";
+  public id = 'webrequest';
 
-    // static Create(options: WebRequestOptions): IDatasource {
-    //     let wds: IDatasource = {};
-    //     wds.handler = 'webrequest';
-    //     wds.options = options;
-    //     wds.source = options.url;
-    //     return wds;
-    // }
-
-
-    execute(ds: IDatasource): Promise<any> {
-        return new Promise((resolve, reject) => {
-            if (ds.source === undefined) { reject('No source defined'); return; }
-            axios.get(ds.source).catch(e => { reject(e) }).then(response => {
-                if (response) {
-                    ds.data = response.data;
-                    resolve(ds.data);
-                }
-            });
+  public execute(ds: IDatasource): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (ds.source === undefined) { return reject('No source defined'); }
+      axios.get(ds.source)
+        .catch(e => { reject(e); })
+        .then(response => {
+          if (response) { resolve(response.data); }
         });
-    }
+    });
+  }
 }
 
-AppState.Instance.projectManager.datasourceManager.add(new WebRequestDatasourceProcessor());
+DatasourceManager.add(new WebRequestDatasourceProcessor());

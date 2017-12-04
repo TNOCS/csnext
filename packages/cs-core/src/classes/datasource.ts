@@ -1,38 +1,35 @@
 import { LinkedList } from 'typescript-collections';
 
 export interface IDatasource {
-    id?: string;
-    handler?: LinkedList<IDatasourceHandler>;
-    source?: string;
-    data?: any;
-    options?: any;
+  id: string;
+  handlers?: IDatasourceHandler[];
+  source?: string;
+  data?: any;
+  options?: any;
 }
 
 export interface IDatasourceHandler {
-    processor: string;
-    options: { [key: string]: string | number | boolean };
-    _processor?: IDatasourceProcessor;
+  processorId: string;
+  options?: { [key: string]: string | number | boolean };
+  _processor?: IDatasourceProcessor;
 }
 
 export enum ProcessorActions {
-    create,
-    read,
-    update,
-    delete
+  Create,
+  Read,
+  Update,
+  Delete
 }
 
-
 export interface IDatasourceProcessor {
-    id: string;
-
-    execute(datasource: IDatasource, action?: ProcessorActions, data?: any);
+  id: string;
+  execute(datasource: IDatasource, action?: ProcessorActions, data?: any): Promise<any>;
 }
 
 export class DatasourceProcessorBase implements IDatasourceProcessor {
-    id: string;
+  public id: string;
 
-    execute(datasource: IDatasource, action?: ProcessorActions) {
-
-    }
+  public execute(datasource: IDatasource, action?: ProcessorActions) {
+    return Promise.resolve();
+  }
 }
-

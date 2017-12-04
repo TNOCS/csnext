@@ -12,7 +12,6 @@ export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
 
-
 // managers
 export * from './managers/single/single';
 export { Tiles} from './managers/tiles/tiles';
@@ -39,7 +38,6 @@ export * from './widgets/iframewidget';
 export * from './widgets/youtubebackgroundwidget';
 export * from './widgets/imagewidget';
 
-
 // export default {
 //     install(Vue) {
 //         console.log('install csnext');
@@ -48,16 +46,14 @@ export * from './widgets/imagewidget';
 
 // console.log('csclient');
 
-export var csnext =
-    {
+export const csnext = {
         install: (Vue) => {
-            
-            let a = AppState.Instance;
+            const a = AppState.Instance;
             a.Init();
-            Vue.component('csdashboard', csdashboard);            
+            Vue.component('csdashboard', csdashboard);
             Vue.component('cswidget', cswidget);
             Vue.component('csapp', csapp);
-            
+
             console.log('install csnext');
 
             // this.g = {};
@@ -76,6 +72,3 @@ export var csnext =
 //     // //expose formly functions if auto installed
 //     // window.Vue.$formly = { getTypes, addType, addValidationMessage };
 // }
-
-
-

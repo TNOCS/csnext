@@ -1,12 +1,12 @@
 import { Widget, Dashboard } from '@csnext/cs-core';
 import Vue from 'vue';
-import "./../../../node_modules/gridstack/dist/gridstack.css";
+import '../../../node_modules/gridstack/dist/gridstack.css';
 import 'jquery';
 import 'lodash';
 import 'gridstack/dist/gridstack.all';
 import './gridstack.css';
 import { DashboardOptions } from '@csnext/cs-core';
-export interface GridStackOptions extends DashboardOptions {
+export interface IGridStackOptions extends DashboardOptions {
     /** height of each cell unit */
     cellHeight?: number;
     /**  vertical gap size (default: 20). */
@@ -29,7 +29,7 @@ export interface GridStackOptions extends DashboardOptions {
 export declare class GridStack extends Vue {
     mode: any;
     dashboard: Dashboard;
-    gridoptions: GridStackOptions;
+    gridoptions: IGridStackOptions;
     readonly widgets: Widget[];
     readonly backgroundWidgets: Widget[];
     beforeMount(): void;
