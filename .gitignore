@@ -63,3 +63,4 @@ packages/cs-client/dist
 packages/cs-server/dist
 packages/cs-client/lib/reports/
 *.js.map
+packages/cs-gridstack/lib/reports/report.gridstack.html
