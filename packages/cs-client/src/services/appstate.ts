@@ -45,7 +45,9 @@ export class AppState {
     Vue.component('csdashboard', csdashboard);
     Vue.component('cswidget', cswidget);
 
-    this.projectManager = new ProjectManager(this.project);
+    this.project = project;
+
+    this.projectManager = new ProjectManager(project);
 
     this.isInitialized = true;
     this.EventBus.$emit('init');
@@ -54,8 +56,8 @@ export class AppState {
   public loadDatasource(source: IDatasource | string) {
     let src: IDatasource;
     if (typeof (source) === 'string') {
-      if (this.project.dataSources && this.project.dataSources.hasOwnProperty(source)) {
-        src = this.project.dataSources[source];
+      if (this.project.datasources && this.project.datasources.hasOwnProperty(source)) {
+        src = this.project.datasources[source];
         return this.projectManager.datasourceManager.load(src);
       }
     } else {

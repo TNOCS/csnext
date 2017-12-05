@@ -1314,6 +1314,14 @@ var csdashboard = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.app = __WEBPACK_IMPORTED_MODULE_2__index__["AppState"].Instance;
         return _this;
+        // public beforeMount() {
+        //   if (!this.app.isInitialized) { this.app.Init(); }
+        //   // if (this.dashboard && this.dashboard.manager) {
+        //   //     if (this.app.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
+        //   //         this.component = this.app.dashboardManagers[this.dashboard.manager].component;
+        //   //     }
+        //   // }
+        // }
     }
     csdashboard.prototype.checkWidgetId = function (widget) {
         if (!widget.id) {
@@ -1332,8 +1340,8 @@ var csdashboard = /** @class */ (function (_super) {
     Object.defineProperty(csdashboard.prototype, "component", {
         get: function () {
             if (this.dashboard && this.dashboard.manager) {
-                if (this.app.projectManager.dashboardManager.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-                    return this.app.projectManager.dashboardManager.dashboardManagers[this.dashboard.manager].component;
+                if (__WEBPACK_IMPORTED_MODULE_2__index__["DashboardManager"].dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
+                    return __WEBPACK_IMPORTED_MODULE_2__index__["DashboardManager"].dashboardManagers[this.dashboard.manager].component;
                 }
             }
             return new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
@@ -1341,16 +1349,6 @@ var csdashboard = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    csdashboard.prototype.beforeMount = function () {
-        if (!this.app.isInitialized) {
-            this.app.Init();
-        }
-        // if (this.dashboard && this.dashboard.manager) {
-        //     if (this.app.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-        //         this.component = this.app.dashboardManagers[this.dashboard.manager].component;
-        //     }
-        // }
-    };
     csdashboard = __decorate([
         __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             name: 'csdashboard',
@@ -1529,21 +1527,20 @@ var WidgetBase = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_csdashboard_csdashboard__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__index__ = __webpack_require__(0);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(0);
 
 
 
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
+// TODO Should we use idiomatic Typescript instead, as in
+// https://github.com/Badacadabra/JavaScript-Design-Patterns/blob/master/GoF/idiomatic/Creational/Singleton/TypeScript/API/me.ts
 var AppState = /** @class */ (function () {
     function AppState() {
         /** Project definition */
         this.project = {};
         /** Logger */
-        this.L = __WEBPACK_IMPORTED_MODULE_4__index__["Logger"].Instance;
+        this.L = __WEBPACK_IMPORTED_MODULE_3__index__["Logger"].Instance;
         /** Event bus for publish/subscribe events in application */
         this.EventBus = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a();
         /** True if the application has been initialized */
@@ -1551,50 +1548,30 @@ var AppState = /** @class */ (function () {
         /** list of past notifications */
         this.notifications = [];
         this.data = {};
-        this.projectManager = new __WEBPACK_IMPORTED_MODULE_0__project_manager__["a" /* ProjectManager */](this.project);
     }
     Object.defineProperty(AppState, "Instance", {
         /** Get singleton instance of appstate */
         get: function () {
-            return this._instance || (this._instance = new this());
+            return this.pInstance || (this.pInstance = new this());
         },
         enumerable: true,
         configurable: true
     });
     /** Initialize the project state, dashboard managers and data source handlers */
-    AppState.prototype.Init = function () {
+    AppState.prototype.Init = function (project) {
         this.L.info('appstate', 'Init AppState');
         __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('csdashboard', __WEBPACK_IMPORTED_MODULE_2__components_csdashboard_csdashboard__["a" /* csdashboard */]);
-        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('cswidget', __WEBPACK_IMPORTED_MODULE_4__index__["cswidget"]);
-        // TODO: use object.assign 
-        if (!this.project) {
-            this.project = new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["Project"]();
-        }
-        ;
-        if (!this.project.theme) {
-            this.project.theme = new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["AppTheme"]();
-        }
-        if (!this.project.theme.colors) {
-            this.project.theme.colors = new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["ThemeColors"]();
-        }
-        if (!this.project.footer) {
-            this.project.footer = new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["FooterOptions"]();
-        }
-        if (!this.project.dashboards) {
-            this.project.dashboards = [];
-        }
-        if (!this.project.navigation) {
-            this.project.navigation = new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["NavigationOptions"]();
-            this.project.navigation.style = 'right';
-        }
+        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('cswidget', __WEBPACK_IMPORTED_MODULE_3__index__["cswidget"]);
+        this.project = project;
+        this.projectManager = new __WEBPACK_IMPORTED_MODULE_0__project_manager__["a" /* ProjectManager */](project);
         this.isInitialized = true;
         this.EventBus.$emit('init');
     };
     AppState.prototype.loadDatasource = function (source) {
         var src;
         if (typeof (source) === 'string') {
-            if (this.project.dataSources && this.project.dataSources.hasOwnProperty(source)) {
-                src = this.project.dataSources[source];
+            if (this.project.datasources && this.project.datasources.hasOwnProperty(source)) {
+                src = this.project.datasources[source];
                 return this.projectManager.datasourceManager.load(src);
             }
         }
@@ -1630,12 +1607,12 @@ var AppState = /** @class */ (function () {
 
 var ProjectManager = /** @class */ (function () {
     function ProjectManager(project) {
+        if (project === void 0) { project = {}; }
         this.project = project;
-        if (!project.dataSources) {
-            project.dataSources = {};
+        if (!project.datasources) {
+            project.datasources = {};
         }
-        ;
-        this.datasourceManager = new __WEBPACK_IMPORTED_MODULE_1__datasource_manager__["a" /* DatasourceManager */](project.dataSources);
+        this.datasourceManager = new __WEBPACK_IMPORTED_MODULE_1__datasource_manager__["a" /* DatasourceManager */](project.datasources);
         this.dashboardManager = new __WEBPACK_IMPORTED_MODULE_0__dashboard_manager__["a" /* DashboardManager */]();
     }
     return ProjectManager;
@@ -1649,15 +1626,17 @@ var ProjectManager = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardManager; });
+// TODO Is this the correct name, since it only stores a reference to existing dashboard managers, and doesn't do any management.
 var DashboardManager = /** @class */ (function () {
     function DashboardManager() {
-        /** Available dashboard managers for layouting */
-        this.dashboardManagers = {};
     }
     /** Registration of a new dashboard manager */
-    DashboardManager.prototype.add = function (manager) {
-        this.dashboardManagers[manager.id] = manager;
+    DashboardManager.add = function (manager) {
+        DashboardManager.dashboardManagers[manager.id] = manager;
     };
+    // TODO Make private (only reference is in the csdashboard.ts)
+    /** Available dashboard managers for layouting */
+    DashboardManager.dashboardManagers = {};
     return DashboardManager;
 }());
 
@@ -1669,74 +1648,58 @@ var DashboardManager = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatasourceManager; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__csnext_cs_core__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__csnext_cs_core___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__csnext_cs_core__);
+
+/**
+ * The DatasourceManager maintains a list of all datasource processors and all datasources?.
+ */
 var DatasourceManager = /** @class */ (function () {
-    function DatasourceManager(dataSources) {
-        this.dataSources = dataSources;
-        /** Available datasource handlers  */
-        this.IDatasourceProcessors = {};
+    function DatasourceManager(datasources) {
+        this.datasources = datasources;
     }
     /** Registration of a new data source handler */
-    DatasourceManager.prototype.add = function (processor) {
-        this.IDatasourceProcessors[processor.id] = processor;
+    DatasourceManager.add = function (processor) {
+        DatasourceManager.Processors[processor.id] = processor;
     };
-    /** Load a data source using the assigned data source handler */
+    /** Load a data source using the assigned data source handler(s) */
     DatasourceManager.prototype.load = function (source) {
-        // source.read() => result
-        //     webrequest.next(geojson).result
-        // source.write({<feature>})
-        //     geojson().previous(<feature>webrequest()'/tiles', 'get')
-        // Webrequest.read('url')
-        // Geojson.read()
-        // LayerX.read(<GeoJSON>{});
-        // find datasource
-        // let src: IDatasource;
-        // if (typeof (source) === 'string') {
-        //     if (this.dataSources && this.dataSources.hasOwnProperty(source)) {
-        //         src = this.dataSources[source];
-        //     } else {
-        //         // reject('data source not found');
-        //         // return;
-        //     }
-        // } else { src = source };
-        // if (source && source.handler && source.handler.length > 0) {
-        //     // link processors
-        //     for (var i = 0; i < source.handler.length; i++) {
-        //         let h = source.handler[i];
-        //         if (!this.IDatasourceProcessors.hasOwnProperty(h.processor)) {
-        //             throw new Error(`Error, datasource processor ${h.processor} is unknown`);                    
-        //         }
-        //         h._processor = this.IDatasourceProcessors[h.processor];
-        //         if (i > 0) { h.previous = source.handler[i - 1]; }
-        //         if (i < source.handler.length - 1) { h.next = source.handler[i + 1]; }
-        //     }
-        //     // if (source.handler[0]._processor) {
-        //     //    source.data = source.handler.reduce(h => {
-        //     //        return h._processor.execute(source, 'create');
-        //     //    });
-        //     //     source.handler[0]._processor.run(source, action: 'create' | 'read');
-        //     // }
-        // }
+        var datasource = typeof source === 'string' ? this.datasources[source] : source;
+        var handlers = datasource.handlers;
+        if (!handlers) {
+            return datasource.data;
+        }
         // run processors
         return new Promise(function (resolve, reject) {
-            // if (src.handler && this.IDatasourceProcessors.hasOwnProperty(src.handler)) {
-            //     this.IDatasourceProcessors[src.handler].load(src).then(data => {
-            //         resolve(data);
-            //         // this.EventBus.$emit('data-' + source, 'loaded');
-            //     }).catch(e => {
-            //         reject(e);
-            //     });
-            // }
+            handlers.reduce(function (promise, current) {
+                if (!DatasourceManager.Processors.hasOwnProperty(current.processorId)) {
+                    throw new Error("DatasourceProcessor " + current.processorId + " is not registered!");
+                }
+                var dsProcessor = DatasourceManager.Processors[current.processorId];
+                return promise.then(function (result) {
+                    return dsProcessor.execute(datasource, __WEBPACK_IMPORTED_MODULE_0__csnext_cs_core__["ProcessorActions"].Read, result);
+                });
+            }, Promise.resolve()).then(function (result) {
+                datasource.data = result; // Save the data as part of the datasource
+                resolve(result);
+            });
         });
     };
     /** load all data sources */
     DatasourceManager.prototype.loadAll = function () {
-        if (this.dataSources) {
-            for (var ds in this.dataSources) {
-                var source = this.dataSources[ds];
-                this.load(source);
+        if (!this.datasources) {
+            return;
+        }
+        for (var ds in this.datasources) {
+            if (!this.datasources.hasOwnProperty(ds)) {
+                continue;
             }
+            var source = this.datasources[ds];
+            this.load(source);
         }
     };
+    /** Available datasource handlers  */
+    DatasourceManager.Processors = {};
     return DatasourceManager;
 }());
 
@@ -2079,14 +2042,20 @@ var csapp = /** @class */ (function (_super) {
             this.$vuetify.theme = this.app.project.theme.colors;
         }
     };
-    // Add a dashboard as a route 
+    // Add a dashboard as a route
     csapp.prototype.AddDashboardRoute = function (d) {
         var _this = this;
         if (d.dashboards && d.dashboards.length > 0) {
             d.dashboards.forEach(function (dash) { return _this.AddDashboardRoute(dash); });
         }
         else if (d.path) {
-            router.addRoutes([{ name: d.id, path: d.path, component: __WEBPACK_IMPORTED_MODULE_3__index__["csdashboard"], props: function (route) { return ({ dashboard: d }); }, alias: d.title, meta: d }]); // 
+            router.addRoutes([{
+                    name: d.id,
+                    path: d.path,
+                    component: __WEBPACK_IMPORTED_MODULE_3__index__["csdashboard"],
+                    props: function (route) { return ({ dashboard: d }); },
+                    alias: d.title, meta: d
+                }]);
         }
     };
     // Make sure all dashboards are available as routes
@@ -2102,7 +2071,7 @@ var csapp = /** @class */ (function (_super) {
         this.L.info('navigation', 'navigation initialized');
     };
     csapp.prototype.SelectDashboard = function (d) {
-        console.log(d.path);
+        this.L.info('SelectDashboard', d.path);
         if (router && d.path && !d.dashboards) {
             router.push(d.path);
         }
@@ -2239,7 +2208,7 @@ class Project {
     constructor() {
         this.navigation = {};
         this.footer = {};
-        this.dataSources = {};
+        this.datasources = {};
         this.dashboards = [];
         this.services = {};
         this.leftSidebar = {};
@@ -2261,12 +2230,18 @@ class ThemeColors {
 exports.ThemeColors = ThemeColors;
 // Application look and feel
 class AppTheme {
+    constructor() {
+        this.colors = new ThemeColors();
+    }
 }
 exports.AppTheme = AppTheme;
 class SidebarOptions {
 }
 exports.SidebarOptions = SidebarOptions;
 class NavigationOptions {
+    constructor() {
+        this.style = 'right';
+    }
 }
 exports.NavigationOptions = NavigationOptions;
 class FooterOptions {
@@ -2326,13 +2301,14 @@ var WidgetType;
 Object.defineProperty(exports, "__esModule", { value: true });
 var ProcessorActions;
 (function (ProcessorActions) {
-    ProcessorActions[ProcessorActions["create"] = 0] = "create";
-    ProcessorActions[ProcessorActions["read"] = 1] = "read";
-    ProcessorActions[ProcessorActions["update"] = 2] = "update";
-    ProcessorActions[ProcessorActions["delete"] = 3] = "delete";
+    ProcessorActions[ProcessorActions["Create"] = 0] = "Create";
+    ProcessorActions[ProcessorActions["Read"] = 1] = "Read";
+    ProcessorActions[ProcessorActions["Update"] = 2] = "Update";
+    ProcessorActions[ProcessorActions["Delete"] = 3] = "Delete";
 })(ProcessorActions = exports.ProcessorActions || (exports.ProcessorActions = {}));
 class DatasourceProcessorBase {
     execute(datasource, action) {
+        return Promise.resolve();
     }
 }
 exports.DatasourceProcessorBase = DatasourceProcessorBase;
@@ -2453,7 +2429,7 @@ var Single = /** @class */ (function (_super) {
     return Single;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
-__WEBPACK_IMPORTED_MODULE_1__index__["AppState"].Instance.projectManager.dashboardManager.add({ id: 'single', name: 'single page', component: Single });
+__WEBPACK_IMPORTED_MODULE_1__index__["DashboardManager"].add({ id: 'single', name: 'single page', component: Single });
 
 
 /***/ }),
@@ -2531,7 +2507,7 @@ var Tiles = /** @class */ (function (_super) {
     return Tiles;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
-__WEBPACK_IMPORTED_MODULE_1__index__["AppState"].Instance.projectManager.dashboardManager.add({ id: 'tiles', name: 'tiles page', component: Tiles });
+__WEBPACK_IMPORTED_MODULE_1__index__["DashboardManager"].add({ id: 'tiles', name: 'tiles page', component: Tiles });
 
 
 /***/ }),
@@ -2743,7 +2719,7 @@ var Grid = /** @class */ (function (_super) {
     return Grid;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
-__WEBPACK_IMPORTED_MODULE_1__index__["AppState"].Instance.projectManager.dashboardManager.add({ id: 'grid', name: 'grid page', component: Grid });
+__WEBPACK_IMPORTED_MODULE_1__index__["DashboardManager"].add({ id: 'grid', name: 'grid page', component: Grid });
 
 
 /***/ }),
@@ -2808,27 +2784,24 @@ module.exports = "<div class=\"grid-manager\">\r\n        <cswidget v-for=\"widg
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 
 
+// export interface IWebRequestOptions {
+//   url: string;
+//   interval?: number;
+// }
 var WebRequestDatasourceProcessor = /** @class */ (function () {
     function WebRequestDatasourceProcessor() {
-        this.id = "webrequest";
+        this.id = 'webrequest';
     }
-    // static Create(options: WebRequestOptions): IDatasource {
-    //     let wds: IDatasource = {};
-    //     wds.handler = 'webrequest';
-    //     wds.options = options;
-    //     wds.source = options.url;
-    //     return wds;
-    // }
     WebRequestDatasourceProcessor.prototype.execute = function (ds) {
         return new Promise(function (resolve, reject) {
             if (ds.source === undefined) {
-                reject('No source defined');
-                return;
+                return reject('No source defined');
             }
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(ds.source).catch(function (e) { reject(e); }).then(function (response) {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(ds.source)
+                .catch(function (e) { reject(e); })
+                .then(function (response) {
                 if (response) {
-                    ds.data = response.data;
-                    resolve(ds.data);
+                    resolve(response.data);
                 }
             });
         });
@@ -2836,7 +2809,7 @@ var WebRequestDatasourceProcessor = /** @class */ (function () {
     return WebRequestDatasourceProcessor;
 }());
 
-__WEBPACK_IMPORTED_MODULE_0__index__["AppState"].Instance.projectManager.datasourceManager.add(new WebRequestDatasourceProcessor());
+__WEBPACK_IMPORTED_MODULE_0__index__["DatasourceManager"].add(new WebRequestDatasourceProcessor());
 
 
 /***/ }),
@@ -25348,7 +25321,7 @@ exports.push([module.i, ".cstabs {\n  margin-top: 0px;\n  background-color: whit
 /* 71 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\r\n\r\n    <v-navigation-drawer v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\r\n        :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\r\n        :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\r\n\r\n        <v-toolbar v-if=\"app.project.leftSidebar.title\">\r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <!-- <v-list>\r\n                <v-list-group v-for=\"dashboard in app.project.dashboards\" :value=\"dashboard.act\" :key=\"dashboard.id\">\r\n                    <v-list-tile slot=\"dashboard\" @click.trigger=\"\">\r\n                        <v-list-tile-action>\r\n                            <v-icon v-if=\"dashboard.icon\">{{dashboard.icon}}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                    </v-list-tile>\r\n                </v-list-group>\r\n            </v-list> -->\r\n            <v-list>\r\n                <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" v-bind:key=\"item.title\">\r\n                    <v-list-tile slot=\"item\" @click=\"SelectDashboard(item)\">\r\n                        <v-list-tile-action>\r\n                            <v-icon>{{ item.icon }}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                        <v-list-tile-action v-if=\"item.dashboards\">\r\n                            <v-icon>keyboard_arrow_down</v-icon>\r\n                        </v-list-tile-action>\r\n                    </v-list-tile>\r\n                    <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.title\" @click=\"SelectDashboard(subItem)\">\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                        <v-list-tile-action>\r\n                            <v-icon>{{ subItem.action }}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-action v-if=\"subItem.dashboards\">\r\n                            <v-icon>keyboard_arrow_down</v-icon>\r\n                        </v-list-tile-action>\r\n                    </v-list-tile>\r\n                </v-list-group>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n\r\n    <v-navigation-drawer right v-if=\"app.project.rightSidebar\" :class=\"app.project.theme.sidebar\" v-model=\"app.project.rightSidebar.open\"\r\n        :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\r\n        :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\r\n        absolute overflow app>\r\n    </v-navigation-drawer>\r\n    <v-tabs style=\"height:100%\">\r\n        <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\" :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense\r\n            app>\r\n            <v-toolbar-side-icon v-if=\"app.project.leftSidebar\"  @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n            <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\r\n            <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\r\n                <v-tabs-slider color=\"yellow\"></v-tabs-slider>\r\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\r\n                    {{ dashboard.title }}\r\n                </v-tabs-item>\r\n            </v-tabs-bar>\r\n        </v-toolbar>\r\n        <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\r\n            <router-view :key=\"$route.path\">\r\n            </router-view>\r\n        </v-content>\r\n    </v-tabs>\r\n\r\n    <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\r\n        {{ lastNotification.title }}\r\n        <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\r\n    </v-snackbar>\r\n</v-app>"
+module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n    <v-navigation-drawer v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n        :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n        :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n        <v-toolbar v-if=\"app.project.leftSidebar.title\">\n            <v-list dense>\n                <v-list-tile>\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n                </v-list-tile>\n            </v-list>\n        </v-toolbar>\n\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n        <div v-if=\"app.project.leftSidebar.component\">\n            <component :is=\"app.project.leftSidebar.component\"></component>\n        </div>\n        <div v-else-if=\"app.project.navigation.style==='left'\">\n            <!-- <v-list>\n                <v-list-group v-for=\"dashboard in app.project.dashboards\" :value=\"dashboard.act\" :key=\"dashboard.id\">\n                    <v-list-tile slot=\"dashboard\" @click.trigger=\"\">\n                        <v-list-tile-action>\n                            <v-icon v-if=\"dashboard.icon\">{{dashboard.icon}}</v-icon>\n                        </v-list-tile-action>\n                        <v-list-tile-content>\n                            <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\n                        </v-list-tile-content>\n                    </v-list-tile>\n                </v-list-group>\n            </v-list> -->\n            <v-list>\n                <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" v-bind:key=\"item.title\">\n                    <v-list-tile slot=\"item\" @click=\"SelectDashboard(item)\">\n                        <v-list-tile-action>\n                            <v-icon>{{ item.icon }}</v-icon>\n                        </v-list-tile-action>\n                        <v-list-tile-content>\n                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n                        </v-list-tile-content>\n                        <v-list-tile-action v-if=\"item.dashboards\">\n                            <v-icon>keyboard_arrow_down</v-icon>\n                        </v-list-tile-action>\n                    </v-list-tile>\n                    <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.title\" @click=\"SelectDashboard(subItem)\">\n                        <v-list-tile-content>\n                            <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n                        </v-list-tile-content>\n                        <v-list-tile-action>\n                            <v-icon>{{ subItem.action }}</v-icon>\n                        </v-list-tile-action>\n                        <v-list-tile-action v-if=\"subItem.dashboards\">\n                            <v-icon>keyboard_arrow_down</v-icon>\n                        </v-list-tile-action>\n                    </v-list-tile>\n                </v-list-group>\n            </v-list>\n        </div>\n    </v-navigation-drawer>\n\n    <v-navigation-drawer right v-if=\"app.project.rightSidebar\" :class=\"app.project.theme.sidebar\" v-model=\"app.project.rightSidebar.open\"\n        :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\n        :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\n        absolute overflow app>\n    </v-navigation-drawer>\n    <v-tabs style=\"height:100%\">\n        <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\" :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense\n            app>\n            <v-toolbar-side-icon v-if=\"app.project.leftSidebar\"  @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n            <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n            <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n                <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n                    {{ dashboard.title }}\n                </v-tabs-item>\n            </v-tabs-bar>\n        </v-toolbar>\n        <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\n            <router-view :key=\"$route.path\">\n            </router-view>\n        </v-content>\n    </v-tabs>\n\n    <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n        {{ lastNotification.title }}\n        <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n    </v-snackbar>\n</v-app>\n"
 
 /***/ }),
 /* 72 */
