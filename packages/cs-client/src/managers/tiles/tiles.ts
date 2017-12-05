@@ -1,4 +1,4 @@
-import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
+import { IWidget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
 import { Logger, cswidget, AppState, TileDashboardOptions, DashboardManager } from '../../index';
 import Component from 'vue-class-component';
@@ -19,7 +19,7 @@ export class Tiles extends Vue {
     return this.dashboard.options as TileDashboardOptions;
   }
 
-  public widgetClass(widget: Widget) {
+  public widgetClass(widget: IWidget) {
     let width = this.options.tileSize;
     let height = this.options.tileSize;
     if (widget.options) {

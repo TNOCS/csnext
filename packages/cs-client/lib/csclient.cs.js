@@ -2137,8 +2137,6 @@ var cswidget = /** @class */ (function (_super) {
     function cswidget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    cswidget.prototype.beforeCreate = function () {
-    };
     Object.defineProperty(cswidget.prototype, "computedOptions", {
         get: function () {
             if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
@@ -2186,6 +2184,7 @@ __export(__webpack_require__(24));
 __export(__webpack_require__(25));
 __export(__webpack_require__(26));
 __export(__webpack_require__(27));
+// export *  from './classes/plugin';
 
 
 /***/ }),

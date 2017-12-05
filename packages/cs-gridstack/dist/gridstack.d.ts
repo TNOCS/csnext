@@ -1,4 +1,4 @@
-import { Widget, Dashboard } from '@csnext/cs-core';
+import { Dashboard } from '@csnext/cs-core';
 import Vue from 'vue';
 import '../../../node_modules/gridstack/dist/gridstack.css';
 import 'jquery';
@@ -30,8 +30,8 @@ export declare class GridStack extends Vue {
     mode: any;
     dashboard: Dashboard;
     gridoptions: IGridStackOptions;
-    readonly widgets: Widget[];
-    readonly backgroundWidgets: Widget[];
+    readonly widgets: any;
+    readonly backgroundWidgets: any;
     beforeMount(): void;
     created(): void;
 }

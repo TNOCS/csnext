@@ -22,6 +22,7 @@ export interface IWidget {
   type?: WidgetType;
   reference?: string;
   component?: any;
+  datasource?: string;
   data?: any;
   options?: IWidgetOptions;
   _dashboard?: Dashboard;

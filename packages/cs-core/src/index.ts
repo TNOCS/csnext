@@ -7,13 +7,4 @@ export * from './classes/datasource';
 export * from './classes/serviceconfig';
 export * from './classes/managerconfig';
 
-//export *  from './classes/plugin';
-
-export module csCore
-{
-   
-
-}
-
-
-
+// export *  from './classes/plugin';

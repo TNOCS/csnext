@@ -1,4 +1,4 @@
-import { Widget } from '@csnext/cs-core';
+import { IWidget } from '@csnext/cs-core';
 import { AppState, Logger, guidGenerator } from '../index';
 import Vue from 'vue';
 import Component from 'vue-class-component';
@@ -12,7 +12,7 @@ import { Watch, Prop } from 'vue-property-decorator';
 } as any)
 export class WidgetBase extends Vue {
 
-  public widget: Widget;
+  public widget: IWidget;
 
   protected L = Logger.Instance;
 
