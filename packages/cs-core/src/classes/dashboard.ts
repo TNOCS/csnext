@@ -1,6 +1,6 @@
 import { DashboardOptions } from './dashboardoptions';
 import { SidebarOptions } from './project';
-import { Widget, WidgetOptions } from './widget';
+import { IWidget, IWidgetOptions } from './widget';
 import { Page } from './page';
 
 
@@ -21,16 +21,15 @@ export class Dashboard {
     public options?: DashboardOptions;
 
     // list of widgets
-    public widgets: Widget[] = [];
+    public widgets: IWidget[] = [];
     public active?: boolean;
 
     public icon?: string;
 
-    public defaultWidgetOptions?: WidgetOptions;
+    public defaultWidgetOptions?: IWidgetOptions;
 
     public leftSidebar?: SidebarOptions = {};
 
     // optional list of sub dashboards
     public dashboards?: Dashboard[];
-    
 }

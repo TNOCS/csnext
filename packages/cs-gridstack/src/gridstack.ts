@@ -1,6 +1,6 @@
 import { Widget, Dashboard, IManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, Logger, cswidget, AppState } from '@csnext/cs-client';
+import { WidgetBase, Logger, cswidget, AppState, DashboardManager } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 import * as $ from 'jquery';
 import '../../../node_modules/gridstack/dist/gridstack.css';
@@ -98,3 +98,5 @@ export class GridStack extends Vue {
     });
   }
 }
+
+
