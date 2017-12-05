@@ -36,26 +36,34 @@ export class AppState {
 
   public data: { [id: string]: any } = {};
 
-  private constructor() {}
+  private constructor() { }
 
   /** Initialize the project state, dashboard managers and data source handlers */
   public init(project: Project) {
     this.logger.info('appstate', 'Init AppState');
 
-    this.project = Object.assign({
-      theme: new AppTheme(),
-      footer: new FooterOptions(),
-      dashboards: [],
-      navigation: new NavigationOptions()
-    }, project);
-
-    this.projectManager = new ProjectManager(this.project);
-
     Vue.component('csdashboard', csdashboard);
     Vue.component('cswidget', cswidget);
 
+    this.project = project;
+
+    this.projectManager = new ProjectManager(project);
+
     this.isInitialized = true;
     this.EventBus.$emit('init');
+  }
+
+  public loadDatasource(source: IDatasource | string) {
+    let src: IDatasource;
+    if (typeof (source) === 'string') {
+      if (this.project.datasources && this.project.datasources.hasOwnProperty(source)) {
+        src = this.project.datasources[source];
+        return this.projectManager.datasourceManager.load(src);
+      }
+    } else {
+      src = source;
+      return this.projectManager.datasourceManager.load(src);
+    }
   }
 
   public TriggerNotification(notification: Notification) {
@@ -64,4 +72,5 @@ export class AppState {
     this.EventBus.$emit('notification.new', notification);
     if (notification.remember) { this.notifications.push(notification); }
   }
+
 }
