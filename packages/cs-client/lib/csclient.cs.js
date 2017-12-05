@@ -1568,17 +1568,7 @@ var AppState = /** @class */ (function () {
         this.EventBus.$emit('init');
     };
     AppState.prototype.loadDatasource = function (source) {
-        var src;
-        if (typeof (source) === 'string') {
-            if (this.project.datasources && this.project.datasources.hasOwnProperty(source)) {
-                src = this.project.datasources[source];
-                return this.projectManager.datasourceManager.load(src);
-            }
-        }
-        else {
-            src = source;
-            return this.projectManager.datasourceManager.load(src);
-        }
+        return this.projectManager.datasourceManager.load(source);
     };
     AppState.prototype.TriggerNotification = function (notification) {
         notification._visible = true;

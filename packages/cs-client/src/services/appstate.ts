@@ -53,17 +53,8 @@ export class AppState {
     this.EventBus.$emit('init');
   }
 
-  public loadDatasource(source: IDatasource | string) {
-    let src: IDatasource;
-    if (typeof (source) === 'string') {
-      if (this.project.datasources && this.project.datasources.hasOwnProperty(source)) {
-        src = this.project.datasources[source];
-        return this.projectManager.datasourceManager.load(src);
-      }
-    } else {
-      src = source;
-      return this.projectManager.datasourceManager.load(src);
-    }
+  public loadDatasource(source: IDatasource | string): Promise<object> {
+    return this.projectManager.datasourceManager.load(source);
   }
 
   public TriggerNotification(notification: Notification) {
