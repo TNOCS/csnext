@@ -15,7 +15,7 @@ export class DatasourceManager {
   constructor(private datasources: { [id: string]: IDatasource }) { }
 
   /** Load a data source using the assigned data source handler(s) */
-  public load(source: IDatasource | string) {
+  public load(source: IDatasource | string): Promise<object> {
     const datasource = typeof source === 'string' ? this.datasources[source] : source;
     const handlers = datasource.handlers;
     if (!handlers) { return datasource.data; }
