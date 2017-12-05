@@ -17,9 +17,11 @@
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.5",
+    "vuetify": "^0.17.3",
     "axios": "^0.16.2"
   },
   "devDependencies": {
+    "@types/geojson": "^7946.0.0",
     "awesome-typescript-loader": "~3.2.3",
     "concurrently": "^3.4.0",
     "cpx": "^1.5.0",
@@ -42,7 +44,6 @@
     "vue-loader": "^13.0.5",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^0.17.3",
     "webpack": "~3.5.5",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "~2.7.1",
