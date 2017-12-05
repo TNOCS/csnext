@@ -1,8 +1,8 @@
-import { LinkedList } from 'typescript-collections';
+import { LinkedList } from 'typescript-collections'; 
 
 export interface IDatasource {
     id?: string;
-    handler?: LinkedList<IDatasourceHandler>;
+    handlers?: IDatasourceHandler[];
     source?: string;
     data?: any;
     options?: any;

@@ -11,8 +11,8 @@ export class AppState {
     public project: Project = {};
 
     /** Manages active project */
-    public projectManager : ProjectManager;
-        
+    public projectManager: ProjectManager;
+
     /** Logger */
     public L = Logger.Instance;
 
@@ -43,7 +43,7 @@ export class AppState {
     public Init() {
         this.L.info('appstate', 'Init AppState');
 
-        Vue.component('csdashboard', csdashboard);            
+        Vue.component('csdashboard', csdashboard);
         Vue.component('cswidget', cswidget);
 
         // TODO: use object.assign 
@@ -59,6 +59,19 @@ export class AppState {
 
         this.isInitialized = true;
         this.EventBus.$emit('init');
+    }
+
+    public loadDatasource(source: IDatasource | string) {
+        let src: IDatasource;
+        if (typeof (source) === 'string') {
+            if (this.project.dataSources && this.project.dataSources.hasOwnProperty(source)) {
+                src = this.project.dataSources[source];
+                return this.projectManager.datasourceManager.load(src);
+            }
+        } else {
+            src = source;
+            return this.projectManager.datasourceManager.load(src);
+        }       
     }
 
     public TriggerNotification(notification: Notification) {
