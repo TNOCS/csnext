@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.5",
-    "vuetify": "^0.17.3",
+    "vuetify": "^v1.0.0-alpha.1",
     "axios": "^0.16.2"
   },
   "devDependencies": {
@@ -44,7 +44,6 @@
     "vue-loader": "^13.0.5",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^v1.0.0-alpha.1",
     "webpack": "~3.5.5",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "~2.7.1",
