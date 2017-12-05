@@ -16,13 +16,12 @@ Vue.use(Vuetify);
 const router = new VueRouter({ routes: [] });
 
 @Component({
-  name: 'csapp',
+  name: 'cs-app',
   router,
-  template: require('./csapp.html'),
+  template: require('./cs-app.html'),
   components: {}
 } as any)
-// tslint:disable-next-line:class-name
-export class csapp extends Vue {
+export class CsApp extends Vue {
   public app = AppState.Instance;
   public L = Logger.Instance;
   public settingsDialog = false;
