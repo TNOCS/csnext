@@ -104,24 +104,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "Grid", function() { return __WEBPACK_IMPORTED_MODULE_10__managers_grid_grid__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__datasources_webrequestdatasource__ = __webpack_require__(43);
 /* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WebRequestDatasourceProcessor", function() { return __WEBPACK_IMPORTED_MODULE_11__datasources_webrequestdatasource__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_csapp_csapp__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_cswidget_cswidget__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_csdashboard_csdashboard__ = __webpack_require__(7);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "csapp", function() { return __WEBPACK_IMPORTED_MODULE_12__components_csapp_csapp__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "cswidget", function() { return __WEBPACK_IMPORTED_MODULE_13__components_cswidget_cswidget__["a"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "csdashboard", function() { return __WEBPACK_IMPORTED_MODULE_14__components_csdashboard_csdashboard__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_cssettings_cssettings__ = __webpack_require__(73);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "cssettings", function() { return __WEBPACK_IMPORTED_MODULE_15__components_cssettings_cssettings__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__widgets_widgetbase__ = __webpack_require__(9);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WidgetBase", function() { return __WEBPACK_IMPORTED_MODULE_16__widgets_widgetbase__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__widgets_mdwidget__ = __webpack_require__(75);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mdwidget", function() { return __WEBPACK_IMPORTED_MODULE_17__widgets_mdwidget__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__widgets_iframewidget__ = __webpack_require__(76);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "iframewidget", function() { return __WEBPACK_IMPORTED_MODULE_18__widgets_iframewidget__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__widgets_youtubebackgroundwidget__ = __webpack_require__(77);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "youtubebackgroundwidget", function() { return __WEBPACK_IMPORTED_MODULE_19__widgets_youtubebackgroundwidget__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__widgets_imagewidget__ = __webpack_require__(80);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "imagewidget", function() { return __WEBPACK_IMPORTED_MODULE_20__widgets_imagewidget__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__datasources_geojson_datasource_processor__ = __webpack_require__(63);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "GeojsonDatasourceProcessor", function() { return __WEBPACK_IMPORTED_MODULE_12__datasources_geojson_datasource_processor__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_cs_app_cs_app__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_cswidget_cswidget__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_csdashboard_csdashboard__ = __webpack_require__(7);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "CsApp", function() { return __WEBPACK_IMPORTED_MODULE_13__components_cs_app_cs_app__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "cswidget", function() { return __WEBPACK_IMPORTED_MODULE_14__components_cswidget_cswidget__["a"]; });
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "csdashboard", function() { return __WEBPACK_IMPORTED_MODULE_15__components_csdashboard_csdashboard__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_cssettings_cssettings__ = __webpack_require__(74);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "cssettings", function() { return __WEBPACK_IMPORTED_MODULE_16__components_cssettings_cssettings__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__widgets_widgetbase__ = __webpack_require__(9);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "WidgetBase", function() { return __WEBPACK_IMPORTED_MODULE_17__widgets_widgetbase__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__widgets_mdwidget__ = __webpack_require__(76);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "mdwidget", function() { return __WEBPACK_IMPORTED_MODULE_18__widgets_mdwidget__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__widgets_iframewidget__ = __webpack_require__(77);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "iframewidget", function() { return __WEBPACK_IMPORTED_MODULE_19__widgets_iframewidget__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__widgets_youtubebackgroundwidget__ = __webpack_require__(78);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "youtubebackgroundwidget", function() { return __WEBPACK_IMPORTED_MODULE_20__widgets_youtubebackgroundwidget__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__widgets_imagewidget__ = __webpack_require__(81);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "imagewidget", function() { return __WEBPACK_IMPORTED_MODULE_21__widgets_imagewidget__["a"]; });
 // services
 
 // utils
@@ -139,6 +141,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 // datasources
+
 
 // components
 
@@ -163,11 +166,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var csnext = {
     install: function (Vue) {
         var a = __WEBPACK_IMPORTED_MODULE_0__services_appstate__["a" /* AppState */].Instance;
-        a.Init();
-        Vue.component('csdashboard', __WEBPACK_IMPORTED_MODULE_14__components_csdashboard_csdashboard__["a" /* csdashboard */]);
-        Vue.component('cswidget', __WEBPACK_IMPORTED_MODULE_13__components_cswidget_cswidget__["a" /* cswidget */]);
-        Vue.component('csapp', __WEBPACK_IMPORTED_MODULE_12__components_csapp_csapp__["a" /* csapp */]);
-        console.log('install csnext');
+        // a.init();
+        Vue.component('csdashboard', __WEBPACK_IMPORTED_MODULE_15__components_csdashboard_csdashboard__["a" /* csdashboard */]);
+        Vue.component('cswidget', __WEBPACK_IMPORTED_MODULE_14__components_cswidget_cswidget__["a" /* cswidget */]);
+        Vue.component('cs-app', __WEBPACK_IMPORTED_MODULE_13__components_cs_app_cs_app__["a" /* CsApp */]);
+        // console.log('install csnext');
         // this.g = {};
         // var $notify = function (group, text, type, time) { if (self.g[group]) self.g[group](text, type, time); };
         // Object.defineProperty(Vue.prototype, '$notify', { get: function () { return $notify; } });
@@ -1543,7 +1546,7 @@ var AppState = /** @class */ (function () {
         /** Project definition */
         this.project = {};
         /** Logger */
-        this.L = __WEBPACK_IMPORTED_MODULE_4__index__["Logger"].Instance;
+        this.logger = __WEBPACK_IMPORTED_MODULE_4__index__["Logger"].Instance;
         /** Event bus for publish/subscribe events in application */
         this.EventBus = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a();
         /** True if the application has been initialized */
@@ -1561,8 +1564,8 @@ var AppState = /** @class */ (function () {
         configurable: true
     });
     /** Initialize the project state, dashboard managers and data source handlers */
-    AppState.prototype.Init = function (project) {
-        this.L.info('appstate', 'Init AppState');
+    AppState.prototype.init = function (project) {
+        this.logger.info('appstate', 'Init AppState');
         this.project = Object.assign({
             theme: new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["AppTheme"](),
             footer: new __WEBPACK_IMPORTED_MODULE_3__csnext_cs_core__["FooterOptions"](),
@@ -1991,18 +1994,18 @@ module.exports = Cancel;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return csapp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CsApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vuetify__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__main_scss__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__main_scss__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__main_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__main_scss__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -2034,9 +2037,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_5_vuetify___default.a);
 var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]({ routes: [] });
-var csapp = /** @class */ (function (_super) {
-    __extends(csapp, _super);
-    function csapp() {
+var CsApp = /** @class */ (function (_super) {
+    __extends(CsApp, _super);
+    function CsApp() {
         var _this = _super.call(this) || this;
         _this.app = __WEBPACK_IMPORTED_MODULE_3__index__["AppState"].Instance;
         _this.L = __WEBPACK_IMPORTED_MODULE_3__index__["Logger"].Instance;
@@ -2045,17 +2048,17 @@ var csapp = /** @class */ (function (_super) {
         _this.InitNavigation();
         return _this;
     }
-    csapp.prototype.projectChanged = function (data) {
+    CsApp.prototype.projectChanged = function (data) {
         this.InitNavigation();
         this.InitTheme();
     };
-    csapp.prototype.InitTheme = function () {
+    CsApp.prototype.InitTheme = function () {
         if (this.app.project && this.app.project.theme) {
             this.$vuetify.theme = this.app.project.theme.colors;
         }
     };
     // Add a dashboard as a route
-    csapp.prototype.AddDashboardRoute = function (d) {
+    CsApp.prototype.AddDashboardRoute = function (d) {
         var _this = this;
         if (d.dashboards && d.dashboards.length > 0) {
             d.dashboards.forEach(function (dash) { return _this.AddDashboardRoute(dash); });
@@ -2071,7 +2074,7 @@ var csapp = /** @class */ (function (_super) {
         }
     };
     // Make sure all dashboards are available as routes
-    csapp.prototype.InitNavigation = function () {
+    CsApp.prototype.InitNavigation = function () {
         var _this = this;
         if (!this.app || !this.app.project || !this.app.project.dashboards) {
             return;
@@ -2082,19 +2085,19 @@ var csapp = /** @class */ (function (_super) {
         });
         this.L.info('navigation', 'navigation initialized');
     };
-    csapp.prototype.SelectDashboard = function (d) {
+    CsApp.prototype.SelectDashboard = function (d) {
         this.L.info('SelectDashboard', d.path);
         if (router && d.path && !d.dashboards) {
             router.push(d.path);
         }
     };
-    csapp.prototype.OpenSettings = function () {
+    CsApp.prototype.OpenSettings = function () {
         this.settingsDialog = true;
     };
-    csapp.prototype.created = function () {
+    CsApp.prototype.created = function () {
         this.InitNotifications();
     };
-    csapp.prototype.InitNotifications = function () {
+    CsApp.prototype.InitNotifications = function () {
         var _this = this;
         if (this.app.EventBus) {
             this.app.EventBus.$on('notification.new', function (not) {
@@ -2107,19 +2110,17 @@ var csapp = /** @class */ (function (_super) {
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object]),
         __metadata("design:returntype", void 0)
-    ], csapp.prototype, "projectChanged", null);
-    csapp = __decorate([
+    ], CsApp.prototype, "projectChanged", null);
+    CsApp = __decorate([
         __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
-            name: 'csapp',
+            name: 'cs-app',
             router: router,
-            template: __webpack_require__(71),
+            template: __webpack_require__(72),
             components: {}
-        })
-        // tslint:disable-next-line:class-name
-        ,
+        }),
         __metadata("design:paramtypes", [])
-    ], csapp);
-    return csapp;
+    ], CsApp);
+    return CsApp;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
 
@@ -2173,7 +2174,7 @@ var cswidget = /** @class */ (function (_super) {
     cswidget = __decorate([
         __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             name: 'cswidget',
-            template: __webpack_require__(72),
+            template: __webpack_require__(73),
             props: {
                 widget: null
             }
@@ -3683,6 +3684,50 @@ module.exports = function spread(callback) {
 
 /***/ }),
 /* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GeojsonDatasourceProcessor; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(0);
+
+/**
+ * Expected input is GeoJSON, output is GeoJSON too, but formatted so we can use it properly, i.e.
+ * - If not available, add a properties object
+ * - If not present, add an id property (f.id)
+ */
+var GeojsonDatasourceProcessor = /** @class */ (function () {
+    function GeojsonDatasourceProcessor() {
+        this.id = 'geojson';
+    }
+    GeojsonDatasourceProcessor.prototype.execute = function (ds, action, data) {
+        return new Promise(function (resolve, reject) {
+            if (!data) {
+                return reject('GeojsonDatasourceProcessor: No data received');
+            }
+            if (!data.features) {
+                return resolve(data);
+            }
+            var count = 0;
+            data.features.forEach(function (f) {
+                if (!f.hasOwnProperty('properties')) {
+                    f.properties = {};
+                }
+                if (!f.hasOwnProperty('id')) {
+                    f.id = f.properties.hasOwnProperty('id') ? f.properties.id : count++;
+                }
+                return f;
+            });
+            resolve(data);
+        });
+    };
+    return GeojsonDatasourceProcessor;
+}());
+
+__WEBPACK_IMPORTED_MODULE_0__index__["DatasourceManager"].add(new GeojsonDatasourceProcessor());
+
+
+/***/ }),
+/* 64 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6313,11 +6358,11 @@ if (inBrowser && window.Vue) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
-	 true ? factory(exports, __webpack_require__(1), __webpack_require__(65), __webpack_require__(66)) :
+	 true ? factory(exports, __webpack_require__(1), __webpack_require__(66), __webpack_require__(67)) :
 	typeof define === 'function' && define.amd ? define(['exports', 'vue', 'vue-class-component', 'reflect-metadata'], factory) :
 	(factory((global.VuePropertyDecorator = {}),global.Vue,global.VueClassComponent));
 }(this, (function (exports,vue,vueClassComponent) { 'use strict';
@@ -6450,7 +6495,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6599,7 +6644,7 @@ exports.createDecorator = createDecorator;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {/*! *****************************************************************************
@@ -7727,10 +7772,10 @@ var Reflect;
             Function("return this;")());
 })(Reflect || (Reflect = {}));
 //# sourceMappingURL=Reflect.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(67)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(68)))
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports) {
 
 var g;
@@ -7757,7 +7802,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -24751,13 +24796,13 @@ function unbind(el, binding) {
 //# sourceMappingURL=vuetify.js.map
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(70);
+var content = __webpack_require__(71);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -24782,7 +24827,7 @@ if(false) {
 }
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(undefined);
@@ -24796,19 +24841,19 @@ exports.push([module.i, ".cstabs {\n  margin-top: 0px;\n  background-color: whit
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
 module.exports = "<v-app v-if=\"app.isInitialized\" id=\"inspire\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\r\n\r\n    <v-navigation-drawer v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\r\n        :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\r\n        :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\r\n\r\n        <v-toolbar v-if=\"app.project.leftSidebar.title\">\r\n            <v-list dense>\r\n                <v-list-tile>\r\n                    <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\r\n                    <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\r\n                </v-list-tile>\r\n            </v-list>\r\n        </v-toolbar>\r\n\r\n        <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\r\n        <div v-if=\"app.project.leftSidebar.component\">\r\n            <component :is=\"app.project.leftSidebar.component\"></component>\r\n        </div>\r\n        <div v-else-if=\"app.project.navigation.style==='left'\">\r\n            <!-- <v-list>\r\n                <v-list-group v-for=\"dashboard in app.project.dashboards\" :value=\"dashboard.act\" :key=\"dashboard.id\">\r\n                    <v-list-tile slot=\"dashboard\" @click.trigger=\"\">\r\n                        <v-list-tile-action>\r\n                            <v-icon v-if=\"dashboard.icon\">{{dashboard.icon}}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{dashboard.title}}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                    </v-list-tile>\r\n                </v-list-group>\r\n            </v-list> -->\r\n            <v-list>\r\n                <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" v-bind:key=\"item.title\">\r\n                    <v-list-tile slot=\"item\" @click=\"SelectDashboard(item)\">\r\n                        <v-list-tile-action>\r\n                            <v-icon>{{ item.icon }}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                        <v-list-tile-action v-if=\"item.dashboards\">\r\n                            <v-icon>keyboard_arrow_down</v-icon>\r\n                        </v-list-tile-action>\r\n                    </v-list-tile>\r\n                    <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.title\" @click=\"SelectDashboard(subItem)\">\r\n                        <v-list-tile-content>\r\n                            <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\r\n                        </v-list-tile-content>\r\n                        <v-list-tile-action>\r\n                            <v-icon>{{ subItem.action }}</v-icon>\r\n                        </v-list-tile-action>\r\n                        <v-list-tile-action v-if=\"subItem.dashboards\">\r\n                            <v-icon>keyboard_arrow_down</v-icon>\r\n                        </v-list-tile-action>\r\n                    </v-list-tile>\r\n                </v-list-group>\r\n            </v-list>\r\n        </div>\r\n    </v-navigation-drawer>\r\n\r\n    <v-navigation-drawer right v-if=\"app.project.rightSidebar\" :class=\"app.project.theme.sidebar\" v-model=\"app.project.rightSidebar.open\"\r\n        :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\r\n        :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\r\n        absolute overflow app>\r\n    </v-navigation-drawer>\r\n    <v-tabs style=\"height:100%\">\r\n        <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\" :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense\r\n            app>\r\n            <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click.stop=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\r\n            <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\r\n            <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\r\n                <v-tabs-slider color=\"yellow\"></v-tabs-slider>\r\n                <v-tabs-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\r\n                    {{ dashboard.title }}\r\n                </v-tabs-item>\r\n            </v-tabs-bar>\r\n        </v-toolbar>\r\n        <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\r\n            <router-view :key=\"$route.path\">\r\n            </router-view>\r\n        </v-content>\r\n    </v-tabs>\r\n\r\n    <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\r\n        {{ lastNotification.title }}\r\n        <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\r\n    </v-snackbar>\r\n</v-app>"
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = "<component :is=\"widget.component\" :widget=\"widget\"></component>\r\n    <!-- <v-card style=\"height:100%\">\r\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\r\n    </v-card> -->\r\n    <!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\r\n"
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24848,7 +24893,7 @@ var cssettings = /** @class */ (function (_super) {
     cssettings = __decorate([
         __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             name: 'csapp',
-            template: __webpack_require__(74),
+            template: __webpack_require__(75),
             components: {}
         })
         // tslint:disable-next-line:class-name
@@ -24859,13 +24904,13 @@ var cssettings = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports) {
 
 module.exports = "<v-dialog v-model=\"dialog\" fullscreen transition=\"dialog-bottom-transition\" :overlay=false>\r\n    <v-btn color=\"primary\" dark slot=\"activator\">Open Dialog</v-btn>\r\n    <v-card>\r\n      <v-toolbar dark color=\"primary\">\r\n        <v-btn icon @click.native=\"dialog = false\" dark>\r\n          <v-icon>close</v-icon>\r\n        </v-btn>\r\n        <v-toolbar-title>Settings</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items>\r\n          <v-btn dark flat @click.native=\"dialog = false\">Save</v-btn>\r\n        </v-toolbar-items>\r\n      </v-toolbar>\r\n      <v-list three-line subheader>\r\n        <v-subheader>User Controls</v-subheader>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Content filtering</v-list-tile-title>\r\n            <v-list-tile-sub-title>Set the content filtering level to restrict appts that can be downloaded</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Password</v-list-tile-title>\r\n            <v-list-tile-sub-title>Require password for purchase or use password to restrict purchase</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n      </v-list>\r\n      <v-divider></v-divider>\r\n      <v-list three-line subheader>\r\n        <v-subheader>General</v-subheader>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"notifications\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Notifications</v-list-tile-title>\r\n            <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"sound\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Sound</v-list-tile-title>\r\n            <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"widgets\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Auto-add widgets</v-list-tile-title>\r\n            <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n      </v-list>\r\n    </v-card>\r\n  </v-dialog>"
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24910,7 +24955,7 @@ var mdwidget = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24959,7 +25004,7 @@ var iframewidget = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24967,7 +25012,7 @@ var iframewidget = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_class_component__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_class_component__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widgetbase__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__youtubebackgroundwidget_css__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__youtubebackgroundwidget_css__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__youtubebackgroundwidget_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__youtubebackgroundwidget_css__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -25011,13 +25056,13 @@ var youtubebackgroundwidget = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(79);
+var content = __webpack_require__(80);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -25042,7 +25087,7 @@ if(false) {
 }
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)(undefined);
@@ -25056,7 +25101,7 @@ exports.push([module.i, ".video-background {\r\n    background: #000;\r\n    pos
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

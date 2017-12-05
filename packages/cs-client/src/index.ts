@@ -14,19 +14,20 @@ export * from './services/dashboard-manager';
 
 // managers
 export * from './managers/single/single';
-export { Tiles} from './managers/tiles/tiles';
+export { Tiles } from './managers/tiles/tiles';
 export { TileDashboardOptions } from './managers/tiles/tiledashboardoptions';
 export * from './managers/grid/grid';
 
 // datasources
 export * from './datasources/webrequestdatasource';
+export * from './datasources/geojson-datasource-processor';
 
 // components
-import { csapp } from './components/csapp/csapp';
+import { CsApp } from './components/cs-app/cs-app';
 import { cswidget } from './components/cswidget/cswidget';
 import { csdashboard } from './components/csdashboard/csdashboard';
 
-export * from './components/csapp/csapp'
+export * from './components/cs-app/cs-app';
 export * from './components/cswidget/cswidget';
 export * from './components/csdashboard/csdashboard';
 export * from './components/cssettings/cssettings';
@@ -47,22 +48,22 @@ export * from './widgets/imagewidget';
 // console.log('csclient');
 
 export const csnext = {
-        install: (Vue) => {
-            const a = AppState.Instance;
-            a.Init();
-            Vue.component('csdashboard', csdashboard);
-            Vue.component('cswidget', cswidget);
-            Vue.component('csapp', csapp);
+  install: (Vue) => {
+    const a = AppState.Instance;
+    // a.init();
+    Vue.component('csdashboard', csdashboard);
+    Vue.component('cswidget', cswidget);
+    Vue.component('cs-app', CsApp);
 
-            console.log('install csnext');
+    // console.log('install csnext');
 
-            // this.g = {};
+    // this.g = {};
 
-            // var $notify = function (group, text, type, time) { if (self.g[group]) self.g[group](text, type, time); };
+    // var $notify = function (group, text, type, time) { if (self.g[group]) self.g[group](text, type, time); };
 
-            // Object.defineProperty(Vue.prototype, '$notify', { get: function () { return $notify; } });
-        }
-    };
+    // Object.defineProperty(Vue.prototype, '$notify', { get: function () { return $notify; } });
+  }
+};
 
 // Vue.use(csnext);
 
