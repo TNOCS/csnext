@@ -67,7 +67,7 @@
     <v-tabs style="height:100%">
         <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense
             app>
-            <v-toolbar-side-icon v-if="app.project.leftSidebar" @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
+            <v-toolbar-side-icon v-if="app.project.leftSidebar"  @click.stop="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
             <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
             <v-tabs-bar v-if="app.project.navigation.style==='tabs'" :class="app.project.theme.navigation" slot="extension">
                 <v-tabs-slider color="yellow"></v-tabs-slider>
