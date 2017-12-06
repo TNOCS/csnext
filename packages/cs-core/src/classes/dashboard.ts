@@ -1,4 +1,4 @@
-import { DashboardOptions } from './dashboardoptions';
+import { IDashboardOptions } from './dashboardoptions';
 import { SidebarOptions } from './project';
 import { IWidget, IWidgetOptions } from './widget';
 import { Page } from './page';
@@ -18,7 +18,7 @@ export class Dashboard {
     // manager that is responsible for layout
     public manager?: string;
 
-    public options?: DashboardOptions;
+    public options?: any; // IDashboardOptions;
 
     // list of widgets
     public widgets: IWidget[] = [];

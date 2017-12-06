@@ -1,5 +1,5 @@
 export * from './classes/project';
-export {DashboardOptions } from './classes/dashboardoptions';
+export * from './classes/dashboardoptions';
 export * from './classes/dashboard';
 export * from './classes/page';
 export * from './classes/widget';
