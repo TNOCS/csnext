@@ -29,8 +29,11 @@ export declare class GridStack extends Vue {
     mode: any;
     dashboard: Dashboard;
     gridoptions: IGridStackOptions;
+    grid: any;
     readonly widgets: IWidget[];
     readonly backgroundWidgets: IWidget[];
+    initWidget(widget: IWidget): void;
+    widgetsChanged(n: IWidget[], old: IWidget[]): void;
     beforeMount(): void;
     created(): void;
 }

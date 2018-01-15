@@ -1,6 +1,7 @@
-import { IWidget, Dashboard, IManagerConfig, IDashboardOptions } from '@csnext/cs-core';
+import { Watch } from 'vue-property-decorator';
+import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, Logger, cswidget, AppState, DashboardManager } from '@csnext/cs-client';
+import { WidgetBase, Logger, cswidget, AppState, LayoutManager } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 import * as $ from 'jquery';
 import '../../../node_modules/gridstack/dist/gridstack.css';
@@ -9,7 +10,7 @@ import 'jquery';
 import 'lodash';
 import 'gridstack/dist/gridstack.all';
 import './gridstack.css';
-import {  } from '@csnext/cs-core';
+import { } from '@csnext/cs-core';
 
 export interface IGridStackOptions extends IDashboardOptions {
   /** height of each cell unit */
@@ -43,18 +44,40 @@ export class GridStack extends Vue {
   public mode: any;
   public dashboard: Dashboard;
   public gridoptions: IGridStackOptions;
+  public grid: any;
 
   get widgets() {
-    return this.dashboard.widgets.filter(w => !w.options.background);
+    return this.dashboard.widgets.filter(w => !w.options || !w.options.background);
   }
 
   get backgroundWidgets() {
-    return this.dashboard.widgets.filter(w => w.options.background);
+    return this.dashboard.widgets.filter(w => w.options && w.options.background);
+  }
+
+  public initWidget(widget: IWidget) {
+    // check if widget options is set
+    if (!widget.options) {
+      widget.options = { x: 1, y: 1, width: 1, height: 1 };
+    }
+  }
+
+  @Watch('dashboard.widgets')
+  public widgetsChanged(n: IWidget[], old: IWidget[]) {
+    Vue.nextTick(() => {
+      n.forEach(w => {
+        this.grid.data('gridstack').makeWidget('#' + w.id);
+        // this.grid.addWidget()
+      });
+    });
   }
 
   public beforeMount() {
     this.gridoptions = this.dashboard.options as IGridStackOptions;
     if (this.gridoptions.autoposition === undefined) { this.gridoptions.autoposition = false; }
+
+    this.dashboard.widgets.forEach(widget => {
+      this.initWidget(widget);
+    });
   }
 
   public created() {
@@ -75,13 +98,15 @@ export class GridStack extends Vue {
         disableResize: this.gridoptions.disableResize || false,
         // tslint:disable-next-line:no-bitwise
         height: this.gridoptions.height | 0,
-        float: this.gridoptions.float || false,
+        float: this.gridoptions.float || true,
         staticGrid: this.gridoptions.staticGrid || false,
         resizable: this.gridoptions.resizable || { handles: 'e, se, s, sw, w' }
       };
-      const gs = $('#gridstack');
-      gs.gridstack(options);
-      gs.on('change', (event, items) => {
+      this.grid = $('#gridstack');
+      this.grid.gridstack(options);
+
+      // store resize result
+      this.grid.on('change', (event, items) => {
         items.forEach(i => {
           if (i.id) {
             this.gridoptions.autoposition = false;
@@ -98,5 +123,3 @@ export class GridStack extends Vue {
     });
   }
 }
-
-
