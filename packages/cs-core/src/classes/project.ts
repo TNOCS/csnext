@@ -1,4 +1,8 @@
+import { FooterOptions } from './footeroptions';
 import { IDatasource, Dashboard, IServiceConfig } from '../index';
+import { NavigationOptions } from './navigationoptions';
+import { SidebarOptions } from './sidebaroptions';
+import { AppTheme } from './apptheme';
 
 export class Project {
   public id?: string;
@@ -13,47 +17,3 @@ export class Project {
   public rightSidebar?: SidebarOptions = {};
   public theme?: AppTheme;
 }
-
-export class ThemeColors {
-  primary = '#1976D2';
-  secondary = '#424242';
-  accent = '#82B1FF';
-  error = '#FF5252';
-  info = '#2196F3';
-  success = '#4CAF50';
-  warning = '#FFC107';
-}
-
-// Application look and feel
-export class AppTheme {
-  dark?: boolean;
-  colors: ThemeColors = new ThemeColors();
-}
-
-export class SidebarOptions {
-  public open?: boolean;
-  public title?: string;
-  public component?: any;
-  public permanent?: boolean;
-  public persistent?: boolean;
-  public temporary?: boolean;
-  public floating?: boolean;
-  public mini?: boolean;
-  public clipped?: boolean;
-}
-
-export class NavigationOptions {
-  public style? = 'right';
-  public hideTitle?: boolean;
-  public hideMenuToggle?: boolean;
-  public floating?: boolean;
-}
-
-export class FooterOptions {
-  public enabled?: boolean;
-  public text?: string;
-  public absolute?: boolean;
-}
-
-
-

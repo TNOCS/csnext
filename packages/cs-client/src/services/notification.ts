@@ -1,8 +1,9 @@
 export class Notification {
-    type?: string;
-    title?: string;
-    remember?: boolean;
-    created?: Date;
-    _visible: boolean;
-    timeout: number;
-}    
+    public type?: string;
+    public title?: string;
+    public remember?: boolean;
+    public created?: Date;
+    // tslint:disable-next-line:variable-name
+    public _visible?: boolean;
+    public timeout?: number;
+}

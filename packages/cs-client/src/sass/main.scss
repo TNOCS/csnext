@@ -1,1 +1,66 @@
 // @import "./../../../node_modules/vue-material/dist/vue-material.css";
+
+.cstabs {
+  margin-top: 0px;
+  background-color: white;
+}
+
+.floating {
+  margin-top: -48px !important;
+}
+
+.leftsidebar-pin
+{
+  float:right;
+  margin:4px;
+}
+
+// .content {
+//   padding-top: 0 !important;
+// }
+// .content :not(.floating) {
+//   padding-top: 48px !important;
+// }
+.content--wrap {
+  height: 100%;
+}
+
+.floating-toolbar {
+  margin-top: 10px !important;
+}
+
+.app-project-logo
+{
+  height: 40px;
+  margin: 4px;  
+}
+
+.content {
+  height: 100%;
+  padding: 0;
+}
+
+.dashboard-fullscreen {
+  margin: 0;
+  height: 100%;
+}
+
+.tabsdemoDynamicTabs md-content {
+  background-color: transparent !important;
+}
+
+.tabsdemoDynamicTabs md-content md-tabs {
+  border: 1px solid #e1e1e1;
+}
+
+.tabsdemoDynamicTabs md-content md-tabs md-tab-content {
+  background: #f6f6f6;
+}
+
+.tabsdemoDynamicTabs md-content md-tabs md-tabs-wrapper {
+  background: white;
+}
+
+.tabsdemoDynamicTabs md-content h1:first-child {
+  margin-top: 0;
+}

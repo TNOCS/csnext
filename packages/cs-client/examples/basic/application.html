@@ -1,143 +1,91 @@
 <html>
 
 <head>
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/vuetify@1.0.0-beta.2/dist/vuetify.css" />
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
+  <script src="https://unpkg.com/vuetify@1.0.0-beta.2/dist/vuetify.js"></script>
+  <script src="./../../lib/csclient.cs.js"></script>
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
-
-    <script src="./../../lib/csclient.cs.js"></script>
 </head>
 
 <body>
 
-    <style>
-        .maintitle {
-            text-align: center;
+  <style>
+    .maintitle {
+      text-align: center;
+    }
+  </style>
+  <div id="main" />
+
+  <script>
+
+    let intro = Vue.component('introduction', {
+      template: '<h1 class="maintitle">this is an introduction widget</h1>'
+    });
+
+    let about = Vue.component('about', {
+      template: '<h1 class="maintitle">this is an about widget</h1>'
+    })
+
+    Vue.use(Vuetify);
+
+    new Vue({
+      el: '#main',
+      render: h => h(csclient.CsApp)
+    });
+
+    const app = csclient.AppState.Instance;
+
+    app.project = {
+      title: "csnext demo",
+      navigation: {
+        style: "tabs"
+      },
+      dataSources: {
+      },
+      leftSidebar: {
+        open: true,
+        permanent: false,
+        persistent: false,
+        clipped: true,
+        temporary: false,
+        canpin: true
+      },
+      theme: {
+        colors: {
+          primary: 'white',
+          secondary: '#e5e9ea',
+          accent: '#82B1FF',
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#4CAF50',
+          warning: '#FFC107'
         }
-    </style>
-    <div id="main">
-    </div>
+      },
+      dashboards: [
+        {
+          path: "/",
+          icon: "info",
+          layout: "single",
+          title: "Intro",
+          widgets: [{ component: intro }]
+        },
+        {
+          path: "/about",
+          icon: "info",
+          layout: "single",
+          title: "About",
+          widgets: [{ component: about }]
+        }
+      ]
+    };
 
-    <script>
+    app.init(app.project);
 
-
-        let intro = Vue.component('introduction', {
-            template: '<h1 class="maintitle">this is an introduction widget</h1>'
-        });
-
-        let about = Vue.component('about', {
-            template: '<h1 class="maintitle">this is an about widget</h1>'
-        })
-
-        let flexbox = Vue.component('flexbox', {
-            template: '\
-                    <div>\
-                    <v-container fluid grid-list-md>\
-                        <v-layout row wrap>\
-                            <v-flex d-flex xs12 sm6 md4>\
-                                <v-card color="purple" dark>\
-                                    <v-card-title primary class="title">Lorem</v-card-title>\
-                                    <v-card-text text="lorem">\
-                                    </v-card-text>\
-                                </v-card>\
-                            </v-flex>\
-                            <v-flex d-flex xs12 sm6 md3>\
-                                <v-layout row wrap>\
-                                    <v-flex d-flex>\
-                                        <v-card color="indigo" dark>\
-                                            <v-card-text text="test">\
-                                            </v-card-text>\
-                                        </v-card>\
-                                    </v-flex>\
-                                    <v-flex d-flex>\
-                                        <v-layout row wrap>\
-                                            <v-flex d-flex v-for="n in 2" :key="n" xs12>\
-                                                <v-card color="red lighten-2" dark>\
-                                                    <v-card-text text="test">\
-                                                    </v-card-text>\
-                                                </v-card>\
-                                            </v-flex>\
-                                        </v-layout>\
-                                    </v-flex>\
-                                </v-layout>\
-                            </v-flex>\
-                            <v-flex d-flex xs12 sm6 md2 child-flex>\
-                                <v-card color="green lighten-2" dark>\
-                                    <v-card-text text="test">\
-                                    </v-card-text>\
-                                </v-card>\
-                            </v-flex>\
-                            <v-flex d-flex xs12 sm6 md3>\
-                                <v-card color="blue lighten-2" dark>\
-                                    <v-card-text text="test">\
-                                    </v-card-text>\
-                                </v-card>\
-                            </v-flex>\
-                        </v-layout>\
-                    </v-container>\
-                </div>'
-        });
-
-        new Vue({
-            el: '#main',
-            render: h => h(csclient.csapp)
-        });
-
-        const app = csclient.AppState.Instance;
-
-        app.project = {
-            title: "csnext demo",
-            navigation: {
-                style: "tabs"
-            },
-            dataSources: {
-            },
-            leftSidebar: {
-                open: false,
-                clipped: true,
-                permanent: false,
-                persistent: true,
-                mini: false,
-                temporary: false
-            },
-            theme: {
-                dark: false
-            },
-            dashboards: [
-                {
-                    path: "/",
-                    icon: "info",
-                    manager: "single",
-                    title: "Intro",
-                    widgets: [{ component: intro, id: 'mdTest', data: 'intro' }]
-                },
-                {
-                    path: "/about",
-                    icon: "store",
-                    manager: "grid",
-                    title: "About",
-                    defaultWidgetOptions: {
-                        card: true,
-                        class: 'gray'
-                    },
-                    widgets: [
-                        { component: csclient.mdwidget, data: 'widget 1', options: { width: 2, height: 2 } },
-                        { component: csclient.mdwidget, data: 'widget 2', options: { width: 4, height: 4 } },
-                        { component: csclient.mdwidget, data: 'widget 3', options: { width: 2, height: 4 } }
-                    ]
-                }
-
-            ]
-        };
-
-        app.Init();
-
-
-    </script>
+  </script>
 </body>
-
 </html>

@@ -4,6 +4,8 @@ export interface IDatasource {
     source?: string;
     data?: any;
     options?: any;
+    // load directly from start
+    instant?: boolean;
 }
 
 export interface IDatasourceHandler {

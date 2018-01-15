@@ -1,3 +1,4 @@
+import { Notification } from './services/notification';
 // services
 import { AppState } from './services/appstate';
 
@@ -7,15 +8,16 @@ export * from './utils/guid';
 // services
 export * from './services/appstate';
 export * from './services/logger';
-export * from './services/notification';
+export { Notification } from './services/notification';
 export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
+export * from './services/layout-manager';
 
 // managers
 export * from './managers/single/single';
 export { Tiles } from './managers/tiles/tiles';
-export { TileDashboardOptions } from './managers/tiles/tiledashboardoptions';
+export { ITileDashboardOptions } from './managers/tiles/tiledashboardoptions';
 export * from './managers/grid/grid';
 
 // datasources

@@ -7,11 +7,11 @@ import { RouteConfig } from 'vue-router/types/router';
 import { Watch, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
 import { setInterval } from 'timers';
-import './main.scss';
+import './../../sass/main.scss';
 
 // register needed plugins
 Vue.use(VueRouter);
-Vue.use(Vuetify);
+// Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
 
@@ -26,8 +26,11 @@ export class CsApp extends Vue {
   public L = Logger.Instance;
   public settingsDialog = false;
   public lastNotification: Notification = { _visible: false } as Notification;
-  private $vuetify: any;
-
+  public $vuetify: any;
+  public active = null;
+  public tabs = ['tab-1', 'tab-2', 'tab-3'];
+  public text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+  public leftsidebarToggle = [0, 1, 2];
   constructor() {
     super();
     this.InitNavigation();

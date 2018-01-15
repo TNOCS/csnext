@@ -22,9 +22,11 @@ export interface IWidget {
   type?: WidgetType;
   reference?: string;
   component?: any;
+  content?: any;
   datasource?: string;
   data?: any;
   options?: IWidgetOptions;
   _dashboard?: Dashboard;
+  _initalized?: boolean;
 
 }

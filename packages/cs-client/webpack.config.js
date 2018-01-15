@@ -105,7 +105,7 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ["./src/index.ts"] }, { 'vue':'Vue' }, 'cs')
+    buildConfig({ cs: ["./src/index.ts"] }, { 'vue':'Vue','vuetify':'vuetify' }, 'cs')
     // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

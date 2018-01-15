@@ -1,27 +1,28 @@
 
 export class Logger {
 
-    private static _instance: Logger;
+    private static instance: Logger;
 
     private constructor() {
-        //...
     }
 
     public static get Instance() {
         // Do you need arguments? Make it a regular method instead.
-        return this._instance || (this._instance = new this());
+        return this.instance || (this.instance = new this());
     }
 
-
-    info(component: string, msg: any) {
+    public info(component: string, msg: any) {
+        // tslint:disable-next-line:no-console
         console.info('[' + component + ']', msg);
     }
 
-    warn(component: string, msg: any) {
+    public warn(component: string, msg: any) {
+        // tslint:disable-next-line:no-console
         console.info('[' + component + ']', msg);
     }
 
-    error(component: string, msg: any) {
+    public error(component: string, msg: any) {
+        // tslint:disable-next-line:no-console
         console.info('[' + component + ']', msg);
     }
 

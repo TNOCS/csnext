@@ -21,6 +21,7 @@ export class DatasourceManager {
     if (!handlers) { return datasource.data; }
     // run processors
     return new Promise((resolve, reject) => {
+      if (datasource.data && datasource.data._loaded) { resolve(datasource.data); }
       handlers.reduce((promise: Promise<any>, current) => {
         if (!DatasourceManager.Processors.hasOwnProperty(current.processorId)) { throw new Error(`DatasourceProcessor ${current.processorId} is not registered!`); }
         const dsProcessor = DatasourceManager.Processors[current.processorId];
@@ -29,6 +30,7 @@ export class DatasourceManager {
         });
       }, Promise.resolve()).then(result => {
         datasource.data = result; // Save the data as part of the datasource
+        result._loaded = true;
         resolve(result);
       });
     });

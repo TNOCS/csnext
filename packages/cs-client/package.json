@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.5",
-    "vuetify": "^v1.0.0-alpha.1",
+    "vuetify": "^v1.0.0-beta.2",
     "axios": "^0.16.2"
   },
   "devDependencies": {
@@ -39,7 +39,7 @@
     "tslint-loader": "~3.5.3",
     "typescript": "^2.5.3",
     "url-loader": "^0.5.9",
-    "vue": "^2.5.2",
+    "vue": "^2.5.13",
     "vue-class-component": "^6.0.0",
     "vue-loader": "^13.0.5",
     "vue-property-decorator": "^6.0.0",

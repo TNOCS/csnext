@@ -1,6 +1,6 @@
-import { IWidget, Dashboard, IManagerConfig } from '@csnext/cs-core';
+import { IWidget, Dashboard, ILayoutManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
-import { Logger, cswidget, AppState, TileDashboardOptions, DashboardManager } from '../../index';
+import { Logger, cswidget, AppState, ITileDashboardOptions, LayoutManager } from '../../index';
 import Component from 'vue-class-component';
 import { Watch, Prop } from 'vue-property-decorator';
 
@@ -15,8 +15,13 @@ import './tiles.css';
 export class Tiles extends Vue {
   public dashboard: Dashboard;
 
-  public get options(): TileDashboardOptions {
-    return this.dashboard.options as TileDashboardOptions;
+  constructor() {
+    super();
+    this.dashboard = new Dashboard();
+  }
+
+  public get options(): ITileDashboardOptions {
+    return this.dashboard.options as ITileDashboardOptions;
   }
 
   public widgetClass(widget: IWidget) {
@@ -30,4 +35,4 @@ export class Tiles extends Vue {
   }
 }
 
-DashboardManager.add({ id: 'tiles', name: 'tiles page', component: Tiles } as IManagerConfig);
+LayoutManager.add({ id: 'tiles', name: 'tiles page', component: Tiles } as ILayoutManagerConfig);

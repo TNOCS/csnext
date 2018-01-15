@@ -1,17 +1,20 @@
 <html>
 
-<head>
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.js"></script>
-
-
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.min.js"></script> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" />
-    <script src="./../../lib/csclient.cs.js"></script>
-</head>
+    <head>
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
+        
+        <script src="https://unpkg.com/vuetify@1.0.0-beta.2/dist/vuetify.js"></script>
+    
+        <script src="./../../lib/csclient.cs.js"></script>
+    
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.16.7/vuetify.css" /> -->
+        
+        
+    </head>
 
 <body>
     <div id="main">
@@ -19,6 +22,8 @@
     </div>
 
     <script>
+
+      Vue.use(Vuetify);
 
         let intro = Vue.component('introduction', {
             template: '<div>this is an introduction widget</div>'

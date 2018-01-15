@@ -1,8 +1,9 @@
+import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
 import { csdashboard } from '../components/csdashboard/csdashboard';
-import { IManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
-import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, Notification, DashboardManager } from '../index';
+import { ILayoutManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
+import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, Notification, LayoutManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -44,10 +45,20 @@ export class AppState {
 
     Vue.component('csdashboard', csdashboard);
     Vue.component('cswidget', cswidget);
+    Vue.component('csapp', CsApp);
 
     this.project = project;
 
     this.projectManager = new ProjectManager(project);
+
+    // if (this.project.datasources) {
+    //   for (const ds in this.project.datasources) {
+    //     if (this.project.datasources[ds].instant) {
+    //       this.loadDatasource(this.project.datasources[ds]);
+    //     }
+
+    //   }
+    // }
 
     this.isInitialized = true;
     this.EventBus.$emit('init');

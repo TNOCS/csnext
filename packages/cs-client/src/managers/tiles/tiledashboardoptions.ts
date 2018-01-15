@@ -1,3 +1,3 @@
-export class TileDashboardOptions {
-    tileSize : number;
+export interface ITileDashboardOptions {
+    tileSize: number;
 }
