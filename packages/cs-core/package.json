@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-core",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "cscore",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,7 @@
     "access": "public"
   },
   "dependencies": {
-    "typescript-collections" : "^1.2.5"
+    "typescript-collections": "^1.2.5"
   },
   "devDependencies": {
     "typescript": "^2.5.3"
