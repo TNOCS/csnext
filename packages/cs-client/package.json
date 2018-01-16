@@ -18,7 +18,7 @@
   "dependencies": {
     "@csnext/cs-core": "^0.0.6",
     "axios": "^0.16.2",
-    "vuetify": "^v1.0.0-beta.2"
+    "vuetify": "^v1.0.0-beta.4"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.0",
