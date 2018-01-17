@@ -1,8 +1,8 @@
+import { csdashboard } from './../components/csdashboard/csdashboard';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
-import { csdashboard } from '../components/csdashboard/csdashboard';
-import { ILayoutManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
+import { ILayoutManagerConfig, Project, IDatasourceHandler, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions, Dashboard } from '@csnext/cs-core';
 import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, Notification, LayoutManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
@@ -34,6 +34,8 @@ export class AppState {
   public static get Instance() {
     return this.pInstance || (this.pInstance = new this());
   }
+
+  public activeDashboard?: Dashboard;
 
   public data: { [id: string]: any } = {};
 

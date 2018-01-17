@@ -56,6 +56,7 @@ export class csdashboard extends Vue {
 
   public created() {
     if (!this.dashboard) { return; }
+    this.app.activeDashboard = this.dashboard;
     // load default datasource, if configured
     if (this.dashboard.datasource) {
       this.app.loadDatasource(this.dashboard.datasource).catch(e => {

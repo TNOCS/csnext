@@ -23,4 +23,8 @@ export class cswidget extends Vue {
     }
     return this.widget.options;
   }
+
+  constructor() {
+    super();
+  }
 }

@@ -48,10 +48,41 @@ export class CsApp extends Vue {
     }
   }
 
+  public getAdjacentDashboard(direction: string, active: Dashboard, dashboards?: Dashboard[]): Dashboard {
+    if (!dashboards) { return active; }
+    let index = dashboards.indexOf(active);
+    switch (direction) {
+      case 'Left':
+        index += 1;
+        if (index >= dashboards.length) { index = 0; }
+        break;
+      case 'Right':
+        index -= 1;
+        if (index < 0) { index = dashboards.length - 1; }
+        break;
+    }
+    return dashboards[index];
+  }
+
+  public swipe(direction: string) {
+    if (!this.app.activeDashboard || !this.app.activeDashboard.touchGesturesEnabled) { return; }
+    const d = this.app.activeDashboard;
+    const adjacent = this.getAdjacentDashboard(direction, this.app.activeDashboard, (d.parent && d.parent.dashboards) ? d.parent.dashboards : this.app.project.dashboards);
+    if (adjacent) {
+      this.SelectDashboard(adjacent);
+    }
+    // console.log(adjacent);
+
+  }
+
   // Add a dashboard as a route
   public AddDashboardRoute(d: Dashboard) {
     if (d.dashboards && d.dashboards.length > 0) {
-      d.dashboards.forEach(dash => this.AddDashboardRoute(dash));
+      d.dashboards.forEach(dash => {
+        dash.parent = d;
+        this.AddDashboardRoute(dash);
+      }
+      );
     } else if (d.path) {
       router.addRoutes([{
         name: d.id,

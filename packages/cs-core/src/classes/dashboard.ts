@@ -5,44 +5,50 @@ import { Page } from './page';
 import { IDashboardManager } from '../index';
 
 export class Dashboard {
-    // dashboard id
-    public id?: string;
+  // dashboard id
+  public id?: string;
 
-    // router path
-    public path?: string;
+  // router path
+  public path?: string;
 
-    // dashboard title
-    public title?: string;
+  // dashboard title
+  public title?: string;
 
-    // manager that is responsible for layout
-    public layout?: string;
+  // manager that is responsible for layout
+  public layout?: string;
 
-    // manager id that is responsible for managing dashboard
-    public manager?: string;
+  // manager id that is responsible for managing dashboard
+  public manager?: string;
 
-    // active dashboard manager (if set in manager)
-    // tslint:disable-next-line:variable-name
-    public _manager?: IDashboardManager;
+  // active dashboard manager (if set in manager)
+  // tslint:disable-next-line:variable-name
+  public _manager?: IDashboardManager;
 
-    public options?: any; // IDashboardOptions;
+  public options?: any; // IDashboardOptions;
 
-    // list of widgets
-    public widgets?: IWidget[] = [];
-    public active?: boolean;
+  // list of widgets
+  public widgets?: IWidget[] = [];
+  public active?: boolean;
 
-    public icon?: string;
+  public icon?: string;
 
-    // id of default datasource
-    public datasource?: string;
+  // allow left & right swipe gestures to switch between dashboards
+  public touchGesturesEnabled?: boolean = false;
 
-    // if datasource is set, result will be available in content
-    public content?: any;
+  // id of default datasource
+  public datasource?: string;
 
-    public defaultWidgetOptions?: IWidgetOptions;
+  // if datasource is set, result will be available in content
+  public content?: any;
 
-    public leftSidebar?: SidebarOptions = {};
+  public defaultWidgetOptions?: IWidgetOptions;
 
-    // optional list of sub dashboards
-    public dashboards?: Dashboard[];
+  public leftSidebar?: SidebarOptions = {};
+
+  // optional list of sub dashboards
+  public dashboards?: Dashboard[];
+
+  // parent dashboard, if this is a child dashboard
+  public parent?: Dashboard;
 
 }
