@@ -7,7 +7,7 @@
 		exports["csclient"] = factory(require("Vue"));
 	else
 		root["csclient"] = factory(root["Vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -197,7 +197,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
-  * vue-class-component v6.0.0
+  * vue-class-component v6.1.2
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -209,6 +209,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(__webpack_require__(1));
 
+var hasProto = { __proto__: [] } instanceof Array;
 function createDecorator(factory) {
     return function (target, key, index) {
         var Ctor = typeof target === 'function'
@@ -223,6 +224,10 @@ function createDecorator(factory) {
         Ctor.__decorators__.push(function (options) { return factory(options, key, index); });
     };
 }
+function isPrimitive(value) {
+    var type = typeof value;
+    return value == null || (type !== "object" && type !== "function");
+}
 function warn(message) {
     if (typeof console !== 'undefined') {
         console.warn('[vue-class-component] ' + message);
@@ -230,6 +235,7 @@ function warn(message) {
 }
 
 function collectDataFromConstructor(vm, Component) {
+    var originalInit = Component.prototype._init;
     Component.prototype._init = function () {
         var _this = this;
         var keys = Object.getOwnPropertyNames(vm);
@@ -244,12 +250,14 @@ function collectDataFromConstructor(vm, Component) {
             if (key.charAt(0) !== '_') {
                 Object.defineProperty(_this, key, {
                     get: function () { return vm[key]; },
-                    set: function (value) { return vm[key] = value; }
+                    set: function (value) { return vm[key] = value; },
+                    configurable: true
                 });
             }
         });
     };
     var data = new Component();
+    Component.prototype._init = originalInit;
     var plainData = {};
     Object.keys(data).forEach(function (key) {
         if (data[key] !== undefined) {
@@ -311,12 +319,56 @@ function componentFactory(Component, options) {
     var decorators = Component.__decorators__;
     if (decorators) {
         decorators.forEach(function (fn) { return fn(options); });
+        delete Component.__decorators__;
     }
     var superProto = Object.getPrototypeOf(Component.prototype);
     var Super = superProto instanceof Vue
         ? superProto.constructor
         : Vue;
-    return Super.extend(options);
+    var Extended = Super.extend(options);
+    forwardStaticMembers(Extended, Component, Super);
+    return Extended;
+}
+var reservedPropertyNames = [
+    'cid',
+    'super',
+    'options',
+    'superOptions',
+    'extendOptions',
+    'sealedOptions',
+    'component',
+    'directive',
+    'filter'
+];
+function forwardStaticMembers(Extended, Original, Super) {
+    Object.getOwnPropertyNames(Original).forEach(function (key) {
+        if (key === 'prototype') {
+            return;
+        }
+        var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
+        if (extendedDescriptor && !extendedDescriptor.configurable) {
+            return;
+        }
+        var descriptor = Object.getOwnPropertyDescriptor(Original, key);
+        if (!hasProto) {
+            if (key === 'cid') {
+                return;
+            }
+            var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
+            if (!isPrimitive(descriptor.value)
+                && superDescriptor
+                && superDescriptor.value === descriptor.value) {
+                return;
+            }
+        }
+        if (process.env.NODE_ENV !== 'production'
+            && reservedPropertyNames.indexOf(key) >= 0) {
+            warn("Static property name '" + key + "' declared on class '" + Original.name + "' " +
+                'conflicts with reserved property name of Vue internal. ' +
+                'It may cause unexpected behavior of the component. Consider renaming the property.');
+        }
+        Object.defineProperty(Extended, key, descriptor);
+    });
 }
 
 function Component(options) {
@@ -956,9 +1008,19 @@ var getElement = (function (fn) {
 
 	return function(selector) {
 		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
+			var styleTarget = fn.call(this, selector);
+			// Special case to return head of iframe instead of iframe itself
+			if (styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[selector] = styleTarget;
 		}
-
 		return memo[selector]
 	};
 })(function (target) {
@@ -982,7 +1044,7 @@ module.exports = function(list, options) {
 
 	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
 	if (!options.insertInto) options.insertInto = "head";
@@ -1088,8 +1150,11 @@ function insertStyleElement (options, style) {
 		stylesInsertedAtTop.push(style);
 	} else if (options.insertAt === "bottom") {
 		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		target.insertBefore(style, nextSibling);
 	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
 	}
 }
 
@@ -6413,7 +6478,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(6)(content, options);
@@ -6436,7 +6501,7 @@ if(false) {
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -6545,7 +6610,7 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <!-- <v-list-tile-action>\n              <v-icon>{{ item.icon }}</v-icon>\n            </v-list-tile-action> -->\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <!-- <v-list-tile-action v-if=\"item.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n          </v-list-tile>\n          <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n            <!-- <v-list-tile-action v-if=\"subItem.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n\n\n    </div>\n  </v-navigation-drawer>\n\n\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.logo\" :src=\"app.project.logo\" class=\"app-project-logo\"></img>\n    <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n  </v-toolbar>\n\n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-bar>\n    </v-toolbar>\n  </v-tabs>\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
+module.exports = "<v-app v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <!-- <v-list-tile-action>\n              <v-icon>{{ item.icon }}</v-icon>\n            </v-list-tile-action> -->\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <!-- <v-list-tile-action v-if=\"item.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n          </v-list-tile>\n          <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n            <!-- <v-list-tile-action v-if=\"subItem.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n\n\n    </div>\n  </v-navigation-drawer>\n\n\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.logo\" :src=\"app.project.logo\" class=\"app-project-logo\"></img>\n    <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n  </v-toolbar>\n\n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-items v-if=\"app.project.navigation.style ==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-items>\n    </v-toolbar>\n  </v-tabs>\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
 
 /***/ }),
 /* 34 */
@@ -6909,7 +6974,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(6)(content, options);
@@ -6932,7 +6997,7 @@ if(false) {
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -7012,7 +7077,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(6)(content, options);
@@ -7035,7 +7100,7 @@ if(false) {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
@@ -8020,7 +8085,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(6)(content, options);
@@ -8043,12 +8108,12 @@ if(false) {
 /* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".widget-default{\n  background:lightgray;\n  height:100%;\n  width:100%;  \n}\n", ""]);
+exports.push([module.i, ".widget-default{\r\n  background:lightgray;\r\n  height:100%;\r\n  width:100%;  \r\n}\r\n", ""]);
 
 // exports
 
@@ -8057,7 +8122,7 @@ exports.push([module.i, ".widget-default{\n  background:lightgray;\n  height:100
 /* 79 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>\n    <!-- <v-card style=\"height:100%\">\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\n    </v-card> -->\n    <!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\n"
+module.exports = "\r\n<component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>\r\n    <!-- <v-card style=\"height:100%\">\r\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\r\n    </v-card> -->\r\n    <!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\r\n"
 
 /***/ }),
 /* 80 */
@@ -8274,7 +8339,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(6)(content, options);
@@ -8297,7 +8362,7 @@ if(false) {
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(5)(false);
 // imports
 
 
