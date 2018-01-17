@@ -1350,11 +1350,46 @@ var CsApp = /** @class */ (function (_super) {
             this.$vuetify.theme = this.app.project.theme.colors;
         }
     };
+    CsApp.prototype.getAdjacentDashboard = function (direction, active, dashboards) {
+        if (!dashboards) {
+            return active;
+        }
+        var index = dashboards.indexOf(active);
+        switch (direction) {
+            case 'Left':
+                index += 1;
+                if (index >= dashboards.length) {
+                    index = 0;
+                }
+                break;
+            case 'Right':
+                index -= 1;
+                if (index < 0) {
+                    index = dashboards.length - 1;
+                }
+                break;
+        }
+        return dashboards[index];
+    };
+    CsApp.prototype.swipe = function (direction) {
+        if (!this.app.activeDashboard || !this.app.activeDashboard.touchGesturesEnabled) {
+            return;
+        }
+        var d = this.app.activeDashboard;
+        var adjacent = this.getAdjacentDashboard(direction, this.app.activeDashboard, (d.parent && d.parent.dashboards) ? d.parent.dashboards : this.app.project.dashboards);
+        if (adjacent) {
+            this.SelectDashboard(adjacent);
+        }
+        // console.log(adjacent);
+    };
     // Add a dashboard as a route
     CsApp.prototype.AddDashboardRoute = function (d) {
         var _this = this;
         if (d.dashboards && d.dashboards.length > 0) {
-            d.dashboards.forEach(function (dash) { return _this.AddDashboardRoute(dash); });
+            d.dashboards.forEach(function (dash) {
+                dash.parent = d;
+                _this.AddDashboardRoute(dash);
+            });
         }
         else if (d.path) {
             router.addRoutes([{
@@ -1505,6 +1540,7 @@ var csdashboard = /** @class */ (function (_super) {
         if (!this.dashboard) {
             return;
         }
+        this.app.activeDashboard = this.dashboard;
         // load default datasource, if configured
         if (this.dashboard.datasource) {
             this.app.loadDatasource(this.dashboard.datasource).catch(function (e) {
@@ -1730,11 +1766,11 @@ var WidgetBase = /** @class */ (function (_super) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppState; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_cs_app_cs_app__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_manager__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_csdashboard_csdashboard__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_csdashboard_csdashboard__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_cs_app_cs_app__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_manager__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__index__ = __webpack_require__(0);
 
 
@@ -1751,7 +1787,7 @@ var AppState = /** @class */ (function () {
         /** Logger */
         this.logger = __WEBPACK_IMPORTED_MODULE_4__index__["Logger"].Instance;
         /** Event bus for publish/subscribe events in application */
-        this.EventBus = new __WEBPACK_IMPORTED_MODULE_2_vue___default.a();
+        this.EventBus = new __WEBPACK_IMPORTED_MODULE_3_vue___default.a();
         /** True if the application has been initialized */
         this.isInitialized = false;
         /** list of past notifications */
@@ -1769,11 +1805,11 @@ var AppState = /** @class */ (function () {
     /** Initialize the project state, dashboard managers and data source handlers */
     AppState.prototype.init = function (project) {
         this.logger.info('appstate', 'Init AppState');
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('csdashboard', __WEBPACK_IMPORTED_MODULE_3__components_csdashboard_csdashboard__["a" /* csdashboard */]);
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('cswidget', __WEBPACK_IMPORTED_MODULE_4__index__["cswidget"]);
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('csapp', __WEBPACK_IMPORTED_MODULE_0__components_cs_app_cs_app__["a" /* CsApp */]);
+        __WEBPACK_IMPORTED_MODULE_3_vue___default.a.component('csdashboard', __WEBPACK_IMPORTED_MODULE_0__components_csdashboard_csdashboard__["a" /* csdashboard */]);
+        __WEBPACK_IMPORTED_MODULE_3_vue___default.a.component('cswidget', __WEBPACK_IMPORTED_MODULE_4__index__["cswidget"]);
+        __WEBPACK_IMPORTED_MODULE_3_vue___default.a.component('csapp', __WEBPACK_IMPORTED_MODULE_1__components_cs_app_cs_app__["a" /* CsApp */]);
         this.project = project;
-        this.projectManager = new __WEBPACK_IMPORTED_MODULE_1__project_manager__["a" /* ProjectManager */](project);
+        this.projectManager = new __WEBPACK_IMPORTED_MODULE_2__project_manager__["a" /* ProjectManager */](project);
         // if (this.project.datasources) {
         //   for (const ds in this.project.datasources) {
         //     if (this.project.datasources[ds].instant) {
@@ -2419,14 +2455,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
 
 var cswidget = /** @class */ (function (_super) {
     __extends(cswidget, _super);
-    // tslint:disable-next-line:class-name
     function cswidget() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        return _super.call(this) || this;
     }
     Object.defineProperty(cswidget.prototype, "computedOptions", {
         get: function () {
@@ -2450,6 +2488,8 @@ var cswidget = /** @class */ (function (_super) {
             }
         })
         // tslint:disable-next-line:class-name
+        ,
+        __metadata("design:paramtypes", [])
     ], cswidget);
     return cswidget;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
@@ -6545,7 +6585,7 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <!-- <v-list-tile-action>\n              <v-icon>{{ item.icon }}</v-icon>\n            </v-list-tile-action> -->\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <!-- <v-list-tile-action v-if=\"item.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n          </v-list-tile>\n          <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n            <!-- <v-list-tile-action v-if=\"subItem.dashboards\">\n              <v-icon>keyboard_arrow_down</v-icon>\n            </v-list-tile-action> -->\n\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n\n\n    </div>\n  </v-navigation-drawer>\n\n\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.logo\" :src=\"app.project.logo\" class=\"app-project-logo\"></img>\n    <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n  </v-toolbar>\n\n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-bar>\n    </v-toolbar>\n  </v-tabs>\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
+module.exports = "<v-app v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n          </v-list-tile>\n          <v-list-tile v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n\n\n    </div>\n  </v-navigation-drawer>\n\n\n  <v-navigation-drawer right disable-route-watcher v-if=\"app.project.rightSidebar\" v-model=\"app.project.rightSidebar.open\"\n    :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\n    :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\n    absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.rightSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.rightSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.rightSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.rightSidebar.temporary=!app.project.rightSidebar.temporary\">\n        <v-icon small v-if=\"app.project.rightSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.rightSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.rightSidebar.title\"></v-divider>\n    <div v-if=\"app.project.rightSidebar.component\">\n      <component :is=\"app.project.rightSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n\n    </div>\n  </v-navigation-drawer>\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.logo\" :src=\"app.project.logo\" class=\"app-project-logo\"></img>\n    <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n  </v-toolbar>\n  <!-- \n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-bar v-if=\"app.project.navigation.style==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-bar>\n    </v-toolbar>\n  </v-tabs> -->\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\" v-touch=\"{\n    left: () => swipe('Left'),\n    right: () => swipe('Right')\n  }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
 
 /***/ }),
 /* 34 */
@@ -6579,6 +6619,8 @@ class Dashboard {
     constructor() {
         // list of widgets
         this.widgets = [];
+        // allow left & right swipe gestures to switch between dashboards
+        this.touchGesturesEnabled = false;
         this.leftSidebar = {};
     }
 }
@@ -8048,7 +8090,7 @@ exports = module.exports = __webpack_require__(5)(undefined);
 
 
 // module
-exports.push([module.i, ".widget-default{\n  background:lightgray;\n  height:100%;\n  width:100%;  \n}\n", ""]);
+exports.push([module.i, ".widget-default{\n  height:100%;\n  width:100%;  \n}\n", ""]);
 
 // exports
 
