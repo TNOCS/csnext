@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["Vue"], factory);
 	else if(typeof exports === 'object')
-		exports["csgridstack"] = factory(require("Vue"));
+		exports["cs-gridstack"] = factory(require("Vue"));
 	else
-		root["csgridstack"] = factory(root["Vue"]);
+		root["cs-gridstack"] = factory(root["Vue"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -48883,8 +48883,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!./gridstack.css", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!./gridstack.css");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!./cs-gridstack.css", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!./cs-gridstack.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -48911,9 +48911,9 @@ exports.push([module.i, ".gridstack-background-widget {\n    position:absolute\n
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div class=\"gridstack-background-widget\" v-for=\"widget in backgroundWidgets\" :key=\"widget.id\">\n        <cswidget :id=\"widget.id\" v-if=\"widget\" :widget=\"widget\"></cswidget>\n    </div>\n\n    <div class=\"grid-stack\" id=\"gridstack\" data-gs-animate=\"false\" data-gs-width=\"10\">\n        <div class=\"grid-stack-item\" v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" :data-gs-id=\"widget.id\" :data-gs-x=\"widget.options.x\"\n            :data-gs-y=\"widget.options.y\" :data-gs-width=\"widget.options.width\" :data-gs-auto-position=\"gridoptions.autoposition\"\n            :data-gs-height=\"widget.options.height\">\n            <div class=\"grid-stack-item-content\">\n              <!-- <h1>hi {{widget.component}}</h1> -->\n                <cswidget v-if=\"widget\" :widget=\"widget\"></cswidget>\n            </div>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div>\n    <div class=\"gridstack-background-widget\" v-for=\"widget in backgroundWidgets\" :key=\"widget.id\">\n        <cs-widget :id=\"widget.id\" v-if=\"widget\" :widget=\"widget\"></cs-widget>\n    </div>\n\n    <div class=\"grid-stack\" id=\"gridstack\" data-gs-animate=\"false\" data-gs-width=\"10\">\n        <div class=\"grid-stack-item\" v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" :data-gs-id=\"widget.id\" :data-gs-x=\"widget.options.x\"\n            :data-gs-y=\"widget.options.y\" :data-gs-width=\"widget.options.width\" :data-gs-auto-position=\"gridoptions.autoposition\"\n            :data-gs-height=\"widget.options.height\">\n            <div class=\"grid-stack-item-content\">\n              <!-- <h1>hi {{widget.component}}</h1> -->\n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=csgridstack.cs.js.map
+//# sourceMappingURL=cs-gridstack.cs.js.map

@@ -1,9 +1,9 @@
-export class Notification {
-    public type?: string;
-    public title?: string;
-    public remember?: boolean;
-    public created?: Date;
+export interface INotification {
+    type?: string;
+    title?: string;
+    remember?: boolean;
+    created?: Date;
     // tslint:disable-next-line:variable-name
-    public _visible?: boolean;
-    public timeout?: number;
+    _visible?: boolean;
+    timeout?: number;
 }

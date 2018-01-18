@@ -13877,7 +13877,7 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\">\n            <div class=\"item-content\">                \n                <cswidget v-if=\"widget\" :widget=\"widget\"></cswidget>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\">\n            <div class=\"item-content\">                \n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ })
 /******/ ]);

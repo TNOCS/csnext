@@ -2,7 +2,7 @@
     <div :id="'muuri-' + dashboard.id" class="grid">
         <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="item h2">
             <div class="item-content">                
-                <cswidget v-if="widget" :widget="widget"></cswidget>
+                <cs-widget v-if="widget" :widget="widget"></cs-widget>
             </div>
         </div>
     </div>

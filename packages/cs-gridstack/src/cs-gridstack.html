@@ -1,6 +1,6 @@
 <div>
     <div class="gridstack-background-widget" v-for="widget in backgroundWidgets" :key="widget.id">
-        <cswidget :id="widget.id" v-if="widget" :widget="widget"></cswidget>
+        <cs-widget :id="widget.id" v-if="widget" :widget="widget"></cs-widget>
     </div>
 
     <div class="grid-stack" id="gridstack" data-gs-animate="false" data-gs-width="10">
@@ -9,7 +9,7 @@
             :data-gs-height="widget.options.height">
             <div class="grid-stack-item-content">
               <!-- <h1>hi {{widget.component}}</h1> -->
-                <cswidget v-if="widget" :widget="widget"></cswidget>
+                <cs-widget v-if="widget" :widget="widget"></cs-widget>
             </div>
         </div>
     </div>

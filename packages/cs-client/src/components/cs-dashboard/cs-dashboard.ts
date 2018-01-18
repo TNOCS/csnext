@@ -1,20 +1,20 @@
 import { Project, Dashboard, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState, Logger, cswidget, guidGenerator, LayoutManager, DashboardManager } from '../../index';
+import { AppState, Logger, CsWidget, guidGenerator, LayoutManager, DashboardManager } from '../../index';
 import { Watch, Prop } from 'vue-property-decorator';
 
 @Component({
-  name: 'csdashboard',
+  name: 'cs-dashboard',
   template: '<component :is="component" :dashboard="dashboard"></component>',
   props: {
     dashboard: null
   }
 } as any)
 // tslint:disable-next-line:class-name
-export class csdashboard extends Vue {
+export class CsDashboard extends Vue {
 
-  public dashboard: Dashboard;
+  public dashboard?: Dashboard;
   public app = AppState.Instance;
 
   constructor() {
@@ -60,8 +60,10 @@ export class csdashboard extends Vue {
     // load default datasource, if configured
     if (this.dashboard.datasource) {
       this.app.loadDatasource(this.dashboard.datasource).catch(e => {
+        if (!this.dashboard) { return; }
         this.app.logger.error('dashboard datasource', 'error loading datasource ' + this.dashboard.datasource);
       }).then(d => {
+        if (!this.dashboard) { return; }
         this.dashboard.content = d;
 
         // if dashboard manager availabe, trigger data loaded event

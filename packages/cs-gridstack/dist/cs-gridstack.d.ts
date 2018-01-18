@@ -4,7 +4,7 @@ import '../../../node_modules/gridstack/dist/gridstack.css';
 import 'jquery';
 import 'lodash';
 import 'gridstack/dist/gridstack.all';
-import './gridstack.css';
+import './cs-gridstack.css';
 export interface IGridStackOptions extends IDashboardOptions {
     /** height of each cell unit */
     cellHeight?: number;

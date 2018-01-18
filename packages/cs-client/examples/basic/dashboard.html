@@ -18,7 +18,7 @@
 
 <body>
     <div id="main">
-        <csdashboard :dashboard="dashboard"></csdashboard>
+        <cs-dashboard :dashboard="dashboard"></cs-dashboard>
     </div>
 
     <script>
@@ -32,7 +32,7 @@
         var main = new Vue({
             el: '#main',
             components: {
-                csdashboard: csclient.csdashboard
+                'cs-dashboard': csclient.CsDashboard
             },
             data: {
                 dashboard: {

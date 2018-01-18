@@ -1,38 +1,38 @@
-import { Notification } from './services/notification';
+import { INotification } from './services/notification';
 // services
-import { AppState } from './services/appstate';
+import { AppState } from './services/app-state';
 
 // utils
 export * from './utils/guid';
 
 // services
-export * from './services/appstate';
+export * from './services/app-state';
 export * from './services/logger';
-export { Notification } from './services/notification';
+export { INotification } from './services/notification';
 export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
 export * from './services/layout-manager';
 
-// managers
-export * from './managers/single/single';
-export { Tiles } from './managers/tiles/tiles';
-export { ITileDashboardOptions } from './managers/tiles/tiledashboardoptions';
-export * from './managers/grid/grid';
+// layout managers
+export * from './layout/single/single';
+export { Tiles } from './layout/tiles/tiles';
+export { ITileDashboardOptions } from './layout/tiles/tiledashboardoptions';
+export * from './layout/grid/grid';
 
 // datasources
-export * from './datasources/webrequestdatasource';
+export * from './datasources/webrequest-datasource';
 export * from './datasources/geojson-datasource-processor';
 
 // components
 import { CsApp } from './components/cs-app/cs-app';
-import { cswidget } from './components/cswidget/cswidget';
-import { csdashboard } from './components/csdashboard/csdashboard';
+import { CsWidget } from './components/cs-widget/cs-widget';
+import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 
 export * from './components/cs-app/cs-app';
-export * from './components/cswidget/cswidget';
-export * from './components/csdashboard/csdashboard';
-export * from './components/cssettings/cssettings';
+export * from './components/cs-widget/cs-widget';
+export * from './components/cs-dashboard/cs-dashboard';
+export * from './components/cs-settings/cs-settings';
 
 // widgets
 export * from './widgets/widgetbase';
@@ -53,8 +53,8 @@ export const csnext = {
   install: (Vue) => {
     const a = AppState.Instance;
     // a.init();
-    Vue.component('csdashboard', csdashboard);
-    Vue.component('cswidget', cswidget);
+    Vue.component('cs-dashboard', CsDashboard);
+    Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
 
     // console.log('install csnext');

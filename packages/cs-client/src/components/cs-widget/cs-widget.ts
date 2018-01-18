@@ -2,17 +2,17 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Dashboard, IWidget, IWidgetOptions } from '@csnext/cs-core';
 import { Watch, Prop } from 'vue-property-decorator';
-import './cswidget.css';
+import './cs-widget.css';
 
 @Component({
-  name: 'cswidget',
-  template: require('./cswidget.html'),
+  name: 'cs-widget',
+  template: require('./cs-widget.html'),
   props: {
     widget: null
   }
 } as any)
-// tslint:disable-next-line:class-name
-export class cswidget extends Vue {
+
+export class CsWidget extends Vue {
 
   public widget?: IWidget;
 

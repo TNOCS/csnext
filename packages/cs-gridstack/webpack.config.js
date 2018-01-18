@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'csgridstack';
+const libraryName = 'cs-gridstack';
 
 let plugins = [], outputFile;
 
@@ -112,7 +112,7 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ["./src/index.ts"] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' }, 'gridstack')
+    buildConfig({ cs: ["./src/index.ts"] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' })
     // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

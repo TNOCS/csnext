@@ -1,7 +1,7 @@
 import { Watch } from 'vue-property-decorator';
 import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, Logger, cswidget, AppState, LayoutManager } from '@csnext/cs-client';
+import { WidgetBase, Logger, CsWidget, AppState, LayoutManager } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 const Muuri = require('muuri');
 import "./muuri.css";

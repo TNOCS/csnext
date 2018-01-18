@@ -1,7 +1,7 @@
 import { Watch } from 'vue-property-decorator';
 import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, Logger, cswidget, AppState, LayoutManager } from '@csnext/cs-client';
+import { WidgetBase, Logger, CsWidget, AppState, LayoutManager } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 import * as $ from 'jquery';
 import '../../../node_modules/gridstack/dist/gridstack.css';
@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 import 'jquery';
 import 'lodash';
 import 'gridstack/dist/gridstack.all';
-import './gridstack.css';
+import './cs-gridstack.css';
 import { } from '@csnext/cs-core';
 
 export interface IGridStackOptions extends IDashboardOptions {
@@ -35,7 +35,7 @@ export interface IGridStackOptions extends IDashboardOptions {
 }
 
 @Component({
-  template: require('./gridstack.html'),
+  template: require('./cs-gridstack.html'),
   props: {
     dashboard: null
   }

@@ -2,7 +2,7 @@ import { Dashboard, ThemeColors } from '@csnext/cs-core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import VueRouter from 'vue-router';
-import { AppState, Logger, Notification, csdashboard } from '../../index';
+import { AppState, Logger, INotification, CsDashboard } from '../../index';
 import { RouteConfig } from 'vue-router/types/router';
 import { Watch, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
@@ -25,7 +25,7 @@ export class CsApp extends Vue {
   public app = AppState.Instance;
   public L = Logger.Instance;
   public settingsDialog = false;
-  public lastNotification: Notification = { _visible: false } as Notification;
+  public lastNotification: INotification = { _visible: false } as INotification;
   public $vuetify: any;
   public active = null;
   public tabs = ['tab-1', 'tab-2', 'tab-3'];
@@ -87,7 +87,7 @@ export class CsApp extends Vue {
       router.addRoutes([{
         name: d.id,
         path: d.path,
-        component: csdashboard,
+        component: CsDashboard,
         props: (route) => ({ dashboard: d }),
         alias: d.title, meta: d
       } as RouteConfig]);
@@ -121,7 +121,7 @@ export class CsApp extends Vue {
 
   public InitNotifications() {
     if (this.app.EventBus) {
-      this.app.EventBus.$on('notification.new', (not: Notification) => {
+      this.app.EventBus.$on('notification.new', (not: INotification) => {
         this.lastNotification = not;
       });
     }

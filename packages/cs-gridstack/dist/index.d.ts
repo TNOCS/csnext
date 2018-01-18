@@ -1,1 +1,1 @@
-export * from './gridstack';
+export * from './cs-gridstack';

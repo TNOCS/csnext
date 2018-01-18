@@ -1,9 +1,8 @@
-import { csdashboard } from './../components/csdashboard/csdashboard';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
 import { ILayoutManagerConfig, Project, IDatasourceHandler, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions, Dashboard } from '@csnext/cs-core';
-import { Single, Grid, Logger, cswidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, Notification, LayoutManager } from '../index';
+import { CsDashboard, Single, Grid, Logger, CsWidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, INotification, LayoutManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -16,7 +15,7 @@ export class AppState {
   public project: Project = {};
 
   /** Manages active project */
-  public projectManager: ProjectManager;
+  public projectManager?: ProjectManager;
 
   /** Logger */
   public logger = Logger.Instance;
@@ -28,7 +27,7 @@ export class AppState {
   public isInitialized = false;
 
   /** list of past notifications */
-  public notifications: Notification[] = [];
+  public notifications: INotification[] = [];
 
   /** Get singleton instance of appstate */
   public static get Instance() {
@@ -43,11 +42,11 @@ export class AppState {
 
   /** Initialize the project state, dashboard managers and data source handlers */
   public init(project: Project) {
-    this.logger.info('appstate', 'Init AppState');
+    this.logger.info('app-state', 'Init AppState');
 
-    Vue.component('csdashboard', csdashboard);
-    Vue.component('cswidget', cswidget);
-    Vue.component('csapp', CsApp);
+    Vue.component('cs-dashboard', CsDashboard);
+    Vue.component('cs-widget', CsWidget);
+    Vue.component('cs-app', CsApp);
 
     this.project = project;
 
@@ -67,10 +66,11 @@ export class AppState {
   }
 
   public loadDatasource(source: IDatasource | string): Promise<object> {
+    if (!this.projectManager) { return Promise.reject('Project Manager not initialized'); }
     return this.projectManager.datasourceManager.load(source);
   }
 
-  public TriggerNotification(notification: Notification) {
+  public TriggerNotification(notification: INotification) {
     notification._visible = true;
     if (!notification.timeout) { notification.timeout = 1000; }
     this.EventBus.$emit('notification.new', notification);
