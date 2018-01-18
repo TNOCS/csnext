@@ -1,10 +1,23 @@
 import { FooterOptions } from './footeroptions';
-import { IDatasource, Dashboard, IServiceConfig } from '../index';
-import { NavigationOptions } from './navigationoptions';
-import { SidebarOptions } from './sidebaroptions';
+import { IDatasource, Dashboard } from '../index';
+import { NavigationOptions } from './..';
+import { SidebarOptions } from './..';
 import { AppTheme } from './apptheme';
 
-export class Project {
+export interface IProject {
+  id?: string;
+  title?: string;
+  logo?: string;
+  navigation?: NavigationOptions;
+  footer?: FooterOptions;
+  datasources?: { [id: string]: IDatasource };
+  dashboards?: Dashboard[];
+  leftSidebar?: SidebarOptions;
+  rightSidebar?: SidebarOptions;
+  theme?: AppTheme;
+}
+
+export class Project implements IProject {
   public id?: string;
   public title?: string;
   public logo?: string;
@@ -12,7 +25,6 @@ export class Project {
   public footer?: FooterOptions = {};
   public datasources?: { [id: string]: IDatasource } = {};
   public dashboards?: Dashboard[] = [];
-  public services?: { [id: string]: IServiceConfig } = {};
   public leftSidebar?: SidebarOptions = {};
   public rightSidebar?: SidebarOptions = {};
   public theme?: AppTheme;

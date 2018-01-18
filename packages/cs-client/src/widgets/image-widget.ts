@@ -5,13 +5,10 @@ import Component from 'vue-class-component';
 import { WidgetBase } from '../index';
 
 @Component({
-  name: 'imagewidget',
+  name: 'image-widget',
   template: '<img :src="widget.data.src" style="width:100%;height: 100%"></img>'
 } as any)
-// tslint:disable-next-line:class-name
-export class imagewidget extends WidgetBase {
 
-  public beforeMount() {
-    this.beforeMount();
-  }
+export class ImageWidget extends WidgetBase {
+
 }

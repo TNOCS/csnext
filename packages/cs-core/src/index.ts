@@ -1,16 +1,15 @@
 export * from './classes/project';
-export * from './classes/dashboardoptions';
+export * from './classes/dashboard-options';
 export * from './classes/dashboard';
 export * from './classes/page';
 export * from './classes/widget';
 export * from './classes/datasource';
-export * from './classes/serviceconfig';
-export * from './classes/layoutmanagerconfig';
-export * from './classes/dashboardmanagerconfig';
+export * from './classes/layout-manager-config';
+export * from './classes/dashboard-manager-config';
 export * from './classes/apptheme';
-export * from './classes/themecolors';
+export * from './classes/theme-colors';
 export * from './classes/footeroptions';
-export * from './classes/navigationoptions';
-export * from './classes/sidebaroptions';
+export * from './classes/navigation-options';
+export * from './classes/sidebar-options';
 
 // export *  from './classes/plugin';

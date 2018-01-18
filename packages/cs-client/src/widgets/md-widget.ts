@@ -5,10 +5,10 @@ import { WidgetBase } from '../index';
 import { Watch, Prop } from 'vue-property-decorator';
 
 @Component({
-    name: 'mdwidget',
+    name: 'md-widget',
     template: '<div>{{ widget.data }}</div>'
 } as any)
-// tslint:disable-next-line:class-name
-export class mdwidget extends WidgetBase {
+
+export class MdWidget extends WidgetBase {
 
 }

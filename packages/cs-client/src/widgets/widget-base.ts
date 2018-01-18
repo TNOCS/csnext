@@ -10,9 +10,10 @@ import { Watch, Prop } from 'vue-property-decorator';
     widget: null
   }
 } as any)
+
 export class WidgetBase extends Vue {
 
-  public widget: IWidget;
+  public widget: IWidget = {};
 
   protected L = Logger.Instance;
 

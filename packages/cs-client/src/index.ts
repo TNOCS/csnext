@@ -35,11 +35,11 @@ export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
 
 // widgets
-export * from './widgets/widgetbase';
-export * from './widgets/mdwidget';
-export * from './widgets/iframewidget';
-export * from './widgets/youtubebackgroundwidget';
-export * from './widgets/imagewidget';
+export * from './widgets/widget-base';
+export * from './widgets/md-widget';
+export * from './widgets/iframe-widget';
+export * from './widgets/youtube-background/youtube-background-widget';
+export * from './widgets/image-widget';
 
 // export default {
 //     install(Vue) {
