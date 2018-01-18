@@ -100,12 +100,12 @@
       :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense app>
       <v-toolbar-side-icon v-if="app.project.leftSidebar" @click="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
       <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
-      <v-tabs-bar v-if="app.project.navigation.style==='tabs'" :class="app.project.theme.navigation" slot="extension">
+      <v-tabs-items v-if="app.project.navigation.style ==='tabs'" :class="app.project.theme.navigation" slot="extension">
         <v-tabs-slider color="yellow"></v-tabs-slider>
         <v-tab-item v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">
           {{ dashboard.title }}
         </v-tab-item>
-      </v-tabs-bar>
+      </v-tabs-items>
     </v-toolbar>
   </v-tabs> -->
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{

@@ -6,7 +6,7 @@
 		"compile": "lerna run --parallel compile"
 	},
 	"devDependencies": {
-		"lerna": "^2.2.0"
+		"lerna": "^2.7.1"
 	},
 	"dependencies": {
 	}
