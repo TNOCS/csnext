@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'csmuuri';
+let libraryName = 'cs-muuri';
 
 let plugins = [], outputFile;
 
@@ -48,7 +48,7 @@ const mod = {
         },
         {
             test: /\.ts$/,
-            exclude: /node_modules/,
+            exclude: '/node_modules/',
             loader: 'awesome-typescript-loader'
         },
         {
@@ -83,12 +83,12 @@ const mod = {
 
 function buildConfig(entry, externals, analyzer) {
     let pl = [];
-    if (analyzer) pl.push(new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false,
-        reportFilename: 'reports/report.' + analyzer + '.html',
-        generateStatsFile: false
-    }));
+    // if (analyzer) pl.push(new BundleAnalyzerPlugin({
+    //     analyzerMode: 'static',
+    //     openAnalyzer: false,
+    //     reportFilename: 'reports/report.' + analyzer + '.html',
+    //     generateStatsFile: false
+    // }));
     return baseConfig =
         {
             entry: entry,
@@ -96,9 +96,13 @@ function buildConfig(entry, externals, analyzer) {
             devtool: 'source-map',
             output: output,
             module: mod,
+            watch: true,
+            watchOptions: {
+                aggregateTimeout: 300 
+            },
             externals: externals,
             resolve: {
-                extensions: ['.ts', '.js', '.html'],               
+                extensions: ['.ts', '.js', '.html'],
                 // alias: {
                 //     'jQuery': 'jquery'
                 //     // 'jquery': 'jQuery'
@@ -109,7 +113,7 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts", ] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' }) // , 'csmuuri'
+    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts",] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' }) // , 'csmuuri'
     // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

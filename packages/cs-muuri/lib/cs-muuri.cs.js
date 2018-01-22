@@ -4,10 +4,10 @@
 	else if(typeof define === 'function' && define.amd)
 		define(["Vue"], factory);
 	else if(typeof exports === 'object')
-		exports["csmuuri"] = factory(require("Vue"));
+		exports["cs-muuri"] = factory(require("Vue"));
 	else
-		root["csmuuri"] = factory(root["Vue"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+		root["cs-muuri"] = factory(root["Vue"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2965,9 +2965,9 @@ var freeGlobal = (typeof window !== 'undefined' ? window : (typeof self !== 'und
 freeGlobal.Hammer = Hammer;
 
 if (true) {
-    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+    !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
         return Hammer;
-    }.call(exports, __webpack_require__, exports, module),
+    }).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 } else if (typeof module != 'undefined' && module.exports) {
     module.exports = Hammer;
@@ -5669,41 +5669,61 @@ var substr = 'ab'.substr(-1) === 'b'
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__muuri__ = __webpack_require__(21);
+/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MuuriLayout", function() { return __WEBPACK_IMPORTED_MODULE_0__muuri__["a"]; });
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(21));
 
 
 /***/ }),
 /* 21 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MuuriLayout; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__muuri_css__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__muuri_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__muuri_css__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const vue_property_decorator_1 = __webpack_require__(22);
-const vue_1 = __webpack_require__(1);
-const vue_class_component_1 = __webpack_require__(26);
-const Muuri = __webpack_require__(27);
-__webpack_require__(28);
-let MuuriLayout = class MuuriLayout extends vue_1.default {
-    constructor() {
-        super(...arguments);
-        this.items = [];
-        this.uuid = 0;
-        this.dragCounter = 0;
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var Muuri = __webpack_require__(27);
+
+var MuuriLayout = /** @class */ (function (_super) {
+    __extends(MuuriLayout, _super);
+    function MuuriLayout() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.items = [];
+        _this.uuid = 0;
+        _this.dragCounter = 0;
+        return _this;
         // const options = {
         //   // tslint:disable-next-line:no-bitwise
         // };
@@ -5725,48 +5745,68 @@ let MuuriLayout = class MuuriLayout extends vue_1.default {
         //   });
         // });
     }
-    get widgets() {
-        return this.dashboard.widgets.filter(w => !w.options || !w.options.background);
-    }
-    get backgroundWidgets() {
-        return this.dashboard.widgets.filter(w => w.options && w.options.background);
-    }
-    initWidget(widget) {
+    Object.defineProperty(MuuriLayout.prototype, "widgets", {
+        get: function () {
+            return this.dashboard.widgets.filter(function (w) { return !w.options || !w.options.background; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MuuriLayout.prototype, "backgroundWidgets", {
+        get: function () {
+            return this.dashboard.widgets.filter(function (w) { return w.options && w.options.background; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MuuriLayout.prototype.initWidget = function (widget) {
         // check if widget options is set
         if (!widget.options) {
             widget.options = { x: 1, y: 1, width: 1, height: 1 };
         }
-    }
-    widgetsChanged(n, old) {
+        widget._style = { background: 'red', width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' };
+    };
+    MuuriLayout.prototype.widgetsChanged = function (n, old) {
+        var _this = this;
         if (!this.grid)
             return;
-        vue_1.default.nextTick(() => {
-            n.forEach(w => {
-                if (this.items.indexOf(w.id) === -1) {
-                    let welement = document.getElementById(w.id);
-                    this.grid.add([welement]);
-                    this.items.push(w.id);
+        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
+            n.forEach(function (w) {
+                if (_this.items.indexOf(w.id) === -1) {
+                    var welement = document.getElementById(w.id);
+                    _this.grid.add([welement]);
+                    _this.items.push(w.id);
                 }
             });
         });
-    }
-    beforeMount() {
+    };
+    MuuriLayout.prototype.beforeMount = function () {
+        var _this = this;
         this.options = this.dashboard.options;
-        this.dashboard.widgets.forEach(widget => {
-            this.initWidget(widget);
+        if (!this.options) {
+            this.options = { itemHeight: 100, itemWidth: 100 };
+        }
+        ;
+        if (!this.options.itemHeight) {
+            this.options.itemHeight = 100;
+        }
+        if (!this.options.itemWidth) {
+            this.options.itemWidth = 100;
+        }
+        console.log(' initing widgets');
+        this.dashboard.widgets.forEach(function (widget) {
+            _this.initWidget(widget);
         });
-    }
-    created() {
+    };
+    MuuriLayout.prototype.created = function () {
+        var _this = this;
         if (!this.dashboard) {
             return;
         }
-        vue_1.default.nextTick(() => {
-            if (!this.dashboard.options) {
-                this.options = {};
-            }
-            setTimeout(() => {
-                this.docElem = document.documentElement;
-                this.grid = new Muuri('#muuri-' + this.dashboard.id, {
+        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
+            setTimeout(function () {
+                _this.docElem = document.documentElement;
+                _this.grid = new Muuri('#muuri-' + _this.dashboard.id, {
                     items: '*',
                     layoutDuration: 200,
                     layoutEasing: 'ease',
@@ -5781,39 +5821,43 @@ let MuuriLayout = class MuuriLayout extends vue_1.default {
                     dragReleaseDuration: 200,
                     dragReleseEasing: 'ease'
                 })
-                    .on('dragStart', () => {
-                    ++this.dragCounter;
-                    this.docElem.classList.add('dragging');
+                    .on('dragStart', function () {
+                    ++_this.dragCounter;
+                    _this.docElem.classList.add('dragging');
                 })
-                    .on('dragEnd', () => {
-                    if (--this.dragCounter < 1) {
-                        this.docElem.classList.remove('dragging');
+                    .on('dragEnd', function () {
+                    if (--_this.dragCounter < 1) {
+                        _this.docElem.classList.remove('dragging');
                     }
                 })
-                    .on('move', this.updateIndices)
-                    .on('sort', this.updateIndices);
-            }, 1000);
+                    .on('move', _this.updateIndices)
+                    .on('sort', _this.updateIndices);
+            }, 500);
         });
-    }
-    updateIndices() {
+    };
+    MuuriLayout.prototype.updateIndices = function () {
         this.grid.getItems().forEach(function (item, i) {
             item.getElement().setAttribute('data-id', i + 1);
             // item.getElement().querySelector('.card-id').innerHTML = i + 1;
         });
-    }
-};
-__decorate([
-    vue_property_decorator_1.Watch('dashboard.widgets')
-], MuuriLayout.prototype, "widgetsChanged", null);
-MuuriLayout = __decorate([
-    vue_class_component_1.default({
-        template: __webpack_require__(33),
-        props: {
-            dashboard: null
-        }
-    })
-], MuuriLayout);
-exports.MuuriLayout = MuuriLayout;
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["Watch"])('dashboard.widgets'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Array, Array]),
+        __metadata("design:returntype", void 0)
+    ], MuuriLayout.prototype, "widgetsChanged", null);
+    MuuriLayout = __decorate([
+        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
+            template: __webpack_require__(33),
+            props: {
+                dashboard: null
+            }
+        })
+    ], MuuriLayout);
+    return MuuriLayout;
+}(__WEBPACK_IMPORTED_MODULE_1_vue___default.a));
+
 
 
 /***/ }),
@@ -7266,7 +7310,7 @@ module.exports = g;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
-  * vue-class-component v6.0.0
+  * vue-class-component v6.1.2
   * (c) 2015-2017 Evan You
   * @license MIT
   */
@@ -7278,6 +7322,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var Vue = _interopDefault(__webpack_require__(1));
 
+var hasProto = { __proto__: [] } instanceof Array;
 function createDecorator(factory) {
     return function (target, key, index) {
         var Ctor = typeof target === 'function'
@@ -7292,6 +7337,10 @@ function createDecorator(factory) {
         Ctor.__decorators__.push(function (options) { return factory(options, key, index); });
     };
 }
+function isPrimitive(value) {
+    var type = typeof value;
+    return value == null || (type !== "object" && type !== "function");
+}
 function warn(message) {
     if (typeof console !== 'undefined') {
         console.warn('[vue-class-component] ' + message);
@@ -7299,6 +7348,7 @@ function warn(message) {
 }
 
 function collectDataFromConstructor(vm, Component) {
+    var originalInit = Component.prototype._init;
     Component.prototype._init = function () {
         var _this = this;
         var keys = Object.getOwnPropertyNames(vm);
@@ -7313,12 +7363,14 @@ function collectDataFromConstructor(vm, Component) {
             if (key.charAt(0) !== '_') {
                 Object.defineProperty(_this, key, {
                     get: function () { return vm[key]; },
-                    set: function (value) { return vm[key] = value; }
+                    set: function (value) { return vm[key] = value; },
+                    configurable: true
                 });
             }
         });
     };
     var data = new Component();
+    Component.prototype._init = originalInit;
     var plainData = {};
     Object.keys(data).forEach(function (key) {
         if (data[key] !== undefined) {
@@ -7380,12 +7432,56 @@ function componentFactory(Component, options) {
     var decorators = Component.__decorators__;
     if (decorators) {
         decorators.forEach(function (fn) { return fn(options); });
+        delete Component.__decorators__;
     }
     var superProto = Object.getPrototypeOf(Component.prototype);
     var Super = superProto instanceof Vue
         ? superProto.constructor
         : Vue;
-    return Super.extend(options);
+    var Extended = Super.extend(options);
+    forwardStaticMembers(Extended, Component, Super);
+    return Extended;
+}
+var reservedPropertyNames = [
+    'cid',
+    'super',
+    'options',
+    'superOptions',
+    'extendOptions',
+    'sealedOptions',
+    'component',
+    'directive',
+    'filter'
+];
+function forwardStaticMembers(Extended, Original, Super) {
+    Object.getOwnPropertyNames(Original).forEach(function (key) {
+        if (key === 'prototype') {
+            return;
+        }
+        var extendedDescriptor = Object.getOwnPropertyDescriptor(Extended, key);
+        if (extendedDescriptor && !extendedDescriptor.configurable) {
+            return;
+        }
+        var descriptor = Object.getOwnPropertyDescriptor(Original, key);
+        if (!hasProto) {
+            if (key === 'cid') {
+                return;
+            }
+            var superDescriptor = Object.getOwnPropertyDescriptor(Super, key);
+            if (!isPrimitive(descriptor.value)
+                && superDescriptor
+                && superDescriptor.value === descriptor.value) {
+                return;
+            }
+        }
+        if (process.env.NODE_ENV !== 'production'
+            && reservedPropertyNames.indexOf(key) >= 0) {
+            warn("Static property name '" + key + "' declared on class '" + Original.name + "' " +
+                'conflicts with reserved property name of Vue internal. ' +
+                'It may cause unexpected behavior of the component. Consider renaming the property.');
+        }
+        Object.defineProperty(Extended, key, descriptor);
+    });
 }
 
 function Component(options) {
@@ -7449,9 +7545,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
     module.exports = factory(namespace, Hammer);
   }
   else if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function (Hammer) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = (function (Hammer) {
       return factory(namespace, Hammer);
-    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   }
   else {
@@ -13304,7 +13400,7 @@ if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
 
-var options = {}
+var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
 var update = __webpack_require__(31)(content, options);
@@ -13327,7 +13423,7 @@ if(false) {
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(30)(undefined);
+exports = module.exports = __webpack_require__(30)(false);
 // imports
 
 
@@ -13453,9 +13549,19 @@ var getElement = (function (fn) {
 
 	return function(selector) {
 		if (typeof memo[selector] === "undefined") {
-			memo[selector] = fn.call(this, selector);
+			var styleTarget = fn.call(this, selector);
+			// Special case to return head of iframe instead of iframe itself
+			if (styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[selector] = styleTarget;
 		}
-
 		return memo[selector]
 	};
 })(function (target) {
@@ -13479,7 +13585,7 @@ module.exports = function(list, options) {
 
 	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
 	if (!options.insertInto) options.insertInto = "head";
@@ -13585,8 +13691,11 @@ function insertStyleElement (options, style) {
 		stylesInsertedAtTop.push(style);
 	} else if (options.insertAt === "bottom") {
 		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
+		target.insertBefore(style, nextSibling);
 	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
 	}
 }
 
@@ -13877,9 +13986,9 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\">\n            <div class=\"item-content\">                \n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\" :style=\"widget._style\">\n            <div class=\"item-content\">                \n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=csmuuri.cs.js.map
+//# sourceMappingURL=cs-muuri.cs.js.map

@@ -16,6 +16,10 @@ export class CsWidget extends Vue {
 
   public widget?: IWidget;
 
+  constructor() {
+    super();
+  }
+
   get computedOptions() {
     if (!this.widget) { return null; }
     if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
@@ -24,7 +28,8 @@ export class CsWidget extends Vue {
     return this.widget.options;
   }
 
-  constructor() {
-    super();
+  public created() {
+    if (this.widget && !this.widget.options) { this.widget.options = {}; }
   }
+
 }

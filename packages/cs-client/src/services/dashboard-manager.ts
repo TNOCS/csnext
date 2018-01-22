@@ -1,4 +1,4 @@
-import { IDashboardManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions } from '@csnext/cs-core';
+import { IDashboardManagerConfig, Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, IFooterOptions, NavigationOptions, ISidebarOptions } from '@csnext/cs-core';
 
 // TODO Is this the correct name, since it only stores a reference to existing dashboard managers, and doesn't do any management.
 export class DashboardManager {

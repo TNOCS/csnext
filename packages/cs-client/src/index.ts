@@ -1,4 +1,3 @@
-import { INotification } from './services/notification';
 // services
 import { AppState } from './services/app-state';
 
@@ -8,7 +7,6 @@ export * from './utils/guid';
 // services
 export * from './services/app-state';
 export * from './services/logger';
-export { INotification } from './services/notification';
 export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
@@ -16,8 +14,6 @@ export * from './services/layout-manager';
 
 // layout managers
 export * from './layout/single/single';
-export { Tiles } from './layout/tiles/tiles';
-export { ITileDashboardOptions } from './layout/tiles/tiledashboardoptions';
 export * from './layout/grid/grid';
 
 // datasources
@@ -41,37 +37,11 @@ export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';
 
-// export default {
-//     install(Vue) {
-//         console.log('install csnext');
-//     }
-// }
-
-// console.log('csclient');
-
 export const csnext = {
   install: (Vue) => {
     const a = AppState.Instance;
-    // a.init();
     Vue.component('cs-dashboard', CsDashboard);
     Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
-
-    // console.log('install csnext');
-
-    // this.g = {};
-
-    // var $notify = function (group, text, type, time) { if (self.g[group]) self.g[group](text, type, time); };
-
-    // Object.defineProperty(Vue.prototype, '$notify', { get: function () { return $notify; } });
   }
 };
-
-// Vue.use(csnext);
-
-// //auto install
-// if (typeof window !== 'undefined' && window.Vue) {
-//     // window.Vue.use(Formly);
-//     // //expose formly functions if auto installed
-//     // window.Vue.$formly = { getTypes, addType, addValidationMessage };
-// }

@@ -1,5 +1,5 @@
-import { IDashboardOptions } from './dashboardoptions';
-import { SidebarOptions } from './sidebaroptions';
+import { IDashboardOptions } from './dashboard-options';
+import { ISidebarOptions } from './sidebar-options';
 import { IWidget, IWidgetOptions } from './widget';
 import { Page } from './page';
 import { IDashboardManager } from '../index';
@@ -41,14 +41,21 @@ export class Dashboard {
   // if datasource is set, result will be available in content
   public content?: any;
 
+  // generic data field for passing dashboard data
+  public data?: any;
+
   public defaultWidgetOptions?: IWidgetOptions;
 
-  public leftSidebar?: SidebarOptions = {};
+  // options for left sidebar
+  public leftSidebar?: ISidebarOptions = {};
 
   // optional list of sub dashboards
   public dashboards?: Dashboard[];
 
   // parent dashboard, if this is a child dashboard
   public parent?: Dashboard;
+
+  // enabled for main dashboard, disabled if dashboards are used for left/right panels
+  public isMain?: boolean;
 
 }

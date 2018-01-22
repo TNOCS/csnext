@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'csclient';
+let libraryName = 'cs-crossfilter';
 
 let plugins = [], outputFile;
 
@@ -48,7 +48,7 @@ const mod = {
         },
         {
             test: /\.ts$/,
-            exclude: /node_modules/,
+            exclude: '/node_modules/',
             loader: 'awesome-typescript-loader'
         },
         {
@@ -83,29 +83,37 @@ const mod = {
 
 function buildConfig(entry, externals, analyzer) {
     let pl = [];
-    if (analyzer) pl.push(new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false,
-        reportFilename: 'reports/report.' + analyzer + '.html',
-        generateStatsFile: false
-    }));
+    // if (analyzer) pl.push(new BundleAnalyzerPlugin({
+    //     analyzerMode: 'static',
+    //     openAnalyzer: false,
+    //     reportFilename: 'reports/report.' + analyzer + '.html',
+    //     generateStatsFile: false
+    // }));
     return baseConfig =
         {
             entry: entry,
             // entry: __dirname + '/src/index.ts',
             devtool: 'source-map',
             output: output,
+            watch: true,
+            watchOptions: {
+                aggregateTimeout: 300 
+            },
             module: mod,
             externals: externals,
             resolve: {
-                extensions: ['.ts', '.js', '.html']               
+                extensions: ['.ts', '.js', '.html'],               
+                // alias: {
+                //     'jQuery': 'jquery'
+                //     // 'jquery': 'jQuery'
+                // }
             },
             plugins: plugins.concat(pl)
         };
 }
 
 const config = [
-    buildConfig({ cs: ["./src/index.ts"] }, { 'vue':'Vue','vuetify':'vuetify' })
+    buildConfig({ cs: ["./src/index.ts"] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' }) // , 'csmuuri'
     // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

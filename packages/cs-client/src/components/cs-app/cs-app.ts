@@ -7,6 +7,7 @@ import { RouteConfig } from 'vue-router/types/router';
 import { Watch, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
 import { setInterval } from 'timers';
+import './cs-app.css';
 import './../../sass/main.scss';
 
 // register needed plugins
@@ -42,6 +43,22 @@ export class CsApp extends Vue {
     this.InitTheme();
   }
 
+  @Watch('$route')
+  public routeChanged(n: any, o: any) {
+    if (this.app.project && this.app.project.header && this.app.project.header.breadcrumbs) {
+      this.app.project.header.breadcrumbItems = [];
+      n.fullPath.split('/').forEach(s => {
+        if (s && this.app.project.header && this.app.project.header.breadcrumbItems) {
+          this.app.project.header.breadcrumbItems.push(s);
+        }
+      });
+    }
+  }
+
+  public onResize() {
+    this.app.windowSize = { x: window.innerWidth, y: window.innerHeight };
+  }
+
   public InitTheme() {
     if (this.app.project && this.app.project.theme) {
       this.$vuetify.theme = this.app.project.theme.colors;
@@ -64,6 +81,7 @@ export class CsApp extends Vue {
     return dashboards[index];
   }
 
+  // swipe gesture
   public swipe(direction: string) {
     if (!this.app.activeDashboard || !this.app.activeDashboard.touchGesturesEnabled) { return; }
     const d = this.app.activeDashboard;

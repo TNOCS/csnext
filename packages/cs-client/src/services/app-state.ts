@@ -1,7 +1,7 @@
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
-import { ILayoutManagerConfig, Project, IDatasourceHandler, IDatasource, AppTheme, ThemeColors, FooterOptions, NavigationOptions, SidebarOptions, Dashboard } from '@csnext/cs-core';
+import { ILayoutManagerConfig, Project, IDatasourceHandler, IDatasource, AppTheme, ThemeColors, IFooterOptions, NavigationOptions, ISidebarOptions, Dashboard } from '@csnext/cs-core';
 import { CsDashboard, Single, Grid, Logger, CsWidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, INotification, LayoutManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
@@ -38,6 +38,8 @@ export class AppState {
 
   public data: { [id: string]: any } = {};
 
+  public windowSize = { x: 0, y: 0 };
+
   private constructor() { }
 
   /** Initialize the project state, dashboard managers and data source handlers */
@@ -49,6 +51,9 @@ export class AppState {
     Vue.component('cs-app', CsApp);
 
     this.project = project;
+
+    // make sure all dashboards are marked as main
+    if (this.project.dashboards) { this.initializeDashboards(this.project.dashboards); }
 
     this.projectManager = new ProjectManager(project);
 
@@ -63,6 +68,15 @@ export class AppState {
 
     this.isInitialized = true;
     this.EventBus.$emit('init');
+  }
+
+  public initializeDashboards(dashboards: Dashboard[]) {
+    if (dashboards) {
+      dashboards.forEach(d => {
+        d.isMain = true;
+        if (d.dashboards) { this.initializeDashboards(d.dashboards); }
+      });
+    }
   }
 
   public loadDatasource(source: IDatasource | string): Promise<object> {

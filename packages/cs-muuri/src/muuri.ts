@@ -1,3 +1,4 @@
+import { IMuuriOptions } from './../dist/muuri.d';
 import { Watch } from 'vue-property-decorator';
 import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
@@ -7,7 +8,8 @@ const Muuri = require('muuri');
 import "./muuri.css";
 
 export interface IMuuriOptions extends IDashboardOptions {
-
+  itemWidth: number;
+  itemHeight: number;
 }
 
 @Component({
@@ -27,7 +29,6 @@ export class MuuriLayout extends Vue {
   private uuid = 0;
   private dragCounter = 0;
 
-
   get widgets() {
     return this.dashboard.widgets.filter(w => !w.options || !w.options.background);
   }
@@ -41,14 +42,13 @@ export class MuuriLayout extends Vue {
     if (!widget.options) {
       widget.options = { x: 1, y: 1, width: 1, height: 1 };
     }
+    widget._style = { background: 'red', width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' }
   }
 
   @Watch('dashboard.widgets')
-  public widgetsChanged(n: IWidget[], old: IWidget[]) {
+  public widgetsChanged(n: IWidget[], old: IWidget[]) {    
     if (!this.grid) return;
     Vue.nextTick(() => {
-
-
       n.forEach(w => {
         if (this.items.indexOf(w.id) === -1) {
           let welement = document.getElementById(w.id);
@@ -62,6 +62,11 @@ export class MuuriLayout extends Vue {
 
   public beforeMount() {
     this.options = this.dashboard.options as IMuuriOptions;
+    if (!this.options) {this.options = { itemHeight: 100, itemWidth: 100}};
+    if (!this.options.itemHeight) { this.options.itemHeight = 100; }
+    if (!this.options.itemWidth) { this.options.itemWidth = 100; }
+    console.log(' initing widgets');
+    
 
     this.dashboard.widgets.forEach(widget => {
       this.initWidget(widget);
@@ -71,10 +76,7 @@ export class MuuriLayout extends Vue {
   public created() {
     if (!this.dashboard) { return; }
     Vue.nextTick(() => {
-      if (!this.dashboard.options) {
-        this.options = {};
-      }
-
+      
       setTimeout(() => {
         this.docElem = document.documentElement;
         this.grid = new Muuri('#muuri-' + this.dashboard.id, {
@@ -103,7 +105,7 @@ export class MuuriLayout extends Vue {
           })
           .on('move', this.updateIndices)
           .on('sort', this.updateIndices);
-      }, 1000);
+      }, 500);
     });
   }
 

@@ -1,7 +1,10 @@
+import { IMuuriOptions } from './../dist/muuri.d';
 import { IWidget, Dashboard, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
 import "./muuri.css";
 export interface IMuuriOptions extends IDashboardOptions {
+    itemWidth: number;
+    itemHeight: number;
 }
 export declare class MuuriLayout extends Vue {
     mode: any;

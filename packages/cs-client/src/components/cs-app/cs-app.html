@@ -1,9 +1,40 @@
-<v-app v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
+<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
+
+  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
+    :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute :dense="app.project.header.dense" app>
+    <v-toolbar-side-icon v-if="app.project.leftSidebar" @click="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
+    <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
+    <div class="header-title-container">
+      <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
+        <v-icon slot="divider">chevron_right</v-icon>
+        <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
+          {{ item}}
+        </v-breadcrumbs-item>
+      </v-breadcrumbs>
+      <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{app.project.header.title}}</v-toolbar-title>
+    </div>
+
+    <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary">
+      <v-tab v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">{{dashboard.title}}</v-tab>
+    </v-tabs>
+    <v-spacer></v-spacer>
+    <v-btn v-if="app.project.search" icon>
+      <v-icon>search</v-icon>
+    </v-btn>
+    <v-btn icon>
+      <v-icon>more_vert</v-icon>
+    </v-btn>
+
+    <v-btn v-if="app.project.rightSidebar" @click="app.project.rightSidebar.open=!app.project.rightSidebar.open" icon>
+      <v-icon v-if="app.project.rightSidebar.open">keyboard_arrow_right</v-icon>
+      <v-icon v-if="!app.project.rightSidebar.open">keyboard_arrow_left</v-icon>
+    </v-btn>
+
+  </v-toolbar>
 
   <v-navigation-drawer disable-route-watcher v-if="app.project.leftSidebar" v-model="app.project.leftSidebar.open" :mini-variant="app.project.leftSidebar.mini"
     :clipped="app.project.leftSidebar.clipped" :permanent="app.project.leftSidebar.permanent" :persistent="app.project.leftSidebar.persistent"
     :temporary="app.project.leftSidebar.temporary" :floating="app.project.leftSidebar.floating" absolute overflow app>
-
 
     <v-toolbar v-if="app.project.leftSidebar.title">
       <v-list dense>
@@ -20,6 +51,13 @@
       </v-btn>
     </div>
 
+    <div class="leftsidebar-minify">
+      <v-btn small icon @click="app.project.leftSidebar.mini=!app.project.leftSidebar.mini">
+        <v-icon small v-if="app.project.leftSidebar.mini">keyboard_arrow_right</v-icon>
+        <v-icon small v-if="!app.project.leftSidebar.mini">keyboard_arrow_left</v-icon>
+      </v-btn>
+    </div>
+
     <v-divider v-if="app.project.leftSidebar.title"></v-divider>
     <div v-if="app.project.leftSidebar.component">
       <component :is="app.project.leftSidebar.component"></component>
@@ -32,7 +70,7 @@
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
+          <v-list-tile v-if="!app.project.leftSidebar.mini" v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
             <v-list-tile-content>
               <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
             </v-list-tile-content>
@@ -42,11 +80,9 @@
           </v-list-tile>
         </v-list-group>
       </v-list>
-
-
     </div>
-  </v-navigation-drawer>
 
+  </v-navigation-drawer>
 
   <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
     :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"
@@ -70,30 +106,13 @@
     </div>
 
     <v-divider v-if="app.project.rightSidebar.title"></v-divider>
-    <div v-if="app.project.rightSidebar.component">
-      <component :is="app.project.rightSidebar.component"></component>
+    <div id="rightSidebarComponent">
+      <!-- <component :is="app.project.rightSidebar.component"></component> -->
     </div>
-    <div v-else-if="app.project.navigation.style==='left'">
 
-    </div>
+
   </v-navigation-drawer>
 
-  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
-    :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense app>
-    <v-toolbar-side-icon v-if="app.project.leftSidebar" @click="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
-    <img v-if="app.project.logo" :src="app.project.logo" class="app-project-logo"></img>
-    <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
-    <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary">
-      <v-tab v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">{{dashboard.title}}</v-tab>
-    </v-tabs>
-    <v-spacer></v-spacer>
-    <v-btn v-if="app.project.search" icon>
-      <v-icon>search</v-icon>
-    </v-btn>
-    <v-btn icon>
-      <v-icon>more_vert</v-icon>
-    </v-btn>
-  </v-toolbar>
   <!-- 
   <v-tabs right>
     <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"

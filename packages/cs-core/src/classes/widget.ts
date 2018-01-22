@@ -28,5 +28,6 @@ export interface IWidget {
   options?: IWidgetOptions;
   _dashboard?: Dashboard;
   _initalized?: boolean;
+  _style?: any;
 
 }

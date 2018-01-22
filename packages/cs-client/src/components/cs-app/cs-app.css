@@ -1,0 +1,72 @@
+
+.cstabs {
+  margin-top: 0px;
+  background-color: white;
+}
+
+.header-title-container
+{
+  margin-left:16px;
+}
+
+@media only screen and (max-width: 480px) {
+  .header-breadcrumbs {
+      display: none !important;
+      background:red;
+  }
+}
+
+
+.header-breadcrumbs
+{
+  padding:0 !important;
+}
+
+.header-breadcrumbs > li
+{
+  padding:0 !important;
+}
+
+.header-title{
+  margin-left:0 !important;
+}
+
+.floating {
+  margin-top: -48px !important;
+}
+
+.leftsidebar-pin
+{
+  float:right;
+  margin:4px;
+}
+
+.leftsidebar-minify{
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+}
+
+.content--wrap {
+  height: 100%;
+}
+
+.floating-toolbar {
+  margin-top: 10px !important;
+}
+
+.app-project-logo
+{
+  height: 40px;
+  margin: 4px;  
+}
+
+.content {
+  height: 100%;
+  padding: 0;
+}
+
+.dashboard-fullscreen {
+  margin: 0;
+  height: 100%;
+}

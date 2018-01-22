@@ -1,4 +1,4 @@
-import { ThemeColors } from './themecolors';
+import { ThemeColors } from './theme-colors';
 
 // Application look and feel
 export class AppTheme {
