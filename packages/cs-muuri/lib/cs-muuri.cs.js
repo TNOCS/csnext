@@ -5764,7 +5764,7 @@ var MuuriLayout = /** @class */ (function (_super) {
         if (!widget.options) {
             widget.options = { x: 1, y: 1, width: 1, height: 1 };
         }
-        widget._style = { background: 'red', width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' };
+        widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' };
     };
     MuuriLayout.prototype.widgetsChanged = function (n, old) {
         var _this = this;
