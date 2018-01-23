@@ -12,7 +12,7 @@
     "minor-release": "npm version minor && npm publish && git push --follow-tags",
     "major-release": "npm version major && npm publish && git push --follow-tags",
     "link": "yarn link",
-    "dev": "webpack --env dev",
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
     "build": "webpack --env build"
   },
   "publishConfig": {
@@ -33,6 +33,7 @@
     "style-loader": "^0.19.1",
     "typescript": "^2.6.2",
     "webpack": "~3.10.0",
-    "webpack-bundle-analyzer": "^2.9.2"
+    "webpack-bundle-analyzer": "^2.9.2",
+    "hard-source-webpack-plugin": "^0.5.16"
   }
 }

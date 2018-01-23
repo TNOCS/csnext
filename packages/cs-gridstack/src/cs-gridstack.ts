@@ -31,6 +31,7 @@ export interface IGridStackOptions extends IDashboardOptions {
   autoposition?: boolean;
   /** makes grid static (default false). If true widgets are not movable/resizable. You don't even need jQueryUI draggable/resizable. A CSS class grid-stack-static is also added to the container. */
   staticGrid?: boolean;
+  /** can the user resize widgets */
   resizable?: any;
 }
 

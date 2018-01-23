@@ -5669,61 +5669,41 @@ var substr = 'ab'.substr(-1) === 'b'
 
 /***/ }),
 /* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__muuri__ = __webpack_require__(21);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "MuuriLayout", function() { return __WEBPACK_IMPORTED_MODULE_0__muuri__["a"]; });
 
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(21));
 
 
 /***/ }),
 /* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MuuriLayout; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__muuri_css__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__muuri_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__muuri_css__);
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var Muuri = __webpack_require__(27);
-
-var MuuriLayout = /** @class */ (function (_super) {
-    __extends(MuuriLayout, _super);
-    function MuuriLayout() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.items = [];
-        _this.uuid = 0;
-        _this.dragCounter = 0;
-        return _this;
+Object.defineProperty(exports, "__esModule", { value: true });
+const vue_property_decorator_1 = __webpack_require__(22);
+const vue_1 = __webpack_require__(1);
+const vue_class_component_1 = __webpack_require__(26);
+const Muuri = __webpack_require__(27);
+__webpack_require__(28);
+let MuuriLayout = class MuuriLayout extends vue_1.default {
+    constructor() {
+        super(...arguments);
+        this.items = [];
+        this.uuid = 0;
+        this.dragCounter = 0;
         // const options = {
         //   // tslint:disable-next-line:no-bitwise
         // };
@@ -5745,43 +5725,33 @@ var MuuriLayout = /** @class */ (function (_super) {
         //   });
         // });
     }
-    Object.defineProperty(MuuriLayout.prototype, "widgets", {
-        get: function () {
-            return this.dashboard.widgets.filter(function (w) { return !w.options || !w.options.background; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MuuriLayout.prototype, "backgroundWidgets", {
-        get: function () {
-            return this.dashboard.widgets.filter(function (w) { return w.options && w.options.background; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MuuriLayout.prototype.initWidget = function (widget) {
+    get widgets() {
+        return this.dashboard.widgets.filter(w => !w.options || !w.options.background);
+    }
+    get backgroundWidgets() {
+        return this.dashboard.widgets.filter(w => w.options && w.options.background);
+    }
+    initWidget(widget) {
         // check if widget options is set
         if (!widget.options) {
             widget.options = { x: 1, y: 1, width: 1, height: 1 };
         }
         widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' };
-    };
-    MuuriLayout.prototype.widgetsChanged = function (n, old) {
-        var _this = this;
+    }
+    widgetsChanged(n, old) {
         if (!this.grid)
             return;
-        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
-            n.forEach(function (w) {
-                if (_this.items.indexOf(w.id) === -1) {
-                    var welement = document.getElementById(w.id);
-                    _this.grid.add([welement]);
-                    _this.items.push(w.id);
+        vue_1.default.nextTick(() => {
+            n.forEach(w => {
+                if (this.items.indexOf(w.id) === -1) {
+                    let welement = document.getElementById(w.id);
+                    this.grid.add([welement]);
+                    this.items.push(w.id);
                 }
             });
         });
-    };
-    MuuriLayout.prototype.beforeMount = function () {
-        var _this = this;
+    }
+    beforeMount() {
         this.options = this.dashboard.options;
         if (!this.options) {
             this.options = { itemHeight: 100, itemWidth: 100 };
@@ -5793,20 +5763,18 @@ var MuuriLayout = /** @class */ (function (_super) {
         if (!this.options.itemWidth) {
             this.options.itemWidth = 100;
         }
-        console.log(' initing widgets');
-        this.dashboard.widgets.forEach(function (widget) {
-            _this.initWidget(widget);
+        this.dashboard.widgets.forEach(widget => {
+            this.initWidget(widget);
         });
-    };
-    MuuriLayout.prototype.created = function () {
-        var _this = this;
+    }
+    created() {
         if (!this.dashboard) {
             return;
         }
-        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
-            setTimeout(function () {
-                _this.docElem = document.documentElement;
-                _this.grid = new Muuri('#muuri-' + _this.dashboard.id, {
+        vue_1.default.nextTick(() => {
+            setTimeout(() => {
+                this.docElem = document.documentElement;
+                this.grid = new Muuri('#muuri-' + this.dashboard.id, {
                     items: '*',
                     layoutDuration: 200,
                     layoutEasing: 'ease',
@@ -5821,43 +5789,39 @@ var MuuriLayout = /** @class */ (function (_super) {
                     dragReleaseDuration: 200,
                     dragReleseEasing: 'ease'
                 })
-                    .on('dragStart', function () {
-                    ++_this.dragCounter;
-                    _this.docElem.classList.add('dragging');
+                    .on('dragStart', () => {
+                    ++this.dragCounter;
+                    this.docElem.classList.add('dragging');
                 })
-                    .on('dragEnd', function () {
-                    if (--_this.dragCounter < 1) {
-                        _this.docElem.classList.remove('dragging');
+                    .on('dragEnd', () => {
+                    if (--this.dragCounter < 1) {
+                        this.docElem.classList.remove('dragging');
                     }
                 })
-                    .on('move', _this.updateIndices)
-                    .on('sort', _this.updateIndices);
+                    .on('move', this.updateIndices)
+                    .on('sort', this.updateIndices);
             }, 500);
         });
-    };
-    MuuriLayout.prototype.updateIndices = function () {
+    }
+    updateIndices() {
         this.grid.getItems().forEach(function (item, i) {
             item.getElement().setAttribute('data-id', i + 1);
             // item.getElement().querySelector('.card-id').innerHTML = i + 1;
         });
-    };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0_vue_property_decorator__["Watch"])('dashboard.widgets'),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Array, Array]),
-        __metadata("design:returntype", void 0)
-    ], MuuriLayout.prototype, "widgetsChanged", null);
-    MuuriLayout = __decorate([
-        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
-            template: __webpack_require__(33),
-            props: {
-                dashboard: null
-            }
-        })
-    ], MuuriLayout);
-    return MuuriLayout;
-}(__WEBPACK_IMPORTED_MODULE_1_vue___default.a));
-
+    }
+};
+__decorate([
+    vue_property_decorator_1.Watch('dashboard.widgets')
+], MuuriLayout.prototype, "widgetsChanged", null);
+MuuriLayout = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(33),
+        props: {
+            dashboard: null
+        }
+    })
+], MuuriLayout);
+exports.MuuriLayout = MuuriLayout;
 
 
 /***/ }),

@@ -10,8 +10,4 @@ import { Watch, Prop } from 'vue-property-decorator';
 } as any)
 
 export class MdWidget extends WidgetBase {
-  constructor() {
-    super();
-  }
-
 }

@@ -57,7 +57,6 @@ export class MuuriLayout extends Vue {
         }
       });
     });
-
   }
 
   public beforeMount() {
@@ -65,9 +64,7 @@ export class MuuriLayout extends Vue {
     if (!this.options) {this.options = { itemHeight: 100, itemWidth: 100}};
     if (!this.options.itemHeight) { this.options.itemHeight = 100; }
     if (!this.options.itemWidth) { this.options.itemWidth = 100; }
-    console.log(' initing widgets');
     
-
     this.dashboard.widgets.forEach(widget => {
       this.initWidget(widget);
     });
@@ -110,7 +107,6 @@ export class MuuriLayout extends Vue {
   }
 
   private updateIndices() {
-
     this.grid.getItems().forEach(function (item, i) {
       item.getElement().setAttribute('data-id', i + 1);
       // item.getElement().querySelector('.card-id').innerHTML = i + 1;

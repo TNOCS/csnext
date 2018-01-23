@@ -13,6 +13,7 @@ import { Watch, Prop } from 'vue-property-decorator';
 
 export class WidgetBase extends Vue {
 
+  /** access the original widget from configuration */
   public widget?: IWidget;
 
   protected L = Logger.Instance;

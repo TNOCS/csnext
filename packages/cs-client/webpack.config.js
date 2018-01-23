@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 
 let libraryName = 'csclient';
 
@@ -71,16 +73,16 @@ const mod = {
 };
 
 function buildConfig(entry, externals, analyzer) {
-  let pl = [];
-  if (analyzer) {
-    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    pl.push(new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      openAnalyzer: false,
-      reportFilename: 'reports/report.' + analyzer + '.html',
-      generateStatsFile: false
-    }));
-  }
+  let pl = [new HardSourceWebpackPlugin()];
+  // if (analyzer) {
+  //   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  //   pl.push(new BundleAnalyzerPlugin({
+  //     analyzerMode: 'static',
+  //     openAnalyzer: false,
+  //     reportFilename: 'reports/report.' + analyzer + '.html',
+  //     generateStatsFile: false
+  //   }));
+  // }
   return baseConfig = {
     entry: entry,
     // entry: __dirname + '/src/index.ts',

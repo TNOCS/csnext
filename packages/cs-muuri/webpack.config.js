@@ -2,6 +2,7 @@
 const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
@@ -48,7 +49,7 @@ const mod = {
         },
         {
             test: /\.ts$/,
-            exclude: '/node_modules/',
+            exclude: /node_modules/,
             loader: 'awesome-typescript-loader'
         },
         {
@@ -82,7 +83,7 @@ const mod = {
 };
 
 function buildConfig(entry, externals, analyzer) {
-    let pl = [];
+    let pl = [new HardSourceWebpackPlugin()];
     // if (analyzer) pl.push(new BundleAnalyzerPlugin({
     //     analyzerMode: 'static',
     //     openAnalyzer: false,
