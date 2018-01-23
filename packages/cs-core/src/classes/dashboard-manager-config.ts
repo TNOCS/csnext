@@ -1,4 +1,4 @@
-import { Dashboard } from '../index';
+import { Dashboard } from '../';
 
 export interface IDashboardManagerConfig {
   id: string;
