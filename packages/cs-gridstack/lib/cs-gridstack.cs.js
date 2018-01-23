@@ -53700,7 +53700,7 @@ exports = module.exports = __webpack_require__(9)(false);
 
 
 // module
-exports.push([module.i, ".gridstack-background-widget {\n    position:absolute\n}\n", ""]);
+exports.push([module.i, ".gridstack-background-widget {\r\n    position:absolute\r\n}\r\n", ""]);
 
 // exports
 
@@ -53709,7 +53709,7 @@ exports.push([module.i, ".gridstack-background-widget {\n    position:absolute\n
 /* 44 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div class=\"gridstack-background-widget\" v-for=\"widget in backgroundWidgets\" :key=\"widget.id\">\n        <cs-widget :id=\"widget.id\" v-if=\"widget\" :widget=\"widget\"></cs-widget>\n    </div>\n\n    <div class=\"grid-stack\" id=\"gridstack\" data-gs-animate=\"false\" data-gs-width=\"10\">\n        <div class=\"grid-stack-item\" v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" :data-gs-id=\"widget.id\" :data-gs-x=\"widget.options.x\"\n            :data-gs-y=\"widget.options.y\" :data-gs-width=\"widget.options.width\" :data-gs-auto-position=\"gridoptions.autoposition\"\n            :data-gs-height=\"widget.options.height\">\n            <div class=\"grid-stack-item-content\">\n              <!-- <h1>hi {{widget.component}}</h1> -->\n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div>\r\n    <div class=\"gridstack-background-widget\" v-for=\"widget in backgroundWidgets\" :key=\"widget.id\">\r\n        <cs-widget :id=\"widget.id\" v-if=\"widget\" :widget=\"widget\"></cs-widget>\r\n    </div>\r\n\r\n    <div class=\"grid-stack\" id=\"gridstack\" data-gs-animate=\"false\" data-gs-width=\"10\">\r\n        <div class=\"grid-stack-item\" v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" :data-gs-id=\"widget.id\" :data-gs-x=\"widget.options.x\"\r\n            :data-gs-y=\"widget.options.y\" :data-gs-width=\"widget.options.width\" :data-gs-auto-position=\"gridoptions.autoposition\"\r\n            :data-gs-height=\"widget.options.height\">\r\n            <div class=\"grid-stack-item-content\">\r\n              <!-- <h1>hi {{widget.component}}</h1> -->\r\n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"
 
 /***/ })
 /******/ ]);

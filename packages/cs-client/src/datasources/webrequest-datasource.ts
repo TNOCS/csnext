@@ -1,11 +1,6 @@
-import { IDatasource, IDatasourceHandler, IDatasourceProcessor } from '@csnext/cs-core';
-import { AppState, DatasourceManager } from '../index';
 import axios from 'axios';
-
-// export interface IWebRequestOptions {
-//   url: string;
-//   interval?: number;
-// }
+import { IDatasource, IDatasourceHandler, IDatasourceProcessor } from '@csnext/cs-core';
+import { AppState, DatasourceManager } from '../';
 
 export class WebRequestDatasourceProcessor implements IDatasourceProcessor {
   public id = 'webrequest';

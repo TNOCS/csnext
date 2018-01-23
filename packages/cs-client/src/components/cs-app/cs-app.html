@@ -29,7 +29,6 @@
       <v-icon v-if="app.project.rightSidebar.open">keyboard_arrow_right</v-icon>
       <v-icon v-if="!app.project.rightSidebar.open">keyboard_arrow_left</v-icon>
     </v-btn>
-
   </v-toolbar>
 
   <v-navigation-drawer disable-route-watcher v-if="app.project.leftSidebar" v-model="app.project.leftSidebar.open" :mini-variant="app.project.leftSidebar.mini"
@@ -81,14 +80,12 @@
         </v-list-group>
       </v-list>
     </div>
-
   </v-navigation-drawer>
 
   <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
     :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"
     :persistent="app.project.rightSidebar.persistent" :temporary="app.project.rightSidebar.temporary" :floating="app.project.rightSidebar.floating"
     absolute overflow app>
-
 
     <v-toolbar v-if="app.project.rightSidebar.title">
       <v-list dense>
@@ -109,11 +106,9 @@
     <div id="rightSidebarComponent">
       <!-- <component :is="app.project.rightSidebar.component"></component> -->
     </div>
-
-
   </v-navigation-drawer>
 
-  <!-- 
+  <!--
   <v-tabs right>
     <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
       :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense app>

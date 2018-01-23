@@ -13392,7 +13392,7 @@ exports = module.exports = __webpack_require__(30)(false);
 
 
 // module
-exports.push([module.i, ".grid {\n    position: relative;\n  }\n  .item {\n    display: block;\n    position: absolute;\n    width: 100px;\n    height: 100px;\n    margin: 5px;\n    border:black;\n    border-style: dashed;\n    z-index: 1;   \n    color: #fff;\n  }\n  .item.muuri-item-dragging {\n    z-index: 3;\n  }\n  .item.muuri-item-releasing {\n    z-index: 2;\n  }\n  .item.muuri-item-hidden {\n    z-index: 0;\n  }\n  .item-content {\n    position: relative;\n    width: 100%;\n    height: 100%;\n  }", ""]);
+exports.push([module.i, ".grid {\r\n    position: relative;\r\n  }\r\n  .item {\r\n    display: block;\r\n    position: absolute;\r\n    width: 100px;\r\n    height: 100px;\r\n    margin: 5px;\r\n    border:black;\r\n    border-style: dashed;\r\n    z-index: 1;   \r\n    color: #fff;\r\n  }\r\n  .item.muuri-item-dragging {\r\n    z-index: 3;\r\n  }\r\n  .item.muuri-item-releasing {\r\n    z-index: 2;\r\n  }\r\n  .item.muuri-item-hidden {\r\n    z-index: 0;\r\n  }\r\n  .item-content {\r\n    position: relative;\r\n    width: 100%;\r\n    height: 100%;\r\n  }", ""]);
 
 // exports
 
@@ -13950,7 +13950,7 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\" :style=\"widget._style\">\n            <div class=\"item-content\">                \n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div>\r\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\r\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\" :style=\"widget._style\">\r\n            <div class=\"item-content\">                \r\n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ })
 /******/ ]);

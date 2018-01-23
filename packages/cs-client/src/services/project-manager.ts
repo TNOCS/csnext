@@ -1,5 +1,5 @@
-import { DashboardManager } from './dashboard-manager';
 import { Project } from '@csnext/cs-core';
+import { DashboardManager } from './dashboard-manager';
 import { LayoutManager } from './layout-manager';
 import { DatasourceManager } from './datasource-manager';
 

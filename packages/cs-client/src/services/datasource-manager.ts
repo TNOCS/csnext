@@ -1,4 +1,4 @@
-import { IDatasourceHandler, IDatasourceProcessor, IDatasource, Project, ProcessorActions } from '@csnext/cs-core';
+import { IDatasourceProcessor, IDatasource, ProcessorActions } from '@csnext/cs-core';
 
 /**
  * The DatasourceManager maintains a list of all datasource processors and all datasources?.

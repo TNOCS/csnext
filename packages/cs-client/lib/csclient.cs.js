@@ -1330,12 +1330,12 @@ function updateLink (link, options, obj) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CsApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_router__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4____ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cs_app_css__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cs_app_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__cs_app_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__sass_main_scss__ = __webpack_require__(31);
@@ -1367,15 +1367,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // register needed plugins
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 // Vue.use(Vuetify);
-var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]({ routes: [] });
+var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({ routes: [] });
 var CsApp = /** @class */ (function (_super) {
     __extends(CsApp, _super);
     function CsApp() {
         var _this = _super.call(this) || this;
-        _this.app = __WEBPACK_IMPORTED_MODULE_3__index__["AppState"].Instance;
-        _this.L = __WEBPACK_IMPORTED_MODULE_3__index__["Logger"].Instance;
+        _this.app = __WEBPACK_IMPORTED_MODULE_4____["AppState"].Instance;
+        _this.L = __WEBPACK_IMPORTED_MODULE_4____["Logger"].Instance;
         _this.settingsDialog = false;
         _this.lastNotification = { _visible: false };
         _this.active = null;
@@ -1454,7 +1454,7 @@ var CsApp = /** @class */ (function (_super) {
             router.addRoutes([{
                     name: d.id,
                     path: d.path,
-                    component: __WEBPACK_IMPORTED_MODULE_3__index__["CsDashboard"],
+                    component: __WEBPACK_IMPORTED_MODULE_4____["CsDashboard"],
                     props: function (route) { return ({ dashboard: d }); },
                     alias: d.title, meta: d
                 }]);
@@ -1493,19 +1493,19 @@ var CsApp = /** @class */ (function (_super) {
         }
     };
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__["Watch"])('app.project.dashboards'),
+        Object(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__["Watch"])('app.project.dashboards'),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object]),
         __metadata("design:returntype", void 0)
     ], CsApp.prototype, "projectChanged", null);
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_4_vue_property_decorator__["Watch"])('$route'),
+        Object(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__["Watch"])('$route'),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], CsApp.prototype, "routeChanged", null);
     CsApp = __decorate([
-        __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
+        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
             name: 'cs-app',
             router: router,
             template: __webpack_require__(33),
@@ -1624,11 +1624,11 @@ module.exports = defaults;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppState; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_cs_app_cs_app__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_manager__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__index__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_cs_app_cs_app__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_manager__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3____ = __webpack_require__(0);
 
 
 
@@ -1641,9 +1641,9 @@ var AppState = /** @class */ (function () {
         /** Project definition */
         this.project = {};
         /** Logger */
-        this.logger = __WEBPACK_IMPORTED_MODULE_3__index__["Logger"].Instance;
+        this.logger = __WEBPACK_IMPORTED_MODULE_3____["Logger"].Instance;
         /** Event bus for publish/subscribe events in application */
-        this.EventBus = new __WEBPACK_IMPORTED_MODULE_2_vue___default.a();
+        this.EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         /** True if the application has been initialized */
         this.isInitialized = false;
         /** list of past notifications */
@@ -1662,15 +1662,15 @@ var AppState = /** @class */ (function () {
     /** Initialize the project state, dashboard managers and data source handlers */
     AppState.prototype.init = function (project) {
         this.logger.info('app-state', 'Init AppState');
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('cs-dashboard', __WEBPACK_IMPORTED_MODULE_3__index__["CsDashboard"]);
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('cs-widget', __WEBPACK_IMPORTED_MODULE_3__index__["CsWidget"]);
-        __WEBPACK_IMPORTED_MODULE_2_vue___default.a.component('cs-app', __WEBPACK_IMPORTED_MODULE_0__components_cs_app_cs_app__["a" /* CsApp */]);
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cs-dashboard', __WEBPACK_IMPORTED_MODULE_3____["CsDashboard"]);
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cs-widget', __WEBPACK_IMPORTED_MODULE_3____["CsWidget"]);
+        __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cs-app', __WEBPACK_IMPORTED_MODULE_1__components_cs_app_cs_app__["a" /* CsApp */]);
         this.project = project;
         // make sure all dashboards are marked as main
         if (this.project.dashboards) {
             this.initializeDashboards(this.project.dashboards);
         }
-        this.projectManager = new __WEBPACK_IMPORTED_MODULE_1__project_manager__["a" /* ProjectManager */](project);
+        this.projectManager = new __WEBPACK_IMPORTED_MODULE_2__project_manager__["a" /* ProjectManager */](project);
         // if (this.project.datasources) {
         //   for (const ds in this.project.datasources) {
         //     if (this.project.datasources[ds].instant) {
@@ -2361,9 +2361,9 @@ var CsWidget = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_property_decorator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3____ = __webpack_require__(0);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -2391,7 +2391,7 @@ var CsDashboard = /** @class */ (function (_super) {
     __extends(CsDashboard, _super);
     function CsDashboard() {
         var _this = _super.call(this) || this;
-        _this.app = __WEBPACK_IMPORTED_MODULE_2__index__["AppState"].Instance;
+        _this.app = __WEBPACK_IMPORTED_MODULE_3____["AppState"].Instance;
         return _this;
         // this.dashboard = new Dashboard();
     }
@@ -2403,7 +2403,7 @@ var CsDashboard = /** @class */ (function (_super) {
     };
     CsDashboard.prototype.checkWidgetId = function (widget) {
         if (!widget.id) {
-            widget.id = 'widget-' + Object(__WEBPACK_IMPORTED_MODULE_2__index__["guidGenerator"])();
+            widget.id = 'widget-' + Object(__WEBPACK_IMPORTED_MODULE_3____["guidGenerator"])();
         }
     };
     CsDashboard.prototype.initWidget = function (widget) {
@@ -2471,8 +2471,8 @@ var CsDashboard = /** @class */ (function (_super) {
         }
         // init dashboard manager
         if (this.dashboard.manager) {
-            if (__WEBPACK_IMPORTED_MODULE_2__index__["DashboardManager"].dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-                this.dashboard._manager = __WEBPACK_IMPORTED_MODULE_2__index__["DashboardManager"].dashboardManagers[this.dashboard.manager].getInstance();
+            if (__WEBPACK_IMPORTED_MODULE_3____["DashboardManager"].dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
+                this.dashboard._manager = __WEBPACK_IMPORTED_MODULE_3____["DashboardManager"].dashboardManagers[this.dashboard.manager].getInstance();
                 if (this.dashboard._manager) {
                     this.dashboard._manager.start(this.dashboard);
                 }
@@ -2482,8 +2482,8 @@ var CsDashboard = /** @class */ (function (_super) {
     Object.defineProperty(CsDashboard.prototype, "component", {
         get: function () {
             if (this.dashboard && this.dashboard.layout) {
-                if (__WEBPACK_IMPORTED_MODULE_2__index__["LayoutManager"].layoutManagers.hasOwnProperty(this.dashboard.layout)) {
-                    return __WEBPACK_IMPORTED_MODULE_2__index__["LayoutManager"].layoutManagers[this.dashboard.layout].component;
+                if (__WEBPACK_IMPORTED_MODULE_3____["LayoutManager"].layoutManagers.hasOwnProperty(this.dashboard.layout)) {
+                    return __WEBPACK_IMPORTED_MODULE_3____["LayoutManager"].layoutManagers[this.dashboard.layout].component;
                 }
             }
             return new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
@@ -2492,7 +2492,7 @@ var CsDashboard = /** @class */ (function (_super) {
         configurable: true
     });
     __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_3_vue_property_decorator__["Watch"])('dashboard.widgets'),
+        Object(__WEBPACK_IMPORTED_MODULE_2_vue_property_decorator__["Watch"])('dashboard.widgets'),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Array, Object]),
         __metadata("design:returntype", void 0)
@@ -2504,9 +2504,7 @@ var CsDashboard = /** @class */ (function (_super) {
             props: {
                 dashboard: null
             }
-        })
-        // tslint:disable-next-line:class-name
-        ,
+        }),
         __metadata("design:paramtypes", [])
     ], CsDashboard);
     return CsDashboard;
@@ -6499,7 +6497,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, "\n.cstabs {\n  margin-top: 0px;\n  background-color: white;\n}\n\n.header-title-container\n{\n  margin-left:16px;\n}\n\n@media only screen and (max-width: 480px) {\n  .header-breadcrumbs {\n      display: none !important;\n      background:red;\n  }\n}\n\n\n.header-breadcrumbs\n{\n  padding:0 !important;\n}\n\n.header-breadcrumbs > li\n{\n  padding:0 !important;\n}\n\n.header-title{\n  margin-left:0 !important;\n}\n\n.floating {\n  margin-top: -48px !important;\n}\n\n.leftsidebar-pin\n{\n  float:right;\n  margin:4px;\n}\n\n.leftsidebar-minify{\n  position: absolute;\n  right: 4px;\n  bottom: 5px;\n}\n\n.content--wrap {\n  height: 100%;\n}\n\n.floating-toolbar {\n  margin-top: 10px !important;\n}\n\n.app-project-logo\n{\n  height: 40px;\n  margin: 4px;  \n}\n\n.content {\n  height: 100%;\n  padding: 0;\n}\n\n.dashboard-fullscreen {\n  margin: 0;\n  height: 100%;\n}\n", ""]);
+exports.push([module.i, ".cstabs {\n  margin-top: 0px;\n  background-color: white;\n}\n\n.header-title-container {\n  margin-left: 16px;\n}\n\n@media only screen and (max-width: 480px) {\n  .header-breadcrumbs {\n    display: none !important;\n    background: red;\n  }\n}\n\n.header-breadcrumbs {\n  padding: 0 !important;\n}\n\n.header-breadcrumbs>li {\n  padding: 0 !important;\n}\n\n.header-title {\n  margin-left: 0 !important;\n}\n\n.floating {\n  margin-top: -48px !important;\n}\n\n.leftsidebar-pin {\n  float: right;\n  margin: 4px;\n}\n\n.leftsidebar-minify {\n  position: absolute;\n  right: 4px;\n  bottom: 5px;\n}\n\n.content--wrap {\n  height: 100%;\n}\n\n.floating-toolbar {\n  margin-top: 10px !important;\n}\n\n.app-project-logo {\n  height: 40px;\n  margin: 4px;\n}\n\n.content {\n  height: 100%;\n  padding: 0;\n}\n\n.dashboard-fullscreen {\n  margin: 0;\n  height: 100%;\n}\n", ""]);
 
 // exports
 
@@ -6648,7 +6646,7 @@ exports.push([module.i, ".tabsdemoDynamicTabs md-content {\n  background-color: 
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-app v-resize=\"onResize\" v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute :dense=\"app.project.header.dense\" app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.header.logo\" :src=\"app.project.header.logo\" class=\"app-project-logo\"></img>\n    <div class=\"header-title-container\">\n      <v-breadcrumbs class=\"header-breadcrumbs\" v-if=\"app.project.header.breadcrumbs && !app.project.header.dense\">\n        <v-icon slot=\"divider\">chevron_right</v-icon>\n        <v-breadcrumbs-item v-for=\"item in app.project.header.breadcrumbItems\" :key=\"item\">\n          {{ item}}\n        </v-breadcrumbs-item>\n      </v-breadcrumbs>\n      <v-toolbar-title class=\"header-title\" v-if=\"!app.project.navigation.hideTitle\">{{app.project.header.title}}</v-toolbar-title>\n    </div>\n\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n\n    <v-btn v-if=\"app.project.rightSidebar\" @click=\"app.project.rightSidebar.open=!app.project.rightSidebar.open\" icon>\n      <v-icon v-if=\"app.project.rightSidebar.open\">keyboard_arrow_right</v-icon>\n      <v-icon v-if=\"!app.project.rightSidebar.open\">keyboard_arrow_left</v-icon>\n    </v-btn>\n\n  </v-toolbar>\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <div class=\"leftsidebar-minify\">\n      <v-btn small icon @click=\"app.project.leftSidebar.mini=!app.project.leftSidebar.mini\">\n        <v-icon small v-if=\"app.project.leftSidebar.mini\">keyboard_arrow_right</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.mini\">keyboard_arrow_left</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n          </v-list-tile>\n          <v-list-tile v-if=\"!app.project.leftSidebar.mini\" v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n    </div>\n\n  </v-navigation-drawer>\n\n  <v-navigation-drawer right disable-route-watcher v-if=\"app.project.rightSidebar\" v-model=\"app.project.rightSidebar.open\"\n    :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\n    :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\n    absolute overflow app>\n\n\n    <v-toolbar v-if=\"app.project.rightSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.rightSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.rightSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.rightSidebar.temporary=!app.project.rightSidebar.temporary\">\n        <v-icon small v-if=\"app.project.rightSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.rightSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.rightSidebar.title\"></v-divider>\n    <div id=\"rightSidebarComponent\">\n      <!-- <component :is=\"app.project.rightSidebar.component\"></component> -->\n    </div>\n\n\n  </v-navigation-drawer>\n\n  <!-- \n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-items v-if=\"app.project.navigation.style ==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-items>\n    </v-toolbar>\n  </v-tabs> -->\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\" v-touch=\"{\n    left: () => swipe('Left'),\n    right: () => swipe('Right')\n  }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
+module.exports = "<v-app v-resize=\"onResize\" v-if=\"app.isInitialized\" :dark=\"app.project.theme.dark\" :light=\"!app.project.theme.dark\">\n\n  <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n    :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute :dense=\"app.project.header.dense\" app>\n    <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n    <img v-if=\"app.project.header.logo\" :src=\"app.project.header.logo\" class=\"app-project-logo\"></img>\n    <div class=\"header-title-container\">\n      <v-breadcrumbs class=\"header-breadcrumbs\" v-if=\"app.project.header.breadcrumbs && !app.project.header.dense\">\n        <v-icon slot=\"divider\">chevron_right</v-icon>\n        <v-breadcrumbs-item v-for=\"item in app.project.header.breadcrumbItems\" :key=\"item\">\n          {{ item}}\n        </v-breadcrumbs-item>\n      </v-breadcrumbs>\n      <v-toolbar-title class=\"header-title\" v-if=\"!app.project.navigation.hideTitle\">{{app.project.header.title}}</v-toolbar-title>\n    </div>\n\n    <v-tabs v-if=\"app.project.navigation.style==='tabs'\" color=\"primary\">\n      <v-tab v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">{{dashboard.title}}</v-tab>\n    </v-tabs>\n    <v-spacer></v-spacer>\n    <v-btn v-if=\"app.project.search\" icon>\n      <v-icon>search</v-icon>\n    </v-btn>\n    <v-btn icon>\n      <v-icon>more_vert</v-icon>\n    </v-btn>\n\n    <v-btn v-if=\"app.project.rightSidebar\" @click=\"app.project.rightSidebar.open=!app.project.rightSidebar.open\" icon>\n      <v-icon v-if=\"app.project.rightSidebar.open\">keyboard_arrow_right</v-icon>\n      <v-icon v-if=\"!app.project.rightSidebar.open\">keyboard_arrow_left</v-icon>\n    </v-btn>\n  </v-toolbar>\n\n  <v-navigation-drawer disable-route-watcher v-if=\"app.project.leftSidebar\" v-model=\"app.project.leftSidebar.open\" :mini-variant=\"app.project.leftSidebar.mini\"\n    :clipped=\"app.project.leftSidebar.clipped\" :permanent=\"app.project.leftSidebar.permanent\" :persistent=\"app.project.leftSidebar.persistent\"\n    :temporary=\"app.project.leftSidebar.temporary\" :floating=\"app.project.leftSidebar.floating\" absolute overflow app>\n\n    <v-toolbar v-if=\"app.project.leftSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.leftSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.leftSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.leftSidebar.temporary=!app.project.leftSidebar.temporary\">\n        <v-icon small v-if=\"app.project.leftSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <div class=\"leftsidebar-minify\">\n      <v-btn small icon @click=\"app.project.leftSidebar.mini=!app.project.leftSidebar.mini\">\n        <v-icon small v-if=\"app.project.leftSidebar.mini\">keyboard_arrow_right</v-icon>\n        <v-icon small v-if=\"!app.project.leftSidebar.mini\">keyboard_arrow_left</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.leftSidebar.title\"></v-divider>\n    <div v-if=\"app.project.leftSidebar.component\">\n      <component :is=\"app.project.leftSidebar.component\"></component>\n    </div>\n    <div v-else-if=\"app.project.navigation.style==='left'\">\n      <v-list>\n        <v-list-group v-for=\"item in app.project.dashboards\" :value=\"item.active\" :prepend-icon=\"item.icon\" no-action v-bind:key=\"item.path\">\n          <v-list-tile slot=\"activator\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ item.title }}</v-list-tile-title>\n            </v-list-tile-content>\n          </v-list-tile>\n          <v-list-tile v-if=\"!app.project.leftSidebar.mini\" v-for=\"subItem in item.dashboards\" v-bind:key=\"subItem.path\" @click=\"SelectDashboard(subItem)\">\n            <v-list-tile-content>\n              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>\n            </v-list-tile-content>\n            <v-list-tile-action>\n              <v-icon>{{ subItem.action }}</v-icon>\n            </v-list-tile-action>\n          </v-list-tile>\n        </v-list-group>\n      </v-list>\n    </div>\n  </v-navigation-drawer>\n\n  <v-navigation-drawer right disable-route-watcher v-if=\"app.project.rightSidebar\" v-model=\"app.project.rightSidebar.open\"\n    :mini-variant=\"app.project.rightSidebar.mini\" :clipped=\"app.project.rightSidebar.clipped\" :permanent=\"app.project.rightSidebar.permanent\"\n    :persistent=\"app.project.rightSidebar.persistent\" :temporary=\"app.project.rightSidebar.temporary\" :floating=\"app.project.rightSidebar.floating\"\n    absolute overflow app>\n\n    <v-toolbar v-if=\"app.project.rightSidebar.title\">\n      <v-list dense>\n        <v-list-tile>\n          <v-icon v-if=\"app.project.navigation.icons\">home</v-icon>\n          <v-list-tile-title class=\"title\">{{app.project.rightSidebar.title}}</v-list-tile-title>\n        </v-list-tile>\n      </v-list>\n    </v-toolbar>\n    <div v-if=\"app.project.rightSidebar.canpin\" class=\"leftsidebar-pin\">\n      <v-btn small icon @click=\"app.project.rightSidebar.temporary=!app.project.rightSidebar.temporary\">\n        <v-icon small v-if=\"app.project.rightSidebar.temporary\">lock_open</v-icon>\n        <v-icon small v-if=\"!app.project.rightSidebar.temporary\">lock_outline</v-icon>\n      </v-btn>\n    </div>\n\n    <v-divider v-if=\"app.project.rightSidebar.title\"></v-divider>\n    <div id=\"rightSidebarComponent\">\n      <!-- <component :is=\"app.project.rightSidebar.component\"></component> -->\n    </div>\n  </v-navigation-drawer>\n\n  <!--\n  <v-tabs right>\n    <v-toolbar color=\"primary\" :floating=\"app.project.navigation.floating\" :class=\"{'floating-toolbar': app.project.navigation.floating}\"\n      :clipped-left=\"app.project.leftSidebar && app.project.leftSidebar.clipped\" absolute dense app>\n      <v-toolbar-side-icon v-if=\"app.project.leftSidebar\" @click=\"app.project.leftSidebar.open = !app.project.leftSidebar.open\"></v-toolbar-side-icon>\n      <v-toolbar-title v-if=\"!app.project.navigation.hideTitle\">{{app.project.title}}</v-toolbar-title>\n      <v-tabs-items v-if=\"app.project.navigation.style ==='tabs'\" :class=\"app.project.theme.navigation\" slot=\"extension\">\n        <v-tabs-slider color=\"yellow\"></v-tabs-slider>\n        <v-tab-item v-for=\"dashboard in app.project.dashboards\" router=\"true\" :key=\"dashboard.id\" :to=\"dashboard.path\">\n          {{ dashboard.title }}\n        </v-tab-item>\n      </v-tabs-items>\n    </v-toolbar>\n  </v-tabs> -->\n  <v-content fluid v-bind:class=\"{ 'floating': app.project.navigation.floating }\" v-touch=\"{\n    left: () => swipe('Left'),\n    right: () => swipe('Right')\n  }\">\n    <router-view :key=\"$route.path\">\n    </router-view>\n  </v-content>\n\n  <v-snackbar :timeout=\"lastNotification.timeout\" :top=\"true\" :multi-line=\"true\" v-model=\"lastNotification._visible\">\n    {{ lastNotification.title }}\n    <v-btn flat @click.native=\"lastNotification._visible = false\">Close</v-btn>\n  </v-snackbar>\n</v-app>\n"
 
 /***/ }),
 /* 34 */
@@ -6848,9 +6846,9 @@ var Logger = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Single; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2____ = __webpack_require__(0);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -6877,13 +6875,13 @@ var Single = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Single.prototype.created = function () {
-        if (!this.dashboard.widgets || this.dashboard.widgets.length === 0) {
+        if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) {
             return;
         }
         this.widget = this.dashboard.widgets.find(function (w) { return !w.hasOwnProperty('sideNav'); });
     };
     Single = __decorate([
-        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
+        __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             name: 'single',
             template: __webpack_require__(45),
             props: {
@@ -6895,14 +6893,14 @@ var Single = /** @class */ (function (_super) {
     return Single;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
-__WEBPACK_IMPORTED_MODULE_1__index__["LayoutManager"].add({ id: 'single', name: 'single page', component: Single });
+__WEBPACK_IMPORTED_MODULE_2____["LayoutManager"].add({ id: 'single', name: 'single page', component: Single });
 
 
 /***/ }),
 /* 45 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"dashboard-fullscreen\">\n    <cs-widget :widget=\"widget\"></cs-widget>\n</div>\n"
+module.exports = "<div class=\"dashboard-fullscreen\">\n  <cs-widget :widget=\"widget\"></cs-widget>\n</div>\n"
 
 /***/ }),
 /* 46 */
@@ -6912,9 +6910,9 @@ module.exports = "<div class=\"dashboard-fullscreen\">\n    <cs-widget :widget=\
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Grid; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1____ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2____ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grid_css__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__grid_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__grid_css__);
 var __extends = (this && this.__extends) || (function () {
@@ -6943,7 +6941,7 @@ var Grid = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Grid = __decorate([
-        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
+        __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             template: __webpack_require__(49),
             props: {
                 dashboard: null
@@ -6953,7 +6951,7 @@ var Grid = /** @class */ (function (_super) {
     return Grid;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
-__WEBPACK_IMPORTED_MODULE_1____["LayoutManager"].add({ id: 'grid', name: 'grid page', component: Grid });
+__WEBPACK_IMPORTED_MODULE_2____["LayoutManager"].add({ id: 'grid', name: 'grid page', component: Grid });
 
 
 /***/ }),
@@ -6996,7 +6994,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, ".grid-manager {\r\n    left:0;right:0;top:0;bottom:0;position:absolute\r\n}", ""]);
+exports.push([module.i, ".grid-manager {\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  position: absolute\n}\n", ""]);
 
 // exports
 
@@ -7005,7 +7003,7 @@ exports.push([module.i, ".grid-manager {\r\n    left:0;right:0;top:0;bottom:0;po
 /* 49 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"grid-manager\">\n        <cs-widget v-for=\"widget in dashboard.widgets\" v-if=\"widget\" :key=\"widget.id\" :widget=\"widget\"></cs-widget>\n</div>\n"
+module.exports = "<div class=\"grid-manager\">\n  <cs-widget v-for=\"widget in dashboard.widgets\" v-if=\"widget\" :key=\"widget.id\" :widget=\"widget\"></cs-widget>\n</div>\n"
 
 /***/ }),
 /* 50 */
@@ -7013,15 +7011,11 @@ module.exports = "<div class=\"grid-manager\">\n        <cs-widget v-for=\"widge
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WebRequestDatasourceProcessor; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1____ = __webpack_require__(0);
 
 
-// export interface IWebRequestOptions {
-//   url: string;
-//   interval?: number;
-// }
 var WebRequestDatasourceProcessor = /** @class */ (function () {
     function WebRequestDatasourceProcessor() {
         this.id = 'webrequest';
@@ -7031,7 +7025,7 @@ var WebRequestDatasourceProcessor = /** @class */ (function () {
             if (ds.source === undefined) {
                 return reject('No source defined');
             }
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(ds.source)
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(ds.source)
                 .catch(function (e) { reject(e); })
                 .then(function (response) {
                 if (response) {
@@ -7043,7 +7037,7 @@ var WebRequestDatasourceProcessor = /** @class */ (function () {
     return WebRequestDatasourceProcessor;
 }());
 
-__WEBPACK_IMPORTED_MODULE_0__index__["DatasourceManager"].add(new WebRequestDatasourceProcessor());
+__WEBPACK_IMPORTED_MODULE_1____["DatasourceManager"].add(new WebRequestDatasourceProcessor());
 
 
 /***/ }),
@@ -7942,7 +7936,7 @@ module.exports = function spread(callback) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GeojsonDatasourceProcessor; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(0);
 
 /**
  * Expected input is GeoJSON, output is GeoJSON too, but formatted so we can use it properly, i.e.
@@ -7977,7 +7971,7 @@ var GeojsonDatasourceProcessor = /** @class */ (function () {
     return GeojsonDatasourceProcessor;
 }());
 
-__WEBPACK_IMPORTED_MODULE_0__index__["DatasourceManager"].add(new GeojsonDatasourceProcessor());
+__WEBPACK_IMPORTED_MODULE_0____["DatasourceManager"].add(new GeojsonDatasourceProcessor());
 
 
 /***/ }),
@@ -8020,7 +8014,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, ".widget-default{\n  height:100%;\n  width:100%;  \n}\n", ""]);
+exports.push([module.i, ".widget-default {\n  height: 100%;\n  width: 100%;\n}\n", ""]);
 
 // exports
 
@@ -8029,7 +8023,7 @@ exports.push([module.i, ".widget-default{\n  height:100%;\n  width:100%;  \n}\n"
 /* 73 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>\n    <!-- <v-card style=\"height:100%\">\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\n    </v-card> -->\n    <!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\n"
+module.exports = "<component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>\n"
 
 /***/ }),
 /* 74 */
@@ -8085,7 +8079,7 @@ var CsSettings = /** @class */ (function (_super) {
 /* 75 */
 /***/ (function(module, exports) {
 
-module.exports = "<v-dialog v-model=\"dialog\" fullscreen transition=\"dialog-bottom-transition\" :overlay=false>\r\n    <v-btn color=\"primary\" dark slot=\"activator\">Open Dialog</v-btn>\r\n    <v-card>\r\n      <v-toolbar dark color=\"primary\">\r\n        <v-btn icon @click.native=\"dialog = false\" dark>\r\n          <v-icon>close</v-icon>\r\n        </v-btn>\r\n        <v-toolbar-title>Settings</v-toolbar-title>\r\n        <v-spacer></v-spacer>\r\n        <v-toolbar-items>\r\n          <v-btn dark flat @click.native=\"dialog = false\">Save</v-btn>\r\n        </v-toolbar-items>\r\n      </v-toolbar>\r\n      <v-list three-line subheader>\r\n        <v-subheader>User Controls</v-subheader>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Content filtering</v-list-tile-title>\r\n            <v-list-tile-sub-title>Set the content filtering level to restrict appts that can be downloaded</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Password</v-list-tile-title>\r\n            <v-list-tile-sub-title>Require password for purchase or use password to restrict purchase</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n      </v-list>\r\n      <v-divider></v-divider>\r\n      <v-list three-line subheader>\r\n        <v-subheader>General</v-subheader>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"notifications\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Notifications</v-list-tile-title>\r\n            <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"sound\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Sound</v-list-tile-title>\r\n            <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n        <v-list-tile avatar>\r\n          <v-list-tile-action>\r\n            <v-checkbox v-model=\"widgets\"></v-checkbox>\r\n          </v-list-tile-action>\r\n          <v-list-tile-content>\r\n            <v-list-tile-title>Auto-add widgets</v-list-tile-title>\r\n            <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>\r\n          </v-list-tile-content>\r\n        </v-list-tile>\r\n      </v-list>\r\n    </v-card>\r\n  </v-dialog>"
+module.exports = "<v-dialog v-model=\"dialog\" fullscreen transition=\"dialog-bottom-transition\" :overlay=false>\n  <v-btn color=\"primary\" dark slot=\"activator\">Open Dialog</v-btn>\n  <v-card>\n    <v-toolbar dark color=\"primary\">\n      <v-btn icon @click.native=\"dialog = false\" dark>\n        <v-icon>close</v-icon>\n      </v-btn>\n      <v-toolbar-title>Settings</v-toolbar-title>\n      <v-spacer></v-spacer>\n      <v-toolbar-items>\n        <v-btn dark flat @click.native=\"dialog = false\">Save</v-btn>\n      </v-toolbar-items>\n    </v-toolbar>\n    <v-list three-line subheader>\n      <v-subheader>User Controls</v-subheader>\n      <v-list-tile avatar>\n        <v-list-tile-content>\n          <v-list-tile-title>Content filtering</v-list-tile-title>\n          <v-list-tile-sub-title>Set the content filtering level to restrict appts that can be downloaded</v-list-tile-sub-title>\n        </v-list-tile-content>\n      </v-list-tile>\n      <v-list-tile avatar>\n        <v-list-tile-content>\n          <v-list-tile-title>Password</v-list-tile-title>\n          <v-list-tile-sub-title>Require password for purchase or use password to restrict purchase</v-list-tile-sub-title>\n        </v-list-tile-content>\n      </v-list-tile>\n    </v-list>\n    <v-divider></v-divider>\n    <v-list three-line subheader>\n      <v-subheader>General</v-subheader>\n      <v-list-tile avatar>\n        <v-list-tile-action>\n          <v-checkbox v-model=\"notifications\"></v-checkbox>\n        </v-list-tile-action>\n        <v-list-tile-content>\n          <v-list-tile-title>Notifications</v-list-tile-title>\n          <v-list-tile-sub-title>Notify me about updates to apps or games that I downloaded</v-list-tile-sub-title>\n        </v-list-tile-content>\n      </v-list-tile>\n      <v-list-tile avatar>\n        <v-list-tile-action>\n          <v-checkbox v-model=\"sound\"></v-checkbox>\n        </v-list-tile-action>\n        <v-list-tile-content>\n          <v-list-tile-title>Sound</v-list-tile-title>\n          <v-list-tile-sub-title>Auto-update apps at any time. Data charges may apply</v-list-tile-sub-title>\n        </v-list-tile-content>\n      </v-list-tile>\n      <v-list-tile avatar>\n        <v-list-tile-action>\n          <v-checkbox v-model=\"widgets\"></v-checkbox>\n        </v-list-tile-action>\n        <v-list-tile-content>\n          <v-list-tile-title>Auto-add widgets</v-list-tile-title>\n          <v-list-tile-sub-title>Automatically add home screen widgets</v-list-tile-sub-title>\n        </v-list-tile-content>\n      </v-list-tile>\n    </v-list>\n  </v-card>\n</v-dialog>\n"
 
 /***/ }),
 /* 76 */
@@ -8093,11 +8087,11 @@ module.exports = "<v-dialog v-model=\"dialog\" fullscreen transition=\"dialog-bo
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WidgetBase; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__index__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_class_component__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2____ = __webpack_require__(0);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8121,7 +8115,7 @@ var WidgetBase = /** @class */ (function (_super) {
     __extends(WidgetBase, _super);
     function WidgetBase() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.L = __WEBPACK_IMPORTED_MODULE_0__index__["Logger"].Instance;
+        _this.L = __WEBPACK_IMPORTED_MODULE_2____["Logger"].Instance;
         return _this;
     }
     WidgetBase.prototype.beforeMount = function () {
@@ -8131,7 +8125,7 @@ var WidgetBase = /** @class */ (function (_super) {
         this.L.info('widget', 'init widget - ' + this.widget.id);
     };
     WidgetBase = __decorate([
-        __WEBPACK_IMPORTED_MODULE_2_vue_class_component___default()({
+        __WEBPACK_IMPORTED_MODULE_1_vue_class_component___default()({
             name: 'dashboard',
             props: {
                 widget: null
@@ -8139,7 +8133,7 @@ var WidgetBase = /** @class */ (function (_super) {
         })
     ], WidgetBase);
     return WidgetBase;
-}(__WEBPACK_IMPORTED_MODULE_1_vue___default.a));
+}(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
 
 
 
@@ -8151,7 +8145,7 @@ var WidgetBase = /** @class */ (function (_super) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MdWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_class_component__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_class_component___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_class_component__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1____ = __webpack_require__(0);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8182,7 +8176,7 @@ var MdWidget = /** @class */ (function (_super) {
         })
     ], MdWidget);
     return MdWidget;
-}(__WEBPACK_IMPORTED_MODULE_1__index__["WidgetBase"]));
+}(__WEBPACK_IMPORTED_MODULE_1____["WidgetBase"]));
 
 
 
@@ -8315,7 +8309,7 @@ exports = module.exports = __webpack_require__(5)(false);
 
 
 // module
-exports.push([module.i, ".video-background {\r\n    background: #000;\r\n    position: fixed;\r\n    top: 0; right: 0; bottom: 0; left: 0;\r\n    z-index: -99;\r\n  }\r\n  .video-foreground,\r\n  .video-background iframe {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    pointer-events: none;\r\n  }", ""]);
+exports.push([module.i, ".video-background {\n  background: #000;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  z-index: -99;\n}\n\n.video-foreground,\n.video-background iframe {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n}\n", ""]);
 
 // exports
 

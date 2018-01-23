@@ -1,6 +1,4 @@
-
 export class Logger {
-
     private static instance: Logger;
 
     private constructor() {
@@ -25,7 +23,6 @@ export class Logger {
         // tslint:disable-next-line:no-console
         console.info('[' + component + ']', msg);
     }
-
 }
 
 export interface INotification {

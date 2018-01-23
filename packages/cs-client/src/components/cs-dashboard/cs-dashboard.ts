@@ -1,8 +1,8 @@
-import { Project, Dashboard, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState, Logger, CsWidget, guidGenerator, LayoutManager, DashboardManager } from '../../index';
-import { Watch, Prop } from 'vue-property-decorator';
+import { Watch } from 'vue-property-decorator';
+import { Project, Dashboard, IWidget } from '@csnext/cs-core';
+import { AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from '../../';
 
 @Component({
   name: 'cs-dashboard',
@@ -11,7 +11,6 @@ import { Watch, Prop } from 'vue-property-decorator';
     dashboard: null
   }
 } as any)
-// tslint:disable-next-line:class-name
 export class CsDashboard extends Vue {
 
   public dashboard?: Dashboard;
