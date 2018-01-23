@@ -1,4 +1,4 @@
 export interface IDashboardOptions {
-    fullscreen?: boolean;
-    background?: string;
+  fullscreen?: boolean;
+  background?: string;
 }

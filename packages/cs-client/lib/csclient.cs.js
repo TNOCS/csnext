@@ -6663,7 +6663,7 @@ __export(__webpack_require__(36));
 __export(__webpack_require__(37));
 __export(__webpack_require__(38));
 __export(__webpack_require__(39));
-__export(__webpack_require__(40));
+__export(__webpack_require__(83));
 __export(__webpack_require__(15));
 __export(__webpack_require__(41));
 // export *  from './classes/plugin';
@@ -6758,23 +6758,7 @@ exports.DatasourceProcessorBase = DatasourceProcessorBase;
 
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const theme_colors_1 = __webpack_require__(15);
-// Application look and feel
-class AppTheme {
-    constructor() {
-        this.colors = new theme_colors_1.ThemeColors();
-    }
-}
-exports.AppTheme = AppTheme;
-
-
-/***/ }),
+/* 40 */,
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6782,9 +6766,6 @@ exports.AppTheme = AppTheme;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 class NavigationOptions {
-    constructor() {
-        this.style = 'right';
-    }
 }
 exports.NavigationOptions = NavigationOptions;
 
@@ -8355,6 +8336,23 @@ var ImageWidget = /** @class */ (function (_super) {
     return ImageWidget;
 }(__WEBPACK_IMPORTED_MODULE_1__index__["WidgetBase"]));
 
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const theme_colors_1 = __webpack_require__(15);
+// Application look and feel
+class AppTheme {
+    constructor() {
+        this.colors = new theme_colors_1.ThemeColors();
+    }
+}
+exports.AppTheme = AppTheme;
 
 
 /***/ })

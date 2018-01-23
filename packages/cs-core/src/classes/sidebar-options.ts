@@ -1,4 +1,5 @@
 import { Dashboard } from './dashboard';
+
 export interface ISidebarOptions {
   open?: boolean;
   title?: string;
@@ -9,6 +10,6 @@ export interface ISidebarOptions {
   floating?: boolean;
   mini?: boolean;
   clipped?: boolean;
-  canpin?: boolean;
+  canPin?: boolean;
   dashboard?: Dashboard;
 }

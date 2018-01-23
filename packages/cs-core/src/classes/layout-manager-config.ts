@@ -1,5 +1,5 @@
 export interface ILayoutManagerConfig {
-    id: string;
-    name: string;
-    component: any;
+  id: string;
+  name: string;
+  component: any;
 }

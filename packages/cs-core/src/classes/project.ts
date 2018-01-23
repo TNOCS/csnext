@@ -1,9 +1,4 @@
-import { IFooterOptions } from './footer-options';
-import { IDatasource, Dashboard } from '../index';
-import { NavigationOptions } from './..';
-import { ISidebarOptions } from './..';
-import { AppTheme } from './apptheme';
-import { IHeaderOptions } from './header-options';
+import { AppTheme, IHeaderOptions, IFooterOptions, IDatasource, Dashboard, ISidebarOptions, NavigationOptions } from './..';
 
 export interface IProject {
   id?: string;
