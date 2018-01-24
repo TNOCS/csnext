@@ -1,15 +1,11 @@
 {
 	"private": true,
 	"scripts": {
-    "patch-release": "lerna run --parallel patch-release",
-    "minor-release": "lerna run --parallel minor-release",
-    "major-release": "lerna run --parallel major-release",
 		"postinstall": "lerna bootstrap --hoist && lerna run link",
 		"dev": "lerna run --parallel dev"
 	},
 	"devDependencies": {
 		"lerna": "^2.7.1"
 	},
-	"dependencies": {
-	}
+	"dependencies": {}
 }

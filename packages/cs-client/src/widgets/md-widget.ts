@@ -7,4 +7,5 @@ import { WidgetBase } from '../';
   template: '<div>{{ widget.data }}</div>'
 } as any)
 export class MdWidget extends WidgetBase {
+
 }
