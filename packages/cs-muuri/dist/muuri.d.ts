@@ -20,6 +20,7 @@ export declare class MuuriLayout extends Vue {
     initWidget(widget: IWidget): void;
     widgetsChanged(n: IWidget[], old: IWidget[]): void;
     beforeMount(): void;
+    initGrid(): void;
     created(): void;
     private updateIndices();
 }

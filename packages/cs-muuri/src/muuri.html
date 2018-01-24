@@ -1,8 +1,8 @@
 <div>
     <div :id="'muuri-' + dashboard.id" class="grid">
-        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="item h2" :style="widget._style">
-            <div class="item-content">                
-                <cs-widget v-if="widget" :widget="widget"></cs-widget>
+        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="item h2">
+            <div class="item-content">
+                <cs-widget :widget="widget"></cs-widget>
             </div>
         </div>
     </div>

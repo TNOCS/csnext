@@ -2,7 +2,7 @@ import { IMuuriOptions } from './../dist/muuri.d';
 import { Watch } from 'vue-property-decorator';
 import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { WidgetBase, Logger, CsWidget, AppState, LayoutManager } from '@csnext/cs-client';
+import { WidgetBase, Logger, CsWidget, AppState, LayoutManager, guidGenerator } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 const Muuri = require('muuri');
 import "./muuri.css";
@@ -38,7 +38,7 @@ export class MuuriLayout extends Vue {
   }
 
   public initWidget(widget: IWidget) {
-    // check if widget options is set
+    // check if widget options is set    
     if (!widget.options) {
       widget.options = { x: 1, y: 1, width: 1, height: 1 };
     }
@@ -46,11 +46,16 @@ export class MuuriLayout extends Vue {
   }
 
   @Watch('dashboard.widgets')
-  public widgetsChanged(n: IWidget[], old: IWidget[]) {    
-    if (!this.grid) return;
+  public widgetsChanged(n: IWidget[], old: IWidget[]) {
+    if (!this.grid) { this.initGrid(); }
     Vue.nextTick(() => {
       n.forEach(w => {
         if (this.items.indexOf(w.id) === -1) {
+          this.initWidget(w);
+          // let c = new CsWidget();
+          // c.widget = w;          
+          // let element = c.$mount();
+          // this.grid.add([element]);          
           let welement = document.getElementById(w.id);
           this.grid.add([welement]);
           this.items.push(w.id);
@@ -61,49 +66,57 @@ export class MuuriLayout extends Vue {
 
   public beforeMount() {
     this.options = this.dashboard.options as IMuuriOptions;
-    if (!this.options) {this.options = { itemHeight: 100, itemWidth: 100}};
+    if (!this.options) { this.options = { itemHeight: 100, itemWidth: 100 } };
     if (!this.options.itemHeight) { this.options.itemHeight = 100; }
     if (!this.options.itemWidth) { this.options.itemWidth = 100; }
-    
+
     this.dashboard.widgets.forEach(widget => {
       this.initWidget(widget);
     });
   }
 
+  public initGrid() {
+    if (this.grid) return;
+    this.docElem = document.documentElement;
+    const elem = '#muuri-' + this.dashboard.id;
+    this.grid = new Muuri(elem, {
+      items: '*',
+      layoutDuration: 200,
+      layoutEasing: 'ease',
+      dragEnabled: true,
+      dragSortInterval: 50,
+      dragContainer: document.body,
+      dragStartPredicate: function (item, event) {
+        var isDraggable = true;
+        // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
+        return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
+      },
+      dragReleaseDuration: 200,
+      dragReleseEasing: 'ease'
+    })
+      .on('dragStart', () => {
+        ++this.dragCounter;
+        this.docElem.classList.add('dragging');
+      })
+      .on('dragEnd', () => {
+        if (--this.dragCounter < 1) {
+          this.docElem.classList.remove('dragging');
+        }
+      })
+      .on('move', this.updateIndices)
+      .on('sort', this.updateIndices);
+  }
+
   public created() {
-    if (!this.dashboard) { return; }
+    // if (!this.dashboard) { return; }
+    if (this.dashboard && !this.dashboard.id) {
+      this.dashboard.id = guidGenerator();
+    }
     Vue.nextTick(() => {
-      
-      setTimeout(() => {
-        this.docElem = document.documentElement;
-        this.grid = new Muuri('#muuri-' + this.dashboard.id, {
-          items: '*',
-          layoutDuration: 200,
-          layoutEasing: 'ease',
-          dragEnabled: true,
-          dragSortInterval: 50,
-          dragContainer: document.body,
-          dragStartPredicate: function (item, event) {
-            var isDraggable = true;
-            // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
-            return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
-          },
-          dragReleaseDuration: 200,
-          dragReleseEasing: 'ease'
-        })
-          .on('dragStart', () => {
-            ++this.dragCounter;
-            this.docElem.classList.add('dragging');
-          })
-          .on('dragEnd', () => {
-            if (--this.dragCounter < 1) {
-              this.docElem.classList.remove('dragging');
-            }
-          })
-          .on('move', this.updateIndices)
-          .on('sort', this.updateIndices);
-      }, 500);
+      this.initGrid();
     });
+
+
   }
 
   private updateIndices() {

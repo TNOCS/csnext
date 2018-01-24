@@ -13,11 +13,11 @@ import { Watch, Prop } from 'vue-property-decorator';
 } as any)
 /** Single layout manager. Only shows first widget full screen */
 export class Single extends Vue {
-  public dashboard: Dashboard;
+  public dashboard?: Dashboard;
   private widget: IWidget | undefined;
 
   public created() {
-    if (!this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
+    if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
     this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
   }
 }

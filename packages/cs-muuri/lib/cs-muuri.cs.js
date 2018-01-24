@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("Vue"));
+		module.exports = factory(require("Vue"), require("@csnext/cs-client"));
 	else if(typeof define === 'function' && define.amd)
-		define(["Vue"], factory);
+		define(["Vue", "@csnext/cs-client"], factory);
 	else if(typeof exports === 'object')
-		exports["cs-muuri"] = factory(require("Vue"));
+		exports["cs-muuri"] = factory(require("Vue"), require("@csnext/cs-client"));
 	else
-		root["cs-muuri"] = factory(root["Vue"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+		root["cs-muuri"] = factory(root["Vue"], root["@csnext/cs-client"]);
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_34__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -5695,6 +5695,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const vue_property_decorator_1 = __webpack_require__(22);
 const vue_1 = __webpack_require__(1);
+const cs_client_1 = __webpack_require__(34);
 const vue_class_component_1 = __webpack_require__(26);
 const Muuri = __webpack_require__(27);
 __webpack_require__(28);
@@ -5732,18 +5733,24 @@ let MuuriLayout = class MuuriLayout extends vue_1.default {
         return this.dashboard.widgets.filter(w => w.options && w.options.background);
     }
     initWidget(widget) {
-        // check if widget options is set
+        // check if widget options is set    
         if (!widget.options) {
             widget.options = { x: 1, y: 1, width: 1, height: 1 };
         }
         widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' };
     }
     widgetsChanged(n, old) {
-        if (!this.grid)
-            return;
+        if (!this.grid) {
+            this.initGrid();
+        }
         vue_1.default.nextTick(() => {
             n.forEach(w => {
                 if (this.items.indexOf(w.id) === -1) {
+                    this.initWidget(w);
+                    // let c = new CsWidget();
+                    // c.widget = w;          
+                    // let element = c.$mount();
+                    // this.grid.add([element]);          
                     let welement = document.getElementById(w.id);
                     this.grid.add([welement]);
                     this.items.push(w.id);
@@ -5767,40 +5774,45 @@ let MuuriLayout = class MuuriLayout extends vue_1.default {
             this.initWidget(widget);
         });
     }
-    created() {
-        if (!this.dashboard) {
+    initGrid() {
+        if (this.grid)
             return;
+        this.docElem = document.documentElement;
+        const elem = '#muuri-' + this.dashboard.id;
+        this.grid = new Muuri(elem, {
+            items: '*',
+            layoutDuration: 200,
+            layoutEasing: 'ease',
+            dragEnabled: true,
+            dragSortInterval: 50,
+            dragContainer: document.body,
+            dragStartPredicate: function (item, event) {
+                var isDraggable = true;
+                // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
+                return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
+            },
+            dragReleaseDuration: 200,
+            dragReleseEasing: 'ease'
+        })
+            .on('dragStart', () => {
+            ++this.dragCounter;
+            this.docElem.classList.add('dragging');
+        })
+            .on('dragEnd', () => {
+            if (--this.dragCounter < 1) {
+                this.docElem.classList.remove('dragging');
+            }
+        })
+            .on('move', this.updateIndices)
+            .on('sort', this.updateIndices);
+    }
+    created() {
+        // if (!this.dashboard) { return; }
+        if (this.dashboard && !this.dashboard.id) {
+            this.dashboard.id = cs_client_1.guidGenerator();
         }
         vue_1.default.nextTick(() => {
-            setTimeout(() => {
-                this.docElem = document.documentElement;
-                this.grid = new Muuri('#muuri-' + this.dashboard.id, {
-                    items: '*',
-                    layoutDuration: 200,
-                    layoutEasing: 'ease',
-                    dragEnabled: true,
-                    dragSortInterval: 50,
-                    dragContainer: document.body,
-                    dragStartPredicate: function (item, event) {
-                        var isDraggable = true;
-                        // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
-                        return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
-                    },
-                    dragReleaseDuration: 200,
-                    dragReleseEasing: 'ease'
-                })
-                    .on('dragStart', () => {
-                    ++this.dragCounter;
-                    this.docElem.classList.add('dragging');
-                })
-                    .on('dragEnd', () => {
-                    if (--this.dragCounter < 1) {
-                        this.docElem.classList.remove('dragging');
-                    }
-                })
-                    .on('move', this.updateIndices)
-                    .on('sort', this.updateIndices);
-            }, 500);
+            this.initGrid();
         });
     }
     updateIndices() {
@@ -13950,7 +13962,13 @@ module.exports = function (css) {
 /* 33 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\" :style=\"widget._style\">\n            <div class=\"item-content\">                \n                <cs-widget v-if=\"widget\" :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div>\n    <div :id=\"'muuri-' + dashboard.id\" class=\"grid\">\n        <div v-for=\"widget in widgets\" :key=\"'stack-' + widget.id\" :id=\"widget.id\" class=\"item h2\">\n            <div class=\"item-content\">\n                <cs-widget :widget=\"widget\"></cs-widget>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_34__;
 
 /***/ })
 /******/ ]);

@@ -2,7 +2,7 @@ import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import Vue from 'vue';
 import { ILayoutManagerConfig, Project, IDatasourceHandler, IDatasource, AppTheme, ThemeColors, IFooterOptions, NavigationOptions, ISidebarOptions, Dashboard } from '@csnext/cs-core';
-import { CsDashboard, Single, Grid, Logger, CsWidget, WebRequestDatasourceProcessor, GeojsonDatasourceProcessor, INotification, LayoutManager } from '../index';
+import { CsDashboard, Single, Grid, Logger, CsWidget, WebRequestDatasourceProcessor, INotification, LayoutManager } from '../index';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in

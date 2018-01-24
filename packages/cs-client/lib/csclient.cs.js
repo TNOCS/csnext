@@ -2307,31 +2307,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
 
 
 var CsWidget = /** @class */ (function (_super) {
     __extends(CsWidget, _super);
     function CsWidget() {
-        return _super.call(this) || this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(CsWidget.prototype, "computedOptions", {
-        get: function () {
-            if (!this.widget) {
-                return null;
-            }
-            if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
-                return this.widget._dashboard.defaultWidgetOptions;
-            }
-            return this.widget.options;
-        },
-        enumerable: true,
-        configurable: true
-    });
     CsWidget.prototype.created = function () {
+        if (!this.widget) {
+            return;
+        }
         if (this.widget && !this.widget.options) {
             this.widget.options = {};
         }
@@ -2343,8 +2330,7 @@ var CsWidget = /** @class */ (function (_super) {
             props: {
                 widget: null
             }
-        }),
-        __metadata("design:paramtypes", [])
+        })
     ], CsWidget);
     return CsWidget;
 }(__WEBPACK_IMPORTED_MODULE_0_vue___default.a));
@@ -6877,7 +6863,7 @@ var Single = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Single.prototype.created = function () {
-        if (!this.dashboard.widgets || this.dashboard.widgets.length === 0) {
+        if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) {
             return;
         }
         this.widget = this.dashboard.widgets.find(function (w) { return !w.hasOwnProperty('sideNav'); });
@@ -7005,7 +6991,7 @@ exports.push([module.i, ".grid-manager {\r\n    left:0;right:0;top:0;bottom:0;po
 /* 49 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"grid-manager\">\n        <cs-widget v-for=\"widget in dashboard.widgets\" v-if=\"widget\" :key=\"widget.id\" :widget=\"widget\"></cs-widget>\n</div>\n"
+module.exports = "<div class=\"grid-manager\">\n  <cs-widget v-for=\"widget in dashboard.widgets\" v-if=\"widget\" :key=\"widget.id\" :widget=\"widget\"></cs-widget>\n</div>\n"
 
 /***/ }),
 /* 50 */
@@ -8029,7 +8015,7 @@ exports.push([module.i, ".widget-default{\n  height:100%;\n  width:100%;  \n}\n"
 /* 73 */
 /***/ (function(module, exports) {
 
-module.exports = "\n<component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>\n    <!-- <v-card style=\"height:100%\">\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\n    </v-card> -->\n    <!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\n"
+module.exports = "<div>  \n  <component :is=\"widget.component\" :widget=\"widget\" class=\"widget-default\" :class=\"widget.options.class\"></component>  \n</div>\n<!-- <v-card style=\"height:100%\">\n        <component :is=\"widget.component\" :widget=\"widget\"></component>\n    </v-card> -->\n<!-- <component :is=\"widget.component\" style=\"background:red; height:100%\"></component> -->\n"
 
 /***/ }),
 /* 74 */
@@ -8168,18 +8154,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
 
 var MdWidget = /** @class */ (function (_super) {
     __extends(MdWidget, _super);
     function MdWidget() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        console.log('init md-widget');
+        return _this;
     }
     MdWidget = __decorate([
         __WEBPACK_IMPORTED_MODULE_0_vue_class_component___default()({
             name: 'md-widget',
             template: '<div>{{ widget.data }}</div>'
-        })
+        }),
+        __metadata("design:paramtypes", [])
     ], MdWidget);
     return MdWidget;
 }(__WEBPACK_IMPORTED_MODULE_1__index__["WidgetBase"]));
