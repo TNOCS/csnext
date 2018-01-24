@@ -19,5 +19,6 @@ export class Single extends Vue {
     if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
     this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
   }
+
 }
 LayoutManager.add({ id: 'single', name: 'single page', component: Single } as ILayoutManagerConfig);
