@@ -1,5 +1,5 @@
-import { IDatasource, IDatasourceHandler, IDatasourceProcessor, ProcessorActions } from '@csnext/cs-core';
-import { AppState, DatasourceManager } from '../index';
+import { IDatasource, IDatasourceProcessor, ProcessorActions } from '@csnext/cs-core';
+import { DatasourceManager } from '../';
 import { FeatureCollection, GeometryObject } from 'geojson';
 
 /**

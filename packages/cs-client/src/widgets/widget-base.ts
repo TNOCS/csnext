@@ -1,8 +1,7 @@
-import { IWidget } from '@csnext/cs-core';
-import { AppState, Logger, guidGenerator } from '../index';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Watch, Prop } from 'vue-property-decorator';
+import { IWidget } from '@csnext/cs-core';
+import { Logger } from '../';
 
 @Component({
   name: 'dashboard',
@@ -10,7 +9,6 @@ import { Watch, Prop } from 'vue-property-decorator';
     widget: null
   }
 } as any)
-
 export class WidgetBase extends Vue {
 
   /** access the original widget from configuration */

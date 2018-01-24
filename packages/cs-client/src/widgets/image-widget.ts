@@ -1,6 +1,3 @@
-
-import { IWidget } from '@csnext/cs-core';
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import { WidgetBase } from '../index';
 
@@ -8,7 +5,5 @@ import { WidgetBase } from '../index';
   name: 'image-widget',
   template: '<img :src="widget.data.src" style="width:100%;height: 100%"></img>'
 } as any)
-
 export class ImageWidget extends WidgetBase {
-
 }

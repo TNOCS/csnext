@@ -1,11 +1,11 @@
-import { Dashboard, ThemeColors } from '@csnext/cs-core';
 import Vue from 'vue';
-import Component from 'vue-class-component';
-import VueRouter from 'vue-router';
-import { AppState, Logger, INotification, CsDashboard } from '../../index';
-import { RouteConfig } from 'vue-router/types/router';
-import { Watch, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
+import VueRouter from 'vue-router';
+import Component from 'vue-class-component';
+import { RouteConfig } from 'vue-router/types/router';
+import { Dashboard, ThemeColors } from '@csnext/cs-core';
+import { Watch } from 'vue-property-decorator';
+import { AppState, Logger, INotification, CsDashboard } from '../../';
 import { setInterval } from 'timers';
 import './cs-app.css';
 import './../../sass/main.scss';
@@ -90,7 +90,6 @@ export class CsApp extends Vue {
       this.SelectDashboard(adjacent);
     }
     // console.log(adjacent);
-
   }
 
   // Add a dashboard as a route

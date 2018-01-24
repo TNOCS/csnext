@@ -1,4 +1,4 @@
-import { Project, IDatasourceHandler, Dashboard, IDatasource, AppTheme, ThemeColors, IFooterOptions, NavigationOptions, ISidebarOptions, ILayoutManagerConfig } from '@csnext/cs-core';
+import { ILayoutManagerConfig } from '@csnext/cs-core';
 
 // TODO Is this the correct name, since it only stores a reference to existing dashboard managers, and doesn't do any management.
 export class LayoutManager {

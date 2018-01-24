@@ -1,8 +1,7 @@
-import { IWidget, Dashboard, ILayoutManagerConfig } from '@csnext/cs-core';
 import Vue from 'vue';
-import { Logger, CsWidget, AppState, LayoutManager } from '../..';
 import Component from 'vue-class-component';
-import { Watch, Prop } from 'vue-property-decorator';
+import { Dashboard, ILayoutManagerConfig } from '@csnext/cs-core';
+import { LayoutManager } from '../..';
 
 import './grid.css';
 @Component({

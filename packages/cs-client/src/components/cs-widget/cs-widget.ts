@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Dashboard, IWidget, IWidgetOptions } from '@csnext/cs-core';
-import { Watch, Prop } from 'vue-property-decorator';
+import { IWidget, IWidgetOptions } from '@csnext/cs-core';
 import './cs-widget.css';
 
 @Component({
@@ -11,9 +10,7 @@ import './cs-widget.css';
     widget: null
   }
 } as any)
-
 export class CsWidget extends Vue {
-
   public widget?: IWidget;
 
   public created() {
