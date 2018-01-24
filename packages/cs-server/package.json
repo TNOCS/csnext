@@ -4,10 +4,7 @@
   "main": "./dist/cs-client/src/index.js",
   "types": "./dist/cs-client/src/index.d.ts",
   "license": "MIT",
-  "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm version major && npm publish && git push --follow-tags",
+  "scripts": {    
     "link": "yarn link",
     "dev": "tsc -w"
   },

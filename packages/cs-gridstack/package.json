@@ -8,9 +8,6 @@
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm version major && npm publish && git push --follow-tags",
     "link": "yarn link",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
     "build": "webpack --watch --env build"

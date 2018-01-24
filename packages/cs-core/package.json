@@ -7,10 +7,7 @@
   "url": "https://github.com/TNOCS/csnext",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
-  "scripts": {
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags",
-    "major-release": "npm version major && npm publish && git push --follow-tags",
+  "scripts": {    
     "link": "yarn link",
     "dev": "tsc -w"
   },
