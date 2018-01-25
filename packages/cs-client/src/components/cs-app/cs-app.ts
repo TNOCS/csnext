@@ -3,9 +3,9 @@ import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Component from 'vue-class-component';
 import { RouteConfig } from 'vue-router/types/router';
-import { Dashboard, ThemeColors } from '@csnext/cs-core';
+import { Dashboard, INotification, ThemeColors } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, INotification, CsDashboard } from '../../';
+import { AppState, Logger, CsDashboard } from '../../';
 import { setInterval } from 'timers';
 import './cs-app.css';
 import './../../sass/main.scss';
@@ -26,12 +26,15 @@ export class CsApp extends Vue {
   public app = AppState.Instance;
   public L = Logger.Instance;
   public settingsDialog = false;
-  public lastNotification: INotification = { _visible: false } as INotification;
   public $vuetify: any;
   public active = null;
-  public tabs = ['tab-1', 'tab-2', 'tab-3'];
-  public text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
   public leftsidebarToggle = [0, 1, 2];
+
+  // notification properties
+  public lastNotification: INotification = { _visible: false } as INotification;
+  public showNotifications = true;
+  public unReadNotifications: INotification[] = [];
+
   constructor() {
     super();
     this.InitNavigation();
@@ -41,6 +44,11 @@ export class CsApp extends Vue {
   public projectChanged(data: any) {
     this.InitNavigation();
     this.InitTheme();
+  }
+
+  @Watch('app.project.notifications', { deep: true })
+  public noticationsUpdated(n: INotification[], o: INotification[]) {
+    this.UpdateNotifications();
   }
 
   @Watch('$route')
@@ -136,10 +144,24 @@ export class CsApp extends Vue {
     this.InitNotifications();
   }
 
+  public SelectNotification(notification: INotification) {
+    notification.isRead = true;
+    this.UpdateNotifications();
+    if (notification.clickCallback) {
+      notification.clickCallback(notification);
+    }
+  }
+
+  /** Update list of unread notification  */
+  public UpdateNotifications() {
+    if (!this.app.project.notifications || !this.app.project.notifications.items) { return; }
+    this.$set(this, 'unReadNotifications', this.app.project.notifications.items.filter(not => !not.isRead));
+  }
   public InitNotifications() {
     if (this.app.EventBus) {
       this.app.EventBus.$on('notification.new', (not: INotification) => {
         this.lastNotification = not;
+        this.UpdateNotifications();
       });
     }
   }

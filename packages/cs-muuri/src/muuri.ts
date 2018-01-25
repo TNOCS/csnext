@@ -108,7 +108,6 @@ export class MuuriLayout extends Vue {
   }
 
   public created() {
-    // if (!this.dashboard) { return; }
     if (this.dashboard && !this.dashboard.id) {
       this.dashboard.id = guidGenerator();
     }

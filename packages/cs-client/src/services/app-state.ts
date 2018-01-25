@@ -1,8 +1,9 @@
 import Vue from 'vue';
-import { Project, IDatasource, Dashboard } from '@csnext/cs-core';
+import { Project, IProject, INotification, Dashboard } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
-import { CsDashboard, Logger, CsWidget, INotification } from '../';
+import { CsDashboard, Logger, CsWidget, guidGenerator } from '../';
+import { IDatasource } from '../../../cs-core/dist/classes/datasource';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -12,7 +13,7 @@ export class AppState {
   private static pInstance: AppState;
 
   /** Project definition */
-  public project: Project = {};
+  public project: IProject = {};
 
   /** Manages active project */
   public projectManager?: ProjectManager;
@@ -85,9 +86,8 @@ export class AppState {
   }
 
   public TriggerNotification(notification: INotification) {
-    notification._visible = true;
-    if (!notification.timeout) { notification.timeout = 1000; }
+    Object.assign(notification, { id: guidGenerator(), timeout: 3000, created: new Date(), isRead: false, remember: true, _visible: true } as INotification);
     this.EventBus.$emit('notification.new', notification);
-    if (notification.remember) { this.notifications.push(notification); }
+    if (this.project.notifications && this.project.notifications.items && notification.remember) { this.project.notifications.items.push(notification); }
   }
 }

@@ -7,7 +7,7 @@
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
         <v-icon slot="divider">chevron_right</v-icon>
-        <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
+        <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item" @click>
           {{ item}}
         </v-breadcrumbs-item>
       </v-breadcrumbs>
@@ -21,6 +21,38 @@
     <v-btn v-if="app.project.search" icon>
       <v-icon>search</v-icon>
     </v-btn>
+    <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
+      <v-badge slot="activator" color="red" overlap>
+        <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
+        <v-icon color="grey">message</v-icon>
+      </v-badge>
+      <!-- <v-btn color="indigo" dark >Menu as Popover</v-btn> -->
+      <v-card>
+        <v-toolbar-title>Notifications</v-toolbar-title>
+        <v-divider></v-divider>
+        <v-list two-line>
+          <template v-for="item in unReadNotifications">
+            <v-list-tile avatar ripple @click="SelectNotification(item)" :key="item.id">
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-sub-title class="text--primary">{{ item.text }}</v-list-tile-sub-title>                
+              </v-list-tile-content>
+              <v-list-tile-action @click="item.isRead = true; UpdateNotifications()">
+                <v-list-tile-action-text>{{ item.actionTitle }}</v-list-tile-action-text>
+                <v-icon color="yellow darken-2">delete</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+            <!-- <v-divider v-if="index + 1 < app.project.notifications.items.length" :key="index"></v-divider> -->
+          </template>
+        </v-list>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="showNotifications = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-menu>
+
+
     <v-btn icon>
       <v-icon>more_vert</v-icon>
     </v-btn>

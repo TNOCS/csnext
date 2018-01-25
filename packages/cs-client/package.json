@@ -16,11 +16,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.7",
+    
     "axios": "^0.17.1",
     "vuetify": "^v1.0.0-beta.4"
   },
-  "devDependencies": {
+  "devDependencies": {    
+    "@csnext/cs-core": "^0.0.7",
     "@types/geojson": "^7946.0.0",
     "awesome-typescript-loader": "~3.4.1",
     "concurrently": "^3.5.1",
