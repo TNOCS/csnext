@@ -1,8 +1,4 @@
-import { IDashboardOptions } from './dashboard-options';
-import { ISidebarOptions } from './sidebar-options';
-import { IWidget, IWidgetOptions } from './widget';
-import { Page } from './page';
-import { IDashboardManager } from '../index';
+import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions } from '../';
 
 export class Dashboard {
   // dashboard id

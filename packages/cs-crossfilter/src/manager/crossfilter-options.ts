@@ -1,11 +1,11 @@
 export class CrossOptions {
-    charts: ChartOptions[];
+  charts: ChartOptions[];
 }
 
 export class ChartOptions {
-    public title: string;
-    public key: string;
-    public type: string;
-    public _dimension?: any;
-    public _group?: any;
+  public title: string;
+  public key: string;
+  public type: string;
+  public _dimension?: any;
+  public _group?: any;
 }

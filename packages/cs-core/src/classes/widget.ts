@@ -29,5 +29,4 @@ export interface IWidget {
   _dashboard?: Dashboard;
   _initalized?: boolean;
   _style?: any;
-
 }

@@ -6,9 +6,10 @@ export * from './classes/widget';
 export * from './classes/datasource';
 export * from './classes/layout-manager-config';
 export * from './classes/dashboard-manager-config';
-export * from './classes/apptheme';
+export * from './classes/app-theme';
 export * from './classes/theme-colors';
 export * from './classes/footer-options';
+export * from './classes/header-options';
 export * from './classes/navigation-options';
 export * from './classes/sidebar-options';
 
