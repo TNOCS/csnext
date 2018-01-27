@@ -4,13 +4,10 @@
   .item {
     display: block;
     position: absolute;
-    width: 100px;
-    height: 100px;
-    margin: 5px;
-    border:black;
-    border-style: dashed;
-    z-index: 1;   
-    color: #fff;
+    width: 150px;
+    height: 150px;
+    background: lightcoral;
+
   }
   .item.muuri-item-dragging {
     z-index: 3;
