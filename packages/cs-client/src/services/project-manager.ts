@@ -10,6 +10,8 @@ export class ProjectManager {
 
   constructor(private project: IProject = {}) {
     if (!project.datasources) { project.datasources = {}; }
+    if (!project.header) { project.header = {}; }
+    if (!project.notifications) { project.notifications = {}; }
     Object.assign(project.notifications, { enabled: false, items: [], listStyle: 'popup' } as INotificationOptions);
     this.datasourceManager = new DatasourceManager(project.datasources);
     this.dashboardManager = new DashboardManager();
