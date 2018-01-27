@@ -12,5 +12,6 @@ export * from './classes/footer-options';
 export * from './classes/header-options';
 export * from './classes/navigation-options';
 export * from './classes/sidebar-options';
+export * from './classes/editor-schema';
 
 // export *  from './classes/plugin';

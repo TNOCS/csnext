@@ -24,7 +24,7 @@
     <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
         <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
-        <v-icon color="grey">message</v-icon>
+        <v-icon>message</v-icon>
       </v-badge>
       <!-- <v-btn color="indigo" dark >Menu as Popover</v-btn> -->
       <v-card>
@@ -35,7 +35,7 @@
             <v-list-tile avatar ripple @click="SelectNotification(item)" :key="item.id">
               <v-list-tile-content>
                 <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                <v-list-tile-sub-title class="text--primary">{{ item.text }}</v-list-tile-sub-title>                
+                <v-list-tile-sub-title class="text--primary">{{ item.text }}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action @click="item.isRead = true; UpdateNotifications()">
                 <v-list-tile-action-text>{{ item.actionTitle }}</v-list-tile-action-text>
@@ -53,9 +53,16 @@
     </v-menu>
 
 
-    <v-btn icon>
-      <v-icon>more_vert</v-icon>
-    </v-btn>
+    <v-menu bottom left>
+      <v-btn icon slot="activator" dark>
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+      <v-list>
+        <v-list-tile v-for="setting in settings" :key="setting.id" @click="">
+          <v-list-tile-title>{{ setting.title }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
 
     <v-btn v-if="app.project.rightSidebar" @click="app.project.rightSidebar.open=!app.project.rightSidebar.open" icon>
       <v-icon v-if="app.project.rightSidebar.open">keyboard_arrow_right</v-icon>

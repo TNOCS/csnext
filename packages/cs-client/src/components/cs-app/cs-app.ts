@@ -148,7 +148,7 @@ export class CsApp extends Vue {
     notification.isRead = true;
     this.UpdateNotifications();
     if (notification.clickCallback) {
-      notification.clickCallback(notification);
+      notification.clickCallback();
     }
   }
 
