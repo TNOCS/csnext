@@ -24,7 +24,6 @@ const router = new VueRouter({ routes: [] });
 } as any)
 export class CsApp extends Vue {
   public app = AppState.Instance;
-  public L = Logger.Instance;
   public settingsDialog = false;
   public $vuetify: any;
   public active = null;
@@ -34,6 +33,13 @@ export class CsApp extends Vue {
   public lastNotification: INotification = { _visible: false } as INotification;
   public showNotifications = true;
   public unReadNotifications: INotification[] = [];
+
+  public settings = [
+    {
+      id: 'dashboard_settings',
+      title: 'dashboard settings'
+    }
+  ];
 
   constructor() {
     super();
@@ -128,11 +134,11 @@ export class CsApp extends Vue {
       this.AddDashboardRoute(d);
     });
 
-    this.L.info('navigation', 'navigation initialized');
+    Logger.info('navigation', 'navigation initialized');
   }
 
   public SelectDashboard(d: Dashboard) {
-    this.L.info('SelectDashboard', d.path);
+    Logger.info('SelectDashboard', d.path);
     if (router && d.path && !d.dashboards) { router.push(d.path); }
   }
 

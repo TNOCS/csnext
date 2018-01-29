@@ -1,3 +1,4 @@
+import { Logger } from './logger';
 import { IDashboardManagerConfig } from '@csnext/cs-core';
 
 // TODO Is this the correct name, since it only stores a reference to existing dashboard managers, and doesn't do any management.
@@ -8,6 +9,10 @@ export class DashboardManager {
 
   /** Registration of a new dashboard manager */
   public static add(manager: IDashboardManagerConfig) {
-    DashboardManager.dashboardManagers[manager.id] = manager;
+    const managers = DashboardManager.dashboardManagers;
+    if (managers && !managers.hasOwnProperty(manager.id)) {
+      Logger.info('dashboard manager', 'added ' + manager.id);
+      DashboardManager.dashboardManagers[manager.id] = manager;
+    }
   }
 }

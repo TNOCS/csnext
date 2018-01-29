@@ -63,7 +63,7 @@ export class CsDashboard extends Vue {
     if (this.dashboard.datasource) {
       this.app.loadDatasource(this.dashboard.datasource).catch(e => {
         if (!this.dashboard) { return; }
-        this.app.logger.error('dashboard datasource', 'error loading datasource ' + this.dashboard.datasource);
+        Logger.error('dashboard datasource', 'error loading datasource ' + this.dashboard.datasource);
       }).then(d => {
         if (!this.dashboard) { return; }
         this.dashboard.content = d;

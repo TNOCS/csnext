@@ -45,7 +45,7 @@ export class AppState {
 
   /** Initialize the project state, dashboard managers and data source handlers */
   public init(project: Project) {
-    this.logger.info('app-state', 'Init AppState');
+    Logger.info('app-state', 'Init AppState');
 
     Vue.component('cs-dashboard', CsDashboard);
     Vue.component('cs-widget', CsWidget);

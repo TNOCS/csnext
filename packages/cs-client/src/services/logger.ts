@@ -1,26 +1,24 @@
 export class Logger {
-    private static instance: Logger;
 
-    private constructor() {
-    }
+  public static info(component: string, msg: any) {
+    // tslint:disable-next-line:no-console
+    console.info('[' + component + ']', msg);
+  }
 
-    public static get Instance() {
-        // Do you need arguments? Make it a regular method instead.
-        return this.instance || (this.instance = new this());
-    }
+  public static warn(component: string, msg: any) {
+    // tslint:disable-next-line:no-console
+    console.info('[' + component + ']', msg);
+  }
 
-    public info(component: string, msg: any) {
-        // tslint:disable-next-line:no-console
-        console.info('[' + component + ']', msg);
-    }
+  public static error(component: string, msg: any) {
+    // tslint:disable-next-line:no-console
+    console.info('[' + component + ']', msg);
+  }
 
-    public warn(component: string, msg: any) {
-        // tslint:disable-next-line:no-console
-        console.info('[' + component + ']', msg);
-    }
+  public static get Instance() {
+    // Do you need arguments? Make it a regular method instead.
+    return this.instance || (this.instance = new this());
+  }
 
-    public error(component: string, msg: any) {
-        // tslint:disable-next-line:no-console
-        console.info('[' + component + ']', msg);
-    }
+  private static instance: Logger;
 }
