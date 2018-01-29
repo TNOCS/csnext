@@ -1,1 +1,1 @@
-export * from './muuri';
+export * from './grid/muuri';

@@ -1,4 +1,3 @@
-import { IMuuriOptions } from './../dist/muuri.d';
 import { Watch } from 'vue-property-decorator';
 import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
@@ -6,6 +5,7 @@ import { WidgetBase, Logger, CsWidget, AppState, LayoutManager, guidGenerator } 
 import Component from 'vue-class-component';
 const Muuri = require('muuri');
 import "./muuri.css";
+import { MuuriWidget } from '../widget/muuri-widget';
 
 export interface IMuuriOptions extends IDashboardOptions {
   itemWidth: number;
@@ -14,6 +14,9 @@ export interface IMuuriOptions extends IDashboardOptions {
 
 @Component({
   template: require('./muuri.html'),
+  components: {
+    'muuri-widget': MuuriWidget
+  },
   props: {
     dashboard: null
   }
@@ -43,6 +46,8 @@ export class MuuriLayout extends Vue {
       widget.options = { x: 1, y: 1, width: 1, height: 1 };
     }
     widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' }
+    
+    
   }
 
   @Watch('dashboard.widgets')
@@ -114,8 +119,6 @@ export class MuuriLayout extends Vue {
     Vue.nextTick(() => {
       this.initGrid();
     });
-
-
   }
 
   private updateIndices() {
