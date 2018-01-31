@@ -50,7 +50,7 @@ const mod = {
         {
             test: /\.ts$/,
             exclude: /node_modules/,
-            loader: 'awesome-typescript-loader'
+            loader: 'ts-loader'
         },
         {
             test: /\.html$/,
@@ -84,6 +84,10 @@ const mod = {
 
 function buildConfig(entry, externals, analyzer) {
     let pl = [new HardSourceWebpackPlugin()];
+    pl.push(new webpack.WatchIgnorePlugin([
+        /\.js$/,
+        /\.d\.ts$/
+    ]));
     // if (analyzer) pl.push(new BundleAnalyzerPlugin({
     //     analyzerMode: 'static',
     //     openAnalyzer: false,
@@ -97,10 +101,6 @@ function buildConfig(entry, externals, analyzer) {
             devtool: 'source-map',
             output: output,
             module: mod,
-            watch: true,
-            watchOptions: {
-                aggregateTimeout: 300 
-            },
             externals: externals,
             resolve: {
                 extensions: ['.ts', '.js', '.html'],

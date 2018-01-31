@@ -23,7 +23,7 @@
   "devDependencies": {    
     "@csnext/cs-core": "^0.0.7",
     "@types/geojson": "^7946.0.0",
-    "awesome-typescript-loader": "~3.4.1",
+    "ts-loader": "^3.4.0",
     "concurrently": "^3.5.1",
     "cpx": "^1.5.0",
     "css-loader": "^0.28.9",
@@ -39,7 +39,7 @@
     "style-loader": "^0.19.1",
     "tslint": "~5.9.1",
     "tslint-loader": "~3.5.3",
-    "typescript": "^2.6.2",
+    "typescript": "^2.7.1",
     "url-loader": "^0.6.2",
     "vue": "^2.5.13",
     "vue-class-component": "^6.1.2",

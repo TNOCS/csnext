@@ -48,7 +48,7 @@ const mod = {
   }, {
     test: /\.ts$/,
     exclude: /node_modules/,
-    loader: 'awesome-typescript-loader'
+    loader: 'ts-loader'
   }, {
     test: /\.html$/,
     loader: 'raw-loader',
@@ -74,6 +74,10 @@ const mod = {
 
 function buildConfig(entry, externals, analyzer) {
   let pl = [new HardSourceWebpackPlugin()];
+  pl.push(new webpack.WatchIgnorePlugin([
+    /\.js$/,
+    /\.d\.ts$/
+  ]));
   // if (analyzer) {
   //   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
   //   pl.push(new BundleAnalyzerPlugin({
@@ -101,9 +105,9 @@ const config = [
   buildConfig({
     cs: ["./src/index.ts"]
   }, {
-    'vue': 'Vue',
-    'vuetify': 'vuetify'
-  }, 'cs')
+      'vue': 'Vue',
+      'vuetify': 'vuetify'
+    }, 'cs')
   // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];
 

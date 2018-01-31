@@ -2,6 +2,8 @@
 const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
@@ -49,7 +51,7 @@ const mod = {
         {
             test: /\.ts$/,
             exclude: '/node_modules/',
-            loader: 'awesome-typescript-loader'
+            loader: 'ts-loader'
         },
         {
             test: /\.html$/,
@@ -82,7 +84,11 @@ const mod = {
 };
 
 function buildConfig(entry, externals, analyzer) {
-    let pl = [];
+    let pl = [new HardSourceWebpackPlugin()];
+    pl.push(new webpack.WatchIgnorePlugin([
+        /\.js$/,
+        /\.d\.ts$/
+    ]));
     // if (analyzer) pl.push(new BundleAnalyzerPlugin({
     //     analyzerMode: 'static',
     //     openAnalyzer: false,
@@ -94,11 +100,7 @@ function buildConfig(entry, externals, analyzer) {
             entry: entry,
             // entry: __dirname + '/src/index.ts',
             devtool: 'source-map',
-            output: output,
-            watch: true,
-            watchOptions: {
-                aggregateTimeout: 300 
-            },
+            output: output,           
             module: mod,
             externals: externals,
             resolve: {
