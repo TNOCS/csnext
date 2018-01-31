@@ -54,7 +54,6 @@ export class CsDashboard extends Vue {
   }
 
   public created() {
-
     if (!this.dashboard) { return; }
 
     // if this is a main dashboard, set it as active dashboard on appstate

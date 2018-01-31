@@ -28,6 +28,9 @@
     <div v-if="sideBar.component">
       <component :is="sideBar.component"></component>
     </div>
+    <div v-if="sideBar.dashboard">
+      <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
+    </div>
     <div v-else-if="app.project.navigation.style==='left'">
       <v-list>
         <v-list-group v-for="item in app.project.dashboards" :value="item.active" :prepend-icon="item.icon" no-action v-bind:key="item.path">
