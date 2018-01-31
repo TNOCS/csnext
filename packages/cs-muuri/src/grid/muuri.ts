@@ -40,14 +40,7 @@ export class MuuriLayout extends Vue {
     return this.dashboard.widgets.filter(w => w.options && w.options.background);
   }
 
-  public initWidget(widget: IWidget) {
-    // check if widget options is set    
-    if (!widget.options) { widget.options = {}; }
-    Object.assign(widget.options, { x: 1, y: 1, width: 1, height: 1 });    
-    widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' }
-    
-    
-  }
+  
 
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: IWidget[]) {
@@ -55,7 +48,7 @@ export class MuuriLayout extends Vue {
     Vue.nextTick(() => {
       n.forEach(w => {
         if (this.items.indexOf(w.id) === -1) {
-          this.initWidget(w);
+          // this.initWidget(w);
           // let c = new CsWidget();
           // c.widget = w;          
           // let element = c.$mount();
@@ -75,7 +68,7 @@ export class MuuriLayout extends Vue {
     if (!this.options.itemWidth) { this.options.itemWidth = 100; }
 
     this.dashboard.widgets.forEach(widget => {
-      this.initWidget(widget);
+      // this.initWidget(widget);
     });
   }
 

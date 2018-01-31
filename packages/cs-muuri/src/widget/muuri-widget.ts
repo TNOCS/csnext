@@ -6,7 +6,6 @@ import Component from 'vue-class-component';
 const Muuri = require('muuri');
 import "./muuri-widget.css";
 
-
 @Component({
   template: require('./muuri-widget.html'),
   props: {
@@ -21,26 +20,17 @@ export class MuuriWidget extends Vue {
     // check if widget options is set    
     if (!this.widget.options) {
       this.widget.options = { x: 1, y: 1, width: 1, height: 1 };
-    }
-    this.widget._style = { width: this.widget.options.width * 100 + 'px', height: this.widget.options.height * 100 + 'px' }
-    
-    
+    }    
+    this.widget._style = { width: this.widget.options.width * 100 + 'px', height: this.widget.options.height * 100 + 'px' }    
   }
 
   @Watch('widget.options')
   public widgetChanged(n: IWidget, old: IWidget) {
-    console.log(n);
   }
 
   public beforeMount() {
     this.initWidget();
   }
-
-
-  public created() {
-    
-  }
-
-  
+ 
 
 }
