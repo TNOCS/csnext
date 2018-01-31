@@ -1,4 +1,4 @@
-import { Dashboard } from './dashboard';
+import { IWidget, Dashboard } from './../index';
 
 export interface ISidebarOptions {
   open?: boolean;
@@ -12,4 +12,5 @@ export interface ISidebarOptions {
   clipped?: boolean;
   canPin?: boolean;
   dashboard?: Dashboard;
+  widget?: IWidget;
 }

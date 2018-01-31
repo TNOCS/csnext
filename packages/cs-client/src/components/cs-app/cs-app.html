@@ -70,6 +70,8 @@
     </v-btn>
   </v-toolbar>
 
+  <cs-sidebar :sideBar="leftSideBar"></cs-sidebar>
+<!-- 
   <v-navigation-drawer disable-route-watcher v-if="leftSideBar" v-model="leftSideBar.open" :mini-variant="leftSideBar.mini"
     :clipped="leftSideBar.clipped" :permanent="leftSideBar.permanent" :persistent="leftSideBar.persistent"
     :temporary="leftSideBar.temporary" :floating="leftSideBar.floating" absolute overflow app>
@@ -119,7 +121,7 @@
         </v-list-group>
       </v-list>
     </div>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
 
   <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
     :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"

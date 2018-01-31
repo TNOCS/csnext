@@ -1,15 +1,15 @@
-import { ISidebarOptions } from './../../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Component from 'vue-class-component';
 import { RouteConfig } from 'vue-router/types/router';
-import { Dashboard, INotification, ThemeColors } from '@csnext/cs-core';
+import { Dashboard, INotification, ThemeColors, ISidebarOptions } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard } from '../../';
 import { setInterval } from 'timers';
 import './cs-app.css';
 import './../../sass/main.scss';
+import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 
 // register needed plugins
 Vue.use(VueRouter);
@@ -21,14 +21,15 @@ const router = new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   template: require('./cs-app.html'),
-  components: {}
+  components: {
+    'cs-sidebar': CsSidebar
+  }
 } as any)
 export class CsApp extends Vue {
   public app = AppState.Instance;
   public settingsDialog = false;
   public $vuetify: any;
   public active = null;
-  public leftsidebarToggle = [0, 1, 2];
   public leftSideBar: ISidebarOptions = {};
 
   // notification properties
@@ -148,19 +149,31 @@ export class CsApp extends Vue {
     this.settingsDialog = true;
   }
 
+  public UpdateSideBars(d: Dashboard) {
+    Vue.nextTick(() => {
+
+      // update left sidebar
+      if (d.leftSidebar) {
+        this.leftSideBar = d.leftSidebar;
+        Vue.set(this, 'leftSideBar', d.leftSidebar);
+      } else {
+        if (this.app.project.leftSidebar) {
+          this.leftSideBar = this.app.project.leftSidebar;
+          Vue.set(this, 'leftSideBar', this.app.project.leftSidebar);
+        }
+      }
+    });
+  }
+
   public created() {
     this.InitNotifications();
 
     // listen to dashboard init events
     this.app.EventBus.$on('maindashboard.init', (d: Dashboard) => {
-      Vue.nextTick(() => {
-
-        // update left sidebar
-        if (d.leftSidebar) { this.leftSideBar = d.leftSidebar; } else {
-          if (this.app.project.leftSidebar) { this.leftSideBar = this.app.project.leftSidebar; }
-        }
-      });
+      this.UpdateSideBars(d);
     });
+
+    if (this.app.activeDashboard) { this.UpdateSideBars(this.app.activeDashboard); }
   }
 
   public SelectNotification(notification: INotification) {

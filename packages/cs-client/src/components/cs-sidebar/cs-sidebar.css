@@ -1,0 +1,11 @@
+
+.leftsidebar-pin {
+  float: right;
+  margin: 4px;
+}
+
+.leftsidebar-minify {
+  position: absolute;
+  right: 4px;
+  bottom: 5px;
+}

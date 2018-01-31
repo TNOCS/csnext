@@ -101,7 +101,8 @@ export class CsDashboard extends Vue {
   }
 
   public get component(): Vue {
-    if (this.dashboard && this.dashboard.layout) {
+    if (this.dashboard) {
+      if (!this.dashboard.layout) { this.dashboard.layout = 'single'; }
       if (LayoutManager.layoutManagers.hasOwnProperty(this.dashboard.layout)) {
         return LayoutManager.layoutManagers[this.dashboard.layout].component;
       }
