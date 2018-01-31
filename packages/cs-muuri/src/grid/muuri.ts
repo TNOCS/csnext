@@ -42,9 +42,8 @@ export class MuuriLayout extends Vue {
 
   public initWidget(widget: IWidget) {
     // check if widget options is set    
-    if (!widget.options) {
-      widget.options = { x: 1, y: 1, width: 1, height: 1 };
-    }
+    if (!widget.options) { widget.options = {}; }
+    Object.assign(widget.options, { x: 1, y: 1, width: 1, height: 1 });    
     widget._style = { width: widget.options.width * this.options.itemWidth + 'px', height: widget.options.height * this.options.itemHeight + 'px' }
     
     
