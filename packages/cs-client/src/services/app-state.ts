@@ -1,9 +1,8 @@
 import Vue from 'vue';
-import { Project, IProject, INotification, Dashboard } from '@csnext/cs-core';
+import { Project, IProject, INotification, Dashboard, IDatasource } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import { CsDashboard, Logger, CsWidget, guidGenerator } from '../';
-import { IDatasource } from '../../../cs-core/dist/classes/datasource';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
