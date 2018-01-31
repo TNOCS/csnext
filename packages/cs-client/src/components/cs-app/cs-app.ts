@@ -1,3 +1,4 @@
+import { ISidebarOptions } from './../../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
@@ -28,6 +29,7 @@ export class CsApp extends Vue {
   public $vuetify: any;
   public active = null;
   public leftsidebarToggle = [0, 1, 2];
+  public leftSideBar: ISidebarOptions = {};
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -148,6 +150,17 @@ export class CsApp extends Vue {
 
   public created() {
     this.InitNotifications();
+
+    // listen to dashboard init events
+    this.app.EventBus.$on('maindashboard.init', (d: Dashboard) => {
+      Vue.nextTick(() => {
+
+        // update left sidebar
+        if (d.leftSidebar) { this.leftSideBar = d.leftSidebar; } else {
+          if (this.app.project.leftSidebar) { this.leftSideBar = this.app.project.leftSidebar; }
+        }
+      });
+    });
   }
 
   public SelectNotification(notification: INotification) {

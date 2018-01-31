@@ -2,7 +2,7 @@
   margin-top: 0px;
 }
 
-.theme--light .tabs__bar
+.cs-navigation-tabbar .tabs__bar
 {
   background-color: transparent !important
 }

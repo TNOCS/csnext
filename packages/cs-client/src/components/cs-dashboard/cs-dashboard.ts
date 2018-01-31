@@ -54,10 +54,14 @@ export class CsDashboard extends Vue {
   }
 
   public created() {
+
     if (!this.dashboard) { return; }
 
     // if this is a main dashboard, set it as active dashboard on appstate
-    if (this.dashboard.isMain) { this.app.activeDashboard = this.dashboard; }
+    if (this.dashboard.isMain) {
+      this.app.activeDashboard = this.dashboard;
+      this.app.EventBus.$emit('maindashboard.init', this.dashboard);
+    }
 
     // load default datasource, if configured
     if (this.dashboard.datasource) {

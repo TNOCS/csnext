@@ -1,3 +1,4 @@
+import { ISidebarOptions } from './../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
 import { Project, IProject, INotification, Dashboard, IDatasource } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
