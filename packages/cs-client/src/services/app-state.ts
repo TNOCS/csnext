@@ -1,6 +1,6 @@
 import { ISidebarOptions } from './../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
-import { Project, IProject, INotification, IDashboard, IDatasource } from '@csnext/cs-core';
+import { MessageBusService, Project, IProject, INotification, IDashboard, IDatasource } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import { CsDashboard, Logger, CsWidget, guidGenerator } from '../';
@@ -22,7 +22,7 @@ export class AppState {
   public logger = Logger.Instance;
 
   /** Event bus for publish/subscribe events in application */
-  public EventBus = new Vue();
+  public bus = new MessageBusService();
 
   /** True if the application has been initialized */
   public isInitialized = false;
@@ -68,7 +68,7 @@ export class AppState {
     // }
 
     this.isInitialized = true;
-    this.EventBus.$emit('init');
+    this.bus.publish('app-state', 'init', null);
   }
 
   public initializeDashboards(dashboards: IDashboard[]) {
@@ -87,7 +87,7 @@ export class AppState {
 
   public TriggerNotification(notification: INotification) {
     Object.assign(notification, { id: guidGenerator(), timeout: 3000, created: new Date(), isRead: false, remember: true, _visible: true } as INotification);
-    this.EventBus.$emit('notification.new', notification);
+    this.bus.publish('notification', 'new', notification);
     if (this.project.notifications && this.project.notifications.items && notification.remember) { this.project.notifications.items.push(notification); }
   }
 }

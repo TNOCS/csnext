@@ -169,8 +169,8 @@ export class CsApp extends Vue {
     this.InitNotifications();
 
     // listen to dashboard init events
-    this.app.EventBus.$on('maindashboard.init', (d: IDashboard) => {
-      this.UpdateSideBars(d);
+    this.app.bus.subscribe('dashboard.main', (action, dashboard) => {
+      this.UpdateSideBars(dashboard);
     });
 
     if (this.app.activeDashboard) { this.UpdateSideBars(this.app.activeDashboard); }
@@ -190,10 +190,12 @@ export class CsApp extends Vue {
     this.$set(this, 'unReadNotifications', this.app.project.notifications.items.filter(not => !not.isRead));
   }
   public InitNotifications() {
-    if (this.app.EventBus) {
-      this.app.EventBus.$on('notification.new', (not: INotification) => {
-        this.lastNotification = not;
-        this.UpdateNotifications();
+    if (this.app.bus) {
+      this.app.bus.subscribe('notification', (action: string, notification: INotification) => {
+        if (action === 'new') {
+          this.lastNotification = notification;
+          this.UpdateNotifications();
+        }
       });
     }
   }

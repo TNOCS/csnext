@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { IDashboardManagerConfig, Dashboard, IDashboardManager, IWidget } from "@csnext/cs-core";
+import { IDashboardManagerConfig, IDashboard, IDashboardManager, IWidget } from "@csnext/cs-core";
 import { setInterval } from 'timers';
 import { CrossChart, CrossOptions, ChartOptions } from './../';
 import {  } from './crossfilter-options';
@@ -13,7 +13,7 @@ export class CrossFilterManager implements IDashboardManagerConfig, IDashboardMa
 
     public id = "crossfilter"
     public name: string;
-    public dashboard: Dashboard;
+    public dashboard: IDashboard;
     public ndx: any;
     public data: any[];
     public options: CrossOptions = {
@@ -23,7 +23,7 @@ export class CrossFilterManager implements IDashboardManagerConfig, IDashboardMa
         ]
     }
 
-    public start(dashboard: Dashboard) {
+    public start(dashboard: IDashboard) {
         this.dashboard = dashboard;
         setInterval(() => {
             let id = new Date().getTime().toString();
@@ -31,7 +31,7 @@ export class CrossFilterManager implements IDashboardManagerConfig, IDashboardMa
         }, 3000);
     }
 
-    public stop(dashboard: Dashboard) {
+    public stop(dashboard: IDashboard) {
 
     }
 
