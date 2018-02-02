@@ -3,7 +3,7 @@
   "version": "0.0.7",
   "description": "cs-muuri",
   "main": "./lib/cs-muuri.cs.js",
-  "types": "./dist/index.d.ts",
+  "types": "./lib/dist/index.d.ts",
   "url": "https://github.com/TNOCS/cs-muuri",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
