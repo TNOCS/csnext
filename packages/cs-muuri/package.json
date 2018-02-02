@@ -1,13 +1,13 @@
 {
   "name": "@csnext/cs-muuri",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "cs-muuri",
   "main": "./lib/cs-muuri.cs.js",
   "types": "./lib/dist/index.d.ts",
   "url": "https://github.com/TNOCS/cs-muuri",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
-  "scripts": {   
+  "scripts": {
     "link": "yarn link",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
     "build": "webpack --env build"
@@ -22,14 +22,14 @@
     "velocityjs": "^1.0.0"
   },
   "devDependencies": {
-    "@csnext/cs-client": "^0.0.7",
-    "@csnext/cs-core": "^0.0.7",
+    "@csnext/cs-client": "^0.0.8",
+    "@csnext/cs-core": "^0.0.8",
     "hard-source-webpack-plugin": "^0.5.16",
     "postcss-loader": "^2.0.10",
-    "ts-loader": "^3.4.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.1",
+    "ts-loader": "^3.4.0",
     "typescript": "^2.7.1",
     "webpack": "~3.10.0",
     "webpack-bundle-analyzer": "^2.9.2"
