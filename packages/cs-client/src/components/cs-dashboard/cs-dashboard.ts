@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { Project, Dashboard, IWidget } from '@csnext/cs-core';
+import { Project, IDashboard, IWidget } from '@csnext/cs-core';
 import { AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from '../../';
 
 @Component({
@@ -13,7 +13,7 @@ import { AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from
 } as any)
 export class CsDashboard extends Vue {
 
-  public dashboard?: Dashboard;
+  public dashboard?: IDashboard;
   public app = AppState.Instance;
 
   constructor() {

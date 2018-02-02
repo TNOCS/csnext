@@ -1,4 +1,4 @@
-import { AppTheme, IHeaderOptions, IFooterOptions, IDatasource, Dashboard, ISidebarOptions, NavigationOptions } from './..';
+import { AppTheme, IHeaderOptions, IFooterOptions, IDatasource, IDashboard, ISidebarOptions, NavigationOptions } from './..';
 
 /** project definition */
 export interface IProject {
@@ -8,7 +8,7 @@ export interface IProject {
   navigation?: NavigationOptions;
   footer?: IFooterOptions;
   datasources?: { [id: string]: IDatasource };
-  dashboards?: Dashboard[];
+  dashboards?: IDashboard[];
   leftSidebar?: ISidebarOptions;
   rightSidebar?: ISidebarOptions;
   theme?: AppTheme;
@@ -48,7 +48,7 @@ export class Project implements IProject {
   public navigation?: NavigationOptions = {};
   public footer?: IFooterOptions = {};
   public datasources?: { [id: string]: IDatasource } = {};
-  public dashboards?: Dashboard[] = [];
+  public dashboards?: IDashboard[] = [];
   public leftSidebar?: ISidebarOptions = {};
   public rightSidebar?: ISidebarOptions = {};
   public theme?: AppTheme;

@@ -1,6 +1,6 @@
 import { ISidebarOptions } from './../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
-import { Project, IProject, INotification, Dashboard, IDatasource } from '@csnext/cs-core';
+import { Project, IProject, INotification, IDashboard, IDatasource } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
 import { CsDashboard, Logger, CsWidget, guidGenerator } from '../';
@@ -35,7 +35,7 @@ export class AppState {
     return this.pInstance || (this.pInstance = new this());
   }
 
-  public activeDashboard?: Dashboard;
+  public activeDashboard?: IDashboard;
 
   public data: { [id: string]: any } = {};
 
@@ -71,7 +71,7 @@ export class AppState {
     this.EventBus.$emit('init');
   }
 
-  public initializeDashboards(dashboards: Dashboard[]) {
+  public initializeDashboards(dashboards: IDashboard[]) {
     if (dashboards) {
       dashboards.forEach(d => {
         d.isMain = true;

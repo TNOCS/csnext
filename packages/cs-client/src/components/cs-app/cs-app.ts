@@ -3,7 +3,7 @@ import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Component from 'vue-class-component';
 import { RouteConfig } from 'vue-router/types/router';
-import { Dashboard, INotification, ThemeColors, ISidebarOptions } from '@csnext/cs-core';
+import { IDashboard, INotification, ThemeColors, ISidebarOptions } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard } from '../../';
 import { setInterval } from 'timers';
@@ -82,7 +82,7 @@ export class CsApp extends Vue {
     }
   }
 
-  public getAdjacentDashboard(direction: string, active: Dashboard, dashboards?: Dashboard[]): Dashboard {
+  public getAdjacentDashboard(direction: string, active: IDashboard, dashboards?: IDashboard[]): IDashboard {
     if (!dashboards) { return active; }
     let index = dashboards.indexOf(active);
     switch (direction) {
@@ -110,7 +110,7 @@ export class CsApp extends Vue {
   }
 
   // Add a dashboard as a route
-  public AddDashboardRoute(d: Dashboard) {
+  public AddDashboardRoute(d: IDashboard) {
     if (d.dashboards && d.dashboards.length > 0) {
       d.dashboards.forEach(dash => {
         dash.parent = d;
@@ -140,7 +140,7 @@ export class CsApp extends Vue {
     Logger.info('navigation', 'navigation initialized');
   }
 
-  public SelectDashboard(d: Dashboard) {
+  public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (router && d.path && !d.dashboards) { router.push(d.path); }
   }
@@ -149,7 +149,7 @@ export class CsApp extends Vue {
     this.settingsDialog = true;
   }
 
-  public UpdateSideBars(d: Dashboard) {
+  public UpdateSideBars(d: IDashboard) {
     Vue.nextTick(() => {
 
       // update left sidebar
@@ -169,7 +169,7 @@ export class CsApp extends Vue {
     this.InitNotifications();
 
     // listen to dashboard init events
-    this.app.EventBus.$on('maindashboard.init', (d: Dashboard) => {
+    this.app.EventBus.$on('maindashboard.init', (d: IDashboard) => {
       this.UpdateSideBars(d);
     });
 

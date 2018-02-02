@@ -1,5 +1,5 @@
 import { Watch } from 'vue-property-decorator';
-import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
+import { IWidget, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
 import { WidgetBase, Logger, CsWidget, AppState, LayoutManager, guidGenerator } from '@csnext/cs-client';
 import Component from 'vue-class-component';

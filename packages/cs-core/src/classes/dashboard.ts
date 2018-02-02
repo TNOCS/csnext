@@ -1,57 +1,57 @@
 import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions } from '../';
 
-export class Dashboard {
+export interface IDashboard {
   // dashboard id
-  public id?: string;
+  id?: string;
 
   // router path
-  public path?: string;
+  path?: string;
 
   // dashboard title
-  public title?: string;
+  title?: string;
 
   // manager that is responsible for layout
-  public layout?: string;
+  layout?: string;
 
   // manager id that is responsible for managing dashboard
-  public manager?: string;
+  manager?: string;
 
   // active dashboard manager (if set in manager)
   // tslint:disable-next-line:variable-name
-  public _manager?: IDashboardManager;
+  _manager?: IDashboardManager;
 
-  public options?: any; // IDashboardOptions;
+  options?: any; // IDashboardOptions;
 
   // list of widgets
-  public widgets?: IWidget[] = [];
-  public active?: boolean;
+  widgets?: IWidget[];
+  active?: boolean;
 
-  public icon?: string;
+  icon?: string;
 
   // allow left & right swipe gestures to switch between dashboards
-  public touchGesturesEnabled?: boolean = false;
+  touchGesturesEnabled?: boolean;
 
   // id of default datasource
-  public datasource?: string;
+  datasource?: string;
 
   // if datasource is set, result will be available in content
-  public content?: any;
+  content?: any;
 
   // generic data field for passing dashboard data
-  public data?: any;
+  data?: any;
 
-  public defaultWidgetOptions?: IWidgetOptions;
+  defaultWidgetOptions?: IWidgetOptions;
 
   // options for left sidebar
-  public leftSidebar?: ISidebarOptions = {};
+  leftSidebar?: ISidebarOptions;
 
   // optional list of sub dashboards
-  public dashboards?: Dashboard[];
+  dashboards?: IDashboard[];
 
   // parent dashboard, if this is a child dashboard
-  public parent?: Dashboard;
+  parent?: IDashboard;
 
   // enabled for main dashboard, disabled if dashboards are used for left/right panels
-  public isMain?: boolean;
+  isMain?: boolean;
 
 }

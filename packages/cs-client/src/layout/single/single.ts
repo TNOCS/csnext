@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, Dashboard, ILayoutManagerConfig } from '@csnext/cs-core';
+import { IWidget, IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
 import { Logger, CsWidget, AppState, LayoutManager } from '../../';
 
 @Component({
@@ -12,7 +12,7 @@ import { Logger, CsWidget, AppState, LayoutManager } from '../../';
 } as any)
 /** Single layout manager. Only shows first widget full screen */
 export class Single extends Vue {
-  public dashboard?: Dashboard;
+  public dashboard?: IDashboard;
   private widget: IWidget | undefined;
 
   public created() {

@@ -4,7 +4,7 @@ import { IWidget } from '@csnext/cs-core';
 import { Logger } from '../';
 
 @Component({
-  name: 'dashboard',
+  name: 'widget-base',
   props: {
     widget: null
   }

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Dashboard, ILayoutManagerConfig } from '@csnext/cs-core';
+import { IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './grid.css';
@@ -11,7 +11,7 @@ import './grid.css';
   }
 } as any)
 export class Grid extends Vue {
-  public dashboard?: Dashboard;
+  public dashboard?: IDashboard;
 }
 
 LayoutManager.add(({ id: 'grid', name: 'grid page', component: Grid } as ILayoutManagerConfig));

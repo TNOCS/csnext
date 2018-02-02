@@ -1,5 +1,5 @@
 import { Watch } from 'vue-property-decorator';
-import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
+import { IWidget, IDashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
 import { WidgetBase, Logger, CsWidget, AppState, LayoutManager } from '@csnext/cs-client';
 import Component from 'vue-class-component';
@@ -43,7 +43,7 @@ export interface IGridStackOptions extends IDashboardOptions {
 })
 export class GridStack extends Vue {
   public mode: any;
-  public dashboard: Dashboard;
+  public dashboard: IDashboard;
   public gridoptions: IGridStackOptions;
   public grid: any;
 

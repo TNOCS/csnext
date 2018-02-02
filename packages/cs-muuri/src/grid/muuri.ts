@@ -1,5 +1,5 @@
 import { Watch } from 'vue-property-decorator';
-import { IWidget, Dashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
+import { IWidget, IDashboard, ILayoutManagerConfig, IDashboardOptions } from '@csnext/cs-core';
 import Vue from 'vue';
 import { WidgetBase, Logger, CsWidget, AppState, LayoutManager, guidGenerator } from '@csnext/cs-client';
 import Component from 'vue-class-component';
@@ -24,7 +24,7 @@ export interface IMuuriOptions extends IDashboardOptions {
 
 export class MuuriLayout extends Vue {
   public mode: any;
-  public dashboard: Dashboard;
+  public dashboard: IDashboard;
   public options: IMuuriOptions;
   public grid: any;
   private docElem;

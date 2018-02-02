@@ -1,5 +1,5 @@
 import { EditorSchema } from './editor-schema';
-import { Dashboard } from '../index';
+import { IDashboard } from '../index';
 
 export enum WidgetType {
   component,
@@ -28,7 +28,7 @@ export interface IWidget {
   data?: any;
   options?: IWidgetOptions;
   Schema?: EditorSchema;
-  _dashboard?: Dashboard;
+  _dashboard?: IDashboard;
   _initalized?: boolean;
   _style?: any;
 }

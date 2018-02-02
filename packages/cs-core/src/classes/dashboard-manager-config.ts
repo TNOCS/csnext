@@ -1,4 +1,4 @@
-import { Dashboard } from '../';
+import { IDashboard } from '../';
 
 export interface IDashboardManagerConfig {
   id: string;
@@ -7,7 +7,7 @@ export interface IDashboardManagerConfig {
 }
 
 export interface IDashboardManager {
-  start: (dashboard: Dashboard) => any;
-  stop: (dashboard: Dashboard) => any;
+  start: (dashboard: IDashboard) => any;
+  stop: (dashboard: IDashboard) => any;
   dataLoaded?: (d: any) => void;
 }
