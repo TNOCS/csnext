@@ -1,11 +1,14 @@
 {
-	"private": true,
-	"scripts": {
-		"postinstall": "lerna bootstrap --hoist && lerna run link",
-		"dev": "lerna run --parallel dev"
-	},
-	"devDependencies": {
-		"lerna": "^2.7.1"
-	},
-	"dependencies": {}
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "lerna bootstrap --hoist && lerna run link",
+    "dev": "lerna run --parallel dev",
+    "clean": "lerna run --parallel clean"
+  },
+  "devDependencies": {
+    "del-cli": "^1.1.0",
+    "lerna": "^2.7.1"
+  },
+  "dependencies": {}
 }

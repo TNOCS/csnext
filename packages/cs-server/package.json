@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "clean": "del-cli dist"
   },
   "publishConfig": {
     "access": "public"

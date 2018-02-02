@@ -10,7 +10,8 @@
   "scripts": {
     "link": "yarn link",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
-    "build": "webpack --watch --env build"
+    "build": "webpack --watch --env build",
+    "clean": "del-cli dist lib"
   },
   "publishConfig": {
     "access": "public"
