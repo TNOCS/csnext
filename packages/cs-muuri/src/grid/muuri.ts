@@ -8,8 +8,9 @@ import "./muuri.css";
 import { MuuriWidget } from '../widget/muuri-widget';
 
 export interface IMuuriOptions extends IDashboardOptions {
-  itemWidth: number;
-  itemHeight: number;
+  itemWidth?: number;
+  itemHeight?: number;
+  dragEnabled?: boolean;
 }
 
 @Component({
@@ -40,7 +41,7 @@ export class MuuriLayout extends Vue {
     return this.dashboard.widgets.filter(w => w.options && w.options.background);
   }
 
-  
+
 
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: IWidget[]) {
@@ -62,10 +63,8 @@ export class MuuriLayout extends Vue {
   }
 
   public beforeMount() {
-    this.options = this.dashboard.options as IMuuriOptions;
-    if (!this.options) { this.options = { itemHeight: 100, itemWidth: 100 } };
-    if (!this.options.itemHeight) { this.options.itemHeight = 100; }
-    if (!this.options.itemWidth) { this.options.itemWidth = 100; }
+    this.options = {};
+    Object.assign(this.options, { itemHeight: 100, itemWidth: 100, dragEnabled: true }, this.dashboard.options);
 
     this.dashboard.widgets.forEach(widget => {
       // this.initWidget(widget);
@@ -80,15 +79,15 @@ export class MuuriLayout extends Vue {
       items: '*',
       layoutDuration: 200,
       layoutEasing: 'ease',
-      dragEnabled: true,
-      dragSortInterval: 50,
+      dragEnabled: this.options.dragEnabled,
+      dragSortInterval: 10,
       dragContainer: document.body,
       dragStartPredicate: function (item, event) {
         var isDraggable = true;
         // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
         return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
       },
-      dragReleaseDuration: 200,
+      dragReleaseDuration: 20,
       dragReleseEasing: 'ease'
     })
       .on('dragStart', () => {
@@ -114,7 +113,7 @@ export class MuuriLayout extends Vue {
   }
 
   private updateIndices() {
-    this.grid.getItems().forEach(function (item, i) {
+    this.grid.getItems().forEach((item, i) => {
       item.getElement().setAttribute('data-id', i + 1);
       // item.getElement().querySelector('.card-id').innerHTML = i + 1;
     });

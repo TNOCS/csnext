@@ -1,6 +1,7 @@
 .grid {
     position: relative;
   }
+
   .item {
     display: block;
     position: absolute;    
