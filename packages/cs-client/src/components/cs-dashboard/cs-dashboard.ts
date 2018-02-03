@@ -16,11 +16,6 @@ export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
   public app = AppState.Instance;
 
-  constructor() {
-    super();
-    // this.dashboard = new Dashboard();
-  }
-
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: any) {
     n.forEach(w => {
@@ -53,32 +48,13 @@ export class CsDashboard extends Vue {
     widget._initalized = true;
   }
 
-  public created() {
-    if (!this.dashboard) { return; }
+  /** init dashboard: load datasources, init widgets and init manager  */
+  public initDashboard(dashboard: IDashboard) {
 
     // if this is a main dashboard, set it as active dashboard on appstate
-    if (this.dashboard.isMain) {
+    if (dashboard.isMain) {
       this.app.activeDashboard = this.dashboard;
       this.app.bus.publish('dashboard.main', 'init', this.dashboard);
-    }
-
-    // load default datasource, if configured
-    if (this.dashboard.datasource) {
-      this.app.loadDatasource(this.dashboard.datasource).catch(e => {
-        if (!this.dashboard) { return; }
-        Logger.error('dashboard datasource', 'error loading datasource ' + this.dashboard.datasource);
-      }).then(d => {
-        if (!this.dashboard) { return; }
-        this.dashboard.content = d;
-
-        // if dashboard manager availabe, trigger data loaded event
-        if (this.dashboard._manager && this.dashboard._manager.dataLoaded) {
-          this.dashboard._manager.dataLoaded(d);
-        }
-        // this.$nextTick(() => {
-        //   Vue.set(this.dashboard, 'content', d);
-        // });
-      });
     }
 
     // init widgets
@@ -89,33 +65,49 @@ export class CsDashboard extends Vue {
     }
 
     // init dashboard manager
-    if (this.dashboard.manager) {
-      if (DashboardManager.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-        this.dashboard._manager = DashboardManager.dashboardManagers[this.dashboard.manager].getInstance();
-        if (this.dashboard._manager) {
-          this.dashboard._manager.start(this.dashboard);
+    if (dashboard.manager) {
+      if (DashboardManager.dashboardManagers.hasOwnProperty(dashboard.manager)) {
+        // instantiate manager
+        dashboard._manager = DashboardManager.dashboardManagers[dashboard.manager].getInstance();
+        if (dashboard._manager) {
+          // start manager
+          dashboard._manager.start(dashboard);
         }
       }
     }
+
+    // load default datasource, if configured
+    if (dashboard.datasource) {
+      this.app.loadDatasource(dashboard.datasource).catch(e => {
+        if (!this.dashboard) { return; }
+        Logger.error('dashboard datasource', 'error loading datasource ' + this.dashboard.datasource);
+      }).then(d => {
+        if (!this.dashboard) { return; }
+        this.dashboard.content = d;
+
+        // if dashboard manager availabe, trigger data loaded event
+        if (this.dashboard._manager && this.dashboard._manager.dataLoaded) {
+          this.dashboard._manager.dataLoaded(d);
+        }
+      });
+    }
+  }
+
+  public created() {
+    if (!this.dashboard) { return; }
+    this.initDashboard(this.dashboard);
   }
 
   public get component(): Vue {
     if (this.dashboard) {
+      // use default single layout, if no layout has been specified
       if (!this.dashboard.layout) { this.dashboard.layout = 'single'; }
+
+      // lookup layout manager
       if (LayoutManager.layoutManagers.hasOwnProperty(this.dashboard.layout)) {
         return LayoutManager.layoutManagers[this.dashboard.layout].component;
       }
     }
     return new Vue();
   }
-
-  // public beforeMount() {
-  //   if (!this.app.isInitialized) { this.app.Init(); }
-  //   // if (this.dashboard && this.dashboard.manager) {
-  //   //     if (this.app.dashboardManagers.hasOwnProperty(this.dashboard.manager)) {
-  //   //         this.component = this.app.dashboardManagers[this.dashboard.manager].component;
-  //   //     }
-  //   // }
-  // }
-
 }
