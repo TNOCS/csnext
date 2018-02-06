@@ -1,12 +1,18 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2015",
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "outDir": "./dist",
-        "declaration": true,
-        "moduleResolution": "node",
-        "experimentalDecorators": true
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "lib": [
+      "es5",
+      "dom",
+      "es2015",
+      "es2015.promise"
+    ],
+   "outDir": "./dist",
+    "declaration": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true
+  }
 }

@@ -10,7 +10,8 @@
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
-    "build": "webpack --watch --env build"
+    "build": "webpack --watch --env build",
+    "clean": "del-cli dist lib"
   },
   "publishConfig": {
     "access": "public"
@@ -21,7 +22,7 @@
   },
   "devDependencies": {
     "@csnext/cs-core": "^0.0.8",
-    "@types/geojson": "^7946.0.0",
+    "@types/geojson": "^7946.0.1",
     "concurrently": "^3.5.1",
     "cpx": "^1.5.0",
     "css-loader": "^0.28.9",
@@ -29,12 +30,12 @@
     "http-server": "~0.11.1",
     "ipaddr.js": "^1.5.4",
     "node-sass": "^4.7.2",
-    "postcss-loader": "^2.0.10",
+    "postcss-loader": "^2.1.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
+    "style-loader": "^0.20.1",
     "ts-loader": "^3.4.0",
     "tslint": "~5.9.1",
     "tslint-loader": "~3.5.3",
@@ -42,12 +43,12 @@
     "url-loader": "^0.6.2",
     "vue": "^2.5.13",
     "vue-class-component": "^6.1.2",
-    "vue-loader": "^13.7.0",
+    "vue-loader": "^14.1.1",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
     "webpack": "~3.10.0",
-    "webpack-bundle-analyzer": "^2.9.2",
-    "webpack-dev-server": "~2.11.0",
-    "yargs": "^10.1.1"
+    "webpack-bundle-analyzer": "^2.10.0",
+    "webpack-dev-server": "~2.11.1",
+    "yargs": "^11.0.0"
   }
 }
