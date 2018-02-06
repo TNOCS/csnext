@@ -1,11 +1,17 @@
 export interface IDatasource {
-    id?: string;
-    handlers?: IDatasourceHandler[];
-    source?: string;
-    data?: any;
-    options?: any;
-    // load directly from start
-    instant?: boolean;
+  id?: string;
+  handlers?: IDatasourceHandler[];
+  source?: string;
+  data?: any;
+  options?: any;
+  // load directly from start
+  instant?: boolean;
+  isLoading?: boolean;
+  loaded?: boolean;
+  // tslint:disable-next-line:ban-types
+  requestQueue?: Array<{ resolve: Function, reject: Function }>;
+  // {(value: any) => void, (reason?: any) => void }
+  // | PromiseLike<object> | undefined
 }
 
 export interface IDatasourceHandler {
