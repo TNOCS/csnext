@@ -20,8 +20,10 @@ export class MuuriWidget extends Vue {
     // check if widget options is set    
     if (!this.widget.options) {
       this.widget.options = { x: 1, y: 1, width: 1, height: 1 };
-    }    
-    this.widget._style = { width: this.widget.options.width * 100 + 'px', height: this.widget.options.height * 100 + 'px' }    
+    }
+    let totalwidth = AppState.Instance.windowSize.x;
+    let baseSize = totalwidth / ((totalwidth < 800) ? 4 : 12);
+    this.widget._style = { width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' }
   }
 
   @Watch('widget.options')
@@ -31,6 +33,6 @@ export class MuuriWidget extends Vue {
   public beforeMount() {
     this.initWidget();
   }
- 
+
 
 }

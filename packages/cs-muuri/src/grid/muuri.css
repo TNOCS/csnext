@@ -1,8 +1,9 @@
-.grid {
+.muuri-grid {
     position: relative;
+    width:100%;
   }
 
-  .item {
+  .muuri-item {
     display: block;
     position: absolute;    
   }
