@@ -2,7 +2,7 @@
 import { AppState } from './services/app-state';
 
 // utils
-export * from './utils/guid';
+export { guidGenerator, idGenerator} from './utils/guid';
 
 // services
 export * from './services/app-state';
@@ -24,6 +24,7 @@ export * from './datasources/geojson-datasource-processor';
 import { CsApp } from './components/cs-app/cs-app';
 import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
+import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 
 export * from './components/cs-app/cs-app';
 export * from './components/cs-widget/cs-widget';
@@ -43,5 +44,6 @@ export const csnext = {
     Vue.component('cs-dashboard', CsDashboard);
     Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
+    Vue.component('cs-sidebar', CsSidebar);
   }
 };

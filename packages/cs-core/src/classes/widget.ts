@@ -1,3 +1,5 @@
+import { IMessageBusService } from './../utils/message-bus/message-bus-service';
+import { IMenu } from './menu';
 import { EditorSchema } from './editor-schema';
 import { IDashboard } from '../index';
 
@@ -12,9 +14,13 @@ export interface IWidgetOptions {
   class?: string;
   width?: number;
   height?: number;
+  margin?: number;
   x?: number;
   y?: number;
   background?: boolean;
+  canRemove?: boolean;
+  canEdit?: boolean;
+  menus?: IMenu[];
 }
 
 export interface IWidget {
@@ -27,7 +33,9 @@ export interface IWidget {
   datasource?: string;
   data?: any;
   options?: IWidgetOptions;
+  editorWidget?: IWidget;
   Schema?: EditorSchema;
+  events?: IMessageBusService;
   _dashboard?: IDashboard;
   _initalized?: boolean;
   _style?: any;

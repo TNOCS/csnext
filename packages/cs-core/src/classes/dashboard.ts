@@ -1,4 +1,4 @@
-import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions } from '../';
+import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
 
 export interface IDashboard {
   // dashboard id
@@ -27,7 +27,6 @@ export interface IDashboard {
   active?: boolean;
 
   icon?: string;
-
   // allow left & right swipe gestures to switch between dashboards
   touchGesturesEnabled?: boolean;
 
@@ -45,6 +44,9 @@ export interface IDashboard {
   // options for left sidebar
   leftSidebar?: ISidebarOptions;
 
+  // options for right sidebar
+  rightSidebar?: ISidebarOptions;
+
   // optional list of sub dashboards
   dashboards?: IDashboard[];
 
@@ -53,5 +55,7 @@ export interface IDashboard {
 
   // enabled for main dashboard, disabled if dashboards are used for left/right panels
   isMain?: boolean;
+
+  events?: IMessageBusService;
 
 }

@@ -1,9 +1,9 @@
-import { ISidebarOptions } from './../../../cs-core/dist/classes/sidebar-options.d';
 import Vue from 'vue';
 import { MessageBusService, Project, IProject, INotification, IDashboard, IDatasource } from '@csnext/cs-core';
 import { CsApp } from './../components/cs-app/cs-app';
 import { ProjectManager } from './project-manager';
-import { CsDashboard, Logger, CsWidget, guidGenerator } from '../';
+import { CsSettings, CsDashboard, Logger, CsWidget, guidGenerator } from '../';
+import VueRouter from 'vue-router';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -26,6 +26,8 @@ export class AppState {
 
   /** True if the application has been initialized */
   public isInitialized = false;
+
+  public router?: VueRouter;
 
   /** list of past notifications */
   public notifications: INotification[] = [];

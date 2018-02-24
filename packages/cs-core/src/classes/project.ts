@@ -1,4 +1,5 @@
 import { AppTheme, IHeaderOptions, IFooterOptions, IDatasource, IDashboard, ISidebarOptions, NavigationOptions } from './..';
+import { IMenu } from './menu';
 
 /** project definition */
 export interface IProject {
@@ -14,6 +15,7 @@ export interface IProject {
   theme?: AppTheme;
   header?: IHeaderOptions;
   notifications?: INotificationOptions;
+  menus?: IMenu[];
 }
 
 /** notification object */
@@ -54,4 +56,5 @@ export class Project implements IProject {
   public theme?: AppTheme;
   public header?: IHeaderOptions;
   public notifications?: INotificationOptions;
+  public menus?: IMenu[] = [];
 }

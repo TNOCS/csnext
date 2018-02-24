@@ -1,8 +1,8 @@
 <v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
 
   <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" 
-    :clipped-left="leftSideBar && leftSideBar.clipped" absolute :dense="app.project.header.dense" app>
-    <v-toolbar-side-icon v-if="leftSideBar" @click="leftSideBar.open = !leftSideBar.open"></v-toolbar-side-icon>
+    :clipped-left="leftSidebar && leftSidebar.clipped" absolute :dense="app.project.header.dense" app>
+    <v-toolbar-side-icon v-if="leftSidebar" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
@@ -20,7 +20,9 @@
     <v-spacer></v-spacer>
     <v-btn v-if="app.project.search" icon>
       <v-icon>search</v-icon>
-    </v-btn>
+    </v-btn> 
+     
+
     <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
         <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
@@ -52,6 +54,13 @@
       </v-card>
     </v-menu>
 
+    <v-menu v-for="menu in app.project.menus" v-if="menu.visible" class="app-menu">
+        <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
+            <v-icon>{{menu.icon}}</v-icon>
+          </v-btn>      
+    </v-menu>
+    
+
 
     <v-menu bottom left>
       <v-btn icon slot="activator" :dark="app.project.theme.dark">
@@ -70,37 +79,38 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar :sideBar="leftSideBar"></cs-sidebar>
+  <cs-sidebar :sideBar="leftSidebar"></cs-sidebar>
+  <cs-sidebar :sideBar="rightSidebar"></cs-sidebar>
 <!-- 
-  <v-navigation-drawer disable-route-watcher v-if="leftSideBar" v-model="leftSideBar.open" :mini-variant="leftSideBar.mini"
-    :clipped="leftSideBar.clipped" :permanent="leftSideBar.permanent" :persistent="leftSideBar.persistent"
-    :temporary="leftSideBar.temporary" :floating="leftSideBar.floating" absolute overflow app>
+  <v-navigation-drawer disable-route-watcher v-if="leftSidebar" v-model="leftSidebar.open" :mini-variant="leftSidebar.mini"
+    :clipped="leftSidebar.clipped" :permanent="leftSidebar.permanent" :persistent="leftSidebar.persistent"
+    :temporary="leftSidebar.temporary" :floating="leftSidebar.floating" absolute overflow app>
 
-    <v-toolbar v-if="leftSideBar.title">
+    <v-toolbar v-if="leftSidebar.title">
       <v-list dense>
         <v-list-tile>
           <v-icon v-if="app.project.navigation.icons">home</v-icon>
-          <v-list-tile-title class="title">{{leftSideBar.title}}</v-list-tile-title>
+          <v-list-tile-title class="title">{{leftSidebar.title}}</v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-toolbar>
-    <div v-if="leftSideBar.canpin" class="leftsidebar-pin">
-      <v-btn small icon @click="leftSideBar.temporary=!leftSideBar.temporary">
-        <v-icon small v-if="leftSideBar.temporary">lock_open</v-icon>
-        <v-icon small v-if="!leftSideBar.temporary">lock_outline</v-icon>
+    <div v-if="leftSidebar.canpin" class="leftsidebar-pin">
+      <v-btn small icon @click="leftSidebar.temporary=!leftSidebar.temporary">
+        <v-icon small v-if="leftSidebar.temporary">lock_open</v-icon>
+        <v-icon small v-if="!leftSidebar.temporary">lock_outline</v-icon>
       </v-btn>
     </div>
 
     <div class="leftsidebar-minify">
-      <v-btn small icon @click="leftSideBar.mini=!leftSideBar.mini">
-        <v-icon small v-if="leftSideBar.mini">keyboard_arrow_right</v-icon>
-        <v-icon small v-if="!leftSideBar.mini">keyboard_arrow_left</v-icon>
+      <v-btn small icon @click="leftSidebar.mini=!leftSidebar.mini">
+        <v-icon small v-if="leftSidebar.mini">keyboard_arrow_right</v-icon>
+        <v-icon small v-if="!leftSidebar.mini">keyboard_arrow_left</v-icon>
       </v-btn>
     </div>
 
-    <v-divider v-if="leftSideBar.title"></v-divider>
-    <div v-if="leftSideBar.component">
-      <component :is="leftSideBar.component"></component>
+    <v-divider v-if="leftSidebar.title"></v-divider>
+    <div v-if="leftSidebar.component">
+      <component :is="leftSidebar.component"></component>
     </div>
     <div v-else-if="app.project.navigation.style==='left'">
       <v-list>
@@ -110,7 +120,7 @@
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-if="!leftSideBar.mini" v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
+          <v-list-tile v-if="!leftSidebar.mini" v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
             <v-list-tile-content>
               <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
             </v-list-tile-content>
@@ -123,7 +133,7 @@
     </div>
   </v-navigation-drawer> -->
 
-  <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
+  <!-- <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
     :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"
     :persistent="app.project.rightSidebar.persistent" :temporary="app.project.rightSidebar.temporary" :floating="app.project.rightSidebar.floating"
     absolute overflow app>
@@ -145,9 +155,9 @@
 
     <v-divider v-if="app.project.rightSidebar.title"></v-divider>
     <div id="rightSidebarComponent">
-      <!-- <component :is="app.project.rightSidebar.component"></component> -->
+      <component :is="app.project.rightSidebar.component"></component>
     </div>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
 
   <!--
   <v-tabs right>

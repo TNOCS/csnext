@@ -28,21 +28,13 @@ export class MuuriWidget extends Vue {
     this.widget._style = { margin: this.widget.options.margin ? this.widget.options.margin + "px" : "0", width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' }
   }
 
-  @Watch('widget.options')
-  public widgetChanged(n: IWidget, old: IWidget) {
-    console.log('widget changed');
-  }
-
   public beforeMount() {
     this.initWidget();
   }
 
   public created() {
     if (this.widget.events) {
-      debugger;
       this.widget.events.subscribe('size-changed', () => {
-        console.log('size changed');
-
         this.initWidget();
         this.grid.layout(true);
 

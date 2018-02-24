@@ -1,4 +1,5 @@
-import { IDashboard } from '../';
+import { IWidget } from './widget';
+import { IDashboard } from './dashboard';
 
 export interface IDashboardManagerConfig {
   id: string;
@@ -6,8 +7,12 @@ export interface IDashboardManagerConfig {
   getInstance: () => IDashboardManager;
 }
 
+/** Interface for dashboard manager */
 export interface IDashboardManager {
-  start: (dashboard: IDashboard) => any;
-  stop: (dashboard: IDashboard) => any;
+  start: (dashboard: IDashboard) => void;
+  stop: (dashboard: IDashboard) => void;
+  dashboardLoaded?: (dashboard: IDashboard) => void;
+  editDashboard?: (dashboard: IDashboard) => void;
   dataLoaded?: (d: any) => void;
+  removeWidget?: (widget: IWidget) => void;
 }

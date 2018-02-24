@@ -10,4 +10,9 @@ import { AppState, Logger } from '../../';
 export class CsSettings extends Vue {
   public app = AppState.Instance;
   public L = Logger.Instance;
+
+  constructor() {
+    super();
+    alert();
+  }
 }

@@ -1,10 +1,15 @@
 import { MessageBusHandle, IMessageBusCallback } from './message-bus-handle';
 
+export interface IMessageBusService {
+  publish(topic: string, title: string, data?: any): void;
+  subscribe(topic: string, callback: IMessageBusCallback): void;
+
+}
 /**
  * Simple message bus service, used for subscribing and unsubsubscribing to topics.
  * @see {@link https://gist.github.com/floatingmonkey/3384419}
  */
-export class MessageBusService {
+export class MessageBusService implements IMessageBusService {
   private static cache: { [topic: string]: IMessageBusCallback[] } = {};
   private confirms: any[] = [];
 

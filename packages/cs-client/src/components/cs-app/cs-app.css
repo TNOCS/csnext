@@ -7,6 +7,10 @@
   background-color: transparent !important
 }
 
+.app-menu{
+  /** margin-left:5px; */
+}
+
 .header-title-container {
   margin-left: 16px;
 }

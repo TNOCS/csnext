@@ -1,4 +1,5 @@
 export * from './classes/project';
+export * from './classes/menu';
 export * from './classes/dashboard-options';
 export * from './classes/dashboard';
 export * from './classes/page';

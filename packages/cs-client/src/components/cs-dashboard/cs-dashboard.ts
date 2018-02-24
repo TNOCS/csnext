@@ -1,12 +1,13 @@
+import { IMessageBusService } from './../../../../cs-core/dist/utils/message-bus/message-bus-service.d';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { Project, IDashboard, IWidget } from '@csnext/cs-core';
-import { AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from '../../';
+import { Project, IDashboard, IWidget, MessageBusService } from '@csnext/cs-core';
+import { CsApp, AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from '../../';
 
 @Component({
   name: 'cs-dashboard',
-  template: '<component :is="component" :dashboard="dashboard"></component>',
+  template: require('./cs-dashboard.html'),
   props: {
     dashboard: null
   }
@@ -15,6 +16,11 @@ export class CsDashboard extends Vue {
 
   public dashboard?: IDashboard;
   public app = AppState.Instance;
+
+  @Watch('dashboard')
+  public dashboardChanged(n: IDashboard, o: IDashboard) {
+    this.initDashboard(n);
+  }
 
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: any) {
@@ -30,6 +36,7 @@ export class CsDashboard extends Vue {
   public initWidget(widget: IWidget) {
     // init widget
     if (widget._initalized) { return; }
+    if (!widget.events) { widget.events = new MessageBusService(); }
     if (!widget.options) { widget.options = {}; }
     if (!widget.data) { widget.data = {}; }
     widget._dashboard = this.dashboard;
@@ -51,6 +58,14 @@ export class CsDashboard extends Vue {
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
 
+    if (!dashboard.events) { dashboard.events = new MessageBusService(); }
+
+    if (dashboard.options && this.app.project.menus) {
+      const dashboardEditButton = this.app.project.menus.find(mi => mi.id === CsApp.DASHBOARD_EDIT_ID);
+      if (dashboardEditButton) {
+        dashboardEditButton.visible = dashboard.options.editButton;
+      }
+    }
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
       this.app.activeDashboard = this.dashboard;
@@ -65,7 +80,7 @@ export class CsDashboard extends Vue {
     }
 
     // init dashboard manager
-    if (dashboard.manager) {
+    if (dashboard.manager && !dashboard._manager) {
       if (DashboardManager.dashboardManagers.hasOwnProperty(dashboard.manager)) {
         // instantiate manager
         dashboard._manager = DashboardManager.dashboardManagers[dashboard.manager].getInstance();
@@ -75,6 +90,7 @@ export class CsDashboard extends Vue {
         }
       }
     }
+    if (dashboard._manager && dashboard._manager.dashboardLoaded) { dashboard._manager.dashboardLoaded(dashboard); }
 
     // load default datasource, if configured
     if (dashboard.datasource) {

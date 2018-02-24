@@ -4,6 +4,7 @@ export interface ISidebarOptions {
   open?: boolean;
   title?: string;
   component?: any;
+  right?: boolean;
   permanent?: boolean;
   persistent?: boolean;
   temporary?: boolean;
@@ -13,4 +14,5 @@ export interface ISidebarOptions {
   canPin?: boolean;
   dashboard?: IDashboard;
   widget?: IWidget;
+  canMinifiy?: boolean;
 }

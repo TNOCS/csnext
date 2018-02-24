@@ -3,9 +3,9 @@ import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Component from 'vue-class-component';
 import { RouteConfig } from 'vue-router/types/router';
-import { IDashboard, INotification, ThemeColors, ISidebarOptions } from '@csnext/cs-core';
+import { IDashboard, INotification, ThemeColors, ISidebarOptions, IWidget, IMenu } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard } from '../../';
+import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 import { setInterval } from 'timers';
 import './cs-app.css';
 import './../../sass/main.scss';
@@ -26,11 +26,15 @@ const router = new VueRouter({ routes: [] });
   }
 } as any)
 export class CsApp extends Vue {
+
+  public static DASHBOARD_EDIT_ID = 'edit_dashboard';
+
   public app = AppState.Instance;
   public settingsDialog = false;
   public $vuetify: any;
   public active = null;
-  public leftSideBar: ISidebarOptions = {};
+  public leftSidebar: ISidebarOptions = {};
+  public rightSidebar: ISidebarOptions = {};
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -46,13 +50,40 @@ export class CsApp extends Vue {
 
   constructor() {
     super();
+    this.app.router = router;
     this.InitNavigation();
+    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+      switch (action) {
+        case 'open-widget':
+          if (this.app.project.rightSidebar && this.app.project.rightSidebar.dashboard && this.app.project.rightSidebar.dashboard.widgets) {
+            while (this.app.project.rightSidebar.dashboard.widgets.length > 0) {
+              this.app.project.rightSidebar.dashboard.widgets.pop();
+            }
+            this.app.project.rightSidebar.dashboard.widgets.push(data);
+            this.app.project.rightSidebar.open = true;
+          }
+          break;
+
+      }
+    });
+    this.app.bus.subscribe('widget', (action: string, widget: IWidget) => {
+      switch (action) {
+        case 'edit':
+          if (this.app.project.leftSidebar) {
+            this.app.project.leftSidebar.component = CsSettings;
+            // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
+            this.app.project.leftSidebar.open = true;
+          }
+          break;
+      }
+    });
   }
 
   @Watch('app.project.dashboards')
   public projectChanged(data: any) {
     this.InitNavigation();
     this.InitTheme();
+    this.InitMenus();
   }
 
   @Watch('app.project.notifications', { deep: true })
@@ -60,8 +91,14 @@ export class CsApp extends Vue {
     this.UpdateNotifications();
   }
 
+  @Watch('app.project.rightSidebar.dashboard')
+  public sideBarChanged(n: IDashboard, o: IDashboard) {
+    this.rightSidebar.dashboard = n;
+  }
+
   @Watch('$route')
   public routeChanged(n: any, o: any) {
+
     if (this.app.project && this.app.project.header && this.app.project.header.breadcrumbs) {
       this.app.project.header.breadcrumbItems = [];
       n.fullPath.split('/').forEach(s => {
@@ -70,6 +107,33 @@ export class CsApp extends Vue {
         }
       });
     }
+  }
+
+  public InitMenus() {
+    if (!this.app.project.menus) { this.app.project.menus = []; }
+    // create edit dashboard button
+    if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
+      this.app.project.menus.push({
+        id: CsApp.DASHBOARD_EDIT_ID, icon: 'mode_edit', title: 'Edit Dashboard', enabled: true, visible: true, action: (m) => {
+
+          // notify dashboard manager that edit was started
+          if (this.app.activeDashboard && this.app.activeDashboard._manager && this.app.activeDashboard._manager.editDashboard) {
+            this.app.activeDashboard._manager.editDashboard(this.app.activeDashboard);
+          }
+          // }
+          // if (this.app.project.rightSidebar) {
+          //   this.app.project.rightSidebar.component = CsSettings;
+          //   // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
+          //   this.app.project.rightSidebar.open = true;
+          // }
+        }
+      });
+    }
+  }
+
+  // menu button was clicked
+  public activateMenu(menu: IMenu) {
+    if (menu.action) { menu.action(menu); }
   }
 
   public onResize() {
@@ -154,18 +218,29 @@ export class CsApp extends Vue {
 
       // update left sidebar
       if (d.leftSidebar) {
-        this.leftSideBar = d.leftSidebar;
-        Vue.set(this, 'leftSideBar', d.leftSidebar);
+        this.leftSidebar = d.leftSidebar;
+        Vue.set(this, 'leftSidebar', d.leftSidebar);
       } else {
         if (this.app.project.leftSidebar) {
-          this.leftSideBar = this.app.project.leftSidebar;
-          Vue.set(this, 'leftSideBar', this.app.project.leftSidebar);
+          this.leftSidebar = this.app.project.leftSidebar;
+          Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
+        }
+      }
+
+      if (d.rightSidebar) {
+        this.rightSidebar = d.rightSidebar;
+        Vue.set(this, 'rightSidebar', d.rightSidebar);
+      } else {
+        if (this.app.project.rightSidebar) {
+          this.rightSidebar = this.app.project.rightSidebar;
+          Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
         }
       }
     });
   }
 
   public created() {
+    this.onResize();
     this.InitNotifications();
 
     // listen to dashboard init events
