@@ -9,12 +9,14 @@ import "./muuri-widget.css";
 @Component({
   template: require('./muuri-widget.html'),
   props: {
-    widget: null
+    widget: null,
+    grid: null
   }
 })
 
 export class MuuriWidget extends Vue {
   public widget: IWidget;
+  public grid: any;
 
   public initWidget() {
     // check if widget options is set    
@@ -22,16 +24,30 @@ export class MuuriWidget extends Vue {
       this.widget.options = { x: 1, y: 1, width: 1, height: 1 };
     }
     let totalwidth = AppState.Instance.windowSize.x;
-    let baseSize = totalwidth / ((totalwidth < 800) ? 4 : 12);
-    this.widget._style = { width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' }
+    let baseSize = totalwidth / ((totalwidth < 800) ? 8 : 24);
+    this.widget._style = { margin: this.widget.options.margin ? this.widget.options.margin + "px" : "0", width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' }
   }
 
   @Watch('widget.options')
   public widgetChanged(n: IWidget, old: IWidget) {
+    console.log('widget changed');
   }
 
   public beforeMount() {
     this.initWidget();
+  }
+
+  public created() {
+    if (this.widget.events) {
+      debugger;
+      this.widget.events.subscribe('size-changed', () => {
+        console.log('size changed');
+
+        this.initWidget();
+        this.grid.layout(true);
+
+      })
+    }
   }
 
 

@@ -1,7 +1,7 @@
 <div>
     <div :id="'muuri-' + dashboard.id" class="muuri-grid">
         <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-            <muuri-widget :widget="widget"></muuri-widget>            
+            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
         </div>
     </div>
 </div>

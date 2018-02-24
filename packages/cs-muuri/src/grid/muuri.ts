@@ -45,8 +45,22 @@ export class MuuriLayout extends Vue {
 
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: IWidget[]) {
+    console.log('Widgets changed');
+
     if (!this.grid) { this.initGrid(); }
     Vue.nextTick(() => {
+      // remove old widgets
+      if (old.length > n.length) {
+        old.forEach(w => {
+          if (n.indexOf(w) === -1) {
+            let welement = document.getElementById(w.id);                        
+            // this.grid.remove([welement]);                        
+            this.items = this.items.filter(wi => w.id !== wi);
+            this.grid.refreshItems().layout();
+          }
+        })
+      }
+      // add new widgets
       n.forEach(w => {
         if (this.items.indexOf(w.id) === -1) {
           // this.initWidget(w);
@@ -54,10 +68,10 @@ export class MuuriLayout extends Vue {
           // c.widget = w;          
           // let element = c.$mount();
           // this.grid.add([element]);          
-          let welement = document.getElementById(w.id);
+          let welement = document.getElementById(w.id);          
           this.grid.add([welement]);
           this.items.push(w.id);
-          this.grid.refreshItems().layout();
+          // this.grid.refreshItems().layout();
         }
       });
     });
@@ -65,8 +79,8 @@ export class MuuriLayout extends Vue {
 
   public beforeMount() {
     this.options = {};
-    
-    // Object.assign(this.options, { itemHeight: 100, itemWidth: 100, dragEnabled: true }, this.dashboard.options);
+
+    Object.assign(this.options, { itemHeight: 50, itemWidth: 50, dragEnabled: true }, this.dashboard.options);
 
     this.dashboard.widgets.forEach(widget => {
       // this.initWidget(widget);
@@ -76,7 +90,6 @@ export class MuuriLayout extends Vue {
   public initGrid() {
     if (this.grid) return;
     Vue.nextTick(() => {
-
       this.docElem = document.documentElement;
       const elem = '#muuri-' + this.dashboard.id;
       this.grid = new Muuri(elem, {
@@ -112,7 +125,7 @@ export class MuuriLayout extends Vue {
     if (this.dashboard && !this.dashboard.id) {
       this.dashboard.id = guidGenerator();
     }
-    this.initGrid();    
+    this.initGrid();
   }
 
   private updateIndices() {
