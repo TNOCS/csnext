@@ -25,7 +25,7 @@ export class MuuriWidget extends Vue {
     }
     let totalwidth = AppState.Instance.windowSize.x;
     let baseSize = totalwidth / ((totalwidth < 800) ? 8 : 24);
-    this.widget._style = { margin: this.widget.options.margin ? this.widget.options.margin + "px" : "0", width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' }
+    this.$set(this.widget, '_style', { margin: this.widget.options.margin ? this.widget.options.margin + "px" : "0", width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' });
   }
 
   public beforeMount() {
@@ -35,9 +35,9 @@ export class MuuriWidget extends Vue {
   public created() {
     if (this.widget.events) {
       this.widget.events.subscribe('size-changed', () => {
-        this.initWidget();
-        this.grid.layout(true);
-
+        Vue.nextTick(() => {
+          this.initWidget();         
+        })
       })
     }
   }
