@@ -1,6 +1,6 @@
 <v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
 
-  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" 
+  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
     :clipped-left="leftSidebar && leftSidebar.clipped" absolute :dense="app.project.header.dense" app>
     <v-toolbar-side-icon v-if="leftSidebar" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
@@ -20,8 +20,8 @@
     <v-spacer></v-spacer>
     <v-btn v-if="app.project.search" icon>
       <v-icon>search</v-icon>
-    </v-btn> 
-     
+    </v-btn>
+
 
     <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
@@ -54,12 +54,17 @@
       </v-card>
     </v-menu>
 
-    <v-menu v-for="menu in app.project.menus" v-if="menu.visible" class="app-menu">
-        <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
-            <v-icon>{{menu.icon}}</v-icon>
-          </v-btn>      
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" v-if="menu.visible" class="app-menu">
+      <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
+        <v-icon>{{menu.icon}}</v-icon>
+      </v-btn>
+      <v-list>
+        <v-list-tile v-for="item in menu.items" :key="item.title" @click="">
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
     </v-menu>
-    
+
 
 
     <v-menu bottom left>
@@ -81,7 +86,7 @@
 
   <cs-sidebar :sideBar="leftSidebar"></cs-sidebar>
   <cs-sidebar :sideBar="rightSidebar"></cs-sidebar>
-<!-- 
+  <!-- 
   <v-navigation-drawer disable-route-watcher v-if="leftSidebar" v-model="leftSidebar.open" :mini-variant="leftSidebar.mini"
     :clipped="leftSidebar.clipped" :permanent="leftSidebar.permanent" :persistent="leftSidebar.persistent"
     :temporary="leftSidebar.temporary" :floating="leftSidebar.floating" absolute overflow app>
