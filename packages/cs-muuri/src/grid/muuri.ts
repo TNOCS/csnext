@@ -32,6 +32,8 @@ export class MuuriLayout extends Vue {
   public items: string[] = [];
   private uuid = 0;
   private dragCounter = 0;
+  private editSubscription: any;
+  private muuriOptions: any;
 
   get widgets() {
     return this.dashboard.widgets.filter(w => !w.options || !w.options.background);
@@ -40,7 +42,6 @@ export class MuuriLayout extends Vue {
   get backgroundWidgets() {
     return this.dashboard.widgets.filter(w => w.options && w.options.background);
   }
-
 
 
   @Watch('dashboard.widgets')
@@ -53,7 +54,7 @@ export class MuuriLayout extends Vue {
       if (old.length > n.length) {
         old.forEach(w => {
           if (n.indexOf(w) === -1) {
-            let welement = document.getElementById(w.id);                        
+            let welement = document.getElementById(w.id);
             // this.grid.remove([welement]);                        
             this.items = this.items.filter(wi => w.id !== wi);
             this.grid.refreshItems().layout();
@@ -68,7 +69,7 @@ export class MuuriLayout extends Vue {
           // c.widget = w;          
           // let element = c.$mount();
           // this.grid.add([element]);          
-          let welement = document.getElementById(w.id);          
+          let welement = document.getElementById(w.id);
           this.grid.add([welement]);
           this.items.push(w.id);
           // this.grid.refreshItems().layout();
@@ -77,10 +78,17 @@ export class MuuriLayout extends Vue {
     });
   }
 
+
+
   public beforeMount() {
     this.options = {};
-
     Object.assign(this.options, { itemHeight: 50, itemWidth: 50, dragEnabled: true }, this.dashboard.options);
+
+    if (!this.editSubscription && this.dashboard && this.dashboard.events) {
+      this.dashboard.events.subscribe('settings', (action, data) => {
+        this.options.dragEnabled = this.dashboard.options.dragEnabled;        
+      })
+    }
 
     this.dashboard.widgets.forEach(widget => {
       // this.initWidget(widget);
@@ -92,21 +100,22 @@ export class MuuriLayout extends Vue {
     Vue.nextTick(() => {
       this.docElem = document.documentElement;
       const elem = '#muuri-' + this.dashboard.id;
-      this.grid = new Muuri(elem, {
+      this.muuriOptions = {
         items: 'muuri-item',
         layoutDuration: 200,
         layoutEasing: 'ease',
-        dragEnabled: this.options.dragEnabled,
+        dragEnabled: true,
         dragSortInterval: 10,
         dragContainer: document.body,
-        dragStartPredicate: function (item, event) {
+        dragStartPredicate: (item, event) => {
           var isDraggable = true;
           // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
-          return isDraggable ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
+          return this.options.dragEnabled ? Muuri.ItemDrag.defaultStartPredicate(item, event) : false;
         },
         dragReleaseDuration: 20,
         dragReleseEasing: 'ease'
-      })
+      }
+      this.grid = new Muuri(elem, this.muuriOptions)
         .on('dragStart', () => {
           ++this.dragCounter;
           this.docElem.classList.add('dragging');
