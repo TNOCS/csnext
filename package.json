@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
-    "lerna": "^2.7.1"
+    "lerna": "^2.9.0"
   },
   "dependencies": {}
 }
