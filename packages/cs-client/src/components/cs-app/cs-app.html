@@ -7,7 +7,7 @@
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
         <v-icon slot="divider">chevron_right</v-icon>
-        <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item" @click>
+        <v-breadcrumbs-item color="accent" v-for="item in app.project.header.breadcrumbItems" :key="item" @click>
           {{ item}}
         </v-breadcrumbs-item>
       </v-breadcrumbs>
@@ -54,13 +54,13 @@
       </v-card>
     </v-menu>
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" v-if="menu.visible" class="app-menu">
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" v-if="menu.visible" class="app-menu" offset-y>
       <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
         <v-icon>{{menu.icon}}</v-icon>
       </v-btn>
-      <v-list>
-        <v-list-tile v-for="item in menu.items" :key="item.title" @click="">
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+      <v-list v-if="menu.items && menu.items.length>0">
+        <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">
+          <v-list-tile-title>{{ menuItem.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-menu>
