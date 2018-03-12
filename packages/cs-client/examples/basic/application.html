@@ -1,18 +1,21 @@
 <html>
+
 <head>
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="https://unpkg.com/vuetify@1.0.0-beta.6/dist/vuetify.css" />
+  <link rel="stylesheet" href="https://unpkg.com/vuetify@1.0.5/dist/vuetify.css" />
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
-  <script src="https://unpkg.com/vuetify@1.0.0-beta.6/dist/vuetify.js"></script>
+  <script src="https://unpkg.com/vuetify@1.0.5/dist/vuetify.js"></script>
   <script src="./../../lib/csclient.cs.js"></script>
 </head>
+
 <body>
   <style>
     .maintitle {
       text-align: center;
     }
+
   </style>
   <div id="main" />
 
@@ -39,19 +42,29 @@
       navigation: {
         style: "tabs"
       },
-      dataSources: {
-      },
+      dataSources: {},
       leftSidebar: {
-        open: true,
+        title: "Filter",
+        open: false,
         permanent: false,
-        persistent: false,
-        clipped: true,
+        persistent: true,
+        clipped: false,
         temporary: false,
-        canPin: true
+      },
+      rightSidebar: {
+        open: false,
+        right: true,
+        clipped: false,
+        temporary: false,
+        dashboard: {
+          layout: 'grid',
+          widgets: []
+        }
       },
       theme: {
+        dark: true,
         colors: {
-          primary: 'white',
+          primary: '#38ad67',
           secondary: '#e5e9ea',
           accent: '#82B1FF',
           error: '#FF5252',
@@ -60,24 +73,35 @@
           warning: '#FFC107'
         }
       },
-      dashboards: [
-        {
+      footer: {
+        enabled: false,
+        text: "Test footer"
+      },
+      dashboards: [{
           path: "/",
           icon: "info",
           layout: "single",
           title: "Intro",
-          widgets: [{ component: intro }]
+          options: { dragEnabled: true, editButton: false },
+          widgets: [{
+            component: intro
+          }]
         },
         {
           path: "/about",
           icon: "info",
           layout: "single",
           title: "About",
-          widgets: [{ component: about }]
+          options: { dragEnabled: true, editButton: false },
+          widgets: [{
+            component: about
+          }]
         }
       ]
     };
     app.init(app.project);
+
   </script>
 </body>
+
 </html>
