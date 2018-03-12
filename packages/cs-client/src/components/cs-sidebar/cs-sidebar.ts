@@ -23,7 +23,6 @@ export class CsSidebar extends Vue {
       }
       this.$forceUpdate();
     });
-    
   }
 
   public SelectDashboard(d: IDashboard) {

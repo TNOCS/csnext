@@ -47,7 +47,7 @@ export class MuuriLayout extends Vue {
   @Watch('dashboard.widgets')
   public widgetsChanged(n: IWidget[], old: IWidget[]) {
     console.log('Widgets changed');
-
+    
     if (!this.grid) { this.initGrid(); }
     Vue.nextTick(() => {
       // remove old widgets
@@ -138,6 +138,7 @@ export class MuuriLayout extends Vue {
   }
 
   private updateIndices() {
+    if (!this.grid) { return; }
     this.grid.getItems().forEach((item, i) => {
       item.getElement().setAttribute('data-id', i + 1);
       // item.getElement().querySelector('.card-id').innerHTML = i + 1;

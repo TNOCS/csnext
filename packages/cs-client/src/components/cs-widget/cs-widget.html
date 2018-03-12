@@ -1,7 +1,7 @@
 <div @mouseenter="mouseEnter()" @mouseleave="mouseLeave()" :class="widget.options.class">
   <component :is="widget.component" :widget="widget" class="widget-default"></component>
   <div v-if="mouseOver" class="widget-buttons-container">
-    <v-menu v-for="menu in widget.options.menus" v-if="menu.visible">
+    <v-menu v-for="menu in widget.options.menus" :key="menu.id" v-if="menu.visible">
       <v-btn icon slot="activator" @click.delegate="triggerMenuAction(menu)" flat icon class="widget-button">
         <v-icon size="16px">{{menu.icon}}</v-icon>
       </v-btn>
