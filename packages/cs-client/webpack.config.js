@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 
 let libraryName = 'csclient';
@@ -73,7 +73,7 @@ const mod = {
 };
 
 function buildConfig(entry, externals, analyzer) {
-  let pl = [new HardSourceWebpackPlugin()];
+  let pl = []; //new HardSourceWebpackPlugin()
   pl.push(new webpack.WatchIgnorePlugin([
     /\.js$/,
     /\.d\.ts$/
