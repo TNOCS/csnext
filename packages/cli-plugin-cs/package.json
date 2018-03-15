@@ -2,13 +2,13 @@
     "name": "@csnext/cli-plugin-pwa",
     "description": "cs plugin for vue-cli",
     "main": "index.js",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "url": "https://github.com/TNOCS/csnext",
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "keywords": [
         "cs",
         "vue",
-        "cli"        
+        "cli"
     ],
     "author": "Arnoud de jong",
     "license": "MIT",
