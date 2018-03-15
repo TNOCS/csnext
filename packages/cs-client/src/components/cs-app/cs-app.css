@@ -25,6 +25,10 @@
   padding: 0 !important;
 }
 
+.breadcrumbs__item {
+  color:hsla(0,0%,100%,.5);
+}
+
 .header-breadcrumbs>li {
   padding: 0 !important;
 }

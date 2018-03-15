@@ -204,6 +204,10 @@ export class CsApp extends Vue {
     Logger.info('navigation', 'navigation initialized');
   }
 
+  public selectBreadCrumb(item: any) {
+    console.log(item);
+  }
+
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (router && d.path && !d.dashboards) { router.push(d.path); }

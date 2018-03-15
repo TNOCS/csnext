@@ -7,7 +7,7 @@
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
         <v-icon slot="divider">chevron_right</v-icon>
-        <v-breadcrumbs-item color="accent" v-for="item in app.project.header.breadcrumbItems" :key="item" @click>
+        <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
           {{ item}}
         </v-breadcrumbs-item>
       </v-breadcrumbs>
@@ -21,7 +21,6 @@
     <v-btn v-if="app.project.search" icon>
       <v-icon>search</v-icon>
     </v-btn>
-
 
     <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
@@ -54,7 +53,7 @@
       </v-card>
     </v-menu>
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" v-if="menu.visible" class="app-menu" offset-y>
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu" offset-y>
       <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
         <v-icon>{{menu.icon}}</v-icon>
       </v-btn>
@@ -63,6 +62,9 @@
           <v-list-tile-title>{{ menuItem.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
+      <v-card v-if="menu.component">
+        <component :is="menu.component" :data="menu.data"></component>
+      </v-card>
     </v-menu>
 
 
@@ -86,98 +88,7 @@
 
   <cs-sidebar :sideBar="leftSidebar"></cs-sidebar>
   <cs-sidebar :sideBar="rightSidebar"></cs-sidebar>
-  <!-- 
-  <v-navigation-drawer disable-route-watcher v-if="leftSidebar" v-model="leftSidebar.open" :mini-variant="leftSidebar.mini"
-    :clipped="leftSidebar.clipped" :permanent="leftSidebar.permanent" :persistent="leftSidebar.persistent"
-    :temporary="leftSidebar.temporary" :floating="leftSidebar.floating" absolute overflow app>
 
-    <v-toolbar v-if="leftSidebar.title">
-      <v-list dense>
-        <v-list-tile>
-          <v-icon v-if="app.project.navigation.icons">home</v-icon>
-          <v-list-tile-title class="title">{{leftSidebar.title}}</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-toolbar>
-    <div v-if="leftSidebar.canpin" class="leftsidebar-pin">
-      <v-btn small icon @click="leftSidebar.temporary=!leftSidebar.temporary">
-        <v-icon small v-if="leftSidebar.temporary">lock_open</v-icon>
-        <v-icon small v-if="!leftSidebar.temporary">lock_outline</v-icon>
-      </v-btn>
-    </div>
-
-    <div class="leftsidebar-minify">
-      <v-btn small icon @click="leftSidebar.mini=!leftSidebar.mini">
-        <v-icon small v-if="leftSidebar.mini">keyboard_arrow_right</v-icon>
-        <v-icon small v-if="!leftSidebar.mini">keyboard_arrow_left</v-icon>
-      </v-btn>
-    </div>
-
-    <v-divider v-if="leftSidebar.title"></v-divider>
-    <div v-if="leftSidebar.component">
-      <component :is="leftSidebar.component"></component>
-    </div>
-    <div v-else-if="app.project.navigation.style==='left'">
-      <v-list>
-        <v-list-group v-for="item in app.project.dashboards" :value="item.active" :prepend-icon="item.icon" no-action v-bind:key="item.path">
-          <v-list-tile slot="activator">
-            <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile v-if="!leftSidebar.mini" v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
-            <v-list-tile-content>
-              <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon>{{ subItem.action }}</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group>
-      </v-list>
-    </div>
-  </v-navigation-drawer> -->
-
-  <!-- <v-navigation-drawer right disable-route-watcher v-if="app.project.rightSidebar" v-model="app.project.rightSidebar.open"
-    :mini-variant="app.project.rightSidebar.mini" :clipped="app.project.rightSidebar.clipped" :permanent="app.project.rightSidebar.permanent"
-    :persistent="app.project.rightSidebar.persistent" :temporary="app.project.rightSidebar.temporary" :floating="app.project.rightSidebar.floating"
-    absolute overflow app>
-
-    <v-toolbar v-if="app.project.rightSidebar.title">
-      <v-list dense>
-        <v-list-tile>
-          <v-icon v-if="app.project.navigation.icons">home</v-icon>
-          <v-list-tile-title class="title">{{app.project.rightSidebar.title}}</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-toolbar>
-    <div v-if="app.project.rightSidebar.canpin" class="leftsidebar-pin">
-      <v-btn small icon @click="app.project.rightSidebar.temporary=!app.project.rightSidebar.temporary">
-        <v-icon small v-if="app.project.rightSidebar.temporary">lock_open</v-icon>
-        <v-icon small v-if="!app.project.rightSidebar.temporary">lock_outline</v-icon>
-      </v-btn>
-    </div>
-
-    <v-divider v-if="app.project.rightSidebar.title"></v-divider>
-    <div id="rightSidebarComponent">
-      <component :is="app.project.rightSidebar.component"></component>
-    </div>
-  </v-navigation-drawer> -->
-
-  <!--
-  <v-tabs right>
-    <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
-      :clipped-left="app.project.leftSidebar && app.project.leftSidebar.clipped" absolute dense app>
-      <v-toolbar-side-icon v-if="app.project.leftSidebar" @click="app.project.leftSidebar.open = !app.project.leftSidebar.open"></v-toolbar-side-icon>
-      <v-toolbar-title v-if="!app.project.navigation.hideTitle">{{app.project.title}}</v-toolbar-title>
-      <v-tabs-items v-if="app.project.navigation.style ==='tabs'" :class="app.project.theme.navigation" slot="extension">
-        <v-tabs-slider color="yellow"></v-tabs-slider>
-        <v-tab-item v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">
-          {{ dashboard.title }}
-        </v-tab-item>
-      </v-tabs-items>
-    </v-toolbar>
-  </v-tabs> -->
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
     left: () => swipe('Left'),
     right: () => swipe('Right')

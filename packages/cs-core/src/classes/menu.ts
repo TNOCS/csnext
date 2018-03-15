@@ -6,4 +6,6 @@ export interface IMenu {
   visible?: boolean;
   items?: IMenu[];
   action?: (menu: IMenu) => void;
+  component?: any;
+  data?: any;
 }
