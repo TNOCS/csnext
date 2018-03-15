@@ -2,7 +2,7 @@
     "name": "@csnext/cli-plugin-cs",
     "description": "cs plugin for vue-cli",
     "main": "index.js",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "url": "https://github.com/TNOCS/csnext",
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "keywords": [
