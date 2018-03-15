@@ -6,7 +6,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'cs-muuri';
+let libraryName = 'csmuuri';
 
 let plugins = [], outputFile;
 
@@ -83,7 +83,7 @@ const mod = {
 };
 
 function buildConfig(entry, externals, analyzer) {
-    let pl = [new HardSourceWebpackPlugin()];
+    let pl = [];
     pl.push(new webpack.WatchIgnorePlugin([
         /\.js$/,
         /\.d\.ts$/
