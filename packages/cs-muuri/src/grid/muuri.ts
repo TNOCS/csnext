@@ -62,7 +62,7 @@ export class MuuriLayout extends Vue {
         })
       }
       // add new widgets
-      n.forEach(w => {
+      n.forEach(w => {        
         if (this.items.indexOf(w.id) === -1) {
           // this.initWidget(w);
           // let c = new CsWidget();
@@ -90,9 +90,9 @@ export class MuuriLayout extends Vue {
       })
     }
 
-    this.dashboard.widgets.forEach(widget => {
-      // this.initWidget(widget);
-    });
+    // this.dashboard.widgets.forEach(widget => {
+    //   this.initWidget(widget);
+    // });
   }
 
   public initGrid() {

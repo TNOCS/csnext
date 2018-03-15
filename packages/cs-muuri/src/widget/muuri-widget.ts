@@ -7,25 +7,40 @@ const Muuri = require('muuri');
 import "./muuri-widget.css";
 
 @Component({
-  template: require('./muuri-widget.html'),
+  template: require("./muuri-widget.html"),
   props: {
     widget: null,
     grid: null
   }
 })
-
 export class MuuriWidget extends Vue {
   public widget: IWidget;
   public grid: any;
 
   public initWidget() {
-    // check if widget options is set    
+    // check if widget options is set
     if (!this.widget.options) {
       this.widget.options = { x: 1, y: 1, width: 1, height: 1 };
     }
     let totalwidth = AppState.Instance.windowSize.x;
-    let baseSize = totalwidth / ((totalwidth < 800) ? 8 : 24);
-    this.$set(this.widget, '_style', { margin: this.widget.options.margin ? this.widget.options.margin + "px" : "0", width: baseSize * this.widget.options.width + 'px', height: baseSize * this.widget.options.height + 'px' });
+
+    let baseSize = totalwidth / 24;
+    if (totalwidth < 800) {
+      baseSize = totalwidth / 8;
+    } else {
+      if (totalwidth < 1100) {
+        baseSize = totalwidth / 12;
+      } else if (totalwidth < 1300) {
+        baseSize = totalwidth / 16;
+      }
+    }
+    this.$set(this.widget, "_style", {
+      padding: this.widget.options.margin
+        ? this.widget.options.margin + "px"
+        : "0",
+      width: baseSize * this.widget.options.width + "px",
+      height: baseSize * this.widget.options.height + "px"
+    });
   }
 
   public beforeMount() {
@@ -34,13 +49,11 @@ export class MuuriWidget extends Vue {
 
   public created() {
     if (this.widget.events) {
-      this.widget.events.subscribe('size-changed', () => {
+      this.widget.events.subscribe("size-changed", () => {
         Vue.nextTick(() => {
-          this.initWidget();         
-        })
-      })
+          this.initWidget();
+        });
+      });
     }
   }
-
-
 }
