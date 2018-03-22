@@ -1,7 +1,7 @@
 
 import {  IDashboardOptions,  IWidgetOptions,  Project,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
-import DataSource from "./components/DataSource";
+import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
 <%_ if (options.csLayoutPlugins.indexOf('muuri')!==-1) { _%>
 import { MuuriLayout, IMuuriOptions } from "@csnext/cs-muuri";
