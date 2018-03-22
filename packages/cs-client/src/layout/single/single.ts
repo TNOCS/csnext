@@ -13,11 +13,13 @@ import { Logger, CsWidget, AppState, LayoutManager } from '../../';
 /** Single layout manager. Only shows first widget full screen */
 export class Single extends Vue {
   public dashboard?: IDashboard;
+  public widgetAvailable = false;
   private widget: IWidget | undefined;
 
   public created() {
     if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
     this.widget = this.dashboard.widgets.find(w => !w.hasOwnProperty('sideNav'));
+    this.widgetAvailable = false;
   }
 
 }

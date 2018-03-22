@@ -45,7 +45,7 @@ export class AppState {
 
   private constructor() { }
 
-  /** Initialize the project state, dashboard managers and data source handlers */
+  /** Initialize the project state, dashboard managers and data summaries handlers */
   public init(project: Project) {
     Logger.info('app-state', 'Init AppState');
 

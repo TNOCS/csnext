@@ -13,7 +13,7 @@ import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 
 // register needed plugins
 Vue.use(VueRouter);
-// Vue.use(Vuetify);
+alert('hi');
 
 const router = new VueRouter({ routes: [] });
 

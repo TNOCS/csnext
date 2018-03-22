@@ -8,10 +8,10 @@
     },
     "url": "https://github.com/TNOCS/csnext",
     "bugs": "https://github.com/TNOCS/csnext/issues",
-    "keywords": [
-        "cs",
+    "keywords": [        
         "vue",
-        "cli"
+        "cli",
+        "cs"
     ],
     "author": "Arnoud de jong",
     "license": "MIT",
@@ -19,6 +19,7 @@
         "access": "public"
     },
     "dependencies": {
+        "@vue/cli-shared-utils": "latest",
         "workbox-webpack-plugin": "^3.0.0-beta.1"
     },
     "devDependencies": {
