@@ -2,13 +2,13 @@
     "name": "@csnext/vue-cli-plugin-cs",
     "description": "cs plugin for vue-cli",
     "main": "index.js",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "scripts": {
         "link": "yarn link"
     },
     "url": "https://github.com/TNOCS/csnext",
     "bugs": "https://github.com/TNOCS/csnext/issues",
-    "keywords": [        
+    "keywords": [
         "vue",
         "cli",
         "cs"
