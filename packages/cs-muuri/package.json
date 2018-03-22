@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-muuri",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "description": "cs-muuri",
   "main": "./lib/csmuuri.cs.js",
   "types": "./lib/dist/index.d.ts",
@@ -23,8 +23,8 @@
     "velocityjs": "^1.0.0"
   },
   "devDependencies": {
-    "@csnext/cs-client": "^0.0.14",
-    "@csnext/cs-core": "^0.0.9",
+    "@csnext/cs-client": "^0.0.16",
+    "@csnext/cs-core": "^0.0.16",
     "hard-source-webpack-plugin": "^0.5.16",
     "postcss-loader": "^2.0.10",
     "raw-loader": "^0.5.1",
