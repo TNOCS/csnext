@@ -2,7 +2,7 @@ const { hasYarn } = require("@vue/cli-shared-utils");
 const chalk = require("chalk");
 
 module.exports = (api, options, rootOptions) => {
-  const csVersion = "^0.0.15";
+  const csVersion = "latest";
   const pkg = {
     dependencies: {
       "@csnext/cs-client": csVersion,
