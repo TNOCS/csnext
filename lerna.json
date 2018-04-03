@@ -3,5 +3,12 @@
   "packages": [
     "packages/*"
   ],
-  "version": "0.0.16"
+  "changelog": {
+    "labels": {
+      "enhancement": ":rocket: Enhancement",
+      "bug": ":bug: Bug Fix"
+    },
+    "cacheDir": ".changelog"
+  },
+  "version": "0.0.17"
 }

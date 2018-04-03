@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
