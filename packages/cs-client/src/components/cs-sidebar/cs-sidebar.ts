@@ -12,22 +12,29 @@ import './cs-sidebar.css';
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
 
-  @Prop()
-  public sideBar?: ISidebarOptions;
+  @Prop() public sideBar?: ISidebarOptions;
 
   @Watch('sideBar.dashboard')
   public sideBarChanged(n: any, o: any) {
     Vue.nextTick(() => {
-      if (this.sideBar && this.sideBar.dashboard && this.sideBar.dashboard.widgets) {
-        this.sideBar.dashboard.widgets[0] = n.widgets[0];
+      if (this.sideBar) {
+        if (this.sideBar.dashboard && this.sideBar.dashboard.widgets) {
+          this.sideBar.dashboard.widgets[0] = n.widgets[0];
+        }
+
+        if (!this.sideBar.width) {
+          this.sideBar.width = 300;
+        }
       }
+
       this.$forceUpdate();
     });
   }
 
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
-    if (this.$router && d.path && !d.dashboards) { this.$router.push(d.path); }
+    if (this.$router && d.path && !d.dashboards) {
+      this.$router.push(d.path);
+    }
   }
-
 }

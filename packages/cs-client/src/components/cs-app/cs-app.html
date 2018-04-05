@@ -86,8 +86,8 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar :sideBar="leftSidebar"></cs-sidebar>
-  <cs-sidebar :sideBar="rightSidebar"></cs-sidebar>
+  <cs-sidebar v-if="leftSidebar" :sideBar="leftSidebar"></cs-sidebar>
+  <cs-sidebar v-if="rightSidebar" :sideBar="rightSidebar"></cs-sidebar>
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
     left: () => swipe('Left'),

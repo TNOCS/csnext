@@ -15,4 +15,5 @@ export interface ISidebarOptions {
   dashboard?: IDashboard;
   widget?: IWidget;
   canMinifiy?: boolean;
+  width?: number;
 }

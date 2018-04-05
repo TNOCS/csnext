@@ -3,7 +3,14 @@ import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import Component from 'vue-class-component';
 import { RouteConfig } from 'vue-router/types/router';
-import { IDashboard, INotification, ThemeColors, ISidebarOptions, IWidget, IMenu } from '@csnext/cs-core';
+import {
+  IDashboard,
+  INotification,
+  ThemeColors,
+  ISidebarOptions,
+  IWidget,
+  IMenu
+} from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 import { setInterval } from 'timers';
@@ -25,7 +32,6 @@ const router = new VueRouter({ routes: [] });
   }
 } as any)
 export class CsApp extends Vue {
-
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
 
   public app = AppState.Instance;
@@ -54,7 +60,11 @@ export class CsApp extends Vue {
     this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
-          if (this.app.project.rightSidebar && this.app.project.rightSidebar.dashboard && this.app.project.rightSidebar.dashboard.widgets) {
+          if (
+            this.app.project.rightSidebar &&
+            this.app.project.rightSidebar.dashboard &&
+            this.app.project.rightSidebar.dashboard.widgets
+          ) {
             while (this.app.project.rightSidebar.dashboard.widgets.length > 0) {
               this.app.project.rightSidebar.dashboard.widgets.pop();
             }
@@ -62,7 +72,6 @@ export class CsApp extends Vue {
             this.app.project.rightSidebar.open = true;
           }
           break;
-
       }
     });
     this.app.bus.subscribe('widget', (action: string, widget: IWidget) => {
@@ -97,11 +106,18 @@ export class CsApp extends Vue {
 
   @Watch('$route')
   public routeChanged(n: any, o: any) {
-
-    if (this.app.project && this.app.project.header && this.app.project.header.breadcrumbs) {
+    if (
+      this.app.project &&
+      this.app.project.header &&
+      this.app.project.header.breadcrumbs
+    ) {
       this.app.project.header.breadcrumbItems = [];
       n.fullPath.split('/').forEach(s => {
-        if (s && this.app.project.header && this.app.project.header.breadcrumbItems) {
+        if (
+          s &&
+          this.app.project.header &&
+          this.app.project.header.breadcrumbItems
+        ) {
           this.app.project.header.breadcrumbItems.push(s);
         }
       });
@@ -109,15 +125,27 @@ export class CsApp extends Vue {
   }
 
   public InitMenus() {
-    if (!this.app.project.menus) { this.app.project.menus = []; }
+    if (!this.app.project.menus) {
+      this.app.project.menus = [];
+    }
     // create edit dashboard button
     if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
       this.app.project.menus.push({
-        id: CsApp.DASHBOARD_EDIT_ID, icon: 'mode_edit', title: 'Edit Dashboard', enabled: true, visible: true, action: (m) => {
-
+        id: CsApp.DASHBOARD_EDIT_ID,
+        icon: 'mode_edit',
+        title: 'Edit Dashboard',
+        enabled: true,
+        visible: true,
+        action: m => {
           // notify dashboard manager that edit was started
-          if (this.app.activeDashboard && this.app.activeDashboard._manager && this.app.activeDashboard._manager.editDashboard) {
-            this.app.activeDashboard._manager.editDashboard(this.app.activeDashboard);
+          if (
+            this.app.activeDashboard &&
+            this.app.activeDashboard._manager &&
+            this.app.activeDashboard._manager.editDashboard
+          ) {
+            this.app.activeDashboard._manager.editDashboard(
+              this.app.activeDashboard
+            );
           }
           // }
           // if (this.app.project.rightSidebar) {
@@ -132,7 +160,9 @@ export class CsApp extends Vue {
 
   // menu button was clicked
   public activateMenu(menu: IMenu) {
-    if (menu.action) { menu.action(menu); }
+    if (menu.action) {
+      menu.action(menu);
+    }
   }
 
   public onResize() {
@@ -145,17 +175,27 @@ export class CsApp extends Vue {
     }
   }
 
-  public getAdjacentDashboard(direction: string, active: IDashboard, dashboards?: IDashboard[]): IDashboard {
-    if (!dashboards) { return active; }
+  public getAdjacentDashboard(
+    direction: string,
+    active: IDashboard,
+    dashboards?: IDashboard[]
+  ): IDashboard {
+    if (!dashboards) {
+      return active;
+    }
     let index = dashboards.indexOf(active);
     switch (direction) {
       case 'Left':
         index += 1;
-        if (index >= dashboards.length) { index = 0; }
+        if (index >= dashboards.length) {
+          index = 0;
+        }
         break;
       case 'Right':
         index -= 1;
-        if (index < 0) { index = dashboards.length - 1; }
+        if (index < 0) {
+          index = dashboards.length - 1;
+        }
         break;
     }
     return dashboards[index];
@@ -163,9 +203,20 @@ export class CsApp extends Vue {
 
   // swipe gesture
   public swipe(direction: string) {
-    if (!this.app.activeDashboard || !this.app.activeDashboard.touchGesturesEnabled) { return; }
+    if (
+      !this.app.activeDashboard ||
+      !this.app.activeDashboard.touchGesturesEnabled
+    ) {
+      return;
+    }
     const d = this.app.activeDashboard;
-    const adjacent = this.getAdjacentDashboard(direction, this.app.activeDashboard, (d.parent && d.parent.dashboards) ? d.parent.dashboards : this.app.project.dashboards);
+    const adjacent = this.getAdjacentDashboard(
+      direction,
+      this.app.activeDashboard,
+      d.parent && d.parent.dashboards
+        ? d.parent.dashboards
+        : this.app.project.dashboards
+    );
     if (adjacent) {
       this.SelectDashboard(adjacent);
     }
@@ -178,22 +229,26 @@ export class CsApp extends Vue {
       d.dashboards.forEach(dash => {
         dash.parent = d;
         this.AddDashboardRoute(dash);
-      }
-      );
+      });
     } else if (d.path) {
-      router.addRoutes([{
-        name: d.id,
-        path: d.path,
-        component: CsDashboard,
-        props: (route) => ({ dashboard: d }),
-        alias: d.title, meta: d
-      } as RouteConfig]);
+      router.addRoutes([
+        {
+          name: d.id,
+          path: d.path,
+          component: CsDashboard,
+          props: route => ({ dashboard: d }),
+          alias: d.title,
+          meta: d
+        } as RouteConfig
+      ]);
     }
   }
 
   // Make sure all dashboards are available as routes
   public InitNavigation() {
-    if (!this.app || !this.app.project || !this.app.project.dashboards) { return; }
+    if (!this.app || !this.app.project || !this.app.project.dashboards) {
+      return;
+    }
 
     // create routes for dashboards
     this.app.project.dashboards.forEach(d => {
@@ -203,13 +258,14 @@ export class CsApp extends Vue {
     Logger.info('navigation', 'navigation initialized');
   }
 
-  public selectBreadCrumb(item: any) {
-    console.log(item);
-  }
+  // tslint:disable-next-line:no-empty
+  public selectBreadCrumb(item: any) {}
 
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
-    if (router && d.path && !d.dashboards) { router.push(d.path); }
+    if (router && d.path && !d.dashboards) {
+      router.push(d.path);
+    }
   }
 
   public OpenSettings() {
@@ -218,7 +274,6 @@ export class CsApp extends Vue {
 
   public UpdateSideBars(d: IDashboard) {
     Vue.nextTick(() => {
-
       // update left sidebar
       if (d.leftSidebar) {
         this.leftSidebar = d.leftSidebar;
@@ -251,7 +306,9 @@ export class CsApp extends Vue {
       this.UpdateSideBars(dashboard);
     });
 
-    if (this.app.activeDashboard) { this.UpdateSideBars(this.app.activeDashboard); }
+    if (this.app.activeDashboard) {
+      this.UpdateSideBars(this.app.activeDashboard);
+    }
   }
 
   public SelectNotification(notification: INotification) {
@@ -264,17 +321,29 @@ export class CsApp extends Vue {
 
   /** Update list of unread notification  */
   public UpdateNotifications() {
-    if (!this.app.project.notifications || !this.app.project.notifications.items) { return; }
-    this.$set(this, 'unReadNotifications', this.app.project.notifications.items.filter(not => !not.isRead));
+    if (
+      !this.app.project.notifications ||
+      !this.app.project.notifications.items
+    ) {
+      return;
+    }
+    this.$set(
+      this,
+      'unReadNotifications',
+      this.app.project.notifications.items.filter(not => !not.isRead)
+    );
   }
   public InitNotifications() {
     if (this.app.bus) {
-      this.app.bus.subscribe('notification', (action: string, notification: INotification) => {
-        if (action === 'new') {
-          this.lastNotification = notification;
-          this.UpdateNotifications();
+      this.app.bus.subscribe(
+        'notification',
+        (action: string, notification: INotification) => {
+          if (action === 'new') {
+            this.lastNotification = notification;
+            this.UpdateNotifications();
+          }
         }
-      });
+      );
     }
   }
 }
