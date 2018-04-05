@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "vuetify": "^1.0.8"
+    "vuetify": "^1.0.13"
   },
   "devDependencies": {
     "@csnext/cs-core": "^0.0.16",

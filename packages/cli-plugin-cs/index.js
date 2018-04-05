@@ -4,6 +4,45 @@ module.exports = (api, { parallel }) => {
 
   api.chainWebpack(config => {
     console.log("update webpack");
+
+    // const htmlRule = webpackConfig.module
+    //   .rule('html')
+    //     .test(/\.html?$/)
+    //     .include
+    //       .add(api.resolve('src'))
+    //       .end()
+    //     .use('raw-loader')
+    //       .loader('raw-loader')          
+    //       .end()
+
+    // config.rule('html').use('raw-loader');
+    
+    // const htmlRule = config.module
+    //   .rule("ts")
+    //   .test(/\.html?$/)
+    //   .include.add(api.resolve("src"))
+    //   .add(api.resolve("test"))
+    //   .end();
+
+    // // add a loader to both *.ts & vue<lang="ts">
+    // const addLoader = loader => {
+    //   const use = htmlRule.use(loader.loader).loader(loader.loader);
+    //   if (loader.options) {
+    //     use.options(loader.options);
+    //   }
+    //   // vueLoader.tap(options => {
+    //   //   options.loaders = options.loaders || {};
+    //   //   options.loaders.ts = options.loaders.ts || [];
+    //   //   options.loaders.ts.push(loader);
+    //   //   return options;
+    //   // });
+    // };
+
+    // addLoader({
+    //   loader: "raw-loader"
+    // });
+  
+
     // console.log(config);
     // config.resolve.alias['Vue']= "path.resolve(__dirname, 'node_modules/vue/dist/vue.esm.js'";
     config.resolve.alias.set('vue$','vue/dist/vue.esm.js');

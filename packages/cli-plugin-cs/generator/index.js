@@ -2,24 +2,26 @@ const { hasYarn } = require("@vue/cli-shared-utils");
 const chalk = require("chalk");
 
 module.exports = (api, options, rootOptions) => {
-  const csVersion = "latest";
+  const csVersion = "0.0.18";
   const pkg = {
     dependencies: {
       "@csnext/cs-client": csVersion,
       "@csnext/cs-core": csVersion,
-      "vuetify": "^1.0.10",
-      "vue-router": "^3.0.1"
+      vuetify: "^1.0.13",
+      "vue-router": "^3.0.1",
+      "raw-loader": "^0.5.1"
     },
     devDependencies: {
       "@types/geojson": "^7946.0.1"
-    }    
+    }
   };
 
-  if (options.csLayoutPlugins.indexOf('muuri')!==-1) {
-   pkg.dependencies['@csnext/cs-muuri', csVersion]   
+  if (options.csLayoutPlugins.indexOf("muuri") !== -1) {
+    pkg.dependencies[("@csnext/cs-muuri", csVersion)];
   }
 
   api.extendPackage(pkg);
+
 
   // add icons
   api.render("./templates/icons");
@@ -31,9 +33,11 @@ module.exports = (api, options, rootOptions) => {
   api.onCreateComplete(() => {
     const fs = require("fs");
 
-    const ts = api.hasPlugin('typescript');
+    const ts = api.hasPlugin("typescript");
     if (!ts) {
-      console.log('Sorry, for now typescript is required for the CS plugin to work!');      
+      console.log(
+        "Sorry, for now typescript is required for the CS plugin to work!"
+      );
     }
     console.log(options);
 
@@ -78,8 +82,8 @@ module.exports = (api, options, rootOptions) => {
       checkImport(iconsImport);
       checkImport(vuetifyUse);
 
-      if (options.addDefaultProject) {             
-        checkImport(importProject);                
+      if (options.addDefaultProject) {
+        checkImport(importProject);
       }
       checkLast(initProject);
       checkLast(appRegistration);
