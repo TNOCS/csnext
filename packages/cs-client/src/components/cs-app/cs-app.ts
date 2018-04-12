@@ -36,7 +36,7 @@ export class CsApp extends Vue {
 
   public app = AppState.Instance;
   public settingsDialog = false;
-  public $vuetify: any;
+  // public $vuetify: any;
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
@@ -47,10 +47,10 @@ export class CsApp extends Vue {
   public unReadNotifications: INotification[] = [];
 
   public settings = [
-    {
-      id: 'dashboard_settings',
-      title: 'dashboard settings'
-    }
+    // {
+    //   id: 'dashboard_settings',
+    //   title: 'dashboard settings'
+    // }
   ];
 
   constructor() {
@@ -101,6 +101,7 @@ export class CsApp extends Vue {
 
   @Watch('app.project.rightSidebar.dashboard')
   public sideBarChanged(n: IDashboard, o: IDashboard) {
+    if (!this.rightSidebar) { return; }
     this.rightSidebar.dashboard = n;
   }
 
@@ -171,7 +172,7 @@ export class CsApp extends Vue {
 
   public InitTheme() {
     if (this.app.project && this.app.project.theme) {
-      this.$vuetify.theme = this.app.project.theme.colors;
+      // this.$vuetify.theme = this.app.project.theme.colors;
     }
   }
 
@@ -277,21 +278,27 @@ export class CsApp extends Vue {
       // update left sidebar
       if (d.leftSidebar) {
         this.leftSidebar = d.leftSidebar;
-        Vue.set(this, 'leftSidebar', d.leftSidebar);
+        this.leftSidebar.visible = true;
+        // Vue.set(this, 'leftSidebar', d.leftSidebar);
       } else {
         if (this.app.project.leftSidebar) {
           this.leftSidebar = this.app.project.leftSidebar;
-          Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
+          this.leftSidebar.visible = true;
+          // Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
         }
       }
 
       if (d.rightSidebar) {
         this.rightSidebar = d.rightSidebar;
-        Vue.set(this, 'rightSidebar', d.rightSidebar);
+        this.rightSidebar.visible = true;
+        this.rightSidebar.right = true;
+        // Vue.set(this, 'rightSidebar', d.rightSidebar);
       } else {
         if (this.app.project.rightSidebar) {
           this.rightSidebar = this.app.project.rightSidebar;
-          Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
+          this.rightSidebar.visible = true;
+          this.rightSidebar.right = true;
+          // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
         }
       }
     });

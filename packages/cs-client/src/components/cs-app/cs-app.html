@@ -1,8 +1,8 @@
 <v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
 
   <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
-    :clipped-left="leftSidebar && leftSidebar.clipped" absolute :dense="app.project.header.dense" app>
-    <v-toolbar-side-icon v-if="leftSidebar" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
+    :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped" absolute :dense="app.project.header.dense" app>
+    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
@@ -69,7 +69,7 @@
 
 
 
-    <v-menu bottom left>
+    <!-- <v-menu bottom left>
       <v-btn icon slot="activator" :dark="app.project.theme.dark">
         <v-icon>more_vert</v-icon>
       </v-btn>
@@ -78,16 +78,16 @@
           <v-list-tile-title>{{ setting.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
-    </v-menu>
+    </v-menu> -->
 
-    <v-btn v-if="app.project.rightSidebar" @click="app.project.rightSidebar.open=!app.project.rightSidebar.open" icon>
-      <v-icon v-if="app.project.rightSidebar.open">keyboard_arrow_right</v-icon>
-      <v-icon v-if="!app.project.rightSidebar.open">keyboard_arrow_left</v-icon>
+    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open" icon>
+      <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
+      <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar v-if="leftSidebar" :sideBar="leftSidebar"></cs-sidebar>
-  <cs-sidebar v-if="rightSidebar" :sideBar="rightSidebar"></cs-sidebar>
+  <cs-sidebar v-if="leftSidebar.visible" :sideBar="leftSidebar"></cs-sidebar>
+  <cs-sidebar v-if="rightSidebar.visible" :sideBar="rightSidebar"></cs-sidebar>
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
     left: () => swipe('Left'),
