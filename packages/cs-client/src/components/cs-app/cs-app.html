@@ -22,7 +22,7 @@
       <v-icon>search</v-icon>
     </v-btn>
 
-    <v-menu offset-x :close-on-content-click="false" :nudge-width="200" v-model="showNotifications">
+    <v-menu v-if="app.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200"  v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
         <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
         <v-icon>message</v-icon>

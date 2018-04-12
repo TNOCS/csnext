@@ -3,5 +3,6 @@ export interface IHeaderOptions {
   title?: string;
   logo?: string;
   breadcrumbs?: boolean;
+  showNotifications?: boolean;
   breadcrumbItems?: any[];
 }

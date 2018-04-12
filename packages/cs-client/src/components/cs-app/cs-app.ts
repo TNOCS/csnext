@@ -43,7 +43,7 @@ export class CsApp extends Vue {
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
-  public showNotifications = true;
+  public showNotifications = false;
   public unReadNotifications: INotification[] = [];
 
   public settings = [
