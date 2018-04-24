@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard, ILayoutManagerConfig, IWidget, IGridDashboardOptions } from '@csnext/cs-core';
+import { IDashboard, ILayoutManagerConfig, IWidget, IGridDashboardOptions, IGridWidgetOptions } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './grid.css';
