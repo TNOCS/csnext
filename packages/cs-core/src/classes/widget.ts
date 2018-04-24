@@ -1,7 +1,8 @@
-import { IMessageBusService } from './../utils/message-bus/message-bus-service';
-import { IMenu } from './menu';
-import { EditorSchema } from './editor-schema';
-import { IDashboard } from '../index';
+import { IWidgetOptions } from "./../../dist/classes/widget.d";
+import { IMessageBusService } from "./../utils/message-bus/message-bus-service";
+import { IMenu } from "./menu";
+import { EditorSchema } from "./editor-schema";
+import { IDashboard } from "../index";
 
 export enum WidgetType {
   component,
@@ -21,6 +22,14 @@ export interface IWidgetOptions {
   canRemove?: boolean;
   canEdit?: boolean;
   menus?: IMenu[];
+}
+
+export interface IGridWidgetOptions extends IWidgetOptions {
+  columnStart?: number;
+  columnEnd?: number;
+  rowStart?: number;
+  rowEnd?: number;
+
 }
 
 export interface IWidget {

@@ -9,8 +9,8 @@
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
-    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev\"",
-    "build": "webpack --env build",
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --env build --mode production",
     "clean": "del-cli dist lib"
   },
   "publishConfig": {
@@ -25,14 +25,14 @@
   "devDependencies": {
     "@csnext/cs-client": "^0.0.21",
     "@csnext/cs-core": "^0.0.20",
-    "hard-source-webpack-plugin": "^0.5.16",
-    "postcss-loader": "^2.0.10",
+    "hard-source-webpack-plugin": "^0.6.4",
+    "postcss-loader": "^2.1.4",
     "raw-loader": "^0.5.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.1",
-    "ts-loader": "^3.4.0",
-    "typescript": "^2.7.2",
-    "webpack": "~3.10.0",
-    "webpack-bundle-analyzer": "^2.9.2"
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.3",
+    "webpack": "~4.6.0",
+    "webpack-bundle-analyzer": "^2.11.1"
   }
 }

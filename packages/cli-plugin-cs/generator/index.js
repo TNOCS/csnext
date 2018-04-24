@@ -2,14 +2,13 @@ const { hasYarn } = require("@vue/cli-shared-utils");
 const chalk = require("chalk");
 
 module.exports = (api, options, rootOptions) => {
-  const csVersion = "0.0.20";
+  const csVersion = "0.0.21";
   const pkg = {
     dependencies: {
-      "@csnext/cs-client": csVersion,
-      "@csnext/cs-core": csVersion,
-      vuetify: "^1.0.13",
-      "vue-router": "^3.0.1",
-      "raw-loader": "^0.5.1"
+      "@csnext/cs-client": "0.0.22",
+      "@csnext/cs-core": "0.0.22",
+      vuetify: "^1.0.16",
+      "vue-router": "^3.0.1"
     },
     devDependencies: {
       "@types/geojson": "^7946.0.1"
@@ -101,66 +100,5 @@ module.exports = (api, options, rootOptions) => {
       fs.writeFileSync(mainPath, content, { encoding: "utf8" });
     }
 
-    // if (options.addServer) {
-    //   // Git ignore
-    //   {
-    //     const gitignorePath = api.resolve("./.gitignore");
-    //     let content;
-
-    //     if (fs.existsSync(gitignorePath)) {
-    //       content = fs.readFileSync(gitignorePath, { encoding: "utf8" });
-    //     } else {
-    //       content = "";
-    //     }
-
-    //     content += "\n/live/\n";
-
-    //     fs.writeFileSync(gitignorePath, content, { encoding: "utf8" });
-    //   }
-    // }
-
-    // if (options.addApolloEngine) {
-    //   // Modify .env.local file
-    //   const envPath = api.resolve("./.env.local");
-    //   let content = "";
-
-    //   if (fs.existsSync(envPath)) {
-    //     content = fs.readFileSync(envPath, { encoding: "utf8" });
-    //   }
-
-    //   content += `VUE_APP_APOLLO_ENGINE_KEY=${options.apolloEngineKey}\n`;
-    //   fs.writeFileSync(envPath, content, { encoding: "utf8" });
-    // }
-
-    // // Linting
-    // try {
-    //   const lint = require("@vue/cli-plugin-eslint/lint");
-    //   lint({ silent: true }, api);
-    // } catch (e) {
-    //   // No ESLint vue-cli plugin
-    // }
-
-    // if (options.addServer) {
-    //   api.exitLog(
-    //     `Start the GraphQL API Server with ${chalk.cyan(
-    //       `${hasYarn() ? "yarn" : "npm"} run graphql-api`
-    //     )}`,
-    //     "info"
-    //   );
-    //   if (options.addMocking) {
-    //     api.exitLog(
-    //       `Customize the mocks in ${chalk.cyan("src/graphql-api/mocks.js")}`,
-    //       "info"
-    //     );
-    //   }
-    //   if (options.addApolloEngine) {
-    //     api.exitLog(
-    //       `The Apollo Engine API key has been added to ${chalk.cyan(
-    //         ".local.env"
-    //       )}`,
-    //       "info"
-    //     );
-    //   }
-    // }
   });
 };

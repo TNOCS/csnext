@@ -47,7 +47,8 @@ module.exports = (api, { parallel }) => {
     // config.resolve.alias['Vue']= "path.resolve(__dirname, 'node_modules/vue/dist/vue.esm.js'";
     config.resolve.alias.set('vue$','vue/dist/vue.esm.js');
     config.resolve.alias.set("Vue", "vue/dist/vue.esm.js");
-    config.resolve.alias.set("Vuetify$", "vuetify/dist/vuetify.js");
+    config.resolve.symlinks = false;
+    // config.resolve.alias.set("Vuetify$", "vuetify/dist/vuetify.js");
     // config
     //   .plugin("fork-ts-checker")
     //   .use(require("fork-ts-checker-webpack-plugin"), [

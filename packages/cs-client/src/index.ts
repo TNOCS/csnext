@@ -37,13 +37,14 @@ export * from './widgets/md-widget';
 export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';
+export * from './widgets/svg-widget';
 
 export const csnext = {
-  install: (Vue) => {
+  install: (vue) => {
     const a = AppState.Instance;
-    Vue.component('cs-dashboard', CsDashboard);
-    Vue.component('cs-widget', CsWidget);
-    Vue.component('cs-app', CsApp);
-    Vue.component('cs-sidebar', CsSidebar);
+    vue.component('cs-dashboard', CsDashboard);
+    vue.component('cs-widget', CsWidget);
+    vue.component('cs-app', CsApp);
+    vue.component('cs-sidebar', CsSidebar);
   }
 };

@@ -3,3 +3,8 @@ export interface IDashboardOptions {
   background?: string;
   editButton?: boolean;
 }
+
+export interface IGridDashboardOptions extends IDashboardOptions {
+  gap?: number;
+
+}

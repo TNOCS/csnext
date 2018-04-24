@@ -13,7 +13,6 @@ import {
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
-import { setInterval } from 'timers';
 import './cs-app.css';
 import './../../sass/main.scss';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
