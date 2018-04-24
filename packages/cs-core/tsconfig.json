@@ -10,9 +10,15 @@
       "es2015",
       "es2015.promise"
     ],
-   "outDir": "./dist",
+    "outDir": "./dist",
     "declaration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true
-  }
+  },   
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "./dist/**/*"
+  ]
 }

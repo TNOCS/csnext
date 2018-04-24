@@ -16,14 +16,14 @@ export class Grid extends Vue {
 
   public gridStyle() {
     if (!this.dashboard) { return; }
-    let style = {} as any;
+    const style = {} as any;
     const options = this.dashboard.options as IGridDashboardOptions;
 
     return { 'grid-template-columns': '300px 100px 100px 100px'};
   }
 
   public gridWidgetClass(widget: IWidget) {
-    let style: any = {};
+    const style: any = {};
     const options = widget.options as IGridWidgetOptions;
     if (options.columnStart) { style['grid-column-start'] = options.columnStart; }
     if (options.columnEnd) { style['grid-column-end'] = options.columnEnd; }

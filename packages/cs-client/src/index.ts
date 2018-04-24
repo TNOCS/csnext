@@ -33,7 +33,7 @@ export * from './components/cs-settings/cs-settings';
 
 // widgets
 export * from './widgets/widget-base';
-export * from './widgets/md-widget';
+export * from './widgets/markdown/md-widget';
 export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';

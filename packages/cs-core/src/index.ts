@@ -2,6 +2,7 @@ export * from './classes/project';
 export * from './classes/menu';
 export * from './classes/dashboard-options';
 export * from './classes/dashboard';
+export * from './classes/grid-dashboard-options';
 export * from './classes/page';
 export * from './classes/widget';
 export * from './classes/datasource';
@@ -15,5 +16,7 @@ export * from './classes/navigation-options';
 export * from './classes/sidebar-options';
 export * from './classes/editor-schema';
 export * from './utils/message-bus/message-bus-service';
+export * from './classes/grid-widget-options';
+export * from './classes/widget-options';
 
 // export *  from './classes/plugin';

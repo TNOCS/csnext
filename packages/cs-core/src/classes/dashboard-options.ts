@@ -4,7 +4,3 @@ export interface IDashboardOptions {
   editButton?: boolean;
 }
 
-export interface IGridDashboardOptions extends IDashboardOptions {
-  gap?: number;
-
-}
