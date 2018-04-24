@@ -10,22 +10,22 @@ let plugins = [],
   outputFile;
 
 if (env === 'build') {
-  const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false,
-      compress: {
-        unused: true,
-        dead_code: true,
-        warnings: false,
-        drop_debugger: true,
-        conditionals: true,
-        evaluate: true,
-        drop_console: true,
-        sequences: true,
-        booleans: true,
-      }
-    }));
+  // const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+  // plugins.push(
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     comments: false,
+  //     compress: {
+  //       unused: true,
+  //       dead_code: true,
+  //       warnings: false,
+  //       drop_debugger: true,
+  //       conditionals: true,
+  //       evaluate: true,
+  //       drop_console: true,
+  //       sequences: true,
+  //       booleans: true,
+  //     }
+  //   }));
   outputFile = libraryName + '.[name].min.js';
 } else {
   outputFile = libraryName + '.[name].js';
