@@ -1,4 +1,3 @@
-
 .leftsidebar-pin {
   float: right;
   margin: 4px;
@@ -8,6 +7,10 @@
   position: absolute;
   right: 4px;
   bottom: 5px;
+}
+
+.sidebar-active-tile {
+  background-color: red
 }
 
 /* .list__group__header__append-icon {

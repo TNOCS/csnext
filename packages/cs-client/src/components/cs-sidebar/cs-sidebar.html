@@ -33,19 +33,19 @@
   </div>
   <div v-else-if="app.project.navigation.style==='left' && !sideBar.right">
     <v-list>
-      <v-list-tile v-for="item in app.project.dashboards" :value="item.active" no-action v-bind:key="item.path">
+      <v-list-tile v-for="item in app.project.dashboards" :value="item.active" :to="subItem.path" no-action v-bind:key="item.path">
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title @click="SelectDashboard(item)">{{ item.title }}</v-list-tile-title>
+        <v-list-tile-content >
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
   </div>
   <div v-else-if="app.project.navigation.style==='left-hierarchy' && !sideBar.right">
     <v-list>
-      <v-list-group v-for="item in app.project.dashboards" :value="item.active" no-action v-bind:key="item.path">
+      <v-list-group v-for="item in app.project.dashboards" :value="item.active" no-action v-bind:key="item.path"  >
         <v-list-tile slot="activator">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -54,7 +54,8 @@
             <v-list-tile-title @click="SelectDashboard(item)">{{ item.title }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="!sideBar.mini" v-for="subItem in item.dashboards" v-bind:key="subItem.path" @click="SelectDashboard(subItem)">
+        <v-list-tile v-if="!sideBar.mini" v-for="subItem in item.dashboards" :to="subItem.path" v-bind:key="subItem.path" >
+            <!-- @click="SelectDashboard(subItem)" -->
           <v-list-tile-content>
             <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
           </v-list-tile-content>
