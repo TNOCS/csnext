@@ -1,0 +1,3 @@
+<div class="grid-manager" :style="gridStyle()">
+  <cs-widget v-for="widget in dashboard.widgets" :key="widget.id" :widget="widget" :style="gridWidgetClass(widget)"></cs-widget>
+</div>
