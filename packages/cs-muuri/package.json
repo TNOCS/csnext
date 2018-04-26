@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-muuri",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "cs-muuri",
   "main": "./lib/csmuuri.cs.js",
   "types": "./lib/dist/index.d.ts",
@@ -17,14 +17,14 @@
     "access": "public"
   },
   "dependencies": {
+    "@csnext/cs-client": "^0.0.23",
+    "@csnext/cs-core": "^0.0.23",
     "hammerjs": "^2.0.8",
     "jquery": "^3.2.1",
     "muuri": "^0.5.3",
-    "velocityjs": "^1.0.0",
-    "@csnext/cs-client": "^0.0.22",
-    "@csnext/cs-core": "^0.0.22"
+    "velocityjs": "^1.0.0"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "hard-source-webpack-plugin": "^0.6.4",
     "postcss-loader": "^2.1.4",
     "raw-loader": "^0.5.1",
