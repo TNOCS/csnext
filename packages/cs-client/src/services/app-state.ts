@@ -1,4 +1,3 @@
-import { IWidget } from "./../../../cs-core/dist/classes/widget.d";
 import Vue from "vue";
 import {
   MessageBusService,
@@ -6,6 +5,7 @@ import {
   IProject,
   INotification,
   IDashboard,
+  IWidget,
   IDatasource
 } from "@csnext/cs-core";
 import { CsApp } from "./../components/cs-app/cs-app";
