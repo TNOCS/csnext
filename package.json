@@ -6,8 +6,8 @@
     "dev": "lerna run --parallel dev",
     "clean": "lerna run --parallel clean",    
     "build": "lerna run build",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev pages",
+    "docs:build": "vuepress build pages",
     "docker:build": "docker build -t tnocs/csnext ."
   },
   "devDependencies": {
