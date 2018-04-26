@@ -11,7 +11,7 @@
     "link": "yarn link",
     "dev": "tsc -w",
     "clean": "del-cli dist",
-    "prebuild": "tsc"
+    "build": "tsc"
   },
   "publishConfig": {
     "access": "public"

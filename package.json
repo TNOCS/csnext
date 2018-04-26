@@ -4,15 +4,14 @@
   "scripts": {
     "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
-    "clean": "lerna run --parallel clean",
-    "prebuild": "lerna run prebuild",
-    "building": "lerna run build",
-    "postbuild": "lerna run postbuild",
-    "build": "yarn prebuild && yarn building && yarn postbuild"
+    "clean": "lerna run --parallel clean",    
+    "build": "lerna run build"
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
     "lerna": "^2.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "nodemon": "^1.17.3"
+  }
 }
