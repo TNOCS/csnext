@@ -1,5 +1,4 @@
-FROM node:8
-EXPOSE 9001
+FROM node:10
 RUN npm install yarn --global
 COPY . .
 RUN yarn

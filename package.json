@@ -5,7 +5,10 @@
     "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
     "clean": "lerna run --parallel clean",
-    "build": "lerna run --parallel build"
+    "prebuild": "lerna run prebuild",
+    "building": "lerna run build",
+    "postbuild": "lerna run postbuild",
+    "build": "yarn prebuild && yarn building && yarn postbuild"
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
