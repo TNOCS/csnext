@@ -1,3 +1,0 @@
-# CS Web documentation
-
-## Introduction
