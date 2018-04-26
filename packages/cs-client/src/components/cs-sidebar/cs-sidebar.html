@@ -33,7 +33,7 @@
   </div>
   <div v-else-if="app.project.navigation.style==='left' && !sideBar.right">
     <v-list>
-      <v-list-tile v-for="item in app.project.dashboards" :value="item.active" :to="subItem.path" no-action v-bind:key="item.path">
+      <v-list-tile v-for="item in app.project.dashboards" :value="item.active" :to="item.path" no-action v-bind:key="item.path">
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
