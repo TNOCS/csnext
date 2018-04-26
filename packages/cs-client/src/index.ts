@@ -19,7 +19,6 @@ export * from './layout/css-grid/css-grid';
 
 // datasources
 export * from './datasources/webrequest-datasource';
-export * from './datasources/geojson-datasource-processor';
 
 // components
 import { CsApp } from './components/cs-app/cs-app';
