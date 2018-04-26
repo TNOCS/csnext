@@ -1,7 +1,7 @@
 module.exports = {
     title: "Common Sense",
     description: "",
-    dest: './docs/',
+    dest: 'docs/',
     serviceWorker: true,
     themeConfig: {
         repo: 'tnocs/csnext',
