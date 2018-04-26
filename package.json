@@ -4,11 +4,12 @@
   "scripts": {
     "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
-    "clean": "lerna run --parallel clean"
+    "clean": "lerna run --parallel clean",
+    "build": "lerna run --parallel build"
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
-    "lerna": "^2.9.0"
+    "lerna": "^2.11.0"
   },
   "dependencies": {}
 }

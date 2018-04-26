@@ -10,7 +10,8 @@
   "scripts": {
     "link": "yarn link",
     "dev": "tsc -w",
-    "clean": "del-cli dist"
+    "clean": "del-cli dist",
+    "build": "tsc"
   },
   "publishConfig": {
     "access": "public"
