@@ -5,13 +5,10 @@ module.exports = (api, options, rootOptions) => {
   const csVersion = "0.0.21";
   const pkg = {
     dependencies: {
-      "@csnext/cs-client": "0.0.22",
-      "@csnext/cs-core": "0.0.22",
-      vuetify: "^1.0.16",
+      "@csnext/cs-client": "0.0.25",
+      "@csnext/cs-core": "0.0.25",
+      vuetify: "^1.0.17",
       "vue-router": "^3.0.1"
-    },
-    devDependencies: {
-      "@types/geojson": "^7946.0.1"
     }
   };
 
