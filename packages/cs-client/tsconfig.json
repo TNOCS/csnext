@@ -18,5 +18,8 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "exclude": [
+    "./dist"
+  ]
 }

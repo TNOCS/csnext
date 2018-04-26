@@ -7,7 +7,7 @@ import {
   IDashboard,
   IWidget,
   IDatasource
-} from "@csnext/cs-core";
+} from '@csnext/cs-core';
 import { CsApp } from "./../components/cs-app/cs-app";
 import { ProjectManager } from "./project-manager";
 import { CsSettings, CsDashboard, Logger, CsWidget, guidGenerator } from "../";
