@@ -1,7 +1,7 @@
 {
   "name": "@csnext/cs-client",
   "version": "0.0.24",
-  "main": "./lib/csclient.cs.js",
+  "main": "./lib/csclient.cs.min.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "url": "https://github.com/TNOCS/csnext",
@@ -43,10 +43,11 @@
     "url-loader": "^1.0.1",
     "vue": "^2.5.16",
     "vue-class-component": "^6.2.0",
-    "vue-loader": "^15.0.2",
+    "vue-loader": "^14.2.2",
     "vue-property-decorator": "^6.0.0",
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
+
     "webpack": "~4.6.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.15",
