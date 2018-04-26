@@ -7,7 +7,7 @@
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
-        <v-icon slot="divider">chevron_right</v-icon>
+        <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon>
         <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
           {{ item}}
         </v-breadcrumbs-item>
@@ -20,13 +20,13 @@
     </v-tabs>
     <v-spacer></v-spacer>
     <v-btn v-if="app.project.search" icon>
-      <v-icon>search</v-icon>
+      <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
     </v-btn>
 
     <v-menu v-if="app.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
         <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
-        <v-icon>message</v-icon>
+        <v-icon :style="{color:app.project.theme.colors.menu}">message</v-icon>
       </v-badge>
       <!-- <v-btn color="indigo" dark >Menu as Popover</v-btn> -->
       <v-card>
@@ -49,7 +49,7 @@
         </v-list>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click="showNotifications = false">Close</v-btn>
+          <v-btn  flat @click="showNotifications = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-menu>
@@ -57,11 +57,11 @@
     <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu"
       offset-y>
       <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
-        <v-icon>{{menu.icon}}</v-icon>
+        <v-icon :style="{color : app.project.theme.colors.menu}">{{menu.icon}}</v-icon>
       </v-btn>
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">
-          <v-icon v-if="menuItem.icon">{{menuItem.icon}}</v-icon>
+          <v-icon v-if="menuItem.icon" :style="{color:app.project.theme.colors.menu}">{{menuItem.icon}}</v-icon>
           <v-list-tile-title>{{ menuItem.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -85,8 +85,8 @@
 
     <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
       icon>
-      <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
-      <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+      <v-icon v-if="rightSidebar.open" :style="{color:app.project.theme.colors.menu}">keyboard_arrow_right</v-icon>
+      <v-icon v-if="!rightSidebar.open" :style="{color:app.project.theme.colors.menu}">keyboard_arrow_left</v-icon>
     </v-btn>
   </v-toolbar>
 
