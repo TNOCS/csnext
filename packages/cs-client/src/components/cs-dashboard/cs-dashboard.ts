@@ -116,7 +116,7 @@ export class CsDashboard extends Vue {
   public get component(): Vue {
     if (this.dashboard) {
       // use default single layout, if no layout has been specified
-      if (!this.dashboard.layout) { this.dashboard.layout = 'single'; }
+      if (!this.dashboard.layout) { this.dashboard.layout = 'grid'; }
 
       // lookup layout manager
       if (LayoutManager.layoutManagers.hasOwnProperty(this.dashboard.layout)) {
