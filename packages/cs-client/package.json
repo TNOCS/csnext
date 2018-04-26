@@ -1,7 +1,7 @@
 {
   "name": "@csnext/cs-client",
   "version": "0.0.24",
-  "main": "./lib/csclient.cs.js",
+  "main": "./lib/csclient.cs.min.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
   "url": "https://github.com/TNOCS/csnext",
