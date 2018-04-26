@@ -1,8 +1,18 @@
-sudo: required
-language: generic
-notifications:
-  slack: webcs:AnvBbkHIi7v9aTiS2H4suMkr#travis-ci-csnext
-services:
-  - docker
-before_install:
-  - docker build -t tnocs/csnext .
+# sudo: required
+# language: generic
+# notifications:
+#   slack: webcs:AnvBbkHIi7v9aTiS2H4suMkr#travis-ci-csnext
+# services:
+#   - docker
+# before_install:
+#   - docker build -t tnocs/csnext .
+# sudo: required
+
+language: node_js
+node_js:
+  - "8"
+cache:
+  yarn: true
+install:
+  - yarn
+  - yarn build
