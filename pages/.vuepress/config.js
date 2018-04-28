@@ -1,6 +1,7 @@
 module.exports = {
     title: "Common Sense",
     description: "",
+    base: '/csnext/',
     dest: 'docs/',
     serviceWorker: true,
     themeConfig: {
