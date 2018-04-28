@@ -1,11 +1,16 @@
 {
   "private": true,
+  "name": "csnext",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tnocs/csnext.git"
+  },
   "scripts": {
     "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
-    "clean": "lerna run --parallel clean",    
-    "build": "lerna run build", 
+    "clean": "lerna run --parallel clean",
+    "build": "lerna run build",
     "docs:dev": "lerna run docs:dev",
     "docs:build": "lerna run build --scope cs-docs",
     "docker:build": "docker build -t tnocs/csnext .",
