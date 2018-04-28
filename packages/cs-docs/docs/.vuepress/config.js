@@ -2,12 +2,12 @@ module.exports = {
     title: "Common Sense",
     description: "",
     base: '/csnext/',
-    dest: 'docs/',
+    dest: '../../docs/',
     serviceWorker: true,
     themeConfig: {
         repo: 'tnocs/csnext',
         editLinks: true,
-        docsDir: 'pages',
+        docsDir: 'docs',
         locales: {
           '/': {
             label: 'English',

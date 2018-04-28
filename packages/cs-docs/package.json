@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "@csnext/cs-docs",
+  "version": "0.0.23",
+  "description": "csdocs",
+  "url": "https://github.com/TNOCS/csnext",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {    
+  },
+  "devDependencies": {
+    "vuepress": "^0.8.4"
+  }
+}

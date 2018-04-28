@@ -5,17 +5,17 @@
     "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
     "clean": "lerna run --parallel clean",    
-    "build": "lerna run build",
-    "docs:dev": "vuepress dev pages",
-    "docs:build": "vuepress build pages",
-    "docker:build": "docker build -t tnocs/csnext ."
+    "build": "lerna run build", 
+    "docs:dev": "lerna run docs:dev",
+    "docs:build": "lerna run build --scope cs-docs",
+    "docker:build": "docker build -t tnocs/csnext .",
+    "publish": "yarn build && lerna publish --force-publish=*"
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
     "lerna": "^2.11.0"
   },
   "dependencies": {
-    "nodemon": "^1.17.3",
-    "vuepress": "^0.8.4"
+    "nodemon": "^1.17.3"
   }
 }
