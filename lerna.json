@@ -3,10 +3,13 @@
   "packages": [
     "packages/*"
   ],
+  "ignoreCommitters": false,
   "changelog": {
+    "repo": "tnocs/csnext",
     "labels": {
-      "enhancement": ":rocket: Enhancement",
-      "bug": ":bug: Bug Fix"
+      "feature": ":rocket: New Feature",
+      "bug": ":bug: Bug Fix",
+      "added": ":bug: Add"
     },
     "cacheDir": ".changelog"
   },

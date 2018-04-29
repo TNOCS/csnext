@@ -7,19 +7,15 @@
     "strict": true,
     "sourceMap": true,
     "sourceRoot": "./src",
-    "lib": [
-      "es5",
-      "dom",
-      "es2015",
-      "es2015.promise"
-    ],
+    "lib": ["es5", "dom", "es2015", "es2015.promise"],
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "./dist"
-  ]
+  "exclude": ["./dist"],
+  "rules": {
+    "quotemark": [true, "single"]
+  }
 }
