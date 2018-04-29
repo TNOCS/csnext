@@ -1,5 +1,14 @@
-import { AppTheme, IHeaderOptions, IFooterOptions, IDatasource, IDashboard, ISidebarOptions, NavigationOptions } from './..';
+import {
+  AppTheme,
+  IHeaderOptions,
+  IFooterOptions,
+  IDatasource,
+  IDashboard,
+  ISidebarOptions,
+  NavigationOptions
+} from './..';
 import { IMenu } from './menu';
+import * as deepmerge from 'deepmerge';
 
 /** project definition */
 export interface IProject {
@@ -57,4 +66,6 @@ export class Project implements IProject {
   public header?: IHeaderOptions;
   public notifications?: INotificationOptions;
   public menus?: IMenu[] = [];
+
+  
 }

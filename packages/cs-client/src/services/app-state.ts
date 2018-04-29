@@ -8,10 +8,19 @@ import {
   IWidget,
   IDatasource
 } from '@csnext/cs-core';
-import { CsApp } from './../components/cs-app/cs-app';
+// tslint:disable-next-line:no-var-requires
+const deepmerge = require('deepmerge').default;
 import { ProjectManager } from './project-manager';
-import { CsSettings, CsDashboard, Logger, CsWidget, guidGenerator } from '../';
+import {
+  CsApp,
+  CsSettings,
+  CsDashboard,
+  Logger,
+  CsWidget,
+  guidGenerator
+} from '../';
 import VueRouter from 'vue-router';
+import { DefaultProject } from './default-project';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -57,11 +66,13 @@ export class AppState {
   public init(project: Project) {
     Logger.info('app-state', 'Init AppState');
 
+    // init basic common sense components
     Vue.component('cs-dashboard', CsDashboard);
     Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
 
-    this.project = project;
+    // merge new project details, with default project to make sure all required properties are available
+    this.project = deepmerge(DefaultProject, project);
 
     // make sure all dashboards are marked as main
     if (this.project.dashboards) {
