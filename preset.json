@@ -5,6 +5,10 @@
         "@vue/cli-plugin-typescript": {
             "classComponent": true,
             "useTsWithBabel": true
+        },
+        "@csnext/vue-cli-plugin-cs": {
+            "addDefaultProject": true,
+            "csLayoutPlugins": []
         }
     }
 }
