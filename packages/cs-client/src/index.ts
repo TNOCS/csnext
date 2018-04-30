@@ -16,6 +16,7 @@ export * from './services/layout-manager';
 export * from './layout/single/single';
 export * from './layout/grid/grid';
 export * from './layout/css-grid/css-grid';
+export * from './layout/flex-grid/flex-grid';
 
 // datasources
 export * from './datasources/webrequest-datasource';
