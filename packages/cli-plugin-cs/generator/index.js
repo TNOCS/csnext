@@ -5,8 +5,8 @@ module.exports = (api, options, rootOptions) => {
   const csVersion = "0.0.21";
   const pkg = {
     dependencies: {
-      "@csnext/cs-client": "0.0.25",
-      "@csnext/cs-core": "0.0.25",
+      "@csnext/cs-client": "0.0.26",
+      "@csnext/cs-core": "0.0.26",
       vuetify: "^1.0.17",
       "vue-router": "^3.0.1"
     }
