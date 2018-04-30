@@ -1,10 +1,10 @@
 ---
 home: true
-heroImage: /hero.png
+heroImage: /cs-transparent.png
 actionText: Get Started →
 actionLink: /guide/
 features:
-- title: Feature 1
+- title: Configurable Dashboards
   details: Feature 1
 - title: Feature 2
   details: Feature 2
@@ -15,15 +15,14 @@ footer: MIT Licensed | Copyright © 2018-present Arnoud de Jong
 
 ### Installation
 
+CS can be installed in different ways. Please check out the getting started guide, for all options. If you want to quickly start a new CS project based on the Vue CLI, follow the following steps:
+
 ``` bash
 # install vue-cli
 yarn global add @vue/cli
 
-# create a new vue project
-vue create my-project
-
-# add CS plugin
-yarn add @csnext/vue-cli-plugin-cs
+# create a new vue project based on the CS preset
+vue create --preset tnocs/csnext my-project
 
 # start dashboard
 yarn serve
