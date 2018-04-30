@@ -1,5 +1,5 @@
 
-import {  IDashboardOptions,  IWidgetOptions,  Project,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
+import {  IDashboardOptions,  IWidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
 import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
@@ -10,7 +10,7 @@ LayoutManager.add({ id: 'muuri', name: 'muuri', component: MuuriLayout } as ILay
 
 <%_ } _%>
 
-export const project: Project = {
+export const project: IProject = {
   header: {
     title: "Test project",
     logo: "./images/logo.png",

@@ -6,7 +6,7 @@ import { RouteConfig } from 'vue-router/types/router';
 import {
   IDashboard,
   INotification,
-  ThemeColors,
+  IThemeColors,
   ISidebarOptions,
   IWidget,
   IMenu

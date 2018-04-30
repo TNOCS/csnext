@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import {
   MessageBusService,
-  Project,
   IProject,
   INotification,
   IDashboard,
@@ -44,6 +43,7 @@ export class AppState {
   /** True if the application has been initialized */
   public isInitialized = false;
 
+  /** Vue router instance */
   public router?: VueRouter;
 
   /** list of past notifications */
@@ -54,6 +54,7 @@ export class AppState {
     return this.pInstance || (this.pInstance = new this());
   }
 
+  /** Currently active dashboard */
   public activeDashboard?: IDashboard;
 
   public data: { [id: string]: any } = {};
@@ -63,7 +64,7 @@ export class AppState {
   private constructor() {}
 
   /** Initialize the project state, dashboard managers and data summaries handlers */
-  public init(project: Project) {
+  public init(project: IProject) {
     Logger.info('app-state', 'Init AppState');
 
     // init basic common sense components
@@ -79,32 +80,15 @@ export class AppState {
       this.initializeDashboards(this.project.dashboards);
     }
 
+    // setup project manager
     this.projectManager = new ProjectManager(project);
 
-    // if (this.project.datasources) {
-    //   for (const ds in this.project.datasources) {
-    //     if (this.project.datasources[ds].instant) {
-    //       this.loadDatasource(this.project.datasources[ds]);
-    //     }
-
-    //   }
-    // }
-
+    // mark app as initialized
     this.isInitialized = true;
     this.bus.publish('app-state', 'init', null);
   }
 
-  public initializeDashboards(dashboards: IDashboard[]) {
-    if (dashboards) {
-      dashboards.forEach(d => {
-        d.isMain = true;
-        if (d.dashboards) {
-          this.initializeDashboards(d.dashboards);
-        }
-      });
-    }
-  }
-
+  /** loads specific datasource in memory. Returns selected datasource as a promise  */
   public loadDatasource(source: IDatasource | string): Promise<object> {
     if (!this.projectManager) {
       return Promise.reject('Project Manager not initialized');
@@ -112,6 +96,7 @@ export class AppState {
     return this.projectManager.datasourceManager.load(source);
   }
 
+  /** Triggers notification */
   public TriggerNotification(notification: INotification) {
     Object.assign(notification, {
       id: guidGenerator(),
@@ -143,6 +128,18 @@ export class AppState {
       }
       this.project.rightSidebar.dashboard.widgets.push(widget);
       this.project.rightSidebar.open = true;
+    }
+  }
+
+  /** initializes given dashboards */
+  private initializeDashboards(dashboards: IDashboard[]) {
+    if (dashboards) {
+      dashboards.forEach(d => {
+        d.isMain = true;
+        if (d.dashboards) {
+          this.initializeDashboards(d.dashboards);
+        }
+      });
     }
   }
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
-import { Project, IDashboard, IWidget, MessageBusService } from '@csnext/cs-core';
+import { IProject, IDashboard, IWidget, MessageBusService } from '@csnext/cs-core';
 import { CsApp, AppState, Logger, guidGenerator, LayoutManager, DashboardManager } from '../../';
 
 @Component({
@@ -62,7 +62,7 @@ export class CsDashboard extends Vue {
     if (dashboard.options && this.app.project.menus) {
       const dashboardEditButton = this.app.project.menus.find(mi => mi.id === CsApp.DASHBOARD_EDIT_ID);
       if (dashboardEditButton) {
-        dashboardEditButton.visible = dashboard.options.editButton;
+        dashboardEditButton.visible = dashboardEditButton && dashboard.options.editButton;
       }
     }
     // if this is a main dashboard, set it as active dashboard on appstate

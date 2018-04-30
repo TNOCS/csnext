@@ -1,6 +1,6 @@
-import { Project } from '@csnext/cs-core';
+import { IProject } from '@csnext/cs-core';
 
-export const DefaultProject: Project = {
+export const DefaultProject: IProject = {
   header: {
     title: 'Test project',
     logo: './images/logo.png',
