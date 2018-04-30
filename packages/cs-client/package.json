@@ -10,7 +10,7 @@
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --env build --mode development",
+    "build": "webpack --mode development",
     "clean": "del-cli dist lib"
   },
   "publishConfig": {
