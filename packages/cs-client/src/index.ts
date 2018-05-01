@@ -39,6 +39,7 @@ export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';
 export * from './widgets/svg-widget';
+export * from './widgets/vega-widget';
 
 export const csnext = {
   install: (vue) => {
