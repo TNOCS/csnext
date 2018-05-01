@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import { WidgetBase } from '../../';
+import { WidgetBase } from './widget-base';
 import Vue from 'vue';
 
 declare var vega: any;
