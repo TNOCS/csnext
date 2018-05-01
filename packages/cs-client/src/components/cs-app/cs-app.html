@@ -90,8 +90,8 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar v-if="leftSidebar.visible" :sideBar="leftSidebar"></cs-sidebar>
-  <cs-sidebar v-if="rightSidebar.visible" :sideBar="rightSidebar"></cs-sidebar>
+  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
+  <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
     left: () => swipe('Left'),

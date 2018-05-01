@@ -21,6 +21,10 @@
   }
 }
 
+.sidebar {
+  z-index:200 !important;
+}
+
 .header-breadcrumbs {
   padding: 0 !important;
 }
