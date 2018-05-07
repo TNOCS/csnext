@@ -3,4 +3,3 @@ export interface IDashboardOptions {
   background?: string;
   editButton?: boolean;
 }
-

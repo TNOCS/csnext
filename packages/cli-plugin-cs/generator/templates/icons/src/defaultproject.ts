@@ -112,7 +112,7 @@ export const project: IProject = {
         icon: "assignment",
         path: '/grid',
         layout: 'grid',    
-        options: <IDashboardOptions>{ editButton: true},
+        options: <IDashboardOptions>{ editButton: false},
         widgets: [ { component: MdWidget, options: { class: 'widget-1'}, data: 'welcome'}]
       }
       <%_ if (options.csLayoutPlugins.indexOf('muuri')!==-1) { _%>

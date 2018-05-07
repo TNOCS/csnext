@@ -7,7 +7,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
     <script src="https://unpkg.com/vuetify@1.0.17/dist/vuetify.js"></script>
-    <script src="./../../packages/cs-client/lib/csclient.cs.js"></script>
+    <script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>
     <!-- <script src="./../../packages/cs-muuri/lib/csmuuri.cs.js"></script> -->
 </head>
 
@@ -58,7 +58,7 @@
                 }
             ]
         };
-        app.init({});
+        app.init(app.project);
     </script>
 </body>
 
