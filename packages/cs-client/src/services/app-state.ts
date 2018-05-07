@@ -75,6 +75,22 @@ export class AppState {
     // merge new project details, with default project to make sure all required properties are available
     this.project = deepmerge(DefaultProject, project);
 
+    // check if navigation style requires a leftSidebar, add one if not available
+    if (
+      this.project.navigation &&
+      this.project.navigation.style &&
+      ['left', 'left-hierarchy'].includes(this.project.navigation.style) &&
+      !this.project.leftSidebar
+    ) {
+      this.project.leftSidebar = {
+        open: false,
+        mini: false,
+        clipped: true,
+        permanent: false,
+        temporary: true
+      };
+    }
+
     // make sure all dashboards are marked as main
     if (this.project.dashboards) {
       this.initializeDashboards(this.project.dashboards);

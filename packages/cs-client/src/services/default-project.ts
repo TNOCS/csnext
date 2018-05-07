@@ -10,16 +10,16 @@ export const DefaultProject: IProject = {
   navigation: {
     style: 'tabs'
   },
-  leftSidebar: {
-    open: false,
-    mini: false,
-    clipped: true,
-    permanent: false,
-    temporary: true
-    // dashboard: {
-    //   widgets: []
-    // }
-  },
+  // leftSidebar: {
+  //   open: false,
+  //   mini: false,
+  //   clipped: true,
+  //   permanent: false,
+  //   temporary: true
+  //   // dashboard: {
+  //   //   widgets: []
+  //   // }
+  // },
   datasources: {},
   theme: {
     dark: false,
