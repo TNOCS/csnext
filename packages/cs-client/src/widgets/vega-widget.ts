@@ -30,11 +30,13 @@ export class VegaWidget extends WidgetBase {
       if (!this.widget || !this.widget.id) {
         return;
       }
-      if (!spec.width) {
-        spec.width = this.$el.clientWidth - 50;
-      }
-      if (!spec.height) {
-        spec.height = this.$el.clientHeight - 50;
+      if (!spec.autosize) {
+        if (!spec.width) {
+          spec.width = this.$el.clientWidth - 50;
+        }
+        if (!spec.height) {
+          spec.height = this.$el.clientHeight - 50;
+        }
       }
       this.view = new vega.View(vega.parse(spec))
         .renderer('canvas') // set renderer (canvas or svg)
