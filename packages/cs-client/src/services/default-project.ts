@@ -15,10 +15,10 @@ export const DefaultProject: IProject = {
     mini: false,
     clipped: true,
     permanent: false,
-    temporary: true,
-    dashboard: {
-      widgets: []
-    }
+    temporary: true
+    // dashboard: {
+    //   widgets: []
+    // }
   },
   datasources: {},
   theme: {
@@ -34,15 +34,15 @@ export const DefaultProject: IProject = {
       menu: '#000'
     }
   },
-  rightSidebar: {
-    open: false,
-    right: true,
-    clipped: false,
-    temporary: false,
-    dashboard: {
-      widgets: []
-    }
-  },
+  // rightSidebar: {
+  //   open: false,
+  //   right: true,
+  //   clipped: false,
+  //   temporary: false,
+  //   dashboard: {
+  //     widgets: []
+  //   }
+  // },
   menus: [],
   dashboards: []
 };
