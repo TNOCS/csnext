@@ -66,3 +66,5 @@ packages/cs-client/lib
 packages/cs-gridstack/lib/reports/report.gridstack.html
 packages/**/dist/
 packages/**/lib/**
+packages/cs-core/src/classes/navigation-options.ts
+packages/cs-map
