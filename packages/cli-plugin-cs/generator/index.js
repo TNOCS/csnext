@@ -2,11 +2,10 @@ const { hasYarn } = require("@vue/cli-shared-utils");
 const chalk = require("chalk");
 
 module.exports = (api, options, rootOptions) => {
-  const csVersion = "0.0.21";
   const pkg = {
     dependencies: {
-      "@csnext/cs-client": "0.0.27",
-      "@csnext/cs-core": "0.0.27",
+      "@csnext/cs-client": "latest",
+      "@csnext/cs-core": "latest",
       vuetify: "^1.0.17",
       "vue-router": "^3.0.1"
     }
