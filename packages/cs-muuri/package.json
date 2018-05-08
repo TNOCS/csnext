@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-muuri",
-  "version": "0.0.27-1",
+  "version": "0.0.27-2",
   "description": "cs-muuri",
   "main": "./lib/csmuuri.cs.js",
   "types": "./lib/dist/index.d.ts",
@@ -17,8 +17,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.27-1",
-    "@csnext/cs-core": "^0.0.27-1",
+    "@csnext/cs-client": "^0.0.27-2",
+    "@csnext/cs-core": "^0.0.27-2",
     "hammerjs": "^2.0.8",
     "jquery": "^3.2.1",
     "muuri": "^0.5.3",
