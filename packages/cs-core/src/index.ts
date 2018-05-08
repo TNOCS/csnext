@@ -17,5 +17,6 @@ export * from './classes/sidebar-options';
 export * from './classes/editor-schema';
 export * from './utils/message-bus/message-bus-service';
 export * from './classes/widget-options';
+export * from './classes/search-options';
 
 // export *  from './classes/plugin';

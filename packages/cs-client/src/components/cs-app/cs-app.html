@@ -19,6 +19,7 @@
       <v-tab v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">{{dashboard.title}}</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
+    <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details single-line></v-text-field>
     <v-btn v-if="app.project.search" icon>
       <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
     </v-btn>
@@ -90,7 +91,7 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
+  <cs-sidebar v-if="leftSidebar.visible" :style="{background:app.project.theme.colors.primary}" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
   <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
