@@ -1,0 +1,6 @@
+{
+  "exclude": ["./generator/templates/**/*.ts"],
+  "rules": {
+    "quotemark": [true, "single"]
+  }
+}
