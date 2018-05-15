@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { IWidget, IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
 import { Logger, CsWidget, AppState, LayoutManager } from '../../';
+import './single.css';
 
 @Component({
   name: 'single',
