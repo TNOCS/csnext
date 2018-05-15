@@ -14,7 +14,8 @@
     "docs:dev": "lerna run docs:dev",
     "docs:build": "lerna run build --scope cs-docs",
     "docker:build": "docker build -t tnocs/csnext .",
-    "publish": "yarn build && lerna publish --force-publish=*"
+    "publish": "yarn build && lerna publish --force-publish=*",
+    "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch"
   },
   "devDependencies": {
     "del-cli": "^1.1.0",
