@@ -1,37 +1,41 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify';
-import VueRouter from 'vue-router';
-import Component from 'vue-class-component';
-import { RouteConfig } from 'vue-router/types/router';
+import Vue from "vue";
+import Vuetify from "vuetify";
+import VueRouter from "vue-router";
+import Component from "vue-class-component";
+import { RouteConfig } from "vue-router/types/router";
 import {
   IDashboard,
   INotification,
   IThemeColors,
   ISidebarOptions,
   IWidget,
-  IMenu
-} from '@csnext/cs-core';
-import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings } from '../../';
-import './cs-app.css';
-import './../../sass/main.scss';
-import { CsSidebar } from '../cs-sidebar/cs-sidebar';
+  IMenu,
+  IFooterOptions
+} from "@csnext/cs-core";
+import { Watch } from "vue-property-decorator";
+import { AppState, Logger, CsDashboard, CsSettings } from "../../";
+import "./cs-app.css";
+import { CsSidebar } from "../cs-sidebar/cs-sidebar";
+import { CsFooter } from "../cs-footer/cs-footer";
 
 // register needed plugins
 Vue.use(VueRouter);
 
+// Vue.component('cs-footer', CsFooter);
+
 const router = new VueRouter({ routes: [] });
 
 @Component({
-  name: 'cs-app',
+  name: "cs-app",
   router,
-  template: require('./cs-app.html'),
+  template: require("./cs-app.html"),
   components: {
-    'cs-sidebar': CsSidebar
+    "cs-sidebar": CsSidebar,
+    "cs-footer": CsFooter
   }
 } as any)
 export class CsApp extends Vue {
-  public static DASHBOARD_EDIT_ID = 'edit_dashboard';
+  public static DASHBOARD_EDIT_ID = "edit_dashboard";
 
   public app = AppState.Instance;
   public settingsDialog = false;
@@ -39,6 +43,7 @@ export class CsApp extends Vue {
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
+  public footer: IFooterOptions = {};
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -56,9 +61,9 @@ export class CsApp extends Vue {
     super();
     this.app.router = router;
     this.InitNavigation();
-    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    this.app.bus.subscribe("right-sidebar", (action: string, data: any) => {
       switch (action) {
-        case 'open-widget':
+        case "open-widget":
           if (
             this.app.project.rightSidebar &&
             this.app.project.rightSidebar.dashboard &&
@@ -73,9 +78,9 @@ export class CsApp extends Vue {
           break;
       }
     });
-    this.app.bus.subscribe('widget', (action: string, widget: IWidget) => {
+    this.app.bus.subscribe("widget", (action: string, widget: IWidget) => {
       switch (action) {
-        case 'edit':
+        case "edit":
           if (this.app.project.leftSidebar) {
             this.app.project.leftSidebar.component = CsSettings;
             // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
@@ -86,19 +91,19 @@ export class CsApp extends Vue {
     });
   }
 
-  @Watch('app.project.dashboards')
+  @Watch("app.project.dashboards")
   public projectChanged(data: any) {
     this.InitNavigation();
     this.InitTheme();
     this.InitMenus();
   }
 
-  @Watch('app.project.notifications', { deep: true })
+  @Watch("app.project.notifications", { deep: true })
   public noticationsUpdated(n: INotification[], o: INotification[]) {
     this.UpdateNotifications();
   }
 
-  @Watch('app.project.rightSidebar.dashboard')
+  @Watch("app.project.rightSidebar.dashboard")
   public sideBarChanged(n: IDashboard, o: IDashboard) {
     if (!this.rightSidebar) {
       return;
@@ -106,7 +111,7 @@ export class CsApp extends Vue {
     this.rightSidebar.dashboard = n;
   }
 
-  @Watch('$route')
+  @Watch("$route")
   public routeChanged(n: any, o: any) {
     if (
       this.app.project &&
@@ -114,7 +119,7 @@ export class CsApp extends Vue {
       this.app.project.header.breadcrumbs
     ) {
       this.app.project.header.breadcrumbItems = [];
-      n.fullPath.split('/').forEach(s => {
+      n.fullPath.split("/").forEach(s => {
         if (
           s &&
           this.app.project.header &&
@@ -134,10 +139,10 @@ export class CsApp extends Vue {
     if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
       this.app.project.menus.push({
         id: CsApp.DASHBOARD_EDIT_ID,
-        icon: 'mode_edit',
-        title: 'Edit Dashboard',
-        enabled: true,
-        visible: true,
+        icon: "mode_edit",
+        title: "Edit Dashboard",
+        enabled: false,
+        visible: false,
         action: m => {
           // notify dashboard manager that edit was started
           if (
@@ -187,13 +192,13 @@ export class CsApp extends Vue {
     }
     let index = dashboards.indexOf(active);
     switch (direction) {
-      case 'Left':
+      case "Left":
         index += 1;
         if (index >= dashboards.length) {
           index = 0;
         }
         break;
-      case 'Right':
+      case "Right":
         index -= 1;
         if (index < 0) {
           index = dashboards.length - 1;
@@ -257,14 +262,14 @@ export class CsApp extends Vue {
       this.AddDashboardRoute(d);
     });
 
-    Logger.info('navigation', 'navigation initialized');
+    Logger.info("navigation", "navigation initialized");
   }
 
   // tslint:disable-next-line:no-empty
   public selectBreadCrumb(item: any) {}
 
   public SelectDashboard(d: IDashboard) {
-    Logger.info('SelectDashboard', d.path);
+    Logger.info("SelectDashboard", d.path);
     if (router && d.path && !d.dashboards) {
       router.push(d.path);
     }
@@ -281,12 +286,12 @@ export class CsApp extends Vue {
         this.leftSidebar = d.leftSidebar;
         this.leftSidebar.visible = true;
         // Vue.set(this, 'leftSidebar', d.leftSidebar);
+      } else if (this.app.project.leftSidebar) {
+        this.leftSidebar = this.app.project.leftSidebar;
+        this.leftSidebar.visible = true;
+        // Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
       } else {
-        if (this.app.project.leftSidebar) {
-          this.leftSidebar = this.app.project.leftSidebar;
-          this.leftSidebar.visible = true;
-          // Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
-        }
+        this.leftSidebar = {};
       }
 
       if (d.rightSidebar) {
@@ -294,15 +299,28 @@ export class CsApp extends Vue {
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
         // Vue.set(this, 'rightSidebar', d.rightSidebar);
+      } else if (this.app.project.rightSidebar) {
+        this.rightSidebar = this.app.project.rightSidebar;
+        this.rightSidebar.visible = true;
+        this.rightSidebar.right = true;
+        // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
       } else {
-        if (this.app.project.rightSidebar) {
-          this.rightSidebar = this.app.project.rightSidebar;
-          this.rightSidebar.visible = true;
-          this.rightSidebar.right = true;
-          // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
-        }
+        this.rightSidebar = {};
       }
     });
+  }
+
+  public UpdateFooter(d: IDashboard) {
+    if (d.footer) {
+      this.footer = d.footer;
+      this.footer.visible = true;
+      // Vue.set(this, 'rightSidebar', d.rightSidebar);
+    } else if (this.app.project.footer) {
+      this.footer = this.app.project.footer;
+      // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
+    } else {
+      this.footer = {};
+    }
   }
 
   public created() {
@@ -310,12 +328,14 @@ export class CsApp extends Vue {
     this.InitNotifications();
 
     // listen to dashboard init events
-    this.app.bus.subscribe('dashboard.main', (action, dashboard) => {
+    this.app.bus.subscribe("dashboard.main", (action, dashboard) => {
       this.UpdateSideBars(dashboard);
+      this.UpdateFooter(dashboard);
     });
 
     if (this.app.activeDashboard) {
       this.UpdateSideBars(this.app.activeDashboard);
+      this.UpdateFooter(this.app.activeDashboard);
     }
   }
 
@@ -337,16 +357,16 @@ export class CsApp extends Vue {
     }
     this.$set(
       this,
-      'unReadNotifications',
+      "unReadNotifications",
       this.app.project.notifications.items.filter(not => !not.isRead)
     );
   }
   public InitNotifications() {
     if (this.app.bus) {
       this.app.bus.subscribe(
-        'notification',
+        "notification",
         (action: string, notification: INotification) => {
-          if (action === 'new') {
+          if (action === "new") {
             this.lastNotification = notification;
             this.UpdateNotifications();
           }

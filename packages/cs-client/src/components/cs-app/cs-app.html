@@ -1,5 +1,4 @@
-<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
-
+<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">  
   <v-toolbar  :style="{background:app.project.theme.colors.primary}" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"
     :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped" absolute :dense="app.project.header.dense"
     app>
@@ -100,10 +99,15 @@
   }">
     <router-view :key="$route.path">
     </router-view>
+    <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
+    <!-- <v-footer height="auto" fixed class="grey darken-3">test</v-footer> -->
   </v-content>
+
+
 
   <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" v-model="lastNotification._visible">
     {{ lastNotification.title }}
     <v-btn flat @click.native="lastNotification._visible = false">Close</v-btn>
   </v-snackbar>
+
 </v-app>

@@ -1,5 +1,7 @@
+import { IDashboard } from './dashboard';
+
 export interface IFooterOptions {
-  enabled?: boolean;
+  visible?: boolean;
   text?: string;
-  absolute?: boolean;
+  dashboard?: IDashboard;
 }

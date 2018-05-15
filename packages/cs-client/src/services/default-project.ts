@@ -34,6 +34,12 @@ export const DefaultProject: IProject = {
       menu: '#000'
     }
   },
+  // footer: {
+  //   visible: false,
+  //   dashboard: {
+  //     widgets: []
+  //   }
+  // },
   // rightSidebar: {
   //   open: false,
   //   right: true,

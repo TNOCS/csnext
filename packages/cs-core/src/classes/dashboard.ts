@@ -1,4 +1,5 @@
 import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
+import { IFooterOptions } from './footer-options';
 
 export interface IDashboard {
   // dashboard id
@@ -47,6 +48,8 @@ export interface IDashboard {
   // options for right sidebar
   rightSidebar?: ISidebarOptions;
 
+  footer?: IFooterOptions;
+
   // optional list of sub dashboards
   dashboards?: IDashboard[];
 
@@ -57,5 +60,7 @@ export interface IDashboard {
   isMain?: boolean;
 
   events?: IMessageBusService;
+
+  component?: any;
 
 }
