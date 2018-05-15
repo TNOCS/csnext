@@ -1,5 +1,5 @@
 
-import {  IDashboardOptions,  IWidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
+import { IWidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
 import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
@@ -104,15 +104,13 @@ export const project: IProject = {
         icon: "assignment",
         path: '/',
         layout: 'single',    
-        options: <IDashboardOptions>{ editButton: false},
         widgets: [ { component: DataSource, datasource: 'testdata'}]
       },
       {
         title: "Grid",
         icon: "assignment",
         path: '/grid',
-        layout: 'grid',    
-        options: <IDashboardOptions>{ editButton: false},
+        layout: 'grid',
         widgets: [ { component: MdWidget, options: { class: 'widget-1'}, data: 'welcome'}]
       }
       <%_ if (options.csLayoutPlugins.indexOf('muuri')!==-1) { _%>
