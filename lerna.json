@@ -8,7 +8,6 @@
       "allowBranch": "master",
       "cdVersion": "patch",
       "conventionalCommits": true,
-      "gitRemote": "upstream",
       "preid": "beta",
       "message": "chore(release): publish %s"
     }
@@ -23,5 +22,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.0.29"
+  "version": "0.0.30"
 }
