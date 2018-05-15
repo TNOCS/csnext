@@ -2,7 +2,6 @@
 const webpack = require('webpack');
 // const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 

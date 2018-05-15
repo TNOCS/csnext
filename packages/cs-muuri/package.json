@@ -25,14 +25,13 @@
     "velocityjs": "^1.0.0"
   },
   "devDependencies": {
-    "hard-source-webpack-plugin": "^0.6.4",
-    "postcss-loader": "^2.1.4",
+    "postcss-loader": "^2.1.5",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.1",
     "style-loader": "^0.21.0",
-    "ts-loader": "^4.2.0",
+    "ts-loader": "^4.3.0",
     "typescript": "^2.8.3",
-    "webpack": "~4.6.0",
-    "webpack-bundle-analyzer": "^2.11.1"
+    "webpack": "~4.8.3",
+    "webpack-bundle-analyzer": "^2.12.0"
   }
 }
