@@ -3,6 +3,16 @@
   "packages": [
     "packages/*"
   ],
+  "command": {
+    "publish": {
+      "allowBranch": "master",
+      "cdVersion": "patch",
+      "conventionalCommits": true,
+      "gitRemote": "upstream",
+      "preid": "beta",
+      "message": "chore(release): publish %s"
+    }
+  },
   "ignoreCommitters": false,
   "changelog": {
     "repo": "tnocs/csnext",
@@ -13,5 +23,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.0.28"
+  "version": "0.0.29"
 }
