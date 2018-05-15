@@ -81,7 +81,7 @@ module.exports = (api, options, rootOptions) => {
         checkImport(importProject);
       }
       checkLast(initProject);
-      checkLast(appRegistration);
+      // checkLast(appRegistration);
 
       api.render("./templates/icons");
 
