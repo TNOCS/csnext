@@ -1,0 +1,4 @@
+packages/cli-plugin-cs/**
+docs/**
+packages/*/dist/**
+packages/*/lib/**
