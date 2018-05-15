@@ -4,9 +4,9 @@ const chalk = require("chalk");
 module.exports = (api, options, rootOptions) => {
   const pkg = {
     dependencies: {
-      "@csnext/cs-client": "latest",
-      "@csnext/cs-core": "latest",
-      vuetify: "^1.0.17",
+      "@csnext/cs-client": "0.0.30",
+      "@csnext/cs-core": "0.0.29",
+      vuetify: "^1.0.18",
       "vue-router": "^3.0.1"
     }
   };
