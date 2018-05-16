@@ -10,6 +10,7 @@ export interface IDatasource {
   loaded?: boolean;
   // tslint:disable-next-line:ban-types
   requestQueue?: Array<{ resolve: Function, reject: Function }>;
+  execute?(action?: ProcessorActions, data?: any): Promise<any>;
   // {(value: any) => void, (reason?: any) => void }
   // | PromiseLike<object> | undefined
 }

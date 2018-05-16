@@ -49,7 +49,7 @@ export class CsDashboard extends Vue {
         });
       });
     } else if (this.dashboard && this.dashboard.content) {
-      // w.content = this.dashboard.content;
+      Vue.set(widget, 'content', this.dashboard.content);
     }
     widget._initalized = true;
   }
@@ -104,6 +104,13 @@ export class CsDashboard extends Vue {
       }).then(d => {
         if (!this.dashboard) { return; }
         this.dashboard.content = d;
+
+        // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined 
+        if (this.dashboard.widgets) {
+          this.dashboard.widgets.forEach(w => {
+            if (!w.datasource && this.dashboard && this.dashboard.content) { Vue.set(w, 'content', this.dashboard.content); }
+          });
+        }
 
         // if dashboard manager availabe, trigger data loaded event
         if (this.dashboard._manager && this.dashboard._manager.dataLoaded) {
