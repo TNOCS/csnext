@@ -11,6 +11,8 @@ export interface IMuuriOptions extends IDashboardOptions {
   itemWidth?: number;
   itemHeight?: number;
   dragEnabled?: boolean;
+  title?: string;
+  description?: string;
 }
 
 @Component({
