@@ -63,4 +63,7 @@ export interface IDashboard {
 
   component?: any;
 
+  // if true, won't be visible in navigation
+  hideFromNavigation?: boolean;
+
 }

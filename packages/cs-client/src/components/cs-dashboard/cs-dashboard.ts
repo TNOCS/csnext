@@ -58,8 +58,13 @@ export class CsDashboard extends Vue {
   public initDashboard(dashboard: IDashboard) {
 
     if (!dashboard.events) { dashboard.events = new MessageBusService(); }
+    if (dashboard.hideFromNavigation === undefined) { dashboard.hideFromNavigation = false; }
 
-    if (dashboard.options && this.app.project.menus) {
+    if (!dashboard.options) {
+      dashboard.options = {};
+    }
+
+    if (this.app.project.menus) {
       const dashboardEditButton = this.app.project.menus.find(mi => mi.id === CsApp.DASHBOARD_EDIT_ID);
       if (dashboardEditButton) {
         dashboardEditButton.visible = dashboardEditButton && dashboard.options.editButton;
