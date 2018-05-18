@@ -19,12 +19,12 @@ export class DatasourceManager {
   constructor(private datasources: { [id: string]: IDatasource }) {}
 
   /** Load a data source using the assigned data summary handler(s) */
-  public load(source: IDatasource | string): Promise<object> {
+  public load<T>(source: IDatasource | string): Promise<T> {
     const datasource =
       typeof source === 'string' ? this.datasources[source] : source;
     const handlers = datasource.handlers;
     if (!handlers && datasource.data) {
-      return datasource.data;
+      return new Promise((resolve, reject) => { resolve(datasource.data); });
     }
     // run processors
     return new Promise((resolve, reject) => {
@@ -42,7 +42,6 @@ export class DatasourceManager {
       }
       datasource.isLoading = true;
       if (typeof datasource.execute === 'function') {
-        datasource.isLoading = true;
         datasource
           .execute()
           .catch(e => {
@@ -53,6 +52,16 @@ export class DatasourceManager {
             datasource.loaded = true;
             datasource.isLoading = false;
             resolve(r);
+
+            while (
+              datasource.requestQueue &&
+              datasource.requestQueue.length > 0
+            ) {
+              const item = datasource.requestQueue.pop();
+              if (item) {
+                item.resolve(r);
+              }
+            }
           });
       } else if (handlers) {
         handlers

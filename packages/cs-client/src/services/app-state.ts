@@ -105,11 +105,11 @@ export class AppState {
   }
 
   /** loads specific datasource in memory. Returns selected datasource as a promise  */
-  public loadDatasource(source: IDatasource | string): Promise<object> {
+  public loadDatasource<T>(source: IDatasource | string): Promise<T> {
     if (!this.projectManager) {
       return Promise.reject('Project Manager not initialized');
     }
-    return this.projectManager.datasourceManager.load(source);
+    return this.projectManager.datasourceManager.load<T>(source);
   }
 
   /** Triggers notification */
@@ -152,6 +152,7 @@ export class AppState {
     if (dashboards) {
       dashboards.forEach(d => {
         d.isMain = true;
+        if (!d.pathLink) { d.pathLink = d.path; }
         if (d.dashboards) {
           this.initializeDashboards(d.dashboards);
         }

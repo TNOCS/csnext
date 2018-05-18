@@ -43,7 +43,7 @@ export class CsDashboard extends Vue {
 
     // load datasource, if configured
     if (widget.datasource !== undefined) {
-      this.app.loadDatasource(widget.datasource).then(d => {
+      this.app.loadDatasource(widget.datasource).catch(e => { console.log(e); }).then(d => {
         this.$nextTick(() => {
           Vue.set(widget, 'content', d);
         });
