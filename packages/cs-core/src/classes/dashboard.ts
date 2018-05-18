@@ -8,6 +8,9 @@ export interface IDashboard {
   // router path
   path?: string;
 
+  // use this path for the actual link, you might require it if you are using params in your path. if not set, it will use path
+  pathLink?: string;
+
   // dashboard title
   title?: string;
 

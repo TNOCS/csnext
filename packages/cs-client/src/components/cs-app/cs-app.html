@@ -1,8 +1,9 @@
-<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">  
-  <v-toolbar  :style="{background:app.project.theme.colors.primary}" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}" :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"
-    :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped" absolute :dense="app.project.header.dense"
-    app>
-    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" :style="{color:app.project.theme.colors.menu}"  @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
+<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
+  <v-toolbar :style="{background:app.project.theme.colors.primary}" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
+    :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
+    absolute :dense="app.project.header.dense" app>
+    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" :style="{color:app.project.theme.colors.menu}"
+      @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
@@ -15,10 +16,11 @@
     </div>
 
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" router="true" :key="dashboard.id" :to="dashboard.path">{{dashboard.title}}</v-tab>
+      <v-tab v-for="dashboard in app.project.dashboards" router :key="dashboard.id" :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
-    <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details single-line></v-text-field>
+    <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details
+      single-line></v-text-field>
     <v-btn v-if="app.project.search" icon>
       <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
     </v-btn>
@@ -49,7 +51,7 @@
         </v-list>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn  flat @click="showNotifications = false">Close</v-btn>
+          <v-btn flat @click="showNotifications = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-menu>
@@ -90,8 +92,9 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar> <!-- :style="{background:app.project.theme.colors.primary}"  -->
-  
+  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
+  <!-- :style="{background:app.project.theme.colors.primary}"  -->
+
   <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
