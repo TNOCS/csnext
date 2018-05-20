@@ -13,4 +13,5 @@ export interface IWidgetOptions {
   canRemove?: boolean;
   canEdit?: boolean;
   menus?: IMenu[];
+  widgetBorder?: string;
 }
