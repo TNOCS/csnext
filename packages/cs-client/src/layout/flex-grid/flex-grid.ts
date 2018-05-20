@@ -5,12 +5,17 @@ import {
   ILayoutManagerConfig,
   IWidget,
   IGridDashboardOptions,
-  IWidgetOptions
+  IWidgetOptions,
+  IDashboardOptions
 } from '@csnext/cs-core';
-import { LayoutManager } from '../..';
-
+import { LayoutManager, FlexSize } from '../..';
 import './flex-grid.css';
-import { FlexSize } from './flex-size';
+import {
+  IFlexGridOptions,
+  IFlexGridContainer,
+  IFlexWidgetOptions,
+  IFlexGridContainerOptions
+} from './flex-grid-options';
 
 @Component({
   template: require('./flex-grid.html'),
@@ -20,6 +25,11 @@ import { FlexSize } from './flex-size';
 } as any)
 export class FlexGrid extends Vue {
   public dashboard!: IDashboard;
+  public containers: IFlexGridContainer[] = [];
+  public get options(): IFlexGridOptions {
+    return this.dashboard.options;
+  }
+  // public containers: IFlexGridContainer[] = [];
 
   get backgroundWidgets() {
     if (!this.dashboard || !this.dashboard.widgets) {
@@ -30,13 +40,53 @@ export class FlexGrid extends Vue {
     );
   }
 
-  get widgets() {
-    if (!this.dashboard || !this.dashboard.widgets) {
-      return null;
+  public getContainer(widget: IWidget): IFlexGridContainer {
+    if (!this.options) {
+      this.dashboard.options = {};
     }
-    return this.dashboard.widgets.filter(
-      w => !w.options || !w.options.background
-    );
+    if (!this.containers) {
+      this.containers = [];
+    }
+    if (!widget.options) {
+      widget.options = {};
+    }
+    if (!(widget.options as IFlexWidgetOptions).container) {
+      (widget.options as IFlexWidgetOptions).container = 0;
+    }
+
+    const containerIndex =
+      (widget.options as IFlexWidgetOptions).container || 0;
+    while (this.containers.length < containerIndex + 1) {
+      this.containers.push({
+        id: containerIndex,
+        widgets: []
+      } as IFlexGridContainer);
+    }
+    if (
+      this.options.containers &&
+      this.options.containers.length >= containerIndex
+    ) {
+      this.containers[containerIndex].options = this.options.containers[containerIndex];
+    } else {
+      this.containers[containerIndex].options = {
+        direction: 'row',
+        height: '200px'
+      } as IFlexGridContainerOptions;
+    }
+    return this.containers[containerIndex];
+  }
+
+  public updateContainers() {
+    this.containers = [];
+    if (!this.dashboard || !this.dashboard.widgets) {
+      return;
+    }
+    this.dashboard.widgets
+      .filter(w => !w.options || !w.options.background)
+      .forEach(widget => {
+        const container = this.getContainer(widget);
+        container.widgets.push(widget);
+      });
   }
 
   public flexClasses(widget: IWidget) {
@@ -61,10 +111,10 @@ export class FlexGrid extends Vue {
   public flexStyles(widget: IWidget) {
     return { padding: '5px' };
   }
-}
 
-export interface IFlexWidgetOptions extends IWidgetOptions {
-  size?: FlexSize;
+  public created() {
+    this.updateContainers();
+  }
 }
 
 LayoutManager.add({
