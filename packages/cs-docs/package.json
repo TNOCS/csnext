@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@csnext/cs-docs",
-  "version": "0.0.29",
+  "version": "0.0.31",
   "description": "csdocs",
   "url": "https://github.com/TNOCS/csnext",
   "bugs": "https://github.com/TNOCS/csnext/issues",
