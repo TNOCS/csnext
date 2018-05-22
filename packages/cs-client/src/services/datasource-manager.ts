@@ -24,12 +24,23 @@ export class DatasourceManager {
       typeof source === 'string' ? this.datasources[source] : source;
     const handlers = datasource.handlers;
     if (!handlers && datasource.data) {
-      return new Promise((resolve, reject) => { resolve(datasource.data); });
+      return new Promise((resolve, reject) => {
+        resolve(datasource.data);
+        return;
+      });
     }
+    // if (typeof datasource.execute === 'function' && datasource.loaded) {
+    //   return new Promise((resolve, reject) => {
+    //     resolve(datasource as any);
+    //     return;
+    //   });
+    // }
+
     // run processors
     return new Promise((resolve, reject) => {
       if (datasource.data && datasource.loaded) {
         resolve(datasource.data);
+        return;
       }
 
       // if datasource is already being loaded added promise to queue
