@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.33"></a>
+## [0.0.33](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33) (2018-05-28)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-docs
+
+<a name="0.0.33-alpha.4b837bf7"></a>
+## [0.0.33-alpha.4b837bf7](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.4b837bf7) (2018-05-28)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-docs
+
+<a name="0.0.33-alpha.4b837bf7"></a>
+## [0.0.33-alpha.4b837bf7](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.4b837bf7) (2018-05-28)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-docs
+
+<a name="0.0.33-alpha.63d73cf8"></a>
+## [0.0.33-alpha.63d73cf8](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.63d73cf8) (2018-05-28)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-docs
+
 <a name="0.0.33-alpha.5328bf63"></a>
 ## [0.0.33-alpha.5328bf63](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.5328bf63) (2018-05-22)
 
