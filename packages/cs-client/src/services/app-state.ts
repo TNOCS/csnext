@@ -5,7 +5,8 @@ import {
   INotification,
   IDashboard,
   IWidget,
-  IDatasource
+  IDatasource,
+  ISidebarOptions
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 const deepmerge = require('deepmerge').default;
@@ -133,7 +134,7 @@ export class AppState {
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public OpenRightSidebarWidget(widget: IWidget) {
+  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
     if (
       this.project.rightSidebar &&
       this.project.rightSidebar.dashboard &&
@@ -143,7 +144,13 @@ export class AppState {
         this.project.rightSidebar.dashboard.widgets.pop();
       }
       this.project.rightSidebar.dashboard.widgets.push(widget);
-      this.project.rightSidebar.open = true;
+      if (options) {
+        if (options.open) {
+          this.project.rightSidebar.open = options.open;
+        }
+      } else {
+        this.project.rightSidebar.open = true;
+      }
     }
   }
 
@@ -152,7 +159,9 @@ export class AppState {
     if (dashboards) {
       dashboards.forEach(d => {
         d.isMain = true;
-        if (!d.pathLink) { d.pathLink = d.path; }
+        if (!d.pathLink) {
+          d.pathLink = d.path;
+        }
         if (d.dashboards) {
           this.initializeDashboards(d.dashboards);
         }

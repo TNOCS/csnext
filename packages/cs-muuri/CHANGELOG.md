@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.33-alpha.5328bf63"></a>
+## [0.0.33-alpha.5328bf63](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.5328bf63) (2018-05-22)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-muuri
+
+<a name="0.0.33-alpha.5328bf63"></a>
+## [0.0.33-alpha.5328bf63](https://github.com/TNOCS/csnext/compare/v0.0.32...v0.0.33-alpha.5328bf63) (2018-05-22)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-muuri
+
 <a name="0.0.32"></a>
 ## [0.0.32](https://github.com/TNOCS/csnext/compare/v0.0.31...v0.0.32) (2018-05-22)
 
