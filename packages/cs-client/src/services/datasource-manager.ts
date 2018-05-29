@@ -23,12 +23,22 @@ export class DatasourceManager {
     const datasource =
       typeof source === 'string' ? this.datasources[source] : source;
     const handlers = datasource.handlers;
+
+    if (!handlers && datasource.loaded) {
+      return new Promise((resolve, reject) => {
+        resolve(datasource as T);
+        return;
+      });
+    }
+
     if (!handlers && datasource.data) {
       return new Promise((resolve, reject) => {
         resolve(datasource.data);
         return;
       });
     }
+
+    
     // if (typeof datasource.execute === 'function' && datasource.loaded) {
     //   return new Promise((resolve, reject) => {
     //     resolve(datasource as any);
