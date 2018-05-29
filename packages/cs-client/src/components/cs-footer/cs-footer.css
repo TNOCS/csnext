@@ -2,3 +2,6 @@
 /* .list__group__header__append-icon {
   display:none;
 } */
+.footer-class {
+  z-index: 300 !important;
+}

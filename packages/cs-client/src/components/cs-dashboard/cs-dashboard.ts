@@ -43,7 +43,7 @@ export class CsDashboard extends Vue {
 
     // load datasource, if configured
     if (widget.datasource !== undefined) {
-      this.app.loadDatasource(widget.datasource).catch(e => { console.log(e); }).then(d => {
+      this.app.loadDatasource(widget.datasource).then(d => {
         this.$nextTick(() => {
           Vue.set(widget, 'content', d);
         });
@@ -105,7 +105,7 @@ export class CsDashboard extends Vue {
         if (!this.dashboard) { return; }
         this.dashboard.content = d;
 
-        // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined 
+        // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
         if (this.dashboard.widgets) {
           this.dashboard.widgets.forEach(w => {
             if (!w.datasource && this.dashboard && this.dashboard.content) { Vue.set(w, 'content', this.dashboard.content); }

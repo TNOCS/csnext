@@ -3,6 +3,7 @@ import { FlexSize } from './flex-size';
 
 export interface IFlexGridContainerOptions {
   height?: string;
+  maxHeight?: string;
 }
 
 export interface IFlexGridContainer {

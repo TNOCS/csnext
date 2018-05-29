@@ -70,7 +70,7 @@ export class FlexGrid extends Vue {
     } else {
       this.containers[containerIndex].options = {
         direction: 'row',
-        height: '200px'
+        height: '300px'
       } as IFlexGridContainerOptions;
     }
     return this.containers[containerIndex];
@@ -87,6 +87,15 @@ export class FlexGrid extends Vue {
         const container = this.getContainer(widget);
         container.widgets.push(widget);
       });
+  }
+
+  public containerStyles(container: IFlexGridContainer): any {
+    const res: any = {};
+    if (container.options) {
+      if (container.options.height) { res.height = container.options.height; }
+      if (container.options.maxHeight) { res['max-height'] = container.options.maxHeight; }
+    }
+    return res;
   }
 
   public flexClasses(widget: IWidget) {

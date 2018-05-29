@@ -1,7 +1,7 @@
 <div class="flex-grid-manager">
   <cs-widget v-for="widget in backgroundWidgets" :key="widget.id" :widget="widget" class="flex-background-widget"></cs-widget>
   <v-container fluid class="mx-0 pa-0" style="z-index: 150">
-    <v-layout v-for="container in containers" :key="container.id" :style="{'height':container.options.height}" :row="container.options.direction === 'row'" :column="container.options.direction === 'column'" wrap>
+    <v-layout v-for="container in containers" :key="container.id" :style="containerStyles(container)" :row="container.options.direction === 'row'" :column="container.options.direction === 'column'" wrap>
       <v-flex v-for="widget in container.widgets" :key="widget.id" :class="flexClasses(widget)" style="z-index: 100" :style="flexStyles(widget)">
         <cs-widget :key="widget.id" :widget="widget" class="flex-widget"></cs-widget>
       </v-flex>

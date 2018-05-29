@@ -12,5 +12,5 @@
 .flex-widget {
   height: 100%;
   width: 100%;
-  z-index: 150;
+  /* z-index: 150; */
 }

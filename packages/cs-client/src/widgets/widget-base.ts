@@ -21,10 +21,8 @@ export class WidgetBase extends Vue {
   }
 
   @Watch('widget.content')
-  private contentChanged(content: any) {
-    if (content) {
-      // let s = content;
-    }
+  public contentChanged(content: any) {
+    const c = content;
   }
 
 }

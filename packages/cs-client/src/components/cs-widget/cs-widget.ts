@@ -34,6 +34,15 @@ export class CsWidget extends Vue {
     }
   }
 
+  public widgetStyles(): any {
+    const res: any = {};
+    if (this.widget && this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
+      const opt = this.widget._dashboard.defaultWidgetOptions;
+      if (opt.height) { res['max-height'] = opt.height + 'px'; }
+    }
+    return res;
+  }
+
   public addMenuItem(menu: IMenu) {
     if (!this.widget || !this.widget.options) {
       return;
