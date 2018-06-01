@@ -38,7 +38,6 @@ export class DatasourceManager {
       });
     }
 
-    
     // if (typeof datasource.execute === 'function' && datasource.loaded) {
     //   return new Promise((resolve, reject) => {
     //     resolve(datasource as any);
