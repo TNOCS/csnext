@@ -67,7 +67,7 @@
           <v-list-tile-title>{{ menuItem.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
-      <v-card v-if="menu.component">
+      <v-card v-if="menu.component" style="z-index: 1000">
         <component :is="menu.component" :data="menu.data"></component>
       </v-card>
     </v-menu>

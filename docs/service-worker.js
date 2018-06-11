@@ -11,7 +11,7 @@
  * See https://goo.gl/2aRDsh
  */
 
-importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox-sw.js");
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js");
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
@@ -21,7 +21,7 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.1.0/workbox
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "318ae11b4d818eef7272b9791c967070"
+    "revision": "8ce7cce8a36f643fd66227fbf8126a4e"
   },
   {
     "url": "assets/css/3.styles.3710225f.css",
@@ -32,20 +32,20 @@ self.__precacheManifest = [
     "revision": "83621669651b9a3d4bf64d1a670ad856"
   },
   {
-    "url": "assets/js/0.8cf35ea2.js",
+    "url": "assets/js/0.47617e7e.js",
     "revision": "8a15eca1d6ae8407e641bdfc41e4643c"
   },
   {
-    "url": "assets/js/1.6c894b7d.js",
+    "url": "assets/js/1.1ab3724b.js",
     "revision": "21a33572e853a0d6767b564ccf8de169"
   },
   {
-    "url": "assets/js/2.dc51c3ca.js",
+    "url": "assets/js/2.16acc0a8.js",
     "revision": "77010a78bf1a218f669e501ed72f5698"
   },
   {
-    "url": "assets/js/app.d7bac812.js",
-    "revision": "e46fc1a73e16960541f964bc1eeb652d"
+    "url": "assets/js/app.cd2770a2.js",
+    "revision": "e72b09909d72fad258f34a52c89fc151"
   },
   {
     "url": "cs-transparent.png",
@@ -53,15 +53,15 @@ self.__precacheManifest = [
   },
   {
     "url": "examples/index.html",
-    "revision": "7e2f4905e73a3fb51c9f75fdb946953a"
+    "revision": "a37331602d8a044b9a4780c23041bc9d"
   },
   {
     "url": "guide/index.html",
-    "revision": "8b0585675786850dde4b50706a91ff84"
+    "revision": "0c2899177367bf905696181311a4deed"
   },
   {
     "url": "index.html",
-    "revision": "c96c089f073679f2467de91307cb6292"
+    "revision": "196b5c5e58c0a997969f515aad9c7e9b"
   },
   {
     "url": "samples/basic/simple.html",
