@@ -113,8 +113,10 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts",] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' }) // , 'csmuuri'
-    // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
+    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts",] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' })
+     
 ];
+
+// , 'csmuuri'    // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 
 module.exports = config;

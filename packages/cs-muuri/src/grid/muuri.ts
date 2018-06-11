@@ -91,8 +91,10 @@ export class MuuriLayout extends Vue {
                 // let element = c.$mount();
                 // this.grid.add([element]);
                 let welement = document.getElementById(w.id);
-                this.grid.add([welement]);
-                this.items.push(w.id);
+                if (welement) {
+                    this.grid.add([welement]);
+                    this.items.push(w.id);
+                }
                 // this.grid.refreshItems().layout();
             }
         });
