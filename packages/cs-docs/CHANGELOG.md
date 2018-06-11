@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.37"></a>
+## [0.0.37](https://github.com/TNOCS/csnext/compare/v0.0.36...v0.0.37) (2018-06-11)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-docs
+
 <a name="0.0.36"></a>
 ## [0.0.36](https://github.com/TNOCS/csnext/compare/v0.0.35...v0.0.36) (2018-06-01)
 
