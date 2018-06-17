@@ -5,7 +5,9 @@ module.exports = (api, options, rootOptions) => {
     const pkg = {
         scripts: {
             'cs-dev':
-                'yarn link @csnext/cs-client && yarn link @csnext/cs-core && yarn link @csnext/vue-cli-plugin-cs'
+                'yarn link @csnext/cs-client && yarn link @csnext/cs-core && yarn link @csnext/vue-cli-plugin-cs',
+            'cs-unlink':
+                'yarn unlink @csnext/cs-client && yarn unlink @csnext/cs-core && yarn unlink @csnext/vue-cli-plugin-cs',
         },
         dependencies: {
             '@csnext/cs-client': '0.0.37',

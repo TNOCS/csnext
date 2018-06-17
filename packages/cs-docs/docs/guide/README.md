@@ -42,3 +42,12 @@ After setting up the development environment for csNext you can now setup the li
 yarn cs-dev
 ```
 
+If you want to return to the NPM packages, you can unlink the local depencies using:
+
+``` bash
+# unlink local csNext libraries
+yarn cs-unlink
+```
+
+
+
