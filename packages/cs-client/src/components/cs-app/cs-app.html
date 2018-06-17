@@ -2,6 +2,8 @@
   <v-toolbar :style="{background:app.project.theme.colors.primary}" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
     :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
     absolute :dense="app.project.header.dense" app>
+
+    <!-- header -->
     <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" :style="{color:app.project.theme.colors.menu}"
       @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
@@ -15,15 +17,22 @@
       <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{app.project.header.title}}</v-toolbar-title>
     </div>
 
+    <!-- tabs -->
+
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
       <v-tab v-for="dashboard in app.project.dashboards" router :key="dashboard.id" :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
+
+    <!-- search -->
+
     <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details
       single-line></v-text-field>
     <v-btn v-if="app.project.search" icon>
       <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
     </v-btn>
+
+    <!-- menus -->
 
     <v-menu v-if="app.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
@@ -72,18 +81,7 @@
       </v-card>
     </v-menu>
 
-
-
-    <!-- <v-menu bottom left>
-      <v-btn icon slot="activator" :dark="app.project.theme.dark">
-        <v-icon>more_vert</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile v-for="setting in settings" :key="setting.id" @click="">
-          <v-list-tile-title>{{ setting.title }}</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu> -->
+    <!-- right side bar button -->
 
     <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
       icon>
@@ -92,21 +90,22 @@
     </v-btn>
   </v-toolbar>
 
-  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
-  <!-- :style="{background:app.project.theme.colors.primary}"  -->
+  <!-- side bars -->
 
+  <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
   <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
-  <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{
-    left: () => swipe('Left'),
-    right: () => swipe('Right')
-  }">
+  <!-- content -->
+
+  <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">
     <router-view :key="$route.path">
     </router-view>
+
+    <!-- footer -->
     <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
-    <!-- <v-footer height="auto" fixed class="grey darken-3">test</v-footer> -->
   </v-content>
 
+  <!-- snackbar -->
 
 
   <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" v-model="lastNotification._visible">
