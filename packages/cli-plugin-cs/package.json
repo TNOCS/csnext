@@ -19,7 +19,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@vue/cli-shared-utils": "latest",
+        "@vue/cli-shared-utils": "^3.0.0-beta.16",
         "workbox-webpack-plugin": "^3.2.0"
     },
     "devDependencies": {
