@@ -133,6 +133,20 @@ export class AppState {
     }
   }
 
+  /** if rightsidebar exists, clear component and close */
+  public ClearRightSidebar() {
+    if (
+      this.project.rightSidebar &&
+      this.project.rightSidebar.dashboard &&
+      this.project.rightSidebar.dashboard.widgets
+    ) {
+      while (this.project.rightSidebar.dashboard.widgets.length > 0) {
+        this.project.rightSidebar.dashboard.widgets.pop();
+      }
+      this.project.rightSidebar.open = false;
+    }
+  }
+
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
   public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
     if (
