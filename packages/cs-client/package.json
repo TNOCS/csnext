@@ -22,7 +22,7 @@
     "deepmerge": "^2.1.0",
     "vue-markdown": "^2.2.4",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.0.18"
+    "vuetify": "^v1.1.0-rc.1"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
