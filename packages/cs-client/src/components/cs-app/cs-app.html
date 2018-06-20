@@ -1,5 +1,5 @@
 <v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
-  <v-toolbar :style="{background:app.project.theme.colors.primary}" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
+  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
     :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
     absolute :dense="app.project.header.dense" app>
 
@@ -7,7 +7,7 @@
     <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" :style="{color:app.project.theme.colors.menu}"
       @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
-    <div class="header-title-container">
+    <div class="header-title-container" :style="{color:app.project.theme.colors.headerColor}">
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
         <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon>
         <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
@@ -20,7 +20,7 @@
     <!-- tabs -->
 
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" router :key="dashboard.id" :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
+      <v-tab v-for="dashboard in app.project.dashboards" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
 
@@ -28,11 +28,12 @@
 
     <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details
       single-line></v-text-field>
+
     <v-btn v-if="app.project.search" icon>
       <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
     </v-btn>
 
-    <!-- menus -->
+    <!-- notifications -->
 
     <v-menu v-if="app.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
@@ -65,10 +66,11 @@
       </v-card>
     </v-menu>
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu"
-      offset-y>
-      <v-btn icon slot="activator" :dark="app.project.theme.dark" @click.delegate="activateMenu(menu)">
-        <v-icon :style="{color : app.project.theme.colors.menu}">{{menu.icon}}</v-icon>
+    <!-- menus -->
+
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu" offset-y>
+      <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
+        <v-icon>{{menu.icon}}</v-icon> <!-- :style="{color : app.project.theme.colors.menu}"-->
       </v-btn>
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">

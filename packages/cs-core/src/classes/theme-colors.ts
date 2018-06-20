@@ -7,4 +7,6 @@ export interface IThemeColors {
   success?: string; // '#4CAF50';
   warning?: string; // '#FFC107';
   menu?: string; // '#000';
+  headerBackground?: string;
+  headerColor?: string;
 }

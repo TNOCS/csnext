@@ -178,7 +178,7 @@ export class CsApp extends Vue {
 
   public InitTheme() {
     if (this.app.project && this.app.project.theme) {
-      // this.$vuetify.theme = this.app.project.theme.colors;
+      this.$vuetify.theme = this.app.project.theme.colors as any;
     }
   }
 
