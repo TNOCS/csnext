@@ -53,17 +53,3 @@ export interface INotificationOptions {
   items?: INotification[];
   listStyle?: 'popup' | 'right-sidebar';
 }
-
-// export class Project implements IProject {
-//   public id?: string;
-//   public navigation?: NavigationOptions = {};
-//   public footer?: IFooterOptions = {};
-//   public datasources?: { [id: string]: IDatasource } = {};
-//   public dashboards?: IDashboard[] = [];
-//   public leftSidebar?: ISidebarOptions = {};
-//   public rightSidebar?: ISidebarOptions = {};
-//   public theme?: AppTheme;
-//   public header?: IHeaderOptions;
-//   public notifications?: INotificationOptions;
-//   public menus?: IMenu[] = [];
-// }
