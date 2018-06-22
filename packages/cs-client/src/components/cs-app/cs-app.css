@@ -16,6 +16,7 @@
   /** margin-left:5px; */
 }
 
+
 .header-title-container {
   margin-left: 16px;
 }
@@ -27,7 +28,7 @@
 }
 
 .sidebar {
-  z-index:200 !important;
+  /* z-index:200 !important; */
 }
 
 .header-breadcrumbs {
