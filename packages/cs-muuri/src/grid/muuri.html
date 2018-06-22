@@ -1,13 +1,10 @@
 <div>
 
     <v-card-title v-if="dashboard.options.title">
-        <h1>{{dashboard.options.title}}</h1>
+        <h1 v-if="dashboard.options.title" class="headline mb-0">{{dashboard.options.title}}</h1>
+        <p v-if="dashboard.options.description"><br/><br/><br/>{{dashboard.options.description}}</p>
     </v-card-title>
-    <v-card-text v-if="dashboard.options.description">
-        {{dashboard.options.description}}
-    </v-card-text>
-
-
+   
     <div :id="'muuri-' + dashboard.id" class="muuri-grid">
         <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
             <muuri-widget :widget="widget" :grid="grid"></muuri-widget>

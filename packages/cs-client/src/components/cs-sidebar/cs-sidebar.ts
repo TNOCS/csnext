@@ -12,8 +12,6 @@ import './cs-sidebar.css';
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
 
-  public appendIcon = '';
-
   @Prop() public sideBar?: ISidebarOptions;
 
   @Watch('sideBar.dashboard')
