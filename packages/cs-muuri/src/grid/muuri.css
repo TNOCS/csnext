@@ -3,6 +3,10 @@
     width:100%;
   }
 
+  .muuri-grid-header {
+      padding:8px;
+  }
+
   .muuri-item {
     display: block;
     position: absolute;    

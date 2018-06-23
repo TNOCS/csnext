@@ -1,9 +1,9 @@
 <div>
 
-    <v-card-title v-if="dashboard.options.title">
+  <div v-if="dashboard.options.title" class="muuri-grid-header">
         <h1 v-if="dashboard.options.title" class="headline mb-0">{{dashboard.options.title}}</h1>
-        <p v-if="dashboard.options.description"><br/><br/><br/>{{dashboard.options.description}}</p>
-    </v-card-title>
+        <h3 v-if="dashboard.options.description">{{dashboard.options.description}}</h3>
+  </div>
    
     <div :id="'muuri-' + dashboard.id" class="muuri-grid">
         <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
