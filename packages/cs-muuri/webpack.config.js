@@ -113,7 +113,7 @@ function buildConfig(entry, externals, analyzer) {
 }
 
 const config = [
-    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts",] }, { 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' })
+    buildConfig({ cs: ['velocityjs', 'hammerjs', "./src/index.ts",] }, { 'cs-client': 'cs-client', 'cs-core': 'cs-core', '@csnext/cs-client': '@csnext/cs-client', 'vue': 'Vue', 'Vue': 'Vue' })
      
 ];
 

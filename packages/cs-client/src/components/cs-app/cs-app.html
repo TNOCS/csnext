@@ -97,6 +97,29 @@
   <cs-sidebar v-if="leftSidebar.visible" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
   <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
+  <!-- dialogs -->
+  <v-dialog
+        v-model="dialog.visible"
+        :fullscreen="dialog.fullscreen"
+        hide-overlay
+        transition="dialog-bottom-transition"      
+        
+      >
+      <v-card tile>
+        <v-toolbar card dark color="primary" v-if="dialog.toolbar">
+          <v-btn icon dark @click.native="dialog.visible = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
+          <v-spacer></v-spacer>          
+        </v-toolbar>
+        <v-card-text>
+          <component :is="dialog.component"></component>
+        </v-card-text>
+        <div style="flex: 1 1 auto;"></div>
+      </v-card>
+    </v-dialog>
+
   <!-- content -->
 
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">

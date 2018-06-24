@@ -6,14 +6,14 @@ import {
   IDashboard,
   IWidget,
   IDatasource,
-  ISidebarOptions
+  ISidebarOptions,
+  IDialog
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 const deepmerge = require('deepmerge').default;
 import { ProjectManager } from './project-manager';
 import {
   CsApp,
-  CsSettings,
   CsDashboard,
   Logger,
   CsWidget,
@@ -131,6 +131,10 @@ export class AppState {
     ) {
       this.project.notifications.items.push(notification);
     }
+  }
+
+  public TriggerDialog(dialog: IDialog) {
+    this.bus.publish('dialog', 'new', dialog);
   }
 
   /** if rightsidebar exists, clear component and close */

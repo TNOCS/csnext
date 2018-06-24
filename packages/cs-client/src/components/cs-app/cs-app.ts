@@ -10,7 +10,8 @@ import {
   ISidebarOptions,
   IWidget,
   IMenu,
-  IFooterOptions
+  IFooterOptions,
+  IDialog
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
@@ -18,7 +19,9 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 
-// register needed plugins
+// register needed plugins'
+// tslint:disable-next-line:no-console
+console.log('Use VueRouter');
 Vue.use(VueRouter);
 
 // Vue.component('cs-footer', CsFooter);
@@ -44,6 +47,7 @@ export class CsApp extends Vue {
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
+  public dialog: IDialog = { visible: false, toolbar: true};
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -61,6 +65,7 @@ export class CsApp extends Vue {
     super();
     this.app.router = router;
     this.InitNavigation();
+
     this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
@@ -326,6 +331,15 @@ export class CsApp extends Vue {
   public created() {
     this.onResize();
     this.InitNotifications();
+
+    this.app.bus.subscribe('dialog', (action: string, dialog: IDialog) => {
+      switch (action) {
+        case 'new':
+          Vue.set(this, 'dialog', dialog);
+          this.dialog.visible = true;
+          break;
+      }
+    });
 
     // listen to dashboard init events
     this.app.bus.subscribe('dashboard.main', (action, dashboard) => {

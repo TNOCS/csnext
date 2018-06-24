@@ -18,5 +18,6 @@ export * from './classes/editor-schema';
 export * from './utils/message-bus/message-bus-service';
 export * from './classes/widget-options';
 export * from './classes/search-options';
+export * from './classes/dialog';
 
 // export *  from './classes/plugin';
