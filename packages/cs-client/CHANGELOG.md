@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.41"></a>
+## [0.0.41](https://github.com/TNOCS/csnext/compare/v0.0.40...v0.0.41) (2018-06-24)
+
+
+
+
+**Note:** Version bump only for package @csnext/cs-client
+
 <a name="0.0.40"></a>
 ## [0.0.40](https://github.com/TNOCS/csnext/compare/v0.0.39...v0.0.40) (2018-06-22)
 
