@@ -2,18 +2,12 @@ import { Watch } from 'vue-property-decorator';
 import {
     IWidget,
     IDashboard,
-    ILayoutManagerConfig,
     IDashboardOptions
 } from '@csnext/cs-core';
 import Vue from 'vue';
-import {
-    WidgetBase,
-    Logger,
-    CsWidget,
-    AppState,
-    LayoutManager,
-    guidGenerator
-} from '@csnext/cs-client';
+// import {
+//     guidGenerator
+// } from '@csnext/cs-client';
 import Component from 'vue-class-component';
 const Muuri = require('muuri');
 import './muuri.css';
@@ -35,26 +29,27 @@ export interface IMuuriOptions extends IDashboardOptions {
     props: {
         dashboard: null
     }
-})
+} as any)
 export class MuuriLayout extends Vue {
     public mode: any;
-    public dashboard: IDashboard;
-    public options: IMuuriOptions;
+    public dashboard!: IDashboard;
+    public options!: IMuuriOptions;
     public grid: any;
     private docElem;
     public items: string[] = [];
-    private uuid = 0;
     private dragCounter = 0;
     private editSubscription: any;
     private muuriOptions: any;
 
     get widgets() {
+        if (!this.dashboard || !this.dashboard.widgets) { return [];}
         return this.dashboard.widgets.filter(
             w => !w.options || !w.options.background
         );
     }
 
     get backgroundWidgets() {
+        if (!this.dashboard.widgets) { return []; }
         return this.dashboard.widgets.filter(
             w => w.options && w.options.background
         );
@@ -73,9 +68,8 @@ export class MuuriLayout extends Vue {
         }
         // remove old widgets
         if (old.length > n.length) {
-            old.forEach(w => {
-                if (n.indexOf(w) === -1) {
-                    let welement = document.getElementById(w.id);
+            old.forEach((w : IWidget) => {
+                if (n.indexOf(w) === -1 && w.id) {
                     // this.grid.remove([welement]);
                     this.items = this.items.filter(wi => w.id !== wi);
                     this.grid.refreshItems().layout();
@@ -84,7 +78,7 @@ export class MuuriLayout extends Vue {
         }
         // add new widgets
         n.forEach(w => {
-            if (this.items.indexOf(w.id) === -1) {
+            if (w.id && this.items.indexOf(w.id) === -1) {
                 // this.initWidget(w);
                 // let c = new CsWidget();
                 // c.widget = w;
@@ -109,7 +103,7 @@ export class MuuriLayout extends Vue {
         );
 
         if (!this.editSubscription && this.dashboard && this.dashboard.events) {
-            this.dashboard.events.subscribe('settings', (action, data) => {
+            this.dashboard.events.subscribe('settings', () => {
                 this.options.dragEnabled = this.dashboard.options.dragEnabled;
             });
         }
@@ -132,7 +126,6 @@ export class MuuriLayout extends Vue {
                 dragSortInterval: 10,
                 dragContainer: document.body,
                 dragStartPredicate: (item, event) => {
-                    var isDraggable = true;
                     // var isRemoveAction = elementMatches(event.target, '.card-remove, .card-remove i');
                     return this.options.dragEnabled
                         ? Muuri.ItemDrag.defaultStartPredicate(item, event)
@@ -157,9 +150,9 @@ export class MuuriLayout extends Vue {
     }
 
     public created() {
-        if (this.dashboard && !this.dashboard.id) {
-            this.dashboard.id = guidGenerator();
-        }
+        // if (this.dashboard && !this.dashboard.id) {
+        //     this.dashboard.id = guidGenerator();
+        // }
         this.initGrid();
     }
 
