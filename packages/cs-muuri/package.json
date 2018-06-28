@@ -28,9 +28,9 @@
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
-    "ts-loader": "^4.4.1",
+    "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
-    "webpack": "~4.12.1",
+    "webpack": "~4.13.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.8"
   }
