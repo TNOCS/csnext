@@ -18,10 +18,6 @@
     "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch"
   },
   "devDependencies": {
-    "del-cli": "^1.1.0",
     "lerna": "^2.11.0"
-  },
-  "dependencies": {
-    "nodemon": "^1.17.3"
   }
 }
