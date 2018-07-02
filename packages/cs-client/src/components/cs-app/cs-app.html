@@ -4,7 +4,7 @@
     absolute :dense="app.project.header.dense" app>
 
     <!-- header -->
-    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent"  @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon> 
+    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <!-- :style="{color:app.project.theme.colors.menu}" -->
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container" :style="{color:app.project.theme.colors.headerColor}">
@@ -20,7 +20,8 @@
     <!-- tabs -->
 
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
+      <v-tab v-for="dashboard in app.project.dashboards" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id"
+        :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
     </v-tabs>
     <v-spacer></v-spacer>
 
@@ -68,10 +69,14 @@
 
     <!-- menus -->
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu" offset-y>
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu"
+      offset-y>
+
+
       <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
-        <v-icon>{{menu.icon}}</v-icon> <!-- :style="{color : app.project.theme.colors.menu}"-->
+        <v-icon>{{menu.icon}}</v-icon>
       </v-btn>
+      
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">
           <v-icon v-if="menuItem.icon" :style="{color:app.project.theme.colors.menu}">{{menuItem.icon}}</v-icon>
@@ -98,27 +103,21 @@
   <cs-sidebar v-if="rightSidebar.visible" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
   <!-- dialogs -->
-  <v-dialog
-        v-model="dialog.visible"
-        :fullscreen="dialog.fullscreen"
-        hide-overlay
-        transition="dialog-bottom-transition"      
-        
-      >
-      <v-card tile>
-        <v-toolbar card dark color="primary" v-if="dialog.toolbar">
-          <v-btn icon dark @click.native="dialog.visible = false">
-            <v-icon>close</v-icon>
-          </v-btn>
-          <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
-          <v-spacer></v-spacer>          
-        </v-toolbar>
-        <v-card-text>
-          <component :is="dialog.component"></component>
-        </v-card-text>
-        <div style="flex: 1 1 auto;"></div>
-      </v-card>
-    </v-dialog>
+  <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" hide-overlay transition="dialog-bottom-transition">
+    <v-card tile>
+      <v-toolbar card dark color="primary" v-if="dialog.toolbar">
+        <v-btn icon dark @click.native="dialog.visible = false">
+          <v-icon>close</v-icon>
+        </v-btn>
+        <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+      <v-card-text>
+        <component :is="dialog.component"></component>
+      </v-card-text>
+      <div style="flex: 1 1 auto;"></div>
+    </v-card>
+  </v-dialog>
 
   <!-- content -->
 
