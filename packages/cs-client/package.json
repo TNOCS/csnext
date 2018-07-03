@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.45",
+    "@csnext/cs-core": "^0.0.46",
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "vue-router": "^3.0.1",
@@ -45,12 +45,12 @@
     "vue": "^2.5.16",
     "vue-class-component": "^6.2.0",
     "vue-loader": "^15.2.4",
+    "vue-markdown": "^2.2.4",
     "vue-property-decorator": "^7.0.0",
     "vue-template-compiler": "^2.5.16",
     "webpack": "~4.14.0",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.0.8",
-    "yargs": "^12.0.1", 
-    "vue-markdown": "^2.2.4"
-  }  
+    "yargs": "^12.0.1"
+  }
 }
