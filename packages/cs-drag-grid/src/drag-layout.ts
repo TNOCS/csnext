@@ -3,12 +3,10 @@ import { Watch } from 'vue-property-decorator';
 import {
   IWidget,
   IDashboard,
-  IDashboardOptions
+  IDashboardOptions,
+  guidGenerator
 } from '@csnext/cs-core';
 import Vue from 'vue';
-import {
-  guidGenerator
-} from '@csnext/cs-client';
 import Component from 'vue-class-component';
 import './drag-layout.css';
 
