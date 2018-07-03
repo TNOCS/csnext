@@ -78,15 +78,15 @@ function buildConfig(entry, externals, analyzer) {
     /\.js$/,
     /\.d\.ts$/
   ]));
-  // if (analyzer) {
-  //   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-  //   pl.push(new BundleAnalyzerPlugin({
-  //     analyzerMode: 'static',
-  //     openAnalyzer: false,
-  //     reportFilename: 'reports/report.' + analyzer + '.html',
-  //     generateStatsFile: false
-  //   }));
-  // }
+  if (analyzer) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    pl.push(new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      reportFilename: 'reports/report.' + analyzer + '.html',
+      generateStatsFile: false
+    }));
+  }
   return baseConfig = {
     entry: entry,
     // entry: __dirname + '/src/index.ts',
@@ -106,7 +106,8 @@ const config = [
     cs: ["./src/index.ts"]
   }, {
       'vue': 'Vue',
-      'vuetify': 'vuetify'
+      'vuetify': 'vuetify',
+      'vue-markdown': 'vue-markdown'
     }, 'cs')
   // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];

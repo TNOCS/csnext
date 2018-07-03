@@ -1,0 +1,32 @@
+{
+  "name": "@csnext/cs-drag-grid",
+  "version": "0.0.45",
+  "description": "cs-drag-grid",
+  "main": "./lib/csdraggrid.cs.js",
+  "types": "./lib/dist/index.d.ts",
+  "url": "https://github.com/TNOCS/cs-drag-grid",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
+  "license": "MIT",
+  "scripts": {
+    "link": "yarn link",
+    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --mode development",
+    "clean": "del-cli dist lib"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+      "vue-grid-layout": "^2.1.13"
+  },
+  "devDependencies": {
+    "postcss-loader": "^2.1.5",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^2.9.2",
+    "webpack": "~4.14.0",
+    "webpack-bundle-analyzer": "^2.13.1",
+    "webpack-cli": "^3.0.8"
+  }
+}
