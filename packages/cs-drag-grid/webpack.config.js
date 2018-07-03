@@ -15,7 +15,7 @@ if (env === 'build') {
 const output = {
     path: __dirname + '/lib',
     filename: outputFile,
-    library: libraryName,
+    library: libraryName
 };
 
 const mod = {
@@ -71,6 +71,8 @@ const config = [
     buildConfig(
         { cs: ['./src/index.ts'] },
         {
+            'cs-core': 'cs-core',
+            '@csnext/cs-client': '@csnext/cs-client',
             vue: 'Vue',
             Vue: 'Vue'
         }
