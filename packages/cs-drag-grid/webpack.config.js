@@ -15,7 +15,8 @@ if (env === 'build') {
 const output = {
     path: __dirname + '/lib',
     filename: outputFile,
-    library: libraryName
+    library: libraryName,
+    libraryTarget: 'umd'
 };
 
 const mod = {
