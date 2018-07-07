@@ -3,11 +3,7 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
-  IWidget,
-  IGridDashboardOptions,
-  IWidgetOptions,
-  IDashboardOptions
-} from '@csnext/cs-core';
+  IWidget} from '@csnext/cs-core';
 import { LayoutManager, FlexSize } from '../..';
 import './flex-grid.css';
 import {
@@ -16,6 +12,7 @@ import {
   IFlexWidgetOptions,
   IFlexGridContainerOptions
 } from './flex-grid-options';
+import { Watch } from 'vue-property-decorator';
 
 @Component({
   template: require('./flex-grid.html'),
@@ -28,6 +25,11 @@ export class FlexGrid extends Vue {
   public containers: IFlexGridContainer[] = [];
   public get options(): IFlexGridOptions {
     return this.dashboard.options;
+  }
+
+  @Watch('dashboard.widgets')
+  public widgetsUpdated(n: IWidget[]) {
+    this.updateContainers();
   }
   // public containers: IFlexGridContainer[] = [];
 
@@ -69,8 +71,8 @@ export class FlexGrid extends Vue {
       this.containers[containerIndex].options = this.options.containers[containerIndex];
     } else {
       this.containers[containerIndex].options = {
-        direction: 'row',
-        height: '300px'
+        direction: 'row'//
+        // height: '300px'
       } as IFlexGridContainerOptions;
     }
     return this.containers[containerIndex];
@@ -117,7 +119,7 @@ export class FlexGrid extends Vue {
     return 'md2 sm6 xs12';
   }
 
-  public flexStyles(widget: IWidget) {
+  public flexStyles() {
     return { padding: '5px' };
   }
 

@@ -1,4 +1,6 @@
-.flex-grid-manager {}
+.flex-grid-manager {
+  height: 100%;
+}
 
 .flex-background-widget {
   position: absolute;
