@@ -12,12 +12,12 @@
         @layout-updated="layoutUpdatedEvent"
         >
         <!-- @layout-updated="layoutUpdatedEvent" -->
-        <grid-item v-for="widget in layout" :key="widget.i" 
+        <grid-item v-for="widget in layout" :class="{'grid-item-moving': isMoving}" :key="widget.i" 
             :x="widget.x" 
             :y="widget.y" 
             :w="widget.w"
             :h="widget.h" 
-            :i="widget.i"                         
+            :i="widget.i"         
             >
 
             <!-- @resized="resizedEvent" 
@@ -25,7 +25,7 @@
             @move="moveEvent"        
             @moved="movedEvent" -->
             <!-- <div style="background:red;height:100%"></div> -->
-            <cs-widget :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
+            <cs-widget v-if="!isMoving" :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
         </grid-item>
     </grid-layout>
     <!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">

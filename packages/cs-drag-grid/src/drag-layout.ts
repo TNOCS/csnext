@@ -33,6 +33,7 @@ export class DragLayout extends Vue {
   public items: string[] = [];
   private editSubscription: any;
   public dragEnabled = false;
+  public isMoving = false;
 
   public layout: any[] = [];
 
@@ -159,12 +160,11 @@ export class DragLayout extends Vue {
   }
 
   public movedEvent(id: string) {
+      this.isMoving = false;
   }
 
   public moveEvent() {
-    // let widget = l[d].widget;
-
-    console.log('move');
+    this.isMoving = true;
   }
 
   public resizeEvent() {

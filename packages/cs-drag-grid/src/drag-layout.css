@@ -16,3 +16,8 @@
   .item.muuri-item-hidden {
     z-index: 0;
   }
+
+  .grid-item-moving {
+      border-width: 1;
+      border-style: dashed;
+  }
