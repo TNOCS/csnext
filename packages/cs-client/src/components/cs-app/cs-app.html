@@ -4,7 +4,7 @@
     absolute :dense="app.project.header.dense" app>
 
     <!-- header -->
-    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
+    <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" class="header-icon" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
     <!-- :style="{color:app.project.theme.colors.menu}" -->
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
     <div class="header-title-container" :style="{color:app.project.theme.colors.headerColor}">
@@ -69,7 +69,7 @@
 
     <!-- menus -->
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu"
+    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu header-icon"
       offset-y>
 
 
@@ -90,7 +90,7 @@
 
     <!-- right side bar button -->
 
-    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
+    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open" class="header-icon"
       icon>
       <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
       <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
