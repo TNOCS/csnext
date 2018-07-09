@@ -4,5 +4,6 @@ export enum FlexSize {
   Medium = 'Medium',
   Large = 'Large',
   Wide = 'Wide',
-  Tall = 'Tall'
+  Tall = 'Tall',
+  AutoWidth = 'AutoWidth'
 }

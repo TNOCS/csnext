@@ -114,8 +114,11 @@ export class FlexGrid extends Vue {
           return 'md4 sm6 xs12';
         case FlexSize.Wide:
           return 'md6 sm6 xs12';
+        case FlexSize.AutoWidth:
+          return 'autowidth';
       }
     }
+    // return 'autowidth';
     return 'md2 sm6 xs12';
   }
 
