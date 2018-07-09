@@ -1,0 +1,36 @@
+<div>
+    <grid-layout 
+        :layout="layout" 
+        :col-num="12" 
+        :row-height="50" 
+        :is-draggable="dashboard.options.dragEnabled" 
+        :is-resizable="dashboard.options.dragEnabled" 
+        :is-mirrored="false"
+        :vertical-compact="false" 
+        :margin="[10, 10]" 
+        :use-css-transforms="false" 
+        @layout-updated="layoutUpdatedEvent"
+        >
+        <!-- @layout-updated="layoutUpdatedEvent" -->
+        <grid-item v-for="widget in layout" :class="{'grid-item-moving': isMoving}" :key="widget.i" 
+            :x="widget.x" 
+            :y="widget.y" 
+            :w="widget.w"
+            :h="widget.h" 
+            :i="widget.i"         
+            >
+
+            <!-- @resized="resizedEvent" 
+            @resize="resizeEvent"
+            @move="moveEvent"        
+            @moved="movedEvent" -->
+            <!-- <div style="background:red;height:100%"></div> -->
+            <cs-widget v-if="!isMoving" :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
+        </grid-item>
+    </grid-layout>
+    <!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">
+        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
+            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
+        </div>
+    </div> -->
+</div>

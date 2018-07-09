@@ -1,0 +1,31 @@
+{
+  "name": "@csnext/cs-map",
+  "version": "0.0.49",
+  "description": "cs-map",
+  "main": "./lib/csmap.cs.js",
+  "types": "./lib/dist/index.d.ts",
+  "url": "https://github.com/TNOCS/cs-map",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
+  "license": "MIT",
+  "scripts": {
+    "link": "yarn link",
+    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --mode development",
+    "clean": "del-cli dist lib"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@csnext/cs-core": "^0.0.49"
+  },
+  "devDependencies": {
+    "postcss-loader": "^2.1.5",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^2.9.2",
+    "webpack": "~4.15.1",
+    "webpack-cli": "^3.0.8"
+  }
+}
