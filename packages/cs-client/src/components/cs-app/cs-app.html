@@ -1,5 +1,5 @@
 <v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
-  <v-toolbar color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
+  <v-toolbar v-if="!app.project.header.hideToolbar" color="primary" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
     :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
     absolute :dense="app.project.header.dense" app>
 

@@ -5,4 +5,5 @@ export interface IHeaderOptions {
   breadcrumbs?: boolean;
   showNotifications?: boolean;
   breadcrumbItems?: any[];
+  hideToolbar?: boolean;
 }
