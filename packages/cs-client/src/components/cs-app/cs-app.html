@@ -76,7 +76,7 @@
       <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
         <v-icon>{{menu.icon}}</v-icon>
       </v-btn>
-      
+
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">
           <v-icon v-if="menuItem.icon" :style="{color:app.project.theme.colors.menu}">{{menuItem.icon}}</v-icon>
@@ -90,8 +90,8 @@
 
     <!-- right side bar button -->
 
-    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open" class="header-icon"
-      icon>
+    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
+      class="header-icon" icon>
       <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
       <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
     </v-btn>
@@ -120,18 +120,22 @@
   </v-dialog>
 
   <!-- content -->
-
   <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">
     <router-view :key="$route.path">
     </router-view>
-
-    <!-- footer -->
-    <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
   </v-content>
 
+  <!-- mobile navigation -->
+  <v-bottom-nav app router v-if="app.project.navigation.style==='bottom'" :value="true">
+    <v-btn v-for="dashboard in app.project.dashboards" :key="dashboard.id" color="teal" flat :to="{path:dashboard.pathLink}">
+      <span>{{dashboard.title}}</span>
+      <v-icon>{{dashboard.icon}}</v-icon>
+    </v-btn>
+  </v-bottom-nav>
+  <!-- footer -->
+  <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
+
   <!-- snackbar -->
-
-
   <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" v-model="lastNotification._visible">
     {{ lastNotification.title }}
     <v-btn flat @click.native="lastNotification._visible = false">Close</v-btn>
