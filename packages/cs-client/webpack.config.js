@@ -107,7 +107,7 @@ const config = [
   }, {
       'vue': 'Vue',
       'vuetify': 'vuetify',
-      'vue-markdown': 'vue-markdown'
+      'vue-markdown': 'vue-markdown'      
     }, 'cs')
   // , buildConfig({ vuebundle: ["vue", "vue-router"] }, 'csvue')
 ];

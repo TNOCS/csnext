@@ -21,7 +21,7 @@
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "vue-router": "^3.0.1",
-    "vuetify": "1.1.4"
+    "vuetify": "1.1.7"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
@@ -29,26 +29,27 @@
     "cpx": "^1.5.0",
     "css-loader": "^1.0.0",
     "http-server": "~0.11.1",
-    "postcss-loader": "^2.1.5",
+    "postcss-loader": "^2.1.6",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.2",
-    "tslint": "~5.10.0",
+    "tslint": "~5.11.0",
     "tslint-loader": "~3.6.0",
     "typescript": "^2.9.2",
     "url-loader": "^1.0.1",
     "vue": "^2.5.16",
     "vue-class-component": "^6.2.0",
-    "vue-loader": "^15.2.4",
+    "vue-loader": "^15.2.6",
     "vue-markdown": "^2.2.4",
     "vue-property-decorator": "^7.0.0",
     "vue-template-compiler": "^2.5.16",
-    "webpack": "~4.15.1",
+    "webpack": "~4.16.2",
     "webpack-bundle-analyzer": "^2.13.1",
-    "webpack-cli": "^3.0.8",
-    "yargs": "^12.0.1"
+    "webpack-cli": "^3.1.0",
+    "yargs": "^12.0.1",
+    "vue-tour": "^1.0.1"
   }
 }

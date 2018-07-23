@@ -18,11 +18,13 @@ import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
+import VueTour from 'vue-tour';
+import 'vue-tour/dist/vue-tour.css';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
-console.log('Use VueRouter');
 Vue.use(VueRouter);
+Vue.use(VueTour);
 
 // Vue.component('cs-footer', CsFooter);
 

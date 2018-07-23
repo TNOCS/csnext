@@ -105,8 +105,8 @@
   <!-- dialogs -->
   <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" hide-overlay transition="dialog-bottom-transition">
     <v-card tile>
-      <v-toolbar card dark color="primary" v-if="dialog.toolbar">
-        <v-btn icon dark @click.native="dialog.visible = false">
+      <v-toolbar card color="primary" v-if="dialog.toolbar">
+        <v-btn icon @click.native="dialog.visible = false">
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
