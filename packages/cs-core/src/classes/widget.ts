@@ -3,6 +3,7 @@ import { IMenu } from './menu';
 import { EditorSchema } from './editor-schema';
 import { IDashboard } from '../index';
 import { IWidgetOptions } from './widget-options';
+import { IProject } from './project';
 
 export enum WidgetType {
   component,
@@ -24,4 +25,5 @@ export interface IWidget {
   _dashboard?: IDashboard;
   _initalized?: boolean;
   _style?: any;
+  _project?: IProject;
 }
