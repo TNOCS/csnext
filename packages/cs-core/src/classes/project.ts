@@ -25,6 +25,7 @@ export interface IProject {
   header?: IHeaderOptions;
   notifications?: INotificationOptions;
   menus?: IMenu[];
+  data?: any;
 }
 
 /** notification object */
