@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, IProject } from '@csnext/cs-core';
 import { Logger } from '../';
 import { Watch } from 'vue-property-decorator';
 

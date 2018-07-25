@@ -172,6 +172,11 @@ export class CsApp extends Vue {
     }
   }
 
+  public toggleMenu(menu: IMenu) {
+    menu.toggleState = menu.toggleState ? !menu.toggleState : true;
+    this.activateMenu(menu);
+  }
+
   // menu button was clicked
   public activateMenu(menu: IMenu) {
     if (menu.action) {

@@ -71,11 +71,23 @@
 
     <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu header-icon"
       offset-y>
-
-
-      <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
-        <v-icon>{{menu.icon}}</v-icon>
-      </v-btn>
+      <template v-if="menu.toggleButton">
+        <v-tooltip slot="activator" bottom>
+          <v-btn icon slot="activator" v-model="menu.toggleState" @click="toggleMenu(menu)">
+            <v-icon v-if="!menu.toggleState">{{menu.icon}}</v-icon>
+            <v-icon v-else>{{menu.toggleIcon}}</v-icon>
+          </v-btn>
+          <template v-if="!menu.toggleState">{{menu.toolTip}}</template>
+          <template v-else>{{menu.toggleToolTip}}</template>
+        </v-tooltip>
+      </template>
+      <template v-else>
+        <v-tooltip slot="activator" bottom>
+          <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
+            <v-icon>{{menu.icon}}</v-icon>
+          </v-btn>
+          {{menu.toolTip}}</v-tooltip>
+      </template>
 
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">

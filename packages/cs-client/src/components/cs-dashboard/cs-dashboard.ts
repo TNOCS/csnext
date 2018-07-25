@@ -38,7 +38,8 @@ export class CsDashboard extends Vue {
     if (!widget.events) { widget.events = new MessageBusService(); }
     if (!widget.options) { widget.options = {}; }
     if (!widget.data) { widget.data = {}; }
-    widget._dashboard = this.dashboard;
+    if (this.dashboard) { widget._dashboard = this.dashboard; }
+    widget._project = AppState.Instance.project;
     this.checkWidgetId(widget);
 
     // load datasource, if configured
