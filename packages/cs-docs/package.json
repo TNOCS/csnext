@@ -7,13 +7,13 @@
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
+    "dev:docs": "vuepress dev docs",
     "build": "vuepress build docs"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "vuepress": "^0.13.1"
+    "vuepress": "0.13.1"
   }
 }

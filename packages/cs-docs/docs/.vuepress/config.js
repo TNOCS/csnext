@@ -80,7 +80,7 @@ function genSidebarConfig(title) {
         {
             title,
             collapsable: false,
-            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets']
+            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources']
         }
     ];
 }

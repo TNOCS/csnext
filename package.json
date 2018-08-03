@@ -11,9 +11,9 @@
     "dev": "lerna run --parallel dev",
     "clean": "lerna run --parallel clean",
     "build": "lerna run build",
-    "docs:dev": "lerna run docs:dev",
-    "docs:build": "lerna run build --scope cs-docs",
-    "docker:build": "docker build -t tnocs/csnext .",
+    "dev:docs": "lerna run dev:docs",
+    "build:docs": "lerna run build --scope cs-docs",
+    "build:docker": "docker build -t tnocs/csnext .",
     "publish": "yarn build && lerna publish --force-publish=*",
     "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch"
   },

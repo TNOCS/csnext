@@ -23,7 +23,16 @@ yarn serve
 
 ## Use CDN version
 
-``` js
+``` html
 <script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>
+```
+
+Because CS relies on both Vue and Vuetify the complete header should be:
+
+``` html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/vue.js"></script>
+<script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+<script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>
+
 ```
 
