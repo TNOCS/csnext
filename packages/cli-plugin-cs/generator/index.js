@@ -10,10 +10,14 @@ module.exports = (api, options, rootOptions) => {
                 'yarn unlink @csnext/cs-client && yarn unlink @csnext/cs-core && yarn unlink @csnext/vue-cli-plugin-cs',
         },
         dependencies: {
-            '@csnext/cs-client': '0.0.37',
-            '@csnext/cs-core': '0.0.37',
-            vuetify: '^1.0.19',
-            'vue-router': '^3.0.1'
+            '@csnext/cs-client': '0.0.54',
+            '@csnext/cs-core': '0.0.54',
+            vuetify: '^1.1.9',
+            'vue-router': '^3.0.1',
+            'vue-markdown': '^2.2.4'
+        },
+        devDependencies: {
+            "raw-loader": "^0.5.1"
         }
     };
 
@@ -54,8 +58,7 @@ module.exports = (api, options, rootOptions) => {
             const CsClientImport =
                 "import { CsApp, AppState } from '@csnext/cs-client';";
             const vuetifyImport = "import Vuetify from 'vuetify'"; // "const Vuetify = require('./../node_modules/vuetify/dist/vuetify.min.js');"
-            const vuetifyCssImport = "import 'vuetify/dist/vuetify.min.css';";
-            const iconsImport = "import './assets/icons.css';";
+            const vuetifyCssImport = "import 'vuetify/dist/vuetify.min.css';";            
             const vuetifyUse = 'Vue.use(Vuetify);';
             const importProject = "import { project } from './defaultproject';";
             const initProject = 'AppState.Instance.init(project);';
@@ -78,8 +81,7 @@ module.exports = (api, options, rootOptions) => {
 
             checkImport(CsClientImport);
             checkImport(vuetifyImport);
-            checkImport(vuetifyCssImport);
-            checkImport(iconsImport);
+            checkImport(vuetifyCssImport);            
             checkImport(vuetifyUse);
 
             if (options.addDefaultProject) {
