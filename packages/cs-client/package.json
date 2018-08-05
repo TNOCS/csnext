@@ -21,7 +21,7 @@
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "vue-router": "^3.0.1",
-    "vuetify": "1.1.8"
+    "vuetify": "1.1.9"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
