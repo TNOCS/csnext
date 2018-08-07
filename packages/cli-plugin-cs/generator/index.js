@@ -21,18 +21,14 @@ module.exports = (api, options, rootOptions) => {
         }
     };
 
-    if (options.csLayoutPlugins.indexOf('muuri') !== -1) {
-        pkg.dependencies[('@csnext/cs-muuri', csVersion)];
+    if (options.csLayoutPlugins.indexOf('drag-grid') !== -1) {
+        pkg.dependencies[('@csnext/cs-drag-grid', csVersion)];
     }
 
     api.extendPackage(pkg);
 
-    // add icons
-    api.render('./templates/icons');
-
-    //   api.render("./templates/default", {
-    //     ...options
-    //   });
+    // add default resources
+    api.render('./templates/default');
 
     api.onCreateComplete(() => {
         const fs = require('fs');
@@ -88,9 +84,9 @@ module.exports = (api, options, rootOptions) => {
                 checkImport(importProject);
             }
             checkLast(initProject);
-            // checkLast(appRegistration);
+            checkLast(appRegistration);
 
-            api.render('./templates/icons');
+            api.render('./templates/default');
 
             // console.log(lines);
 

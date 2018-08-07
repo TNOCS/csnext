@@ -3,17 +3,15 @@ import { IWidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification}
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
 import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
-<%_ if (options.csLayoutPlugins.indexOf('muuri')!==-1) { _%>
-import { MuuriLayout, IMuuriOptions } from "@csnext/cs-muuri";
+<%_ if (options.csLayoutPlugins.indexOf('drag-grid')!==-1) { _%>
 
-LayoutManager.add({ id: 'muuri', name: 'muuri', component: MuuriLayout } as ILayoutManagerConfig);
+// LayoutManager.add({ id: 'muuri', name: 'muuri', component: MuuriLayout } as ILayoutManagerConfig);
 
 <%_ } _%>
 
 export const project: IProject = {
   header: {
     title: "Test project",
-    logo: "./images/logo.png",
     breadcrumbs: false,
     dense: false
   },
@@ -42,9 +40,9 @@ export const project: IProject = {
     }
   },
   theme: {
-    dark: true,
+    dark: false,
     colors: {
-      primary: "#000",
+      primary: "#3eaf7c",
       secondary: "#e5e9ea",
       accent: "#82B1FF",
       error: "#FF5252",
@@ -113,16 +111,16 @@ export const project: IProject = {
         layout: 'grid',
         widgets: [ { component: MdWidget, options: { class: 'widget-1'}, data: 'welcome'}]
       }
-      <%_ if (options.csLayoutPlugins.indexOf('muuri')!==-1) { _%>
-        ,{
-          title: "muuri",
-          icon: "assignment",
-          path: "/muuri",
-          layout: "muuri",          
-          options: <IMuuriOptions>{ dragEnabled: true, gap: 5},
-          widgets: [{ component: MdWidget, data: 'widget 1', options: <IWidgetOptions>{ width: 3, height: 3}}]
-        }        
-        <%_ } _%>
+    //   <%_ if (options.csLayoutPlugins.indexOf('drag-grid')!==-1) { _%>
+    //     ,{
+    //       title: "Drag Grid",
+    //       icon: "assignment",
+    //       path: "/dragGrid",
+    //       layout: "drag-grid",          
+    //       options: <IMuuriOptions>{ dragEnabled: true, gap: 5},
+    //       widgets: [{ component: MdWidget, data: 'widget 1', options: <IWidgetOptions>{ width: 3, height: 3}}]
+    //     }        
+    //     <%_ } _%>
         
     ]
   }

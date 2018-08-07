@@ -8,6 +8,6 @@ module.exports = [{
     type: 'checkbox',
     name: 'csLayoutPlugins',
     message: 'Add the following layout plugins?',
-    choices: ['muuri']
+    choices: ['map', 'drag-grid']
   }
 ]
