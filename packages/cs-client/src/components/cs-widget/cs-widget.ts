@@ -63,6 +63,8 @@ export class CsWidget extends Vue {
       return;
     }
 
+    
+
     if (this.widget.options.canEdit) {
       this.addMenuItem({
         id: 'edit',
