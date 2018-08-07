@@ -10,4 +10,11 @@ export class LayoutManager {
   public static add(manager: ILayoutManagerConfig) {
     LayoutManager.layoutManagers[manager.id] = manager;
   }
+
+  public static addLayoutManager(comp: any) {
+    if (comp.hasOwnProperty('id')) {
+      const manager: ILayoutManagerConfig = { id: comp.id, name: comp.id, component: comp};
+      LayoutManager.add(manager);
+    }
+  }
 }
