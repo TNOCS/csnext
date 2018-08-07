@@ -3,7 +3,6 @@ import { IProject } from '@csnext/cs-core';
 export const DefaultProject: IProject = {
   header: {
     title: 'Test project',
-    logo: './images/logo.png',
     breadcrumbs: false,
     dense: false
   },
