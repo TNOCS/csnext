@@ -10,7 +10,7 @@ export interface IMessageBusService {
  * @see {@link https://gist.github.com/floatingmonkey/3384419}
  */
 export class MessageBusService implements IMessageBusService {
-  private static cache: { [topic: string]: IMessageBusCallback[] } = {};
+  private cache: { [topic: string]: IMessageBusCallback[] } = {};
   private confirms: any[] = [];
 
   /**
@@ -18,8 +18,8 @@ export class MessageBusService implements IMessageBusService {
    */
   public publish(topic: string, title: string, data?: any): void {
     // window.console.log('publish: ' + topic + ', ' + title);
-    if (!MessageBusService.cache[topic]) { return; }
-    MessageBusService.cache[topic].forEach(cb => cb(title, data));
+    if (!this.cache[topic]) { return; }
+    this.cache[topic].forEach(cb => cb(title, data));
   }
 
   /**
@@ -28,8 +28,8 @@ export class MessageBusService implements IMessageBusService {
    * @param {IMessageBusCallback} callback The callback to call.
    */
   public subscribe(topic: string, callback: IMessageBusCallback): MessageBusHandle {
-    if (!MessageBusService.cache[topic]) { MessageBusService.cache[topic] = new Array<IMessageBusCallback>(); }
-    MessageBusService.cache[topic].push(callback);
+    if (!this.cache[topic]) { this.cache[topic] = new Array<IMessageBusCallback>(); }
+    this.cache[topic].push(callback);
     return new MessageBusHandle(topic, callback);
   }
 
@@ -39,10 +39,10 @@ export class MessageBusService implements IMessageBusService {
   public unsubscribe(handle: MessageBusHandle): void {
     const topic = handle.topic;
     const callback = handle.callback;
-    if (!MessageBusService.cache[topic]) { return; }
-    MessageBusService.cache[topic].forEach((cb, idx) => {
+    if (!this.cache[topic]) { return; }
+    this.cache[topic].forEach((cb, idx) => {
       if (cb === callback) {
-        MessageBusService.cache[topic].splice(idx, 1);
+        this.cache[topic].splice(idx, 1);
         return;
       }
     });
