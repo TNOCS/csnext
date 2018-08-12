@@ -19,12 +19,6 @@
             :h="widget.h" 
             :i="widget.i"         
             >
-
-            <!-- @resized="resizedEvent" 
-            @resize="resizeEvent"
-            @move="moveEvent"        
-            @moved="movedEvent" -->
-            <!-- <div style="background:red;height:100%"></div> -->
             <cs-widget v-if="!isMoving" :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
         </grid-item>
     </grid-layout>

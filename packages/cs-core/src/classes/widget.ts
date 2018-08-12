@@ -26,4 +26,10 @@ export interface IWidget {
   _initalized?: boolean;
   _style?: any;
   _project?: IProject;
+  _size?: IWidgetSize;
+}
+
+export interface IWidgetSize {
+  width: number;
+  height: number;
 }

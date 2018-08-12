@@ -2,16 +2,17 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {
   IWidget,
-  IWidgetOptions,
   IMenu,
   MessageBusService
 } from '@csnext/cs-core';
+import resize from 'vue-resize-directive';
 import './cs-widget.css';
-import { AppState, CsDashboard } from '../..';
+import { AppState } from '../..';
 
 @Component({
   name: 'cs-widget',
   template: require('./cs-widget.html'),
+  directives: {resize},
   props: {
     widget: null
   }
@@ -20,25 +21,52 @@ export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
+  public $refs!: {
+    widget: HTMLElement;
+  };
 
-  constructor() {
-    super();
+  public updateSize() {
+    if (!this.widget || !this.widget.events) {
+      return;
+    }
+    this.widget._size = {
+      width: this.$refs.widget.clientWidth,
+      height: this.$refs.widget.clientHeight
+    };
+    this.widget.events.publish('resize', 'changed', this.widget._size);
+  }
+
+  public onResize() {
+    this.updateSize();
   }
 
   public get widgetBorder(): string | undefined {
-    if (!this.widget) { return; }
-    if ( this.widget.options && this.widget.options.widgetBorder) {
+    if (!this.widget) {
+      return;
+    }
+
+    if (this.widget.options && this.widget.options.widgetBorder) {
       return this.widget.options.widgetBorder;
-    } else if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions && this.widget._dashboard.defaultWidgetOptions.widgetBorder) {
+    } else if (
+      this.widget._dashboard &&
+      this.widget._dashboard.defaultWidgetOptions &&
+      this.widget._dashboard.defaultWidgetOptions.widgetBorder
+    ) {
       return this.widget._dashboard.defaultWidgetOptions.widgetBorder;
     }
   }
 
   public widgetStyles(): any {
     const res: any = {};
-    if (this.widget && this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
+    if (
+      this.widget &&
+      this.widget._dashboard &&
+      this.widget._dashboard.defaultWidgetOptions
+    ) {
       const opt = this.widget._dashboard.defaultWidgetOptions;
-      if (opt.height) { res['max-height'] = opt.height + 'px'; }
+      if (opt.height) {
+        res['max-height'] = opt.height + 'px';
+      }
     }
     return res;
   }
@@ -63,29 +91,24 @@ export class CsWidget extends Vue {
       return;
     }
 
-    
-
     if (this.widget.options.canEdit) {
       this.addMenuItem({
         id: 'edit',
         icon: 'mode_edit',
         title: 'edit',
         visible: true,
-        action: m => {
-          if (
-            this.widget &&
+        action: () => {
+          if (this.widget &&
             this.widget.editorWidget &&
-            this.app.project.rightSidebar
-          ) {
+            this.app.project.rightSidebar) {
             const editor = this.widget.editorWidget;
             editor.data = {
               data: this.widget.data,
               widget: this.widget,
               widgetoptions: this.widget.options,
-              manager:
-                this.widget._dashboard && this.widget._dashboard._manager
-                  ? this.widget._dashboard._manager
-                  : null
+              manager: this.widget._dashboard && this.widget._dashboard._manager
+                ? this.widget._dashboard._manager
+                : null
             };
             this.app.bus.publish('right-sidebar', 'open-widget', editor);
           }
@@ -99,12 +122,10 @@ export class CsWidget extends Vue {
         icon: 'delete',
         title: 'remove',
         visible: true,
-        action: m => {
+        action: () => {
           if (this.widget && this.widget._dashboard) {
-            if (
-              this.widget._dashboard._manager &&
-              this.widget._dashboard._manager.removeWidget
-            ) {
+            if (this.widget._dashboard._manager &&
+              this.widget._dashboard._manager.removeWidget) {
               this.widget._dashboard._manager.removeWidget(this.widget);
             }
           }

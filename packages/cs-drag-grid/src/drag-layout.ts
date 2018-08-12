@@ -63,10 +63,13 @@ export class DragLayout extends Vue {
                             i: w.id,
                             widget: w
                         });
+                        
                     });
                 this.layout = res;
             }
         });
+        
+        
     }
 
     get widgets() {
@@ -153,7 +156,7 @@ export class DragLayout extends Vue {
         }
     }
 
-    public layoutUpdatedEvent(l: any[]) {
+    public layoutUpdatedEvent(l: any[]) {        
         if (!this.dashboard.widgets) {
             return;
         }

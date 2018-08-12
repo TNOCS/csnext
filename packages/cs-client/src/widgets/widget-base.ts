@@ -20,9 +20,4 @@ export class WidgetBase extends Vue {
     Logger.info('widget', 'init widget - ' + this.widget.id);
   }
 
-  @Watch('widget.content')
-  public contentChanged(content: any) {
-    const c = content;
-  }
-
 }

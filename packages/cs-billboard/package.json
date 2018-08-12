@@ -1,0 +1,32 @@
+{
+  "name": "@csnext/cs-billboard",
+  "version": "0.0.54",
+  "description": "cs-billboard",
+  "main": "./lib/csbillboard.cs.js",
+  "types": "./lib/dist/index.d.ts",
+  "url": "https://github.com/TNOCS/cs-billboard",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
+  "license": "MIT",
+  "scripts": {
+    "link": "yarn link",
+    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --mode development",
+    "clean": "del-cli dist lib"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@csnext/cs-core": "^0.0.54",
+    "billboard.js": "^1.5.1"
+  },
+  "devDependencies": {    
+    "postcss-loader": "^2.1.6",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.21.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "webpack": "~4.16.4",
+    "webpack-cli": "^3.1.0"
+  }
+}

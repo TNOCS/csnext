@@ -21,7 +21,7 @@ importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox
 self.__precacheManifest = [
   {
     "url": "404.html",
-    "revision": "1b89e919cc98b583c0084cdd4b154efd"
+    "revision": "e2ab497320d10564eb5596e7893b877d"
   },
   {
     "url": "assets/css/0.styles.e2188309.css",
@@ -88,8 +88,8 @@ self.__precacheManifest = [
     "revision": "3712d872e7df88ee4eb873abd86247d6"
   },
   {
-    "url": "assets/js/app.572e7414.js",
-    "revision": "736e5b03de3ea80a1d731230bf38e242"
+    "url": "assets/js/app.5c67a300.js",
+    "revision": "88d601df7e3a67c2a20e796297b9486a"
   },
   {
     "url": "cs-transparent.png",
@@ -97,51 +97,51 @@ self.__precacheManifest = [
   },
   {
     "url": "development/index.html",
-    "revision": "c3b77e27f741886c83e8164b2803c139"
+    "revision": "40da8462599aa0bece834bf8c08363f4"
   },
   {
     "url": "examples/index.html",
-    "revision": "e7fe9f970cccb46fd84b0b537cd75fed"
+    "revision": "7be4af1a1efd68932500ce8fb2b0c94b"
   },
   {
     "url": "guide/configuration.html",
-    "revision": "4bb2a4eaf24932df8c6a63bcc1b603a8"
+    "revision": "b983941c48c203d57083915e9ce5d39d"
   },
   {
     "url": "guide/dashboards.html",
-    "revision": "1e6ca156a600e60a13d9bea5d4499bec"
+    "revision": "35253ec116adb6d71f94ceb6293d1c5b"
   },
   {
     "url": "guide/datasources.html",
-    "revision": "96b749b876073e734763951e4679b570"
+    "revision": "2d29c02d8c0aeb626f74e40d0ee92333"
   },
   {
     "url": "guide/index.html",
-    "revision": "4215a0fd6f44a53c5897d9c7d159e39d"
+    "revision": "594059d40d854b52e4b3d0ccdf6d14ac"
   },
   {
     "url": "guide/installation.html",
-    "revision": "7e78bb454715bf21f27c769726267dd4"
+    "revision": "83bbf7923a7d56ea06c6c8873b114281"
   },
   {
     "url": "guide/layout.html",
-    "revision": "2ee23df0813c46fe65e728ac99d722b9"
+    "revision": "80ee24e4a2af25385e8a1a1272232689"
   },
   {
     "url": "guide/navigation.html",
-    "revision": "faca9ebeb5470e40695c7697b6876439"
+    "revision": "07d068e87d0074d1325e12934461529c"
   },
   {
     "url": "guide/sidebars.html",
-    "revision": "c0c3ff518074b859327f19da1b6f101c"
+    "revision": "422d6cca8c41a469882ebea0167219b5"
   },
   {
     "url": "guide/widgets.html",
-    "revision": "83ea437e72ce9448179f24d071348bc3"
+    "revision": "c07d8dea15518a852b065508c1d405c7"
   },
   {
     "url": "index.html",
-    "revision": "7ff9f29562c12a39f69a45497115e893"
+    "revision": "8dcf0d9d154898d64bf7c3fd2d5475ee"
   },
   {
     "url": "samples/basic/simple.html",
