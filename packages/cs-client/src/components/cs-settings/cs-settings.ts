@@ -24,7 +24,6 @@ export class CsSettings extends Vue {
 
   @Watch('widget')
   public dataChanged(d: any) {
-    console.log(d);
   }
 
 }

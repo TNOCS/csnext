@@ -68,8 +68,7 @@ export class DragLayout extends Vue {
 
     public layout: any[] = [];
 
-    private initLayout() {
-        console.log('test');
+    private initLayout() {        
         // this.options = new DragLayoutOptions();
         let options = new DragLayoutOptions();
         Object.assign(options, this.dashboard.options);
@@ -200,7 +199,6 @@ export class DragLayout extends Vue {
         }
         let result: IWidget[] = [];
         for (var i = 0; i < l.length; i++) {
-            // console.log('moved');
             let widget = l[i].widget as IWidget;
             let moved = false;
             let resized = false;
@@ -261,8 +259,7 @@ export class DragLayout extends Vue {
         this.isMoving = true;
     }
 
-    public resizeEvent() {
-        console.log('resize');
+    public resizeEvent() {        
     }
 
     public initGrid() {}
