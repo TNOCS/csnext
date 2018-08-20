@@ -64,7 +64,7 @@ export class CsDashboard extends Vue {
     }
     widget._project = AppState.Instance.project;
     this.checkWidgetId(widget);
-    this.checkDefaultOptions(widget);
+    this.checkDefaultWidgetOptions(widget);
 
     // load datasource, if configured
     if (widget.datasource !== undefined) {
@@ -98,7 +98,7 @@ export class CsDashboard extends Vue {
       );
       if (dashboardEditButton) {
         dashboardEditButton.visible =
-          dashboardEditButton && dashboard.options.editButton;
+          dashboardEditButton && dashboard.options.EditButton;
       }
     }
     // if this is a main dashboard, set it as active dashboard on appstate
@@ -174,6 +174,8 @@ export class CsDashboard extends Vue {
       return;
     }
     this.initDashboard(this.dashboard);
+    console.log('Dashboard init');
+    console.log(this.dashboard);
   }
 
   public get component(): Vue {
@@ -191,8 +193,14 @@ export class CsDashboard extends Vue {
     return new Vue();
   }
 
-  private checkDefaultOptions(widget: IWidget) {
-    if (!widget.options || !widget._dashboard || !widget._dashboard.defaultWidgetOptions) { return; }
+  private checkDefaultWidgetOptions(widget: IWidget) {
+    if (
+      !widget.options ||
+      !widget._dashboard ||
+      !widget._dashboard.defaultWidgetOptions
+    ) {
+      return;
+    }
     if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
       for (const key in widget._dashboard.defaultWidgetOptions) {
         if (!widget.options.hasOwnProperty(key)) {

@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "module": "es2015",
-      "target": "es5",
+      "target": "es2015",
       "noImplicitAny": false,
       "outDir": "./dist",
       "strict": true,
@@ -12,7 +12,10 @@
       "experimentalDecorators": true,
       "declaration": true,
       "emitDecoratorMetadata": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "stripInternal": true,
+      "pretty": true
     },
     "exclude": ["./dist"],
     "rules": {

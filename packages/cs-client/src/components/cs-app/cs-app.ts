@@ -19,6 +19,8 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
+import { MdWidget } from '../../widgets/markdown/md-widget';
+import { IframeWidget } from '../../widgets/iframe-widget';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
@@ -47,7 +49,7 @@ export class CsApp extends Vue {
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
-  public dialog: IDialog = { visible: false, toolbar: true};
+  public dialog: IDialog = { visible: false, toolbar: true };
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -150,20 +152,26 @@ export class CsApp extends Vue {
         visible: false,
         action: m => {
           // notify dashboard manager that edit was started
-          if (
-            this.app.activeDashboard &&
-            this.app.activeDashboard._manager &&
-            this.app.activeDashboard._manager.editDashboard
-          ) {
-            this.app.activeDashboard._manager.editDashboard(
-              this.app.activeDashboard
-            );
+          if (this.app.activeDashboard) {
+            // if there is a manager with own editdashboard implementation use that
+            if (
+              this.app.activeDashboard._manager &&
+              this.app.activeDashboard._manager.editDashboard
+            ) {
+              this.app.activeDashboard._manager.editDashboard(
+                this.app.activeDashboard
+              );
+            } else {
+              if (this.app.project.rightSidebar) {
+                // let s = Vue.component('test', { template: '<h1>editor</h1>'});
+                // this.app.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
+                AppState.Instance.OpenRightSidebarWidget({
+                  component: CsSettings,
+                  data: { obj: this.app.activeDashboard.options }
+                });
+              }
+            }
           }
-          // }
-          // if (this.app.project.rightSidebar) {
-          //   this.app.project.rightSidebar.component = CsSettings;
-          //   // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
-          //   this.app.project.rightSidebar.open = true;
           // }
         }
       });

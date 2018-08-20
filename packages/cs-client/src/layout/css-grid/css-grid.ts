@@ -3,8 +3,8 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
+  GridDashboardOptions,
   IWidget,
-  IGridDashboardOptions,
   IWidgetOptions
 } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
@@ -25,7 +25,7 @@ export class CssGrid extends Vue {
       return;
     }
     const style = {} as any;
-    const options = this.dashboard.options as IGridDashboardOptions;
+    const options = this.dashboard.options as GridDashboardOptions;
 
     return { 'grid-template-columns': 'repeat(auto-fill, minmax(250px,1fr))' };
   }

@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { AppState, Logger } from '../../';
+import { AppState, Logger, WidgetBase } from '../../';
+import { IWidget, IFormOptions } from '@csnext/cs-core';
+import { Watch } from 'vue-property-decorator';
+import 'reflect-metadata';
 
 @Component({
   name: 'cs-settings',
@@ -11,8 +14,17 @@ export class CsSettings extends Vue {
   public app = AppState.Instance;
   public L = Logger.Instance;
 
-  constructor() {
-    super();
-    alert();
+  public get Form(): IFormOptions {
+    return this.Widget.data.obj._form;
   }
+
+  public get Widget(): IWidget {
+    return (this.$parent as WidgetBase).widget;
+  }
+
+  @Watch('widget')
+  public dataChanged(d: any) {
+    console.log(d);
+  }
+
 }

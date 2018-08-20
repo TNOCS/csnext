@@ -1,1 +1,1 @@
-export { DragLayout, IDragLayoutOptions } from './drag-layout';
+export { DragLayout, DragLayoutOptions } from './drag-layout';

@@ -117,7 +117,7 @@ export const project: IProject = {
     //       icon: "assignment",
     //       path: "/dragGrid",
     //       layout: "drag-grid",          
-    //       options: <IMuuriOptions>{ dragEnabled: true, gap: 5},
+    //       options: <IMuuriOptions>{ DragEnabled: true, gap: 5},
     //       widgets: [{ component: MdWidget, data: 'widget 1', options: <IWidgetOptions>{ width: 3, height: 3}}]
     //     }        
     //     <%_ } _%>

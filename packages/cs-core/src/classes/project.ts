@@ -8,7 +8,6 @@ import {
   NavigationOptions
 } from './..';
 import { IMenu } from './menu';
-import * as deepmerge from 'deepmerge';
 
 /** project definition */
 export interface IProject {

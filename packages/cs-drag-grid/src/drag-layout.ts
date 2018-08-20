@@ -3,44 +3,79 @@ import { Watch } from 'vue-property-decorator';
 import {
     IWidget,
     IDashboard,
-    IDashboardOptions,
+    BaseDashboardOptions,
     guidGenerator,
-    IWidgetOptions
+    IWidgetOptions    
 } from '@csnext/cs-core';
 import Vue, { WatchOptions } from 'vue';
 import Component from 'vue-class-component';
 import './drag-layout.css';
+import { Form, IFormOptions, IFormFieldOptions, FormField } from './decorator';
 
-export interface IDragLayoutOptions extends IDashboardOptions {
-    itemWidth?: number;
-    itemHeight?: number;
-    dragEnabled?: boolean;
+@Form({ title: 'Drag Layout Options'})
+export class DragLayoutOptions extends BaseDashboardOptions {
+    public itemWidth?: number;
+    public itemHeight?: number;
+        
+    private dragEnabled?: boolean;    
+
+    @FormField({ title: 'Allow dragging'})
+    public get DragEnabled(): boolean | undefined {
+        return this.dragEnabled;
+    }
+
+    public set DragEnabled(value: boolean | undefined) {
+        this.dragEnabled = value;
+    }
 }
 
 Vue.component('grid-layout', GridLayout);
 Vue.component('grid-item', GridItem);
 
+@Form({ title: 'Test Class'})
+export class TestClass {
+    public name = 'arnoud';
+}
+
+// @Form({ title: 'Drag Layout'})
 @Component({
     template: require('./drag-layout.html'),
     props: {
         dashboard: null
     } as any
 })
+
 export class DragLayout extends Vue {
     public mode: any;
     public dashboard!: IDashboard;
-    public options?: IDragLayoutOptions;
+
+    public get options() : DragLayoutOptions | undefined {
+        return this.dashboard.options as DragLayoutOptions
+    }
+
+    public set options(value : DragLayoutOptions | undefined) {
+        this.dashboard.options = value;
+    }
+
+    // public options?: DragLayoutOptions;
     public grid: any;
     public items: string[] = [];
     private editSubscription: any;
     public dragEnabled = false;
     public isMoving = false;
-
+    public tc = new TestClass();
     public static id = 'drag-grid';
 
     public layout: any[] = [];
 
     private initLayout() {
+        console.log('test');
+        // this.options = new DragLayoutOptions();
+        let options = new DragLayoutOptions();
+        Object.assign(options, this.dashboard.options);
+        this.dashboard.options = options;
+        // Object.assign(this.options, this.dashboard.options);
+
         let res: any[] = [];
         Vue.nextTick(() => {
             if (this.dashboard.widgets) {
@@ -63,12 +98,11 @@ export class DragLayout extends Vue {
                             i: w.id,
                             widget: w
                         });
-                        
                     });
                 this.layout = res;
             }
+            
         });
-        
         
     }
 
@@ -86,7 +120,7 @@ export class DragLayout extends Vue {
             );
     }
 
-    @Watch('dashboard.widgets', {immediate:false})
+    @Watch('dashboard.widgets', { immediate: false })
     public widgetsChanged(data: any, old: any) {
         this.initLayout();
     }
@@ -95,16 +129,20 @@ export class DragLayout extends Vue {
         this.options = {
             itemHeight: 5,
             itemWidth: 5,
-            dragEnabled: true,
+            DragEnabled: true,
             ...this.dashboard.options
-        };
+        } as DragLayoutOptions;
 
         this.initLayout();
 
         if (!this.editSubscription && this.dashboard && this.dashboard.events) {
             this.dashboard.events.subscribe('settings', () => {
-                if (this.options) {
-                    this.options.dragEnabled = this.dashboard.options.dragEnabled;
+                if (
+                    this.options &&
+                    this.dashboard.options &&
+                    this.options.DragEnabled
+                ) {
+                    this.options.DragEnabled = this.options.DragEnabled;
                 }
             });
         }
@@ -156,7 +194,7 @@ export class DragLayout extends Vue {
         }
     }
 
-    public layoutUpdatedEvent(l: any[]) {        
+    public layoutUpdatedEvent(l: any[]) {
         if (!this.dashboard.widgets) {
             return;
         }

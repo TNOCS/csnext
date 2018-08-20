@@ -7,7 +7,7 @@ import {
 import { LayoutManager, FlexSize } from '../..';
 import './flex-grid.css';
 import {
-  IFlexGridOptions,
+  FlexGridOptions,
   IFlexGridContainer,
   IFlexWidgetOptions,
   IFlexGridContainerOptions
@@ -23,8 +23,8 @@ import { Watch } from 'vue-property-decorator';
 export class FlexGrid extends Vue {
   public dashboard!: IDashboard;
   public containers: IFlexGridContainer[] = [];
-  public get options(): IFlexGridOptions {
-    return this.dashboard.options;
+  public get options(): FlexGridOptions {
+    return this.dashboard.options as FlexGridOptions;
   }
 
   @Watch('dashboard.widgets')

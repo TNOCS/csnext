@@ -1,4 +1,4 @@
-import { IDashboardOptions, IWidget, IWidgetOptions } from '@csnext/cs-core';
+import { IWidget, IWidgetOptions, BaseDashboardOptions } from '@csnext/cs-core';
 import { FlexSize } from './flex-size';
 
 export interface IFlexGridContainerOptions {
@@ -12,9 +12,9 @@ export interface IFlexGridContainer {
   widgets: IWidget[];
 }
 
-export interface IFlexGridOptions extends IDashboardOptions {
-  direction: 'row' | 'column';
-  containers?: IFlexGridContainerOptions[];
+export class FlexGridOptions extends BaseDashboardOptions {
+  public direction?: 'row' | 'column';
+  public containers?: IFlexGridContainerOptions[];
 }
 
 export interface IFlexWidgetOptions extends IWidgetOptions {
