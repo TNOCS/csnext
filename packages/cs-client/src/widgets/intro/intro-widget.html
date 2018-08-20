@@ -27,8 +27,8 @@
 
           <v-card-actions v-if="card.actions" >
             <template v-for="action in card.actions">
-              <v-btn v-if="action.route" :key="card.title" :to="action.route" flat color="orange">{{action.title}}</v-btn>
-              <v-btn v-else :key="card.title" :href="action.url" flat color="orange">{{action.title}}</v-btn>
+              <v-btn v-if="action.route" :to="action.route" flat color="orange">{{action.title}}</v-btn>
+              <v-btn v-else :href="action.url" flat color="orange">{{action.title}}</v-btn>
             </template>
           </v-card-actions>
         </v-card>
