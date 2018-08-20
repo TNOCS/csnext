@@ -73,7 +73,6 @@ export class AppState {
     Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
 
-    console.log('Deep merge');
     // merge new project details, with default project to make sure all required properties are available
     this.project = deepmerge(DefaultProject, project);
 

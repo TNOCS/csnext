@@ -174,8 +174,6 @@ export class CsDashboard extends Vue {
       return;
     }
     this.initDashboard(this.dashboard);
-    console.log('Dashboard init');
-    console.log(this.dashboard);
   }
 
   public get component(): Vue {

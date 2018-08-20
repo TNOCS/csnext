@@ -19,8 +19,6 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
-import { MdWidget } from '../../widgets/markdown/md-widget';
-import { IframeWidget } from '../../widgets/iframe-widget';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
@@ -135,6 +133,12 @@ export class CsApp extends Vue {
           this.app.project.header.breadcrumbItems.push(s);
         }
       });
+    }
+  }
+
+  public openDashboard(dashboard: IDashboard) {
+    if (dashboard && dashboard.path) {
+      this.$router.push(dashboard.path);
     }
   }
 

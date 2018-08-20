@@ -20,8 +20,26 @@
     <!-- tabs -->
 
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id"
-        :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
+      <v-tab v-for="dashboard in app.project.dashboards" @click="openDashboard(dashboard)" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
+        <v-menu v-if="dashboard.dashboards" bottom open-on-hover>
+          <a slot="activator" class="v-tabs__item">
+            {{dashboard.title}}
+            <v-icon>arrow_drop_down</v-icon>
+          </a>
+
+          <v-list class="grey lighten-3">
+            <v-list-tile v-for="subdash in dashboard.dashboards" :key="subdash.id" @click="openDashboard(subdash)">
+              {{ subdash.title }}
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+        <span :to="{path:dashboard.pathLink}" v-else>
+          {{dashboard.title}}
+        </span>
+      </v-tab>
+
+
+
     </v-tabs>
     <v-spacer></v-spacer>
 
@@ -86,7 +104,8 @@
           <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
             <v-icon>{{menu.icon}}</v-icon>
           </v-btn>
-          {{menu.toolTip}}</v-tooltip>
+          {{menu.toolTip}}
+        </v-tooltip>
       </template>
 
       <v-list v-if="menu.items && menu.items.length>0">

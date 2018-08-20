@@ -16,7 +16,7 @@
     <v-layout wrap v-if="options.cards">
       <v-flex xs12 sm6 md4 lg3 v-for="card in options.cards" :key="card.title">
         <v-card>
-          <v-card-media :src="card.backgroundImage" height="200px"></v-card-media>
+          <v-img :src="card.backgroundImage" height="200px"></v-img>
 
           <v-card-title primary-title>
             <div>
