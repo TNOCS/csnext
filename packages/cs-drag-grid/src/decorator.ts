@@ -27,7 +27,6 @@ export function FormField(options: IFormFieldOptions) {
         console.log(res);
         let meta = Reflect.getMetadata("design:returntype", object, key);
         console.log(meta);
-        debugger;
         if (!object.hasOwnProperty('_form')) {
             object._form = { fields: [options] };
         } else {

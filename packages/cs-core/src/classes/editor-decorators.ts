@@ -17,7 +17,6 @@ export function Form(options: IFormOptions) {
 
 export function FormField(options: IFormFieldOptions) {
   return function decorator(target: any) {
-    debugger;
     console.log(target);
   };
 }
