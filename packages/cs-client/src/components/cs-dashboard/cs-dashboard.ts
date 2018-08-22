@@ -34,19 +34,22 @@ export class CsDashboard extends Vue {
 
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[], old: any) {
-    n.forEach(w => {
-      this.initWidget(w);
-    });
+    if (n && n.length > 0) {
+      n.forEach(w => {
+        this.initWidget(w);
+      });
+    }
   }
 
   public checkWidgetId(widget: IWidget) {
-    if (!widget.id) {
+    if (widget && !widget.id) {
       widget.id = 'widget-' + guidGenerator();
     }
   }
 
   public initWidget(widget: IWidget) {
     // init widget
+    if (!widget) { return; }
     if (widget._initalized) {
       return;
     }

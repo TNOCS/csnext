@@ -1,4 +1,4 @@
-import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
+import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
 import { IFooterOptions } from './footer-options';
 
 export interface IDashboard {
@@ -43,7 +43,7 @@ export interface IDashboard {
   // generic data field for passing dashboard data
   data?: any;
 
-  defaultWidgetOptions?: IWidgetOptions;
+  defaultWidgetOptions?: WidgetOptions;
 
   // options for left sidebar
   leftSidebar?: ISidebarOptions;

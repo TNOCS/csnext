@@ -1,17 +1,17 @@
 import { IMenu } from './menu';
 
-export interface IWidgetOptions {
-  datasource?: string;
-  card?: boolean;
-  class?: string;
-  width?: number;
-  height?: number;
-  margin?: number;
-  x?: number;
-  y?: number;
-  background?: boolean;
-  canRemove?: boolean;
-  canEdit?: boolean;
-  menus?: IMenu[];
-  widgetBorder?: string;
+export class WidgetOptions {
+  public datasource?: string;
+  public card?: boolean;
+  public class?: string;
+  public width?: number;
+  public height?: number;
+  public margin?: number;
+  public x?: number;
+  public y?: number;
+  public background?: boolean;
+  public canRemove?: boolean;
+  public canEdit?: boolean;
+  public menus?: IMenu[];
+  public widgetBorder?: string;
 }

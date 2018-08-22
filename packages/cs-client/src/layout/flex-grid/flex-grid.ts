@@ -9,9 +9,9 @@ import './flex-grid.css';
 import {
   FlexGridOptions,
   IFlexGridContainer,
-  IFlexWidgetOptions,
   IFlexGridContainerOptions
 } from './flex-grid-options';
+import { FlexWidgetOptions } from './flex-widget-options';
 import { Watch } from 'vue-property-decorator';
 
 @Component({
@@ -52,12 +52,12 @@ export class FlexGrid extends Vue {
     if (!widget.options) {
       widget.options = {};
     }
-    if (!(widget.options as IFlexWidgetOptions).container) {
-      (widget.options as IFlexWidgetOptions).container = 0;
+    if (!(widget.options as FlexWidgetOptions).container) {
+      (widget.options as FlexWidgetOptions).container = 0;
     }
 
     const containerIndex =
-      (widget.options as IFlexWidgetOptions).container || 0;
+      (widget.options as FlexWidgetOptions).container || 0;
     while (this.containers.length < containerIndex + 1) {
       this.containers.push({
         id: containerIndex,
@@ -101,8 +101,8 @@ export class FlexGrid extends Vue {
   }
 
   public flexClasses(widget: IWidget) {
-    if (widget.options && (widget.options as IFlexWidgetOptions).size) {
-      const opt = widget.options as IFlexWidgetOptions;
+    if (widget.options && (widget.options as FlexWidgetOptions).size) {
+      const opt = widget.options as FlexWidgetOptions;
       switch (opt.size) {
         case FlexSize.Small:
           return 'md2 sm4 xs6';

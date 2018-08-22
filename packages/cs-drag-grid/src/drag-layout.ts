@@ -5,7 +5,7 @@ import {
     IDashboard,
     BaseDashboardOptions,
     guidGenerator,
-    IWidgetOptions    
+    WidgetOptions    
 } from '@csnext/cs-core';
 import Vue, { WatchOptions } from 'vue';
 import Component from 'vue-class-component';
@@ -151,7 +151,7 @@ export class DragLayout extends Vue {
         // });
     }
 
-    public checkPosition(options: IWidgetOptions) {
+    public checkPosition(options: WidgetOptions) {
         if (!this.dashboard || !this.dashboard.widgets) return;
         if (options.x === undefined || options.y === undefined) {
             let lastY = 0;
