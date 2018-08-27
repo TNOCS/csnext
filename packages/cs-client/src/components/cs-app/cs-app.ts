@@ -234,7 +234,7 @@ export class CsApp extends Vue {
   public swipe(direction: string) {
     if (
       !this.app.activeDashboard ||
-      !this.app.activeDashboard.touchGesturesEnabled
+      !this.app.activeDashboard.options || ! this.app.activeDashboard.options.TouchGesturesEnabled
     ) {
       return;
     }

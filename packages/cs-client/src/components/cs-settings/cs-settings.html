@@ -1,6 +1,26 @@
-<div>
+<v-container>
   <h1>{{ Form.title }}</h1>
-  <div v-for="field in Form.fields" :key="field.id">
-    {{ field.title }}
-  </div>
-</div>
+  <v-form>
+    <v-layout row wrap v-for="group in fieldGroups" dense>
+      <v-flex :class="group.class" v-for="field in group.fields" :key="field.id" style="padding-right:2px" dense>
+        <v-tooltip bottom :disabled="!field.description">
+          <template slot="activator">
+            <template v-if="field.type === 'boolean'">
+              <v-checkbox v-model="Target[field._key]" :label="field.title" :required="field.required"></v-checkbox>
+            </template>
+            <template v-if="field.type === 'string'">
+              <v-text-field v-model="Target[field._key]" :label="field.title" :required="field.required"></v-text-field>
+            </template>
+            <template v-if="field.type === 'number'">
+              <v-text-field v-model="Target[field._key]" type="number" :label="field.title" :required="field.required"></v-text-field>
+            </template>
+          </template>
+          {{field.description}}
+        </v-tooltip>
+
+        <!-- {{ field.title }} -->
+      </v-flex>
+    </v-layout>
+  </v-form>
+
+</v-container>

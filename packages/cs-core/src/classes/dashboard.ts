@@ -31,8 +31,6 @@ export interface IDashboard {
   active?: boolean;
 
   icon?: string;
-  // allow left & right swipe gestures to switch between dashboards
-  touchGesturesEnabled?: boolean;
 
   // id of default datasource
   datasource?: string;

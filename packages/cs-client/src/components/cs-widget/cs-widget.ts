@@ -1,10 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {
-  IWidget,
-  IMenu,
-  MessageBusService
-} from '@csnext/cs-core';
+import { IWidget, IMenu, MessageBusService } from '@csnext/cs-core';
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
 import { AppState } from '../..';
@@ -12,7 +8,7 @@ import { AppState } from '../..';
 @Component({
   name: 'cs-widget',
   template: require('./cs-widget.html'),
-  directives: {resize},
+  directives: { resize },
   props: {
     widget: null
   }
@@ -29,10 +25,12 @@ export class CsWidget extends Vue {
     if (!this.widget || !this.widget.events) {
       return;
     }
-    this.widget._size = {
-      width: this.$refs.widget.clientWidth,
-      height: this.$refs.widget.clientHeight
-    };
+    if (this.$refs.widget) {
+      this.widget._size = {
+        width: this.$refs.widget.clientWidth,
+        height: this.$refs.widget.clientHeight
+      };
+    }
     this.widget.events.publish('resize', 'changed', this.widget._size);
   }
 
@@ -98,17 +96,20 @@ export class CsWidget extends Vue {
         title: 'edit',
         visible: true,
         action: () => {
-          if (this.widget &&
+          if (
+            this.widget &&
             this.widget.editorWidget &&
-            this.app.project.rightSidebar) {
+            this.app.project.rightSidebar
+          ) {
             const editor = this.widget.editorWidget;
             editor.data = {
               data: this.widget.data,
               widget: this.widget,
               widgetoptions: this.widget.options,
-              manager: this.widget._dashboard && this.widget._dashboard._manager
-                ? this.widget._dashboard._manager
-                : null
+              manager:
+                this.widget._dashboard && this.widget._dashboard._manager
+                  ? this.widget._dashboard._manager
+                  : null
             };
             this.app.bus.publish('right-sidebar', 'open-widget', editor);
           }
@@ -124,8 +125,10 @@ export class CsWidget extends Vue {
         visible: true,
         action: () => {
           if (this.widget && this.widget._dashboard) {
-            if (this.widget._dashboard._manager &&
-              this.widget._dashboard._manager.removeWidget) {
+            if (
+              this.widget._dashboard._manager &&
+              this.widget._dashboard._manager.removeWidget
+            ) {
               this.widget._dashboard._manager.removeWidget(this.widget);
             }
           }

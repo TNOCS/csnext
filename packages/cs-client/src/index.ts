@@ -19,6 +19,7 @@ export * from './layout/css-grid/css-grid';
 export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
 export * from './layout/flex-grid/flex-grid-options';
+export { FlexWidgetOptions } from './layout/flex-grid/flex-widget-options';
 
 // datasources
 export * from './datasources/webrequest-datasource';

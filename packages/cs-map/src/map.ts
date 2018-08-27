@@ -23,6 +23,7 @@ export class Map extends Vue {
 
     created() {
         console.log(this);
+        
         Vue.nextTick(() => {
           
             mapboxgl.accessToken =
