@@ -43,4 +43,5 @@ export class BaseDashboardOptions implements IDashboardOptions {
   public set TouchGesturesEnabled(value: boolean) {
     this.touchGesturesEnabled = value;
   }
+
 }

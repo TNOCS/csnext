@@ -17,6 +17,9 @@ export interface IDashboard {
   // manager that is responsible for layout
   layout?: string;
 
+  // if specified this url will be opened, instead of a dashboard
+  url?: string;
+
   // manager id that is responsible for managing dashboard
   manager?: string;
 

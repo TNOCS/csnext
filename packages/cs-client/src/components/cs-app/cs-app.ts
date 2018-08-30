@@ -137,8 +137,13 @@ export class CsApp extends Vue {
   }
 
   public openDashboard(dashboard: IDashboard) {
-    if (dashboard && dashboard.path) {
-      this.$router.push(dashboard.path);
+    if (dashboard) {
+      if (dashboard.url) {
+        // window.location.replace(dashboard.url);
+        window.open(dashboard.url, '_blank');
+      } else if (dashboard.path) {
+        this.$router.push(dashboard.path);
+      }
     }
   }
 
@@ -234,7 +239,8 @@ export class CsApp extends Vue {
   public swipe(direction: string) {
     if (
       !this.app.activeDashboard ||
-      !this.app.activeDashboard.options || ! this.app.activeDashboard.options.TouchGesturesEnabled
+      !this.app.activeDashboard.options ||
+      !this.app.activeDashboard.options.TouchGesturesEnabled
     ) {
       return;
     }
