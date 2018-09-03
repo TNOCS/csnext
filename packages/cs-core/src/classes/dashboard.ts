@@ -44,6 +44,7 @@ export interface IDashboard {
   // generic data field for passing dashboard data
   data?: any;
 
+  // default options for all widgets
   defaultWidgetOptions?: WidgetOptions;
 
   // options for left sidebar
@@ -63,6 +64,7 @@ export interface IDashboard {
   // enabled for main dashboard, disabled if dashboards are used for left/right panels
   isMain?: boolean;
 
+  // event bus for widget specific events. e.g. resize
   events?: IMessageBusService;
 
   component?: any;
