@@ -163,17 +163,17 @@ export class Map extends Vue {
             this.addLayerToMap(layer);
         } else {
             if (layer.url) {
-                this.loadSource(layer.url)
-                    .then(gj => {
-                        layer._geojson = gj;
-                        this.addSource(layer);
-                        this.addLayerToMap(layer);
+                // this.loadSource(layer.url)
+                //     .then(gj => {
+                //         layer._geojson = gj;
+                //         this.addSource(layer);
+                //         this.addLayerToMap(layer);
 
-                        console.log(gj);
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+                //         console.log(gj);
+                //     })
+                //     .catch(e => {
+                //         console.log(e);
+                //     });
             }
 
             // load source
