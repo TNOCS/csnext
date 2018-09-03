@@ -21,9 +21,9 @@
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "reflect-metadata": "latest",
-    "vue-resize-directive": "^1.0.1",
+    "vue-resize-directive": "^1.1.0",
     "vue-router": "^3.0.1",
-    "vuetify": "v1.2.0-beta.3"
+    "vuetify": "v1.2.1"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
