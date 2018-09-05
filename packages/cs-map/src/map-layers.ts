@@ -95,16 +95,16 @@ export class MapLayers implements IDatasource {
                 this._sources = this.sources;
             }
 
-            if (
-                this.layers === undefined &&
-                this._sources &&
-                this._sources.layers
-            ) {
-                this.layers = [];
-                for (var s in this._sources.layers) {
-                    this.layers.push(s);
-                }
-            }
+            // if (
+            //     this.layers === undefined &&
+            //     this._sources &&
+            //     this._sources.layers
+            // ) {
+            //     this.layers = [];
+            //     for (var s in this._sources.layers) {
+            //         this.layers.push(s);
+            //     }
+            // }
 
             if (this.layers) {
                 this.layers.map(l => {
