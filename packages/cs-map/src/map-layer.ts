@@ -12,6 +12,7 @@ export class MapLayer {
     public layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout;
     public _manager?: MapLayers;    
     public events?: MessageBusService;
+    public popupContent: any; 
 
     constructor() {
         this.events = new MessageBusService();

@@ -5,11 +5,20 @@ import { guidGenerator } from '@csnext/cs-core';
 import { LayerSources } from './';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection } from 'geojson';
+import { Map } from './map';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
     public id = 'maplayers';
     public events = new MessageBusService();
+    private map?: Map;
+    public get MapWidget() : Map | undefined {
+        return this.map;
+    }
+
+    public set MapWidget(map: Map | undefined) {
+        this.map = map;
+    }
 
     constructor(
         public layers?: MapLayer[],
@@ -93,34 +102,9 @@ export class MapLayers implements IDatasource {
                 this._sources = this.sources;
             }
 
-            // if (
-            //     this.layers === undefined &&
-            //     this._sources &&
-            //     this._sources.layers
-            // ) {
-            //     this.layers = [];
-            //     for (var s in this._sources.layers) {
-            //         this.layers.push(s);
-            //     }
-            // }
-
             if (this.layers) {
-                this.layers.map(l => {
-                    // if (typeof l === 'string') {
-                    //     if (
-                    //         this._sources &&
-                    //         this._sources.layers.hasOwnProperty(l)
-                    //     ) {
-                    //         result.push(
-                    //             this.initLayer({
-                    //                 id: l,
-                    //                 source: this._sources.layers[l]
-                    //             } as MapLayer)
-                    //         );
-                    //     }
-                    // } else {
-                    result.push(this.initLayer(l));
-                    // }
+                this.layers.map(l => {              
+                    result.push(this.initLayer(l));              
                 });
                 this.layers = result;
                 resolve(this);

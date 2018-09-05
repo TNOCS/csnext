@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { IWidget, IDatasource } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
-import mapboxgl, { GeoJSONSource } from 'mapbox-gl';
+import mapboxgl, { GeoJSONSource, FlyToOptions } from 'mapbox-gl';
 import { MapOptions } from './map-options';
 import { LayerSource, LayerSources, MapLayer } from './';
 import { FeatureCollection, Feature } from 'geojson';
@@ -27,6 +27,11 @@ export class Map extends Vue {
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
+
+    // Create a popup, but don't add it to the map yet.
+    private popup = new mapboxgl.Popup({
+        closeButton: false
+    });
 
     public get Layers(): MapLayers | undefined {
         if (this.widget) {
@@ -52,23 +57,31 @@ export class Map extends Vue {
         }
     }
 
-    public initMapLayers() {
-        if (this.Layers && this.map.loaded) {            
-            if (this.Layers._sources && this.Layers._sources.images) {
-                for (var id in this.Layers._sources.images) {                    
-                    if (!this.map.hasImage(id)) {                        
-                        this.map.loadImage(
-                            '/' + this.Layers._sources.images[id],
-                            (error, image) => {
-                                if (!this.map.hasImage(id)) {                                    
-                                    if (error) throw error;
-                                    this.map.addImage(id, image);
-                                }
-                            }
-                        );
-                    }
+    public addImage(id: string, url: string) {
+        if (!this.map.hasImage(id)) {
+            this.map.loadImage(url, (error, image) => {
+                if (!this.map.hasImage(id)) {
+                    if (error) throw error;
+                    this.map.addImage(id, image);
+                    console.log('Image added (' + id + ')');
                 }
-            }            
+            });
+        }
+    }
+
+    public initMapLayers() {
+        if (this.Layers && this.map.loaded) {
+            if (this.Layers.MapWidget === undefined) {
+                this.Layers.MapWidget = this;
+            }
+            if (this.Layers._sources && this.Layers._sources.images) {
+                for (var id in this.Layers._sources.images) {
+                    this.addImage(id, this.Layers._sources.images[id]);
+                }
+            }
+
+            this.Layers.MapWidget = this;
+
             this.Layers.events.subscribe(
                 'layer',
                 (action: string, layer: MapLayer) => {
@@ -106,17 +119,29 @@ export class Map extends Vue {
                                         );
                                     }
                                 });
+                                this.map.on('mousemove', layer.id, e => {
+                                    if (layer.popupContent) {
+                                        this.popup
+                                            .setLngLat(e.lngLat)
+                                            .setHTML('<h1>test</h1>')
+                                            .addTo(this.map);
+                                    }
+                                });
                                 this.map.on('mouseenter', layer.id, e => {
                                     if (layer.events) {
                                         layer.events.publish(
                                             'feature',
                                             Map.FEATURE_MOUSE_ENTER,
-                                            { features: e.features, context: e }
+                                            {
+                                                features: e.features,
+                                                context: e
+                                            }
                                         );
                                     }
                                 });
 
                                 this.map.on('mouseleave', layer.id, e => {
+                                    if (layer.popupContent) this.popup.remove();
                                     if (layer.events) {
                                         layer.events.publish(
                                             'feature',
@@ -128,15 +153,21 @@ export class Map extends Vue {
                             }
                             break;
                         case 'disabled': {
-                            if (layer.id && this.map.getLayer(layer.id) !== undefined) {
+                            if (
+                                layer.id &&
+                                this.map.getLayer(layer.id) !== undefined
+                            ) {
                                 this.map.removeLayer(layer.id);
                             }
                         }
                         case 'remove': {
-                            if (layer.id && this.map.getLayer(layer.id) !== undefined) {                                
+                            if (
+                                layer.id &&
+                                this.map.getLayer(layer.id) !== undefined
+                            ) {
                                 this.map.removeLayer(layer.id);
                             }
-                        }                        
+                        }
                     }
                 }
             );
@@ -148,7 +179,7 @@ export class Map extends Vue {
         this.initMapLayers();
     }
 
-    mounted() {        
+    mounted() {
         this.initMapLayers();
 
         Vue.nextTick(() => {
