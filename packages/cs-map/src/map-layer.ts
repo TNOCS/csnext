@@ -1,13 +1,21 @@
-import { IDatasource } from '@csnext/cs-core';
+import { IDatasource, guidGenerator, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
 import { MapLayers } from '.';
+import { FeatureCollection } from 'geojson';
 
 export class MapLayer {
     public id?: string;
+    public type?: 'symbol' | 'raster' | 'line' | 'fill';
     public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
-    public _manager?: MapLayers;
+    public layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout;
+    public _manager?: MapLayers;    
+    public events?: MessageBusService;
+
+    constructor() {
+        this.events = new MessageBusService();
+    }
 
     public get Visible(): boolean | undefined {
         return this.visible;

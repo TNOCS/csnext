@@ -1,13 +1,18 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, IDatasource } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
 import mapboxgl, { GeoJSONSource } from 'mapbox-gl';
 import { MapOptions } from './map-options';
 import { LayerSource, LayerSources, MapLayer } from './';
-import { FeatureCollection } from 'geojson';
+import { FeatureCollection, Feature } from 'geojson';
 import { MapLayers } from '.';
+
+export interface FeatureEventDetails {
+    context: any;
+    features: Feature[];
+}
 
 @Component({
     template: require('./map.html')
@@ -15,16 +20,23 @@ import { MapLayers } from '.';
 export class Map extends Vue {
     /** access the original widget from configuration */
 
+    public static FEATURE_SELECT = 'select';
+    public static FEATURE_MOUSE_ENTER = 'enter';
+    public static FEATURE_MOUSE_LEAVE = 'enter';
+
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
 
-    public get layerCollection(): LayerSources {
-        if (this.widget && this.widget.content) {
-            return this.widget.content as LayerSources;
-        } else {
-            return new LayerSources({});
+    public get Layers(): MapLayers | undefined {
+        if (this.widget) {
+            if (this.widget.content) {
+                return this.widget.content as MapLayers;
+            } else if (this.widget.data) {
+                return this.widget.data as MapLayers;
+            }
         }
+        return undefined;
     }
 
     public get options(): MapOptions {
@@ -40,36 +52,113 @@ export class Map extends Vue {
         }
     }
 
-    @Watch('widget.content')
-    dataLoaded(value: MapLayers) {
-        value.events.subscribe('layer', (action: string, layer: MapLayer) => {
-            switch (action) {
-                case 'enabled':
-                    if (
-                        layer.id &&
-                        layer._source &&
-                        layer._source.id &&
-                        layer._source._geojson
-                    ) {
-                        this.addSource(layer._source);
-                        this.map.addLayer({
-                            id: layer.id,
-                            type: 'line',
-                            source: layer._source.id
-                        });
-                    }
-                    break;
-                case 'disabled': {
-                    if (layer.id) {
-                        this.map.removeLayer(layer.id);
+    public initMapLayers() {
+        if (this.Layers && this.map.loaded) {            
+            if (this.Layers._sources && this.Layers._sources.images) {
+                for (var id in this.Layers._sources.images) {
+                    console.log(
+                        'loading: ' +
+                            id +
+                            ', ' +
+                            this.Layers._sources.images[id]
+                    );
+                    if (!this.map.hasImage(id)) {
+                        console.log('Loading image')                        ;
+                        this.map.loadImage(
+                            '/' + this.Layers._sources.images[id],
+                            (error, image) => {
+                                if (!this.map.hasImage(id)) {
+                                    console.log(image);
+                                    if (error) throw error;
+                                    this.map.addImage(id, image);
+                                }
+                            }
+                        );
                     }
                 }
-            }
-        });
+            }            
+            this.Layers.events.subscribe(
+                'layer',
+                (action: string, layer: MapLayer) => {
+                    switch (action) {
+                        case 'enabled':
+                            if (
+                                layer.id &&
+                                layer._source &&
+                                layer._source.id &&
+                                layer._source._geojson
+                            ) {
+                                this.addSource(layer._source);
+
+                                // remove layer if it already exists
+                                if (this.map.getLayer(layer.id) !== undefined) {
+                                    this.map.removeLayer(layer.id);
+                                }
+
+                                this.map.addLayer({
+                                    id: layer.id,
+                                    type: layer.type,
+                                    source: layer._source.id,
+                                    layout: layer.layout
+                                });
+
+                                this.map.on('click', layer.id, e => {
+                                    if (layer.events) {
+                                        layer.events.publish(
+                                            'feature',
+                                            Map.FEATURE_SELECT,
+                                            {
+                                                features: e.features,
+                                                context: e
+                                            } as FeatureEventDetails
+                                        );
+                                    }
+                                });
+                                this.map.on('mouseenter', layer.id, e => {
+                                    if (layer.events) {
+                                        layer.events.publish(
+                                            'feature',
+                                            Map.FEATURE_MOUSE_ENTER,
+                                            { features: e.features, context: e }
+                                        );
+                                    }
+                                });
+
+                                this.map.on('mouseleave', layer.id, e => {
+                                    if (layer.events) {
+                                        layer.events.publish(
+                                            'feature',
+                                            Map.FEATURE_MOUSE_LEAVE,
+                                            { features: e.features, context: e }
+                                        );
+                                    }
+                                });
+                            }
+                            break;
+                        case 'disabled': {
+                            if (layer.id && this.map.getLayer(layer.id) !== undefined) {
+                                this.map.removeLayer(layer.id);
+                            }
+                        }
+                        case 'remove': {
+                            if (layer.id && this.map.getLayer(layer.id) !== undefined) {                                
+                                this.map.removeLayer(layer.id);
+                            }
+                        }                        
+                    }
+                }
+            );
+        }
     }
 
-    created() {
+    @Watch('widget.content')
+    dataLoaded(value: MapLayers) {
+        this.initMapLayers();
+    }
+
+    mounted() {
         console.log(this);
+        this.initMapLayers();
 
         Vue.nextTick(() => {
             if (this.options.token) {
@@ -109,10 +198,11 @@ export class Map extends Vue {
                 if (this.options.activeLayers) {
                     this.options.activeLayers.forEach(id => {
                         if (
-                            this.layerCollection.layers &&
-                            this.layerCollection.layers.hasOwnProperty(id)
+                            this.Layers &&
+                            this.Layers.layers &&
+                            this.Layers.layers.hasOwnProperty(id)
                         ) {
-                            let layer = this.layerCollection.layers[id];
+                            let layer = this.Layers.layers[id];
                             if (layer.id === undefined) {
                                 layer.id = id;
                             }
@@ -121,21 +211,18 @@ export class Map extends Vue {
                     });
                 }
             });
-
-            this.map.on('mousedown', (e: any) => {
-                // var features = this.map.queryRenderedFeatures(e.point, {
-                //   layers: ['venues']
-                // });
-                // if (features.length > 0) {
-                //   let fid = features[0].properties.ID.toString();
-                // }
-            });
         });
     }
 
-    private addSource(source: LayerSource) {
+    private addSource(source: LayerSource, refresh = false) {
         if (source._geojson && source.id) {
-            if (this.map.getSource(source.id) === undefined) {
+            let original = this.map.getSource(source.id);
+            if (original !== undefined) {
+                if (original.type === 'geojson') {
+                    original.setData(source._geojson);
+                }
+            } else {
+                // add source
                 this.map.addSource(source.id, {
                     type: 'geojson',
                     data: source._geojson
@@ -148,7 +235,7 @@ export class Map extends Vue {
         if (layer.id) {
             this.map.addLayer({
                 id: layer.id,
-                type: 'line',
+                type: 'fill',
                 source: layer.id
             });
         }
@@ -168,7 +255,6 @@ export class Map extends Vue {
                 //         layer._geojson = gj;
                 //         this.addSource(layer);
                 //         this.addLayerToMap(layer);
-
                 //         console.log(gj);
                 //     })
                 //     .catch(e => {
