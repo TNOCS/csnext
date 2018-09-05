@@ -55,20 +55,12 @@ export class Map extends Vue {
     public initMapLayers() {
         if (this.Layers && this.map.loaded) {            
             if (this.Layers._sources && this.Layers._sources.images) {
-                for (var id in this.Layers._sources.images) {
-                    console.log(
-                        'loading: ' +
-                            id +
-                            ', ' +
-                            this.Layers._sources.images[id]
-                    );
-                    if (!this.map.hasImage(id)) {
-                        console.log('Loading image')                        ;
+                for (var id in this.Layers._sources.images) {                    
+                    if (!this.map.hasImage(id)) {                        
                         this.map.loadImage(
                             '/' + this.Layers._sources.images[id],
                             (error, image) => {
-                                if (!this.map.hasImage(id)) {
-                                    console.log(image);
+                                if (!this.map.hasImage(id)) {                                    
                                     if (error) throw error;
                                     this.map.addImage(id, image);
                                 }
@@ -156,8 +148,7 @@ export class Map extends Vue {
         this.initMapLayers();
     }
 
-    mounted() {
-        console.log(this);
+    mounted() {        
         this.initMapLayers();
 
         Vue.nextTick(() => {

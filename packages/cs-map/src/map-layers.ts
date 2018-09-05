@@ -44,12 +44,10 @@ export class MapLayers implements IDatasource {
             ml._source.LoadSource().then(gj => {
                 this.events.publish('layer', 'enabled', ml);
             });
-        }
-        console.log('Enable');
+        }        
     }
 
-    public disableLayer(ml: string | MapLayer) {
-        console.log('Disable');
+    public disableLayer(ml: string | MapLayer) {        
         if (!this.layers) return;
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
