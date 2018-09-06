@@ -179,6 +179,14 @@ export class CsDashboard extends Vue {
     this.initDashboard(this.dashboard);
   }
 
+  /** dashboard will be closed. */
+  public beforeDestroy() {
+    // call stop function for manager
+    if (this.dashboard && this.dashboard._manager) {
+      this.dashboard._manager.stop(this.dashboard);
+    }
+  }
+
   public get component(): Vue {
     if (this.dashboard) {
       // use default single layout, if no layout has been specified
