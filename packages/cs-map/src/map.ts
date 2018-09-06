@@ -62,15 +62,14 @@ export class Map extends Vue {
             this.map.loadImage(url, (error, image) => {
                 if (!this.map.hasImage(id)) {
                     if (error) throw error;
-                    this.map.addImage(id, image);
-                    console.log('Image added (' + id + ')');
+                    this.map.addImage(id, image);                   
                 }
             });
         }
     }
 
     public initMapLayers() {
-        if (this.Layers && this.map.loaded) {
+        if (this.Layers && this.map && this.map.loaded) {
             if (this.Layers.MapWidget === undefined) {
                 this.Layers.MapWidget = this;
             }
@@ -207,7 +206,10 @@ export class Map extends Vue {
                 this.widget.events.subscribe(
                     'resize',
                     (a: string, data: any) => {
-                        this.map.resize();
+                        Vue.nextTick(()=>{
+                            this.map.resize();
+                        })
+                        
                     }
                 );
             }
@@ -288,6 +290,6 @@ export class Map extends Vue {
         }
 
         // add to map
-        console.log('Adding layer' + layer.title);
+        // console.log('Adding layer' + layer.title);
     }
 }
