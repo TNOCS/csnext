@@ -23,7 +23,7 @@
     "reflect-metadata": "latest",
     "vue-resize-directive": "^1.1.0",
     "vue-router": "^3.0.1",
-    "vuetify": "v1.2.1"
+    "vuetify": "1.2.3"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",
@@ -37,11 +37,11 @@
     "purifycss-webpack": "^0.7.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.1.0",
-    "style-loader": "^0.22.1",
-    "ts-loader": "^4.5.0",
+    "style-loader": "^0.23.0",
+    "ts-loader": "^5.0.0",
     "tslint": "~5.11.0",
     "tslint-loader": "~3.6.0",
-    "typescript": "^3.0.1",
+    "typescript": "^3.0.3",
     "url-loader": "^1.1.1",
     "vue": "^2.5.17",
     "vue-class-component": "^6.2.0",
@@ -50,7 +50,7 @@
     "vue-property-decorator": "^7.0.0",
     "vue-template-compiler": "^2.5.17",
     "vue-tour": "^1.0.1",
-    "webpack": "~4.17.1",
+    "webpack": "~4.17.2",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
     "yargs": "^12.0.1"
