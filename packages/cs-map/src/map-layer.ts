@@ -9,7 +9,8 @@ export class MapLayer {
     public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
-    public layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout;
+    public layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
+    public paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
     public _manager?: MapLayers;    
     public events?: MessageBusService;
     public popupContent: any; 

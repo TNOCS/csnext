@@ -99,12 +99,16 @@ export class Map extends Vue {
                                     this.map.removeLayer(layer.id);
                                 }
 
-                                this.map.addLayer({
+                                let mblayer = {
                                     id: layer.id,
                                     type: layer.type,
-                                    source: layer._source.id,
-                                    layout: layer.layout
-                                });
+                                    source: layer._source.id                                    
+                                } as mapboxgl.Layer;
+
+                                if (layer.layout) { mblayer.layout = layer.layout};
+                                if (layer.paint) { mblayer.paint = layer.paint};
+
+                                this.map.addLayer(mblayer);
 
                                 this.map.on('click', layer.id, e => {
                                     if (layer.events) {
