@@ -57,6 +57,13 @@ export class Map extends Vue {
         }
     }
 
+    public zoomLayer(mapLayer : MapLayer) {
+        let bounds = mapLayer.getBounds();
+        if (bounds !== undefined) {
+            this.map.fitBounds(bounds, { padding: 20});
+        }
+    }
+
     public addImage(id: string, url: string) {
         if (!this.map.hasImage(id)) {
             this.map.loadImage(url, (error, image) => {
@@ -109,6 +116,7 @@ export class Map extends Vue {
                                 if (layer.paint) { mblayer.paint = layer.paint};
 
                                 this.map.addLayer(mblayer);
+                                this.zoomLayer(layer);
 
                                 this.map.on('click', layer.id, e => {
                                     if (layer.events) {

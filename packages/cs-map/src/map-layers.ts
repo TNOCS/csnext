@@ -6,6 +6,8 @@ import { LayerSources } from './';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection } from 'geojson';
 import { Map } from './map';
+import extent from 'geojson-extent';
+
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
@@ -18,6 +20,14 @@ export class MapLayers implements IDatasource {
 
     public set MapWidget(map: Map | undefined) {
         this.map = map;
+    }
+
+    public get MapControl() : mapboxgl.Map | undefined {
+        if (this.MapWidget && this.MapWidget.map) {
+            return this.MapWidget.map;
+        } else { 
+            return undefined;
+        }
     }
 
     constructor(
@@ -34,6 +44,7 @@ export class MapLayers implements IDatasource {
             });
         }
     }
+
 
     public fromGeoJSON(geojson: FeatureCollection, title?: string): MapLayer {
         let result = new MapLayer();
