@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-map",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "description": "cs-map",
   "main": "./lib/csmap.cs.js",
   "types": "./lib/dist/index.d.ts",
@@ -17,12 +17,12 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.61",
+    "@csnext/cs-core": "^0.0.62",
     "axios": "^0.18.0",
     "class-transformer": "^0.1.9",
+    "geojson-extent": "^0.3.2",
     "mapbox-gl": "^0.49.0-beta.1",
-    "mapbox-gl-layer-groups": "https://github.com/mapbox/mapbox-gl-layer-groups",
-    "geojson-extent": "^0.3.2"
+    "mapbox-gl-layer-groups": "https://github.com/mapbox/mapbox-gl-layer-groups"
   },
   "devDependencies": {
     "@types/mapbox-gl": "^0.48.0",
