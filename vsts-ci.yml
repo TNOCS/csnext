@@ -14,6 +14,7 @@ steps:
 
 - script: |
     npm install -g @vue/cli
+    npm install -g lerna
     npm install -g yarn
     yarn build
   displayName: 'yarn, yarn build'
