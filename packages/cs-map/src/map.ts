@@ -143,18 +143,21 @@ export class Map extends Vue {
                                 });
                                 this.map.on('mousemove', layer.id, e => {});
                                 this.map.on('mouseenter', layer.id, e => {
-                                    let popup = undefined;
-                                    if (this.isFunction(layer.popupContent)) {
-                                        popup = layer.popupContent(e);
-                                    } else if (layer.popupContent) {
-                                        popup = layer.popupContent;
-                                    }
+                                    let popup: string | undefined = undefined;
+                                    if (layer.popupContent) {
+                                        if ( typeof layer.popupContent === 'string') {
+                                            popup = layer.popupContent;
+                                        } else if (this.isFunction(layer.popupContent))
+                                        {
+                                            popup = layer.popupContent(e);
+                                        }
 
-                                    if (popup) {
-                                        this.popup
-                                            .setLngLat(e.lngLat)
-                                            .setHTML(popup)
-                                            .addTo(this.map);
+                                        if (popup) {
+                                            this.popup
+                                                .setLngLat(e.lngLat)
+                                                .setHTML(popup)
+                                                .addTo(this.map);
+                                        }
                                     }
 
                                     if (layer.events) {

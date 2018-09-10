@@ -23,7 +23,7 @@ export class MapLayer {
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
     public events?: MessageBusService;
-    public popupContent?: any;
+    public popupContent?: string | Function | undefined;
 
     constructor() {
         this.events = new MessageBusService();
