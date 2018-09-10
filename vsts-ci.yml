@@ -17,5 +17,6 @@ steps:
     npm install -g @vue/cli
     npm install -g lerna
     npm install -g yarn
+    npm install -g vuepress
     yarn build
   displayName: 'yarn, yarn build'
