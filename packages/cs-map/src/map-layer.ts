@@ -7,7 +7,7 @@ import { LngLatBounds } from 'mapbox-gl';
 
 export class MapLayer {
     public id?: string;
-    public type?: 'symbol' | 'raster' | 'line' | 'fill';
+    public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
@@ -23,7 +23,7 @@ export class MapLayer {
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
     public events?: MessageBusService;
-    public popupContent: any;
+    public popupContent?: any;
 
     constructor() {
         this.events = new MessageBusService();

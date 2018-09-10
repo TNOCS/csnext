@@ -57,10 +57,10 @@ export class Map extends Vue {
         }
     }
 
-    public zoomLayer(mapLayer : MapLayer) {
+    public zoomLayer(mapLayer: MapLayer) {
         let bounds = mapLayer.getBounds();
         if (bounds !== undefined) {
-            this.map.fitBounds(bounds, { padding: 20});
+            this.map.fitBounds(bounds, { padding: 20 });
         }
     }
 
@@ -69,10 +69,17 @@ export class Map extends Vue {
             this.map.loadImage(url, (error, image) => {
                 if (!this.map.hasImage(id)) {
                     if (error) throw error;
-                    this.map.addImage(id, image);                   
+                    this.map.addImage(id, image);
                 }
             });
         }
+    }
+
+    private isFunction(functionToCheck) {
+        return (
+            functionToCheck &&
+            {}.toString.call(functionToCheck) === '[object Function]'
+        );
     }
 
     public initMapLayers() {
@@ -109,11 +116,15 @@ export class Map extends Vue {
                                 let mblayer = {
                                     id: layer.id,
                                     type: layer.type,
-                                    source: layer._source.id                                    
+                                    source: layer._source.id
                                 } as mapboxgl.Layer;
 
-                                if (layer.layout) { mblayer.layout = layer.layout};
-                                if (layer.paint) { mblayer.paint = layer.paint};
+                                if (layer.layout) {
+                                    mblayer.layout = layer.layout;
+                                }
+                                if (layer.paint) {
+                                    mblayer.paint = layer.paint;
+                                }
 
                                 this.map.addLayer(mblayer);
                                 this.zoomLayer(layer);
@@ -130,15 +141,22 @@ export class Map extends Vue {
                                         );
                                     }
                                 });
-                                this.map.on('mousemove', layer.id, e => {
-                                    if (layer.popupContent) {
+                                this.map.on('mousemove', layer.id, e => {});
+                                this.map.on('mouseenter', layer.id, e => {
+                                    let popup = undefined;
+                                    if (this.isFunction(layer.popupContent)) {
+                                        popup = layer.popupContent(e);
+                                    } else if (layer.popupContent) {
+                                        popup = layer.popupContent;
+                                    }
+
+                                    if (popup) {
                                         this.popup
                                             .setLngLat(e.lngLat)
-                                            .setHTML('<h1>test</h1>')
+                                            .setHTML(popup)
                                             .addTo(this.map);
                                     }
-                                });
-                                this.map.on('mouseenter', layer.id, e => {
+
                                     if (layer.events) {
                                         layer.events.publish(
                                             'feature',
@@ -218,10 +236,9 @@ export class Map extends Vue {
                 this.widget.events.subscribe(
                     'resize',
                     (a: string, data: any) => {
-                        Vue.nextTick(()=>{
+                        Vue.nextTick(() => {
                             this.map.resize();
-                        })
-                        
+                        });
                     }
                 );
             }
