@@ -1,11 +1,11 @@
-import { IWidgetOptions } from '@csnext/cs-core';
+import { WidgetOptions } from '@csnext/cs-core';
 
 /** Markdown widget options, from vue-markdown (https://github.com/miaolz123/vue-markdown) */
-export interface IIntroWidgetOptions extends IWidgetOptions {
-  title: string;
-  subHeader: string;
-  backgroundImage: string;
-  cards: IIntroCard[];
+export class IntroWidgetOptions extends WidgetOptions {
+  public title?: string;
+  public subHeader?: string;
+  public backgroundImage?: string;
+  public cards?: IIntroCard[];
 }
 
 export interface IIntroCard {

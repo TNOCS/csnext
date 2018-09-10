@@ -19,6 +19,7 @@ export * from './layout/css-grid/css-grid';
 export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
 export * from './layout/flex-grid/flex-grid-options';
+export { FlexWidgetOptions } from './layout/flex-grid/flex-widget-options';
 
 // datasources
 export * from './datasources/webrequest-datasource';
@@ -37,6 +38,7 @@ export * from './components/cs-settings/cs-settings';
 // widgets
 export * from './widgets/widget-base';
 export * from './widgets/markdown/md-widget';
+export * from './widgets/markdown/md-widget-options';
 export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';

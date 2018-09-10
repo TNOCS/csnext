@@ -1,3 +1,5 @@
+import { IProject } from './project';
+
 export interface IDatasource {
   id?: string;
   handlers?: IDatasourceHandler[];
@@ -9,8 +11,12 @@ export interface IDatasource {
   isLoading?: boolean;
   loaded?: boolean;
   // tslint:disable-next-line:ban-types
-  requestQueue?: Array<{ resolve: Function, reject: Function }>;
-  execute?(action?: ProcessorActions, data?: any): Promise<any>;
+  requestQueue?: Array<{ resolve: Function; reject: Function }>;
+  execute?(
+    datasources?: { [id: string]: IDatasource },
+    action?: ProcessorActions,
+    data?: any
+  ): Promise<any>;
   // {(value: any) => void, (reason?: any) => void }
   // | PromiseLike<object> | undefined
 }
@@ -30,13 +36,18 @@ export enum ProcessorActions {
 
 export interface IDatasourceProcessor {
   id: string;
-  execute(datasource: IDatasource, action?: ProcessorActions, data?: any): Promise<any>;
+  execute(
+    sources: { [id: string]: IDatasource },
+    datasource: IDatasource,
+    action?: ProcessorActions,
+    data?: any
+  ): Promise<any>;
 }
 
 export class DatasourceProcessorBase implements IDatasourceProcessor {
   public id: string;
 
-  public execute(datasource: IDatasource, action?: ProcessorActions) {
+  public execute(sources: { [id: string]: IDatasource }, datasource: IDatasource, action?: ProcessorActions) {
     return Promise.resolve();
   }
 }

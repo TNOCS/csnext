@@ -34,19 +34,22 @@ export class CsDashboard extends Vue {
 
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[], old: any) {
-    n.forEach(w => {
-      this.initWidget(w);
-    });
+    if (n && n.length > 0) {
+      n.forEach(w => {
+        this.initWidget(w);
+      });
+    }
   }
 
   public checkWidgetId(widget: IWidget) {
-    if (!widget.id) {
+    if (widget && !widget.id) {
       widget.id = 'widget-' + guidGenerator();
     }
   }
 
   public initWidget(widget: IWidget) {
     // init widget
+    if (!widget) { return; }
     if (widget._initalized) {
       return;
     }
@@ -64,7 +67,7 @@ export class CsDashboard extends Vue {
     }
     widget._project = AppState.Instance.project;
     this.checkWidgetId(widget);
-    this.checkDefaultOptions(widget);
+    this.checkDefaultWidgetOptions(widget);
 
     // load datasource, if configured
     if (widget.datasource !== undefined) {
@@ -98,7 +101,7 @@ export class CsDashboard extends Vue {
       );
       if (dashboardEditButton) {
         dashboardEditButton.visible =
-          dashboardEditButton && dashboard.options.editButton;
+          dashboardEditButton && dashboard.options.EditButton;
       }
     }
     // if this is a main dashboard, set it as active dashboard on appstate
@@ -176,6 +179,14 @@ export class CsDashboard extends Vue {
     this.initDashboard(this.dashboard);
   }
 
+  /** dashboard will be closed. */
+  public beforeDestroy() {
+    // call stop function for manager
+    if (this.dashboard && this.dashboard._manager) {
+      this.dashboard._manager.stop(this.dashboard);
+    }
+  }
+
   public get component(): Vue {
     if (this.dashboard) {
       // use default single layout, if no layout has been specified
@@ -191,8 +202,14 @@ export class CsDashboard extends Vue {
     return new Vue();
   }
 
-  private checkDefaultOptions(widget: IWidget) {
-    if (!widget.options || !widget._dashboard || !widget._dashboard.defaultWidgetOptions) { return; }
+  private checkDefaultWidgetOptions(widget: IWidget) {
+    if (
+      !widget.options ||
+      !widget._dashboard ||
+      !widget._dashboard.defaultWidgetOptions
+    ) {
+      return;
+    }
     if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
       for (const key in widget._dashboard.defaultWidgetOptions) {
         if (!widget.options.hasOwnProperty(key)) {

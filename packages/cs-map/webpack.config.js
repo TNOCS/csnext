@@ -19,7 +19,7 @@ const output = {
     libraryTarget: 'umd'
 };
 
-const mod = {
+const mod = {   
     rules: [
         {
             test: /\.ts$/,
@@ -37,6 +37,7 @@ const mod = {
             loader: 'raw-loader',
             exclude: ['./src/index.html']
         },
+
         {
             test: /\.css$/,
             use: [

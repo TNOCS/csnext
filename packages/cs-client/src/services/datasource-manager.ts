@@ -23,6 +23,12 @@ export class DatasourceManager {
     const datasource =
       typeof source === 'string' ? this.datasources[source] : source;
     const handlers = datasource.handlers;
+    if (typeof datasource.execute !== 'function') {
+      return new Promise(resolve => {
+        resolve(datasource as T);
+        return;
+      });
+    }
 
     if (!handlers && datasource.loaded) {
       return new Promise((resolve, reject) => {
@@ -63,7 +69,7 @@ export class DatasourceManager {
       datasource.isLoading = true;
       if (typeof datasource.execute === 'function') {
         datasource
-          .execute()
+          .execute(this.datasources)
           .catch(e => {
             datasource.loaded = false;
             datasource.isLoading = false;
@@ -106,6 +112,7 @@ export class DatasourceManager {
 
             return promise.then(result => {
               return dsProcessor.execute(
+                this.datasources,
                 datasource,
                 ProcessorActions.Read,
                 result

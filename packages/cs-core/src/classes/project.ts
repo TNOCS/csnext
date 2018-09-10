@@ -8,7 +8,6 @@ import {
   NavigationOptions
 } from './..';
 import { IMenu } from './menu';
-import * as deepmerge from 'deepmerge';
 
 /** project definition */
 export interface IProject {
@@ -17,7 +16,7 @@ export interface IProject {
   logo?: string;
   navigation?: NavigationOptions;
   footer?: IFooterOptions;
-  datasources?: { [id: string]: IDatasource };
+  datasources?: { [id: string]: IDatasource | any };
   dashboards?: IDashboard[];
   leftSidebar?: ISidebarOptions;
   rightSidebar?: ISidebarOptions;

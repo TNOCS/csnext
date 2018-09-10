@@ -5,8 +5,7 @@
   ],
   "command": {
     "publish": {
-      "allowBranch": "master",
-      "cdVersion": "patch",
+      "allowBranch": "*",
       "conventionalCommits": true,
       "preid": "beta",
       "message": "chore(release): publish %s"
@@ -22,5 +21,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.0.54"
+  "version": "0.0.63"
 }

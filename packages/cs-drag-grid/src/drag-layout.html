@@ -1,13 +1,13 @@
 <div>
     <grid-layout 
         :layout="layout" 
-        :col-num="12" 
-        :row-height="50" 
-        :is-draggable="dashboard.options.dragEnabled" 
-        :is-resizable="dashboard.options.dragEnabled" 
-        :is-mirrored="false"
-        :vertical-compact="false" 
-        :margin="[10, 10]" 
+        :col-num="dashboard.options.ColNum" 
+        :row-height="dashboard.options.RowHeight" 
+        :is-draggable="dashboard.options.DragEnabled" 
+        :is-resizable="dashboard.options.ResizeEnabled" 
+        :is-mirrored="dashboard.options.IsMirrored"
+        :vertical-compact="dashboard.options.VerticalCompact" 
+        :margin="Margin" 
         :use-css-transforms="false" 
         @layout-updated="layoutUpdatedEvent"
         >

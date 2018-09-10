@@ -3,23 +3,20 @@ import { Watch } from 'vue-property-decorator';
 import {
     IWidget,
     IDashboard,
-    IDashboardOptions,
+    BaseDashboardOptions,
     guidGenerator,
-    IWidgetOptions
+    WidgetOptions,
+    Form, IFormOptions, IFormFieldOptions, FormField 
 } from '@csnext/cs-core';
 import Vue, { WatchOptions } from 'vue';
 import Component from 'vue-class-component';
 import './drag-layout.css';
-
-export interface IDragLayoutOptions extends IDashboardOptions {
-    itemWidth?: number;
-    itemHeight?: number;
-    dragEnabled?: boolean;
-}
+import { DragLayoutOptions } from './drag-layout-options';
 
 Vue.component('grid-layout', GridLayout);
 Vue.component('grid-item', GridItem);
 
+// @Form({ title: 'Drag Layout'})
 @Component({
     template: require('./drag-layout.html'),
     props: {
@@ -29,18 +26,32 @@ Vue.component('grid-item', GridItem);
 export class DragLayout extends Vue {
     public mode: any;
     public dashboard!: IDashboard;
-    public options?: IDragLayoutOptions;
+
+    public get options(): DragLayoutOptions | undefined {
+        return this.dashboard.options as DragLayoutOptions;
+    }
+
+    public set options(value: DragLayoutOptions | undefined) {
+        this.dashboard.options = value;
+    }
+
+    // public options?: DragLayoutOptions;
     public grid: any;
     public items: string[] = [];
     private editSubscription: any;
     public dragEnabled = false;
     public isMoving = false;
-
     public static id = 'drag-grid';
 
     public layout: any[] = [];
 
     private initLayout() {
+        // this.options = new DragLayoutOptions();
+        let options = new DragLayoutOptions();
+        Object.assign(options, this.dashboard.options);
+        this.dashboard.options = options;
+        // Object.assign(this.options, this.dashboard.options);
+
         let res: any[] = [];
         Vue.nextTick(() => {
             if (this.dashboard.widgets) {
@@ -63,13 +74,16 @@ export class DragLayout extends Vue {
                             i: w.id,
                             widget: w
                         });
-                        
                     });
                 this.layout = res;
             }
         });
-        
-        
+    }
+
+    get Margin() {
+        if (this.options && this.options.Margin)
+            return [this.options.Margin, this.options.Margin];
+        return [10, 10];
     }
 
     get widgets() {
@@ -86,7 +100,12 @@ export class DragLayout extends Vue {
             );
     }
 
-    @Watch('dashboard.widgets', {immediate:false})
+    @Watch('dashboard.options', { deep: true })
+    public optionsChanged(data: any) {
+        console.log('options changed');
+    }
+
+    @Watch('dashboard.widgets', { immediate: false })
     public widgetsChanged(data: any, old: any) {
         this.initLayout();
     }
@@ -95,16 +114,25 @@ export class DragLayout extends Vue {
         this.options = {
             itemHeight: 5,
             itemWidth: 5,
-            dragEnabled: true,
+            DragEnabled: true,
+            ResizeEnabled: true,
+            IsMirrored: false,
+            RowHeight: 50,
+            ColNum: 12,
+            Margin: 10,
             ...this.dashboard.options
-        };
+        } as DragLayoutOptions;
 
         this.initLayout();
 
         if (!this.editSubscription && this.dashboard && this.dashboard.events) {
             this.dashboard.events.subscribe('settings', () => {
-                if (this.options) {
-                    this.options.dragEnabled = this.dashboard.options.dragEnabled;
+                if (
+                    this.options &&
+                    this.dashboard.options &&
+                    this.options.DragEnabled
+                ) {
+                    this.options.DragEnabled = this.options.DragEnabled;
                 }
             });
         }
@@ -114,7 +142,7 @@ export class DragLayout extends Vue {
         // });
     }
 
-    public checkPosition(options: IWidgetOptions) {
+    public checkPosition(options: WidgetOptions) {
         if (!this.dashboard || !this.dashboard.widgets) return;
         if (options.x === undefined || options.y === undefined) {
             let lastY = 0;
@@ -156,13 +184,12 @@ export class DragLayout extends Vue {
         }
     }
 
-    public layoutUpdatedEvent(l: any[]) {        
+    public layoutUpdatedEvent(l: any[]) {
         if (!this.dashboard.widgets) {
             return;
         }
         let result: IWidget[] = [];
         for (var i = 0; i < l.length; i++) {
-            // console.log('moved');
             let widget = l[i].widget as IWidget;
             let moved = false;
             let resized = false;
@@ -223,9 +250,7 @@ export class DragLayout extends Vue {
         this.isMoving = true;
     }
 
-    public resizeEvent() {
-        console.log('resize');
-    }
+    public resizeEvent() {}
 
     public initGrid() {}
 

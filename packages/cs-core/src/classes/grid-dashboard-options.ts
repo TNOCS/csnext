@@ -1,6 +1,5 @@
-import { IDashboardOptions } from './dashboard-options';
+import { BaseDashboardOptions } from './dashboard-options';
 
-export interface IGridDashboardOptions extends IDashboardOptions {
-  gap?: number;
-
+export class GridDashboardOptions extends BaseDashboardOptions {
+  public gap?: number;
 }

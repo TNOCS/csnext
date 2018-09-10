@@ -1,8 +1,7 @@
 import { IMessageBusService } from './../utils/message-bus/message-bus-service';
-import { IMenu } from './menu';
 import { EditorSchema } from './editor-schema';
 import { IDashboard } from '../index';
-import { IWidgetOptions } from './widget-options';
+import { WidgetOptions } from './widget-options';
 import { IProject } from './project';
 
 export enum WidgetType {
@@ -18,7 +17,7 @@ export interface IWidget {
   content?: any;
   datasource?: string;
   data?: any;
-  options?: IWidgetOptions;
+  options?: WidgetOptions;
   editorWidget?: IWidget;
   Schema?: EditorSchema;
   events?: IMessageBusService;

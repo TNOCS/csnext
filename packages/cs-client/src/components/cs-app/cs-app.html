@@ -20,8 +20,26 @@
     <!-- tabs -->
 
     <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id"
-        :to="{path:dashboard.pathLink}">{{dashboard.title}}</v-tab>
+      <v-tab v-for="dashboard in app.project.dashboards" @click="openDashboard(dashboard)" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
+        <v-menu v-if="dashboard.dashboards" bottom open-on-hover>
+          <a slot="activator" class="v-tabs__item">
+            {{dashboard.title}}
+            <v-icon>arrow_drop_down</v-icon>
+          </a>
+
+          <v-list class="grey lighten-3">
+            <v-list-tile v-for="subdash in dashboard.dashboards" :key="subdash.id" @click="openDashboard(subdash)">
+              {{ subdash.title }}
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+        <span :to="{path:dashboard.pathLink}" v-else>
+          {{dashboard.title}}
+        </span>
+      </v-tab>
+
+
+
     </v-tabs>
     <v-spacer></v-spacer>
 
@@ -70,10 +88,10 @@
     <!-- menus -->
 
     <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu header-icon"
-      offset-y>
+      offset-y >
       <template v-if="menu.toggleButton">
         <v-tooltip slot="activator" bottom>
-          <v-btn icon slot="activator" v-model="menu.toggleState" @click="toggleMenu(menu)">
+          <v-btn icon slot="activator" v-model="menu.toggleState" @click="toggleMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
             <v-icon v-if="!menu.toggleState">{{menu.icon}}</v-icon>
             <v-icon v-else>{{menu.toggleIcon}}</v-icon>
           </v-btn>
@@ -83,10 +101,11 @@
       </template>
       <template v-else>
         <v-tooltip slot="activator" bottom>
-          <v-btn icon slot="activator" @click.delegate="activateMenu(menu)">
+          <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
             <v-icon>{{menu.icon}}</v-icon>
           </v-btn>
-          {{menu.toolTip}}</v-tooltip>
+          {{menu.toolTip}}
+        </v-tooltip>
       </template>
 
       <v-list v-if="menu.items && menu.items.length>0">

@@ -1,0 +1,9 @@
+<v-container>
+    <!-- <h1>Layer Selection</h1> -->
+
+    <template v-if="widget.content">
+        <div v-for="layer in widget.content.layers">
+            <v-checkbox :label="layer.title" v-model="layer.Visible"></v-checkbox>
+        </div>
+    </template>
+</v-container>

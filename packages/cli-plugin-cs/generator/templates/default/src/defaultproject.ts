@@ -1,5 +1,5 @@
 
-import { IProject,  IMenu, INotification} from "@csnext/cs-core";
+import { WidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
 import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
@@ -117,8 +117,8 @@ export const project: IProject = {
     //       icon: "assignment",
     //       path: "/dragGrid",
     //       layout: "drag-grid",          
-    //       options: <IMuuriOptions>{ dragEnabled: true, gap: 5},
-    //       widgets: [{ component: MdWidget, data: 'widget 1', options: <IWidgetOptions>{ width: 3, height: 3}}]
+    //       options: <IMuuriOptions>{ DragEnabled: true, gap: 5},
+    //       widgets: [{ component: MdWidget, data: 'widget 1', options: <WidgetOptions>{ width: 3, height: 3}}]
     //     }        
     //     <%_ } _%>
         

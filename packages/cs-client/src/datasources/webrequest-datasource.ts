@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { IDatasource, IDatasourceHandler, IDatasourceProcessor } from '@csnext/cs-core';
+import { IDatasource, IDatasourceProcessor } from '@csnext/cs-core';
 import { AppState, DatasourceManager } from '../';
 
 export class WebRequestDatasourceProcessor implements IDatasourceProcessor {
   public id = 'webrequest';
 
-  public execute(ds: IDatasource): Promise<any> {
+  public execute(sources: {[id: string]: IDatasource}, ds: IDatasource): Promise<any> {
     return new Promise((resolve, reject) => {
       if (ds.source === undefined) { return reject('No source defined'); }
       axios.get(ds.source)

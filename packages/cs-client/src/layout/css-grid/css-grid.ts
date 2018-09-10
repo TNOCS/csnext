@@ -3,13 +3,12 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
-  IWidget,
-  IGridDashboardOptions,
-  IWidgetOptions
-} from '@csnext/cs-core';
+  GridDashboardOptions,
+  IWidget} from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './css-grid.css';
+import { GridWidgetOptions } from './css-grid-widget-options';
 
 @Component({
   template: require('./css-grid.html'),
@@ -25,14 +24,14 @@ export class CssGrid extends Vue {
       return;
     }
     const style = {} as any;
-    const options = this.dashboard.options as IGridDashboardOptions;
+    const options = this.dashboard.options as GridDashboardOptions;
 
     return { 'grid-template-columns': 'repeat(auto-fill, minmax(250px,1fr))' };
   }
 
   public gridWidgetClass(widget: IWidget) {
     const style: any = {};
-    const options = widget.options as IGridWidgetOptions;
+    const options = widget.options as GridWidgetOptions;
     if (options.columnStart) {
       style['grid-column-start'] = options.columnStart;
     }
@@ -47,13 +46,6 @@ export class CssGrid extends Vue {
     }
     return style;
   }
-}
-
-export interface IGridWidgetOptions extends IWidgetOptions {
-  columnStart?: number;
-  columnEnd?: number;
-  rowStart?: number;
-  rowEnd?: number;
 }
 
 LayoutManager.add({

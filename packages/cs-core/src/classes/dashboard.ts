@@ -1,4 +1,4 @@
-import { IDashboardManager, Page, IWidget, IWidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
+import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
 import { IFooterOptions } from './footer-options';
 
 export interface IDashboard {
@@ -17,6 +17,9 @@ export interface IDashboard {
   // manager that is responsible for layout
   layout?: string;
 
+  // if specified this url will be opened, instead of a dashboard
+  url?: string;
+
   // manager id that is responsible for managing dashboard
   manager?: string;
 
@@ -24,15 +27,13 @@ export interface IDashboard {
   // tslint:disable-next-line:variable-name
   _manager?: IDashboardManager;
 
-  options?: any; // IDashboardOptions;
+  options?: IDashboardOptions;
 
   // list of widgets
   widgets?: IWidget[];
   active?: boolean;
 
   icon?: string;
-  // allow left & right swipe gestures to switch between dashboards
-  touchGesturesEnabled?: boolean;
 
   // id of default datasource
   datasource?: string;
@@ -43,7 +44,8 @@ export interface IDashboard {
   // generic data field for passing dashboard data
   data?: any;
 
-  defaultWidgetOptions?: IWidgetOptions;
+  // default options for all widgets
+  defaultWidgetOptions?: WidgetOptions;
 
   // options for left sidebar
   leftSidebar?: ISidebarOptions;
@@ -62,6 +64,7 @@ export interface IDashboard {
   // enabled for main dashboard, disabled if dashboards are used for left/right panels
   isMain?: boolean;
 
+  // event bus for widget specific events. e.g. resize
   events?: IMessageBusService;
 
   component?: any;
