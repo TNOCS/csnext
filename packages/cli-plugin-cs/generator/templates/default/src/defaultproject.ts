@@ -1,5 +1,5 @@
 
-import { IWidgetOptions,  IProject,  ILayoutManagerConfig, IMenu, INotification} from "@csnext/cs-core";
+import { IProject,  IMenu, INotification} from "@csnext/cs-core";
 import { LayoutManager, MdWidget, AppState } from "@csnext/cs-client";
 import DataSource from "./components/DataSource.vue";
 import './assets/example.css'
