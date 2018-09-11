@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev:docs": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build:docs": "vuepress build docs"
   },
   "publishConfig": {
     "access": "public"
