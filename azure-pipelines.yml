@@ -10,5 +10,5 @@ variables:
   imageName: 'csnext:$(build.buildId)'
 
 steps:
-- script: docker build -f Dockerfile -t $(imageName) .
+- script: docker build -f dockerfile -t $(imageName) .
   displayName: 'docker build'
