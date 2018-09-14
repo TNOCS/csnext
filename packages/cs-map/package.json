@@ -3,7 +3,7 @@
   "version": "0.0.63",
   "description": "cs-map",
   "main": "./lib/csmap.cs.js",
-  "types": "./lib/dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "url": "https://github.com/TNOCS/cs-map",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
