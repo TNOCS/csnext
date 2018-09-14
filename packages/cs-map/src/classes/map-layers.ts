@@ -1,11 +1,9 @@
 import { IDatasource, IProject, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
-import { MapLayer } from '.';
+import { MapLayer, LayerSources, Map } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
-import { LayerSources } from './';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection } from 'geojson';
-import { Map } from './map';
 import extent from 'geojson-extent';
 
 

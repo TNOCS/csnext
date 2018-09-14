@@ -4,7 +4,7 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-selection.css';
 import { Vue, Watch } from 'vue-property-decorator';
-import { MapLayers } from '../';
+import { MapLayers } from '../../.';
 
 @Component({
     name: 'layer-selection',
@@ -17,7 +17,5 @@ export class LayerSelection extends Vue {
     created() {}
 
     @Watch('widget.content')
-    dataLoaded(n: MapLayers) {        
-      
-    }
+    dataLoaded(n: MapLayers) {}
 }

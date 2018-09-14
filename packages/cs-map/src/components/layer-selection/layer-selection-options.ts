@@ -1,5 +1,5 @@
 import { WidgetOptions } from '@csnext/cs-core';
-import { MapLayers, LayerSources } from '../';
+import { MapLayers, LayerSources } from '../../.';
 
 export class LayerSelectionOptions extends WidgetOptions {
     public layers?: string;

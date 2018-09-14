@@ -1,7 +1,5 @@
-import { IDatasource, guidGenerator, MessageBusService } from '@csnext/cs-core';
-import { LayerSource } from './layer-source';
-import { MapLayers } from '.';
-import { FeatureCollection } from 'geojson';
+import { MessageBusService } from '@csnext/cs-core';
+import { LayerSource, MapLayers } from './../.';
 import extent from 'geojson-extent';
 import { LngLatBounds } from 'mapbox-gl';
 

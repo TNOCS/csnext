@@ -1,12 +1,12 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, IDatasource } from '@csnext/cs-core';
+import { IWidget } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
-import mapboxgl, { GeoJSONSource, FlyToOptions } from 'mapbox-gl';
-import { MapOptions } from './map-options';
-import { LayerSource, LayerSources, MapLayer } from './';
-import { FeatureCollection, Feature } from 'geojson';
+import mapboxgl, {  } from 'mapbox-gl';
+import { MapOptions } from './.';
+import { LayerSource, MapLayer } from './';
+import { Feature } from 'geojson';
 import { MapLayers } from '.';
 
 export interface FeatureEventDetails {
@@ -141,7 +141,7 @@ export class Map extends Vue {
                                         );
                                     }
                                 });
-                                this.map.on('mousemove', layer.id, e => {});
+                                this.map.on('mousemove', layer.id, () => { });
                                 this.map.on('mouseenter', layer.id, e => {
                                     let popup: string | undefined = undefined;
                                     if (layer.popupContent) {
@@ -207,7 +207,7 @@ export class Map extends Vue {
     }
 
     @Watch('widget.content')
-    dataLoaded(value: MapLayers) {
+    dataLoaded() {
         this.initMapLayers();
     }
 
@@ -238,7 +238,7 @@ export class Map extends Vue {
             if (this.widget.events) {
                 this.widget.events.subscribe(
                     'resize',
-                    (a: string, data: any) => {
+                    () => {
                         Vue.nextTick(() => {
                             this.map.resize();
                         });
@@ -270,7 +270,7 @@ export class Map extends Vue {
         });
     }
 
-    private addSource(source: LayerSource, refresh = false) {
+    private addSource(source: LayerSource) {
         if (source._geojson && source.id) {
             let original = this.map.getSource(source.id);
             if (original !== undefined) {
