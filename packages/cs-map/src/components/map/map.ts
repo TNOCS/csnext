@@ -4,10 +4,8 @@ import { IWidget } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
 import mapboxgl, {  } from 'mapbox-gl';
-import { MapOptions } from './.';
-import { LayerSource, MapLayer } from './';
 import { Feature } from 'geojson';
-import { MapLayers } from '.';
+import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
 
 export interface FeatureEventDetails {
     context: any;

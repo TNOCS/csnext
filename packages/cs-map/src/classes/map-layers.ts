@@ -1,11 +1,9 @@
-import { IDatasource, IProject, MessageBusService } from '@csnext/cs-core';
+import { IDatasource, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
 import { MapLayer, LayerSources, Map } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection } from 'geojson';
-import extent from 'geojson-extent';
-
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
@@ -59,7 +57,7 @@ export class MapLayers implements IDatasource {
     public enableLayer(ml: MapLayer) {
         if (ml._source && this.layers) {
             this.layers.push(ml);
-            ml._source.LoadSource().then(gj => {
+            ml._source.LoadSource().then(() => {
                 this.events.publish('layer', 'enabled', ml);
             });
         }        
