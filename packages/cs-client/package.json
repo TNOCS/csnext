@@ -21,9 +21,10 @@
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "reflect-metadata": "latest",
-    "vue-resize-directive": "^1.1.0",
+    "vue-resize-directive": "^1.1.1",
     "vue-router": "^3.0.1",
-    "vuetify": "1.2.3"
+    "vuetify": "1.2.4",
+    "vue-split-panel": "^1.0.4"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.1.0",

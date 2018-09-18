@@ -1,0 +1,7 @@
+<div class="split-manager">
+  <Split style="height: 100%; width: 100%" ref="mySplit">
+    <SplitArea v-for="widget in dashboard.widgets" :key="widget.id" :size="widget.options.width">
+      <cs-widget :widget="widget"></cs-widget>
+    </SplitArea>
+  </Split>
+</div>
