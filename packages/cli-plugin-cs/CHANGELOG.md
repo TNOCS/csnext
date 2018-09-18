@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.64"></a>
+## [0.0.64](https://github.com/TNOCS/csnext/compare/v0.0.63...v0.0.64) (2018-09-18)
+
+**Note:** Version bump only for package @csnext/vue-cli-plugin-cs
+
+
+
+
+
 <a name="0.0.63"></a>
 ## [0.0.63](https://github.com/TNOCS/csnext/compare/v0.0.62...v0.0.63) (2018-09-10)
 
