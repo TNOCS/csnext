@@ -49,6 +49,11 @@ export class Map extends Vue {
         return new MapOptions();
     }
 
+    @Watch('widget.content')
+    dataLoaded() {
+        this.initMapLayers();
+    }
+
     public beforeMount() {
         if (!this.widget) {
             return;
@@ -81,7 +86,7 @@ export class Map extends Vue {
     }
 
     public initMapLayers() {
-        if (this.Layers && this.map && this.map.loaded) {
+        if (this.Layers && this.map && this.map.loaded && this.Layers.events) {
             if (this.Layers.MapWidget === undefined) {
                 this.Layers.MapWidget = this;
             }
@@ -204,10 +209,7 @@ export class Map extends Vue {
         }
     }
 
-    @Watch('widget.content')
-    dataLoaded() {
-        this.initMapLayers();
-    }
+ 
 
     mounted() {
         this.initMapLayers();
