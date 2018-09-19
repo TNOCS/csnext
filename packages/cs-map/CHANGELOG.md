@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.66"></a>
+## [0.0.66](https://github.com/TNOCS/csnext/compare/v0.0.65...v0.0.66) (2018-09-19)
+
+**Note:** Version bump only for package @csnext/cs-map
+
+
+
+
+
 <a name="0.0.65"></a>
 ## [0.0.65](https://github.com/TNOCS/csnext/compare/v0.0.64...v0.0.65) (2018-09-19)
 
