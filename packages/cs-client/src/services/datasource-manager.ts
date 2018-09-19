@@ -31,16 +31,16 @@ export class DatasourceManager {
       });
     }
 
-    if (typeof datasource.execute !== 'function') {
-      return new Promise(resolve => {
-        resolve(datasource as T);
+    if (!handlers && datasource.data) {
+      return new Promise((resolve, reject) => {
+        resolve(datasource.data);
         return;
       });
     }
 
-    if (!handlers && datasource.data) {
-      return new Promise((resolve, reject) => {
-        resolve(datasource.data);
+    if (!handlers && typeof datasource.execute !== 'function') {
+      return new Promise(resolve => {
+        resolve(datasource as T);
         return;
       });
     }

@@ -20,8 +20,6 @@ export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
 export * from './layout/flex-grid/flex-grid-options';
 export { FlexWidgetOptions } from './layout/flex-grid/flex-widget-options';
-export * from './layout/split-panel/split-panel';
-export * from './layout/split-panel/split-widget-options';
 
 // datasources
 export * from './datasources/webrequest-datasource';

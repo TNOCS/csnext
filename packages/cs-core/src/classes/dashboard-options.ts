@@ -1,3 +1,4 @@
+import { IDashboard } from './dashboard';
 
 export interface IDashboardOptions {
   // Fullscreen?: boolean;
@@ -5,9 +6,33 @@ export interface IDashboardOptions {
   EditButton?: boolean;
   // allow left & right swipe gestures to switch between dashboards
   TouchGesturesEnabled?: boolean;
+  _dashboard?: IDashboard;
 }
 
 export class BaseDashboardOptions implements IDashboardOptions {
+
+  public get Background(): string | undefined {
+    return this.background;
+  }
+
+  public get EditButton(): boolean | undefined {
+    return this.editButton;
+  }
+
+  public set EditButton(value: boolean) {
+    this.editButton = value;
+  }
+
+  public get TouchGesturesEnabled(): boolean | undefined {
+    return this.touchGesturesEnabled;
+  }
+
+  public set TouchGesturesEnabled(value: boolean) {
+    this.touchGesturesEnabled = value;
+  }
+
+  // tslint:disable-next-line:variable-name
+  public _dashboard?: IDashboard;
   // private fullscreen?: boolean;
 
   // public get Fullscreen(): boolean| undefined {
@@ -20,28 +45,8 @@ export class BaseDashboardOptions implements IDashboardOptions {
 
   private background?: string;
 
-  public get Background(): string | undefined {
-    return this.background;
-  }
-
   private editButton?: boolean;
 
-  public get EditButton(): boolean | undefined {
-    return this.editButton;
-  }
-
-  public set EditButton(value: boolean) {
-    this.editButton = value;
-  }
-
   private touchGesturesEnabled?: boolean;
-
-  public get TouchGesturesEnabled(): boolean | undefined {
-    return this.touchGesturesEnabled;
-  }
-
-  public set TouchGesturesEnabled(value: boolean) {
-    this.touchGesturesEnabled = value;
-  }
 
 }

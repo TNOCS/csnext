@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "module": "es2015",
+      "target": "es2015",
+      "noImplicitAny": false,
+      "outDir": "./dist",
+      "strict": true,
+      "sourceMap": true,
+      "sourceRoot": "./src",
+      "lib": ["es5", "dom", "es2015", "es2015.promise", "es2016.array.include"],
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "declaration": true,
+      "emitDecoratorMetadata": true,
+      "allowSyntheticDefaultImports": true,
+      "noFallthroughCasesInSwitch": true,
+      "stripInternal": true,
+      "pretty": true
+    },
+    "exclude": ["./dist"],
+    "rules": {
+      "quotemark": [true, "single"]
+    }
+  }
+  

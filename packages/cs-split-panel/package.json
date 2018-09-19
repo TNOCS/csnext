@@ -1,10 +1,10 @@
 {
-  "name": "@csnext/cs-drag-grid",
+  "name": "@csnext/cs-split-panel",
   "version": "0.0.64",
-  "description": "cs-drag-grid",
-  "main": "./lib/csdraggrid.cs.js",
+  "description": "cs-split-panel",
+  "main": "./lib/cssplitpanel.cs.js",
   "types": "./lib/dist/index.d.ts",
-  "url": "https://github.com/TNOCS/cs-drag-grid",
+  "url": "https://github.com/TNOCS/cs-split-panel",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.64",
-    "vue-grid-layout": "^2.1.13"
+    "vue-split-panel": "^1.0.4"
   },
   "devDependencies": {
     "postcss-loader": "^3.0.0",

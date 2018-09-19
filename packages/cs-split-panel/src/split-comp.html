@@ -1,0 +1,11 @@
+<Split style="height: 100%; width: 100%" :direction="options.direction">
+  <SplitArea v-for="element in options.elements" :key="element.widgetId" :size="element.size">
+    <template v-if="element.widgetId">
+        <cs-widget :widget="getWidget(element.widgetId, dashboard)"></cs-widget>      
+    </template>
+    <template v-else>      
+      <!-- {{ element.elements }} -->
+      <split-comp :options="element.splitpanel" :dashboard="dashboard"></split-comp>
+    </template>
+  </SplitArea>
+</Split>

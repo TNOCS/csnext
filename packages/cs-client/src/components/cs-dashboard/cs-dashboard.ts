@@ -94,6 +94,7 @@ export class CsDashboard extends Vue {
     if (!dashboard.options) {
       dashboard.options = {};
     }
+    if (dashboard.options) { dashboard.options._dashboard = dashboard; }
 
     if (this.app.project.menus && dashboard.isMain) {
       const dashboardEditButton = this.app.project.menus.find(
