@@ -72,8 +72,7 @@ const config = [
     buildConfig(
         { cs: ['./src/index.ts'] },
         {
-            'cs-core': 'cs-core',
-            '@csnext/cs-client': '@csnext/cs-client',
+            'cs-core': 'cs-core',            
             vue: 'Vue',
             Vue: 'Vue'
         }

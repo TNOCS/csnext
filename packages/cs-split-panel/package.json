@@ -3,7 +3,7 @@
   "version": "0.0.65",
   "description": "cs-split-panel",
   "main": "./lib/cssplitpanel.cs.js",
-  "types": "./lib/dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "url": "https://github.com/TNOCS/cs-split-panel",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",

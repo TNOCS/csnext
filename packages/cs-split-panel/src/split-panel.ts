@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
+import { IDashboard } from '@csnext/cs-core';
 import VueSplit from 'vue-split-panel';
 import './split-panel.css';
 
