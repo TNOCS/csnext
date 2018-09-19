@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { IWidget } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
-import mapboxgl, {  } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
 
@@ -103,105 +103,13 @@ export class Map extends Vue {
                 (action: string, layer: MapLayer) => {
                     switch (action) {
                         case 'enabled':
-                            if (
-                                layer.id &&
-                                layer._source &&
-                                layer._source.id &&
-                                layer._source._geojson
-                            ) {
-                                this.addSource(layer._source);
-
-                                // remove layer if it already exists
-                                if (this.map.getLayer(layer.id) !== undefined) {
-                                    this.map.removeLayer(layer.id);
-                                }
-
-                                let mblayer = {
-                                    id: layer.id,
-                                    type: layer.type,
-                                    source: layer._source.id
-                                } as mapboxgl.Layer;
-
-                                if (layer.layout) {
-                                    mblayer.layout = layer.layout;
-                                }
-                                if (layer.paint) {
-                                    mblayer.paint = layer.paint;
-                                }
-
-                                this.map.addLayer(mblayer);
-                                this.zoomLayer(layer);
-
-                                this.map.on('click', layer.id, e => {
-                                    if (layer.events) {
-                                        layer.events.publish(
-                                            'feature',
-                                            Map.FEATURE_SELECT,
-                                            {
-                                                features: e.features,
-                                                context: e
-                                            } as FeatureEventDetails
-                                        );
-                                    }
-                                });
-                                this.map.on('mousemove', layer.id, () => { });
-                                this.map.on('mouseenter', layer.id, e => {
-                                    let popup: string | undefined = undefined;
-                                    if (layer.popupContent) {
-                                        if ( typeof layer.popupContent === 'string') {
-                                            popup = layer.popupContent;
-                                        } else if (this.isFunction(layer.popupContent))
-                                        {
-                                            popup = layer.popupContent(e);
-                                        }
-
-                                        if (popup) {
-                                            this.popup
-                                                .setLngLat(e.lngLat)
-                                                .setHTML(popup)
-                                                .addTo(this.map);
-                                        }
-                                    }
-
-                                    if (layer.events) {
-                                        layer.events.publish(
-                                            'feature',
-                                            Map.FEATURE_MOUSE_ENTER,
-                                            {
-                                                features: e.features,
-                                                context: e
-                                            }
-                                        );
-                                    }
-                                });
-
-                                this.map.on('mouseleave', layer.id, e => {
-                                    if (layer.popupContent) this.popup.remove();
-                                    if (layer.events) {
-                                        layer.events.publish(
-                                            'feature',
-                                            Map.FEATURE_MOUSE_LEAVE,
-                                            { features: e.features, context: e }
-                                        );
-                                    }
-                                });
-                            }
+                            this.enableLayer(layer);
                             break;
                         case 'disabled': {
-                            if (
-                                layer.id &&
-                                this.map.getLayer(layer.id) !== undefined
-                            ) {
-                                this.map.removeLayer(layer.id);
-                            }
+                            this.disableLayer(layer);
                         }
                         case 'remove': {
-                            if (
-                                layer.id &&
-                                this.map.getLayer(layer.id) !== undefined
-                            ) {
-                                this.map.removeLayer(layer.id);
-                            }
+                            this.removeLayer(layer);
                         }
                     }
                 }
@@ -209,7 +117,97 @@ export class Map extends Vue {
         }
     }
 
- 
+    private enableLayer(layer: MapLayer) {
+        if (
+            layer.id &&
+            layer._source &&
+            layer._source.id &&
+            layer._source._geojson
+        ) {
+            this.addSource(layer._source);
+            // remove layer if it already exists
+            if (this.map.getLayer(layer.id) !== undefined) {
+                this.map.removeLayer(layer.id);
+            }
+            let mblayer = {
+                id: layer.id,
+                type: layer.type,
+                source: layer._source.id
+            } as mapboxgl.Layer;
+            if (layer.layout) {
+                mblayer.layout = layer.layout;
+            }
+            if (layer.paint) {
+                mblayer.paint = layer.paint;
+            }
+            this.map.addLayer(mblayer);
+            this.zoomLayer(layer);
+            this.map.on('click', layer.id, e => {
+                this.click(layer, e);
+            });
+            this.map.on('mousemove', layer.id, () => {});
+            this.map.on('mouseenter', layer.id, e => {
+                this.mouseEnter(layer, e);
+            });
+            this.map.on('mouseleave', layer.id, e => {
+                this.mouseLeave(layer, e);
+            });
+        }
+    }
+
+    private click(layer: MapLayer, e: any) {
+        if (layer.events) {
+            layer.events.publish('feature', Map.FEATURE_SELECT, {
+                features: e.features,
+                context: e
+            } as FeatureEventDetails);
+        }
+    }
+
+    private mouseLeave(layer: MapLayer, e: any) {
+        if (layer.popupContent) this.popup.remove();
+        if (layer.events) {
+            layer.events.publish('feature', Map.FEATURE_MOUSE_LEAVE, {
+                features: e.features,
+                context: e
+            });
+        }
+    }
+
+    private mouseEnter(layer: MapLayer, e: any) {
+        let popup: string | undefined = undefined;
+        if (layer.popupContent) {
+            if (typeof layer.popupContent === 'string') {
+                popup = layer.popupContent;
+            } else if (this.isFunction(layer.popupContent)) {
+                popup = layer.popupContent(e);
+            }
+            if (popup) {
+                this.popup
+                    .setLngLat(e.lngLat)
+                    .setHTML(popup)
+                    .addTo(this.map);
+            }
+        }
+        if (layer.events) {
+            layer.events.publish('feature', Map.FEATURE_MOUSE_ENTER, {
+                features: e.features,
+                context: e
+            });
+        }
+    }
+
+    private removeLayer(layer: MapLayer) {
+        if (layer.id && this.map.getLayer(layer.id) !== undefined) {
+            this.map.removeLayer(layer.id);
+        }
+    }
+
+    private disableLayer(layer: MapLayer) {
+        if (layer.id && this.map.getLayer(layer.id) !== undefined) {
+            this.map.removeLayer(layer.id);
+        }
+    }
 
     mounted() {
         this.initMapLayers();
@@ -236,38 +234,35 @@ export class Map extends Vue {
             this.map.addControl(nav, 'top-left');
 
             if (this.widget.events) {
-                this.widget.events.subscribe(
-                    'resize',
-                    () => {
-                        Vue.nextTick(() => {
-                            this.map.resize();
-                        });
-                    }
-                );
-            }
-
-            // this.map.addLayer('ameland');
-
-            this.map.on('load', e => {
-                if (this.widget.events)
-                    this.widget.events.publish('map', 'loaded', e);
-                if (this.options.activeLayers) {
-                    this.options.activeLayers.forEach(id => {
-                        if (
-                            this.Layers &&
-                            this.Layers.layers &&
-                            this.Layers.layers.hasOwnProperty(id)
-                        ) {
-                            let layer = this.Layers.layers[id];
-                            if (layer.id === undefined) {
-                                layer.id = id;
-                            }
-                            this.initLayer(layer);
-                        }
+                this.widget.events.subscribe('resize', () => {
+                    Vue.nextTick(() => {
+                        this.map.resize();
                     });
-                }
+                });
+            }
+            this.map.on('load', e => {
+                this.mapLoaded(e);
             });
         });
+    }
+
+    private mapLoaded(e: any) {
+        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+        if (this.options.activeLayers) {
+            this.options.activeLayers.forEach(id => {
+                if (
+                    this.Layers &&
+                    this.Layers.layers &&
+                    this.Layers.layers.hasOwnProperty(id)
+                ) {
+                    let layer = this.Layers.layers[id];
+                    if (layer.id === undefined) {
+                        layer.id = id;
+                    }
+                    this.initLayer(layer);
+                }
+            });
+        }
     }
 
     private addSource(source: LayerSource) {
