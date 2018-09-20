@@ -9,6 +9,8 @@ export class MapLayer {
     public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
+    public parentId?: string;
+    public _parent?: MapLayer;
     public layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout
@@ -32,6 +34,7 @@ export class MapLayer {
     }
 
     public set Visible(value: boolean | undefined) {
+        if (this.visible === value) { return; }
         this.visible = value;
         if (!this._manager) {
             return;

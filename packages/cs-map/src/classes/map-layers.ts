@@ -8,9 +8,10 @@ import { FeatureCollection } from 'geojson';
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
     public id = 'maplayers';
+    
     public events = new MessageBusService();
     private map?: Map;
-    public get MapWidget() : Map | undefined {
+    public get MapWidget(): Map | undefined {
         return this.map;
     }
 
@@ -18,10 +19,10 @@ export class MapLayers implements IDatasource {
         this.map = map;
     }
 
-    public get MapControl() : mapboxgl.Map | undefined {
+    public get MapControl(): mapboxgl.Map | undefined {
         if (this.MapWidget && this.MapWidget.map) {
             return this.MapWidget.map;
-        } else { 
+        } else {
             return undefined;
         }
     }
@@ -36,11 +37,10 @@ export class MapLayers implements IDatasource {
     public clearLayers() {
         if (this.layers) {
             this.layers.map(l => {
-                this.disableLayer(l);                
+                this.disableLayer(l);
             });
         }
     }
-
 
     public fromGeoJSON(geojson: FeatureCollection, title?: string): MapLayer {
         let result = new MapLayer();
@@ -56,21 +56,26 @@ export class MapLayers implements IDatasource {
 
     public enableLayer(ml: MapLayer) {
         if (ml._source && this.layers) {
-            this.layers.push(ml);
-            ml._source.LoadSource().then(() => {
-                this.events.publish('layer', 'enabled', ml);
-            });
-        }        
+            if (this.layers.findIndex(l => l.id === ml.id) === -1) {
+                this.layers.push(ml);
+            }
+            if (this.map) {
+                this.map.enableLayer(ml);
+            }
+            // this.events.publish('layer', 'enabled', ml);
+        }
     }
 
-    public disableLayer(ml: string | MapLayer) {        
+    public disableLayer(ml: string | MapLayer) {
         if (!this.layers) return;
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.disableLayer(layer);
         } else {
-            this.layers = this.layers.filter(l => l.id !== ml.id);
-            this.events.publish('layer', 'disabled', ml);
+            if (this.map) {
+                this.map.disableLayer(ml);
+                // this.events.publish('layer', 'disabled', ml);
+            }
         }
     }
 
@@ -110,8 +115,8 @@ export class MapLayers implements IDatasource {
             }
 
             if (this.layers) {
-                this.layers.map(l => {              
-                    result.push(this.initLayer(l));              
+                this.layers.map(l => {
+                    result.push(this.initLayer(l));
                 });
                 this.layers = result;
                 resolve(this);
