@@ -18,16 +18,17 @@ export class LayerSource {
             if (!this.url) { reject('Url not defined'); return; }            
             axios
                 .get(this.url)
-                .catch(e => {
-                    reject(e);
-                })
                 .then(response => {
                     if (response) {                        
                         this._geojson = response.data;
                         this._loaded = true;
                         resolve(this._geojson);
                     }
+                })
+                .catch(e => {
+                    reject(e);
                 });
+                
         });
     }
 }

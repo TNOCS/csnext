@@ -9,6 +9,7 @@ export class MapLayer {
     public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
+    public tags?: string[];
     public parentId?: string;
     public _parent?: MapLayer;
     public layout?:

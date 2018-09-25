@@ -2,6 +2,8 @@
     <!-- <h1>Layer Selection</h1> -->
 
     <template v-if="widget.content">
-        <v-checkbox v-for="layer in widget.content.layers" :label="layer.title" v-model="layer.Visible"></v-checkbox>
+        <div v-for="(group, key) in Groups" :key="key"> {{ group.title}}
+            <v-checkbox v-for="layer in group.layers" :label="layer.title" v-model="layer.Visible"></v-checkbox>
+        </div>
     </template>
 </v-container>

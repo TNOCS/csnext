@@ -6,6 +6,8 @@ import './map.css';
 import mapboxgl from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+var MapboxDraw = require('@mapbox/mapbox-gl-draw');
 
 export interface FeatureEventDetails {
     context: any;
@@ -32,6 +34,7 @@ export class Map extends Vue {
     });
 
     public get Layers(): MapLayers | undefined {
+        
         if (this.widget) {
             if (this.widget.content) {
                 return this.widget.content as MapLayers;
@@ -62,7 +65,7 @@ export class Map extends Vue {
 
     public zoomLayer(mapLayer: MapLayer) {
         let bounds = mapLayer.getBounds();
-        if (bounds !== undefined) {
+        if (bounds) {
             this.map.fitBounds(bounds, { padding: 20 });
         }
     }
@@ -141,7 +144,8 @@ export class Map extends Vue {
                     let mblayer = {
                         id: layer.id,
                         type: layer.type,
-                        source: layer._source.id
+                        source: layer._source.id,
+                        interactive: true
                     } as mapboxgl.Layer;
                     if (layer.layout) {
                         mblayer.layout = layer.layout;
@@ -243,6 +247,9 @@ export class Map extends Vue {
             };
 
             this.map = new mapboxgl.Map(this.options.mbOptions);
+
+            // var Draw = new MapboxDraw();
+            // this.map.addControl(Draw, 'top-left');
 
             var nav = new mapboxgl.NavigationControl();
             this.map.addControl(nav, 'top-left');
