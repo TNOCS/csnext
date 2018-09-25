@@ -13,6 +13,9 @@ export class DragLayoutOptions extends BaseDashboardOptions {
     private verticalCompact?: boolean;
     private margin?: number;
 
+    public Title?: string;
+    public Description?: string;
+
     @FormField({ title: 'Drag', description: 'Allow widget dragging', type: 'boolean', group: 'edit'})
     public get DragEnabled(): boolean | undefined {
         return this.dragEnabled;
