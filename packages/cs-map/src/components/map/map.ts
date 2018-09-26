@@ -6,8 +6,6 @@ import './map.css';
 import mapboxgl from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-var MapboxDraw = require('@mapbox/mapbox-gl-draw');
 
 export interface FeatureEventDetails {
     context: any;
