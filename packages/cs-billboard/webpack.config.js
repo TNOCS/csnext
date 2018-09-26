@@ -23,19 +23,12 @@ const mod = {
     rules: [
         {
             test: /\.ts$/,
-            exclude: /node_modules/,
-            enforce: 'pre',
-            loader: 'tslint-loader'
-        },
-        {
-            test: /\.ts$/,
-            exclude: /node_modules/,
+            exclude: [/node_modules/],
             loader: 'ts-loader'
         },
         {
             test: /\.html$/,
-            loader: 'raw-loader',
-            exclude: ['./src/index.html']
+            loader: 'raw-loader'
         },
         {
             test: /\.css$/,

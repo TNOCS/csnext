@@ -26,36 +26,12 @@ const mod = {
   rules: [
     {
       test: /\.ts$/,
-      exclude: /node_modules/,
-      enforce: 'pre',
-      loader: 'tslint-loader'
-    },
-    {
-      test: /\.ts$/,
-      exclude: /node_modules/,
+      exclude: [/node_modules/],
       loader: 'ts-loader'
     },
     {
       test: /\.html$/,
-      loader: 'raw-loader',
-      exclude: ['./src/index.html']
-    },
-    {
-      test: /\.scss$/,
-      use: [
-        {
-          loader: 'style-loader'
-        },
-        {
-          loader: 'css-loader'
-        },
-        {
-          loader: 'sass-loader'
-        }
-      ]
-    },
-    { test: /\.woff2$/, 
-      use: 'base64-inline-loader?limit=1000&name=[name].[ext]'
+      loader: 'raw-loader'
     },
     {
       test: /\.css$/,
@@ -67,6 +43,10 @@ const mod = {
           loader: 'css-loader'
         }
       ]
+    },
+    {
+      test: /\.woff2$/,
+      use: 'base64-inline-loader?limit=1000&name=[name].[ext]'
     }
   ]
 };
@@ -74,7 +54,7 @@ const mod = {
 function buildConfig(entry, externals, analyzer) {
   let pl = []; //new HardSourceWebpackPlugin()
   pl.push(new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]));
-  
+
   if (analyzer) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
       .BundleAnalyzerPlugin;
@@ -87,7 +67,7 @@ function buildConfig(entry, externals, analyzer) {
       })
     );
   }
-  
+
   return (baseConfig = {
     entry: entry,
     // entry: __dirname + '/src/index.ts',
