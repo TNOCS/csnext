@@ -23,7 +23,7 @@ export class MapLayer {
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
-    public events?: MessageBusService;
+    public events: MessageBusService;
     public popupContent?: string | Function | undefined;
 
     constructor() {
@@ -34,14 +34,14 @@ export class MapLayer {
         return this.visible;
     }
 
-    public set Visible(value: boolean | undefined) {
+    public set Visible(value: boolean | undefined) {        
         if (this.visible === value) { return; }
         this.visible = value;
         if (!this._manager) {
             return;
         }
-        if (value === true) {
-            this._manager.enableLayer(this);
+        if (value === true) {            
+            this._manager.showLayer(this);
         } else {
             this._manager.disableLayer(this);
         }

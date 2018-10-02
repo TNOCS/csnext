@@ -32,7 +32,6 @@ export class Map extends Vue {
     });
 
     public get Layers(): MapLayers | undefined {
-        
         if (this.widget) {
             if (this.widget.content) {
                 return this.widget.content as MapLayers;
@@ -102,7 +101,7 @@ export class Map extends Vue {
             if (this.Layers.layers) {
                 this.Layers.layers.forEach(l => {
                     if (this.Layers && l.Visible) {
-                        this.enableLayer(l);                        
+                        this.enableLayer(l);
                     }
                 });
             }
@@ -129,44 +128,46 @@ export class Map extends Vue {
         }
     }
 
-
-    public async enableLayer(layer: MapLayer) {        
-        if (layer.id && layer._source && layer._source.id) {            
-            layer._source.LoadSource().then(() => {                
-                if (layer.id && layer._source && layer._source.id) {
-                    this.addSource(layer._source);
-                    // remove layer if it already exists
-                    if (this.map.getLayer(layer.id) !== undefined) {
-                        this.map.removeLayer(layer.id);
+    public async enableLayer(layer: MapLayer): Promise<MapLayer> {
+        return new Promise<MapLayer>((resolve, reject) => {
+            if (layer.id && layer._source && layer._source.id) {
+                layer._source.LoadSource().then(() => {
+                    if (layer.id && layer._source && layer._source.id) {
+                        this.addSource(layer._source);
+                        // remove layer if it already exists
+                        if (this.map.getLayer(layer.id) !== undefined) {
+                            this.map.removeLayer(layer.id);
+                        }
+                        let mblayer = {
+                            id: layer.id,
+                            type: layer.type,
+                            source: layer._source.id,
+                            interactive: true
+                        } as mapboxgl.Layer;
+                        if (layer.layout) {
+                            mblayer.layout = layer.layout;
+                        }
+                        if (layer.paint) {
+                            mblayer.paint = layer.paint;
+                        }
+                        this.map.addLayer(mblayer);
+                        layer.Visible = true;
+                        this.zoomLayer(layer);
+                        this.map.on('click', layer.id, e => {
+                            this.click(layer, e);
+                        });
+                        this.map.on('mousemove', layer.id, () => {});
+                        this.map.on('mouseenter', layer.id, e => {
+                            this.mouseEnter(layer, e);
+                        });
+                        this.map.on('mouseleave', layer.id, e => {
+                            this.mouseLeave(layer, e);
+                        });
+                        resolve(layer);
                     }
-                    let mblayer = {
-                        id: layer.id,
-                        type: layer.type,
-                        source: layer._source.id,
-                        interactive: true
-                    } as mapboxgl.Layer;
-                    if (layer.layout) {
-                        mblayer.layout = layer.layout;
-                    }
-                    if (layer.paint) {
-                        mblayer.paint = layer.paint;
-                    }
-                    this.map.addLayer(mblayer);
-                    layer.Visible = true;
-                    this.zoomLayer(layer);
-                    this.map.on('click', layer.id, e => {
-                        this.click(layer, e);
-                    });
-                    this.map.on('mousemove', layer.id, () => {});
-                    this.map.on('mouseenter', layer.id, e => {
-                        this.mouseEnter(layer, e);
-                    });
-                    this.map.on('mouseleave', layer.id, e => {
-                        this.mouseLeave(layer, e);
-                    });
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
     private click(layer: MapLayer, e: any) {
@@ -218,7 +219,7 @@ export class Map extends Vue {
         }
     }
 
-    public disableLayer(layer: MapLayer) {        
+    public disableLayer(layer: MapLayer) {
         if (layer.id && this.map.getLayer(layer.id) !== undefined) {
             layer.Visible = false;
             this.map.removeLayer(layer.id);

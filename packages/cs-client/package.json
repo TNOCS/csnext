@@ -21,7 +21,7 @@
     "axios": "^0.18.0",
     "deepmerge": "^2.1.1",
     "reflect-metadata": "latest",
-    "vue-resize-directive": "^1.1.1",
+    "vue-resize-directive": "^1.1.4",
     "vue-router": "^3.0.1",
     "vuetify": "1.2.5"
   },

@@ -4,11 +4,12 @@ import { MapLayer, LayerSources, Map } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection } from 'geojson';
+import { LayerServiceBase } from './layer-service';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
     public id = 'maplayers';
-    
+
     public events = new MessageBusService();
     private map?: Map;
     public get MapWidget(): Map | undefined {
@@ -29,7 +30,8 @@ export class MapLayers implements IDatasource {
 
     constructor(
         public layers?: MapLayer[],
-        public sources?: string | LayerSources
+        public sources?: string | LayerSources,
+        public services?: LayerServiceBase[]
     ) {
         this.layers = layers;
     }
@@ -54,16 +56,42 @@ export class MapLayers implements IDatasource {
         return result;
     }
 
-    public enableLayer(ml: MapLayer) {
-        if (ml._source && this.layers) {
-            if (this.layers.findIndex(l => l.id === ml.id) === -1) {
-                this.layers.push(ml);
-            }
+    public showLayer(ml: MapLayer): Promise<MapLayer> {
+        return new Promise((resolve, reject) => {
             if (this.map) {
-                this.map.enableLayer(ml);
+                this.map
+                    .enableLayer(ml)
+                    .then(maplayer => {
+                        resolve(maplayer);
+                    })
+                    .catch(() => {
+                        reject();
+                    });
             }
-            // this.events.publish('layer', 'enabled', ml);
-        }
+            this.events.publish('layer', 'enabled', ml);
+        });
+    }
+
+    public loadLayer(ml: MapLayer): Promise<MapLayer> {
+        return new Promise(async (resolve, reject) => {
+            if (this.layers) {
+                if (this.layers.findIndex(l => l.id === ml.id) === -1) {
+                    this.layers.push(ml);
+                }
+
+                if (ml.source) {
+                    ml._source = plainToClass(LayerSource, ml.source);
+                    ml._source
+                        .LoadSource()
+                        .then(() => {
+                            resolve(ml);
+                        })
+                        .catch(() => {
+                            reject();
+                        });
+                }
+            }
+        });
     }
 
     public disableLayer(ml: string | MapLayer) {
@@ -94,7 +122,7 @@ export class MapLayers implements IDatasource {
                 l._source = this._sources.layers[l.source];
             }
         } else {
-            l._source = l.source;
+            l._source = l.source = plainToClass(LayerSource, l.source);
         }
         if (l.title === undefined && l._source && l._source.id) {
             l.title = l._source.id;
