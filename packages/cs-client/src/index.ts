@@ -2,7 +2,7 @@
 import { AppState } from './services/app-state';
 
 // utils
-export { guidGenerator, idGenerator} from './utils/guid';
+export { guidGenerator, idGenerator, numberGenerator} from './utils/guid';
 
 // services
 export * from './services/app-state';

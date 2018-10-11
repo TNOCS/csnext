@@ -11,8 +11,6 @@ import VueMarkdown from 'vue-markdown';
 export class MdWidget extends WidgetBase {
 
     public mounted() {
-    // tslint:disable-next-line:no-debugger
-    // debugger;
   }
 
 }
