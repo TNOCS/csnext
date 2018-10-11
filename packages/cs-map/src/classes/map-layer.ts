@@ -1,6 +1,6 @@
 import { MessageBusService } from '@csnext/cs-core';
 import { LayerSource, MapLayers } from './../.';
-import extent from 'geojson-extent';
+import extent from '@mapbox/geojson-extent';
 import { LngLatBounds } from 'mapbox-gl';
 
 export class MapLayer {
@@ -34,23 +34,17 @@ export class MapLayer {
         return this.visible;
     }
 
-    public set Visible(value: boolean | undefined) {        
+    public set Visible(value: boolean | undefined) {            
         if (this.visible === value) { return; }
-        this.visible = value;
-        if (!this._manager) {
-            return;
-        }
-        if (value === true) {            
-            this._manager.showLayer(this);
-        } else {
-            this._manager.disableLayer(this);
-        }
+        this.visible = value;        
     }
 
     public getBounds(): LngLatBounds | undefined {
         if (this._source) {
+            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
+            let geo = { ...this._source._geojson};
             try {
-                let bounds = extent(this._source._geojson);
+                let bounds = extent(geo);
                 return bounds;
             } catch {
                 return undefined;

@@ -3,8 +3,9 @@ import { LayerSource } from './layer-source';
 import { MapLayer, LayerSources, Map } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
-import { FeatureCollection } from 'geojson';
+import { FeatureCollection, Feature } from 'geojson';
 import { LayerServiceBase } from './layer-service';
+import { GeoJSONSource } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
@@ -39,7 +40,7 @@ export class MapLayers implements IDatasource {
     public clearLayers() {
         if (this.layers) {
             this.layers.map(l => {
-                this.disableLayer(l);
+                this.hideLayer(l);
             });
         }
     }
@@ -58,9 +59,10 @@ export class MapLayers implements IDatasource {
 
     public showLayer(ml: MapLayer): Promise<MapLayer> {
         return new Promise((resolve, reject) => {
+            ml.Visible = true;
             if (this.map) {
                 this.map
-                    .enableLayer(ml)
+                    .showLayer(ml)
                     .then(maplayer => {
                         resolve(maplayer);
                     })
@@ -94,21 +96,95 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public disableLayer(ml: string | MapLayer) {
+    public hideLayer(ml: string | MapLayer) {
         if (!this.layers) return;
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
-            if (layer) this.disableLayer(layer);
+            if (layer) this.hideLayer(layer);
         } else {
             if (this.map) {
-                this.map.disableLayer(ml);
+                this.map.removeLayer(ml);
                 // this.events.publish('layer', 'disabled', ml);
             }
         }
     }
 
+    public updateLayerFeature(
+        ml: MapLayer | string,
+        feature: Feature,
+        updateSource = true
+    ) {
+        let layer : MapLayer | undefined = undefined;
+        if (typeof ml === 'string') {
+            if (this.layers) { layer = this.layers.find(l=>l.id === ml); }
+        } else {
+            layer = ml;
+        }        
+        if (layer && layer._source && layer._source._geojson && feature.id !== undefined) {
+            let index = layer._source._geojson.features.findIndex(
+                f => f.id === feature.id
+            );
+            if (index >= 0) {
+                layer._source._geojson.features[index] = feature;
+                if (updateSource) {
+                    this.updateLayerSource(layer);
+                }
+            }
+        }
+    }
+
+    public updateFeatureProperty(
+        source: string,
+        featureId: number,
+        props: any
+    ) {
+        if (this.MapControl) {
+            this.MapControl.setFeatureState(
+                { source: source, id: featureId as any },
+                props
+            );
+        }
+    }
+
+    public updateLayerSource(
+        ml: MapLayer,
+        geojson?: FeatureCollection | string
+    ) {
+        if (!geojson && ml._source && ml._source._geojson) {
+            geojson = ml._source._geojson;
+        }
+        let g =
+            typeof geojson === 'string'
+                ? (JSON.parse(geojson) as FeatureCollection)
+                : geojson;
+
+        if (g && ml._source && ml._source.id && this.MapControl) {
+            let sourceId = ml._source.id;
+            (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
+        }
+        console.log(ml);
+        // if (ml._source) {
+        //     this.MapControl.getSource(ml.source)
+        // }
+    }
+
+    public addLayer(ml: MapLayer): Promise<MapLayer> {
+        return new Promise((resolve, reject) => {
+            let layer = this.initLayer(ml);
+            if (this.layers) {
+                this.layers.push(layer);
+                this.showLayer(layer)
+                    .then(m => resolve(m))
+                    .catch(e => reject(e));
+            }
+        });
+    }
+
     public initLayer(ml: MapLayer): MapLayer {
-        let l = plainToClass(MapLayer, ml);
+        // check if we need to create an instance first of maplayer (needed if imported from json)
+        let l = (typeof ml.getBounds === "function") ? ml : plainToClass(MapLayer, ml);
+
+        // add reference to this maplayers manager
         l._manager = this;
 
         if (l.id === undefined) {

@@ -1,9 +1,37 @@
-<v-container>
+<div>
     <!-- <h1>Layer Selection</h1> -->
 
+    <!-- <v-treeview :open="open" :items="tree" activatable item-key="name" open-on-click>
+        <template slot="prepend" slot-scope="{ item, open, leaf }">
+            <v-icon v-if="!item.file">
+                {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+            </v-icon>
+            <v-icon v-else>
+                mdi-folder
+            </v-icon>
+            <h1>test</h1>
+        </template>
+    </v-treeview> -->
+    <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
+        <v-expansion-panel-content v-for="(group, key) in Groups" :key="key" expand>
+            <div slot="header">{{ group.title}}</div>
+
+            <v-container >
+                <v-layout v-for="layer in group.layers">
+                    <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)" ></v-checkbox>
+                    <v-btn flat right icon>
+                        <v-icon>more_vert</v-icon>
+                    </v-btn>
+                </v-layout>
+            </v-container>
+
+        </v-expansion-panel-content>
+    </v-expansion-panel>
+    <!-- 
     <template v-if="widget.content">
-        <div v-for="(group, key) in Groups" :key="key"> {{ group.title}}
+        <div v-for="(group, key) in Groups" :key="key"> 
+            <h4 class="layer-group-title">{{ group.title}}</h3>
             <v-checkbox v-for="layer in group.layers" :label="layer.title" v-model="layer.Visible"></v-checkbox>
         </div>
-    </template>
-</v-container>
+    </template> -->
+</div>

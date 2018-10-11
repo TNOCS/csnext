@@ -1,9 +1,9 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './map.css';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { VectorSource, GeoJSONSource } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
 
@@ -101,7 +101,7 @@ export class Map extends Vue {
             if (this.Layers.layers) {
                 this.Layers.layers.forEach(l => {
                     if (this.Layers && l.Visible) {
-                        this.enableLayer(l);
+                        this.showLayer(l);
                     }
                 });
             }
@@ -111,11 +111,11 @@ export class Map extends Vue {
                 (action: string, layer: MapLayer) => {
                     switch (action) {
                         case 'enabled':
-                            this.enableLayer(layer);
+                            // this.showLayer(layer);
 
                             break;
                         case 'disabled': {
-                            this.disableLayer(layer);
+                            this.removeLayer(layer);
                             break;
                         }
                         case 'remove': {
@@ -128,11 +128,12 @@ export class Map extends Vue {
         }
     }
 
-    public async enableLayer(layer: MapLayer): Promise<MapLayer> {
+    public async showLayer(layer: MapLayer): Promise<MapLayer> {
         return new Promise<MapLayer>((resolve, reject) => {
-            if (layer.id && layer._source && layer._source.id) {
-                layer._source.LoadSource().then(() => {
+            if (layer.id && layer._source && layer._source.id) {                                
+                layer._source.LoadSource().then((geojson) => {                                                      
                     if (layer.id && layer._source && layer._source.id) {
+                          
                         this.addSource(layer._source);
                         // remove layer if it already exists
                         if (this.map.getLayer(layer.id) !== undefined) {
@@ -210,16 +211,9 @@ export class Map extends Vue {
                 context: e
             });
         }
-    }
+    }    
 
     public removeLayer(layer: MapLayer) {
-        if (layer.id && this.map.getLayer(layer.id) !== undefined) {
-            layer.Visible = false;
-            this.map.removeLayer(layer.id);
-        }
-    }
-
-    public disableLayer(layer: MapLayer) {
         if (layer.id && this.map.getLayer(layer.id) !== undefined) {
             layer.Visible = false;
             this.map.removeLayer(layer.id);
@@ -234,7 +228,7 @@ export class Map extends Vue {
                 mapboxgl.accessToken = this.options.token;
             }
 
-            if (!this.options.mbOptions) this.options.mbOptions = {};
+            // if (!this.options.mbOptions) this.options.mbOptions = {};
             this.options.mbOptions = {
                 ...{
                     container: 'mapbox-' + this.widget.id,
@@ -266,7 +260,7 @@ export class Map extends Vue {
         });
     }
 
-    private mapLoaded(e: any) {
+    private mapLoaded(e: any) {        
         if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
         if (this.options.activeLayers) {
             this.options.activeLayers.forEach(id => {
@@ -293,11 +287,14 @@ export class Map extends Vue {
                     original.setData(source._geojson);
                 }
             } else {
-                // add source
+                // add source                                      
                 this.map.addSource(source.id, {
                     type: 'geojson',
                     data: source._geojson
                 });
+                let vs = (this.map.getSource(source.id) as GeoJSONSource);
+                
+                
             }
         }
     }
