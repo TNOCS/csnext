@@ -2,6 +2,10 @@
   margin-top: 0px;
 }
 
+.v-toolbar--clipped {
+  z-index: 4 !important;
+}
+
 .cs-navigation-tabbar .tabs__bar
 {
   background-color: transparent !important
