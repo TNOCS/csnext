@@ -106,11 +106,11 @@ export class DragLayout extends Vue {
     }
 
     @Watch('dashboard.widgets', { immediate: false })
-    public widgetsChanged(data: any, old: any) {
+    public widgetsChanged(data: any, old: any) {        
         this.initLayout();
     }
 
-    public beforeMount() {
+    public beforeMount() {        
         this.options = {
             itemHeight: 5,
             itemWidth: 5,
@@ -254,7 +254,7 @@ export class DragLayout extends Vue {
 
     public initGrid() {}
 
-    public created() {
+    public created() {        
         if (this.dashboard && !this.dashboard.id) {
             this.dashboard.id = guidGenerator();
         }
