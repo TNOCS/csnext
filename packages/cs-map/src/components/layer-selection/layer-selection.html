@@ -17,7 +17,7 @@
             <div slot="header">{{ group.title}}</div>
 
             <v-container >
-                <v-layout v-for="layer in group.layers">
+                <v-layout v-for="layer in group.layers" :key="layer.id">
                     <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)" ></v-checkbox>
                     <v-btn flat right icon>
                         <v-icon>more_vert</v-icon>

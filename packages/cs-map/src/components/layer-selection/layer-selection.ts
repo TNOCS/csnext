@@ -34,8 +34,7 @@ export class LayerSelection extends Vue {
                     this.addLayerToGroup(res, t, l);
                 });
             });
-        }
-        console.log(res);
+        }        
         return res;
     }
 
