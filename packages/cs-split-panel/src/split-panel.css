@@ -5,3 +5,7 @@
   bottom: 0;
   position: absolute;  
 }
+
+.hide-vertical-scroll {
+    overflow-y: hidden;
+}
