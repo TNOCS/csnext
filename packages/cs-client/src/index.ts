@@ -30,6 +30,7 @@ import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 
+// export components
 export * from './components/cs-app/cs-app';
 export * from './components/cs-widget/cs-widget';
 export * from './components/cs-dashboard/cs-dashboard';

@@ -129,7 +129,7 @@ export class CsDashboard extends Vue {
         ].getInstance();
         if (dashboard._manager) {
           // start manager
-          dashboard._manager.start(dashboard);
+        dashboard._manager.start(dashboard);
         }
       }
     }
@@ -139,17 +139,9 @@ export class CsDashboard extends Vue {
 
     // load default datasource, if configured
     if (dashboard.datasource) {
+      
       this.app
         .loadDatasource(dashboard.datasource)
-        .catch(e => {
-          if (!this.dashboard) {
-            return;
-          }
-          Logger.error(
-            'dashboard datasource',
-            'error loading datasource ' + this.dashboard.datasource
-          );
-        })
         .then(d => {
           if (!this.dashboard) {
             return;
@@ -169,6 +161,15 @@ export class CsDashboard extends Vue {
           if (this.dashboard._manager && this.dashboard._manager.dataLoaded) {
             this.dashboard._manager.dataLoaded(d);
           }
+        })
+        .catch(e => {
+          if (!this.dashboard) {
+            return;
+          }
+          Logger.error(
+            'dashboard datasource',
+            'error loading datasource ' + this.dashboard.datasource
+          );
         });
     }
   }
