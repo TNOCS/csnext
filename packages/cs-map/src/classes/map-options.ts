@@ -8,4 +8,9 @@ export class MapOptions extends WidgetOptions
     public token?: string;
     public mbOptions?: MapboxOptions;
     public activeLayers?: string[] = [];
+
+    /** show toolbar on top of map */
+    public showToolbar?: boolean = true;
+    public showZoom?: boolean = true;
+    public showCompass?: boolean = true;
 }

@@ -6,6 +6,7 @@ import './map.css';
 import mapboxgl, { VectorSource, GeoJSONSource } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
+import { plainToClass } from 'class-transformer';
 
 export interface FeatureEventDetails {
     context: any;
@@ -78,13 +79,6 @@ export class Map extends Vue {
         }
     }
 
-    private isFunction(functionToCheck) {
-        return (
-            functionToCheck &&
-            {}.toString.call(functionToCheck) === '[object Function]'
-        );
-    }
-
     public initMapLayers() {
         if (this.Layers && this.map && this.map.loaded && this.Layers.events) {
             if (this.Layers.MapWidget === undefined) {
@@ -130,40 +124,13 @@ export class Map extends Vue {
 
     public async showLayer(layer: MapLayer): Promise<MapLayer> {
         return new Promise<MapLayer>((resolve, reject) => {
-            if (layer.id && layer._source && layer._source.id) {                                
-                layer._source.LoadSource().then((geojson) => {                                                      
+            if (layer.id && layer._source && layer._source.id) {
+                layer._source.LoadSource().then(geojson => {
                     if (layer.id && layer._source && layer._source.id) {
-                          
                         this.addSource(layer._source);
-                        // remove layer if it already exists
-                        if (this.map.getLayer(layer.id) !== undefined) {
-                            this.map.removeLayer(layer.id);
+                        if (typeof layer.addLayer === 'function') {
+                            layer.addLayer(this);
                         }
-                        let mblayer = {
-                            id: layer.id,
-                            type: layer.type,
-                            source: layer._source.id,
-                            interactive: true
-                        } as mapboxgl.Layer;
-                        if (layer.layout) {
-                            mblayer.layout = layer.layout;
-                        }
-                        if (layer.paint) {
-                            mblayer.paint = layer.paint;
-                        }
-                        this.map.addLayer(mblayer);
-                        layer.Visible = true;
-                        this.zoomLayer(layer);
-                        this.map.on('click', layer.id, e => {
-                            this.click(layer, e);
-                        });
-                        this.map.on('mousemove', layer.id, () => {});
-                        this.map.on('mouseenter', layer.id, e => {
-                            this.mouseEnter(layer, e);
-                        });
-                        this.map.on('mouseleave', layer.id, e => {
-                            this.mouseLeave(layer, e);
-                        });
                         resolve(layer);
                     }
                 });
@@ -171,52 +138,12 @@ export class Map extends Vue {
         });
     }
 
-    private click(layer: MapLayer, e: any) {
-        if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_SELECT, {
-                features: e.features,
-                context: e
-            } as FeatureEventDetails);
-        }
-    }
-
-    private mouseLeave(layer: MapLayer, e: any) {
-        if (layer.popupContent) this.popup.remove();
-        if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_MOUSE_LEAVE, {
-                features: e.features,
-                context: e
-            });
-        }
-    }
-
-    private mouseEnter(layer: MapLayer, e: any) {
-        let popup: string | undefined = undefined;
-        if (layer.popupContent) {
-            if (typeof layer.popupContent === 'string') {
-                popup = layer.popupContent;
-            } else if (this.isFunction(layer.popupContent)) {
-                popup = layer.popupContent(e);
-            }
-            if (popup) {
-                this.popup
-                    .setLngLat(e.lngLat)
-                    .setHTML(popup)
-                    .addTo(this.map);
-            }
-        }
-        if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_MOUSE_ENTER, {
-                features: e.features,
-                context: e
-            });
-        }
-    }    
-
     public removeLayer(layer: MapLayer) {
         if (layer.id && this.map.getLayer(layer.id) !== undefined) {
             layer.Visible = false;
-            this.map.removeLayer(layer.id);
+            if (typeof layer.addLayer === 'function') {
+                layer.removeLayer(this);
+            }
         }
     }
 
@@ -239,44 +166,59 @@ export class Map extends Vue {
                 ...this.options.mbOptions
             };
 
+            // init map
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
-            // var Draw = new MapboxDraw();
-            // this.map.addControl(Draw, 'top-left');
-
-            var nav = new mapboxgl.NavigationControl();
+            // ad navigation control
+            var nav = new mapboxgl.NavigationControl({
+                showCompass: (this.widget.options as MapOptions).showCompass,
+                showZoom: (this.widget.options as MapOptions).showZoom
+            });
             this.map.addControl(nav, 'top-left');
 
+            // subscribe to widget events
             if (this.widget.events) {
+                // check if widget has been resized
                 this.widget.events.subscribe('resize', () => {
                     Vue.nextTick(() => {
                         this.map.resize();
                     });
                 });
             }
+
+            // check if map has loaded
             this.map.on('load', e => {
                 this.mapLoaded(e);
             });
         });
     }
 
-    private mapLoaded(e: any) {        
-        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+    private mapLoaded(e: any) {
+        if (this.Layers && !this.Layers.MapWidget) {
+            this.Layers.MapWidget = this;
+        }
         if (this.options.activeLayers) {
             this.options.activeLayers.forEach(id => {
-                if (
-                    this.Layers &&
-                    this.Layers.layers &&
-                    this.Layers.layers.hasOwnProperty(id)
-                ) {
-                    let layer = this.Layers.layers[id];
-                    if (layer.id === undefined) {
-                        layer.id = id;
+                if (this.Layers && this.Layers.layers) {
+                    let layer = this.Layers.layers.find(l => l.id === id);
+                    if (layer) {
+                        this.Layers.addLayer(layer);
                     }
-                    this.initLayerSource(layer);
                 }
             });
         }
+        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+        // this.map.addSource('mask',);
+
+        //     {
+        //     "id": "zmask",
+        //     "source": "mask",
+        //     "type": "fill",
+        //     "paint": {
+        //       "fill-color": "#4192DD",
+        //       'fill-opacity': 0.999
+        //     }
+        //   });
     }
 
     private addSource(source: LayerSource) {
@@ -287,19 +229,17 @@ export class Map extends Vue {
                     original.setData(source._geojson);
                 }
             } else {
-                // add source                                      
+                // add source
                 this.map.addSource(source.id, {
                     type: 'geojson',
                     data: source._geojson
                 });
-                let vs = (this.map.getSource(source.id) as GeoJSONSource);
-                
-                
+                let vs = this.map.getSource(source.id) as GeoJSONSource;
             }
         }
     }
 
-    private addLayerToMap(layer: LayerSource) {
+    private addLayerSourceToMap(layer: LayerSource) {
         if (layer.id) {
             this.map.addLayer({
                 id: layer.id,
@@ -315,25 +255,12 @@ export class Map extends Vue {
             if (!this.map.isSourceLoaded(source.id)) {
                 this.addSource(source);
             }
-            this.addLayerToMap(source);
+            this.addLayerSourceToMap(source);
         } else {
             if (source.url) {
-                // this.loadSource(layer.url)
-                //     .then(gj => {
-                //         layer._geojson = gj;
-                //         this.addSource(layer);
-                //         this.addLayerToMap(layer);
-                //         console.log(gj);
-                //     })
-                //     .catch(e => {
-                //         console.log(e);
-                //     });
             }
 
             // load source
         }
-
-        // add to map
-        // console.log('Adding layer' + layer.title);
     }
 }
