@@ -2,10 +2,16 @@ import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
-import './map.css';
+import './cs-map.css';
 import mapboxgl, { VectorSource, GeoJSONSource } from 'mapbox-gl';
 import { Feature } from 'geojson';
-import { MapLayers, MapOptions, LayerSource, MapLayer } from '../../.';
+import {
+    MapLayers,
+    MapOptions,
+    LayerSource,
+    IMapLayer,
+    IMapLayerType
+} from '../../.';
 import { plainToClass } from 'class-transformer';
 
 export interface FeatureEventDetails {
@@ -14,9 +20,9 @@ export interface FeatureEventDetails {
 }
 
 @Component({
-    template: require('./map.html')
+    template: require('./cs-map.html')
 })
-export class Map extends Vue {
+export class CsMap extends Vue {
     /** access the original widget from configuration */
 
     public static FEATURE_SELECT = 'select';
@@ -26,6 +32,15 @@ export class Map extends Vue {
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
+
+    public static layerTypes: IMapLayerType[] = [];
+
+    /** register new layertype  */
+    public static AddLayerType(type: IMapLayerType) {
+        if (CsMap.layerTypes.findIndex(lt => lt.id === type.id) === -1) {
+            CsMap.layerTypes.push(type);
+        }
+    }
 
     // Create a popup, but don't add it to the map yet.
     private popup = new mapboxgl.Popup({
@@ -61,7 +76,7 @@ export class Map extends Vue {
         }
     }
 
-    public zoomLayer(mapLayer: MapLayer) {
+    public zoomLayer(mapLayer: IMapLayer) {
         let bounds = mapLayer.getBounds();
         if (bounds) {
             this.map.fitBounds(bounds, { padding: 20 });
@@ -102,7 +117,7 @@ export class Map extends Vue {
 
             this.Layers.events.subscribe(
                 'layer',
-                (action: string, layer: MapLayer) => {
+                (action: string, layer: IMapLayer) => {
                     switch (action) {
                         case 'enabled':
                             // this.showLayer(layer);
@@ -122,8 +137,8 @@ export class Map extends Vue {
         }
     }
 
-    public async showLayer(layer: MapLayer): Promise<MapLayer> {
-        return new Promise<MapLayer>((resolve, reject) => {
+    public async showLayer(layer: IMapLayer): Promise<IMapLayer> {
+        return new Promise<IMapLayer>((resolve, reject) => {
             if (layer.id && layer._source && layer._source.id) {
                 layer._source.LoadSource().then(geojson => {
                     if (layer.id && layer._source && layer._source.id) {
@@ -138,7 +153,7 @@ export class Map extends Vue {
         });
     }
 
-    public removeLayer(layer: MapLayer) {
+    public removeLayer(layer: IMapLayer) {
         if (layer.id && this.map.getLayer(layer.id) !== undefined) {
             layer.Visible = false;
             if (typeof layer.addLayer === 'function') {

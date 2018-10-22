@@ -1,6 +1,6 @@
 import { IDatasource, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
-import { MapLayer, LayerSources, Map } from '../.';
+import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection, Feature } from 'geojson';
@@ -12,12 +12,12 @@ export class MapLayers implements IDatasource {
     public id = 'maplayers';
 
     public events = new MessageBusService();
-    private map?: Map;
-    public get MapWidget(): Map | undefined {
+    private map?: CsMap;
+    public get MapWidget(): CsMap | undefined {
         return this.map;
     }
 
-    public set MapWidget(map: Map | undefined) {
+    public set MapWidget(map: CsMap | undefined) {
         this.map = map;
     }
 
@@ -30,7 +30,7 @@ export class MapLayers implements IDatasource {
     }
 
     constructor(
-        public layers?: MapLayer[],
+        public layers?: IMapLayer[],
         public sources?: string | LayerSources,
         public services?: LayerServiceBase[]
     ) {
@@ -45,19 +45,22 @@ export class MapLayers implements IDatasource {
         }
     }
 
-    public fromGeoJSON(geojson: FeatureCollection, title?: string): MapLayer {
-        let result = new MapLayer();
+    public fromGeoJSON(
+        geojson: FeatureCollection,
+        title?: string
+    ): GeojsonLayer {
+        let result = new GeojsonLayer();
         result.title = title ? title : 'new layer';
         result.source = new LayerSource();
         result.source.id = guidGenerator();
         result.source.type = 'geojson';
         result.source._geojson = geojson;
         result.source._loaded = true;
-        this.initLayer(result);
+        result.initLayer(this);
         return result;
     }
 
-    public showLayer(ml: MapLayer): Promise<MapLayer> {
+    public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             ml.Visible = true;
             if (this.map) {
@@ -74,7 +77,7 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public loadLayer(ml: MapLayer): Promise<MapLayer> {
+    public loadLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise(async (resolve, reject) => {
             if (this.layers) {
                 if (this.layers.findIndex(l => l.id === ml.id) === -1) {
@@ -96,7 +99,7 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public hideLayer(ml: string | MapLayer) {
+    public hideLayer(ml: string | IMapLayer) {
         if (!this.layers) return;
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
@@ -110,17 +113,24 @@ export class MapLayers implements IDatasource {
     }
 
     public updateLayerFeature(
-        ml: MapLayer | string,
+        ml: IMapLayer | string,
         feature: Feature,
         updateSource = true
     ) {
-        let layer : MapLayer | undefined = undefined;
+        let layer: IMapLayer | undefined = undefined;
         if (typeof ml === 'string') {
-            if (this.layers) { layer = this.layers.find(l=>l.id === ml); }
+            if (this.layers) {
+                layer = this.layers.find(l => l.id === ml);
+            }
         } else {
             layer = ml;
-        }        
-        if (layer && layer._source && layer._source._geojson && feature.id !== undefined) {
+        }
+        if (
+            layer &&
+            layer._source &&
+            layer._source._geojson &&
+            feature.id !== undefined
+        ) {
             let index = layer._source._geojson.features.findIndex(
                 f => f.id === feature.id
             );
@@ -147,7 +157,7 @@ export class MapLayers implements IDatasource {
     }
 
     public updateLayerSource(
-        ml: MapLayer,
+        ml: IMapLayer,
         geojson?: FeatureCollection | string
     ) {
         if (!geojson && ml._source && ml._source._geojson) {
@@ -168,10 +178,31 @@ export class MapLayers implements IDatasource {
         // }
     }
 
-    public addLayer(ml: MapLayer): Promise<MapLayer> {
+    /** Create a IMapLayer instance based on layer type, optionally provide maplayer config */
+    private getLayerInstance(
+        type: string,
+        init?: IMapLayer
+    ): IMapLayer | undefined {
+        const layerType = CsMap.layerTypes.find(
+            lt => lt.types && lt.types.includes(type)
+        );
+        if (!layerType) {
+            return;
+        }
+        const res = layerType.getInstance(init);
+        res._manager = this;
+        return res;
+    }
+
+    public addLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            let layer = this.initLayer(ml);
-            if (this.layers) {
+            if (!ml.type || !this.layers) {
+                reject();
+                return;
+            }
+            let layer = this.getLayerInstance(ml.type, ml);
+            if (layer) {
+                layer.initLayer(this);
                 this.layers.push(layer);
                 this.showLayer(layer)
                     .then(m => resolve(m))
@@ -180,36 +211,9 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public initLayer(ml: MapLayer): MapLayer {
-        // check if we need to create an instance first of maplayer (needed if imported from json)
-        let l = (typeof ml.getBounds === "function") ? ml : plainToClass(MapLayer, ml);
-
-        // add reference to this maplayers manager
-        l._manager = this;
-
-        if (l.id === undefined) {
-            l.id = guidGenerator();
-        }
-        if (typeof l.source === 'string') {
-            if (
-                this._sources &&
-                this._sources.layers.hasOwnProperty(l.source)
-            ) {
-                l._source = this._sources.layers[l.source];
-            }
-        } else {
-            l._source = l.source = plainToClass(LayerSource, l.source);
-        }
-        if (l.title === undefined && l._source && l._source.id) {
-            l.title = l._source.id;
-        }
-        l._initialized = true;
-        return l;
-    }
-
     public execute(datasources: { [id: string]: IDatasource }): Promise<any> {
         return new Promise(resolve => {
-            let result: MapLayer[] = [];
+            let result: IMapLayer[] = [];
             if (typeof this.sources === 'string') {
                 if (datasources.hasOwnProperty(this.sources)) {
                     this._sources = datasources[this.sources] as LayerSources;
@@ -220,7 +224,14 @@ export class MapLayers implements IDatasource {
 
             if (this.layers) {
                 this.layers.map(l => {
-                    result.push(this.initLayer(l));
+                    if (l.type) {
+                        // create layer instance based on type
+                        let li = this.getLayerInstance(l.type, l);                        
+                        if (li) {
+                            li.initLayer(this);
+                            result.push(li);
+                        }
+                    }
                 });
                 this.layers = result;
                 resolve(this);

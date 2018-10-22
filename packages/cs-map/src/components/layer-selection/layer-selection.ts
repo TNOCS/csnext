@@ -3,12 +3,12 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-selection.css';
 import { Vue, Watch } from 'vue-property-decorator';
-import { MapLayers, MapLayer } from '../../.';
+import { MapLayers, IMapLayer } from '../../.';
 
 export interface ILayerGroup {
     title: string;
     color: string;
-    layers: MapLayer[];
+    layers: IMapLayer[];
 }
 
 @Component({
@@ -22,6 +22,12 @@ export class LayerSelection extends Vue {
     public items = [];
     public open = [];
     public groupsexpanded : boolean[] = [];
+
+    constructor() {
+        super();
+        
+
+    }
 
     public get Groups(): { [id: string]: ILayerGroup } {
         let res: { [id: string]: ILayerGroup } = {};
@@ -38,7 +44,7 @@ export class LayerSelection extends Vue {
         return res;
     }
 
-    public toggleLayer(layer: MapLayer) {
+    public toggleLayer(layer: IMapLayer) {
         if (!layer._manager) { return; }
         if (layer.Visible) {
             layer._manager.showLayer(layer);            
@@ -51,7 +57,7 @@ export class LayerSelection extends Vue {
     private addLayerToGroup(
         res: { [id: string]: ILayerGroup },
         t: string,
-        l: MapLayer
+        l: IMapLayer
     ) {
         if (res.hasOwnProperty(t)) {
             res[t].layers.push(l);
@@ -99,8 +105,10 @@ export class LayerSelection extends Vue {
     //     }
     // }
 
-    @Watch('widget.content')
+    @Watch('widget')
     dataLoaded(n: MapLayers) {
+        console.log('layers updated');
+        console.log(this.widget);
         // this.updateTree();
     }
 }

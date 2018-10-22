@@ -1,23 +1,20 @@
-import { MessageBusService } from '@csnext/cs-core';
-import { LayerSource, MapLayers, FeatureEventDetails } from './../.';
+import { MessageBusService, guidGenerator } from '@csnext/cs-core';
+import { LayerSource, MapLayers, FeatureEventDetails, IMapLayer, IMapLayerType } from './../.';
 import extent from '@mapbox/geojson-extent';
 import { LngLatBounds } from 'mapbox-gl';
-import { Map } from './..';
+import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
+import { plainToClass } from 'class-transformer';
 
-export interface IMapLayer {
-    /** layer id */
-    id?: string;
-    /** layer as shown in interface */
-    title?: string;
-    /** list of tags, used for clustering in layer selection */
-    tags?: string[];
 
-    /** toggle visibility of layer */
-    Visible?: boolean;
-}
+export class GeojsonLayer implements IMapLayer, IMapLayerType {
+    types = ['symbol' , 'raster' , 'line' , 'fill' , 'circle'];
 
-export class MapLayer implements IMapLayer {
+    public getInstance(init?: Partial<IMapLayer>) {
+        let result = new GeojsonLayer(init);        
+        return result;
+    }
+    public typeId = 'geojson';
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
@@ -25,7 +22,7 @@ export class MapLayer implements IMapLayer {
     public visible?: boolean;
     public tags?: string[];
     public parentId?: string;
-    public _parent?: MapLayer;
+    public _parent?: GeojsonLayer;
     public layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout
@@ -40,7 +37,8 @@ export class MapLayer implements IMapLayer {
     public events: MessageBusService;
     public popupContent?: string | Function | undefined;
 
-    constructor() {
+    constructor(init?:Partial<IMapLayer>) {
+        Object.assign(this, init);
         this.events = new MessageBusService();
     }
 
@@ -82,7 +80,37 @@ export class MapLayer implements IMapLayer {
         closeButton: false
     });
 
-    public addLayer(map: Map) {
+    public initLayer(manager: MapLayers) {
+        // check if we need to create an instance first of maplayer (needed if imported from json)
+        let l =
+            typeof this.getBounds === 'function'
+                ? this
+                : plainToClass(GeojsonLayer, this);
+
+        // add reference to this maplayers manager
+        this._manager = manager;
+
+        if (l.id === undefined) {
+            l.id = guidGenerator();
+        }
+        if (typeof l.source === 'string') {
+            if (
+                manager._sources &&
+                manager._sources.layers.hasOwnProperty(l.source)
+            ) {
+                l._source = manager._sources.layers[l.source];
+            }
+        } else {
+            l._source = l.source = plainToClass(LayerSource, l.source);
+        }
+        if (l.title === undefined && l._source && l._source.id) {
+            l.title = l._source.id;
+        }
+        l._initialized = true;
+        return l;
+    }
+
+    public addLayer(map: CsMap) {
         if (!this.id || !this._source) {
             return;
         }
@@ -117,32 +145,32 @@ export class MapLayer implements IMapLayer {
         });
     }
 
-    public removeLayer(map: Map) {
+    public removeLayer(map: CsMap) {
         if (this.id) {
             map.map.removeLayer(this.id);
-        }        
+        }
     }
 
-    private click(layer: MapLayer, e: any) {
+    private click(layer: GeojsonLayer, e: any) {
         if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_SELECT, {
+            layer.events.publish('feature', CsMap.FEATURE_SELECT, {
                 features: e.features,
                 context: e
             } as FeatureEventDetails);
         }
     }
 
-    private mouseLeave(map: Map, layer: MapLayer, e: any) {
+    private mouseLeave(map: CsMap, layer: GeojsonLayer, e: any) {
         if (layer.popupContent) this.popup.remove();
         if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_MOUSE_LEAVE, {
+            layer.events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
                 features: e.features,
                 context: e
             });
         }
     }
 
-    private mouseEnter(map: Map, layer: MapLayer, e: any) {
+    private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
         let popup: string | undefined = undefined;
         if (layer.popupContent) {
             if (typeof layer.popupContent === 'string') {
@@ -158,7 +186,7 @@ export class MapLayer implements IMapLayer {
             }
         }
         if (layer.events) {
-            layer.events.publish('feature', Map.FEATURE_MOUSE_ENTER, {
+            layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
                 features: e.features,
                 context: e
             });
