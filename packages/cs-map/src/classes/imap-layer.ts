@@ -2,7 +2,7 @@ import { LayerSource, MapLayers, CsMap } from '..';
 import { MessageBusService } from '@csnext/cs-core';
 
 export interface IMapLayerType {
-    typeId: string;
+    typeId?: string;
     types: string[];
     getInstance: (init?: Partial<IMapLayer>) => IMapLayer;
 }

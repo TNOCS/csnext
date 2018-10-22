@@ -37,7 +37,7 @@ export class CsMap extends Vue {
 
     /** register new layertype  */
     public static AddLayerType(type: IMapLayerType) {
-        if (CsMap.layerTypes.findIndex(lt => lt.id === type.id) === -1) {
+        if (CsMap.layerTypes.findIndex(lt => lt.typeId === type.typeId) === -1) {
             CsMap.layerTypes.push(type);
         }
     }

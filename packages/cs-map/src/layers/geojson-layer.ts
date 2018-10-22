@@ -14,7 +14,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         let result = new GeojsonLayer(init);        
         return result;
     }
-    public typeId = 'geojson';
+    public typeId?:string = 'geojson';
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
