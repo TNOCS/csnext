@@ -3,7 +3,21 @@
     padding-top: 0;
 }
 
-.layer-group-title
+.layer-group-list {
+    margin: 5px;
+}
+
+.layer-options-button {
+    right: 0;
+    margin: 0;
+    margin-top: -10px;
+}
+
+.layer-group-title > .v-expansion-panel__header
 {
-    font-size:30px;
+    font-size:25px;    
+    margin-left: 5px;
+    padding-left: 0px;
+    padding-right: 5px;
+    margin-right: 3px;
 }

@@ -1,17 +1,14 @@
-<div>
-    <h1>Layer Selection</h1>
+<div>    
     <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
-        <v-expansion-panel-content v-for="(group, key) in Groups" :key="key" expand>
-            <div slot="header">{{ group.title}}</div>
+        <v-expansion-panel-content v-for="(group, key) in Groups" class="layer-group-title" :key="key" expand>
+            <div slot="header" >{{ group.title}}</div>
 
-            <v-container >
-                <v-layout v-for="layer in group.layers" :key="layer.id">
+                <v-layout class="layer-group-list" v-for="layer in group.layers" :key="layer.id">
                     <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)" ></v-checkbox>
-                    <v-btn flat right icon>
+                    <v-btn flat right icon class="layer-options-button">
                         <v-icon>more_vert</v-icon>
                     </v-btn>
                 </v-layout>
-            </v-container>
 
         </v-expansion-panel-content>
     </v-expansion-panel>
