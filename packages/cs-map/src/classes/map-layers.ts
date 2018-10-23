@@ -184,9 +184,9 @@ export class MapLayers implements IDatasource {
         init?: IMapLayer
     ): IMapLayer | undefined {
         const layerType = CsMap.layerTypes.find(
-            lt => lt.types && lt.types.includes(type)
+            lt => lt.types!==undefined && lt.types.includes(type)
         );
-        if (!layerType) {
+        if (!layerType || !layerType.getInstance ) {
             return;
         }
         const res = layerType.getInstance(init);

@@ -154,8 +154,7 @@ export class CsMap extends Vue {
     }
 
     public removeLayer(layer: IMapLayer) {
-        if (layer.id && this.map.getLayer(layer.id) !== undefined) {
-            layer.Visible = false;
+        if (layer.id) {            
             if (typeof layer.addLayer === 'function') {
                 layer.removeLayer(this);
             }

@@ -3,8 +3,8 @@ import { MessageBusService } from '@csnext/cs-core';
 
 export interface IMapLayerType {
     typeId?: string;
-    types: string[];
-    getInstance: (init?: Partial<IMapLayer>) => IMapLayer;
+    types?: string[];
+    getInstance?: (init?: Partial<any>) => IMapLayer;
 }
 
 export interface IMapLayer {
@@ -20,9 +20,10 @@ export interface IMapLayer {
     _source?: LayerSource;
     _manager?: MapLayers;
     type?: string;
+    parentId?: string;
     addLayer(map: CsMap);
     initLayer(manager: MapLayers);
-    events: MessageBusService;
+    events?: MessageBusService;
     layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout

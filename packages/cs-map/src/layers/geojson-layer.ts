@@ -34,12 +34,12 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
-    public events: MessageBusService;
+    public events?: MessageBusService;
     public popupContent?: string | Function | undefined;
 
     constructor(init?:Partial<IMapLayer>) {
         Object.assign(this, init);
-        this.events = new MessageBusService();
+        // this.events = new MessageBusService();
     }
 
     public get Visible(): boolean | undefined {
@@ -103,8 +103,20 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         } else {
             l._source = l.source = plainToClass(LayerSource, l.source);
         }
-        if (l.title === undefined && l._source && l._source.id) {
-            l.title = l._source.id;
+        // if no title has been set
+        if (l.title === undefined) {
+            // check if source has a title
+            if (l._source && l._source.title) {
+                l.title = l._source.title;
+            } else {
+                // otherwise use id
+                l.title = l.id;
+            }
+        }
+
+        // check for event bus existence
+        if (!l.events) { 
+            l.events = new MessageBusService();
         }
         l._initialized = true;
         return l;
@@ -132,7 +144,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
         map.map.addLayer(mblayer);
         this.Visible = true;
-        map.zoomLayer(this);
+        // map.zoomLayer(this);
         map.map.on('click', this.id, e => {
             this.click(this, e);
         });
@@ -149,6 +161,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (this.id) {
             map.map.removeLayer(this.id);
         }
+        this.Visible = false;
     }
 
     private click(layer: GeojsonLayer, e: any) {
