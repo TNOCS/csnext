@@ -1,4 +1,4 @@
-<Split style="height: 100%; width: 100%" :direction="options.direction">
+<Split style="height: 100%; width: 100%" :direction="options.direction" :gutterSize="8">
   <SplitArea v-for="element in options.elements" :key="element.widgetId" :size="element.size" :class="{'hide-vertical-scroll':options.disableVerticalScroll}">
     <template v-if="element.widgetId">
         <cs-widget :widget="getWidget(element.widgetId, dashboard)"></cs-widget>      
