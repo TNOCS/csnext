@@ -148,7 +148,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         map.map.on('click', this.id, e => {
             this.click(this, e);
         });
-        map.map.on('mousemove', this.id, () => {});
+        map.map.on('mousemove', this.id, e => {
+            this.mouseMove(map, this, e);
+        });
         map.map.on('mouseenter', this.id, e => {
             this.mouseEnter(map, this, e);
         });
@@ -183,7 +185,23 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
+    private mouseMove(map: CsMap, layer: GeojsonLayer, e: any) {
+        if (layer.popupContent && e && e.features) {
+            this.createPopup(map, layer, e);
+        }
+    }
+
     private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
+        this.createPopup(map, layer, e);
+        if (layer.events) {
+            layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
+                features: e.features,
+                context: e
+            });
+        }
+    }
+
+    private createPopup(map: CsMap, layer: GeojsonLayer, e: any) {
         let popup: string | undefined = undefined;
         if (layer.popupContent) {
             if (typeof layer.popupContent === 'string') {
@@ -197,12 +215,6 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
                     .setHTML(popup)
                     .addTo(map.map);
             }
-        }
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
-                features: e.features,
-                context: e
-            });
         }
     }
 
