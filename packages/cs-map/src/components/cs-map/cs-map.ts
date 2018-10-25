@@ -10,7 +10,8 @@ import {
     MapOptions,
     LayerSource,
     IMapLayer,
-    IMapLayerType
+    IMapLayerType,
+    IStartStopService
 } from '../../.';
 import { plainToClass } from 'class-transformer';
 
@@ -34,11 +35,18 @@ export class CsMap extends Vue {
     public map!: mapboxgl.Map;
 
     public static layerTypes: IMapLayerType[] = [];
+    public static serviceTypes: IStartStopService[] = [];
 
     /** register new layertype  */
     public static AddLayerType(type: IMapLayerType) {
         if (CsMap.layerTypes.findIndex(lt => lt.typeId === type.typeId) === -1) {
             CsMap.layerTypes.push(type);
+        }
+    }
+
+    public static AddLayerServiceType(type: IStartStopService) {        
+        if (CsMap.serviceTypes.findIndex(lt => lt.type === type.type) === -1) {
+            CsMap.serviceTypes.push(type);
         }
     }
 

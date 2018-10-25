@@ -4,7 +4,7 @@ import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection, Feature } from 'geojson';
-import { LayerServiceBase } from './layer-service';
+import { LayerServiceBase, ILayerService, IStartStopService } from './layer-service';
 import { GeoJSONSource } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
@@ -32,7 +32,7 @@ export class MapLayers implements IDatasource {
     constructor(
         public layers?: IMapLayer[],
         public sources?: string | LayerSources,
-        public services?: LayerServiceBase[]
+        public services?: IStartStopService[]
     ) {
         this.layers = layers;
     }
@@ -178,6 +178,18 @@ export class MapLayers implements IDatasource {
         // }
     }
 
+    private getServiceInstance(
+        type: string,
+        init?: ILayerService
+    ) : IStartStopService  | undefined{
+        const serviceType = CsMap.serviceTypes.find(st => st.type === type);
+        if (serviceType && serviceType.getInstance) {
+            const res = serviceType.getInstance(init);
+            return res;
+        }
+        return;
+    }
+
     /** Create a IMapLayer instance based on layer type, optionally provide maplayer config */
     private getLayerInstance(
         type: string,
@@ -213,13 +225,23 @@ export class MapLayers implements IDatasource {
 
     public execute(datasources: { [id: string]: IDatasource }): Promise<any> {
         return new Promise(resolve => {
-            let result: IMapLayer[] = [];
+            let layers: IMapLayer[] = [];
+            let services: IStartStopService[] = [];
             if (typeof this.sources === 'string') {
                 if (datasources.hasOwnProperty(this.sources)) {
                     this._sources = datasources[this.sources] as LayerSources;
                 }
             } else {
                 this._sources = this.sources;
+            }
+
+            if (this.services) {
+                for (const service of this.services) {
+                    let si = this.getServiceInstance(service.type, service);
+                    if (si) {
+                        services.push(si);
+                    }                    
+                }
             }
 
             if (this.layers) {
@@ -229,11 +251,12 @@ export class MapLayers implements IDatasource {
                         let li = this.getLayerInstance(l.type, l);                        
                         if (li) {
                             li.initLayer(this);
-                            result.push(li);
+                            layers.push(li);
                         }
                     }
                 });
-                this.layers = result;
+                this.layers = layers;
+                this.services = services;
                 resolve(this);
             } else {
                 resolve(this);
