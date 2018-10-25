@@ -24,8 +24,11 @@
 
 /* Borders */
 
-.widget-border-shadow {
+.widget-border-shadow { 
+  margin: 2px;
   box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);
+  background: white;
+  height: calc(100% - 4px);
 }
 
 .widget-border-line {
