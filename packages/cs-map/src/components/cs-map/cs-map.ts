@@ -39,12 +39,14 @@ export class CsMap extends Vue {
 
     /** register new layertype  */
     public static AddLayerType(type: IMapLayerType) {
-        if (CsMap.layerTypes.findIndex(lt => lt.typeId === type.typeId) === -1) {
+        if (
+            CsMap.layerTypes.findIndex(lt => lt.typeId === type.typeId) === -1
+        ) {
             CsMap.layerTypes.push(type);
         }
     }
 
-    public static AddLayerServiceType(type: IStartStopService) {        
+    public static AddLayerServiceType(type: IStartStopService) {
         if (CsMap.serviceTypes.findIndex(lt => lt.type === type.type) === -1) {
             CsMap.serviceTypes.push(type);
         }
@@ -55,7 +57,7 @@ export class CsMap extends Vue {
         closeButton: false
     });
 
-    public get Layers(): MapLayers | undefined {
+    public get Manager(): MapLayers | undefined {
         if (this.widget) {
             if (this.widget.content) {
                 return this.widget.content as MapLayers;
@@ -102,28 +104,43 @@ export class CsMap extends Vue {
         }
     }
 
-    public initMapLayers() {
-        if (this.Layers && this.map && this.map.loaded && this.Layers.events) {
-            if (this.Layers.MapWidget === undefined) {
-                this.Layers.MapWidget = this;
+    public async startServices() {
+        if (this.Manager && this.Manager.services) {
+            for (const service of this.Manager.services) {
+                if (service.Start) {
+                    await service.Start(this.Manager);
+                }
             }
-            if (this.Layers._sources && this.Layers._sources.images) {
-                for (var id in this.Layers._sources.images) {
-                    this.addImage(id, this.Layers._sources.images[id]);
+        }
+    }
+
+    public initMapLayers() {
+        if (
+            this.Manager &&
+            this.map &&
+            this.map.loaded &&
+            this.Manager.events
+        ) {
+            if (this.Manager.MapWidget === undefined) {
+                this.Manager.MapWidget = this;
+            }
+            if (this.Manager._sources && this.Manager._sources.images) {
+                for (var id in this.Manager._sources.images) {
+                    this.addImage(id, this.Manager._sources.images[id]);
                 }
             }
 
-            this.Layers.MapWidget = this;
+            this.Manager.MapWidget = this;
 
-            if (this.Layers.layers) {
-                this.Layers.layers.forEach(l => {
-                    if (this.Layers && l.Visible) {
+            if (this.Manager.layers) {
+                this.Manager.layers.forEach(l => {
+                    if (this.Manager && l.Visible) {
                         this.showLayer(l);
                     }
                 });
             }
 
-            this.Layers.events.subscribe(
+            this.Manager.events.subscribe(
                 'layer',
                 (action: string, layer: IMapLayer) => {
                     switch (action) {
@@ -162,7 +179,7 @@ export class CsMap extends Vue {
     }
 
     public removeLayer(layer: IMapLayer) {
-        if (layer.id) {            
+        if (layer.id) {
             if (typeof layer.addLayer === 'function') {
                 layer.removeLayer(this);
             }
@@ -210,21 +227,22 @@ export class CsMap extends Vue {
 
             // check if map has loaded
             this.map.on('load', e => {
+                this.startServices();
                 this.mapLoaded(e);
             });
         });
     }
 
     private mapLoaded(e: any) {
-        if (this.Layers && !this.Layers.MapWidget) {
-            this.Layers.MapWidget = this;
+        if (this.Manager && !this.Manager.MapWidget) {
+            this.Manager.MapWidget = this;
         }
         if (this.options.activeLayers) {
             this.options.activeLayers.forEach(id => {
-                if (this.Layers && this.Layers.layers) {
-                    let layer = this.Layers.layers.find(l => l.id === id);
+                if (this.Manager && this.Manager.layers) {
+                    let layer = this.Manager.layers.find(l => l.id === id);
                     if (layer) {
-                        this.Layers.addLayer(layer);
+                        this.Manager.addLayer(layer);
                     }
                 }
             });

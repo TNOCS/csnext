@@ -144,7 +144,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
         map.map.addLayer(mblayer);
         this.Visible = true;
-        map.zoomLayer(this);
+        // map.zoomLayer(this);
         map.map.on('click', this.id, e => {
             this.click(this, e);
         });

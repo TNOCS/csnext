@@ -1,4 +1,5 @@
 import { LayerSelectionOptions, ILayerServiceOptions } from '../.';
+import { MapLayers } from './map-layers';
 
 export interface ILayerService {
     id: string;
@@ -8,7 +9,7 @@ export interface ILayerService {
 
 export interface IStartStopService extends ILayerService {
     type: string;
-    Start?: () => void;
+    Start?: (manager: MapLayers) => void;
     Stop?: () => void;    
     getInstance?: (init?: Partial<any>) => IStartStopService;
 }
@@ -19,11 +20,11 @@ export abstract class LayerServiceBase implements ILayerService, IStartStopServi
     public type!: string;
     public options?: ILayerServiceOptions;
     
-    public Start() {
+    public async Start() {
         
     }
 
-    public Stop() {
+    public async Stop() {
         
     }
 }
