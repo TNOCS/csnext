@@ -11,6 +11,13 @@
     margin-left:-4px;
 }
 
+.layer-group-item-selected {        
+    border-left-style: solid;    
+    border-left-color: gray;
+    border-left-width: 4px;
+    margin-left:-4px;
+}
+
 .layer-group-item {        
     padding-left: 15px;
 }
@@ -39,6 +46,9 @@
 }
 
 .layer-group-title {
-    padding-left: 4px;
+    border-left-style: solid;    
+    border-left-color: transparent;
+    border-left-width: 4px;
+    padding-left: 0px;
 }
 

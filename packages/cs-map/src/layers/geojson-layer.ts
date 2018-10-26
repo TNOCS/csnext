@@ -19,9 +19,11 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
+    public description?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
     public tags?: string[];
+    public color?: string;
     public parentId?: string;
     public _parent?: GeojsonLayer;
     public layout?:
@@ -139,6 +141,10 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (!l.events) { 
             l.events = new MessageBusService();
         }
+
+        // if no color is set, set default color
+        if (!l.color) { l.color = 'red'; }
+
         l._initialized = true;
         return l;
     }

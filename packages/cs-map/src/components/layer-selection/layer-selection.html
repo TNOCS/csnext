@@ -2,9 +2,13 @@
     <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
         <v-expansion-panel-content v-for="(group, key) in Groups" class="layer-group-title" :key="key" expand>
             <div slot="header">{{ group.title}}</div>
-            <v-layout class="layer-group-item" v-for="layer in group.layers" :key="layer.id" @contextmenu="showLayerMenu" :id="layer.id">
-                <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)"></v-checkbox>
-                <v-menu bottom left v-model="layer._showMenu" >
+            <v-layout class="layer-group-item" v-for="layer in group.layers" :key="layer.id" @contextmenu="showLayerMenu"
+                :id="layer.id" :class="{'layer-group-item-selected':layer.Visible}" :style="{'border-left-color': layer.color}">
+                <v-tooltip top style="width:100%" :disabled="!layer.description">
+                    <v-checkbox :label="layer.title" slot="activator" v-model="layer.Visible" @change="toggleLayer(layer)"></v-checkbox>
+                    <span>{{layer.description}}</span>
+                </v-tooltip>
+                <v-menu bottom left v-model="layer._showMenu">
                     <v-btn slot="activator" flat right icon class="layer-options-button">
                         <v-icon>more_vert</v-icon>
                     </v-btn>

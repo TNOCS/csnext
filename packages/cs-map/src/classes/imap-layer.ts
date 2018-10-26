@@ -15,6 +15,8 @@ export interface IMapLayer {
     title?: string;
     /** list of tags, used for clustering in layer selection */
     tags?: string[];
+    color?: string;
+    description?: string;
     popupContent?: string | Function | undefined;
     source?: string | LayerSource;
     _source?: LayerSource;
