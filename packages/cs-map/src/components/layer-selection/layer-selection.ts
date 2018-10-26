@@ -4,6 +4,7 @@ import { IWidget } from '@csnext/cs-core';
 import './layer-selection.css';
 import { Vue, Watch } from 'vue-property-decorator';
 import { MapLayers, IMapLayer } from '../../.';
+import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 export interface ILayerGroup {
     title: string;
@@ -14,6 +15,7 @@ export interface ILayerGroup {
 @Component({
     name: 'layer-selection',
     props: { widget: null },
+    components: { VuePerfectScrollbar },
     template: require('./layer-selection.html')
 } as any)
 export class LayerSelection extends Vue {
@@ -21,12 +23,11 @@ export class LayerSelection extends Vue {
     public tree: any[] = [];
     public items = [];
     public open = [];
-    public groupsexpanded : boolean[] = [];
+    public groupsexpanded: boolean[] = [];
+    public showMenu = false;
 
     constructor() {
         super();
-        
-
     }
 
     public get Groups(): { [id: string]: ILayerGroup } {
@@ -40,14 +41,42 @@ export class LayerSelection extends Vue {
                     this.addLayerToGroup(res, t, l);
                 });
             });
-        }        
+        }
         return res;
     }
 
+    public showLayerMenu(e: MouseEvent, layer: IMapLayer) {
+        if (e.currentTarget && this.MapLayers && this.MapLayers.layers) {
+            let targetId = e.currentTarget['id'];
+            let targetLayer = this.MapLayers.layers.find(l => l.id == targetId);
+            if (targetLayer) {
+                if (e) {
+                    e.preventDefault();
+                }
+                targetLayer._showMenu = true;
+                this.$forceUpdate();
+                // targetLayer._showMenu = false;
+                // this.x = e.clientX
+                // this.y = e.clientY
+                this.$nextTick(() => {
+                    if (targetLayer) {
+                        targetLayer._showMenu = true;
+                    }
+                });
+            }
+        }
+    }
+
+    public layerMenu(layer: IMapLayer): any[] {
+        return layer.getLayerActions();
+    }
+
     public toggleLayer(layer: IMapLayer) {
-        if (!layer._manager) { return; }
+        if (!layer._manager) {
+            return;
+        }
         if (layer.Visible) {
-            layer._manager.showLayer(layer);            
+            layer._manager.showLayer(layer);
         } else {
             layer._manager.hideLayer(layer);
         }
@@ -109,6 +138,12 @@ export class LayerSelection extends Vue {
     dataLoaded(n: MapLayers) {
         console.log('layers updated');
         console.log(this.widget);
+        if (this.MapLayers && this.MapLayers.events) {
+            this.MapLayers.events.subscribe('layer', (a: string, e: any) => {
+                this.$forceUpdate();
+            });
+        }
+
         // this.updateTree();
     }
 }

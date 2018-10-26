@@ -5,6 +5,7 @@ import { LngLatBounds } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
+import { ILayerAction } from '../classes/ilayer-action';
 
 
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
@@ -51,6 +52,26 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             return;
         }
         this.visible = value;
+    }
+
+    public getLayerActions() : ILayerAction[]
+    {
+        let res: ILayerAction[] = [];
+        if (this.Visible) {
+            res.push({ title: 'Zoom to', action: () => {
+                if (this._manager) {
+                    this._manager.zoomLayer(this);
+                }
+            } });
+            res.push({ title: 'Hide', action: () => {if (this._manager) {
+                this._manager.hideLayer(this);
+            } }});         
+        } else {
+            res.push({ title: 'Show', action: () => {if (this._manager) {                
+                this._manager.showLayer(this);
+            } }});
+        }
+        return res;
     }
 
     public getBounds(): LngLatBounds | undefined {

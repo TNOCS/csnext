@@ -4,7 +4,8 @@ import {
     MapLayers,
     FeatureEventDetails,
     IMapLayer,
-    IMapLayerType
+    IMapLayerType,
+    ILayerAction
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import { LngLatBounds, CirclePaint, SymbolLayout } from 'mapbox-gl';
@@ -56,6 +57,12 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
             return;
         }
         this.visible = value;
+    }
+
+    public getLayerActions() : ILayerAction[]
+    {
+        let res: ILayerAction[] = [];
+        return res;
     }
 
     public getBounds(): LngLatBounds | undefined {

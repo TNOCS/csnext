@@ -43,6 +43,7 @@ export class MapLayers implements IDatasource {
                 this.hideLayer(l);
             });
         }
+        this.events.publish('layer', 'cleared');
     }
 
     public fromGeoJSON(
@@ -59,7 +60,7 @@ export class MapLayers implements IDatasource {
         result.initLayer(this);
         return result;
     }
-
+   
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             ml.Visible = true;
@@ -99,6 +100,12 @@ export class MapLayers implements IDatasource {
         });
     }
 
+    public zoomLayer(layer : IMapLayer) {
+        if (this.map) {
+            this.map.zoomLayer(layer);
+        }
+    }
+
     public hideLayer(ml: string | IMapLayer) {
         if (!this.layers) return;
         if (typeof ml === 'string') {
@@ -107,7 +114,7 @@ export class MapLayers implements IDatasource {
         } else {
             if (this.map) {
                 this.map.removeLayer(ml);
-                // this.events.publish('layer', 'disabled', ml);
+                this.events.publish('layer', 'disabled', ml);
             }
         }
     }

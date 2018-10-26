@@ -11,6 +11,7 @@ export * from './classes/layer-service';
 export * from './classes/map-layers';
 export * from './classes/imap-layer';
 export * from './classes/layer-service-options';
+export * from './classes/ilayer-action';
 
 // components
 export * from './components/layer-selection/layer-selection';

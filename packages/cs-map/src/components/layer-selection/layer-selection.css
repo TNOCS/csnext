@@ -3,14 +3,30 @@
     padding-top: 0;
 }
 
-.layer-group-list {
-    margin: 5px;
+
+.layer-group-item:hover {
+    border-left-style: solid;    
+    border-left-color: gray;
+    border-left-width: 4px;
+    margin-left:-4px;
+}
+
+.layer-group-item {        
+    padding-left: 15px;
 }
 
 .layer-options-button {
     right: 0;
     margin: 0;
+    color: lightgray !important;
     margin-top: -10px;
+}
+
+.layer-group-title:hover {
+    border-left-style: solid;    
+    border-left-color: lightgray;
+    border-left-width: 4px;
+    padding-left: 0px;
 }
 
 .layer-group-title > .v-expansion-panel__header
@@ -21,3 +37,8 @@
     padding-right: 5px;
     margin-right: 3px;
 }
+
+.layer-group-title {
+    padding-left: 4px;
+}
+

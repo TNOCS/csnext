@@ -1,16 +1,22 @@
-<div>    
+<VuePerfectScrollbar>
     <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
         <v-expansion-panel-content v-for="(group, key) in Groups" class="layer-group-title" :key="key" expand>
-            <div slot="header" >{{ group.title}}</div>
-
-                <v-layout class="layer-group-list" v-for="layer in group.layers" :key="layer.id">
-                    <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)" ></v-checkbox>
-                    <v-btn flat right icon class="layer-options-button">
+            <div slot="header">{{ group.title}}</div>
+            <v-layout class="layer-group-item" v-for="layer in group.layers" :key="layer.id" @contextmenu="showLayerMenu" :id="layer.id">
+                <v-checkbox :label="layer.title" v-model="layer.Visible" @change="toggleLayer(layer)"></v-checkbox>
+                <v-menu bottom left v-model="layer._showMenu" >
+                    <v-btn slot="activator" flat right icon class="layer-options-button">
                         <v-icon>more_vert</v-icon>
                     </v-btn>
-                </v-layout>
+                    <v-list>
+                        <v-list-tile v-for="(item, i) in layerMenu(layer)" :key="i" @click="item.action(layer)">
+                            <v-list-tile-title>{{ item.title }} </v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>
+                </v-menu>
+            </v-layout>
 
         </v-expansion-panel-content>
     </v-expansion-panel>
 
-</div>
+</VuePerfectScrollbar>

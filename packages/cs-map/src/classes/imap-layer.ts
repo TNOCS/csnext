@@ -1,4 +1,4 @@
-import { LayerSource, MapLayers, CsMap } from '..';
+import { LayerSource, MapLayers, CsMap,ILayerAction } from '..';
 import { MessageBusService } from '@csnext/cs-core';
 
 export interface IMapLayerType {
@@ -23,6 +23,7 @@ export interface IMapLayer {
     parentId?: string;
     addLayer(map: CsMap);
     initLayer(manager: MapLayers);
+    getLayerActions() : ILayerAction[];
     events?: MessageBusService;
     layout?:
         | mapboxgl.SymbolLayout
@@ -38,4 +39,5 @@ export interface IMapLayer {
 
     /** toggle visibility of layer */
     Visible?: boolean;
+    _showMenu?: boolean;
 }
