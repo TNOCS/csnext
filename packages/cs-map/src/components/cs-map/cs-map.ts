@@ -180,7 +180,7 @@ export class CsMap extends Vue {
 
     public removeLayer(layer: IMapLayer) {
         if (layer.id) {
-            if (typeof layer.addLayer === 'function') {
+            if (typeof layer.removeLayer === 'function') {
                 layer.removeLayer(this);
             }
         }
@@ -229,6 +229,21 @@ export class CsMap extends Vue {
             this.map.on('load', e => {
                 this.startServices();
                 this.mapLoaded(e);
+
+                // this.map.addLayer({
+                //     id: 'wms-test-layer',
+                //     type: 'raster',
+                //     source: {
+                //         type: 'raster',
+                //         tiles: [
+                //             'http://geoservices.knmi.nl/cgi-bin/RADNL_OPER_R___25PCPRR_L3.cgi?SERVICE=WMS&VERSION=1.3.0&bbox={bbox-epsg-3857}&REQUEST=GetMap&format=image/png&width=265&height=256&LAYERS=RADNL_OPER_R___25PCPRR_L3_COLOR&CRS=EPSG%3A3857&transparent=true'
+                //             // 'http://geoservices.knmi.nl/cgi-bin/RADNL_OPER_R___25PCPRR_L3.cgi?SERVICE=WMS&VERSION=1.1.1&bbox={bbox-epsg-3857}'
+                //             // 'https://geodata.state.nj.us/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
+                //         ],
+                //         tileSize: 256
+                //     },
+                //     paint: {}
+                // });
             });
         });
     }
@@ -262,19 +277,32 @@ export class CsMap extends Vue {
     }
 
     private addSource(source: LayerSource) {
-        if (source._geojson && source.id) {
+        if (source.id) {
             let original = this.map.getSource(source.id);
             if (original !== undefined) {
-                if (original.type === 'geojson') {
+                if (original.type === 'geojson' && source._geojson) {
                     original.setData(source._geojson);
                 }
             } else {
-                // add source
-                this.map.addSource(source.id, {
-                    type: 'geojson',
-                    data: source._geojson
-                });
-                let vs = this.map.getSource(source.id) as GeoJSONSource;
+                switch (source.type) {
+                    case 'raster':
+                        if (source.url) {
+                            this.map.addSource(source.id, {
+                                type: source.type,
+                                tiles: [source.url],
+                                tileSize: source.tileSize
+                            });
+                        }
+                        break;
+                    default:
+                        source.type = 'geojson';
+                        this.map.addSource(source.id, {
+                            type: source.type,
+                            data: source._geojson
+                        });
+                        break;
+                }
+                // let vs = this.map.getSource(source.id) as GeoJSONSource;
             }
         }
     }

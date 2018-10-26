@@ -8,8 +8,9 @@ export class LayerSource {
     /** id of this layer */
     public id?: string;
     public title?: string;
-    public type?: string;
+    public type?: 'vector' | 'raster' | 'raster-dem' | 'geojson' | 'image' | 'video';
     public url?: string;
+    public tileSize?: number;
     public _geojson?: FeatureCollection;    
     public _loaded? = false;
 
@@ -28,8 +29,9 @@ export class LayerSource {
     public LoadSource(): Promise<FeatureCollection> {          
         return new Promise((resolve, reject) => {            
             if (this._loaded) { resolve(this._geojson); return; }
-            if (!this.url) { reject('Url not defined'); return; }            
-            axios
+            if (!this.url) { reject('Url not defined'); return; }    
+            if (!this.type || this.type === 'geojson') {
+                axios
                 .get(this.url)
                 .then(response => {
                     if (response) {                        
@@ -41,7 +43,10 @@ export class LayerSource {
                 .catch(e => {
                     reject(e);
                 });
-                
+            } else {
+                this._loaded = true;
+                resolve(undefined);
+            }
         });
     }
 }
