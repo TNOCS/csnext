@@ -5,6 +5,9 @@ import Component from 'vue-class-component';
 import './cs-map.css';
 import mapboxgl, { VectorSource, GeoJSONSource } from 'mapbox-gl';
 import { Feature } from 'geojson';
+import { RulerControl } from 'mapbox-gl-controls';
+import { StylesControl } from 'mapbox-gl-controls';
+import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import {
     MapLayers,
     MapOptions,
@@ -209,11 +212,36 @@ export class CsMap extends Vue {
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
             // ad navigation control
+            let mo = { ... {showCompass: true, showZoom: true, showStyles: true, showRuler: true, showLayer: true}, ...this.widget.options as MapOptions};
             var nav = new mapboxgl.NavigationControl({
-                showCompass: (this.widget.options as MapOptions).showCompass,
-                showZoom: (this.widget.options as MapOptions).showZoom
+                showCompass: mo.showCompass,
+                showZoom: mo.showZoom
             });
             this.map.addControl(nav, 'top-left');
+            
+            if (mo.showStyles) {
+                this.map.addControl(
+                    new StylesControl([
+                        {
+                            name: 'Streets',
+                            url: 'mapbox://styles/mapbox/streets-v9'
+                        },
+                        {
+                            name: 'Satellite',
+                            url: 'mapbox://styles/mapbox/satellite-v9'
+                        },
+                        {
+                            name: 'Dark',
+                            url: 'mapbox://styles/mapbox/dark-v9'
+                        }
+                    ]),
+                    'bottom-right'
+                );
+            }
+
+            if (mo.showRuler) {
+                this.map.addControl(new RulerControl(), 'top-right');
+            }
 
             // subscribe to widget events
             if (this.widget.events) {

@@ -50,13 +50,16 @@ export class LayerSelection extends Vue {
         this.$forceUpdate();
     }
 
-    public layerOpacityChanged(layer: IMapLayer) {
-        if (this.MapLayers && this.MapLayers.MapControl && layer.id) {
-            layer.opacity 
-            this.MapLayers.MapControl.setPaintProperty(layer.id, 'opacity', layer.opacity);
-        }
-        // console.log(layer.opacity);
-    }
+    // public setLayerOpacity(value: number, layer: IMapLayer) {        
+    //     if (this.MapLayers && this.MapLayers.MapControl && layer.id) {            
+    //         // this.MapLayers.MapControl.setPaintProperty(layer.id, 'line-opacity', value / 100.0);
+    //         if (layer.paint) {
+    //             layer.paint['fill-opacity'] = value / 100.0;
+    //         }
+    //         // this.MapLayers.MapControl.setPaintProperty(layer.id, 'fill-opacity', value / 100.0);
+    //     }
+    //     // console.log(layer.opacity);
+    // }
 
     public showLayerMenu(e: MouseEvent, layer: IMapLayer) {
         if (e.currentTarget && this.MapLayers && this.MapLayers.layers) {

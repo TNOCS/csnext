@@ -32,6 +32,7 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
     public _parent?: PoiLayer;
     public iconLayer?: GeojsonLayer;
     public circleLayer?: GeojsonLayer;
+    public opacity?: number;
 
     public circleLayout?: mapboxgl.CircleLayout;
     public circlePaint?: mapboxgl.CirclePaint;
@@ -63,6 +64,14 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
     {
         let res: ILayerAction[] = [];
         return res;
+    }
+
+    public setOpacity(value: number) {
+        this.opacity = value;
+        if (this.circleLayer && this.circleLayer.id && this.iconLayer && this.iconLayer.id && this._manager && this._manager.MapControl) {
+            this._manager.MapControl.setLayoutProperty(this.circleLayer.id, 'opacity', value);
+            this._manager.MapControl.setLayoutProperty(this.iconLayer.id, 'opacity', value);
+        }
     }
 
     public getBounds(): LngLatBounds | undefined {

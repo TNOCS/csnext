@@ -26,6 +26,7 @@ export interface IMapLayer {
     parentId?: string;
     addLayer(map: CsMap);
     initLayer(manager: MapLayers);
+    setOpacity(value: number);
     getLayerActions() : ILayerAction[];
     events?: MessageBusService;
     layout?:

@@ -19,7 +19,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
-    public opacity?: number;
+    // public opacity?: number;
     public description?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
@@ -55,6 +55,22 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             return;
         }
         this.visible = value;
+    }
+
+    public set opacity(value: number | undefined) {
+
+    }
+
+    public get opacity() : number | undefined {
+        return 1;
+
+    }
+
+    setOpacity(value: number) {
+        this.opacity = value;
+        if (this.id && this._manager && this._manager.MapControl) {
+            this._manager.MapControl.setLayoutProperty(this.id, 'opacity', value);
+        }
     }
 
     public getLayerActions() : ILayerAction[]

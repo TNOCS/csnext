@@ -13,4 +13,6 @@ export class MapOptions extends WidgetOptions
     public showToolbar?: boolean = true;
     public showZoom?: boolean = true;
     public showCompass?: boolean = true;
+    public showRuler?: boolean = true;
+    public showStyles?: boolean = true;
 }
