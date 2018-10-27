@@ -19,6 +19,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
+    public opacity?: number;
     public description?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
@@ -135,6 +136,10 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
                 // otherwise use id
                 l.title = l.id;
             }
+        }
+
+        if (!l.opacity) {
+            l.opacity = 100;
         }
 
         // check for event bus existence

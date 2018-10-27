@@ -18,8 +18,24 @@
     margin-left:-4px;
 }
 
+.layer-opacity-button {
+    opacity: 0;
+}
+
+.layer-more-options {
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:-15px;
+}
+
+.layer-group-item:hover .layer-opacity-button {
+    opacity: 1;
+}
+
 .layer-group-item {        
     padding-left: 15px;
+    height: 45px;
+    padding-top: 8px;
 }
 
 .layer-options-button {

@@ -45,6 +45,19 @@ export class LayerSelection extends Vue {
         return res;
     }
 
+    public toggleShowMore(layer: IMapLayer) {
+        layer._showMore = !layer._showMore;
+        this.$forceUpdate();
+    }
+
+    public layerOpacityChanged(layer: IMapLayer) {
+        if (this.MapLayers && this.MapLayers.MapControl && layer.id) {
+            layer.opacity 
+            this.MapLayers.MapControl.setPaintProperty(layer.id, 'opacity', layer.opacity);
+        }
+        // console.log(layer.opacity);
+    }
+
     public showLayerMenu(e: MouseEvent, layer: IMapLayer) {
         if (e.currentTarget && this.MapLayers && this.MapLayers.layers) {
             let targetId = e.currentTarget['id'];

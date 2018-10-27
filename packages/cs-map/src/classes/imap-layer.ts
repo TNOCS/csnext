@@ -18,6 +18,7 @@ export interface IMapLayer {
     color?: string;
     description?: string;
     popupContent?: string | Function | undefined;
+    opacity?: number;
     source?: string | LayerSource;
     _source?: LayerSource;
     _manager?: MapLayers;
@@ -42,4 +43,5 @@ export interface IMapLayer {
     /** toggle visibility of layer */
     Visible?: boolean;
     _showMenu?: boolean;
+    _showMore?: boolean;
 }
