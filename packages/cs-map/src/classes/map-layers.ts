@@ -4,7 +4,11 @@ import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import { FeatureCollection, Feature } from 'geojson';
-import { LayerServiceBase, ILayerService, IStartStopService } from './layer-service';
+import {
+    LayerServiceBase,
+    ILayerService,
+    IStartStopService
+} from './layer-service';
 import { GeoJSONSource } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
@@ -60,7 +64,7 @@ export class MapLayers implements IDatasource {
         result.initLayer(this);
         return result;
     }
-   
+
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             ml.Visible = true;
@@ -100,7 +104,7 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public zoomLayer(layer : IMapLayer) {
+    public zoomLayer(layer: IMapLayer) {
         if (this.map) {
             this.map.zoomLayer(layer);
         }
@@ -188,7 +192,7 @@ export class MapLayers implements IDatasource {
     private getServiceInstance(
         type: string,
         init?: ILayerService
-    ) : IStartStopService  | undefined{
+    ): IStartStopService | undefined {
         const serviceType = CsMap.serviceTypes.find(st => st.type === type);
         if (serviceType && serviceType.getInstance) {
             const res = serviceType.getInstance(init);
@@ -203,9 +207,9 @@ export class MapLayers implements IDatasource {
         init?: IMapLayer
     ): IMapLayer | undefined {
         const layerType = CsMap.layerTypes.find(
-            lt => lt.types!==undefined && lt.types.includes(type)
+            lt => lt.types !== undefined && lt.types.includes(type)
         );
-        if (!layerType || !layerType.getInstance ) {
+        if (!layerType || !layerType.getInstance) {
             return;
         }
         const res = layerType.getInstance(init);
@@ -232,8 +236,8 @@ export class MapLayers implements IDatasource {
 
     public execute(datasources: { [id: string]: IDatasource }): Promise<any> {
         return new Promise(resolve => {
-            let layers: IMapLayer[] = [];
-            let services: IStartStopService[] = [];
+
+            // if datasource is a string, find actual datasource;
             if (typeof this.sources === 'string') {
                 if (datasources.hasOwnProperty(this.sources)) {
                     this._sources = datasources[this.sources] as LayerSources;
@@ -242,32 +246,44 @@ export class MapLayers implements IDatasource {
                 this._sources = this.sources;
             }
 
-            if (this.services) {
-                for (const service of this.services) {
-                    let si = this.getServiceInstance(service.type, service);
-                    if (si) {
-                        services.push(si);
-                    }                    
+            // initialize services and layers
+            this.initServices();
+            this.initLayers();            
+            resolve(this);
+        });
+    }
+
+    /** create an instance and initialize all layers */
+    private initLayers() {
+        let layers: IMapLayer[] = [];
+        if (this.layers) {
+            for (const l of this.layers) {
+                if (l.type) {
+                    // create layer instance based on type
+                    let li = this.getLayerInstance(l.type, l);
+                    if (li) {
+                        li.initLayer(this);
+                        layers.push(li);
+                    }
                 }
             }
+        }
+        else {
+        }
+        this.layers = layers;
+    }
 
-            if (this.layers) {
-                this.layers.map(l => {
-                    if (l.type) {
-                        // create layer instance based on type
-                        let li = this.getLayerInstance(l.type, l);                        
-                        if (li) {
-                            li.initLayer(this);
-                            layers.push(li);
-                        }
-                    }
-                });
-                this.layers = layers;
-                this.services = services;
-                resolve(this);
-            } else {
-                resolve(this);
+    /** create an instance and initialize all services */
+    private initServices() {
+        let services: IStartStopService[] = [];
+        if (this.services) {
+            for (const service of this.services) {
+                let si = this.getServiceInstance(service.type, service);
+                if (si) {
+                    services.push(si);
+                }
             }
-        });
+        }
+        this.services = services;
     }
 }
