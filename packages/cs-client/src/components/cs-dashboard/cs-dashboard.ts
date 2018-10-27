@@ -5,13 +5,13 @@ import {
   IProject,
   IDashboard,
   IWidget,
+  guidGenerator,
   MessageBusService
 } from '@csnext/cs-core';
 import {
   CsApp,
   AppState,
   Logger,
-  guidGenerator,
   LayoutManager,
   DashboardManager
 } from '../../';
@@ -139,7 +139,6 @@ export class CsDashboard extends Vue {
 
     // load default datasource, if configured
     if (dashboard.datasource) {
-      
       this.app
         .loadDatasource(dashboard.datasource)
         .then(d => {

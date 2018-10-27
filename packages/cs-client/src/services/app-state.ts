@@ -7,7 +7,8 @@ import {
   IWidget,
   IDatasource,
   ISidebarOptions,
-  IDialog
+  IDialog,
+  guidGenerator
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 const deepmerge = require('deepmerge').default;
@@ -16,8 +17,7 @@ import {
   CsApp,
   CsDashboard,
   Logger,
-  CsWidget,
-  guidGenerator
+  CsWidget
 } from '../';
 import VueRouter from 'vue-router';
 import { DefaultProject } from './default-project';

@@ -13,3 +13,7 @@ export function idGenerator() {
   };
   return (S4() + S4());
 }
+
+export function numberGenerator() {
+  return Math.round(Math.random() * 10000);
+}
