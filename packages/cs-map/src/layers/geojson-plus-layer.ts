@@ -8,17 +8,17 @@ import {
     ILayerAction
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import { LngLatBounds, CirclePaint, SymbolLayout } from 'mapbox-gl';
+import { LngLatBounds, CirclePaint, SymbolLayout, LineLayout } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
 import { GeojsonLayer } from './geojson-layer';
 
-export class PoiLayer implements IMapLayer, IMapLayerType {
+export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     types? = ['poi'];
 
-    public getInstance(init?: Partial<PoiLayer>) {
-        let result = new PoiLayer(init);
+    public getInstance(init?: Partial<GeojsonPlusLayer>) {
+        let result = new GeojsonPlusLayer(init);
         return result;
     }
     public typeId?: string = 'poi';
@@ -29,16 +29,29 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
     public visible?: boolean;
     public tags?: string[];
     public parentId?: string;
-    public _parent?: PoiLayer;
-    public iconLayer?: GeojsonLayer;
-    public circleLayer?: GeojsonLayer;
+    public filter?: any;
+    public _parent?: GeojsonPlusLayer;
+    public iconLayer!: GeojsonLayer;
+    public lineLayer!: GeojsonLayer;
+    public fillLayer!: GeojsonLayer;
+    public circleLayer!: GeojsonLayer;
     public opacity?: number;
 
-    public circleLayout?: mapboxgl.CircleLayout;
-    public circlePaint?: mapboxgl.CirclePaint;
+    // circle style
+    public circleLayout!: mapboxgl.CircleLayout;
+    public circlePaint!: mapboxgl.CirclePaint;
 
-    public symbolLayout?: mapboxgl.SymbolLayout;
-    public symbolPaint?: mapboxgl.SymbolPaint;
+    // symbol style
+    public symbolLayout!: mapboxgl.SymbolLayout;
+    public symbolPaint!: mapboxgl.SymbolPaint;
+
+    // line style
+    public lineLayout!: mapboxgl.LineLayout;
+    public linePaint!: mapboxgl.LinePaint;
+
+    // fill style
+    public fillLayout!: mapboxgl.FillLayout;
+    public fillPaint!: mapboxgl.FillPaint;
 
     public _manager?: MapLayers;
     public events: MessageBusService;
@@ -60,17 +73,31 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
         this.visible = value;
     }
 
-    public getLayerActions() : ILayerAction[]
-    {
+    public getLayerActions(): ILayerAction[] {
         let res: ILayerAction[] = [];
         return res;
     }
 
     public setOpacity(value: number) {
         this.opacity = value;
-        if (this.circleLayer && this.circleLayer.id && this.iconLayer && this.iconLayer.id && this._manager && this._manager.MapControl) {
-            this._manager.MapControl.setLayoutProperty(this.circleLayer.id, 'opacity', value);
-            this._manager.MapControl.setLayoutProperty(this.iconLayer.id, 'opacity', value);
+        if (
+            this.circleLayer &&
+            this.circleLayer.id &&
+            this.iconLayer &&
+            this.iconLayer.id &&
+            this._manager &&
+            this._manager.MapControl
+        ) {
+            this._manager.MapControl.setLayoutProperty(
+                this.circleLayer.id,
+                'opacity',
+                value
+            );
+            this._manager.MapControl.setLayoutProperty(
+                this.iconLayer.id,
+                'opacity',
+                value
+            );
         }
     }
 
@@ -126,7 +153,8 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
                       'circle-stroke-width': 1,
                       'circle-stroke-color': '#fff',
                       'circle-stroke-opacity': 1
-                  } as CirclePaint)
+                  } as CirclePaint),
+            filter: ['==', ['geometry-type'], 'Point']
         });
         this.circleLayer = this.circleLayer.initLayer(manager);
 
@@ -157,9 +185,32 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
                       'icon-allow-overlap': true,
                       'icon-ignore-placement': true
                   } as SymbolLayout),
-            paint: this.symbolPaint ? this.symbolPaint : {}
+            paint: this.symbolPaint ? this.symbolPaint : {},
+            filter: ['==', ['geometry-type'], 'Point']
         });
         this.iconLayer.initLayer(manager);
+
+        this.lineLayer = new GeojsonLayer({
+            id: this.id + '-line',
+            type: 'line',
+            source: this.source,
+            parentId: this.id,
+            layout: this.lineLayout,
+            paint: this.linePaint ? this.linePaint : {},
+            filter: ['==', ['geometry-type'], 'LineString']
+        });
+        this.lineLayer.initLayer(manager);
+
+        this.fillLayer = new GeojsonLayer({
+            id: this.id + '-fill',
+            type: 'fill',
+            source: this.source,
+            parentId: this.id,
+            layout: this.fillLayout,
+            paint: this.fillPaint ? this.fillPaint : {},
+            filter: ['==', ['geometry-type'], 'Polygon']
+        });
+        this.fillLayer.initLayer(manager);
 
         // add reference to this maplayers manager
         this._manager = manager;
@@ -168,20 +219,24 @@ export class PoiLayer implements IMapLayer, IMapLayerType {
     }
 
     public addLayer(map: CsMap) {
-        if (!this.iconLayer || !this.circleLayer) {
+        if (!this.iconLayer || !this.circleLayer || !this.lineLayer) {
             return;
         }
         this.circleLayer.addLayer(map);
         this.iconLayer.addLayer(map);
+        this.lineLayer.addLayer(map);
+        this.fillLayer.addLayer(map);
         this.Visible = true;
     }
 
     public removeLayer(map: CsMap) {
-        if (!this.iconLayer || !this.circleLayer) {
+        if (!this.iconLayer || !this.circleLayer || !this.lineLayer) {
             return;
         }
         this.circleLayer.removeLayer(map);
         this.iconLayer.removeLayer(map);
+        this.lineLayer.removeLayer(map);
+        this.fillLayer.removeLayer(map);
         this.Visible = false;
     }
 

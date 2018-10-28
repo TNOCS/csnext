@@ -29,6 +29,7 @@ export interface IMapLayer {
     setOpacity(value: number);
     getLayerActions() : ILayerAction[];
     events?: MessageBusService;
+    filter?: any;
     layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout

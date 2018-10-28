@@ -1,5 +1,11 @@
 import { MessageBusService, guidGenerator } from '@csnext/cs-core';
-import { LayerSource, MapLayers, FeatureEventDetails, IMapLayer, IMapLayerType } from './../.';
+import {
+    LayerSource,
+    MapLayers,
+    FeatureEventDetails,
+    IMapLayer,
+    IMapLayerType
+} from './../.';
 import extent from '@mapbox/geojson-extent';
 import { LngLatBounds } from 'mapbox-gl';
 import { CsMap } from './..';
@@ -7,15 +13,14 @@ import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
 import { ILayerAction } from '../classes/ilayer-action';
 
-
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
-    types = ['symbol' , 'raster' , 'line' , 'fill' , 'circle'];
+    types = ['symbol', 'raster', 'line', 'fill', 'circle'];
 
     public getInstance(init?: Partial<IMapLayer>) {
-        let result = new GeojsonLayer(init);        
+        let result = new GeojsonLayer(init);
         return result;
     }
-    public typeId?:string = 'geojson';
+    public typeId?: string = 'geojson';
     public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     public title?: string;
@@ -27,6 +32,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public color?: string;
     public parentId?: string;
     public _parent?: GeojsonLayer;
+    public filter?: any;
     public layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout
@@ -41,7 +47,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public events?: MessageBusService;
     public popupContent?: string | Function | undefined;
 
-    constructor(init?:Partial<IMapLayer>) {
+    constructor(init?: Partial<IMapLayer>) {
         Object.assign(this, init);
         // this.events = new MessageBusService();
     }
@@ -57,38 +63,51 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         this.visible = value;
     }
 
-    public set opacity(value: number | undefined) {
+    public set opacity(value: number | undefined) {}
 
-    }
-
-    public get opacity() : number | undefined {
+    public get opacity(): number | undefined {
         return 1;
-
     }
 
     setOpacity(value: number) {
         this.opacity = value;
         if (this.id && this._manager && this._manager.MapControl) {
-            this._manager.MapControl.setLayoutProperty(this.id, 'opacity', value);
+            this._manager.MapControl.setLayoutProperty(
+                this.id,
+                'opacity',
+                value
+            );
         }
     }
 
-    public getLayerActions() : ILayerAction[]
-    {
+    public getLayerActions(): ILayerAction[] {
         let res: ILayerAction[] = [];
         if (this.Visible) {
-            res.push({ title: 'Zoom to', action: () => {
-                if (this._manager) {
-                    this._manager.zoomLayer(this);
+            res.push({
+                title: 'Zoom to',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.zoomLayer(this);
+                    }
                 }
-            } });
-            res.push({ title: 'Hide', action: () => {if (this._manager) {
-                this._manager.hideLayer(this);
-            } }});         
+            });
+            res.push({
+                title: 'Hide',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.hideLayer(this);
+                    }
+                }
+            });
         } else {
-            res.push({ title: 'Show', action: () => {if (this._manager) {                
-                this._manager.showLayer(this);
-            } }});
+            res.push({
+                title: 'Show',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.showLayer(this);
+                    }
+                }
+            });
         }
         return res;
     }
@@ -159,12 +178,14 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
 
         // check for event bus existence
-        if (!l.events) { 
+        if (!l.events) {
             l.events = new MessageBusService();
         }
 
         // if no color is set, set default color
-        if (!l.color) { l.color = 'red'; }
+        if (!l.color) {
+            l.color = 'red';
+        }
 
         l._initialized = true;
         return l;
@@ -190,6 +211,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (this.paint) {
             mblayer.paint = this.paint;
         }
+        if (this.filter) {
+            mblayer.filter = this.filter;
+        }
         map.map.addLayer(mblayer);
         this.Visible = true;
         // map.zoomLayer(this);
@@ -209,7 +233,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
     public removeLayer(map: CsMap) {
         if (this.id) {
-            map.map.removeLayer(this.id);
+            if (map.map.getLayer(this.id) !== undefined) {
+                map.map.removeLayer(this.id);
+            }
         }
         this.Visible = false;
     }
