@@ -10,7 +10,7 @@ export interface ILayerService {
 export interface IStartStopService extends ILayerService {
     type: string;
     Start?: (manager: MapLayers) => void;
-    Stop?: () => void;    
+    Stop?: (manager: MapLayers) => void;    
     getInstance?: (init?: Partial<any>) => IStartStopService;
 }
 

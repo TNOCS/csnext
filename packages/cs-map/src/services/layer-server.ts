@@ -1,16 +1,15 @@
 import {
-    LayerServiceBase,
-    LayerServiceOptions,
     ILayerServiceOptions,
     ILayerService,
-    IStartStopService
+    IStartStopService,
+    GeojsonPlusLayer
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
 import { GeojsonLayer } from '../layers/geojson-layer';
-import { guidGenerator } from '@csnext/cs-core';
 import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
+import { IMapLayer } from '../classes/imap-layer';
 
 export class LayerServerOptions implements ILayerServiceOptions {
     public url?: string;
@@ -23,6 +22,7 @@ export class LayerServer implements ILayerService, IStartStopService {
 
     public options?: LayerServerOptions;
     public type = 'layer-server';
+    public layers : IMapLayer[] = [];
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
         let result = new LayerServer(init);
@@ -34,6 +34,7 @@ export class LayerServer implements ILayerService, IStartStopService {
     }
 
     async Start(manager: MapLayers) {
+        this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
                 .get(this.options.url)
@@ -46,30 +47,42 @@ export class LayerServer implements ILayerService, IStartStopService {
                     ) {
                         for (const layer of response.data) {
                             let s = new LayerSource();
-                            s.url = s.id = this.options.url + layer.id;
+                            s.url = s.id = this.options.url + layer.id;                        
                             s.type = 'geojson';
-                            let gl = new GeojsonLayer();
+                            let gl = new GeojsonPlusLayer();
                             gl.source = s;
                             gl.title = layer.title;
-                            gl.type = 'line';
+                            gl.type = layer.type;
                             gl.tags = this.options.tags;
-                            gl.paint = {
-                                'line-color': ['get', 'stroke'],
-                                'line-opacity': ['get', 'stroke-opacity'],
-                                'line-width': ['get', 'stroke-width']
-                            } as LinePaint;
+                            // gl.paint = {
+                            //     'line-color': ['get', 'stroke'],
+                            //     'line-opacity': ['get', 'stroke-opacity'],
+                            //     'line-width': ['get', 'stroke-width']
+                            // } as LinePaint;
                             gl.initLayer(manager);
                             manager.layers.push(gl);
+                            this.layers.push(gl);
                         }
                     }
                 })
-                .catch(e => {
-                    // reject(e);
-                });
+                .catch(() => {
+                    });
         }
     }
 
-    Stop() {
+    /** remove previously added layers */
+    private removeExistingLayers(manager: MapLayers) {
+        if (this.layers && this.layers.length > 0 && manager.MapWidget && manager.layers) {
+            for (const layer of this.layers) {
+                manager.hideLayer(layer);
+                manager.layers = manager.layers.filter(l => l.id !== layer.id);
+            }
+        }
+        this.layers = [];
+    }
+
+    Stop(manager: MapLayers) {
+        this.removeExistingLayers(manager);
         console.log('Stop service');
     }
 }
