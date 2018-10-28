@@ -8,6 +8,9 @@ import { Feature } from 'geojson';
 import { RulerControl } from 'mapbox-gl-controls';
 import { StylesControl } from 'mapbox-gl-controls';
 import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+
 import {
     MapLayers,
     MapOptions,
@@ -212,13 +215,30 @@ export class CsMap extends Vue {
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
             // ad navigation control
-            let mo = { ... {showCompass: true, showZoom: true, showStyles: true, showRuler: true, showLayer: true}, ...this.widget.options as MapOptions};
+            let mo = {
+                ...{
+                    showCompass: true,
+                    showZoom: true,
+                    showStyles: true,
+                    showRuler: true,
+                    showGeocoder: true,
+                    showLayer: true
+                },
+                ...(this.widget.options as MapOptions)
+            };
             var nav = new mapboxgl.NavigationControl({
                 showCompass: mo.showCompass,
                 showZoom: mo.showZoom
             });
             this.map.addControl(nav, 'top-left');
-            
+            if (mo.showGeocoder) {
+                this.map.addControl(
+                    new MapboxGeocoder({
+                        accessToken: mapboxgl.accessToken
+                    })
+                );
+            }
+
             if (mo.showStyles) {
                 this.map.addControl(
                     new StylesControl([
@@ -240,7 +260,7 @@ export class CsMap extends Vue {
             }
 
             if (mo.showRuler) {
-                this.map.addControl(new RulerControl(), 'top-right');
+                this.map.addControl(new RulerControl(), 'top-left');
             }
 
             // subscribe to widget events
@@ -256,22 +276,7 @@ export class CsMap extends Vue {
             // check if map has loaded
             this.map.on('load', e => {
                 this.startServices();
-                this.mapLoaded(e);
-
-                // this.map.addLayer({
-                //     id: 'wms-test-layer',
-                //     type: 'raster',
-                //     source: {
-                //         type: 'raster',
-                //         tiles: [
-                //             'http://geoservices.knmi.nl/cgi-bin/RADNL_OPER_R___25PCPRR_L3.cgi?SERVICE=WMS&VERSION=1.3.0&bbox={bbox-epsg-3857}&REQUEST=GetMap&format=image/png&width=265&height=256&LAYERS=RADNL_OPER_R___25PCPRR_L3_COLOR&CRS=EPSG%3A3857&transparent=true'
-                //             // 'http://geoservices.knmi.nl/cgi-bin/RADNL_OPER_R___25PCPRR_L3.cgi?SERVICE=WMS&VERSION=1.1.1&bbox={bbox-epsg-3857}'
-                //             // 'https://geodata.state.nj.us/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015'
-                //         ],
-                //         tileSize: 256
-                //     },
-                //     paint: {}
-                // });
+                this.mapLoaded(e);                
             });
         });
     }
