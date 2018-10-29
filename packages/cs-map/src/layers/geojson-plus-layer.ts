@@ -8,7 +8,7 @@ import {
     ILayerAction
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import { LngLatBounds, CirclePaint, SymbolLayout, LineLayout } from 'mapbox-gl';
+import { LngLatBounds, CirclePaint, SymbolLayout, LineLayout, LinePaint } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
@@ -75,6 +75,33 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
 
     public getLayerActions(): ILayerAction[] {
         let res: ILayerAction[] = [];
+        if (this.Visible) {
+            res.push({
+                title: 'Zoom to',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.zoomLayer(this);
+                    }
+                }
+            });
+            res.push({
+                title: 'Hide',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.hideLayer(this);
+                    }
+                }
+            });
+        } else {
+            res.push({
+                title: 'Show',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.showLayer(this);
+                    }
+                }
+            });
+        }
         return res;
     }
 
@@ -147,7 +174,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             paint: this.circlePaint
                 ? this.circlePaint
                 : ({
-                      'circle-radius': 20,
+                      'circle-radius': 10,
                       'circle-color': ['get', 'circle-color'],
                       'circle-opacity': 0.5,
                       'circle-stroke-width': 1,
@@ -196,7 +223,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             source: this.source,
             parentId: this.id,
             layout: this.lineLayout,
-            paint: this.linePaint ? this.linePaint : {},
+            paint: this.linePaint ? this.linePaint : {
+                    'line-color': ['get', 'stroke'],
+                    'line-opacity': ['get', 'stroke-opacity'],
+                    'line-width': ['get', 'stroke-width']
+                } as LinePaint,
             filter: ['==', ['geometry-type'], 'LineString']
         });
         this.lineLayer.initLayer(manager);

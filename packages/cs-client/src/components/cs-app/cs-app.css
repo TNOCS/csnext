@@ -6,9 +6,20 @@
   z-index: 4 !important;
 }
 
+.cs-navigation-tabbar
+{
+  margin-left: 20px;
+}
+
+.cs-navigation-tabbar .v-tabs__div {
+  font-size:20px;
+  font-weight: 800;
+}
+
 .cs-navigation-tabbar .tabs__bar
 {
-  background-color: transparent !important
+  background-color: transparent !important;
+  
 }
 
 .menu {
