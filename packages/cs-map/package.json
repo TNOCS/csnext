@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-map",
-    "version": "0.0.72",
+    "version": "0.0.73",
     "description": "cs-map",
     "main": "./lib/csmap.cs.js",
     "types": "./dist/index.d.ts",
@@ -17,21 +17,21 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-core": "^0.0.72",
+        "@csnext/cs-core": "^0.0.73",
         "@mapbox/geojson-extent": "^0.3.2",
+        "@mapbox/mapbox-gl-geocoder": "^2.3.0",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
-        "@mapbox/mapbox-gl-geocoder":"^2.3.0",
         "@turf/bbox": "^6.0.1",
         "@turf/bbox-polygon": "^6.0.1",
         "@turf/difference": "^6.0.2",
         "axios": "^0.18.0",
         "class-transformer": "^0.1.10",
         "mapbox-gl": "^0.50.0",
-        "vue-perfect-scrollbar":"^0.1.0",
-        "mapbox-gl-controls":"^0.0.11"
+        "mapbox-gl-controls": "^0.0.11",
+        "vue-perfect-scrollbar": "^0.1.0"
     },
     "devDependencies": {
-        "@types/mapbox-gl": "^0.49.0",        
+        "@types/mapbox-gl": "^0.49.0",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^0.5.1",
         "style-loader": "^0.23.1",
