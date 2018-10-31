@@ -253,6 +253,10 @@ export class CsMap extends Vue {
                         {
                             name: 'Dark',
                             url: 'mapbox://styles/mapbox/dark-v9'
+                        },
+                        {
+                            name: 'Light',
+                            url: 'mapbox://styles/mapbox/light-v9'
                         }
                     ]),
                     'bottom-right'
