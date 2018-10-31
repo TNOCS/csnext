@@ -72,4 +72,6 @@ export interface IDashboard {
   // if true, won't be visible in navigation
   hideFromNavigation?: boolean;
 
+  showLoadAnimation?: boolean;
+  _loading?: boolean;
 }

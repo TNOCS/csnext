@@ -1,1 +1,5 @@
-<component :is="component" :dashboard="dashboard"></component>
+<div>
+  <component v-show="!dashboard._loading" :is="component" :dashboard="dashboard" :id="'dashboard-' + dashboard.id"></component>
+  <div v-if="dashboard.showLoadAnimation && dashboard._loading">Is Loading</div>
+</div>
+

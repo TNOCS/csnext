@@ -84,6 +84,10 @@ export class CsDashboard extends Vue {
 
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
+    if (dashboard.showLoadAnimation) { dashboard._loading = true; }
+    if (!dashboard.id) {
+      dashboard.id = guidGenerator();
+    }
     if (!dashboard.events) {
       dashboard.events = new MessageBusService();
     }
