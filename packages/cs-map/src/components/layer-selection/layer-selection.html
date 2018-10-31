@@ -1,4 +1,5 @@
 <VuePerfectScrollbar>
+    <v-text-field solo v-if="widget.options.searchEnabled" class="layer-filter-field" v-model="filter" label="filter" append-icon="search"></v-text-field>
     <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
         <v-expansion-panel-content v-for="(group, key) in Groups" class="layer-group-title" :key="key" expand>
             <div slot="header">{{ group.title}}</div>

@@ -3,6 +3,13 @@
     padding-top: 0;
 }
 
+.layer-filter-field {
+    margin-left: 15px !important;
+    margin-top: 15px !important;
+    margin-right: 15px !important;
+    margin-bottom: -10px !important;
+}
+
 
 .layer-group-item:hover {
     border-left-style: solid;    

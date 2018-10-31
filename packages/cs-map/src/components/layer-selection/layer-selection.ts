@@ -25,6 +25,7 @@ export class LayerSelection extends Vue {
     public open = [];
     public groupsexpanded: boolean[] = [];
     public showMenu = false;
+    public filter: string = '';
 
     constructor() {
         super();
@@ -34,12 +35,21 @@ export class LayerSelection extends Vue {
         let res: { [id: string]: ILayerGroup } = {};
         if (this.MapLayers && this.MapLayers.layers) {
             this.MapLayers.layers.forEach(l => {
-                if (!l.tags || l.tags.length === 0) {
-                    l.tags = [' '];
+                if (l.title) {
+                    if (
+                        this.filter.length === 0 ||
+                        l.title
+                            .toLowerCase()
+                            .indexOf(this.filter.toLowerCase()) !== -1
+                    ) {
+                        if (!l.tags || l.tags.length === 0) {
+                            l.tags = [' '];
+                        }
+                        l.tags.forEach(t => {
+                            this.addLayerToGroup(res, t, l);
+                        });
+                    }
                 }
-                l.tags.forEach(t => {
-                    this.addLayerToGroup(res, t, l);
-                });
             });
         }
         return res;
@@ -50,8 +60,8 @@ export class LayerSelection extends Vue {
         this.$forceUpdate();
     }
 
-    // public setLayerOpacity(value: number, layer: IMapLayer) {        
-    //     if (this.MapLayers && this.MapLayers.MapControl && layer.id) {            
+    // public setLayerOpacity(value: number, layer: IMapLayer) {
+    //     if (this.MapLayers && this.MapLayers.MapControl && layer.id) {
     //         // this.MapLayers.MapControl.setPaintProperty(layer.id, 'line-opacity', value / 100.0);
     //         if (layer.paint) {
     //             layer.paint['fill-opacity'] = value / 100.0;
