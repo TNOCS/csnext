@@ -282,20 +282,23 @@ export class CsMap extends Vue {
     }
 
     private mapLoaded(e: any) {
-        if (this.Manager && !this.Manager.MapWidget) {
+        if (!this.Manager) { return; }
+        if (!this.Manager.MapWidget) {
             this.Manager.MapWidget = this;
         }
         if (this.options.activeLayers) {
-            this.options.activeLayers.forEach(id => {
+            for (const id of this.options.activeLayers) {                            
                 if (this.Manager && this.Manager.layers) {
                     let layer = this.Manager.layers.find(l => l.id === id);
                     if (layer) {
                         this.Manager.addLayer(layer);
                     }
                 }
-            });
+            };
         }
         if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+        this.Manager.events.publish('map','loaded', e);
+        
         // this.map.addSource('mask',);
 
         //     {
