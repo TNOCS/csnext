@@ -129,8 +129,15 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     }
 
     public getBounds(): LngLatBounds | undefined {
-        if (this.iconLayer) {
-            return this.iconLayer.getBounds();
+        if (this._source) {
+            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
+            let geo = { ...this._source._geojson };
+            try {
+                let bounds = extent(geo);
+                return bounds;
+            } catch {
+                return undefined;
+            }
         } else {
             return undefined;
         }
