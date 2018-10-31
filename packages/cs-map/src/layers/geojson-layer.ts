@@ -1,4 +1,5 @@
 import { MessageBusService, guidGenerator } from '@csnext/cs-core';
+import turf from 'turf';
 import {
     LayerSource,
     MapLayers,
@@ -12,6 +13,7 @@ import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
 import { ILayerAction } from '../classes/ilayer-action';
+import { Feature, Polygon } from 'geojson';
 
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
     types = ['symbol', 'raster', 'line', 'fill', 'circle'];
@@ -28,6 +30,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public description?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
+    public mask?: boolean;
     public tags?: string[];
     public color?: string;
     public parentId?: string;
@@ -195,6 +198,47 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (!this.id || !this._source) {
             return;
         }
+
+        if (this.mask && this._source._geojson) {
+            try {
+                const bounds = [-180, -180, 180, 90];
+
+                let diff: undefined | Feature<Polygon> = undefined; //turf.difference(bboxPoly, mask);
+                const bboxPoly = turf.bboxPolygon(bounds);
+                for (const f of this._source._geojson.features) {
+                    const mask = f as Feature<Polygon>; //this._source._geojson.features[0] as Feature<Polygon>;
+                    diff = turf.difference(diff ? diff : bboxPoly, mask);
+                }
+                // const diff = turf.difference(bboxPoly, mask);
+                if (diff !== undefined) {
+                    this._source._geojson.features = [diff];
+                    if (this._manager && this._manager.MapControl) {
+                        this._manager.updateLayerSource(
+                            this,
+                            this._source._geojson
+                        );
+                    }
+                }
+            } catch (e) {
+                debugger;
+            }
+            this.type = 'fill';
+            // this.source = { type: 'geojson', data: difference.default(bboxPoly, mask)}
+
+            //         let res = {
+            //             id: id,
+            //             source: {
+            //                 type: 'geojson',
+            //                 data: difference.default(bboxPoly, mask)
+            //             },
+            //             type: 'fill',
+            //             paint: paint
+            //         } as Layer;
+
+            //         return res;
+            //     }
+        }
+
         // remove layer if it already exists
         if (map.map.getLayer(this.id) !== undefined) {
             map.map.removeLayer(this.id);
