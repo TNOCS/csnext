@@ -28,6 +28,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public source?: string | LayerSource;
     public visible?: boolean;
     public tags?: string[];
+    public color?: string;
     public parentId?: string;
     public filter?: any;
     public _parent?: GeojsonPlusLayer;
