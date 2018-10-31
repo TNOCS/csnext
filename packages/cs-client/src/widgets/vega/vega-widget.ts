@@ -1,12 +1,16 @@
 import Component from 'vue-class-component';
-import { WidgetBase } from './widget-base';
+import { WidgetBase } from './../..';
 import Vue from 'vue';
+import { WidgetOptions, IWidget } from '@csnext/cs-core';
 
 declare var vega: any;
 
 @Component({
   name: 'vega-widget',
-  template: '<div :id="\'vega-\' + widget.id"></div>'
+  template: '<div :id="\'vega-\' + widget.id"></div>',
+  props: {
+    widget: null
+  }
 } as any)
 export class VegaWidget extends WidgetBase {
   public view: any;
@@ -21,6 +25,10 @@ export class VegaWidget extends WidgetBase {
           .then((data: any) => {
             this.viewRender(JSON.parse(data));
           });
+      } else {
+        if (this.widget && this.widget.data) {
+          this.viewRender(this.widget.data);
+        }
       }
     });
   }

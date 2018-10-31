@@ -41,7 +41,8 @@ export * from './widgets/iframe-widget';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';
 export * from './widgets/svg-widget';
-export * from './widgets/vega-widget';
+export * from './widgets/vega/vega-widget';
+export * from './widgets/vega/vega-widget-options';
 export * from './widgets/intro/intro-widget';
 export * from './widgets/intro/intro-widget-options';
 

@@ -9,8 +9,4 @@ import VueMarkdown from 'vue-markdown';
   template: '<VueMarkdown :source="widget.data" :emoji="widget.options.emoji" :linkify="widget.options.linkify" :breaks="widget.options.break" :html="widget.options.html"></VueMarkdown>'
 } as any)
 export class MdWidget extends WidgetBase {
-
-    public mounted() {
-  }
-
 }
