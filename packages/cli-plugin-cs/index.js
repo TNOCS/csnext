@@ -4,6 +4,8 @@ module.exports = (api, { parallel }) => {
 
   api.chainWebpack(config => {    
 
+    console.log('CS?');
+
     // const htmlRule = webpackConfig.module
     //   .rule('html')
     //     .test(/\.html?$/)

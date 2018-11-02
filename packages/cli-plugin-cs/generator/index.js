@@ -3,6 +3,8 @@ const chalk = require('chalk');
 
 const version = require('./../package.json').version;
 
+console.log('CS!');
+
 module.exports = (api, options, rootOptions) => {
     const pkg = {
         scripts: {
@@ -25,15 +27,17 @@ module.exports = (api, options, rootOptions) => {
         }
     };
 
-    if (options.csPlugins.indexOf('split-panel') !== -1) {
+    console.log(options.csPlugins);
+
+    if (options && options.csPlugins && options.csPlugins.indexOf('split-panel') !== -1) {
         pkg.dependencies[('@csnext/cs-split-panel', version)];
     }
 
-    if (options.csPlugins.indexOf('billboard') !== -1) {
+    if (options && options.csPlugins && options.csPlugins.indexOf('billboard') !== -1) {
         pkg.dependencies[('@csnext/cs-billboard', version)];
     }
 
-    if (options.csPlugins.indexOf('map') !== -1) {
+    if (options && options.csPlugins && options.csPlugins.indexOf('map') !== -1) {
         pkg.dependencies[('@csnext/cs-map', version)];
     }
 
@@ -43,6 +47,7 @@ module.exports = (api, options, rootOptions) => {
     api.render('./templates/default');
 
     api.onCreateComplete(() => {
+        console.log('Starting...');
         const fs = require('fs');
 
         const ts = api.hasPlugin('typescript');
@@ -75,15 +80,15 @@ module.exports = (api, options, rootOptions) => {
 
             const lines = content.split(/\r?\n/g).reverse();
 
-            lastImport = () => lines.findIndex(line => line.match(/^import/));
+            lastImport = () => { if (lines) { return lines.findIndex(line => line.match(/^import/)) } };
 
             checkImport = i => {
-                if (content.indexOf(i) === -1) {
+                if (content && content.indexOf(i) === -1) {
                     lines[lastImport()] += `\n` + i;
                 }
             };
             checkLast = i => {
-                if (content.indexOf(i) === -1) {
+                if (content && content.indexOf(i) === -1) {
                     lines[0] += `\n` + i;
                 }
             };
