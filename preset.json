@@ -8,7 +8,7 @@
         },
         "@csnext/vue-cli-plugin-cs": {
             "addDefaultProject": true,
-            "csLayoutPlugins": []
+            "csPlugins": ['map', 'split-panel', 'billboard']
         }
     }
 }

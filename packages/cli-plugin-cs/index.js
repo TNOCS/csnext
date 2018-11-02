@@ -2,8 +2,7 @@ module.exports = (api, { parallel }) => {
   const fs = require("fs");
   const path = require("path");
 
-  api.chainWebpack(config => {
-    console.log("update webpack");
+  api.chainWebpack(config => {    
 
     // const htmlRule = webpackConfig.module
     //   .rule('html')

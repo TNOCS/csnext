@@ -6,8 +6,8 @@ module.exports = [{
   },
   {
     type: 'checkbox',
-    name: 'csLayoutPlugins',
-    message: 'Add the following layout plugins?',
-    choices: ['map', 'drag-grid']
+    name: 'csPlugins',
+    message: 'Add the following CS plugins?',
+    choices: ['split-panel', 'billboard', 'map']
   }
 ]

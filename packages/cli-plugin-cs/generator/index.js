@@ -1,6 +1,8 @@
 const { hasYarn } = require('@vue/cli-shared-utils');
 const chalk = require('chalk');
 
+const version = require('./../package.json').version;
+
 module.exports = (api, options, rootOptions) => {
     const pkg = {
         scripts: {
@@ -10,9 +12,11 @@ module.exports = (api, options, rootOptions) => {
                 'yarn unlink @csnext/cs-client && yarn unlink @csnext/cs-core && yarn unlink @csnext/vue-cli-plugin-cs',
         },
         dependencies: {
-            '@csnext/cs-client': '0.0.54',
-            '@csnext/cs-core': '0.0.54',
-            vuetify: '^1.1.9',
+            '@csnext/cs-client': version,
+            '@csnext/cs-core': version,            
+            'vuetify': '^1.3.5',
+            'vue-class-component': '^6.3.2',
+            'vue-markdown': '^2.2.4',
             'vue-router': '^3.0.1',
             'vue-markdown': '^2.2.4'
         },
@@ -21,8 +25,16 @@ module.exports = (api, options, rootOptions) => {
         }
     };
 
-    if (options.csLayoutPlugins.indexOf('drag-grid') !== -1) {
-        pkg.dependencies[('@csnext/cs-drag-grid', csVersion)];
+    if (options.csPlugins.indexOf('split-panel') !== -1) {
+        pkg.dependencies[('@csnext/cs-split-panel', version)];
+    }
+
+    if (options.csPlugins.indexOf('billboard') !== -1) {
+        pkg.dependencies[('@csnext/cs-billboard', version)];
+    }
+
+    if (options.csPlugins.indexOf('map') !== -1) {
+        pkg.dependencies[('@csnext/cs-map', version)];
     }
 
     api.extendPackage(pkg);
@@ -53,12 +65,13 @@ module.exports = (api, options, rootOptions) => {
 
             const CsClientImport =
                 "import { CsApp, AppState } from '@csnext/cs-client';";
-            const vuetifyImport = "import Vuetify from 'vuetify'"; // "const Vuetify = require('./../node_modules/vuetify/dist/vuetify.min.js');"
-            const vuetifyCssImport = "import 'vuetify/dist/vuetify.min.css';";            
+            const vuetifyImport = "import Vuetify from 'vuetify';"; // "const Vuetify = require('./../node_modules/vuetify/dist/vuetify.min.js');"                    
+            const vuetifyCssImport = "import 'vuetify/dist/vuetify.min.css';";
             const vuetifyUse = 'Vue.use(Vuetify);';
+            
             const importProject = "import { project } from './defaultproject';";
             const initProject = 'AppState.Instance.init(project);';
-            const appRegistration = '(<any>window).app = AppState.Instance;';
+            const appRegistration = '(window as any).app = AppState.Instance;\n';
 
             const lines = content.split(/\r?\n/g).reverse();
 
@@ -76,8 +89,8 @@ module.exports = (api, options, rootOptions) => {
             };
 
             checkImport(CsClientImport);
-            checkImport(vuetifyImport);
-            checkImport(vuetifyCssImport);            
+            checkImport(vuetifyImport);            
+            checkImport(vuetifyCssImport);
             checkImport(vuetifyUse);
 
             if (options.addDefaultProject) {
