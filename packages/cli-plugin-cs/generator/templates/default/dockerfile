@@ -1,0 +1,12 @@
+FROM node:10 as builder
+COPY . .
+RUN npm install yarn -g
+RUN npm install typescript -g
+RUN yarn
+RUN vue build
+
+FROM node:10
+COPY --from=builder ./dist .
+RUN npm install http-server -g
+EXPOSE 8080
+CMD ["http-server"]
