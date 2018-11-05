@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.75](https://github.com/TNOCS/csnext/compare/v0.0.74...v0.0.75) (2018-11-05)
+
+**Note:** Version bump only for package @csnext/cs-client
+
+
+
+
+
+
 <a name="0.0.74"></a>
 ## [0.0.74](https://github.com/TNOCS/csnext/compare/v0.0.73...v0.0.74) (2018-10-31)
 
