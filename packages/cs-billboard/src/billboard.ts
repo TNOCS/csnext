@@ -24,11 +24,24 @@ export class Billboard extends Vue {
         }
     }
 
+    @Watch('widget.content', { deep: true})
+    contentUpdated() {
+        if (this.chart) {
+            this.chart.load(this.widget.content);
+        }
+    }
+
+    private getData() : any {
+        if (this.widget.data) return this.widget.data;
+        if (this.widget.content) return this.widget.content;
+        return undefined;
+    }
+
     public mounted() {
         Vue.nextTick(() => {
             this.chart = bb.generate({
                 bindto: '#' + this.widget.id,
-                data: this.widget.data
+                data: this.getData()
             });
 
             if (this.widget.events) {
