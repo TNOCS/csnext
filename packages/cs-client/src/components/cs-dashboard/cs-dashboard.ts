@@ -64,6 +64,9 @@ export class CsDashboard extends Vue {
     }
     if (this.dashboard) {
       widget._dashboard = this.dashboard;
+      if (this.dashboard._manager) {
+        widget._manager = this.dashboard._manager;
+      }
     }
     widget._project = AppState.Instance.project;
     this.checkWidgetId(widget);
