@@ -1,4 +1,4 @@
-<div @mouseenter="mouseEnter()" v-if="widget" @mouseleave="mouseLeave()" :class="[widget.options.class, widgetBorder]" ref="widget" v-resize:debounce.50="onResize" >
+<div @mouseenter="mouseEnter()" v-if="widget" v-show="!widget.options.hide" @mouseleave="mouseLeave()" :class="[widget.options.class, widgetBorder]" ref="widget" v-resize:debounce.50="onResize" >
   <component :is="widget.component" :widget="widget" class="widget-default" :style="widgetStyles()" ></component>
   <div v-if="mouseOver && widget.options.menus" class="widget-buttons-container">
     <v-menu v-for="menu in widget.options.menus" :key="menu.id" v-if="menu.visible">

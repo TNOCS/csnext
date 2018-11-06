@@ -14,4 +14,5 @@ export class WidgetOptions {
   public canEdit?: boolean;
   public menus?: IMenu[];
   public widgetBorder?: string;
+  public hide?: boolean;
 }
