@@ -49,6 +49,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public _manager?: MapLayers;
     public events?: MessageBusService;
     public popupContent?: string | Function | undefined;
+    private _opacity?: number;
 
     constructor(init?: Partial<IMapLayer>) {
         Object.assign(this, init);
@@ -66,20 +67,71 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         this.visible = value;
     }
 
-    public set opacity(value: number | undefined) {}
+    public set opacity(value: number | undefined) {
+        //    this._opacity = value;
+        // this.MapLayers.MapControl.setPaintProperty(layer.id, 'line-opacity', value / 100.0);
+        // if (layer.paint) {
+        //     layer.paint['raster-opacity'] = value / 100.0;
+        // }
+        // this.MapLayers.MapControl.setPaintProperty(layer.id, 'raster-opacity', value / 100.0);
+    }
 
     public get opacity(): number | undefined {
-        return 1;
+        if (
+            this._initialized &&
+            this.id &&
+            this._manager &&
+            this._manager.MapControl &&
+            this.type
+        ) {
+            try {
+                let maxOpacity = 0;
+                for (const prop of this.layerTypeProps()) {
+                    const op =
+                        this._manager.MapControl.getPaintProperty(
+                            this.id,
+                            this.type + '-opacity'
+                        ) * 100;
+                    if (op > maxOpacity) {
+                        maxOpacity = op;
+                    }
+                }
+                this._opacity = maxOpacity;
+            } catch (e) {
+                this._opacity = 100;
+            }
+        }
+        return this._opacity;
+    }
+
+    layerTypeProps(): string[] {
+        let props: string[] = [];
+        if (this.type === 'symbol') {
+            props.push('text');
+            props.push('icon');
+        } else if (this.type) {
+            props.push(this.type);
+        }
+        return props;
     }
 
     setOpacity(value: number) {
-        this.opacity = value;
-        if (this.id && this._manager && this._manager.MapControl) {
-            this._manager.MapControl.setLayoutProperty(
-                this.id,
-                'opacity',
-                value
-            );
+        this._opacity = value;
+        if (
+            this._initialized &&
+            this.id &&
+            this._manager &&
+            this._manager.MapControl
+        ) {
+            for (const prop of this.layerTypeProps()) {
+                this._manager.MapControl.setPaintProperty(
+                    this.id,
+                    prop + '-opacity',
+                    value / 100.0
+                );
+                if (!this.paint) this.paint = {};
+                this.paint[prop + '-opacity'] = this._opacity / 100.0;
+            }
         }
     }
 

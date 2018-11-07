@@ -10,6 +10,11 @@
     margin-bottom: -10px !important;
 }
 
+.layer-opacity-slider {
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
 
 .layer-group-item:hover {
     border-left-style: solid;    

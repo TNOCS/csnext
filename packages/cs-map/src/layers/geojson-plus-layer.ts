@@ -36,7 +36,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public lineLayer!: GeojsonLayer;
     public fillLayer!: GeojsonLayer;
     public circleLayer!: GeojsonLayer;
-    public opacity?: number;
+    public opacity?: number = 100;
 
     // circle style
     public circleLayout!: mapboxgl.CircleLayout;
@@ -108,25 +108,10 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
 
     public setOpacity(value: number) {
         this.opacity = value;
-        if (
-            this.circleLayer &&
-            this.circleLayer.id &&
-            this.iconLayer &&
-            this.iconLayer.id &&
-            this._manager &&
-            this._manager.MapControl
-        ) {
-            this._manager.MapControl.setLayoutProperty(
-                this.circleLayer.id,
-                'opacity',
-                value
-            );
-            this._manager.MapControl.setLayoutProperty(
-                this.iconLayer.id,
-                'opacity',
-                value
-            );
-        }
+        if (this.circleLayer) { this.circleLayer.setOpacity(value); }
+        if (this.iconLayer) { this.iconLayer.setOpacity(value); }
+        if (this.fillLayer) { this.fillLayer.setOpacity(value); }
+        if (this.lineLayer) { this.lineLayer.setOpacity(value); }
     }
 
     public getBounds(): LngLatBounds | undefined {
