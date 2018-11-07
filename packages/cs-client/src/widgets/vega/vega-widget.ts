@@ -2,6 +2,7 @@ import Component from 'vue-class-component';
 import { WidgetBase } from './../..';
 import Vue from 'vue';
 import { WidgetOptions, IWidget } from '@csnext/cs-core';
+import { Watch } from 'vue-property-decorator';
 
 declare var vega: any;
 
@@ -15,7 +16,12 @@ declare var vega: any;
 export class VegaWidget extends WidgetBase {
   public view: any;
 
-  public mounted() {
+  @Watch('widget.data', { deep: true})
+  public dataChanged(d: any) {
+    this.updateChart();
+  }
+
+  private updateChart() {
     Vue.nextTick(() => {
       // check if path for definition is available
       if (this.widget && this.widget.data && this.widget.data.path) {
@@ -33,7 +39,7 @@ export class VegaWidget extends WidgetBase {
     });
   }
 
-  public viewRender(spec: any) {
+  private viewRender(spec: any) {
     Vue.nextTick(() => {
       if (!this.widget || !this.widget.id) {
         return;
