@@ -5,7 +5,7 @@ notifications:
 services:
   - docker
 before_install:
-  - docker build --build-arg NPM_TOKEN=$NPM_TOKEN -t tnocs/csnext .
+  - docker build -t tnocs/csnext .
 # sudo: required
 
 # language: node_js
