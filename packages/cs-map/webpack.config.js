@@ -19,7 +19,7 @@ const output = {
     libraryTarget: 'umd'
 };
 
-const mod = {   
+const mod = {
     rules: [
         {
             test: /\.ts$/,
@@ -52,6 +52,9 @@ function buildConfig(entry, externals, analyzer) {
         entry: entry,
         devtool: 'source-map',
         output: output,
+        node: {
+            fs: 'empty'
+        },
         module: mod,
         externals: externals,
         resolve: {
