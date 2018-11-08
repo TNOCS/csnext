@@ -152,6 +152,8 @@ export class MapLayers implements IDatasource {
                    (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
                }
                if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
+                   const wasVisible = ml.Visible;
+                   if (wasVisible) ml._manager!.map!.map!.removeLayer(ml.id!);
                    const newSource = {
                        type: ml._source.type,
                        tiles: [ml._source.url],
@@ -159,6 +161,7 @@ export class MapLayers implements IDatasource {
                    }
                    if (this.MapControl.getSource(ml._source.id)) this.MapControl.removeSource(ml._source.id);
                    this.MapControl.addSource(ml._source.id, newSource as RasterSource);
+                   if (wasVisible) ml._manager!.map!.map!.addLayer({id: ml.id!,type: 'raster', source: ml._source.id!});
                }
                console.log(ml);
                // if (ml._source) {

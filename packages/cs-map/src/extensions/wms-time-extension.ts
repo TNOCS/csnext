@@ -12,7 +12,7 @@ export class WmsTimeExtension implements ILayerExtension, ILayerExtensionType, I
     public title?: string | undefined;
     public timeProperty?: string;
     private _layer?: IMapLayer;
-    private _currentTime: Date = new Date();
+    private _currentTime: Date = (new Date(Date.now() - 10 * 60 * 1000)); //10 minutes earlier because most recent is not always available
     private _timeHandle?: MessageBusHandle;
     private _originalUrl?: string;
 
@@ -39,6 +39,8 @@ export class WmsTimeExtension implements ILayerExtension, ILayerExtensionType, I
 
     private updateTime() {
         if (!this._layer || !this._layer._source || this._layer._source.type !== 'raster' || !this.timeProperty || !this._originalUrl) return;
+        const oldIndex = this._originalUrl.indexOf(`&${this.timeProperty}=`);
+        if (oldIndex > 0) this._originalUrl = this._originalUrl.substr(0, oldIndex);
         this._layer._source.url = `${this._originalUrl}&${this.timeProperty}=${this.roundTimeToFiveMinutes()}`;
         this._layer._manager!.updateLayerSource(this._layer);
     }
@@ -49,7 +51,7 @@ export class WmsTimeExtension implements ILayerExtension, ILayerExtensionType, I
         fiveMinuteDate.setMinutes(minutes);
         fiveMinuteDate.setSeconds(0);
         fiveMinuteDate.setMilliseconds(0);
-        return fiveMinuteDate.toISOString();
+        return fiveMinuteDate.toISOString().replace('00.000Z', '00Z');
     }
 
     private subscribeToTimeEvents() {
@@ -62,6 +64,4 @@ export class WmsTimeExtension implements ILayerExtension, ILayerExtensionType, I
             });
         }
     }
-
-    
 }
