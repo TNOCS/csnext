@@ -1,5 +1,6 @@
-import { LayerSource, MapLayers, CsMap,ILayerAction } from '..';
-import { MessageBusService } from '@csnext/cs-core';
+import {LayerSource, MapLayers, CsMap, ILayerAction} from '..';
+import {MessageBusService} from '@csnext/cs-core';
+import { ILayerExtensionType} from './ilayer-extension';
 
 export interface IMapLayerType {
     typeId?: string;
@@ -27,20 +28,13 @@ export interface IMapLayer {
     addLayer(map: CsMap);
     initLayer(manager: MapLayers);
     setOpacity(value: number);
-    getLayerActions() : ILayerAction[];
-    events?: MessageBusService;
-    filter?: any;
-    layout?:
-        | mapboxgl.SymbolLayout
-        | mapboxgl.FillLayout
-        | mapboxgl.LineLayout
-        | mapboxgl.CircleLayout;
-    paint?:
-        | mapboxgl.SymbolPaint
-        | mapboxgl.LinePaint
-        | mapboxgl.FillPaint
-        | mapboxgl.CirclePaint;
+    getLayerActions(): ILayerAction[];
     removeLayer(map: CsMap);
+    events?: MessageBusService;
+    extensions?: ILayerExtensionType[];
+    filter?: any;
+    layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
+    paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
 
     /** toggle visibility of layer */
     Visible?: boolean;
