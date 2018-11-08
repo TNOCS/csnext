@@ -3,6 +3,7 @@ import { GeojsonLayer } from './layers/geojson-layer';
 import { LayerServer } from './services/layer-server';
 import { GeojsonPlusLayer } from './layers/geojson-plus-layer';
 import { TimeInterpolationExtension } from './extensions/time-interpolation-extension';
+import { WmsTimeExtension } from './extensions/wms-time-extension';
 
 
 // classes
@@ -31,8 +32,10 @@ export * from './services/layer-server';
 
 // extensions
 export * from './extensions/time-interpolation-extension';
+export * from './extensions/wms-time-extension';
 
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
 CsMap.AddLayerExtension(new TimeInterpolationExtension());
+CsMap.AddLayerExtension(new WmsTimeExtension());
 CsMap.AddLayerServiceType(new LayerServer());
