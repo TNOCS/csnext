@@ -20,7 +20,8 @@ import {
     LayerSource,
     IMapLayer,
     IMapLayerType,
-    IStartStopService
+    IStartStopService,
+    ILayerExtensionType
 } from '../../.';
 import { plainToClass } from 'class-transformer';
 
@@ -46,6 +47,16 @@ export class CsMap extends Vue {
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
+    public static layerExtensions: ILayerExtensionType[] = [];
+
+    /** register new layertype  */
+    public static AddLayerExtension(type: ILayerExtensionType) {
+        if (
+            CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1
+        ) {
+            CsMap.layerExtensions.push(type);
+        }
+    }
 
     /** register new layertype  */
     public static AddLayerType(type: IMapLayerType) {

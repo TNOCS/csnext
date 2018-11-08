@@ -2,6 +2,8 @@ import { CsMap } from './.';
 import { GeojsonLayer } from './layers/geojson-layer';
 import { LayerServer } from './services/layer-server';
 import { GeojsonPlusLayer } from './layers/geojson-plus-layer';
+import { TimeInterpolationExtension } from './extensions/time-interpolation-extension';
+
 
 // classes
 export * from './classes/map-options';
@@ -10,6 +12,7 @@ export * from './classes/layer-source';
 export * from './classes/layer-service';
 export * from './classes/map-layers';
 export * from './classes/imap-layer';
+export * from './classes/ilayer-extension';
 export * from './classes/layer-service-options';
 export * from './classes/ilayer-action';
 
@@ -26,6 +29,10 @@ export * from './layers/geojson-plus-layer';
 // services
 export * from './services/layer-server';
 
+// extensions
+export * from './extensions/time-interpolation-extension';
+
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
+CsMap.AddLayerExtension(new TimeInterpolationExtension());
 CsMap.AddLayerServiceType(new LayerServer());
