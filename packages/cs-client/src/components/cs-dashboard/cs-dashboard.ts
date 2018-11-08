@@ -32,6 +32,11 @@ export class CsDashboard extends Vue {
     this.initDashboard(n);
   }
 
+  @Watch('dashboard.menus')
+  public menusChanged(d: any) {
+    this.app.bus.publish('menus', 'changed');
+  }
+
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[], old: any) {
     if (n && n.length > 0) {
@@ -49,7 +54,9 @@ export class CsDashboard extends Vue {
 
   public initWidget(widget: IWidget) {
     // init widget
-    if (!widget) { return; }
+    if (!widget) {
+      return;
+    }
     if (widget._initalized) {
       return;
     }
@@ -87,7 +94,9 @@ export class CsDashboard extends Vue {
 
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
-    if (dashboard.showLoadAnimation) { dashboard._loading = true; }
+    if (dashboard.showLoadAnimation) {
+      dashboard._loading = true;
+    }
     if (!dashboard.id) {
       dashboard.id = guidGenerator();
     }
@@ -101,7 +110,9 @@ export class CsDashboard extends Vue {
     if (!dashboard.options) {
       dashboard.options = {};
     }
-    if (dashboard.options) { dashboard.options._dashboard = dashboard; }
+    if (dashboard.options) {
+      dashboard.options._dashboard = dashboard;
+    }
 
     if (this.app.project.menus && dashboard.isMain) {
       const dashboardEditButton = this.app.project.menus.find(
@@ -136,7 +147,7 @@ export class CsDashboard extends Vue {
         ].getInstance();
         if (dashboard._manager) {
           // start manager
-        dashboard._manager.start(dashboard);
+          dashboard._manager.start(dashboard);
         }
       }
     }

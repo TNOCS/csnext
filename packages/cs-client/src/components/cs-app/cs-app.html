@@ -87,7 +87,7 @@
 
     <!-- menus -->
 
-    <v-menu v-for="menu in app.project.menus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu header-icon"
+    <v-menu v-for="menu in allMenus" :key="menu.id" :close-on-content-click="false" v-if="menu.visible" class="app-menu header-icon"
       offset-y >
       <template v-if="menu.toggleButton">
         <v-tooltip slot="activator" bottom>
