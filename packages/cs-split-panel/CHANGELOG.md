@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.0.77"></a>
+## [0.0.77](https://github.com/TNOCS/csnext/compare/v0.0.76...v0.0.77) (2018-11-08)
+
+**Note:** Version bump only for package @csnext/cs-split-panel
+
+
+
+
+
 <a name="0.0.76"></a>
 ## [0.0.76](https://github.com/TNOCS/csnext/compare/v0.0.75...v0.0.76) (2018-11-08)
 
