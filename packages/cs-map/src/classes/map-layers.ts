@@ -153,7 +153,7 @@ export class MapLayers implements IDatasource {
                }
                if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
                    const wasVisible = ml.Visible;
-                   if (wasVisible) ml._manager!.map!.map!.removeLayer(ml.id!);
+                   if (wasVisible && ml._manager!.map!.map!.getLayer(ml.id!)) ml._manager!.map!.map!.removeLayer(ml.id!);
                    const newSource = {
                        type: ml._source.type,
                        tiles: [ml._source.url],
