@@ -99,6 +99,15 @@
           <template v-else>{{menu.toggleToolTip}}</template>
         </v-tooltip>
       </template>
+      <template v-if="menu.textButton">
+        <v-tooltip slot="activator" bottom>
+          <v-btn depressed slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
+            {{ menu.title }}
+            <v-icon v-if="menu.icon" right dark>{{ menu.icon }}</v-icon>
+          </v-btn>
+          {{menu.toolTip}}
+        </v-tooltip>
+      </template>
       <template v-else>
         <v-tooltip slot="activator" bottom>
           <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">

@@ -18,5 +18,6 @@ export class BaseDashboardOptions implements IDashboardOptions {
 
   // tslint:disable-next-line:variable-name
   public _dashboard?: IDashboard;
+  public icon?: string;
 
 }
