@@ -48,6 +48,7 @@ export class CsApp extends Vue {
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
   public dialog: IDialog = { visible: false, toolbar: true };
+  public allMenus: IMenu[] = [];
 
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
@@ -184,6 +185,11 @@ export class CsApp extends Vue {
           // }
         }
       });
+    }
+
+    this.allMenus = this.app.project.menus;
+    if (this.app.activeDashboard && this.app.activeDashboard.menus) {
+      this.allMenus = [...this.allMenus, ...this.app.activeDashboard.menus];
     }
   }
 
@@ -365,9 +371,18 @@ export class CsApp extends Vue {
     });
 
     // listen to dashboard init events
-    this.app.bus.subscribe('dashboard.main', (action, dashboard) => {
-      this.UpdateSideBars(dashboard);
-      this.UpdateFooter(dashboard);
+    this.app.bus.subscribe(
+      'dashboard.main',
+      (action: string, dashboard: IDashboard) => {
+        this.UpdateSideBars(dashboard);
+        this.UpdateFooter(dashboard);
+        this.InitMenus();
+      }
+    );
+
+    // menu list changed (e.g. if dashboard menu was updated)
+    this.app.bus.subscribe('menus', (action: string) => {
+      this.InitMenus();
     });
 
     if (this.app.activeDashboard) {

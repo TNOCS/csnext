@@ -10,6 +10,9 @@ import { StylesControl } from 'mapbox-gl-controls';
 import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import  MapboxDraw  from '@mapbox/mapbox-gl-draw';
+
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import {
     MapLayers,
@@ -40,6 +43,7 @@ export class CsMap extends Vue {
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
+    public mapDraw!: any;
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -294,6 +298,9 @@ export class CsMap extends Vue {
                     });
                 });
             }
+
+            this.mapDraw = new MapboxDraw()
+            this.map.addControl(this.mapDraw, 'top-left');
 
             // check if map has loaded
             this.map.on('load', e => {

@@ -1,4 +1,4 @@
-import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService } from '../';
+import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu } from '../';
 import { IFooterOptions } from './footer-options';
 
 export interface IDashboard {
@@ -66,6 +66,9 @@ export interface IDashboard {
 
   // event bus for widget specific events. e.g. resize
   events?: IMessageBusService;
+
+  // menus only visible for this dashboard
+  menus?: IMenu[];
 
   component?: any;
 

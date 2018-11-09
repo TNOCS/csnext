@@ -3,4 +3,5 @@ import { SplitPanelOptions } from './.';
 
 export class SplitPanelDashboardOptions extends BaseDashboardOptions {
   public splitpanel?: SplitPanelOptions;
+  public presets?: { [title: string] : SplitPanelOptions };
 }
