@@ -264,10 +264,6 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 			//     }
 		}
 
-		// remove layer if it already exists
-		if (map.map.getLayer(this.id) !== undefined) {
-			map.map.removeLayer(this.id);
-		}
 		let mblayer = {
 			id: this.id,
 			type: this.type,
@@ -286,6 +282,10 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
 		this.registerLayerExtensions(this);
 
+		// remove layer if it already exists
+		if (map.map.getLayer(this.id) !== undefined) {
+			map.map.removeLayer(this.id);
+		}
 		map.map.addLayer(mblayer);
 		this.Visible = true;
 		// map.zoomLayer(this);
