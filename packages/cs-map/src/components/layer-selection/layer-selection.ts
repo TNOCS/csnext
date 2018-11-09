@@ -2,7 +2,7 @@ import Component from 'vue-class-component';
 import { IWidget } from '@csnext/cs-core';
 
 import './layer-selection.css';
-import { Vue, Watch } from 'vue-property-decorator';
+import { Vue, Watch, Prop } from 'vue-property-decorator';
 import { MapLayers, IMapLayer } from '../../.';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
@@ -27,14 +27,37 @@ export class LayerSelection extends Vue {
     public showMenu = false;
     public filter: string = '';
 
+    
+
+    // public get groupsexpanded() : boolean[]
+
+    @Watch('groupsexpanded')
+    groupsChanged(v: boolean[]) {
+        localStorage.layergroupsexpanded = JSON.stringify(v);
+    }
+
     constructor() {
         super();
     }
 
+    public mounted() {
+        if (localStorage.layergroupsexpanded) {
+            try {
+                this.groupsexpanded = JSON.parse(localStorage.layergroupsexpanded);
+                
+            } catch (e) {
+                this.groupsexpanded = [];
+            }
+        }
+        else {
+            this.groupsexpanded = [];
+        }
+    }
+
     public get Groups(): { [id: string]: ILayerGroup } {
         let res: { [id: string]: ILayerGroup } = {};
-        if (this.MapLayers && this.MapLayers.layers) {
-            this.MapLayers.layers.forEach(l => {
+        if (this.MapManager && this.MapManager.layers) {
+            this.MapManager.layers.forEach(l => {
                 if (l.title) {
                     if (
                         this.filter.length === 0 ||
@@ -51,6 +74,10 @@ export class LayerSelection extends Vue {
                     }
                 }
             });
+            
+            while (this.groupsexpanded.length < Object.keys(res).length) {
+                this.groupsexpanded.push(true);
+            }
         }
         return res;
     }
@@ -61,7 +88,7 @@ export class LayerSelection extends Vue {
     }
 
     public setLayerOpacity(value: number, layer: IMapLayer) {
-        if (this.MapLayers && this.MapLayers.MapControl && layer.id) {
+        if (this.MapManager && this.MapManager.MapControl && layer.id) {
             layer.setOpacity(value);
             // layer.opacity = value / 100.0;
             // this.MapLayers.MapControl.setPaintProperty(layer.id, 'line-opacity', value / 100.0);
@@ -74,9 +101,11 @@ export class LayerSelection extends Vue {
     }
 
     public showLayerMenu(e: MouseEvent, layer: IMapLayer) {
-        if (e.currentTarget && this.MapLayers && this.MapLayers.layers) {
+        if (e.currentTarget && this.MapManager && this.MapManager.layers) {
             let targetId = e.currentTarget['id'];
-            let targetLayer = this.MapLayers.layers.find(l => l.id == targetId);
+            let targetLayer = this.MapManager.layers.find(
+                l => l.id == targetId
+            );
             if (targetLayer) {
                 if (e) {
                     e.preventDefault();
@@ -124,7 +153,7 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public get MapLayers(): MapLayers | undefined {
+    public get MapManager(): MapLayers | undefined {
         if (this.widget.content) {
             return this.widget.content as MapLayers;
         }
@@ -166,8 +195,8 @@ export class LayerSelection extends Vue {
     dataLoaded(n: MapLayers) {
         console.log('layers updated');
         console.log(this.widget);
-        if (this.MapLayers && this.MapLayers.events) {
-            this.MapLayers.events.subscribe('layer', (a: string, e: any) => {
+        if (this.MapManager && this.MapManager.events) {
+            this.MapManager.events.subscribe('layer', (a: string, e: any) => {
                 this.$forceUpdate();
             });
         }
