@@ -55,7 +55,7 @@ export class SplitPanel extends Vue {
     }
 
     created() {
-        debugger;
+       
         if (this.options) {
             if (!this.options.splitpanel) {
                 if (this.options.presets) {
@@ -83,9 +83,10 @@ export class SplitPanel extends Vue {
                     const element = this.options.presets[key];
                     let presetMenu = {
                         id: 'preset-' + key,
-                        icon: 'filter_list',
+                        icon: element.icon,
                         title: key,
                         toolTip: key,
+                        textButton: true,
                         enabled: true,
                         visible: true,
                         action: m => {
