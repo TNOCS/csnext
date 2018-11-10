@@ -38,8 +38,9 @@ export class SplitPanel extends Vue {
         // if no splitpanel was defined, but a list of presets, take first
         if (this.dashboard.options) {
             const opt = this.dashboard.options as SplitPanelDashboardOptions;
-            if (opt.presets && !opt.splitpanel) {
-                opt.splitpanel = opt.presets[0];
+            if (opt.presets && !opt.splitpanel && opt.defaultPreset) {
+                opt.splitpanel = opt.presets[opt.defaultPreset];
+                // opt.splitpanel = opt.presets[0];
             }
         }
         return this.dashboard.options;
