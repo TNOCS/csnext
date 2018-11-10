@@ -26,7 +26,7 @@
                     </v-menu>
                 </v-layout>
                 <div v-if="layer._showMore && layer.Visible" class="layer-more-options">
-                    <v-slider v-model="layer.opacity" class="layer-opacity-slider" max="100" min="0" @end="setLayerOpacity($event, layer)"></v-slider>
+                    <v-slider v-model="layer.opacity" class="layer-opacity-slider" max="100" min="0" @change="setLayerOpacity($event, layer)"></v-slider>
                 </div>
             </div>
 
