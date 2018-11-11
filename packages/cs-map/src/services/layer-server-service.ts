@@ -11,25 +11,25 @@ import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
 
-export class LayerServerOptions implements ILayerServiceOptions {
+export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
     public tags?: string[];
 }
 
-export class LayerServer implements ILayerService, IStartStopService {
+export class LayerServerService implements ILayerService, IStartStopService {
     id!: string;
     title?: string | undefined;
 
-    public options?: LayerServerOptions;
-    public type = 'layer-server';
+    public options?: LayerServerServiceOptions;
+    public type = 'layer-server-service';
     public layers: IMapLayer[] = [];
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
-        let result = new LayerServer(init);
+        let result = new LayerServerService(init);
         return result;
     }
 
-    constructor(init?: Partial<LayerServer>) {
+    constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
     }
 
