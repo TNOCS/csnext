@@ -21,8 +21,8 @@ import { plainToClass } from 'class-transformer';
 import { GeojsonLayer } from './geojson-layer';
 import { centroid } from 'turf';
 import { FeatureCollection, Feature } from 'geojson';
-import { debounce } from 'lodash.debounce';
-import { MessageBusHandle } from '@csnext/cs-core/dist/utils/message-bus/message-bus-handle';
+import { MessageBusHandle } from '@csnext/cs-core';
+import { LayerStyle } from '../classes/layer-style';
 
 export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     types? = ['poi'];
@@ -41,12 +41,16 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public color?: string;
     public parentId?: string;
     public filter?: any;
+    public iconZoomLevel?: number;
     public _parent?: GeojsonPlusLayer;
     public symbolLayer!: GeojsonLayer;
+    public centerLayer!: GeojsonLayer;
     public lineLayer!: GeojsonLayer;
     public fillLayer!: GeojsonLayer;
     public circleLayer!: GeojsonLayer;
     public opacity?: number = 100;
+    public style!: LayerStyle;
+    public centerHandle?: MessageBusHandle;
 
     public centerGeoJson?: FeatureCollection;
     public centerSource?: LayerSource;
@@ -128,6 +132,9 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         if (this.circleLayer) {
             this.circleLayer.setOpacity(value);
         }
+        if (this.centerLayer) {
+            this.centerLayer.setOpacity(value);
+        }
         if (this.symbolLayer) {
             this.symbolLayer.setOpacity(value);
         }
@@ -155,6 +162,9 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     }
 
     public createCenterSource() {
+        if (this.iconZoomLevel === undefined) {
+            return;
+        }
         if (this.centerGeoJson) {
             return;
         }
@@ -201,8 +211,8 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             ] = this.centerSource;
             this._manager.updateSource(this.centerSource);
 
-            this.circleLayer = new GeojsonLayer({
-                id: this.id + '-circles',
+            this.centerLayer = new GeojsonLayer({
+                id: this.id + '-center',
                 type: 'circle',
                 popupContent: this.popupContent,
                 source: this.centerSource,
@@ -218,11 +228,35 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                           'circle-stroke-color': ['get', 'stroke'],
                           'circle-stroke-opacity': 1
                       } as CirclePaint),
-                filter: ['<=', ['zoom'], 15]
+                filter: ['<=', ['zoom'], this.iconZoomLevel]
                 // filter: ['==', ['geometry-type'], 'Point']
             });
 
-            this.circleLayer = this.circleLayer.initLayer(this._manager);
+            this.centerLayer.initLayer(this._manager);
+
+            this.symbolLayer = new GeojsonLayer({
+                id: this.id + '-symbol',
+                type: 'symbol',
+                source: this.centerSource,
+                parentId: this.id,
+                popupContent: this.popupContent,
+                layout: this.symbolLayout
+                    ? this.symbolLayout
+                    : ({
+                          'icon-image': '{icon}',
+                          'icon-size': 0.45,
+                          'text-field': this.style.title,
+
+                          'text-anchor': 'center',
+                          'text-size': 12,
+                          'text-offset': [0, 1.5],
+                          'icon-allow-overlap': true,
+                          'icon-ignore-placement': true
+                      } as SymbolLayout),
+                paint: this.symbolPaint ? this.symbolPaint : {},
+                filter: ['<=', ['zoom'], this.iconZoomLevel]
+            });
+            this.symbolLayer.initLayer(this._manager);
             // publish all events received from the circle layer
         }
     }
@@ -250,10 +284,44 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             this.title = this._source.id;
         }
 
+        this.style = {
+            ...({
+                title: '{name}',
+                popover: '{name}',
+                fill: false
+            } as LayerStyle),
+            ...this.style
+        };
+
         if (!this.popupContent) {
             this.popupContent = (d: Feature) => {
-                return d['lngLat'];
+                return this.style.popup
+                    ? this.parsePopupString(d, this.style.popup)
+                    : `<h2>${this.title}</h2>`;
             };
+        }
+
+        if ((this.style.pointCircle = true)) {
+            this.circleLayer = new GeojsonLayer({
+                id: this.id + '-circles',
+                type: 'circle',
+                popupContent: this.popupContent,
+                source: this.source,
+                parentId: this.id,
+                layout: this.circleLayout ? this.circleLayout : {},
+                paint: this.circlePaint
+                    ? this.circlePaint
+                    : ({
+                          'circle-radius': 10,
+                          'circle-color': ['get', 'stroke'],
+                          'circle-opacity': 0.5,
+                          'circle-stroke-width': 1,
+                          'circle-stroke-color': ['get', 'stroke'],
+                          'circle-stroke-opacity': 1
+                      } as CirclePaint),
+                filter: ['==', ['geometry-type'], 'Point']
+            });
+            this.circleLayer.initLayer(manager);
         }
 
         this.symbolLayer = new GeojsonLayer({
@@ -267,7 +335,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 : ({
                       'icon-image': '{icon}',
                       'icon-size': 0.45,
-                      'text-field': '{name}',
+                      'text-field': this.style.title,
                       'text-anchor': 'center',
                       'text-size': 12,
                       'text-offset': [0, 1.5],
@@ -293,8 +361,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                       'line-opacity': ['get', 'stroke-opacity'],
                       'line-width': ['get', 'stroke-width']
                   } as LinePaint),
-            filter: ['==', ['geometry-type'], 'LineString']
+            filter: ['all', ['==', ['geometry-type'], 'LineString']]
         });
+        if (this.iconZoomLevel !== undefined) {
+            this.lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
+        }
         this.lineLayer.initLayer(manager);
 
         this.fillLayer = new GeojsonLayer({
@@ -309,9 +380,15 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 : ({
                       'fill-color': ['get', 'stroke'],
                       'fill-opacity': ['get', 'stroke-opacity']
-                  } as FillPaint)
-            // filter: ['==', ['geometry-type'], 'Polygon']
+                  } as FillPaint),
+            filter: ['all']
         });
+        if (!this.style.fill) {
+            this.fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
+        }
+        if (this.iconZoomLevel !== undefined) {
+            this.fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
+        }
         this.fillLayer.initLayer(manager);
 
         // add reference to this maplayers manager
@@ -320,17 +397,23 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         return this;
     }
 
+    private parsePopupString(f: Feature, s: string) {
+        return s;
+    }
+
     pipeEvents(
-        layer: GeojsonLayer,
+        map: CsMap,
+        layer?: GeojsonLayer,
         handle?: MessageBusHandle
     ): MessageBusHandle | undefined {
-        if (layer.events) {
+        if (layer && layer.events) {
             if (handle !== undefined) {
                 return handle;
             } else {
+                layer.addLayer(map);
                 return layer.events.subscribe(
                     'feature',
-                    (a: string, data: FeatureEventDetails) => {                        
+                    (a: string, data: FeatureEventDetails) => {
                         if (a === CsMap.FEATURE_SELECT) {
                             this.events.publish('feature', a, data);
                         }
@@ -342,9 +425,12 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
 
     removeSubLayer(
         map: CsMap,
-        layer: GeojsonLayer,
+        layer?: GeojsonLayer,
         handle?: MessageBusHandle
     ): MessageBusHandle | undefined {
+        if (!layer) {
+            return;
+        }
         if (layer.events && handle) {
             layer.events.unsubscribe(handle);
             handle = undefined;
@@ -360,23 +446,24 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         }
         this.createCenterSource();
 
-        // add layers
-        this.circleLayer.addLayer(map);
-        this.symbolLayer.addLayer(map);
-        this.lineLayer.addLayer(map);
-        this.fillLayer.addLayer(map);
-
         // subscribe to events
         this.circleHandle = this.pipeEvents(
+            map,
             this.circleLayer,
             this.circleHandle
         );
+        this.centerHandle = this.pipeEvents(
+            map,
+            this.centerLayer,
+            this.centerHandle
+        );
         this.symbolHandle = this.pipeEvents(
+            map,
             this.symbolLayer,
             this.symbolHandle
         );
-        this.lineHandle = this.pipeEvents(this.lineLayer, this.lineHandle);
-        this.fillHandle = this.pipeEvents(this.fillLayer, this.fillHandle);
+        this.lineHandle = this.pipeEvents(map, this.lineLayer, this.lineHandle);
+        this.fillHandle = this.pipeEvents(map, this.fillLayer, this.fillHandle);
 
         this.Visible = true;
     }
@@ -403,6 +490,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             map,
             this.circleLayer,
             this.circleHandle
+        );
+        this.centerHandle = this.removeSubLayer(
+            map,
+            this.centerLayer,
+            this.centerHandle
         );
         this.fillHandle = this.removeSubLayer(
             map,

@@ -2,7 +2,8 @@ import {
     ILayerServiceOptions,
     ILayerService,
     IStartStopService,
-    GeojsonPlusLayer
+    GeojsonPlusLayer,
+    LayerStyle
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
@@ -46,6 +47,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         manager.layers
                     ) {
                         for (const layer of response.data) {
+                            let style = layer.defaultStyle as LayerStyle;                         
                             let s = new LayerSource();                     
                             if (layer.sourceUrl) {
                                 s.url = s.id = layer.sourceUrl;
@@ -56,8 +58,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl.source = s;
+                            gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
+                            gl.style = style;
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;
                             } else {

@@ -5,7 +5,8 @@ import {
     MapLayers,
     FeatureEventDetails,
     IMapLayer,
-    IMapLayerType
+    IMapLayerType,
+    LayerStyle
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import { LngLatBounds } from 'mapbox-gl';
@@ -19,10 +20,11 @@ import {
     ILayerExtensionType
 } from '../classes/ilayer-extension';
 
+
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
     types = ['symbol', 'raster', 'line', 'fill', 'circle'];
 
-	private mapEventsRegistered = false;
+    private mapEventsRegistered = false;
     public getInstance(init?: Partial<IMapLayer>) {
         let result = new GeojsonLayer(init);
         return result;
@@ -38,6 +40,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public mask?: boolean;
     public tags?: string[];
     public color?: string;
+    public style?: LayerStyle;
     public parentId?: string;
     public _parent?: GeojsonLayer;
     public filter?: any;
@@ -235,6 +238,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             }
         }
 
+        l.style = { ...({ title: '{name}', popover: '{name}'  } as LayerStyle), ...l.style };
+       
+
         if (!l.opacity) {
             l.opacity = 100;
         }
@@ -283,8 +289,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             });
             map.map.on('mouseleave', this.id, e => {
                 this.mouseLeave(map, this, e);
-			});
-			this.mapEventsRegistered = true;
+            });
+            this.mapEventsRegistered = true;
         }
     }
 
@@ -347,8 +353,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             mblayer.filter = this.filter;
         }
 
-		this.registerLayerExtensions(this);
-		this.registerMapEvents(map);
+        this.registerLayerExtensions(this);
+        this.registerMapEvents(map);
 
         // remove layer if it already exists
         if (map.map.getLayer(this.id) !== undefined) {
@@ -385,6 +391,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     }
 
     private mouseLeave(map: CsMap, layer: GeojsonLayer, e: any) {
+        map.map.getCanvas().style.cursor = '';
         if (layer.popupContent) this.popup.remove();
         if (layer.events) {
             layer.events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
@@ -401,6 +408,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     }
 
     private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
+        map.map.getCanvas().style.cursor = 'pointer';
         this.createPopup(map, layer, e);
         if (layer.events) {
             layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {

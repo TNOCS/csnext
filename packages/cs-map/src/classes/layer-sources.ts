@@ -30,6 +30,7 @@ export class LayerSources implements IDatasource {
 
     public initSource(id: string, source: LayerSource): LayerSource {
         source.id = id;
+        
         return plainToClass(LayerSource, source);
     }
 

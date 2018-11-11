@@ -1,4 +1,4 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction} from '..';
+import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle} from '..';
 import {MessageBusService} from '@csnext/cs-core';
 import { ILayerExtensionType} from './ilayer-extension';
 import { MessageBusHandle } from '@csnext/cs-core/dist/utils/message-bus/message-bus-handle';
@@ -31,6 +31,7 @@ export interface IMapLayer {
     setOpacity(value: number);
     getLayerActions(): ILayerAction[];
     removeLayer(map: CsMap);
+    style?: LayerStyle,
     events?: MessageBusService;
     extensions?: ILayerExtensionType[];
     filter?: any;

@@ -17,6 +17,7 @@ export * from './classes/imap-layer';
 export * from './classes/ilayer-extension';
 export * from './classes/layer-service-options';
 export * from './classes/ilayer-action';
+export * from './classes/layer-style';
 
 // components
 export * from './components/layer-selection/layer-selection';
@@ -24,6 +25,7 @@ export * from './components/layer-selection/layer-selection-options';
 export * from './components/cs-map/cs-map';
 
 // layers
+export * from './layers/base-layer';
 export * from './layers/geojson-layer';
 export * from './layers/mask-layer';
 export * from './layers/geojson-plus-layer';

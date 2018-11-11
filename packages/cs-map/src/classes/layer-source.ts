@@ -28,14 +28,14 @@ export class LayerSource {
     }
 
     /** make sure all features have an id and properties object */
-    private InitGeoJsonIDs(geojson: FeatureCollection) {
+    private InitGeoJsonFeatures(geojson: FeatureCollection) {
         let count = 0;
         if (geojson && geojson.features) {
             for (const f of geojson.features) {
                 if (f.id === undefined) {
                     f.id = count;
                     count += 1;
-                }
+                }                
                 if (!f.properties) f.properties = {};
             }
         }
@@ -57,7 +57,7 @@ export class LayerSource {
                     .get(this.url)
                     .then(response => {
                         if (response) {
-                            this._geojson = this.InitGeoJsonIDs(response.data);
+                            this._geojson = this.InitGeoJsonFeatures(response.data);
                             this._loaded = true;
                             resolve(this._geojson);
                         }
