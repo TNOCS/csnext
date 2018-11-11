@@ -83,7 +83,7 @@ export class MapLayers implements IDatasource {
                     // if not subscribe
                     ml._featureEventHandle = ml.events.subscribe('feature', (a: string, f: Feature) => {
                         if (a === CsMap.FEATURE_SELECT) {
-                            alert('Feature selected');
+                            // alert('Feature selected');
                         }
                     });
                 }
@@ -249,7 +249,7 @@ export class MapLayers implements IDatasource {
             this.MapControl
         ) {
             const wasVisible = ml.Visible;
-            if (wasVisible) ml._manager!.map!.map!.removeLayer(ml.id!);
+            if (wasVisible && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) ml._manager!.map!.map!.removeLayer(ml.id!);
             const newSource = {
                 type: ml._source.type,
                 tiles: [ml._source.url],
