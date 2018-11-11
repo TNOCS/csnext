@@ -168,11 +168,11 @@ export class CsMap extends Vue {
 
                             break;
                         case 'disabled': {
-                            this.removeLayer(layer);
+                            // this.removeLayer(layer);
                             break;
                         }
                         case 'remove': {
-                            this.removeLayer(layer);
+                            // this.removeLayer(layer);
                             break;
                         }
                     }

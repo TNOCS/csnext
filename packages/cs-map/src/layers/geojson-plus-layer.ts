@@ -223,7 +223,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             });
 
             this.circleLayer = this.circleLayer.initLayer(this._manager);
-            // publish all events received from the circle layer            
+            // publish all events received from the circle layer
         }
     }
 
@@ -278,7 +278,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             filter: ['==', ['geometry-type'], 'Point']
         });
         this.symbolLayer.initLayer(manager);
-        
 
         this.lineLayer = new GeojsonLayer({
             id: this.id + '-line',
@@ -309,42 +308,53 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 ? this.fillPaint
                 : ({
                       'fill-color': ['get', 'stroke'],
-                      'fill-opacity': ['get', 'stroke-opacity']                      
+                      'fill-opacity': ['get', 'stroke-opacity']
                   } as FillPaint)
             // filter: ['==', ['geometry-type'], 'Polygon']
         });
         this.fillLayer.initLayer(manager);
-        
+
         // add reference to this maplayers manager
         this._manager = manager;
         this._initialized = true;
         return this;
     }
-    pipeEvents(layer: GeojsonLayer, handle?: MessageBusHandle): MessageBusHandle | undefined {
+
+    pipeEvents(
+        layer: GeojsonLayer,
+        handle?: MessageBusHandle
+    ): MessageBusHandle | undefined {
         if (layer.events) {
             if (handle !== undefined) {
                 return handle;
             } else {
                 return layer.events.subscribe(
                     'feature',
-                    (a: string, data: FeatureEventDetails) => {
-                        this.events.publish('feature', a, data);
+                    (a: string, data: FeatureEventDetails) => {                        
+                        if (a === CsMap.FEATURE_SELECT) {
+                            this.events.publish('feature', a, data);
+                        }
                     }
                 );
             }
         }
     }
 
-    removeSubLayer(map: CsMap, layer: GeojsonLayer, handle?: MessageBusHandle) {
+    removeSubLayer(
+        map: CsMap,
+        layer: GeojsonLayer,
+        handle?: MessageBusHandle
+    ): MessageBusHandle | undefined {
         if (layer.events && handle) {
             layer.events.unsubscribe(handle);
             handle = undefined;
         }
         layer.removeLayer(map);
-
+        return handle;
     }
 
     public addLayer(map: CsMap) {
+        console.log('Adding layer');
         if (!this.symbolLayer || !this.lineLayer || !this._manager) {
             return;
         }
@@ -357,26 +367,49 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         this.fillLayer.addLayer(map);
 
         // subscribe to events
-        this.circleHandle = this.pipeEvents(this.circleLayer, this.circleHandle);
-        this.symbolHandle = this.pipeEvents(this.symbolLayer, this.symbolHandle);
-        this.lineHandle = this.pipeEvents(this.lineLayer,this.lineHandle);
+        this.circleHandle = this.pipeEvents(
+            this.circleLayer,
+            this.circleHandle
+        );
+        this.symbolHandle = this.pipeEvents(
+            this.symbolLayer,
+            this.symbolHandle
+        );
+        this.lineHandle = this.pipeEvents(this.lineLayer, this.lineHandle);
         this.fillHandle = this.pipeEvents(this.fillLayer, this.fillHandle);
-        
+
         this.Visible = true;
     }
 
-
     public removeLayer(map: CsMap) {
+        console.log('Removing layer');
+
         if (!this.symbolLayer || !this.lineLayer) {
             return;
         }
 
         // remove event handles
-        this.removeSubLayer(map, this.lineLayer, this.lineHandle);
-        this.removeSubLayer(map, this.symbolLayer, this.symbolHandle);
-        this.removeSubLayer(map, this.circleLayer, this.circleHandle);
-        this.removeSubLayer(map, this.fillLayer, this.fillHandle);
-        
+        this.lineHandle = this.removeSubLayer(
+            map,
+            this.lineLayer,
+            this.lineHandle
+        );
+        this.symbolHandle = this.removeSubLayer(
+            map,
+            this.symbolLayer,
+            this.symbolHandle
+        );
+        this.circleHandle = this.removeSubLayer(
+            map,
+            this.circleLayer,
+            this.circleHandle
+        );
+        this.fillHandle = this.removeSubLayer(
+            map,
+            this.fillLayer,
+            this.fillHandle
+        );
+
         this.Visible = false;
     }
 
