@@ -10,9 +10,9 @@ import { StylesControl } from 'mapbox-gl-controls';
 import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import  MapboxDraw  from '@mapbox/mapbox-gl-draw';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
 
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 
 import {
     MapLayers,
@@ -51,9 +51,7 @@ export class CsMap extends Vue {
 
     /** register new layertype  */
     public static AddLayerExtension(type: ILayerExtensionType) {
-        if (
-            CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1
-        ) {
+        if (CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1) {
             CsMap.layerExtensions.push(type);
         }
     }
@@ -299,7 +297,7 @@ export class CsMap extends Vue {
                 });
             }
 
-            this.mapDraw = new MapboxDraw()
+            this.mapDraw = new MapboxDraw();
             this.map.addControl(this.mapDraw, 'top-left');
 
             // check if map has loaded
@@ -343,7 +341,7 @@ export class CsMap extends Vue {
         //   });
     }
 
-    private addSource(source: LayerSource) {
+    public addSource(source: LayerSource) {
         if (source.id) {
             let original = this.map.getSource(source.id);
             if (original !== undefined) {
@@ -374,28 +372,12 @@ export class CsMap extends Vue {
         }
     }
 
-    private addLayerSourceToMap(layer: LayerSource) {
-        if (layer.id) {
-            this.map.addLayer({
-                id: layer.id,
-                type: 'fill',
-                source: layer.id
-            });
-        }
-    }
-
-    initLayerSource(source: LayerSource): any {
+    public initLayerSource(source: LayerSource): any {
         // load datasource
         if (source.id && source._geojson) {
             if (!this.map.isSourceLoaded(source.id)) {
                 this.addSource(source);
             }
-            this.addLayerSourceToMap(source);
-        } else {
-            if (source.url) {
-            }
-
-            // load source
         }
     }
 }

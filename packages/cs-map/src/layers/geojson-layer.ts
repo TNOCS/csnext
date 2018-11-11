@@ -38,7 +38,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 	public popupContent?: string | Function | undefined;
 	public extensions?: ILayerExtensionType[];
 	public _extensions: ILayerExtension[] = [];
-	private _opacity?: number;
+	private _opacity?: number;	
 
 	constructor(init?: Partial<IMapLayer>) {
 		Object.assign(this, init);
@@ -245,7 +245,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 					}
 				}
 			} catch (e) {
-				debugger;
+			
 			}
 			this.type = 'fill';
 			// this.source = { type: 'geojson', data: difference.default(bboxPoly, mask)}
