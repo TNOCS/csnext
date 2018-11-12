@@ -5,5 +5,6 @@ export class LayerStyle {
     public title? : string;
     public popup? : string;
     public fill?: boolean;
+    public line?: boolean;
     public pointCircle?: boolean;
 }
