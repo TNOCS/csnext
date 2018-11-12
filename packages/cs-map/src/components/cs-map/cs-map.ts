@@ -297,8 +297,10 @@ export class CsMap extends Vue {
                 });
             }
 
-            this.mapDraw = new MapboxDraw();
-            this.map.addControl(this.mapDraw, 'top-left');
+            if (mo.showDraw) {
+                this.mapDraw = new MapboxDraw();
+                this.map.addControl(this.mapDraw, 'top-left');
+            }
 
             // check if map has loaded
             this.map.on('load', e => {
