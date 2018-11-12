@@ -5,12 +5,16 @@ import {Feature, Point} from 'geojson';
 
 export interface ITimeInterpolationExtensionOptions {
     timeProperty?: string;
+    showFeatureBeforeStart?: boolean;
+    showFeatureAfterEnd?: boolean;
 }
 
 export class TimeInterpolationExtension implements ILayerExtension, ILayerExtensionType, ITimeInterpolationExtensionOptions {
     public id: string = 'time-interpolation';
     public title?: string | undefined;
     public timeProperty?: string;
+    public showFeatureBeforeStart?: boolean;
+    public showFeatureAfterEnd?: boolean;
     private _layer?: IMapLayer;
     private _timeHandle?: MessageBusHandle;
     private _currentTime?: number;
@@ -73,22 +77,23 @@ export class TimeInterpolationExtension implements ILayerExtension, ILayerExtens
 
     private updateInterpolation() {
         if (!this.timeProperty || !this._layer || !this._layer._source || !this._originalFeatures || !this._originalFeatures.length) return;
+        this._interpolatedFeature = undefined;
         const source = this._layer._source;
         const manager = this._layer._manager;
         if (this.timeProperty && source && source._geojson && source._geojson.features) {
-            if (!this._currentTime) {
+            if (!this._currentTime && this.showFeatureBeforeStart) {
                 this._interpolatedFeature = this._originalFeatures[0];
             } else {
                 //Loop over all features sorted by increasing time
                 const found = this.findInterpolatedFeatureForCurrentTime();
-                if (!found) {
+                if (!found && this.showFeatureAfterEnd) {
                     this._interpolatedFeature = this._originalFeatures[this._originalFeatures.length - 1];
                 }
             }
-            if (this._interpolatedFeature && source && source._geojson && source._geojson.features) {
-                source!._geojson!.features = [this._interpolatedFeature];
+            if (source && source._geojson && source._geojson.features) {
+                source!._geojson!.features = this._interpolatedFeature ? [this._interpolatedFeature] : [];
                 manager!.updateLayerSource(this._layer);
-                console.log(`Updated interpolation feature to ${JSON.stringify(this._interpolatedFeature.geometry.coordinates)}`);
+                console.log(`Updated interpolation feature to ${this._interpolatedFeature ? JSON.stringify(this._interpolatedFeature.geometry.coordinates) : 'undefined'}`);
             }
         }
     }
@@ -100,9 +105,12 @@ export class TimeInterpolationExtension implements ILayerExtension, ILayerExtens
                 //Find the first feature with a timestamp later than the current time
                 if (this._currentTime! < fTime) {
                     const featureAfterNow = JSON.parse(JSON.stringify(f));
-                    if (fIndex === 0) {
+                    if (fIndex === 0 && this.showFeatureBeforeStart) {
                         //If the found feature is the first feature, use it directly
                         this._interpolatedFeature = featureAfterNow;
+                        return true;
+                    } else if (fIndex === 0 && !this.showFeatureBeforeStart) {
+                        this._interpolatedFeature = undefined;
                         return true;
                     } else {
                         //Otherwise interpolate the previous and current features
