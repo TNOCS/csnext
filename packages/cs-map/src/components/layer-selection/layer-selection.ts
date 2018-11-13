@@ -10,6 +10,7 @@ export interface ILayerGroup {
     title: string;
     color: string;
     layers: IMapLayer[];
+    state: "all" | "none" | "some";
 }
 
 @Component({
@@ -26,6 +27,7 @@ export class LayerSelection extends Vue {
     public groupsexpanded: boolean[] = [];
     public showMenu = false;
     public filter: string = '';
+    public Groups :  { [id: string]: ILayerGroup } = {};
 
     
 
@@ -40,7 +42,13 @@ export class LayerSelection extends Vue {
         super();
     }
 
+    @Watch('filter')
+    filterChanged(search: string) {
+        this.updateGroups();
+    }
+
     public mounted() {
+        this.updateGroups();
         if (localStorage.layergroupsexpanded) {
             try {
                 this.groupsexpanded = JSON.parse(localStorage.layergroupsexpanded);
@@ -54,7 +62,22 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public get Groups(): { [id: string]: ILayerGroup } {
+
+
+    public toggleGroup(group: ILayerGroup) {
+        if (group.layers && group.layers.findIndex(l => l.Visible === true)!==-1) {
+            for (const layer of group.layers) {
+                if (layer._manager) { layer._manager.hideLayer(layer); }
+            }        
+        } else {
+            for (const layer of group.layers) {
+                if (layer._manager) { layer._manager.showLayer(layer); }
+            }
+        }
+    }
+    
+
+    public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
         if (this.MapManager && this.MapManager.layers) {
             this.MapManager.layers.forEach(l => {
@@ -78,8 +101,25 @@ export class LayerSelection extends Vue {
             while (this.groupsexpanded.length < Object.keys(res).length) {
                 this.groupsexpanded.push(true);
             }
+
+            for (const group in res) {
+                if (res.hasOwnProperty(group)) {
+                    const element = res[group];
+                    if (element.layers && element.layers.findIndex(l => l.Visible === true)!==-1) {
+                        element.state = "some";
+                    } else {
+                        element.state = "none"
+                    }
+                    console.log(group + ' - ' + element.state);
+                    console.log('Updating groups');
+                    
+                }
+            }
+            // update group state
+           
+
         }
-        return res;
+        this.Groups = res;
     }
 
     public toggleShowMore(layer: IMapLayer) {
@@ -149,7 +189,7 @@ export class LayerSelection extends Vue {
             res[t].layers.push(l);
             this.groupsexpanded.push(true);
         } else {
-            res[t] = { title: t, color: 'gray', layers: [l] };
+            res[t] = { title: t, color: 'gray', layers: [l], state: 'none' };
         }
     }
 
@@ -191,13 +231,19 @@ export class LayerSelection extends Vue {
     //     }
     // }
 
+    @Watch('MapManager.layers')
+    layersChanged(d: any) {
+        this.updateGroups();
+    }
+
     @Watch('widget')
     dataLoaded(n: MapLayers) {
         console.log('layers updated');
         console.log(this.widget);
         if (this.MapManager && this.MapManager.events) {
+            this.updateGroups();
             this.MapManager.events.subscribe('layer', (a: string, e: any) => {
-                this.$forceUpdate();
+                this.updateGroups();
             });
         }
 

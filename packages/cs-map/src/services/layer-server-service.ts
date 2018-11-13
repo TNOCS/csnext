@@ -32,6 +32,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
+        
     }
 
     async Start(manager: MapLayers) {
@@ -47,7 +48,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         manager.layers
                     ) {
                         for (const layer of response.data) {
-                            let style = layer.defaultStyle as LayerStyle;                         
+                            let style = layer.style as LayerStyle;                         
                             let s = new LayerSource();                     
                             if (layer.sourceUrl) {
                                 s.url = s.id = layer.sourceUrl;

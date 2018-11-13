@@ -2,7 +2,8 @@
     <v-text-field solo v-if="widget.options.searchEnabled" class="layer-filter-field" v-model="filter" label="filter" append-icon="search"></v-text-field>
     <v-expansion-panel v-if="widget.content" v-model="groupsexpanded" expand>
         <v-expansion-panel-content v-for="(group, key) in Groups" class="layer-group-title" :key="key" expand>
-            <div slot="header">{{ group.title}}</div>
+            <div slot="header"><v-checkbox class="layer-group-checkbox" v-model="group.state === 'some'" @click.stop="toggleGroup(group)" left></v-checkbox><span class="layer-group-title">{{ group.title}}</span></div>
+            
             <div v-for="layer in group.layers" :key="layer.id">
                 <v-layout class="layer-group-item" @contextmenu="showLayerMenu" :id="layer.id" :class="{'layer-group-item-selected':layer.Visible}"
                     :style="{'border-left-color': layer.color}">

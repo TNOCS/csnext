@@ -121,6 +121,7 @@ export class MapLayers implements IDatasource {
 
     public hideLayer(ml: string | IMapLayer) {
         if (!this.layers) return;
+        this.events.publish('layer', 'removed', ml);
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.hideLayer(layer);
@@ -133,8 +134,7 @@ export class MapLayers implements IDatasource {
             if (this.map) {
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
-            }
-            
+            }            
         }
     
     }
@@ -313,6 +313,7 @@ export class MapLayers implements IDatasource {
                     .then(m => resolve(m))
                     .catch(e => reject(e));
             }
+            this.events.publish('layer', 'added', ml);
         });
     }
 
