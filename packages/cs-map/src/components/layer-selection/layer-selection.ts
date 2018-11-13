@@ -109,15 +109,9 @@ export class LayerSelection extends Vue {
                         element.state = "some";
                     } else {
                         element.state = "none"
-                    }
-                    console.log(group + ' - ' + element.state);
-                    console.log('Updating groups');
-                    
+                    }                   
                 }
             }
-            // update group state
-           
-
         }
         this.Groups = res;
     }
