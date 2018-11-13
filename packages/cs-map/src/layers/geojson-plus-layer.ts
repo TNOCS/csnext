@@ -301,7 +301,8 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             };
         }
 
-        if ((this.style.pointCircle = true)) {
+        if ((this.style.pointCircle === true)) {
+            console.log('PointCircle: ' + this.id);
             this.circleLayer = new GeojsonLayer({
                 id: this.id + '-circles',
                 type: 'circle',
@@ -319,8 +320,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                           'circle-stroke-color': ['get', 'stroke'],
                           'circle-stroke-opacity': 1
                       } as CirclePaint),
-                filter: ['==', ['geometry-type'], 'Point']
+                filter: ['all']
             });
+            if (this.style.pointCircle) {
+                this.circleLayer.filter.push(['==',['geometry-type'], 'Point']);
+            }
             this.circleLayer.initLayer(manager);
         }
 
