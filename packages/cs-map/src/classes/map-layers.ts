@@ -237,9 +237,13 @@ export class MapLayers implements IDatasource {
             typeof geojson === 'string'
                 ? (JSON.parse(geojson) as FeatureCollection)
                 : geojson;
+        if (!ml._source && ml.source) { ml._source = ml.source as LayerSource; };
         if (g && ml._source && ml._source.id && this.MapControl) {
             let sourceId = ml._source.id;
-            (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
+            let source = (this.MapControl.getSource(sourceId) as GeoJSONSource);
+            if (source) {
+                source.setData(g);
+            }
         }
         if (
             ml._source &&

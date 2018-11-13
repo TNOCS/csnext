@@ -21,9 +21,11 @@ export class LayerSource {
 
     constructor(geojson?: FeatureCollection) {
         if (geojson) {
+            this.id = guidGenerator(),
             this._geojson = geojson;
             this._geojson.type = "FeatureCollection";
             this.type = "geojson";
+            this._loaded = true;
         }
     }
 

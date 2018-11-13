@@ -270,15 +270,20 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         if (this.id === undefined) {
             this.id = guidGenerator();
         }
-        if (typeof this.source === 'string') {
-            if (
-                manager._sources &&
-                manager._sources.layers.hasOwnProperty(this.source)
-            ) {
-                this._source = manager._sources.layers[this.source];
+        if (!this._source) {
+            if (typeof this.source === 'string') {
+                if (
+                    manager._sources &&
+                    manager._sources.layers.hasOwnProperty(this.source)
+                ) {
+                    this._source = manager._sources.layers[this.source];
+                }
+            } else {
+                this._source = this.source = plainToClass(
+                    LayerSource,
+                    this.source
+                );
             }
-        } else {
-            this._source = this.source = plainToClass(LayerSource, this.source);
         }
         if (this.title === undefined && this._source && this._source.id) {
             this.title = this._source.id;
@@ -301,7 +306,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             };
         }
 
-        if ((this.style.pointCircle === true)) {
+        if (this.style.pointCircle === true) {
             console.log('PointCircle: ' + this.id);
             this.circleLayer = new GeojsonLayer({
                 id: this.id + '-circles',
@@ -323,7 +328,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 filter: ['all']
             });
             if (this.style.pointCircle) {
-                this.circleLayer.filter.push(['==',['geometry-type'], 'Point']);
+                this.circleLayer.filter.push([
+                    '==',
+                    ['geometry-type'],
+                    'Point'
+                ]);
             }
             this.circleLayer.initLayer(manager);
         }
