@@ -364,7 +364,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             filter: ['all']
         });
         if (!this.style.line) {
-            this.fillLayer.filter.push(['==', ['geometry-type'], 'LineString']);
+            this.lineLayer.filter.push(['==', ['geometry-type'], 'LineString']);
         }
         if (this.iconZoomLevel !== undefined) {
             this.lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
