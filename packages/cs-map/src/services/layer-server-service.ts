@@ -62,13 +62,17 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
+                            
                             gl.style = style;
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;
                             } else {
                                 gl.type = layer.type;
                             }
-                            gl.tags = this.options.tags;
+                            gl.tags = [];
+                            if (this.options.tags) { gl.tags = this.options.tags; }
+                            if (layer.tags) { gl.tags = [...gl.tags, ...layer.tags]; }
+                            
                             // gl.paint = {
                             //     'line-color': ['get', 'stroke'],
                             //     'line-opacity': ['get', 'stroke-opacity'],
