@@ -11,8 +11,9 @@ import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-
+import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import radiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 
 import {
     MapLayers,
@@ -295,8 +296,25 @@ export class CsMap extends Vue {
             }
 
             if (this.mapOptions.showDraw) {
-                this.mapDraw = new MapboxDraw();
+                this.mapDraw = new MapboxDraw({
+                    styles: _mapDrawOption,
+    
+                    modes: {
+                        ...MapboxDraw.modes,
+                        draw_circle: radiusMode // eslint-disable-line camelcase
+                    },
+                    userProperties: true,
+                    displayControlsDefault: true,
+                    controls: {
+                        circle: true,
+                        polygon: true,
+                        trash: true
+                    },
+                });                
                 this.map.addControl(this.mapDraw, 'top-left');
+                this.map.on('draw.create', e => {
+                    console.log(e.features);
+                })
             }
 
             // check if map has loaded
@@ -306,6 +324,7 @@ export class CsMap extends Vue {
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
                 }
+                this.mapDraw.changeMode('draw_circle');
             });
         });
     }
@@ -340,14 +359,16 @@ export class CsMap extends Vue {
         // });
 
         if (this.manager) {
-            let rl = new GeojsonLayer();
+            let rl = new GeojsonPlusLayer();
+            
             rl.title = 'Search result';
-            (rl.paint = {
+            (rl.circlePaint = {
                 'circle-radius': 10,
                 'circle-color': 'grey'
             } as CirclePaint),
                 (rl.tags = ['search']);
-            rl.type = 'circle';
+            rl.type = 'poi';
+            rl.style = { pointCircle: true, icon: 'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'}
             rl.popupContent = f => {
                 if (f.features) {
                     return f.features[0].properties['place_name'];

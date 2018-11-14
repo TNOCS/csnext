@@ -1,0 +1,53 @@
+{
+    "center": {
+        "title": "绘制中心点",
+        "enable": [
+            "point"
+        ],
+        "limitFeatures": 1,
+        "properties": {},
+        "layer": "circle",
+        "paint": {
+            "circle-stroke-width": 2,
+            "circle-stroke-color": "#fff",
+            "circle-stroke-opacity": 0.8,
+            "circle-radius": 4,
+            "circle-color": "#fd9c27",
+            "circle-opacity": 0.6
+        }
+    },
+    "primary": {
+        "title": "绘制核心辐射区域",
+        "enable": [
+            "polygon",
+            "circle"
+        ],
+        "limitFeatures": 1,
+        "properties": {
+            "type": "primary"
+        },
+        "layer": "fill",
+        "paint": {
+            "fill-antialias": true,
+            "fill-opacity": 0.2,
+            "fill-color": "#fd9c27"
+        }
+    },
+    "secondary": {
+        "title": "绘制次级辐射区域",
+        "enable": [
+            "polygon",
+            "circle"
+        ],
+        "limitFeatures": 4,
+        "properties": {
+            "type": "secondary"
+        },
+        "layer": "fill",
+        "paint": {
+            "fill-antialias": true,
+            "fill-opacity": 0.2,
+            "fill-color": "#fd9c27"
+        }
+    }
+}

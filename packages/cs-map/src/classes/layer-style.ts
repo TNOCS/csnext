@@ -7,4 +7,5 @@ export class LayerStyle {
     public fill?: boolean;
     public line?: boolean;
     public pointCircle?: boolean;
+    public icon?: string;
 }

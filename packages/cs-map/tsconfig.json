@@ -12,7 +12,9 @@
       "experimentalDecorators": true,
       "declaration": true,
       "emitDecoratorMetadata": true,
-      "allowSyntheticDefaultImports": true
+      "allowSyntheticDefaultImports": true,
+      "resolveJsonModule": true
+
     },
     "exclude": ["./dist"],
     "rules": {

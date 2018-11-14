@@ -9,7 +9,7 @@ import {
     LayerStyle
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import { LngLatBounds } from 'mapbox-gl';
+import { LngLatBounds, SymbolPaint, SymbolLayout } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
@@ -238,9 +238,6 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             }
         }
 
-        l.style = { ...({ title: '{name}', popover: '{name}'  } as LayerStyle), ...l.style };
-       
-
         if (!l.opacity) {
             l.opacity = 100;
         }
@@ -255,8 +252,25 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             l.color = 'red';
         }
 
+        
+        l.style = { ...({ title: '{name}', popover: '{name}'  } as LayerStyle), ...l.style };
+       
+        if (l.style.icon) {
+            this.addImage(l.id, l.style.icon);
+            (this.layout as SymbolLayout)['icon-image'] = l.id;
+        }
         l._initialized = true;
         return l;
+    }
+
+    public addImage(id: string, url: string) {
+        if (this._manager && this._manager.MapControl) {
+            this._manager.MapControl.loadImage(url, (error, image) => {
+                if (!error) {
+                    this._manager!.MapControl!.addImage(id,image);
+                }
+            });            
+        }
     }
 
     private registerLayerExtensions(l: IMapLayer) {
