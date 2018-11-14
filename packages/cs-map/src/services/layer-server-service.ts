@@ -70,9 +70,26 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             } else {
                                 gl.type = layer.type;
                             }
+                            if (layer.style && layer.style.mapbox) {
+                                gl.circlePaint = layer.style.mapbox.circlePaint;
+                            }
                             gl.tags = [];
                             if (this.options.tags) { gl.tags = this.options.tags; }
                             if (layer.tags) { gl.tags = [...gl.tags, ...layer.tags]; }
+                            if (gl.isEditable) {                               
+                                gl.events.subscribe('source',(a: string, s: LayerSource) => {
+                                    if (a === 'updated' && this.options) {
+                                        const url = this.options.url + 'sources/' + layer.id;
+                                        console.log(gl._source!._geojson);
+                                        axios.put(url, gl._source!._geojson, { headers: { 'Content-Type' : 'application/json'}}).then(
+                                            r => {
+                                                console.log(r);
+                                            }).catch( e => {
+                                                console.log(e);
+                                            })
+                                        }                    
+                                })
+                            }
                             
                             // gl.paint = {
                             //     'line-color': ['get', 'stroke'],
