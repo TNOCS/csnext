@@ -3,13 +3,13 @@ import { LayerSource } from './layer-source';
 import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
-import { FeatureCollection, Feature } from 'geojson';
+import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';
 import {
     LayerServiceBase,
     ILayerService,
     IStartStopService
 } from './layer-service';
-import { GeoJSONSource, RasterSource } from 'mapbox-gl';
+import { GeoJSONSource, RasterSource, LngLat, LngLatBounds } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
@@ -120,6 +120,21 @@ export class MapLayers implements IDatasource {
         if (this.map) {
             this.map.zoomLayer(layer);
         }
+    }
+
+    public zoomFeature(layer: IMapLayer, featureId: string) {
+        if (!layer._source || !layer._source._geojson || !this.map) return;
+        const feature = layer._source._geojson.features.find(f => f.id === featureId);
+        if (!feature) return;
+        var coords: [number, number] | undefined = undefined;
+        if (feature.geometry.type === 'Point') {
+            coords = (feature.geometry as Point).coordinates as [number, number];
+        } else if (feature.geometry.type === 'LineString') {
+            coords = (feature.geometry as LineString).coordinates[0] as [number, number];
+        } else if (feature.geometry.type === 'Polygon') {
+            coords = (feature.geometry as Polygon).coordinates[0][0] as [number, number];
+        }
+        if (coords) this.map.map.easeTo({center: LngLat.convert(coords)});
     }
 
     public hideLayer(ml: string | IMapLayer) {

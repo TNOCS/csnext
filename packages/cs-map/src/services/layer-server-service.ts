@@ -63,6 +63,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
+                            gl.id = layer.id;
                             
                             gl.style = style;
                             if (layer.sourceType) {
