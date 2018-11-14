@@ -70,7 +70,7 @@ export class MapLayers implements IDatasource {
         return new Promise((resolve, reject) => {
             ml.Visible = true;
             if (ml.isEditable) {
-
+                this.activeDrawLayer = ml;
             }
             if (this.map) {
                 this.map
