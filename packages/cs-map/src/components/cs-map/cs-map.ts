@@ -304,16 +304,18 @@ export class CsMap extends Vue {
                         draw_circle: radiusMode // eslint-disable-line camelcase
                     },
                     userProperties: true,
-                    displayControlsDefault: true,
-                    controls: {
-                        circle: true,
-                        polygon: true,
-                        trash: true
-                    },
+                    displayControlsDefault: true,                    
                 });                
                 this.map.addControl(this.mapDraw, 'top-left');
-                this.map.on('draw.create', e => {
-                    console.log(e.features);
+                this.map.on('draw.create', (e : GeoJSON.FeatureCollection) => {
+                    if (this.manager && this.manager.activeDrawLayer) {                        
+                        let source = this.manager.activeDrawLayer._source;
+                        if (source && source._geojson) {
+                            source._geojson.features = [...source._geojson.features, ...e.features];
+                            this.manager.updateLayerSource(this.manager.activeDrawLayer, source._geojson);
+                        }
+                    }
+                    // console.log(e.features);
                 })
             }
 
@@ -324,7 +326,7 @@ export class CsMap extends Vue {
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
                 }
-                this.mapDraw.changeMode('draw_circle');
+                // this.mapDraw.changeMode('draw_circle');
             });
         });
     }
@@ -371,7 +373,7 @@ export class CsMap extends Vue {
             rl.style = { pointCircle: true, icon: 'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'}
             rl.popupContent = f => {
                 if (f.features) {
-                    return f.features[0].properties['place_name'];
+                    return f.features[0].properties['place_name'];                    
                 }
             };
 

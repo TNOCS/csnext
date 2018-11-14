@@ -396,7 +396,6 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     }
 
     private click(layer: GeojsonLayer, e: any) {
-        console.log('Got click');
         if (layer.events) {
             layer.events.publish('feature', CsMap.FEATURE_SELECT, {
                 features: e.features,
