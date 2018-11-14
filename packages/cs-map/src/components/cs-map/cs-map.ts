@@ -239,7 +239,7 @@ export class CsMap extends Vue {
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
             // ad navigation control
-            this.mapOptions=  {
+            this.mapOptions = {
                 ...{
                     showCompass: true,
                     showZoom: true,
@@ -303,79 +303,90 @@ export class CsMap extends Vue {
             this.map.on('load', e => {
                 this.startServices();
                 this.mapLoaded(e);
-                if (this.mapOptions.showGeocoder){ this.addGeocoder(); }
+                if (this.mapOptions.showGeocoder) {
+                    this.addGeocoder();
+                }
             });
         });
     }
 
     private addGeocoder() {
+        this.map.on('moveend', () => {
+            if (this.map.getZoom() > 9) {
+                var center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
+                geocoder.setProximity({
+                    longitude: center.lng,
+                    latitude: center.lat
+                });
+            } else {
+                geocoder.setProximity(null);
+            }
+        });
 
-            this.map.on('moveend', () => {
-                if (this.map.getZoom() > 9) {
-                    var center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
-                    geocoder.setProximity({
-                        longitude: center.lng,
-                        latitude: center.lat
-                    });
-                } else {
-                    geocoder.setProximity(null);
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            country: 'nl',
+            limit: 8
+        });
+
+        this.map.addControl(geocoder);
+
+        // this.map.addSource('single-point', {
+        //     type: 'geojson',
+        //     data: {
+        //         type: 'FeatureCollection',
+        //         features: []
+        //     }
+        // });
+
+        if (this.manager) {
+            let rl = new GeojsonLayer();
+            rl.title = 'Search result';
+            (rl.paint = {
+                'circle-radius': 10,
+                'circle-color': 'grey'
+            } as CirclePaint),
+                (rl.tags = ['search']);
+            rl.type = 'circle';
+            rl.popupContent = f => {
+                if (f.features) {
+                    return f.features[0].properties['place_name'];
+                }
+            };
+
+            rl.source = new LayerSource({
+                type: 'FeatureCollection',
+                features: []
+            });
+            this.manager.addLayer(rl).then(l => {
+                if (l.events) {
+                    l.events.subscribe('feature', (a: string, f: Feature) => {
+                        if (a === CsMap.FEATURE_SELECT) {
+                            
+                        }
+                    })
+                }
+            })
+            
+
+            geocoder.on('results', ev => {
+                if (this.manager) {
+                    for (const feature of ev.features) {
+                        feature.properties['place_name'] = feature.place_name;
+                    }
+                    this.manager.updateLayerSource(rl, ev);
                 }
             });
 
-            var geocoder = new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                country: 'nl',
-                limit: 8
+            geocoder.on('clear', ev => {
+                if (this.manager) {
+                    this.manager.updateLayerSource(rl, {
+                        type: 'FeatureCollection',
+                        features: []
+                    });
+                }
             });
-
-            this.map.addControl(geocoder);
-
-            // this.map.addSource('single-point', {
-            //     type: 'geojson',
-            //     data: {
-            //         type: 'FeatureCollection',
-            //         features: []
-            //     }
-            // });
-
-            if (this.manager) {
-                let rl = new GeojsonLayer();                
-                rl.title = 'Search result';
-                (rl.paint = {
-                    'circle-radius': 10,
-                    'circle-color': 'grey'
-                } as CirclePaint),
-                    (rl.tags = ['search']);
-                rl.type = 'circle';
-                rl.popupContent = (f) => {
-                    if (f.features) {
-                        return f.features[0].properties['place_name'];
-                    }
-                };
-
-                rl.source = new LayerSource({
-                    type: 'FeatureCollection',
-                    features: []
-                });
-                this.manager.addLayer(rl);
-                
-                geocoder.on('results', ev => {
-                    if (this.manager) {
-                        for (const feature of ev.features) {
-                            feature.properties['place_name'] = feature.place_name;
-                            
-                        }
-                        this.manager.updateLayerSource(rl, ev);
-                    }                    
-                });
-
-                geocoder.on('clear', ev => {
-                    if (this.manager) {
-                        this.manager.updateLayerSource(rl, { type: 'FeatureCollection', features: []});
-                    }
-                });
-            }
-        
+        }
     }
 
     private mapLoaded(e: any) {
