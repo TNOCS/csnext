@@ -39,7 +39,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
-                .get(this.options.url)
+                .get(this.options.url + 'layers/')
                 .then(response => {
                     if (
                         response &&
@@ -50,15 +50,16 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         for (const layer of response.data) {
                             let style = layer.style as LayerStyle;                         
                             let s = new LayerSource();                     
-                            if (layer.sourceUrl) {
-                                s.url = s.id = layer.sourceUrl;
+                            // if (layer.sourceUrl) {
+                            //     s.url = s.id = layer.sourceUrl;
                                 
-                            } else {
-                                s.url = s.id = this.options.url + layer.id;
-                            }
+                            // } else {
+                                s.url = s.id = this.options.url + 'sources/' + layer.id;
+                            // }
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl.source = s;
+                            gl.isEditable = layer.isEditable;
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
