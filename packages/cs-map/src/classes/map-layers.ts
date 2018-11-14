@@ -16,6 +16,7 @@ export class MapLayers implements IDatasource {
     public id = 'maplayers';
 
     public events = new MessageBusService();
+    public activeDrawLayer? : IMapLayer;
     private map?: CsMap;
     public get MapWidget(): CsMap | undefined {
         return this.map;
@@ -68,6 +69,9 @@ export class MapLayers implements IDatasource {
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             ml.Visible = true;
+            if (ml.isEditable) {
+
+            }
             if (this.map) {
                 this.map
                     .showLayer(ml)

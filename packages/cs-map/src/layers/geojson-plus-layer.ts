@@ -51,7 +51,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public opacity?: number = 100;
     public style!: LayerStyle;
     public centerHandle?: MessageBusHandle;
-
+    public isEditable?: boolean;
     public centerGeoJson?: FeatureCollection;
     public centerSource?: LayerSource;
 

@@ -42,6 +42,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public color?: string;
     public style?: LayerStyle;
     public parentId?: string;
+    public isEditable?: boolean;
     public _parent?: GeojsonLayer;
     public filter?: any;
     public layout?:

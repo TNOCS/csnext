@@ -35,6 +35,7 @@ export interface IMapLayer {
     events?: MessageBusService;
     extensions?: ILayerExtensionType[];
     filter?: any;
+    isEditable?: boolean;
     layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
     paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
 
