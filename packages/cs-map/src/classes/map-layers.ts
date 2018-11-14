@@ -82,9 +82,8 @@ export class MapLayers implements IDatasource {
                 if (ml.events && !ml._featureEventHandle) {
                     // if not subscribe
                     ml._featureEventHandle = ml.events.subscribe('feature', (a: string, f: Feature) => {
-                        if (a === CsMap.FEATURE_SELECT) {
-                            // alert('Feature selected');
-                        }
+                        // also publish this event to manager
+                        this.events.publish('feature', a, f);                        
                     });
                 }
             }
@@ -311,6 +310,7 @@ export class MapLayers implements IDatasource {
             }
             let layer = this.getLayerInstance(ml.type, ml);
             if (layer) {
+                if (!ml.events) { ml.events = new MessageBusService();}
                 layer.initLayer(this);
                 this.layers.push(layer);
                 this.showLayer(layer)
