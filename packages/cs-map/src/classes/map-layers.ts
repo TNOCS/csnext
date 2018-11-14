@@ -244,8 +244,10 @@ export class MapLayers implements IDatasource {
         if (g && ml._source && ml._source.id && this.MapControl) {
             let sourceId = ml._source.id;
             let source = (this.MapControl.getSource(sourceId) as GeoJSONSource);
-            if (source) {
+            if (source && ml.events) {                
                 source.setData(g);
+                
+                ml.events.publish('source', 'updated', source);
             }
         }
         if (
