@@ -25,7 +25,7 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { LayerStyle } from '../classes/layer-style';
 
 export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
-    types? = ['poi'];
+    types? = ['poi', 'geojson'];
 
     public getInstance(init?: Partial<GeojsonPlusLayer>) {
         let result = new GeojsonPlusLayer(init);
