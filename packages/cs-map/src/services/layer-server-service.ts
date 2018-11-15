@@ -27,7 +27,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     public options?: LayerServerServiceOptions;
     public type = 'layer-server-service';
-    public layers: IMapLayer[] = [];
+    public layers: IMapLayer[] = [];    
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
         let result = new LayerServerService(init);
@@ -42,13 +42,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.options && this.options.url) {
             this.socket = io(this.options.url);
             this.socket.on('connect', () => {
-                console.log('Connected');
-                this.socket.emit('events', { test: 'test' });
-                alert('Connected');
+                console.log('Connected');                
+                // this.socket.emit('events', { test: 'test' });                
                 //   AppState.Instance.TriggerNotification({ title: 'Connected' });
             });
             this.socket.on('connect_error', error => {
-                alert('Connection error');
+                console.log('Connection error: ' + error);
             });
         }
     }
