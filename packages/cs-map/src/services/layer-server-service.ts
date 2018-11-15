@@ -11,7 +11,8 @@ import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
-import io from 'socket.io-client';
+import SocketIOClient from 'socket.io-client';
+
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -45,9 +46,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 alert('Connected');
                 //   AppState.Instance.TriggerNotification({ title: 'Connected' });
             });
-            this.socket.on('connect_error', (error) => {
+            this.socket.on('connect_error', error => {
                 alert('Connection error');
-            })
+            });
         }
     }
 
@@ -66,13 +67,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         for (const layer of response.data) {
                             let style = layer.style as LayerStyle;
                             let s = new LayerSource();
-                            // if (layer.sourceUrl) {
-                            //     s.url = s.id = layer.sourceUrl;
-
-                            // } else {
-                            s.url = s.id =
-                                this.options.url + 'sources/' + layer.id;
-                            // }
+                            s.url = this.options.url + 'sources/' + layer.id;
+                            s.id = layer.id;
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl.source = s;
@@ -99,7 +95,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 gl.tags = [...gl.tags, ...layer.tags];
                             }
                             if (gl.isEditable) {
-                                
                                 this.initEditableLayer(gl, layer);
                             }
 
@@ -125,14 +120,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
             this.socket.on('layer/' + gl.id, (data: any) => {
                 console.log(data);
                 alert('got data');
-            })
+            });
         }
         // listen to source change events
         gl.events.subscribe('source', (a: string, s: LayerSource) => {
             if (a === 'updated' && this.options) {
-                const url = this.options.url +
-                    'sources/' +
-                    layer.id;
+                const url = this.options.url + 'sources/' + layer.id;
                 console.log(gl._source!._geojson);
                 axios
                     .put(url, gl._source!._geojson, {

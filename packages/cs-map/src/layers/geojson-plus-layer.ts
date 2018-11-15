@@ -239,11 +239,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 type: 'symbol',
                 source: this.centerSource,
                 parentId: this.id,
+                style: this.style,
                 popupContent: this.popupContent,
                 layout: this.symbolLayout
                     ? this.symbolLayout
                     : ({
-                          'icon-image': '{icon}',
                           'icon-size': 0.45,
                           'text-field': this.style.title,
 
@@ -342,11 +342,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             type: 'symbol',
             source: this.source,
             parentId: this.id,
+            style: this.style,
             popupContent: this.popupContent,
             layout: this.symbolLayout
                 ? this.symbolLayout
                 : ({
-                      'icon-image': '{icon}',
                       'icon-size': 0.45,
                       'text-field': this.style.title,
                       'text-anchor': 'center',

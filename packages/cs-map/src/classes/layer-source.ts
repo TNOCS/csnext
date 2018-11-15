@@ -30,7 +30,7 @@ export class LayerSource {
     }
 
     /** make sure all features have an id and properties object */
-    private InitGeoJsonFeatures(geojson: FeatureCollection) {
+    private InitGeoJsonFeatures(geojson: FeatureCollection, layerId?: string) {
         let count = 0;
         if (geojson && geojson.features) {
             for (const f of geojson.features) {
@@ -39,6 +39,8 @@ export class LayerSource {
                     count += 1;
                 }                
                 if (!f.properties) f.properties = {};
+                f.properties['_fId'] = f.id; // Workaround because of mapbox bug in MapMouseEvent
+                f.properties['_lId'] = layerId;
             }
         }
         return geojson;
@@ -59,7 +61,7 @@ export class LayerSource {
                     .get(this.url)
                     .then(response => {
                         if (response) {
-                            this._geojson = this.InitGeoJsonFeatures(response.data);
+                            this._geojson = this.InitGeoJsonFeatures(response.data, this.id);
                             this._loaded = true;
                             resolve(this._geojson);
                         }

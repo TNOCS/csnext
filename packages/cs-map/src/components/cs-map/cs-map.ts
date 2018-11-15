@@ -301,7 +301,7 @@ export class CsMap extends Vue {
     
                     modes: {
                         ...MapboxDraw.modes,
-                        draw_circle: radiusMode // eslint-disable-line camelcase
+                        // draw_circle: radiusMode // eslint-disable-line camelcase
                     },
                     userProperties: true,
                     displayControlsDefault: true,                    
