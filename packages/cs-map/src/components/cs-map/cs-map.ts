@@ -3,7 +3,11 @@ import Vue from 'vue';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { GeoJSONSource, CirclePaint, MapLayerMouseEvent } from 'mapbox-gl';
+import mapboxgl, {
+    GeoJSONSource,
+    CirclePaint,
+    MapLayerMouseEvent
+} from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { RulerControl } from 'mapbox-gl-controls';
 import { StylesControl } from 'mapbox-gl-controls';
@@ -297,16 +301,58 @@ export class CsMap extends Vue {
 
             if (this.mapOptions.showDraw) {
                 this.mapDraw = new MapboxDraw({
-                    styles: _mapDrawOption,
+                    styles: [
+                        {
+                          'id': 'highlight-active-points',
+                          'type': 'circle',
+                          'filter': ['all',
+                            ['==', '$type', 'Point'],
+                            ['==', 'meta', 'feature'],
+                            ['==', 'active', 'true']],
+                          'paint': {
+                            'circle-radius': 17,
+                            'circle-color': '#000000'
+                          }
+                        },
+                        {
+                          'id': 'points-are-blue',
+                          'type': 'circle',
+                          'filter': ['all',
+                            ['==', '$type', 'Point'],
+                            ['==', 'meta', 'feature'],
+                            ['==', 'active', 'false']],
+                          'paint': {
+                            'circle-radius': 15,
+                            'circle-color': '#000088'
+                          }
+                        }
+                      ],
 
                     modes: {
                         ...MapboxDraw.modes
                         // draw_circle: radiusMode // eslint-disable-line camelcase
-                    },                    
+                    },
                     displayControlsDefault: true
                 });
-                this.map.addControl(this.mapDraw, 'top-left');
+
                
+
+
+                this.map.addControl(this.mapDraw, 'top-left');
+
+                this.map.on(
+                    'draw.update',
+                    ( e : {features: Feature[], action: string}) => {                        
+                        switch (e.action) {
+                            case 'move':
+                                for (const feature of e.features) {
+                                    this.manager!.updateLayerFeature(this.manager!.activeDrawLayer!, feature, true);
+                                }
+                                break;
+                        }
+                    }
+                );
+
                 this.map.on('draw.create', (e: GeoJSON.FeatureCollection) => {
                     if (this.manager && this.manager.activeDrawLayer) {
                         let source = this.manager.activeDrawLayer._source;
@@ -326,6 +372,33 @@ export class CsMap extends Vue {
                                 ...e.features
                             ];
 
+                            this.manager.updateLayerSource(
+                                this.manager.activeDrawLayer,
+                                source._geojson
+                            );
+                        }
+                    }
+                    // console.log(e.features);
+                });
+
+                this.map.on('draw.create', (e: GeoJSON.FeatureCollection) => {
+                    if (this.manager && this.manager.activeDrawLayer) {
+                        let source = this.manager.activeDrawLayer._source;
+                        if (source && source._geojson) {
+                            // set layer/feature ids
+                            for (const feature of e.features) {
+                                feature.properties = {};
+                                feature.id = feature.properties[
+                                    '_fId'
+                                ] = guidGenerator();
+                                feature.properties[
+                                    '_lId'
+                                ] = this.manager.activeDrawLayer.id;
+                            }
+                            source._geojson.features = [
+                                ...source._geojson.features,
+                                ...e.features
+                            ];
 
                             this.manager.updateLayerSource(
                                 this.manager.activeDrawLayer,
@@ -412,9 +485,7 @@ export class CsMap extends Vue {
                         feature.id = feature.properties[
                             '_fId'
                         ] = guidGenerator();
-                        feature.properties[
-                            '_lId'
-                        ] = rl.id;
+                        feature.properties['_lId'] = rl.id;
                     }
                     this.manager.updateLayerSource(rl, ev);
                 }
@@ -448,8 +519,10 @@ export class CsMap extends Vue {
                 }
             }
         }
-        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);        
-        if (this.manager && this.manager.events) { this.manager.events.publish('map', 'loaded', e); }
+        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+        if (this.manager && this.manager.events) {
+            this.manager.events.publish('map', 'loaded', e);
+        }
 
         // this.map.addSource('mask',);
 

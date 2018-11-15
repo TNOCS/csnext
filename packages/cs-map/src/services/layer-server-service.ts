@@ -123,6 +123,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 }
                             }
                         }
+
+                        
                     }
                 })
                 .catch(() => {});
@@ -156,6 +158,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 }
             }
         });
+
+        
 
         // listen to source change events
         gl.events.subscribe('source', (a: string, s: LayerSource) => {

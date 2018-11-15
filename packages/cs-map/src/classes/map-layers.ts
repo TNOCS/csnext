@@ -74,14 +74,21 @@ export class MapLayers implements IDatasource {
 
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            ml.Visible = true;
-            if (ml.isEditable) {
-                this.activeDrawLayer = ml;
-            }
+            ml.Visible = true;            
             if (this.map) {
                 this.map
                     .showLayer(ml)
                     .then(maplayer => {
+                        if (ml.isEditable) {
+                            this.activeDrawLayer = ml;
+                            if (this.MapWidget &&
+                                this.MapWidget.mapDraw
+                            ) {                                
+                                let md = this.MapWidget.mapDraw;
+                                // md.set(this.activeDrawLayer._source!._geojson);
+                    
+                            }
+                        }
                         resolve(maplayer);
                     })
                     .catch(() => {
@@ -206,6 +213,7 @@ export class MapLayers implements IDatasource {
             }
         }
     }
+
 
     public updateFeatureProperty(
         source: string,
