@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { GeoJSONSource, CirclePaint } from 'mapbox-gl';
+import mapboxgl, { GeoJSONSource, CirclePaint, MapLayerMouseEvent } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { RulerControl } from 'mapbox-gl-controls';
 import { StylesControl } from 'mapbox-gl-controls';
@@ -302,11 +302,11 @@ export class CsMap extends Vue {
                     modes: {
                         ...MapboxDraw.modes
                         // draw_circle: radiusMode // eslint-disable-line camelcase
-                    },
-                    userProperties: true,
+                    },                    
                     displayControlsDefault: true
                 });
                 this.map.addControl(this.mapDraw, 'top-left');
+               
                 this.map.on('draw.create', (e: GeoJSON.FeatureCollection) => {
                     if (this.manager && this.manager.activeDrawLayer) {
                         let source = this.manager.activeDrawLayer._source;
@@ -325,6 +325,8 @@ export class CsMap extends Vue {
                                 ...source._geojson.features,
                                 ...e.features
                             ];
+
+
                             this.manager.updateLayerSource(
                                 this.manager.activeDrawLayer,
                                 source._geojson
@@ -368,14 +370,6 @@ export class CsMap extends Vue {
 
         this.map.addControl(geocoder);
 
-        // this.map.addSource('single-point', {
-        //     type: 'geojson',
-        //     data: {
-        //         type: 'FeatureCollection',
-        //         features: []
-        //     }
-        // });
-
         if (this.manager) {
             let rl = new GeojsonPlusLayer();
 
@@ -384,7 +378,7 @@ export class CsMap extends Vue {
                 'circle-radius': 10,
                 'circle-color': 'grey'
             } as CirclePaint),
-                (rl.tags = ['search']);
+                (rl.tags = ['Schets']);
             rl.type = 'poi';
             rl.style = {
                 pointCircle: true,
@@ -454,8 +448,8 @@ export class CsMap extends Vue {
                 }
             }
         }
-        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
-        this.manager.events.publish('map', 'loaded', e);
+        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);        
+        if (this.manager && this.manager.events) { this.manager.events.publish('map', 'loaded', e); }
 
         // this.map.addSource('mask',);
 

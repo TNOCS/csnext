@@ -252,11 +252,10 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (!l.color) {
             l.color = 'red';
         }
-
         
         l.style = { ...({ title: '{name}', popover: '{name}'  } as LayerStyle), ...l.style };
        
-        if (l.style.icon) {
+        if (l.id && l.style.icon) {            
             this.addImage(l.id, l.style.icon);
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }
@@ -266,7 +265,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
     public addImage(id: string, url: string) {
         if (this._manager && this._manager.MapControl) {
-            this._manager.MapControl.loadImage(url, (error, image) => {
+            this._manager.MapControl.loadImage(url, (error, image) => {                
                 if (!error) {
                     this._manager!.MapControl!.addImage(id,image);
                 }

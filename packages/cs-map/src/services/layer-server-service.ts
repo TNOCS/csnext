@@ -3,21 +3,22 @@ import {
     ILayerService,
     IStartStopService,
     GeojsonPlusLayer,
-    LayerStyle
+    LayerStyle,
+    CsMap
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
 import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
-import { LinePaint } from 'mapbox-gl';
+import { LinePaint, MapLayerMouseEvent } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
 import SocketIOClient from 'socket.io-client';
 import io from 'socket.io-client';
 
-
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
     public tags?: string[];
+    public activeLayers?: string[];
 }
 
 export class LayerServerService implements ILayerService, IStartStopService {
@@ -27,7 +28,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     public options?: LayerServerServiceOptions;
     public type = 'layer-server-service';
-    public layers: IMapLayer[] = [];    
+    public layers: IMapLayer[] = [];
+    public manager?: MapLayers;
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
         let result = new LayerServerService(init);
@@ -42,8 +44,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.options && this.options.url) {
             this.socket = io(this.options.url);
             this.socket.on('connect', () => {
-                console.log('Connected');                
-                // this.socket.emit('events', { test: 'test' });                
+                console.log('Connected');
+                // this.socket.emit('events', { test: 'test' });
                 //   AppState.Instance.TriggerNotification({ title: 'Connected' });
             });
             this.socket.on('connect_error', error => {
@@ -53,6 +55,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     async Start(manager: MapLayers) {
+        this.manager = manager;
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
@@ -106,6 +109,19 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);
+                            console.log('Add ' + gl.id);
+                        }
+
+                        if (this.options.activeLayers) {
+                            for (const ad of this.options.activeLayers) {
+                                const layer = this.layers.find(
+                                    l => l.id === ad
+                                );
+                                if (layer && this.manager) {
+                                    console.log('Active layer ' + layer.id);
+                                    this.manager.showLayer(layer);
+                                }
+                            }
                         }
                     }
                 })
@@ -120,9 +136,27 @@ export class LayerServerService implements ILayerService, IStartStopService {
             this.socket.on('layer/' + gl.id, (data: any) => {
                 console.log(data);
                 gl._manager!.updateLayerSource(gl, data, false);
-                
             });
         }
+
+        gl.events.subscribe('feature', (a: string, f: MapLayerMouseEvent) => {
+            if (
+                this.manager &&
+                this.manager.MapWidget &&
+                this.manager.MapWidget.mapDraw
+            ) {
+                let md = this.manager.MapWidget.mapDraw;
+                if (f.features && a === CsMap.FEATURE_SELECT) {
+                    let feature = f.features[0];
+                    if (feature.properties) {
+                        feature.id = feature.properties['_fId'];
+                    }
+                    var featureIds = md.add(feature);
+                    console.log(featureIds);
+                }
+            }
+        });
+
         // listen to source change events
         gl.events.subscribe('source', (a: string, s: LayerSource) => {
             if (a === 'updated' && this.options) {
