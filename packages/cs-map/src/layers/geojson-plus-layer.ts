@@ -5,7 +5,9 @@ import {
     FeatureEventDetails,
     IMapLayer,
     IMapLayerType,
-    ILayerAction
+    ILayerAction,
+    ILayerExtensionType,
+    ILayerExtension
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import {
@@ -78,6 +80,8 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public _manager?: MapLayers;
     public events: MessageBusService;
     public popupContent?: string | Function | undefined;
+    public extensions?: ILayerExtensionType[];
+    public _extensions: ILayerExtension[] = [];
 
     constructor(init?: Partial<IMapLayer>) {
         Object.assign(this, init);
@@ -158,6 +162,23 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             }
         } else {
             return undefined;
+        }
+    }
+
+    private registerLayerExtensions() {
+        if (this.extensions) {
+            this.extensions.forEach(ext => {
+                const extensionType = CsMap.layerExtensions.find(
+                    le => le.id === ext.id
+                );
+                if (extensionType && extensionType.getInstance) {
+                    const extension = extensionType.getInstance(ext.options);
+                    this._extensions.push(extension);
+                    extension.start(this);
+                } else {
+                    console.warn(`Could not find extension ${ext.id}`);
+                }
+            });
         }
     }
 
@@ -246,7 +267,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                     : ({
                           'icon-size': 0.45,
                           'text-field': this.style.title,
-
                           'text-anchor': 'center',
                           'text-size': 12,
                           'text-offset': [0, 1.5],
@@ -461,6 +481,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             return;
         }
         this.createCenterSource();
+        this.registerLayerExtensions();
 
         // subscribe to events
         this.circleHandle = this.pipeEvents(
@@ -484,8 +505,18 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         this.Visible = true;
     }
 
+    private removeExtensions() {
+        if (this._extensions && this._extensions.length) {
+            this._extensions.forEach(extension => {
+                extension.stop();
+            });
+            this._extensions.length = 0;
+        }
+    }
+
     public removeLayer(map: CsMap) {
         console.log('Removing layer');
+        this.removeExtensions();
 
         if (!this.symbolLayer || !this.lineLayer) {
             return;

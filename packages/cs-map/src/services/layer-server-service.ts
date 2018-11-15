@@ -80,6 +80,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
                             gl.id = layer.id;
+                            gl.extensions = layer.extensions;
 
                             gl.style = style;
                             if (layer.sourceType) {

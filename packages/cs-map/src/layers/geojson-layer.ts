@@ -273,16 +273,16 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    private registerLayerExtensions(l: IMapLayer) {
-        if (l.extensions) {
-            l.extensions.forEach(ext => {
+    private registerLayerExtensions() {
+        if (this.extensions) {
+            this.extensions.forEach(ext => {
                 const extensionType = CsMap.layerExtensions.find(
                     le => le.id === ext.id
                 );
                 if (extensionType && extensionType.getInstance) {
                     const extension = extensionType.getInstance(ext.options);
                     this._extensions.push(extension);
-                    extension.start(l);
+                    extension.start(this);
                 } else {
                     console.warn(`Could not find extension ${ext.id}`);
                 }
@@ -367,7 +367,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             mblayer.filter = this.filter;
         }
 
-        this.registerLayerExtensions(this);
+        this.registerLayerExtensions();
         this.registerMapEvents(map);
 
         // remove layer if it already exists
@@ -379,13 +379,17 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         // map.zoomLayer(this);
     }
 
-    public removeLayer(map: CsMap) {
+    private removeExtensions() {
         if (this._extensions && this._extensions.length) {
             this._extensions.forEach(extension => {
                 extension.stop();
             });
             this._extensions.length = 0;
         }
+    }
+
+    public removeLayer(map: CsMap) {
+        this.removeExtensions();
         if (this.id) {
             if (map.map.getLayer(this.id) !== undefined) {
                 map.map.removeLayer(this.id);
