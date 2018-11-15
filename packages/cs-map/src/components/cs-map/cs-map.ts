@@ -455,7 +455,7 @@ export class CsMap extends Vue {
             }
         }
         if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
-        this.manager.events.publish('map', 'loaded', e);
+        if (this.manager.events) this.manager.events.publish('map', 'loaded', e);
 
         // this.map.addSource('mask',);
 
