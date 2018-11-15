@@ -298,25 +298,41 @@ export class CsMap extends Vue {
             if (this.mapOptions.showDraw) {
                 this.mapDraw = new MapboxDraw({
                     styles: _mapDrawOption,
-    
+
                     modes: {
-                        ...MapboxDraw.modes,
+                        ...MapboxDraw.modes
                         // draw_circle: radiusMode // eslint-disable-line camelcase
                     },
                     userProperties: true,
-                    displayControlsDefault: true,                    
-                });                
+                    displayControlsDefault: true
+                });
                 this.map.addControl(this.mapDraw, 'top-left');
-                this.map.on('draw.create', (e : GeoJSON.FeatureCollection) => {
-                    if (this.manager && this.manager.activeDrawLayer) {                        
+                this.map.on('draw.create', (e: GeoJSON.FeatureCollection) => {
+                    if (this.manager && this.manager.activeDrawLayer) {
                         let source = this.manager.activeDrawLayer._source;
                         if (source && source._geojson) {
-                            source._geojson.features = [...source._geojson.features, ...e.features];
-                            this.manager.updateLayerSource(this.manager.activeDrawLayer, source._geojson);
+                            // set layer/feature ids
+                            for (const feature of e.features) {
+                                feature.properties = {};
+                                feature.id = feature.properties[
+                                    '_fId'
+                                ] = guidGenerator();
+                                feature.properties[
+                                    '_lId'
+                                ] = this.manager.activeDrawLayer.id;
+                            }
+                            source._geojson.features = [
+                                ...source._geojson.features,
+                                ...e.features
+                            ];
+                            this.manager.updateLayerSource(
+                                this.manager.activeDrawLayer,
+                                source._geojson
+                            );
                         }
                     }
                     // console.log(e.features);
-                })
+                });
             }
 
             // check if map has loaded
@@ -362,7 +378,7 @@ export class CsMap extends Vue {
 
         if (this.manager) {
             let rl = new GeojsonPlusLayer();
-            
+
             rl.title = 'Search result';
             (rl.circlePaint = {
                 'circle-radius': 10,
@@ -370,10 +386,14 @@ export class CsMap extends Vue {
             } as CirclePaint),
                 (rl.tags = ['search']);
             rl.type = 'poi';
-            rl.style = { pointCircle: true, icon: 'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'}
+            rl.style = {
+                pointCircle: true,
+                icon:
+                    'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+            };
             rl.popupContent = f => {
                 if (f.features) {
-                    return f.features[0].properties['place_name'];                    
+                    return f.features[0].properties['place_name'];
                 }
             };
 
@@ -385,17 +405,22 @@ export class CsMap extends Vue {
                 if (l.events) {
                     l.events.subscribe('feature', (a: string, f: Feature) => {
                         if (a === CsMap.FEATURE_SELECT) {
-                            
                         }
-                    })
+                    });
                 }
-            })
-            
+            });
 
             geocoder.on('results', ev => {
                 if (this.manager) {
                     for (const feature of ev.features) {
                         feature.properties['place_name'] = feature.place_name;
+                        // set layer/feature ids
+                        feature.id = feature.properties[
+                            '_fId'
+                        ] = guidGenerator();
+                        feature.properties[
+                            '_lId'
+                        ] = rl.id;
                     }
                     this.manager.updateLayerSource(rl, ev);
                 }
