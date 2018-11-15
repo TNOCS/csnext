@@ -12,6 +12,7 @@ import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
 import SocketIOClient from 'socket.io-client';
+import io from 'socket.io-client';
 
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
@@ -119,7 +120,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.socket) {
             this.socket.on('layer/' + gl.id, (data: any) => {
                 console.log(data);
-                alert('got data');
+                gl._manager!.updateLayerSource(gl, data, false);
+                
             });
         }
         // listen to source change events

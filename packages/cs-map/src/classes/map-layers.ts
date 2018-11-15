@@ -3,7 +3,13 @@ import { LayerSource } from './layer-source';
 import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
-import { FeatureCollection, Feature, Point, LineString, Polygon } from 'geojson';
+import {
+    FeatureCollection,
+    Feature,
+    Point,
+    LineString,
+    Polygon
+} from 'geojson';
 import {
     LayerServiceBase,
     ILayerService,
@@ -16,7 +22,7 @@ export class MapLayers implements IDatasource {
     public id = 'maplayers';
 
     public events = new MessageBusService();
-    public activeDrawLayer? : IMapLayer;
+    public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
     public get MapWidget(): CsMap | undefined {
         return this.map;
@@ -85,10 +91,13 @@ export class MapLayers implements IDatasource {
                 // check if not already subscribed to features events
                 if (ml.events && !ml._featureEventHandle) {
                     // if not subscribe
-                    ml._featureEventHandle = ml.events.subscribe('feature', (a: string, f: Feature) => {
-                        // also publish this event to manager
-                        this.events.publish('feature', a, f);                        
-                    });
+                    ml._featureEventHandle = ml.events.subscribe(
+                        'feature',
+                        (a: string, f: Feature) => {
+                            // also publish this event to manager
+                            this.events.publish('feature', a, f);
+                        }
+                    );
                 }
             }
         });
@@ -124,17 +133,28 @@ export class MapLayers implements IDatasource {
 
     public zoomFeature(layer: IMapLayer, featureId: string) {
         if (!layer._source || !layer._source._geojson || !this.map) return;
-        const feature = layer._source._geojson.features.find(f => f.id === featureId);
+        const feature = layer._source._geojson.features.find(
+            f => f.id === featureId
+        );
         if (!feature) return;
         var coords: [number, number] | undefined = undefined;
         if (feature.geometry.type === 'Point') {
-            coords = (feature.geometry as Point).coordinates as [number, number];
+            coords = (feature.geometry as Point).coordinates as [
+                number,
+                number
+            ];
         } else if (feature.geometry.type === 'LineString') {
-            coords = (feature.geometry as LineString).coordinates[0] as [number, number];
+            coords = (feature.geometry as LineString).coordinates[0] as [
+                number,
+                number
+            ];
         } else if (feature.geometry.type === 'Polygon') {
-            coords = (feature.geometry as Polygon).coordinates[0][0] as [number, number];
+            coords = (feature.geometry as Polygon).coordinates[0][0] as [
+                number,
+                number
+            ];
         }
-        if (coords) this.map.map.easeTo({center: LngLat.convert(coords)});
+        if (coords) this.map.map.easeTo({ center: LngLat.convert(coords) });
     }
 
     public hideLayer(ml: string | IMapLayer) {
@@ -152,9 +172,8 @@ export class MapLayers implements IDatasource {
             if (this.map) {
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
-            }            
+            }
         }
-    
     }
 
     public updateLayerFeature(
@@ -215,38 +234,37 @@ export class MapLayers implements IDatasource {
         }
     }
 
-    
-
-        //    public updateLayerSource(ml: IMapLayer, geojson?: FeatureCollection | string) {
-        //        if (!geojson && ml._source && ml._source._geojson) {
-        //            geojson = ml._source._geojson;
-        //        }
-        //        let g = typeof geojson === 'string' ? (JSON.parse(geojson) as FeatureCollection) : geojson;
-        //        if (g && ml._source && ml._source.id && this.MapControl) {
-        //            let sourceId = ml._source.id;
-        //            (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
-        //        }
-        //        if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
-        //            const wasVisible = ml.Visible;
-        //            if (wasVisible && ml._manager!.map!.map!.getLayer(ml.id!)) ml._manager!.map!.map!.removeLayer(ml.id!);
-        //            const newSource = {
-        //                type: ml._source.type,
-        //                tiles: [ml._source.url],
-        //                tileSize: ml._source.tileSize
-        //            }
-        //            if (this.MapControl.getSource(ml._source.id)) this.MapControl.removeSource(ml._source.id);
-        //            this.MapControl.addSource(ml._source.id, newSource as RasterSource);
-        //            if (wasVisible) ml._manager!.map!.map!.addLayer({id: ml.id!,type: 'raster', source: ml._source.id!});
-        //        }
-        //        console.log(ml);
-        //        // if (ml._source) {
-        //        //     this.MapControl.getSource(ml.source)
-        //        // }
-        //    }
+    //    public updateLayerSource(ml: IMapLayer, geojson?: FeatureCollection | string) {
+    //        if (!geojson && ml._source && ml._source._geojson) {
+    //            geojson = ml._source._geojson;
+    //        }
+    //        let g = typeof geojson === 'string' ? (JSON.parse(geojson) as FeatureCollection) : geojson;
+    //        if (g && ml._source && ml._source.id && this.MapControl) {
+    //            let sourceId = ml._source.id;
+    //            (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
+    //        }
+    //        if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
+    //            const wasVisible = ml.Visible;
+    //            if (wasVisible && ml._manager!.map!.map!.getLayer(ml.id!)) ml._manager!.map!.map!.removeLayer(ml.id!);
+    //            const newSource = {
+    //                type: ml._source.type,
+    //                tiles: [ml._source.url],
+    //                tileSize: ml._source.tileSize
+    //            }
+    //            if (this.MapControl.getSource(ml._source.id)) this.MapControl.removeSource(ml._source.id);
+    //            this.MapControl.addSource(ml._source.id, newSource as RasterSource);
+    //            if (wasVisible) ml._manager!.map!.map!.addLayer({id: ml.id!,type: 'raster', source: ml._source.id!});
+    //        }
+    //        console.log(ml);
+    //        // if (ml._source) {
+    //        //     this.MapControl.getSource(ml.source)
+    //        // }
+    //    }
 
     public updateLayerSource(
         ml: IMapLayer,
-        geojson?: FeatureCollection | string
+        geojson?: FeatureCollection | string,
+        triggerEvent = true
     ) {
         if (!geojson && ml._source && ml._source._geojson) {
             geojson = ml._source._geojson;
@@ -255,14 +273,17 @@ export class MapLayers implements IDatasource {
             typeof geojson === 'string'
                 ? (JSON.parse(geojson) as FeatureCollection)
                 : geojson;
-        if (!ml._source && ml.source) { ml._source = ml.source as LayerSource; };
+        if (!ml._source && ml.source) {
+            ml._source = ml.source as LayerSource;
+        }
         if (g && ml._source && ml._source.id && this.MapControl) {
             let sourceId = ml._source.id;
-            let source = (this.MapControl.getSource(sourceId) as GeoJSONSource);
-            if (source && ml.events) {                
+            let source = this.MapControl.getSource(sourceId) as GeoJSONSource;
+            if (source && ml.events) {
                 source.setData(g);
-                
-                ml.events.publish('source', 'updated', source);
+                if (triggerEvent) {
+                    ml.events.publish('source', 'updated', source);
+                }
             }
         }
         if (
@@ -273,7 +294,8 @@ export class MapLayers implements IDatasource {
             this.MapControl
         ) {
             const wasVisible = ml.Visible;
-            if (wasVisible && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) ml._manager!.map!.map!.removeLayer(ml.id!);
+            if (wasVisible && ml.id && ml._manager!.map!.map!.getLayer(ml.id))
+                ml._manager!.map!.map!.removeLayer(ml.id!);
             const newSource = {
                 type: ml._source.type,
                 tiles: [ml._source.url],
@@ -331,7 +353,9 @@ export class MapLayers implements IDatasource {
             }
             let layer = this.getLayerInstance(ml.type, ml);
             if (layer) {
-                if (!ml.events) { ml.events = new MessageBusService();}
+                if (!ml.events) {
+                    ml.events = new MessageBusService();
+                }
                 layer.initLayer(this);
                 this.layers.push(layer);
                 this.showLayer(layer)
