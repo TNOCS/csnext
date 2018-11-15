@@ -11,6 +11,7 @@ import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
+import io from 'socket.io-client';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -20,6 +21,7 @@ export class LayerServerServiceOptions implements ILayerServiceOptions {
 export class LayerServerService implements ILayerService, IStartStopService {
     id!: string;
     title?: string | undefined;
+    public socket!: SocketIOClient.Socket;
 
     public options?: LayerServerServiceOptions;
     public type = 'layer-server-service';
@@ -32,7 +34,21 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
-        
+    }
+
+    initSocket() {
+        if (this.options && this.options.url) {
+            this.socket = io(this.options.url);
+            this.socket.on('connect', () => {
+                console.log('Connected');
+                this.socket.emit('events', { test: 'test' });
+                alert('Connected');
+                //   AppState.Instance.TriggerNotification({ title: 'Connected' });
+            });
+            this.socket.on('connect_error', (error) => {
+                alert('Connection error');
+            })
+        }
     }
 
     async Start(manager: MapLayers) {
@@ -48,13 +64,14 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         manager.layers
                     ) {
                         for (const layer of response.data) {
-                            let style = layer.style as LayerStyle;                         
-                            let s = new LayerSource();                     
+                            let style = layer.style as LayerStyle;
+                            let s = new LayerSource();
                             // if (layer.sourceUrl) {
                             //     s.url = s.id = layer.sourceUrl;
-                                
+
                             // } else {
-                                s.url = s.id = this.options.url + 'sources/' + layer.id;
+                            s.url = s.id =
+                                this.options.url + 'sources/' + layer.id;
                             // }
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
@@ -64,7 +81,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.color = layer.color ? layer.color : 'lightgrey';
                             gl.title = layer.title;
                             gl.id = layer.id;
-                            
+
                             gl.style = style;
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;
@@ -75,23 +92,17 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 gl.circlePaint = layer.style.mapbox.circlePaint;
                             }
                             gl.tags = [];
-                            if (this.options.tags) { gl.tags = this.options.tags; }
-                            if (layer.tags) { gl.tags = [...gl.tags, ...layer.tags]; }
-                            if (gl.isEditable) {                               
-                                gl.events.subscribe('source',(a: string, s: LayerSource) => {
-                                    if (a === 'updated' && this.options) {
-                                        const url = this.options.url + 'sources/' + layer.id;
-                                        console.log(gl._source!._geojson);
-                                        axios.put(url, gl._source!._geojson, { headers: { 'Content-Type' : 'application/json'}}).then(
-                                            r => {
-                                                console.log(r);
-                                            }).catch( e => {
-                                                console.log(e);
-                                            })
-                                        }                    
-                                })
+                            if (this.options.tags) {
+                                gl.tags = this.options.tags;
                             }
-                            
+                            if (layer.tags) {
+                                gl.tags = [...gl.tags, ...layer.tags];
+                            }
+                            if (gl.isEditable) {
+                                
+                                this.initEditableLayer(gl, layer);
+                            }
+
                             // gl.paint = {
                             //     'line-color': ['get', 'stroke'],
                             //     'line-opacity': ['get', 'stroke-opacity'],
@@ -105,6 +116,38 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 })
                 .catch(() => {});
         }
+        this.initSocket();
+    }
+
+    private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
+        // listen to server
+        if (this.socket) {
+            this.socket.on('layer/' + gl.id, (data: any) => {
+                console.log(data);
+                alert('got data');
+            })
+        }
+        // listen to source change events
+        gl.events.subscribe('source', (a: string, s: LayerSource) => {
+            if (a === 'updated' && this.options) {
+                const url = this.options.url +
+                    'sources/' +
+                    layer.id;
+                console.log(gl._source!._geojson);
+                axios
+                    .put(url, gl._source!._geojson, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(r => {
+                        console.log(r);
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            }
+        });
     }
 
     /** remove previously added layers */
