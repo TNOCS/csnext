@@ -292,6 +292,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
     private registerMapEvents(map: CsMap) {
         if (this.id && !this.mapEventsRegistered) {
+            map.map.on('touchend', this.id, e => {
+                this.click(this, e);
+            });
             map.map.on('click', this.id, e => {
                 this.click(this, e);
             });

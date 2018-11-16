@@ -85,6 +85,7 @@ export class MapLayers implements IDatasource {
                                 this.MapWidget.mapDraw
                             ) {                                
                                 let md = this.MapWidget.mapDraw;
+                                // md.changeMode('delete');
                                 // md.set(this.activeDrawLayer._source!._geojson);
                     
                             }
@@ -183,6 +184,39 @@ export class MapLayers implements IDatasource {
         }
     }
 
+    /** delete feature from a feature  */
+    public deleteLayerFeature(
+        ml: IMapLayer | string, id: string, 
+        updateSource = true
+    ) {
+        let layer: IMapLayer | undefined = undefined;
+        if (typeof ml === 'string') {
+            if (this.layers) {
+                layer = this.layers.find(l => l.id === ml);
+            }
+        } else {
+            layer = ml;
+        }
+        if (
+            layer &&
+            layer._source &&
+            layer._source._geojson           
+        ) {
+
+            let index = layer._source._geojson.features.findIndex(
+                f => f.id === id
+            );
+            
+            if (index >= 0) {
+                layer._source._geojson.features.splice(index,1);
+                if (updateSource) {
+                    this.updateLayerSource(layer, layer._source._geojson);
+                }
+            }
+        }
+    }
+
+    /** Replace/update a feature for a given layer */
     public updateLayerFeature(
         ml: IMapLayer | string,
         feature: Feature,
@@ -292,6 +326,7 @@ export class MapLayers implements IDatasource {
                 if (triggerEvent) {
                     ml.events.publish('source', 'updated', source);
                 }
+                ml.events.publish('layer', CsMap.LAYER_UPDATED, ml);
             }
         }
         if (

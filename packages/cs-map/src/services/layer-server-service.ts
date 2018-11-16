@@ -90,6 +90,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             }
                             if (layer.style && layer.style.mapbox) {
                                 gl.circlePaint = layer.style.mapbox.circlePaint;
+                                gl.fillPaint = layer.style.mapbox.fillPaint;
+                                gl.linePaint = layer.style.mapbox.linePaint;
                             }
                             gl.tags = [];
                             if (this.options.tags) {
@@ -124,8 +126,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 }
                             }
                         }
-
-                        
                     }
                 })
                 .catch(() => {});
@@ -133,52 +133,88 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.initSocket();
     }
 
+    private get mapDraw(): any {
+        if (
+            this.manager &&
+            this.manager.MapWidget &&
+            this.manager.MapWidget.mapDraw
+        ) {
+            return this.manager.MapWidget.mapDraw;
+        }
+    }
+
     private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
         // listen to server
         if (this.socket) {
             this.socket.on('layer/' + gl.id, (data: any) => {
-                console.log(data);
-                gl._manager!.updateLayerSource(gl, data, false);
+                console.log('got data from socket');
+                if (
+                    data.hasOwnProperty('lastUpdatedBy') &&
+                    data['lastUpdatedBy'] === this.socket.id
+                ) {
+                    console.log('Was updated by me');
+                } else {
+                    gl._manager!.updateLayerSource(gl, data, false);
+                    
+                }
+
+                if (this.mapDraw) {
+                    this.mapDraw.deleteAll();
+                }
             });
         }
 
-        gl.events.subscribe('feature', (a: string, f: MapLayerMouseEvent) => {
-            if (
-                this.manager &&
-                this.manager.MapWidget &&
-                this.manager.MapWidget.mapDraw
-            ) {
-                let md = this.manager.MapWidget.mapDraw;
-                if (f.features && a === CsMap.FEATURE_SELECT) {
-                    let feature = f.features[0];
-                    if (feature.properties) {
-                        feature.id = feature.properties['_fId'];
-                    }
-                    var featureIds = md.add(feature);
-                    console.log(featureIds);
+        gl.events.subscribe('feature', (a: string, f: any) => {
+            let md = this.mapDraw;
+
+            if (md && f.features && a === CsMap.FEATURE_SELECT) {
+                let feature = f.features[0];
+                if (feature.properties) {
+                    feature.id = feature.properties['_fId'];
                 }
+                let all = md.getAll();
+                console.log(all);
+                var featureIds = md.add(feature);
+                //
+                md.changeMode('simple_select', {
+                    featureIds: [featureIds[0]]});
+                
+                if (feature.geometry.type !== 'Point') {
+                    // md.changeMode('direct_select', {
+                    //     featureId: featureIds[0]
+                    // });
+                } else {
+                   
+                    // if (f.context.type !== 'touchend') {
+                        
+                    // }
+                }
+
+                console.log(featureIds);
             }
         });
-
-        
 
         // listen to source change events
         gl.events.subscribe('source', (a: string, s: LayerSource) => {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
-                console.log(gl._source!._geojson);
-                axios
-                    .put(url, gl._source!._geojson, {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(r => {
-                        console.log(r);
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+                let body = gl._source!._geojson;
+                if (body) {
+                    body['lastUpdatedBy'] = this.socket.id;
+                    console.log(gl._source!._geojson);
+                    axios
+                        .put(url, gl._source!._geojson, {
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(r => {
+                            console.log(r);
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        });
+                }
             }
         });
     }
