@@ -25,12 +25,12 @@ import {
     GeojsonPlusLayer
 } from '../../.';
 import { LayerEditor } from '../layer-editor/layer-editor';
+import { GeojsonLayer } from '../../layers/geojson-layer';
 
 export interface FeatureEventDetails {
     context: any;
     features: Feature[];
 }
-
 
 @Component({
     template: require('./cs-map.html')
@@ -476,20 +476,20 @@ export class CsMap extends Vue {
                 });
 
                 this.map.addControl(this.mapDraw, 'top-left');
-
-               
             }
 
             // check if map has loaded
             this.map.on('load', e => {
                 this.startServices();
                 this.mapLoaded(e);
-                
+
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
                 }
                 if (this.mapOptions.showEditor && this.manager) {
-                    const layerEditorControl = new LayerEditorControl(this.manager);
+                    const layerEditorControl = new LayerEditorControl(
+                        this.manager
+                    );
                     this.map.addControl(layerEditorControl);
                 }
             });
@@ -517,39 +517,42 @@ export class CsMap extends Vue {
 
         this.map.addControl(geocoder);
 
-        if (this.manager) {
-            let rl = new GeojsonPlusLayer();
+        if (this.manager) {  
+            let rl = this.manager.layers!.find(l => l.id === 'searchlayer') as GeojsonPlusLayer;
+            if (!rl) {
+                rl = new GeojsonPlusLayer();
+                rl.id = 'searchlayer';
+                rl.title = 'Search result';
+                (rl.circlePaint = {
+                    'circle-radius': 10,
+                    'circle-color': 'grey'
+                } as CirclePaint),
+                    (rl.tags = ['Schets']);
+                rl.type = 'poi';
+                rl.style = {
+                    pointCircle: true,
+                    icon:
+                        'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+                };
+                rl.popupContent = f => {
+                    if (f.features) {
+                        return f.features[0].properties['place_name'];
+                    }
+                };
 
-            rl.title = 'Search result';
-            (rl.circlePaint = {
-                'circle-radius': 10,
-                'circle-color': 'grey'
-            } as CirclePaint),
-                (rl.tags = ['Schets']);
-            rl.type = 'poi';
-            rl.style = {
-                pointCircle: true,
-                icon:
-                    'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
-            };
-            rl.popupContent = f => {
-                if (f.features) {
-                    return f.features[0].properties['place_name'];
-                }
-            };
-
-            rl.source = new LayerSource({
-                type: 'FeatureCollection',
-                features: []
-            });
-            this.manager.addLayer(rl).then(l => {
-                if (l.events) {
-                    l.events.subscribe('feature', (a: string) => {
-                        if (a === CsMap.FEATURE_SELECT) {
-                        }
-                    });
-                }
-            });
+                rl.source = new LayerSource({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                this.manager.addLayer(rl).then(l => {
+                    if (l.events) {
+                        l.events.subscribe('feature', (a: string) => {
+                            if (a === CsMap.FEATURE_SELECT) {
+                            }
+                        });
+                    }
+                });
+            }
 
             geocoder.on('results', ev => {
                 if (this.manager) {
