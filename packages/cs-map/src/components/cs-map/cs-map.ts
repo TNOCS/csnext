@@ -867,6 +867,11 @@ export class CsMap extends Vue {
                 this.map.addControl(this.mapDraw, 'top-left');
             }
 
+            // this.map.on('styledata', (e:any) => {
+            //     // noinspection JSUnresolvedVariable
+            //     console.log(e);    
+            // });
+            
             // check if map has loaded
             this.map.on('load', e => {
                 this.startServices();
