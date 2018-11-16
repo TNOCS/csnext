@@ -20,7 +20,6 @@ import {
     ILayerExtensionType
 } from '../classes/ilayer-extension';
 
-
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
     types = ['symbol', 'raster', 'line', 'fill', 'circle'];
 
@@ -252,10 +251,13 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (!l.color) {
             l.color = 'red';
         }
-        
-        l.style = { ...({ title: '{name}', popover: '{name}'  } as LayerStyle), ...l.style };
-       
-        if (l.id && l.style.icon) {            
+
+        l.style = {
+            ...({ title: '{name}', popover: '{name}' } as LayerStyle),
+            ...l.style
+        };
+
+        if (l.id && l.style.icon) {
             this.addImage(l.id, l.style.icon);
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }
@@ -264,7 +266,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             for (const key in l.style.icons) {
                 if (l.style.icons.hasOwnProperty(key)) {
                     const url = l.style.icons[key];
-                    this.addImage(key, url);                    
+                    this.addImage(key, url);
                 }
             }
         }
@@ -274,11 +276,13 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
     public addImage(id: string, url: string) {
         if (this._manager && this._manager.MapControl) {
-            this._manager.MapControl.loadImage(url, (error, image) => {                
-                if (!error) {
-                    this._manager!.MapControl!.addImage(id,image);
-                }
-            });            
+            if (!this._manager.MapControl.hasImage(id)) {
+                this._manager.MapControl.loadImage(url, (error, image) => {
+                    if (!error) {
+                        this._manager!.MapControl!.addImage(id, image);
+                    }
+                });
+            }
         }
     }
 
