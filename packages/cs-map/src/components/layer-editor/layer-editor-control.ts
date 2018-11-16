@@ -26,7 +26,6 @@ export class LayerEditorControl {
         return this.container;
     }
     onRemove() {
-        debugger;
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
             this.map = undefined;
