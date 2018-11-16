@@ -25,10 +25,10 @@ export class LayerEditor extends Vue {
             mode: "draw_point",
             notification: "Plaats incident",
             icon: "images/incident-icon.png",
-            properties: {
-                type: 'incident',
+            properties: {                
                 title: 'incident',
-                description: ''
+                description: '',
+                type: 'incident',
             }
         },
         demonstratie: {
@@ -36,10 +36,10 @@ export class LayerEditor extends Vue {
             mode: "draw_point",
             notification: "Plaats demonstratie",
             icon: "images/demonstratie.png",
-            properties: {
-                type: 'demonstratie',
+            properties: {               
                 title: 'demonstratie',
-                description: ''
+                description: '',
+                type: 'demonstratie'
             }            
         },
         lijn: {
@@ -55,7 +55,7 @@ export class LayerEditor extends Vue {
             notification: "Begin met tekenen",
             icon: "images/polygon.png",
             properties: {
-                type: 'line'
+                type: 'polygon'
             } 
         }
     };
