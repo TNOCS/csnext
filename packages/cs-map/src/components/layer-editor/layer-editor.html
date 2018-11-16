@@ -1,4 +1,10 @@
 <div  v-if="layer" class="mapboxgl-ctrl mapboxgl-ctrl-group layer-editor-component">
     <h1>{{ manager.activeDrawLayer.title }}</h1>
-    <v-btn @click="addIcon()">Incident</v-btn>
+    <v-layout>
+    <template v-for="(value,key,index) in types" :key="key">
+        <img :src="value.icon" @click="addIcon(key)" class="layer-editor-type-image"></img>
+        
+        
+    </template>
+</v-layout>
 </div>

@@ -49,6 +49,7 @@ export class CsMap extends Vue {
     public static LAYER_UPDATED = 'layer.updated';
     public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
     public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
+    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
     public static DRAWLAYER = 'drawlayer';
 
     @Prop()
@@ -482,15 +483,15 @@ export class CsMap extends Vue {
             this.map.on('load', e => {
                 this.startServices();
                 this.mapLoaded(e);
-
-                if (this.mapOptions.showGeocoder) {
-                    this.addGeocoder();
-                }
+                
                 if (this.mapOptions.showEditor && this.manager) {
                     const layerEditorControl = new LayerEditorControl(
                         this.manager
                     );
                     this.map.addControl(layerEditorControl);
+                }
+                if (this.mapOptions.showGeocoder) {
+                    this.addGeocoder();
                 }
             });
         });

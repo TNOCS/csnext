@@ -8,25 +8,65 @@ import { Feature } from 'geojson';
 
 @Component({
     name: 'layer-editor',
-    props: { widget: null, manager: null },    
+    props: { widget: null, manager: null },
     template: require('./layer-editor.html')
 } as any)
 export class LayerEditor extends Vue {
     public widget!: IWidget;
     public manager!: MapLayers;
-    public busHandle? : MessageBusHandle;
-    public layer! : IMapLayer | undefined;
-    public mapDraw : any;
+    public busHandle?: MessageBusHandle;
+    public layer!: IMapLayer | undefined;
+    public mapDraw: any;
     public activeType: any;
     public map?: mapboxgl.Map;
 
-    public addIcon() {        
-        this.mapDraw.changeMode('draw_point');
-        this.activeType = {
-            "type" : "incident"
-        };
+    public types = {
+        incident: {
+            mode: "draw_point",
+            notification: "Plaats incident",
+            icon: "images/incident-icon.png",
+            properties: {
+                type: 'incident',
+                title: 'incident',
+                description: ''
+            }
+        },
+        demonstratie: {
+            title: "Demonstratie",
+            mode: "draw_point",
+            notification: "Plaats demonstratie",
+            icon: "images/demonstratie.png",
+            properties: {
+                type: 'demonstratie',
+                title: 'demonstratie',
+                description: ''
+            }            
+        },
+        lijn: {
+            mode: "draw_line_string",
+            notification: "Begin met tekenen",
+            icon: "images/polyline.png",
+            properties: {
+                type: 'line'
+            } 
+        },
+        vlak: {
+            mode: "draw_polygon",
+            notification: "Begin met tekenen",
+            icon: "images/polygon.png",
+            properties: {
+                type: 'line'
+            } 
+        }
+    };
+
+    public addIcon(type: string) {
+        if (this.types.hasOwnProperty(type)) {
+            this.activeType = this.types[type];
+            this.mapDraw.changeMode(this.activeType.mode);    
+            this.manager.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_START_DRAWING, this.activeType);    
+        }
     }
-   
 
     public updateLayer() {
         this.layer = this.manager.activeDrawLayer;
@@ -81,14 +121,13 @@ export class LayerEditor extends Vue {
                     if (source && source._geojson) {
                         // set layer/feature ids
                         for (const feature of e.features) {
-                            feature.properties = {
-                                name: 'incident',
-                                description: ''
-                            };
-                            feature.id = feature.properties[
+                            feature.properties = {};
+                            feature.properties = { ...this.activeType.properties };
+
+                            feature.id = feature.properties![
                                 '_fId'
                             ] = guidGenerator();
-                            feature.properties[
+                            feature.properties![
                                 '_lId'
                             ] = this.manager.activeDrawLayer.id;
                         }
@@ -115,16 +154,18 @@ export class LayerEditor extends Vue {
             });
         }
         if (this.manager.events) {
-            this.busHandle = this.manager.events.subscribe(CsMap.DRAWLAYER, (a: string, l: IMapLayer) => {
-                // if (a === CsMap.DRAWLAYER_ACTIVATED) {
-                //     this.$forceUpdate();
-                // }
-                this.updateLayer();
-                // this.$forceUpdate();
-
-            });
+            this.busHandle = this.manager.events.subscribe(
+                CsMap.DRAWLAYER,
+                (a: string, l: IMapLayer) => {
+                    // if (a === CsMap.DRAWLAYER_ACTIVATED) {
+                    //     this.$forceUpdate();
+                    // }
+                    this.updateLayer();
+                    // this.$forceUpdate();
+                }
+            );
         }
-        
+
         // debugger;
         // if (this.manager.events) {
         //     this.manager.events.subscribe('feature', (a: string, f: any) => {
@@ -132,6 +173,4 @@ export class LayerEditor extends Vue {
         //     })
         // }
     }
-
-
 }

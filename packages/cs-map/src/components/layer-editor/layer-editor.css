@@ -1,3 +1,9 @@
 .layer-editor-component {
     padding: 5px;
 }
+
+.layer-editor-type-image {
+    /* width: 32px !important; */
+    margin: 4px;
+    cursor: pointer;
+}
