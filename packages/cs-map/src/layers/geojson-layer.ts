@@ -259,6 +259,15 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             this.addImage(l.id, l.style.icon);
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }
+
+        if (l.id && l.style.icons) {
+            for (const key in l.style.icons) {
+                if (l.style.icons.hasOwnProperty(key)) {
+                    const url = l.style.icons[key];
+                    this.addImage(key, url);                    
+                }
+            }
+        }
         l._initialized = true;
         return l;
     }

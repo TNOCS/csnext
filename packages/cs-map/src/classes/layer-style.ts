@@ -8,4 +8,5 @@ export class LayerStyle {
     public line?: boolean;
     public pointCircle?: boolean;
     public icon?: string;
+    public icons?: { [id:string]: string}
 }
