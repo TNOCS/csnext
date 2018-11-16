@@ -22,49 +22,61 @@ export class LayerEditor extends Vue {
 
     public types = {
         incident: {
-            mode: "draw_point",
-            notification: "Plaats incident",
-            icon: "images/incident-icon.png",
-            properties: {                
+            mode: 'draw_point',
+            notification: 'Plaats incident',
+            icon: 'images/incident-icon.png',
+            properties: {
                 title: 'incident',
                 description: '',
-                type: 'incident',
+                type: 'incident'
             }
         },
         demonstratie: {
-            title: "Demonstratie",
-            mode: "draw_point",
-            notification: "Plaats demonstratie",
-            icon: "images/demonstratie.png",
-            properties: {               
+            title: 'Demonstratie',
+            mode: 'draw_point',
+            notification: 'Plaats demonstratie',
+            icon: 'images/demonstratie.png',
+            properties: {
                 title: 'demonstratie',
                 description: '',
                 type: 'demonstratie'
-            }            
+            }
         },
         lijn: {
-            mode: "draw_line_string",
-            notification: "Begin met tekenen",
-            icon: "images/polyline.png",
+            mode: 'draw_line_string',
+            notification: 'Begin met tekenen',
+            icon: 'images/polyline.png',
             properties: {
                 type: 'line'
-            } 
+            }
         },
         vlak: {
-            mode: "draw_polygon",
-            notification: "Begin met tekenen",
-            icon: "images/polygon.png",
+            mode: 'draw_polygon',
+            notification: 'Begin met tekenen',
+            icon: 'images/polygon.png',
             properties: {
                 type: 'polygon'
-            } 
+            }
+        },
+        circle: {
+            mode: 'draw_circle',
+            notification: 'Begin met tekenen',
+            icon: 'images/circle.png',
+            properties: {
+                type: 'radius'
+            }
         }
     };
 
     public addIcon(type: string) {
         if (this.types.hasOwnProperty(type)) {
             this.activeType = this.types[type];
-            this.mapDraw.changeMode(this.activeType.mode);    
-            this.manager.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_START_DRAWING, this.activeType);    
+            this.mapDraw.changeMode(this.activeType.mode);
+            this.manager.events.publish(
+                CsMap.DRAWLAYER,
+                CsMap.DRAWLAYER_START_DRAWING,
+                this.activeType
+            );
         }
     }
 
@@ -122,7 +134,9 @@ export class LayerEditor extends Vue {
                         // set layer/feature ids
                         for (const feature of e.features) {
                             feature.properties = {};
-                            feature.properties = { ...this.activeType.properties };
+                            feature.properties = {
+                                ...this.activeType.properties
+                            };
 
                             feature.id = feature.properties![
                                 '_fId'

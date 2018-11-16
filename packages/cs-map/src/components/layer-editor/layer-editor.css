@@ -4,6 +4,8 @@
 
 .layer-editor-type-image {
     /* width: 32px !important; */
-    margin: 4px;
+    margin: 10px;
+    margin-right:13px;
+    margin-top:15px;
     cursor: pointer;
 }
