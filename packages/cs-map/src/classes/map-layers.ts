@@ -135,7 +135,7 @@ export class MapLayers implements IDatasource {
     public zoomFeature(layer: IMapLayer, featureId: string) {
         if (!layer._source || !layer._source._geojson || !this.map) return;
         const feature = layer._source._geojson.features.find(
-            f => f.id === featureId
+            f => f.id === featureId || f.properties!['_fId'] === featureId
         );
         if (!feature) return;
         var coords: [number, number] | undefined = undefined;
