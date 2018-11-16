@@ -52,11 +52,9 @@ export class SplitPanel extends Vue {
 
     constructor() {
         super();
-        
     }
 
     created() {
-       
         if (this.options) {
             if (!this.options.splitpanel) {
                 if (this.options.presets) {
@@ -93,11 +91,17 @@ export class SplitPanel extends Vue {
                         action: m => {
                             if (this.options) {
                                 this.options.splitpanel = element;
-                            }                        
+                            }
                             this.$forceUpdate();
                         }
                     } as IMenu;
-                    this.dashboard.menus.push(presetMenu);
+                    if (
+                        this.dashboard.menus.findIndex(
+                            m => m.id === presetMenu.id
+                        ) === -1
+                    ) {
+                        this.dashboard.menus.push(presetMenu);
+                    }
                 }
             }
         }
