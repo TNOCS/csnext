@@ -91,6 +91,7 @@ export class TimeInterpolationExtension implements ILayerExtension, ILayerExtens
                 }
             }
             if (source && source._geojson && source._geojson.features) {
+                if (this._interpolatedFeature) this._interpolatedFeature.properties!['_fId'] = 'current';
                 source!._geojson!.features = this._interpolatedFeature ? [this._interpolatedFeature] : [];
                 manager!.updateLayerSource(this._layer);
                 console.log(`Updated interpolation feature to ${this._interpolatedFeature ? JSON.stringify(this._interpolatedFeature.geometry.coordinates) : 'undefined'}`);

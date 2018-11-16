@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-core",
-  "version": "0.0.87",
+  "version": "0.0.88",
   "description": "cscore",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
