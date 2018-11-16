@@ -45,11 +45,33 @@ export class LayerServerService implements ILayerService, IStartStopService {
             this.socket = io(this.options.url);
             this.socket.on('connect', () => {
                 console.log('Connected');
+
                 // this.socket.emit('events', { test: 'test' });
                 //   AppState.Instance.TriggerNotification({ title: 'Connected' });
             });
-            this.socket.on('connect_error', error => {
-                console.log('Connection error: ' + error);
+            this.socket.on('reconnect', () => {
+                console.log('Reconnected');
+                for (const layer of this.layers) {
+                    if (layer.isEditable === true) {
+                        this.manager!.refreshLayerSource(layer).then(ml => {
+                            console.log('Layer refreshed');
+                        })
+
+                        // });
+                        // this.manager!
+                        // .loadLayer(layer).then( l => {
+
+
+                    }
+                }
+            });
+            this.socket.on('disconnected', () => {
+                for (const layer of this.layers) {
+                    if (layer.isEditable === true && layer._source) {
+                        layer._source._loaded = false;
+                    }
+                }
+                console.log('Connection lost');
             });
         }
     }
@@ -83,13 +105,17 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.extensions = layer.extensions;
 
                             gl.style = style;
+                            if (gl.style && gl.style.popup) {
+                                console.log(gl.style.popup);
+                            }
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;
                             } else {
                                 gl.type = layer.type;
                             }
                             if (layer.style && layer.style.mapbox) {
-                                gl.symbolLayout = layer.style.mapbox.symbolLayout;
+                                gl.symbolLayout =
+                                    layer.style.mapbox.symbolLayout;
                                 gl.symbolPaint = layer.style.mapbox.symbolPaint;
                                 gl.circlePaint = layer.style.mapbox.circlePaint;
                                 gl.fillPaint = layer.style.mapbox.fillPaint;
@@ -102,8 +128,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             if (layer.tags) {
                                 gl.tags = [...gl.tags, ...layer.tags];
                             }
+                            if (layer.featureTypes) {
+                                gl.featureTypes = layer.featureTypes;
+                            }
+
                             if (gl.isEditable) {
-                                this.initEditableLayer(gl, layer);
+                               this.initEditableLayer(gl, layer);
                             }
 
                             // gl.paint = {
@@ -156,7 +186,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                     console.log('Was updated by me');
                 } else {
                     gl._manager!.updateLayerSource(gl, data, false);
-                    
                 }
 
                 if (this.mapDraw) {
@@ -178,18 +207,19 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 var featureIds = md.add(feature);
                 //
                 md.changeMode('simple_select', {
-                    featureIds: [featureIds[0]]});
-                
+                    featureIds: [featureIds[0]]
+                });
+
                 if (feature.geometry.type !== 'Point') {
-                    // md.changeMode('direct_select', {
-                    //     featureId: featureIds[0]
-                    // });
-                } else {
-                   
+                    md.changeMode('direct_select', {
+                        featureId: featureIds[0]
+                    });
+                } 
+
                     // if (f.context.type !== 'touchend') {
-                        
+
                     // }
-                }
+                
 
                 console.log(featureIds);
             }
