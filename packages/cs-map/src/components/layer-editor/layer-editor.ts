@@ -3,7 +3,7 @@ import { IWidget, MessageBusHandle, guidGenerator } from '@csnext/cs-core';
 
 import './layer-editor.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer, CsMap } from '../../.';
+import { MapLayers, IMapLayer, CsMap, FeatureType } from '../../.';
 import { Feature } from 'geojson';
 
 @Component({
@@ -18,58 +18,16 @@ export class LayerEditor extends Vue {
     public layer!: IMapLayer | undefined;
     public mapDraw: any;
     public activeType: any;
+    public types?: { [key: string]: FeatureType } = {};
     public map?: mapboxgl.Map;
 
-    public types = {
-        incident: {
-            mode: 'draw_point',
-            notification: 'Plaats incident',
-            icon: 'images/incident-icon.png',
-            properties: {
-                title: 'incident',
-                description: '',
-                type: 'incident'
-            }
-        },
-        demonstratie: {
-            title: 'Demonstratie',
-            mode: 'draw_point',
-            notification: 'Plaats demonstratie',
-            icon: 'images/demonstratie.png',
-            properties: {
-                title: 'demonstratie',
-                description: '',
-                type: 'demonstratie'
-            }
-        },
-        lijn: {
-            mode: 'draw_line_string',
-            notification: 'Begin met tekenen',
-            icon: 'images/polyline.png',
-            properties: {
-                type: 'line'
-            }
-        },
-        vlak: {
-            mode: 'draw_polygon',
-            notification: 'Begin met tekenen',
-            icon: 'images/polygon.png',
-            properties: {
-                type: 'polygon'
-            }
-        },
-        circle: {
-            mode: 'draw_circle',
-            notification: 'Begin met tekenen',
-            icon: 'images/circle.png',
-            properties: {
-                type: 'radius'
-            }
-        }
-    };
-
     public addIcon(type: string) {
-        if (this.types.hasOwnProperty(type)) {
+        if (
+            this.layer &&
+            this.layer.featureTypes &&
+            this.types && 
+            this.layer.featureTypes.hasOwnProperty(type)
+        ) {
             this.activeType = this.types[type];
             this.mapDraw.changeMode(this.activeType.mode);
             this.manager.events.publish(
@@ -82,6 +40,9 @@ export class LayerEditor extends Vue {
 
     public updateLayer() {
         this.layer = this.manager.activeDrawLayer;
+        if (this.layer) {
+            this.types = this.layer.featureTypes;
+        }
         this.$forceUpdate();
     }
 

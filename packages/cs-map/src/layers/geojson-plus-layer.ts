@@ -7,7 +7,8 @@ import {
     IMapLayerType,
     ILayerAction,
     ILayerExtensionType,
-    ILayerExtension
+    ILayerExtension,
+    FeatureType
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import {
@@ -15,7 +16,8 @@ import {
     CirclePaint,
     SymbolLayout,
     LinePaint,
-    FillPaint
+    FillPaint,
+    MapMouseEvent
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
@@ -56,6 +58,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public isEditable?: boolean;
     public centerGeoJson?: FeatureCollection;
     public centerSource?: LayerSource;
+    public featureTypes?: { [key: string]: FeatureType };
 
     // circle style
     public circleLayout!: mapboxgl.CircleLayout;
@@ -115,6 +118,14 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 action: () => {
                     if (this._manager) {
                         this._manager.hideLayer(this);
+                    }
+                }
+            });
+            res.push({
+                title: 'Refresh',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.refreshLayerSource(this);
                     }
                 }
             });
@@ -207,17 +218,21 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                 } as Feature;
                 nf.geometry = { type: 'Point', coordinates: [] };
 
-                switch (f.geometry.type) {
-                    case 'LineString':
-                        nf.geometry = centroid(f).geometry; //.coordinates[0];
-                        break;
-                    case 'Polygon':
-                        nf.geometry = centroid(f).geometry;
-                        break;
-                    case 'Point':
-                        nf.geometry = f.geometry;
+                try {
+                    switch (f.geometry.type) {
+                        case 'LineString':
+                            nf.geometry = centroid(f).geometry; //.coordinates[0];
+                            break;
+                        case 'Polygon':
+                            nf.geometry = centroid(f).geometry;
+                            break;
+                        case 'Point':
+                            nf.geometry = f.geometry;
 
-                        break;
+                            break;
+                    }
+                } catch (e) {
+                    console.log('Error calculating center');
                 }
                 if (nf.geometry.coordinates.length > 1) {
                     this.centerGeoJson.features.push(nf);
@@ -312,7 +327,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         this.style = {
             ...({
                 title: '{name}',
-                popover: '{name}',
                 fill: false
             } as LayerStyle),
             ...this.style
@@ -433,7 +447,20 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         return this;
     }
 
-    private parsePopupString(f: Feature, s: string) {
+    private parsePopupString(e: any, s: string) {
+        // if (e.features && e.features.length === 1) {
+        //     let f = e.features[0];
+
+        //     if (!f.properties) {
+        //         return s;
+        //     }
+        //     for (const key in f.properties) {
+        //         if (f.properties.hasOwnProperty(key)) {
+        //             const prop = f.properties[key];
+        //             s = s.split('{' + key + '}').join(prop);
+        //         }
+        //     }
+        // }
         return s;
     }
 

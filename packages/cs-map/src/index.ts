@@ -18,6 +18,7 @@ export * from './classes/ilayer-extension';
 export * from './classes/layer-service-options';
 export * from './classes/ilayer-action';
 export * from './classes/layer-style';
+export * from './classes/feature-type';
 
 // components
 export * from './components/layer-selection/layer-selection';

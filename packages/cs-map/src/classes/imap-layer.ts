@@ -1,4 +1,4 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle} from '..';
+import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType} from '..';
 import {MessageBusService} from '@csnext/cs-core';
 import { ILayerExtensionType} from './ilayer-extension';
 import { MessageBusHandle } from '@csnext/cs-core/dist/utils/message-bus/message-bus-handle';
@@ -38,6 +38,7 @@ export interface IMapLayer {
     isEditable?: boolean;
     layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
     paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
+    featureTypes?: {[key:string]: FeatureType};
 
     /** toggle visibility of layer */
     Visible?: boolean;

@@ -253,7 +253,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
 
         l.style = {
-            ...({ title: '{name}', popover: '{name}' } as LayerStyle),
+            ...({ title: '{name}'} as LayerStyle),
             ...l.style
         };
 
@@ -306,7 +306,9 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     private registerMapEvents(map: CsMap) {
         if (this.id && !this.mapEventsRegistered) {
             map.map.on('touchend', this.id, e => {
+                console.log('Start click');
                 this.click(this, e);
+                
             });
             map.map.on('click', this.id, e => {
                 this.click(this, e);
@@ -453,18 +455,21 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
 
     private createPopup(map: CsMap, layer: GeojsonLayer, e: any) {
         let popup: string | undefined = undefined;
-        if (layer.popupContent) {
+        if (layer.style && layer.style.popup) {
+            popup = layer.style.popup;
+        } else if (layer.popupContent) {
             if (typeof layer.popupContent === 'string') {
                 popup = layer.popupContent;
             } else if (this.isFunction(layer.popupContent)) {
                 popup = layer.popupContent(e);
             }
-            if (popup) {
-                this.popup
-                    .setLngLat(e.lngLat)
-                    .setHTML(popup)
-                    .addTo(map.map);
-            }
+            
+        }
+        if (popup) {
+            this.popup
+                .setLngLat(e.lngLat)
+                .setHTML(popup)
+                .addTo(map.map);
         }
     }
 

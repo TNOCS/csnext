@@ -72,16 +72,36 @@ export class MapLayers implements IDatasource {
         return result;
     }
 
+    public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
+            if (ml._source) {
+                ml._source._loaded = false;
+                ml._source.LoadSource().then(l => {
+                    this.updateLayerSource(ml, undefined, false);
+                    resolve(ml);
+                }).catch(e => {
+                    reject(e);
+                });
+            } else {
+                reject();
+            }
+        });
+    }
+
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            ml.Visible = true;            
+            ml.Visible = true;
             if (this.map) {
                 this.map
                     .showLayer(ml)
                     .then(maplayer => {
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
-                            this.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_ACTIVATED, ml);
+                            this.events.publish(
+                                CsMap.DRAWLAYER,
+                                CsMap.DRAWLAYER_ACTIVATED,
+                                ml
+                            );
                         }
                         resolve(maplayer);
                     })
@@ -173,7 +193,11 @@ export class MapLayers implements IDatasource {
             if (this.map) {
                 if (this.activeDrawLayer === ml) {
                     this.activeDrawLayer = undefined;
-                    this.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_DEACTIVATED, ml);
+                    this.events.publish(
+                        CsMap.DRAWLAYER,
+                        CsMap.DRAWLAYER_DEACTIVATED,
+                        ml
+                    );
                 }
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
@@ -183,7 +207,8 @@ export class MapLayers implements IDatasource {
 
     /** delete feature from a feature  */
     public deleteLayerFeature(
-        ml: IMapLayer | string, id: string, 
+        ml: IMapLayer | string,
+        id: string,
         updateSource = true
     ) {
         let layer: IMapLayer | undefined = undefined;
@@ -194,18 +219,13 @@ export class MapLayers implements IDatasource {
         } else {
             layer = ml;
         }
-        if (
-            layer &&
-            layer._source &&
-            layer._source._geojson           
-        ) {
-
+        if (layer && layer._source && layer._source._geojson) {
             let index = layer._source._geojson.features.findIndex(
                 f => f.id === id
             );
-            
+
             if (index >= 0) {
-                layer._source._geojson.features.splice(index,1);
+                layer._source._geojson.features.splice(index, 1);
                 if (updateSource) {
                     this.updateLayerSource(layer, layer._source._geojson);
                 }
@@ -244,7 +264,6 @@ export class MapLayers implements IDatasource {
             }
         }
     }
-
 
     public updateFeatureProperty(
         source: string,
@@ -315,7 +334,7 @@ export class MapLayers implements IDatasource {
         if (!ml._source && ml.source) {
             ml._source = ml.source as LayerSource;
         }
-        
+
         if (g && ml._source && ml._source.id && this.MapControl) {
             ml._source._geojson = g;
             let sourceId = ml._source.id;
