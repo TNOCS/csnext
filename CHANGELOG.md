@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.89](https://github.com/tnocs/csnext/compare/v0.0.88...v0.0.89) (2018-11-16)
+
+**Note:** Version bump only for package csnext
+
+
+
+
+
+
 ## [0.0.88](https://github.com/tnocs/csnext/compare/v0.0.87...v0.0.88) (2018-11-16)
 
 **Note:** Version bump only for package csnext
