@@ -81,14 +81,7 @@ export class MapLayers implements IDatasource {
                     .then(maplayer => {
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
-                            if (this.MapWidget &&
-                                this.MapWidget.mapDraw
-                            ) {                                
-                                let md = this.MapWidget.mapDraw;
-                                // md.changeMode('delete');
-                                // md.set(this.activeDrawLayer._source!._geojson);
-                    
-                            }
+                            this.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_ACTIVATED, ml);
                         }
                         resolve(maplayer);
                     })
@@ -178,6 +171,10 @@ export class MapLayers implements IDatasource {
                 ml._featureEventHandle = undefined;
             }
             if (this.map) {
+                if (this.activeDrawLayer === ml) {
+                    this.activeDrawLayer = undefined;
+                    this.events.publish(CsMap.DRAWLAYER, CsMap.DRAWLAYER_DEACTIVATED, ml);
+                }
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
             }

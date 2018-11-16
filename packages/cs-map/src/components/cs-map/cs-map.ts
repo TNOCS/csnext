@@ -3,21 +3,16 @@ import Vue from 'vue';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, {
-    GeoJSONSource,
-    CirclePaint,
-    MapLayerMouseEvent
-} from 'mapbox-gl';
+import mapboxgl, { CirclePaint } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { RulerControl } from 'mapbox-gl-controls';
 import { StylesControl } from 'mapbox-gl-controls';
-import { ZoomControl, CompassControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import radiusMode from './../../draw-modes/radius/draw-mode-radius.js';
+import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 
 import {
     MapLayers,
@@ -29,13 +24,13 @@ import {
     ILayerExtensionType,
     GeojsonPlusLayer
 } from '../../.';
-import { plainToClass } from 'class-transformer';
-import { GeojsonLayer } from '../../layers/geojson-layer';
+import { LayerEditor } from '../layer-editor/layer-editor';
 
 export interface FeatureEventDetails {
     context: any;
     features: Feature[];
 }
+
 
 @Component({
     template: require('./cs-map.html')
@@ -52,7 +47,9 @@ export class CsMap extends Vue {
     public static FEATURE_MOUSE_LEAVE = 'leave';
     public static FEATURE_UPDATED = 'updated';
     public static LAYER_UPDATED = 'layer.updated';
-
+    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
+    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
+    public static DRAWLAYER = 'drawlayer';
 
     @Prop()
     public widget!: IWidget;
@@ -84,11 +81,6 @@ export class CsMap extends Vue {
             CsMap.serviceTypes.push(type);
         }
     }
-
-    // Create a popup, but don't add it to the map yet.
-    private popup = new mapboxgl.Popup({
-        closeButton: false
-    });
 
     public get manager(): MapLayers | undefined {
         if (this.widget) {
@@ -173,32 +165,29 @@ export class CsMap extends Vue {
                 });
             }
 
-            this.manager.events.subscribe(
-                'layer',
-                (action: string, layer: IMapLayer) => {
-                    switch (action) {
-                        case 'enabled':
-                            // this.showLayer(layer);
+            this.manager.events.subscribe('layer', (action: string) => {
+                switch (action) {
+                    case 'enabled':
+                        // this.showLayer(layer);
 
-                            break;
-                        case 'disabled': {
-                            // this.removeLayer(layer);
-                            break;
-                        }
-                        case 'remove': {
-                            // this.removeLayer(layer);
-                            break;
-                        }
+                        break;
+                    case 'disabled': {
+                        // this.removeLayer(layer);
+                        break;
+                    }
+                    case 'remove': {
+                        // this.removeLayer(layer);
+                        break;
                     }
                 }
-            );
+            });
         }
     }
 
     public async showLayer(layer: IMapLayer): Promise<IMapLayer> {
-        return new Promise<IMapLayer>((resolve, reject) => {
+        return new Promise<IMapLayer>(resolve => {
             if (layer.id && layer._source && layer._source.id) {
-                layer._source.LoadSource().then(geojson => {
+                layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         this.addSource(layer._source);
                         if (typeof layer.addLayer === 'function') {
@@ -256,7 +245,8 @@ export class CsMap extends Vue {
                     showStyles: true,
                     showRuler: true,
                     showGeocoder: true,
-                    showLayer: true
+                    showLayer: true,
+                    showEditor: true
                 },
                 ...(this.widget.options as MapOptions)
             };
@@ -487,83 +477,20 @@ export class CsMap extends Vue {
 
                 this.map.addControl(this.mapDraw, 'top-left');
 
-                this.map.on(
-                    'draw.update',
-                    (e: { features: Feature[]; action: string }) => {
-                        for (const feature of e.features) {
-                            this.manager!.updateLayerFeature(
-                                this.manager!.activeDrawLayer!,
-                                feature,
-                                true
-                            );
-                        }
-                        // this.mapDraw.deleteAll();
-                    }
-                );
-
-                this.map.on('draw.delete', (e: GeoJSON.FeatureCollection) => {
-                    if (this.manager && this.manager.activeDrawLayer) {
-                        for (const feature of e.features) {
-                            if (typeof feature.id === 'string') {
-                                this.manager.deleteLayerFeature(
-                                    this.manager.activeDrawLayer,
-                                    feature.id,
-                                    true
-                                );
-                            }
-                        }
-
-                        this.manager.events.publish('feature', CsMap.FEATURE_DELETED, e.features[0]);
-
-                        this.mapDraw.deleteAll();
-                    }
-                });
-
-                this.map.on('draw.create', (e: GeoJSON.FeatureCollection) => {
-                    if (this.manager && this.manager.activeDrawLayer) {
-                        let source = this.manager.activeDrawLayer._source;
-                        if (source && source._geojson) {
-                            // set layer/feature ids
-                            for (const feature of e.features) {
-                                feature.properties = {
-                                    name: 'incident',
-                                    description: ''
-                                };
-                                feature.id = feature.properties[
-                                    '_fId'
-                                ] = guidGenerator();
-                                feature.properties[
-                                    '_lId'
-                                ] = this.manager.activeDrawLayer.id;
-                            }
-                            source._geojson.features = [
-                                ...source._geojson.features,
-                                ...e.features
-                            ];
-                            
-
-                            this.manager.updateLayerSource(
-                                this.manager.activeDrawLayer,
-                                source._geojson,
-                                true
-                            );
-
-                            this.manager.events.publish('feature', CsMap.FEATURE_CREATED, { features : [e.features[0]]});
-
-                            
-                        }
-                        this.mapDraw.deleteAll();
-                    }
-                    // console.log(e.features);
-                });
+               
             }
 
             // check if map has loaded
             this.map.on('load', e => {
                 this.startServices();
                 this.mapLoaded(e);
+                
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
+                }
+                if (this.mapOptions.showEditor && this.manager) {
+                    const layerEditorControl = new LayerEditorControl(this.manager);
+                    this.map.addControl(layerEditorControl);
                 }
             });
         });
@@ -617,7 +544,7 @@ export class CsMap extends Vue {
             });
             this.manager.addLayer(rl).then(l => {
                 if (l.events) {
-                    l.events.subscribe('feature', (a: string, f: Feature) => {
+                    l.events.subscribe('feature', (a: string) => {
                         if (a === CsMap.FEATURE_SELECT) {
                         }
                     });
@@ -638,7 +565,7 @@ export class CsMap extends Vue {
                 }
             });
 
-            geocoder.on('clear', ev => {
+            geocoder.on('clear', () => {
                 if (this.manager) {
                     this.manager.updateLayerSource(rl, {
                         type: 'FeatureCollection',

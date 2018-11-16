@@ -89,6 +89,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 gl.type = layer.type;
                             }
                             if (layer.style && layer.style.mapbox) {
+                                gl.symbolLayout = layer.style.mapbox.symbolLayout;
+                                gl.symbolPaint = layer.style.mapbox.symbolPaint;
                                 gl.circlePaint = layer.style.mapbox.circlePaint;
                                 gl.fillPaint = layer.style.mapbox.fillPaint;
                                 gl.linePaint = layer.style.mapbox.linePaint;
@@ -112,7 +114,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);
-                            console.log('Add ' + gl.id);
                         }
 
                         if (this.options.activeLayers) {
