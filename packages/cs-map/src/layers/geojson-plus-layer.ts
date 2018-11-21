@@ -299,9 +299,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public initLayer(manager: MapLayers) {
         // check if we need to create an instance first of maplayer (needed if imported from json)
 
-        // debugger;
-        // this.circleLayer = new GeojsonLayer(this);
-
         if (this.id === undefined) {
             this.id = guidGenerator();
         }
@@ -428,11 +425,14 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             paint: this.fillPaint
                 ? this.fillPaint
                 : ({
-                      'fill-color': ['get', 'stroke'],
+                      'fill-color': ['get', 'color'],
                       'fill-opacity': ['get', 'stroke-opacity']
                   } as FillPaint),
             filter: ['all']
         });
+
+        console.log('Fill layer');
+        console.log(this.fillLayer);
         if (!this.style.fill) {
             this.fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
         }

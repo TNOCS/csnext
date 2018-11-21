@@ -140,12 +140,5 @@ export class LayerEditor extends Vue {
                 }
             );
         }
-
-        // debugger;
-        // if (this.manager.events) {
-        //     this.manager.events.subscribe('feature', (a: string, f: any) => {
-        //         console.log(a);
-        //     })
-        // }
     }
 }

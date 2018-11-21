@@ -151,7 +151,7 @@ export class CsMap extends Vue {
             if (this.manager.MapWidget === undefined) {
                 this.manager.MapWidget = this;
             }
-            if (this.manager._sources && this.manager._sources.images) {
+            if (this.manager._sources && this.manager._sources.images) {                
                 for (var id in this.manager._sources.images) {
                     this.addImage(id, this.manager._sources.images[id]);
                 }
