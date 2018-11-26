@@ -16,14 +16,13 @@ import {
     CirclePaint,
     SymbolLayout,
     LinePaint,
-    FillPaint,
-    MapMouseEvent
+    FillPaint
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
 import { GeojsonLayer } from './geojson-layer';
-import { centroid } from 'turf';
+import centroid from '@turf/centroid';
 import { FeatureCollection, Feature } from 'geojson';
 import { MessageBusHandle } from '@csnext/cs-core';
 import { LayerStyle } from '../classes/layer-style';
@@ -193,7 +192,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    public createCenterSource() {
+    public createCenterSource() {        
         if (this.iconZoomLevel === undefined) {
             return;
         }
@@ -422,6 +421,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             parentId: this.id,
             popupContent: this.popupContent,
             layout: this.fillLayout,
+
             paint: this.fillPaint
                 ? this.fillPaint
                 : ({
@@ -431,8 +431,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             filter: ['all']
         });
 
-        console.log('Fill layer');
-        console.log(this.fillLayer);
         if (!this.style.fill) {
             this.fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
         }
@@ -502,8 +500,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         return handle;
     }
 
-    public addLayer(map: CsMap) {
-        console.log('Adding layer');
+    public addLayer(map: CsMap) {        
         if (!this.symbolLayer || !this.lineLayer || !this._manager) {
             return;
         }

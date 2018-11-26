@@ -1,5 +1,4 @@
 import { MessageBusService, guidGenerator } from '@csnext/cs-core';
-import turf from 'turf';
 import {
     LayerSource,
     MapLayers,
@@ -9,7 +8,7 @@ import {
     LayerStyle
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import { LngLatBounds, SymbolPaint, SymbolLayout } from 'mapbox-gl';
+import { LngLatBounds, SymbolPaint, SymbolLayout, FillPaint } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
@@ -378,9 +377,15 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         if (this.layout) {
             mblayer.layout = this.layout;
         }
+        
         if (this.paint) {
             mblayer.paint = this.paint;
         }
+
+        // mblayer.paint = {
+        //     'fill-color': ['get', 'color'],
+        //     'fill-opacity': 0.3
+        //   } as FillPaint;
         if (this.filter) {
             mblayer.filter = this.filter;
         }

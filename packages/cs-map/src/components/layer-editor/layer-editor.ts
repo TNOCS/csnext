@@ -47,8 +47,6 @@ export class LayerEditor extends Vue {
     }
 
     public mounted() {
-        console.log('Editor mounted');
-        console.log(this.manager);
         this.map = this.manager.MapControl;
         this.mapDraw = this.manager.MapWidget!.mapDraw;
         if (this.map) {

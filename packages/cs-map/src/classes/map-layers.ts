@@ -371,8 +371,7 @@ export class MapLayers implements IDatasource {
                     type: 'raster',
                     source: ml._source.id!
                 });
-        }
-        console.log(ml);
+        }        
         // if (ml._source) {
         //     this.MapControl.getSource(ml.source)
         // }
