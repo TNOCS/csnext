@@ -42,8 +42,7 @@ export class LayerSource {
                 f.properties['_fId'] = f.id; // Workaround because of mapbox bug in MapMouseEvent
                 f.properties['_lId'] = layerId;   
                 
-               
-                if (f.geometry.type === 'Polygon') {
+                if (f.geometry && f.geometry.type === 'Polygon') {
                     let correct = true;
                     for (const line of f.geometry.coordinates) {
                         if (line.length === 1 && line[0] === null) {
