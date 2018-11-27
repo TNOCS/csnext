@@ -146,9 +146,9 @@ export class MapLayers implements IDatasource {
         });
     }
 
-    public zoomLayer(layer: IMapLayer) {
+    public zoomLayer(layer: IMapLayer, padding?: number) {
         if (this.map) {
-            this.map.zoomLayer(layer);
+            this.map.zoomLayer(layer, padding);
         }
     }
 

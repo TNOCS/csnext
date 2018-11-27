@@ -113,10 +113,10 @@ export class CsMap extends Vue {
         }
     }
 
-    public zoomLayer(mapLayer: IMapLayer) {
+    public zoomLayer(mapLayer: IMapLayer, padding = 20) {
         let bounds = mapLayer.getBounds();
         if (bounds) {
-            this.map.fitBounds(bounds, { padding: 20 });
+            this.map.fitBounds(bounds, { padding: padding });
         }
     }
 
