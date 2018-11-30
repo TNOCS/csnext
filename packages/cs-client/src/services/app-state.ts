@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import {
+  AppStateBase,
   MessageBusService,
   IProject,
   INotification,
@@ -11,58 +12,34 @@ import {
   guidGenerator
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
-const deepmerge = require('deepmerge').default;
+import merge from 'deepmerge';
 import { ProjectManager } from './project-manager';
-import {
-  CsApp,
-  CsDashboard,
-  Logger,
-  CsWidget
-} from '../';
+import { CsApp, CsDashboard, Logger, CsWidget } from '../';
 import VueRouter from 'vue-router';
 import { DefaultProject } from './default-project';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
 // https://github.com/Badacadabra/JavaScript-Design-Patterns/blob/master/GoF/idiomatic/Creational/Singleton/TypeScript/API/me.ts
-export class AppState {
+export class AppState extends AppStateBase {
   /** used for singleton  */
   private static pInstance: AppState;
-
-  /** Project definition */
-  public project: IProject = {};
-
-  /** Manages active project */
-  public projectManager?: ProjectManager;
-
-  /** Logger */
-  public logger = Logger.Instance;
-
-  /** Event bus for publish/subscribe events in application */
-  public bus = new MessageBusService();
-
-  /** True if the application has been initialized */
-  public isInitialized = false;
-
-  /** Vue router instance */
-  public router?: VueRouter;
-
-  /** list of past notifications */
-  public notifications: INotification[] = [];
 
   /** Get singleton instance of appstate */
   public static get Instance() {
     return this.pInstance || (this.pInstance = new this());
   }
 
-  /** Currently active dashboard */
-  public activeDashboard?: IDashboard;
+  /** Manages active project */
+  public projectManager?: ProjectManager;
+  /** Logger */
+  public logger = Logger.Instance;
+  /** Vue router instance */
+  public router?: VueRouter;
 
-  public data: { [id: string]: any } = {};
-
-  public windowSize = { x: 0, y: 0 };
-
-  private constructor() {}
+  private constructor() {
+    super();
+  }
 
   /** Initialize the project state, dashboard managers and data summaries handlers */
   public init(project: IProject) {
@@ -74,7 +51,23 @@ export class AppState {
     Vue.component('cs-app', CsApp);
 
     // merge new project details, with default project to make sure all required properties are available
-    this.project = deepmerge(DefaultProject, project);
+    // this.project = merge(DefaultProject, project);
+    this.project = project;
+    this.project.header = Object.assign(DefaultProject.header, project.header);
+    this.project.theme = Object.assign(DefaultProject.theme, project.theme);
+    this.project.menus = Object.assign(DefaultProject.menus, project.menus);
+    this.project.dashboards = Object.assign(
+      DefaultProject.dashboards,
+      project.dashboards
+    );
+    this.project.navigation = Object.assign(
+      DefaultProject.navigation,
+      project.navigation
+    );
+
+    if (project.init) {
+      this.project.init = project.init;
+    }
 
     // check if navigation style requires a leftSidebar, add one if not available
     if (
@@ -103,6 +96,21 @@ export class AppState {
     // mark app as initialized
     this.isInitialized = true;
     this.bus.publish('app-state', 'init', null);
+    this.project._appState = this;
+    if (typeof this.project.init === 'function') {
+      this.project.init();
+    }
+  }
+
+  public updateDatasource(id: string, value: any) {
+    if (!this.project) {
+      return;
+    }
+    if (!this.project.datasources) {
+      this.project.datasources = {};
+    }
+    this.project.datasources[id] = value;
+    this.bus.publish('ds-' + id, 'updated', value);
   }
 
   /** loads specific datasource in memory. Returns selected datasource as a promise  */
