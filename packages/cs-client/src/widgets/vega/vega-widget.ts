@@ -1,7 +1,6 @@
 import Component from 'vue-class-component';
-import { WidgetBase } from './../..';
 import Vue from 'vue';
-import { WidgetOptions, IWidget } from '@csnext/cs-core';
+import { IWidget } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 
 declare var vega: any;
@@ -13,11 +12,14 @@ declare var vega: any;
     widget: null
   }
 } as any)
-export class VegaWidget extends WidgetBase {
+export class VegaWidget extends Vue {
   public view: any;
 
+  /** access the original widget from configuration */
+  public widget!: IWidget;
+
   @Watch('widget.data', { deep: true})
-  public dataChanged(d: any) {
+  public dataChanged() {
     this.updateChart();
   }
 
