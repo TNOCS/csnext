@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Watch } from 'vue-property-decorator';
 import {
-  IProject,
   IDashboard,
   IWidget,
   guidGenerator,
@@ -28,17 +27,17 @@ export class CsDashboard extends Vue {
   public app = AppState.Instance;
 
   @Watch('dashboard')
-  public dashboardChanged(n: IDashboard, o: IDashboard) {
+  public dashboardChanged(n: IDashboard) {
     this.initDashboard(n);
   }
 
   @Watch('dashboard.menus')
-  public menusChanged(d: any) {
+  public menusChanged() {
     this.app.bus.publish('menus', 'changed');
   }
 
   @Watch('dashboard.widgets', { immediate: true })
-  public widgetsChanged(n: IWidget[], old: any) {
+  public widgetsChanged(n: IWidget[]) {
     if (n && n.length > 0) {
       n.forEach(w => {
         this.initWidget(w);
@@ -60,6 +59,13 @@ export class CsDashboard extends Vue {
     if (widget._initalized) {
       return;
     }
+
+    if (typeof widget.component === 'string') {
+      // var classNameString = 'MyClass';
+      // tslint:disable-next-line:no-eval
+      widget.component = widget.component;
+    }
+
     if (!widget.events) {
       widget.events = new MessageBusService();
     }
@@ -179,7 +185,7 @@ export class CsDashboard extends Vue {
             this.dashboard._manager.dataLoaded(d);
           }
         })
-        .catch(e => {
+        .catch(() => {
           if (!this.dashboard) {
             return;
           }

@@ -1,4 +1,5 @@
 export * from './classes/project';
+export * from './classes/app-state-base';
 export * from './classes/menu';
 export * from './classes/dashboard-options';
 export * from './classes/dashboard';
@@ -17,6 +18,7 @@ export * from './classes/sidebar-options';
 export * from './classes/editor-schema';
 export * from './utils/message-bus/message-bus-service';
 export * from './utils/message-bus/message-bus-handle';
+// export * from './utils/message-bus/typed-event';
 export * from './classes/widget-options';
 export * from './classes/search-options';
 export * from './classes/dialog';

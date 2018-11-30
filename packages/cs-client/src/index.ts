@@ -26,6 +26,9 @@ import { CsApp } from './components/cs-app/cs-app';
 import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
+import { MdWidget } from './widgets/markdown/md-widget';
+import Vue from 'vue';
+import { WidgetBase } from './widgets/widget-base';
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -53,5 +56,6 @@ export const csnext = {
     vue.component('cs-widget', CsWidget);
     vue.component('cs-app', CsApp);
     vue.component('cs-sidebar', CsSidebar);
+    Vue.component('md-widget', MdWidget);
   }
 };

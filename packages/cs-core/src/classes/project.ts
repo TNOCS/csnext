@@ -5,7 +5,8 @@ import {
   IDatasource,
   IDashboard,
   ISidebarOptions,
-  NavigationOptions
+  NavigationOptions,
+  AppStateBase
 } from './..';
 import { IMenu } from './menu';
 
@@ -25,6 +26,8 @@ export interface IProject {
   notifications?: INotificationOptions;
   menus?: IMenu[];
   data?: any;
+  _appState?: AppStateBase;
+  init?();
 }
 
 /** notification object */

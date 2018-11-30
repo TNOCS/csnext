@@ -167,7 +167,9 @@ export class DatasourceManager {
         continue;
       }
       const source = this.datasources[ds];
-      this.load(source);
+      if (source) {
+        this.load(source);
+      }
     }
   }
 }

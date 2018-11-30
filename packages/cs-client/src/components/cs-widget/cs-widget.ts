@@ -1,6 +1,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, IMenu, MessageBusService } from '@csnext/cs-core';
+import {
+  IWidget,
+  IMenu,
+  MessageBusService,
+  MessageBusHandle
+} from '@csnext/cs-core';
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
 import { AppState } from '../..';
@@ -17,6 +22,7 @@ export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
+  private dsHandle?: MessageBusHandle;
   public $refs!: {
     widget: HTMLElement;
   };
@@ -87,6 +93,16 @@ export class CsWidget extends Vue {
   public created() {
     if (!this.widget || !this.widget.options) {
       return;
+    }
+    if (this.widget.datasource) {
+      this.dsHandle = AppState.Instance.bus.subscribe(
+        'ds-' + this.widget.datasource,
+        (a: string, d: any) => {
+          if (a === 'updated') {
+            this.widget!.content = d;
+          }
+        }
+      );
     }
 
     if (this.widget.options.canEdit) {
