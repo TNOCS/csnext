@@ -1,50 +1,18 @@
 {
-    "name": "@csnext/cs-map",
-    "version": "0.0.95",
-    "description": "cs-map",
-    "main": "./lib/csmap.cs.js",
-    "types": "./dist/index.d.ts",
-    "url": "https://github.com/TNOCS/cs-map",
-    "bugs": "https://github.com/TNOCS/csnext/issues",
-    "license": "MIT",
-    "scripts": {
-        "link": "yarn link",
-        "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "webpack --mode development",
-        "clean": "del-cli dist lib"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "dependencies": {
-        "@csnext/cs-core": "^0.0.95",
-        "@mapbox/geojson-extent": "^0.3.2",
-        "@mapbox/mapbox-gl-draw": "mapbox/mapbox-gl-draw#e117715",
-        "@mapbox/mapbox-gl-geocoder": "^2.3.0",
-        "@mapbox/polylabel": "^1.0.2",
-        "@mapbox/simplespec-to-gl-style": "^0.3.2",
-        "@turf/centroid": "^6.0.2",
-        "@turf/length": "^6.0.2",
-        "axios": "^0.18.0",
-        "class-transformer": "^0.2.0",
-        "lodash.debounce": "^4.0.8",
-        "mapbox-gl": "^0.51.0",
-        "mapbox-gl-controls": "^0.0.13",
-        "numeral": "^2.0.6",
-        "socket.io-client": "^2.1.1",
-        "vue-perfect-scrollbar": "^0.1.0"
-    },
-    "devDependencies": {
-        "@types/mapbox-gl": "^0.51.0",
-        "@types/polylabel": "^1.0.5",
-        "@types/socket.io-client": "^1.4.32",
-        "@types/turf": "^3.5.32",
-        "postcss-loader": "^3.0.0",
-        "raw-loader": "^0.5.1",
-        "style-loader": "^0.23.1",
-        "ts-loader": "^5.3.0",
-        "typescript": "^3.1.6",
-        "webpack": "~4.26.0",
-        "webpack-cli": "^3.1.2"
-    }
+	"name": "@csnext/cs-map",
+	"version": "0.0.95",
+	"description": "cs-map",
+	"main": "./lib/csmap.cs.js",
+	"types": "./dist/index.d.ts",
+	"url": "https://github.com/TNOCS/cs-map",
+	"bugs": "https://github.com/TNOCS/csnext/issues",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"devDependencies": {
+		"ts-loader": "^5.3.1",
+		"typescript": "^3.2.1",
+		"webpack": "~4.26.1"
+	}
 }
