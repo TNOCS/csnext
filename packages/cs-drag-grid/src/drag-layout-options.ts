@@ -1,22 +1,29 @@
 import { BaseDashboardOptions, Form, FormField } from '@csnext/cs-core';
 
-@Form({ title: 'Drag Layout Options'})
+@Form({ title: 'Drag Layout Options' })
 export class DragLayoutOptions extends BaseDashboardOptions {
     public itemWidth?: number;
     public itemHeight?: number;
-        
-    private dragEnabled?: boolean;  
+
+    private dragEnabled?: boolean;
     private resizeEnabled?: boolean;
     private isMirrored?: boolean;
     private rowHeight?: number;
     private colNum?: number;
     private verticalCompact?: boolean;
     private margin?: number;
+    private animations?: boolean;
 
     public Title?: string;
     public Description?: string;
+    public Responsive?: boolean;
 
-    @FormField({ title: 'Drag', description: 'Allow widget dragging', type: 'boolean', group: 'edit'})
+    @FormField({
+        title: 'Drag',
+        description: 'Allow widget dragging',
+        type: 'boolean',
+        group: 'edit'
+    })
     public get DragEnabled(): boolean | undefined {
         return this.dragEnabled;
     }
@@ -25,7 +32,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.dragEnabled = value;
     }
 
-    @FormField({ title: 'Resize', type: 'boolean', group: 'edit'})
+    @FormField({ title: 'Resize', type: 'boolean', group: 'edit' })
     public get ResizeEnabled(): boolean | undefined {
         return this.resizeEnabled;
     }
@@ -34,7 +41,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.resizeEnabled = value;
     }
 
-    @FormField({ title: 'Mirrored', type: 'boolean', group: 'orientation'})
+    @FormField({ title: 'Mirrored', type: 'boolean', group: 'orientation' })
     public get IsMirrored(): boolean | undefined {
         return this.isMirrored;
     }
@@ -43,7 +50,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.isMirrored = value;
     }
 
-    @FormField({ title: 'Row Height', type: 'number', group: 'size'})
+    @FormField({ title: 'Row Height', type: 'number', group: 'size' })
     public get RowHeight(): number | undefined {
         return this.rowHeight;
     }
@@ -52,7 +59,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.rowHeight = value;
     }
 
-    @FormField({ title: 'Column Count', type: 'number', group: 'size'})
+    @FormField({ title: 'Column Count', type: 'number', group: 'size' })
     public get ColNum(): number | undefined {
         return this.colNum;
     }
@@ -61,7 +68,11 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.colNum = value;
     }
 
-    @FormField({ title: 'Vertical Compact', type: 'boolean', group: 'orientation'})
+    @FormField({
+        title: 'Vertical Compact',
+        type: 'boolean',
+        group: 'orientation'
+    })
     public get VerticalCompact(): boolean | undefined {
         return this.verticalCompact;
     }
@@ -70,7 +81,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.verticalCompact = value;
     }
 
-    @FormField({ title: 'Margin', type: 'number', group: 'size'})
+    @FormField({ title: 'Margin', type: 'number', group: 'size' })
     public get Margin(): number | undefined {
         return this.margin;
     }
@@ -79,5 +90,11 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.margin = value;
     }
 
-    
+    public getAnimations(): boolean | undefined {
+        return this.animations;
+    }
+
+    public set Animations(value: boolean | undefined) {
+        this.animations = value;
+    }
 }

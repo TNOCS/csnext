@@ -3,7 +3,7 @@
   "version": "0.0.95",
   "description": "cs-drag-grid",
   "main": "./lib/csdraggrid.cs.js",
-  "types": "./lib/dist/index.d.ts",
+	"types": "./dist/index.d.ts",
   "url": "https://github.com/TNOCS/cs-drag-grid",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",

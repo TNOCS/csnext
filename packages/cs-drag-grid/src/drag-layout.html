@@ -1,30 +1,42 @@
-<div>    
+<div>
     <grid-layout 
-        :layout="layout" 
-        :col-num="dashboard.options.ColNum" 
-        :row-height="dashboard.options.RowHeight" 
-        :is-draggable="dashboard.options.DragEnabled" 
-        :is-resizable="dashboard.options.ResizeEnabled" 
+        :layout="layout"
+        :col-num="dashboard.options.ColNum"
+        :row-height="dashboard.options.RowHeight"
+        :is-draggable="dashboard.options.DragEnabled"
+        :is-resizable="dashboard.options.ResizeEnabled"
         :is-mirrored="dashboard.options.IsMirrored"
-        :vertical-compact="dashboard.options.VerticalCompact" 
-        :margin="Margin" 
-        :use-css-transforms="false" 
+        :vertical-compact="dashboard.options.VerticalCompact"
+        :responsive="dashboard.options.Responsive"        
+        :margin="Margin"
+        :use-css-transforms="dashboard.options.Animations"
         @layout-updated="layoutUpdatedEvent"
-        >
-        <!-- @layout-updated="layoutUpdatedEvent" -->
-        <grid-item v-for="widget in layout" :class="{'grid-item-moving': isMoving}" :key="widget.i" 
-            :x="widget.x" 
-            :y="widget.y" 
+    >
+        <grid-item
+            
+            v-for="widget in layout"
+            :class="{'grid-item-moving': isMoving}"
+            :class="{'no-item-animation':dashboard.options.Animations}"
+            :key="widget.i"
+            :x="widget.x"
+            :y="widget.y"
             :w="widget.w"
-            :h="widget.h" 
-            :i="widget.i"         
-            >
-            <cs-widget v-if="!isMoving" :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
+            :h="widget.h"
+            :i="widget.i"
+        >
+            <cs-widget
+                v-if="!isMoving"
+                :key="widget.i"
+                :widget="widget.widget"
+                style="height:100%; width:100%"
+            ></cs-widget>
         </grid-item>
     </grid-layout>
-    <!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">
-        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
+    <!--
+        <div :id="'muuri-' + dashboard.id" class="muuri-grid">
+            <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
+                <muuri-widget :widget="widget" :grid="grid"></muuri-widget>
+            </div>
         </div>
-    </div> -->
+    -->
 </div>
