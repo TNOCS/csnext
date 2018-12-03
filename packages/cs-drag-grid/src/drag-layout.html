@@ -27,7 +27,7 @@
             <cs-widget
                 v-if="!isMoving"
                 :key="widget.i"
-                :widget="widget.widget"
+                :widget="findWidget(widget.i)"
                 style="height:100%; width:100%"
             ></cs-widget>
         </grid-item>
