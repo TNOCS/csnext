@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.96](https://github.com/TNOCS/csnext/compare/v0.0.95...v0.0.96) (2018-12-03)
+
+**Note:** Version bump only for package @csnext/cs-drag-grid
+
+
+
+
+
 ## [0.0.95](https://github.com/TNOCS/csnext/compare/v0.0.94...v0.0.95) (2018-11-27)
 
 **Note:** Version bump only for package @csnext/cs-drag-grid
