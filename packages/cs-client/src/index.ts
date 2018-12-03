@@ -16,6 +16,8 @@ export * from './layout/css-grid/css-grid';
 export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
 export * from './layout/flex-grid/flex-grid-options';
+// export * from './layout/drag-grid/drag-layout';
+// export * from './layout/drag-grid/drag-layout-options';
 export { FlexWidgetOptions } from './layout/flex-grid/flex-widget-options';
 
 // datasources

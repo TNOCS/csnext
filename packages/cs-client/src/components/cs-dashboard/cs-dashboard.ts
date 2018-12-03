@@ -26,7 +26,7 @@ export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
   public app = AppState.Instance;
 
-  @Watch('dashboard')
+   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
     this.initDashboard(n);
   }
@@ -116,9 +116,9 @@ export class CsDashboard extends Vue {
     if (!dashboard.options) {
       dashboard.options = {};
     }
-    if (dashboard.options) {
-      dashboard.options._dashboard = dashboard;
-    }
+    // if (dashboard.options) {
+    //   dashboard.options._dashboard = dashboard;
+    // }
 
     if (this.app.project.menus && dashboard.isMain) {
       const dashboardEditButton = this.app.project.menus.find(
@@ -222,6 +222,9 @@ export class CsDashboard extends Vue {
       // lookup layout manager
       if (LayoutManager.layoutManagers.hasOwnProperty(this.dashboard.layout)) {
         return LayoutManager.layoutManagers[this.dashboard.layout].component;
+      } else {
+        Logger.error('dashboard', `Layout manager ${this.dashboard.layout} is not available, using grid instead`);
+        return LayoutManager.layoutManagers.grid.component;
       }
     }
     return new Vue();
