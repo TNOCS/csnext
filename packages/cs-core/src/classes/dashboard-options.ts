@@ -1,6 +1,7 @@
 import { IDashboard } from './dashboard';
 
 export interface IDashboardOptions {
+  class?: string;
   // Fullscreen?: boolean;
   Background?: string;
   EditButton?: boolean;
@@ -10,7 +11,7 @@ export interface IDashboardOptions {
 }
 
 export class BaseDashboardOptions implements IDashboardOptions {
-
+  public class?: string;
   public Background?: string;
   public EditButton?: boolean;
   // allow left & right swipe gestures to switch between dashboards

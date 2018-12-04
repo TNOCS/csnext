@@ -1,4 +1,4 @@
-<div>
+<div :class="dashboard.options.class">
   <component v-show="!dashboard._loading" :is="component" :dashboard="dashboard" :id="'dashboard-' + dashboard.id"></component>
   <div v-if="dashboard.showLoadAnimation && dashboard._loading">Is Loading</div>
 </div>

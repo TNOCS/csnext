@@ -116,8 +116,7 @@ export class DragLayout extends Vue {
 
     @Watch('dashboard.options', { deep: true })
     public optionsChanged() {
-        // tslint:disable-next-line:no-console
-        console.log('options changed');
+        // tslint:disable-next-line:no-console        
     }
 
     @Watch('dashboard.widgets', { immediate: false })

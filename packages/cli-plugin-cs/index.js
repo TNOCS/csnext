@@ -4,7 +4,7 @@ module.exports = (api, { parallel }) => {
 
   api.chainWebpack(config => {    
 
-    console.log('CS?');
+    console.log('Initialize CommonSense Framework');
 
     // const htmlRule = webpackConfig.module
     //   .rule('html')
