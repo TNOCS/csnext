@@ -1,6 +1,6 @@
 {
 	"name": "@csnext/cs-map",
-	"version": "0.0.97",
+	"version": "0.0.98",
 	"description": "cs-map",
 	"main": "./lib/csmap.cs.js",
 	"types": "./dist/index.d.ts",
