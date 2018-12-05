@@ -1,0 +1,10 @@
+<div class="tabs-manager">
+  <v-tabs right>
+    <v-tab v-for="widget in dashboard.widgets" :key="widget.id">
+      {{ widget.title }}
+    </v-tab>
+    <v-tab-item v-for="widget in dashboard.widgets" :key="widget.id">
+      <cs-widget :widget="widget"></cs-widget>
+    </v-tab-item>
+  </v-tabs>
+</div>
