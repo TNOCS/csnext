@@ -131,9 +131,13 @@
     <!-- right side bar button -->
 
     <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
-      class="header-icon" icon>
+      class="header-icon" flat>
       <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
       <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+      <template v-if="rightSidebar.title">
+      <span class="right-sidebar-title"  v-if="!rightSidebar.open">{{ rightSidebar.title }} </span>
+      <span class="right-sidebar-title" v-if="rightSidebar.open">{{ rightSidebar.titleClose }} </span>
+    </template>
     </v-btn>
   </v-toolbar>
 

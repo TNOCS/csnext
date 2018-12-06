@@ -3,6 +3,7 @@ import { IWidget, IDashboard } from './../index';
 export interface ISidebarOptions {
   open?: boolean;
   title?: string;
+  titleClose?: string;
   component?: any;
   right?: boolean;
   permanent?: boolean;
