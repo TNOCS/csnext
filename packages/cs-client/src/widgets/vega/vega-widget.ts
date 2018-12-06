@@ -23,19 +23,25 @@ export class VegaWidget extends Vue {
     this.updateChart();
   }
 
+  @Watch('widget.content', { deep: true})
+  public contentChanged() {
+    this.updateChart();
+  }
+
   private updateChart() {
     Vue.nextTick(() => {
       // check if path for definition is available
-      if (this.widget && this.widget.data && this.widget.data.path) {
+      const data = this.widget.content ? this.widget.content.graph : this.widget.data;      
+      if (data && data.path) {
         vega
           .loader()
-          .load(this.widget.data.path)
-          .then((data: any) => {
-            this.viewRender(JSON.parse(data));
+          .load(data.path)
+          .then((d: any) => {
+            this.viewRender(JSON.parse(d));
           });
       } else {
-        if (this.widget && this.widget.data) {
-          this.viewRender(this.widget.data);
+        if (data) {
+          this.viewRender(data);
         }
       }
     });
