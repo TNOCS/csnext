@@ -347,7 +347,9 @@ export class CsApp extends Vue {
   public UpdateFooter(d: IDashboard) {
     if (d.footer) {
       this.footer = d.footer;
-      this.footer.visible = true;
+      if (!this.footer.hasOwnProperty('visible')) {
+        this.footer.visible = true;
+      }
       // Vue.set(this, 'rightSidebar', d.rightSidebar);
     } else if (this.app.project.footer) {
       this.footer = this.app.project.footer;
