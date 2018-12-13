@@ -76,7 +76,12 @@ export class DragLayout extends Vue {
                             ...w.options
                         };
 
-                        this.checkPosition(w.options);
+                        if (
+                            w.options.x === undefined ||
+                            w.options.y === undefined
+                        ) {
+                            this.checkPosition(w.options);
+                        }
                         res.push({
                             x: w.options.x,
                             y: w.options.y,
@@ -116,7 +121,7 @@ export class DragLayout extends Vue {
 
     @Watch('dashboard.options', { deep: true })
     public optionsChanged() {
-        // tslint:disable-next-line:no-console        
+        // tslint:disable-next-line:no-console
     }
 
     @Watch('dashboard.widgets', { immediate: false })
@@ -133,8 +138,8 @@ export class DragLayout extends Vue {
             IsMirrored: false,
             RowHeight: 50,
             ColNum: 12,
-            Responsive: false,
-            Animations: false,
+            Responsive: true,
+            Animations: true,
             Margin: 10,
             ...this.dashboard.options
         } as DragLayoutOptions;
@@ -162,6 +167,7 @@ export class DragLayout extends Vue {
         if (!this.dashboard || !this.dashboard.widgets) {
             return;
         }
+        // return;
         if (options.x === undefined || options.y === undefined) {
             let lastY = 0;
             let lastYHeight = 4;
@@ -193,12 +199,14 @@ export class DragLayout extends Vue {
                 }
             });
 
+            console.log('update pos');
+
             options.x = lastX;
             options.y = lastY;
-            if (options.width !== undefined && options.x + options.width > 12) {
-                options.x = 0;
-                options.y = lastY + lastYHeight;
-            }
+            // if (options.width !== undefined && options.x + options.width > 12) {
+            //     options.x = 0;
+            //     options.y = lastY + lastYHeight;
+            // }
         }
     }
 
