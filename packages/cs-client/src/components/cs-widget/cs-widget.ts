@@ -94,6 +94,7 @@ export class CsWidget extends Vue {
     if (!this.widget || !this.widget.options) {
       return;
     }
+    this.widget._component = this.widget.component;
     if (this.widget.datasource) {
       this.dsHandle = AppState.Instance.bus.subscribe(
         'ds-' + this.widget.datasource,

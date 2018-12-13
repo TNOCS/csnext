@@ -28,6 +28,7 @@ export interface IWidget {
   _style?: any;
   _project?: IProject;
   _size?: IWidgetSize;
+  _component?: any;
 }
 
 export interface IWidgetSize {
