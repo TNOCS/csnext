@@ -178,11 +178,11 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public moveLayer(beforeId?: string) {
         if (this._manager && this._manager.MapControl && this.id) {
             const map = this._manager.MapControl;
-            map.moveLayer(this.lineLayer.id!, beforeId);
-            map.moveLayer(this.symbolLayer.id!, beforeId);
-            map.moveLayer(this.circleLayer.id!, beforeId);
-            map.moveLayer(this.centerLayer.id!, beforeId);
-            map.moveLayer(this.fillLayer.id!, beforeId);       
+            if (this.fillLayer) map.moveLayer(this.fillLayer.id!, beforeId);       
+            if (this.centerLayer) map.moveLayer(this.centerLayer.id!, beforeId);
+            if (this.circleLayer) map.moveLayer(this.circleLayer.id!, beforeId);
+            if (this.symbolLayer) map.moveLayer(this.symbolLayer.id!, beforeId);
+            if (this.lineLayer) map.moveLayer(this.lineLayer.id!, beforeId);
         }
     }
 
