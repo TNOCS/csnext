@@ -59,6 +59,7 @@ export class BaseLayer implements IMapLayer {
     setOpacity(value: number) {}
     getLayerActions(): ILayerAction[] { return [];}
     removeLayer(map: CsMap) {}
+    moveLayer(beforeId?: string) {}
    
     _showMenu?: boolean | undefined;
     _showMore?: boolean | undefined;

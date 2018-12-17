@@ -155,6 +155,10 @@ export class MapLayers implements IDatasource {
         }
     }
 
+    public moveLayer(layer: IMapLayer, beforeId?: string) {
+        layer.moveLayer(beforeId);
+    }
+
     public zoomFeature(layer: IMapLayer, featureId: string) {
         if (!layer._source || !layer._source._geojson || !this.map) return;
         const feature = layer._source._geojson.features.find(

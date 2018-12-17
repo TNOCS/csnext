@@ -285,6 +285,12 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
+    public moveLayer(beforeId?: string) {
+        if (this._manager && this._manager.MapControl && this.id) {
+            this._manager.MapControl.moveLayer(this.id, beforeId);
+        }
+    }
+
     private registerLayerExtensions() {
         if (this.extensions) {
             this.extensions.forEach(ext => {

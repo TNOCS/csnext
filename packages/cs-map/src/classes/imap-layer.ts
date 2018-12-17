@@ -31,6 +31,7 @@ export interface IMapLayer {
     setOpacity(value: number);
     getLayerActions(): ILayerAction[];
     removeLayer(map: CsMap);
+    moveLayer(beforeId?: string);
     style?: LayerStyle,
     events?: MessageBusService;
     extensions?: ILayerExtensionType[];
