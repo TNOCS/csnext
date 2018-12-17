@@ -218,7 +218,7 @@ export class CsMap extends Vue {
     }
 
     mounted() {
-        this.initMapLayers();
+        
 
         Vue.nextTick(() => {
             if (this.options.token) {
@@ -252,6 +252,9 @@ export class CsMap extends Vue {
                 },
                 ...(this.widget.options as MapOptions)
             };
+
+            this.initMapLayers();
+
             var nav = new mapboxgl.NavigationControl({
                 showCompass: this.mapOptions.showCompass,
                 showZoom: this.mapOptions.showZoom
@@ -1037,6 +1040,10 @@ export class CsMap extends Vue {
                 // let vs = this.map.getSource(source.id) as GeoJSONSource;
             }
         }
+    }
+
+    public destroyed() {
+    //    this.map.remove();
     }
 
     public initLayerSource(source: LayerSource): any {

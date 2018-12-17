@@ -76,12 +76,15 @@ export class MapLayers implements IDatasource {
         return new Promise((resolve, reject) => {
             if (ml._source) {
                 ml._source._loaded = false;
-                ml._source.LoadSource().then(l => {
-                    this.updateLayerSource(ml, undefined, false);
-                    resolve(ml);
-                }).catch(e => {
-                    reject(e);
-                });
+                ml._source
+                    .LoadSource()
+                    .then(l => {
+                        this.updateLayerSource(ml, undefined, false);
+                        resolve(ml);
+                    })
+                    .catch(e => {
+                        reject(e);
+                    });
             } else {
                 reject();
             }
@@ -371,7 +374,7 @@ export class MapLayers implements IDatasource {
                     type: 'raster',
                     source: ml._source.id!
                 });
-        }        
+        }
         // if (ml._source) {
         //     this.MapControl.getSource(ml.source)
         // }

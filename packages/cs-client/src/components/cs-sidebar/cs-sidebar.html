@@ -1,4 +1,4 @@
-<v-navigation-drawer :width="sideBar.width" disable-route-watcher v-if="sideBar" v-model="sideBar.open" :right="sideBar.right" :mini-variant="sideBar.mini"
+<v-navigation-drawer :width="sideBar.width" disable-route-watcher v-if="sideBar" disable-resize-watcher v-model="sideBar.open" :right="sideBar.right" :mini-variant="sideBar.mini"
   :clipped="sideBar.clipped" :permanent="sideBar.permanent" :persistent="sideBar.persistent" :temporary="sideBar.temporary"
   :floating="sideBar.floating" absolute overflow app>
 
