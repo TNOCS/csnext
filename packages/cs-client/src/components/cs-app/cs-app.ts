@@ -26,7 +26,7 @@ Vue.use(VueRouter);
 
 // Vue.component('cs-footer', CsFooter);
 
-const router = new VueRouter({ routes: [], mode: 'history' });
+const router = new VueRouter({ routes: [] });
 
 @Component({
   name: 'cs-app',
