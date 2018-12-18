@@ -178,15 +178,12 @@ export class CsDashboard extends Vue {
                 Vue.set(w, 'content', this.dashboard.content);
               }
 
-              
               // if a component is available with a dataSourceUpdated function, call it
               if (w._component && w._component.dataSourceUpdated) {
                 w._component.dataSourceUpdated(d);
               }
             });
           }
-
-          
 
           // if dashboard manager availabe, trigger data loaded event
           if (this.dashboard._manager && typeof this.dashboard._manager.dataLoaded === 'function') {

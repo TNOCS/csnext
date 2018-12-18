@@ -1,8 +1,10 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify';
-import VueRouter from 'vue-router';
+import VueI18n from 'vue-i18n';
+import Vuetify, { VuetifyObject } from 'vuetify';
+import vuetifyEN from 'vuetify/src/locale/en';
+import vuetifyNL from 'vuetify/src/locale/nl';
 import Component from 'vue-class-component';
-import { RouteConfig } from 'vue-router/types/router';
+import VueRouter, { RouteConfig } from 'vue-router';
 import {
   IDashboard,
   INotification,
@@ -19,18 +21,30 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
+import * as en from './../../assets/translations/en.json';
+import * as nl from './../../assets/translations/nl.json';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
 Vue.use(VueRouter);
-
-// Vue.component('cs-footer', CsFooter);
+Vue.use(VueI18n);
+const i18n = new VueI18n({
+  locale: 'en', // set locale
+  fallbackLocale: 'nl',
+  messages: {'en': en.default, 'nl': nl.default} as VueI18n.LocaleMessages // set locale messages
+});
+Vue.use(Vuetify, {
+  lang: {
+    t: (key, ...params) => i18n.t(key, params)
+  }
+});
 
 const router = new VueRouter({ routes: [] });
 
 @Component({
   name: 'cs-app',
   router,
+  i18n,
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
@@ -42,7 +56,7 @@ export class CsApp extends Vue {
 
   public app = AppState.Instance;
   public settingsDialog = false;
-  // public $vuetify: any;
+  public $vuetify!: VuetifyObject;
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
@@ -65,6 +79,9 @@ export class CsApp extends Vue {
   constructor() {
     super();
     this.app.router = router;
+    this.app.i18n = i18n;
+    this.app.i18n.mergeLocaleMessage('en',  {'$vuetify': vuetifyEN});
+    this.app.i18n.mergeLocaleMessage('nl',  {'$vuetify': vuetifyNL});
     this.InitNavigation();
 
     this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
