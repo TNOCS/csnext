@@ -3,7 +3,7 @@ import Component from 'vue-class-component';
 import { AppState, Logger, WidgetBase } from '../../';
 import { IWidget, IFormOptions, IFormFieldOptions } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
 export class FieldGroup {
   public id!: string;

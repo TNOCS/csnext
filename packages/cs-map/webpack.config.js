@@ -48,6 +48,19 @@ function buildConfig(entry, externals, analyzer) {
     let pl = [];
     pl.push(new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]));
 
+    if (analyzer) {
+        const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+          .BundleAnalyzerPlugin;
+        pl.push(
+          new BundleAnalyzerPlugin({
+            analyzerMode: 'static',
+            openAnalyzer: false,
+            reportFilename: 'reports/report.' + analyzer + '.html',
+            generateStatsFile: false
+          })
+        );
+      }
+
     return (baseConfig = {
         entry: entry,
         devtool: 'source-map',
@@ -72,7 +85,8 @@ const config = [
             '@csnext/cs-client': '@csnext/cs-client',
             vue: 'Vue',
             Vue: 'Vue'
-        }
+        },
+        'csmap'
     )
 ];
 
