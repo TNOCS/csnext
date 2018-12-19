@@ -7,7 +7,7 @@ import {
   ISidebarOptions,
   NavigationOptions,
   AppStateBase,
-  ILanguageObject
+  ILanguageOptions
 } from './..';
 import { IMenu } from './menu';
 
@@ -26,7 +26,7 @@ export interface IProject {
   header?: IHeaderOptions;
   notifications?: INotificationOptions;
   menus?: IMenu[];
-  localeMessages?: ILanguageObject;
+  languages?: ILanguageOptions;
   data?: any;
   _appState?: AppStateBase;
   init?();

@@ -1,12 +1,6 @@
 import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu } from '../';
 import { IFooterOptions } from './footer-options';
 
-export type ILanguageString = string | ILanguageObject;
-
-export interface ILanguageObject {
-  [languageKey: string]: ILanguageString;
-}
-
 export interface IDashboard {
   // dashboard id
   id?: string;
