@@ -73,8 +73,10 @@ export class AppState extends AppStateBase {
     }
 
     if (project.languages && this.i18n && this.i18n.messages) {
-      const messages = Object.keys(project.languages.localeMessages);
-      messages.forEach(lang => this.i18n!.mergeLocaleMessage(lang, project.languages!.localeMessages![lang] as LocaleMessageObject));
+      if (project.languages.localeMessages) {
+        const messages = Object.keys(project.languages.localeMessages);
+        messages.forEach(lang => this.i18n!.mergeLocaleMessage(lang, project.languages!.localeMessages![lang] as LocaleMessageObject));
+      }
       this.i18n.locale = project.languages.defaultLanguage || 'en';
       this.i18n.fallbackLocale = project.languages.fallbackLanguage || 'nl';
     }
