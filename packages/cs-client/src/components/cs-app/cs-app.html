@@ -105,7 +105,7 @@
             {{ menu.title }}
             <v-icon v-if="menu.icon" right dark>{{ menu.icon }}</v-icon>
           </v-btn>
-          {{menu.toolTip}}
+          {{$t(menu.toolTip)}}
         </v-tooltip>
       </template>
       <template v-else>
@@ -113,7 +113,7 @@
           <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
             <v-icon>{{menu.icon}}</v-icon>
           </v-btn>
-          {{menu.toolTip}}
+          {{$t(menu.toolTip)}}
         </v-tooltip>
       </template>
 

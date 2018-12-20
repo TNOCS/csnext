@@ -8,4 +8,5 @@ export interface ILanguageOptions {
   defaultLanguage?: string;
   fallbackLanguage?: string;
   localeMessages?: ILanguageObject;
+  showLanguageSwitchMenu?: boolean;
 }
