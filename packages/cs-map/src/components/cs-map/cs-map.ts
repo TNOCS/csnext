@@ -156,9 +156,9 @@ export class CsMap extends Vue {
                     this.addImage(id, this.manager._sources.images[id]);
                 }
             }
-
             this.manager.MapWidget = this;
 
+            // show layers that are initialially set to visible
             if (this.manager.layers) {
                 this.manager.layers.forEach(l => {
                     if (this.manager && l.Visible) {
@@ -166,32 +166,20 @@ export class CsMap extends Vue {
                     }
                 });
             }
-
-            this.manager.events.subscribe('layer', (action: string) => {
-                switch (action) {
-                    case 'enabled':
-                        // this.showLayer(layer);
-
-                        break;
-                    case 'disabled': {
-                        // this.removeLayer(layer);
-                        break;
-                    }
-                    case 'remove': {
-                        // this.removeLayer(layer);
-                        break;
-                    }
-                }
-            });
         }
     }
 
+    /** Add layer to mapbox. Load source of necessary */
     public async showLayer(layer: IMapLayer): Promise<IMapLayer> {
         return new Promise<IMapLayer>(resolve => {
             if (layer.id && layer._source && layer._source.id) {
+                // make sure source is loaded
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
+                        // load source in memory
                         this.addSource(layer._source);
+
+                        // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
                             layer.addLayer(this);
                         }
@@ -208,7 +196,7 @@ export class CsMap extends Vue {
             }
         });
     }
-
+    
     public removeLayer(layer: IMapLayer) {
         if (layer.id) {
             if (typeof layer.removeLayer === 'function') {
@@ -217,9 +205,7 @@ export class CsMap extends Vue {
         }
     }
 
-    mounted() {
-        
-
+    mounted() {    
         Vue.nextTick(() => {
             if (this.options.token) {
                 mapboxgl.accessToken = this.options.token;
@@ -262,8 +248,7 @@ export class CsMap extends Vue {
             this.map.addControl(nav, 'top-left');
 
             if (this.mapOptions.showStyles) {
-                this.map.addControl(
-                    new StylesControl([
+                    const stylesControl = new StylesControl([
                         {
                             name: 'Streets',
                             url: 'mapbox://styles/mapbox/streets-v9'
@@ -280,9 +265,15 @@ export class CsMap extends Vue {
                             name: 'Light',
                             url: 'mapbox://styles/mapbox/light-v9'
                         }
-                    ]),
-                    'bottom-right'
-                );
+                    ]);
+                    
+                this.map.addControl(stylesControl,'bottom-right');
+                this.map.on('style.load', () => { 
+                    if (this.manager) {
+                        this.manager.refreshLayers();                        
+                        // this.man
+                    }
+                 });
             }
 
             if (this.mapOptions.showRuler) {

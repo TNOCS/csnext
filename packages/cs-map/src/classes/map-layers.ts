@@ -11,11 +11,10 @@ import {
     Polygon
 } from 'geojson';
 import {
-    LayerServiceBase,
     ILayerService,
     IStartStopService
 } from './layer-service';
-import { GeoJSONSource, RasterSource, LngLat, LngLatBounds } from 'mapbox-gl';
+import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
@@ -78,7 +77,7 @@ export class MapLayers implements IDatasource {
                 ml._source._loaded = false;
                 ml._source
                     .LoadSource()
-                    .then(l => {
+                    .then(() => {
                         this.updateLayerSource(ml, undefined, false);
                         resolve(ml);
                     })
@@ -147,6 +146,21 @@ export class MapLayers implements IDatasource {
                 }
             }
         });
+    }
+
+    public refreshLayers() {
+        if (this.layers) {
+            for (const layer of this.layers) {
+                this.refreshLayer(layer);                
+            }
+        }
+    }
+
+    public refreshLayer(layer: IMapLayer) {
+        if (layer.Visible) {
+            this.hideLayer(layer);
+            this.showLayer(layer);          
+        }
     }
 
     public zoomLayer(layer: IMapLayer, padding?: number) {

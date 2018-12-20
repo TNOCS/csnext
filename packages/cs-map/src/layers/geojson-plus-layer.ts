@@ -123,8 +123,8 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             res.push({
                 title: 'Refresh',
                 action: () => {
-                    if (this._manager) {
-                        this._manager.refreshLayerSource(this);
+                    if (this._manager) {                        
+                        this._manager.refreshLayer(this);
                     }
                 }
             });
