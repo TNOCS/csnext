@@ -16,7 +16,7 @@ import {
   IDialog
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings } from '../../';
+import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
 import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
@@ -53,6 +53,7 @@ const router = new VueRouter({ routes: [] });
 } as any)
 export class CsApp extends Vue {
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
+  public static LANUAGE_SWITCH_ID = 'switch_language';
 
   public app = AppState.Instance;
   public settingsDialog = false;
@@ -168,6 +169,19 @@ export class CsApp extends Vue {
   public InitMenus() {
     if (!this.app.project.menus) {
       this.app.project.menus = [];
+    }
+    if (this.app.project.languages && this.app.project.languages.showLanguageSwitchMenu) {
+      if (!this.app.project.menus.find(menu => menu.id === CsApp.LANUAGE_SWITCH_ID)) {
+        this.app.project.menus.push({
+          id: CsApp.LANUAGE_SWITCH_ID,
+          icon: 'translate',
+          title: 'LANGUAGE',
+          toolTip: 'LANGUAGE_SETTINGS',
+          enabled: true,
+          visible: true,
+          component: CsLanguageSwitch
+        });
+      }
     }
     // create edit dashboard button
     if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {

@@ -38,6 +38,7 @@ export * from './components/cs-app/cs-app';
 export * from './components/cs-widget/cs-widget';
 export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
+export * from './components/cs-language-switch/cs-language-switch';
 
 // widgets
 export * from './widgets/widget-base';
