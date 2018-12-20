@@ -905,7 +905,7 @@ export class CsMap extends Vue {
 
         this.map.addControl(geocoder);
 
-        if (this.manager) {  
+        if (this.manager && this.manager.layers) {  
             let rl = this.manager.layers!.find(l => l.id === 'searchlayer') as GeojsonPlusLayer;
             if (!rl) {
                 rl = new GeojsonPlusLayer();

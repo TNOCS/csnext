@@ -1,0 +1,9 @@
+<v-container>
+  <v-toolbar-title>{{ $t('LANGUAGE') }}</v-toolbar-title>
+  <v-divider class="my-2"></v-divider>
+  <v-layout row wrap dense>
+    <v-flex xs12 dense>
+      <v-radio-group v-model="app.i18n.locale" hide-details column> <v-radio v-for="language in languages" :label="language" :value="language" @click="switchLanguage(language)"></v-radio> </v-radio-group>
+    </v-flex>
+  </v-layout>
+</v-container>

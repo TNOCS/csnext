@@ -11,10 +11,10 @@
       <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
         <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon>
         <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
-          {{ item}}
+          {{$t(item)}}
         </v-breadcrumbs-item>
       </v-breadcrumbs>
-      <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{app.project.header.title}}</v-toolbar-title>
+      <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{$t(app.project.header.title)}}</v-toolbar-title>
     </div>
 
     <!-- tabs -->
@@ -23,18 +23,18 @@
       <v-tab v-for="dashboard in app.project.dashboards" @click="openDashboard(dashboard)" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
         <v-menu v-if="dashboard.dashboards" bottom open-on-hover>
           <a slot="activator" class="v-tabs__item">
-            {{dashboard.title}}
+            {{$t(dashboard.title)}}
             <v-icon>arrow_drop_down</v-icon>
           </a>
 
           <v-list class="grey lighten-3">
             <v-list-tile v-for="subdash in dashboard.dashboards" :key="subdash.id" @click="openDashboard(subdash)">
-              {{ subdash.title }}
+              {{$t(subdash.title)}}
             </v-list-tile>
           </v-list>
         </v-menu>
         <span :to="{path:dashboard.pathLink}" v-else>
-          {{dashboard.title}}
+          {{$t(dashboard.title)}}
         </span>
       </v-tab>
 
@@ -105,7 +105,7 @@
             {{ menu.title }}
             <v-icon v-if="menu.icon" right dark>{{ menu.icon }}</v-icon>
           </v-btn>
-          {{menu.toolTip}}
+          {{$t(menu.toolTip)}}
         </v-tooltip>
       </template>
       <template v-else>
@@ -113,7 +113,7 @@
           <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
             <v-icon>{{menu.icon}}</v-icon>
           </v-btn>
-          {{menu.toolTip}}
+          {{$t(menu.toolTip)}}
         </v-tooltip>
       </template>
 
@@ -132,8 +132,14 @@
 
     <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
       class="header-icon" flat>
-      <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
-      <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+      <v-tooltip bottom>
+        <v-icon slot="activator" v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
+        <span>{{$t('CLOSE_RIGHT_SIDEBAR')}}</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <v-icon slot="activator" v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+        <span>{{$t('OPEN_RIGHT_SIDEBAR')}}</span>
+      </v-tooltip>
       <template v-if="rightSidebar.title">
       <span class="right-sidebar-title"  v-if="!rightSidebar.open">{{ rightSidebar.title }} </span>
       <span class="right-sidebar-title" v-if="rightSidebar.open">{{ rightSidebar.titleClose }} </span>

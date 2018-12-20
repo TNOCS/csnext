@@ -7,6 +7,7 @@ export { GridDashboardOptions } from './classes/grid-dashboard-options';
 export * from './classes/page';
 export * from './classes/widget';
 export * from './classes/datasource';
+export * from './classes/language-options';
 export * from './classes/layout-manager-config';
 export * from './classes/dashboard-manager-config';
 export * from './classes/app-theme';

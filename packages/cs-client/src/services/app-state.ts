@@ -16,6 +16,7 @@ import merge from 'deepmerge';
 import { ProjectManager } from './project-manager';
 import { CsApp, CsDashboard, Logger, CsWidget } from '../';
 import VueRouter from 'vue-router';
+import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import { DefaultProject } from './default-project';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
@@ -36,6 +37,8 @@ export class AppState extends AppStateBase {
   public logger = Logger.Instance;
   /** Vue router instance */
   public router?: VueRouter;
+  /** Vue i18n instance */
+  public i18n?: VueI18n;
 
   private constructor() {
     super();
@@ -67,6 +70,15 @@ export class AppState extends AppStateBase {
 
     if (project.init) {
       this.project.init = project.init;
+    }
+
+    if (project.languages && this.i18n && this.i18n.messages) {
+      if (project.languages.localeMessages) {
+        const messages = Object.keys(project.languages.localeMessages);
+        messages.forEach(lang => this.i18n!.mergeLocaleMessage(lang, project.languages!.localeMessages![lang] as LocaleMessageObject));
+      }
+      this.i18n.locale = project.languages.defaultLanguage || 'en';
+      this.i18n.fallbackLocale = project.languages.fallbackLanguage || 'nl';
     }
 
     // check if navigation style requires a leftSidebar, add one if not available
