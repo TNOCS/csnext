@@ -4,7 +4,6 @@ export * from './classes/menu';
 export * from './classes/dashboard-options';
 export * from './classes/dashboard';
 export { GridDashboardOptions } from './classes/grid-dashboard-options';
-export * from './classes/page';
 export * from './classes/widget';
 export * from './classes/datasource';
 export * from './classes/language-options';

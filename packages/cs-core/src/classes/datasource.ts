@@ -46,7 +46,7 @@ export interface IDatasourceProcessor {
 }
 
 export class DatasourceProcessorBase implements IDatasourceProcessor {
-  public id: string;
+  public id!: string;
 
   public execute(sources: { [id: string]: IDatasource }, datasource: IDatasource, action?: ProcessorActions) {
     return Promise.resolve();

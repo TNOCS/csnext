@@ -1,21 +1,9 @@
 {
+  "extends": "../tsconfig.settings.json",
+  // "include": ["src/"],
   "compilerOptions": {
-    "module": "es2015",
-    "target": "es2015",
-    "noImplicitAny": false,
-    "outDir": "./dist",
-    "strict": true,
-    "sourceMap": false,
-    "lib": ["es5", "dom", "es2015", "es2015.promise", "es2016.array.include"],
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": false
+    /* Basic Options */
+    "outDir": "./dist"     
   },
-  "exclude": ["./dist"],
-  "rules": {
-    "quotemark": [true, "single"]
-  }
+  "exclude": ["./dist"]
 }
