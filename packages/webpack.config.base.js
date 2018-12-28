@@ -76,7 +76,7 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
     output: output,
     module: mod,
     optimization: {
-      minimize: true
+      minimize: false
     },
     externals: externals,
     resolve: {

@@ -4,7 +4,7 @@
       "target": "es2015",
       "noImplicitAny": false,      
       "strict": true,
-      "sourceMap": false,
+      "sourceMap": true,
       "lib": ["es5", "dom", "es2015", "es2015.promise", "es2016.array.include"],
       "moduleResolution": "node",
       "experimentalDecorators": true,

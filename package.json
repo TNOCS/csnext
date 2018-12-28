@@ -18,6 +18,6 @@
     "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch"
   },
   "devDependencies": {
-    "lerna": "^3.6.0"
+    "lerna": "^3.8.0"
   }
 }
