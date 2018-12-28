@@ -3,16 +3,17 @@ const buildConfig = require('./../webpack.config.base.js');
 const config = [
     buildConfig(
       __dirname + '/lib',
-      'cs',
+      'csclient',
     {
       cs: ['./src/index.ts']
     },
     {
       vue: 'Vue',
       vuetify: 'vuetify',
-      'vue-markdown': 'vue-markdown'
+      'vue-markdown': 'vue-markdown',
+      'vue-router': 'vue-router'
     },
-    'cs'
+    'csclient'
   )
 ];
 module.exports = config;
