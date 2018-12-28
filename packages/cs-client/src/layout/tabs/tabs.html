@@ -1,7 +1,7 @@
 <div class="tabs-manager">
   <v-tabs right>
     <v-tab v-for="widget in dashboard.widgets" :key="widget.id">
-      $t{{ widget.title }}
+      {{ widget.title }}
     </v-tab>
     <v-tab-item v-for="widget in dashboard.widgets" :key="widget.id">
       <cs-widget :widget="widget"></cs-widget>
