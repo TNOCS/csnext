@@ -3,6 +3,7 @@
 export interface IFormOptions {
   title: string;
   fields?: IFormFieldOptions[];
+  saveButton?: boolean;
 }
 
 export interface IFormFieldOptions {
