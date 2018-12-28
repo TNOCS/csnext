@@ -75,6 +75,9 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
     devtool: 'source-map',
     output: output,
     module: mod,
+    optimization: {
+      minimize: true
+    },
     externals: externals,
     resolve: {
       extensions: ['.ts', '.js', '.html']
