@@ -18,15 +18,15 @@
   },
   "dependencies": {
     "@csnext/cs-core": "^0.0.101",
-    "vue-grid-layout": "^2.3.2"
+    "vue-grid-layout": "^2.3.3"
   },
   "devDependencies": {
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.1",
+    "ts-loader": "^5.3.2",
     "typescript": "^3.2.2",
-    "webpack": "~4.27.1",
+    "webpack": "~4.28.2",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2"
   }
