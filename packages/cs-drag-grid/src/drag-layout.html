@@ -12,12 +12,13 @@
         :use-css-transforms="dashboard.options.Animations"        
         @layout-updated="layoutUpdatedEvent"
     >
+    <!-- :class="{'no-item-animation':dashboard.options.Animations}" -->
         <grid-item
             
             v-for="widget in layout"
             :class="{'grid-item-moving': isMoving}"
-            :class="{'no-item-animation':dashboard.options.Animations}"
-            :key="widget.i"
+            
+            :key="widget.i"            
             :x="widget.x"
             :y="widget.y"
             :w="widget.w"
