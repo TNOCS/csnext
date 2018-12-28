@@ -1,0 +1,42 @@
+.timeline-container {
+    align-content: stretch;
+    height: 100%;
+  }
+  
+  .high-timeline-item {
+    background-color: red;
+  }
+  
+  .medium-timeline-item {
+    background-color: orange;
+  }
+  
+  .low-timeline-item {
+    background-color: green;
+  }
+  
+  .nan-timeline-item {
+    background-color: gray;
+  }
+  
+  .vis-item-content {
+    color: black;
+  }
+  
+  .vis-custom-time {
+    width: 6px;
+  }
+  
+  .timeline-custom-header {
+    width: 80px;
+    height: 50px;
+    background: black;
+    color: white;
+    position: fixed;
+    margin-left: 100px;
+    bottom: 100px;
+    transform: translateY(-25px);
+    left: 300px;
+    z-index: 100;
+  }
+  

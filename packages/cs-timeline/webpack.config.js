@@ -8,9 +8,10 @@ const config = buildConfig(
         'cs-core': 'cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
         vue: 'Vue',
+        'timeline-plus':'timeline-plus',
         Vue: 'Vue'
     },
-    'csmap'
+    'cstimeline'
 );
 
 config.node = {
