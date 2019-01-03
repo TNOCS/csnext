@@ -23,6 +23,8 @@ import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
 import * as en from './../../assets/translations/en.json';
 import * as nl from './../../assets/translations/nl.json';
+import 'vuetify/dist/vuetify.min.css';
+import { CsHeader } from '../cs-header/cs-header';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
@@ -48,7 +50,8 @@ const router = new VueRouter({ routes: [] });
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
-    'cs-footer': CsFooter
+    'cs-footer': CsFooter,
+    'cs-header': CsHeader
   }
 } as any)
 export class CsApp extends Vue {
@@ -63,8 +66,6 @@ export class CsApp extends Vue {
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
   public dialog: IDialog = { visible: false, toolbar: true };
-  public allMenus: IMenu[] = [];
-
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
   public showNotifications = false;
@@ -119,7 +120,7 @@ export class CsApp extends Vue {
   public projectChanged(data: any) {
     this.InitNavigation();
     this.InitTheme();
-    this.InitMenus();
+    // this.InitMenus();
   }
 
   @Watch('app.project.notifications', { deep: true })
@@ -163,76 +164,6 @@ export class CsApp extends Vue {
       } else if (dashboard.path) {
         this.$router.push(dashboard.path);
       }
-    }
-  }
-
-  public InitMenus() {
-    if (!this.app.project.menus) {
-      this.app.project.menus = [];
-    }
-    if (this.app.project.languages && this.app.project.languages.showLanguageSwitchMenu) {
-      if (!this.app.project.menus.find(menu => menu.id === CsApp.LANUAGE_SWITCH_ID)) {
-        this.app.project.menus.push({
-          id: CsApp.LANUAGE_SWITCH_ID,
-          icon: 'translate',
-          title: 'LANGUAGE',
-          toolTip: 'LANGUAGE_SETTINGS',
-          enabled: true,
-          visible: true,
-          component: CsLanguageSwitch
-        });
-      }
-    }
-    // create edit dashboard button
-    if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
-      this.app.project.menus.push({
-        id: CsApp.DASHBOARD_EDIT_ID,
-        icon: 'mode_edit',
-        title: 'Edit Dashboard',
-        enabled: false,
-        visible: false,
-        action: m => {
-          // notify dashboard manager that edit was started
-          if (this.app.activeDashboard) {
-            // if there is a manager with own editdashboard implementation use that
-            if (
-              this.app.activeDashboard._manager &&
-              this.app.activeDashboard._manager.editDashboard
-            ) {
-              this.app.activeDashboard._manager.editDashboard(
-                this.app.activeDashboard
-              );
-            } else {
-              if (this.app.project.rightSidebar) {
-                // let s = Vue.component('test', { template: '<h1>editor</h1>'});
-                // this.app.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
-                AppState.Instance.OpenRightSidebarWidget({
-                  component: CsSettings,
-                  data: { obj: this.app.activeDashboard.options }
-                });
-              }
-            }
-          }
-          // }
-        }
-      });
-    }
-
-    this.allMenus = this.app.project.menus;
-    if (this.app.activeDashboard && this.app.activeDashboard.menus) {
-      this.allMenus = [...this.allMenus, ...this.app.activeDashboard.menus];
-    }
-  }
-
-  public toggleMenu(menu: IMenu) {
-    menu.toggleState = menu.toggleState ? !menu.toggleState : true;
-    this.activateMenu(menu);
-  }
-
-  // menu button was clicked
-  public activateMenu(menu: IMenu) {
-    if (menu.action) {
-      menu.action(menu);
     }
   }
 
@@ -409,14 +340,8 @@ export class CsApp extends Vue {
       (action: string, dashboard: IDashboard) => {
         this.UpdateSideBars(dashboard);
         this.UpdateFooter(dashboard);
-        this.InitMenus();
       }
     );
-
-    // menu list changed (e.g. if dashboard menu was updated)
-    this.app.bus.subscribe('menus', (action: string) => {
-      this.InitMenus();
-    });
 
     if (this.app.activeDashboard) {
       this.UpdateSideBars(this.app.activeDashboard);
