@@ -27,7 +27,7 @@ export class CsWidget extends Vue {
     widget: HTMLElement;
   };
 
-  public updateSize() {
+  public updateSize(trigger = true) {
     if (!this.widget || !this.widget.events) {
       return;
     }
@@ -37,12 +37,15 @@ export class CsWidget extends Vue {
         height: this.$refs.widget.clientHeight
       };
     }
-    this.widget.events.publish('resize', 'changed', this.widget._size);
+    if (trigger) {
+      this.widget.events.publish('resize', 'changed', this.widget._size);
+    }
   }
 
   public onResize() {
     this.updateSize();
   }
+
 
   public get widgetBorder(): string | undefined {
     if (!this.widget) {
@@ -152,6 +155,10 @@ export class CsWidget extends Vue {
         }
       });
     }
+  }
+
+  public mounted() {
+    this.updateSize(false);
   }
 
   public triggerMenuAction(menu: IMenu) {
