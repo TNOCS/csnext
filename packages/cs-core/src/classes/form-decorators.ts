@@ -6,6 +6,10 @@ export interface IFormOptions {
   saveButton?: boolean;
 }
 
+export interface IFormObject {
+  save(): Promise<boolean>;
+}
+
 export interface IFormFieldOptions {
   title: string;
   type?: string;

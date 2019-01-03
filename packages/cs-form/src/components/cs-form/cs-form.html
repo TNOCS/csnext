@@ -2,7 +2,7 @@
     <v-toolbar flat>
         <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon v-if="Form.saveButton"> <v-icon>search</v-icon> </v-btn>
+        <v-btn icon @click="saveForm()" v-if="Form.saveButton"><v-icon>save</v-icon> </v-btn>
     </v-toolbar>
     <v-container>
         <v-form>
@@ -45,6 +45,6 @@
                     <!-- {{ field.title }} -->
                 </v-flex>
             </v-layout>
-        </v-form>
+        </v-form>        
     </v-container>
 </div>
