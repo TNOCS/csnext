@@ -23,6 +23,8 @@ export * from './classes/widget-options';
 export * from './classes/search-options';
 export * from './classes/dialog';
 export * from './classes/form-decorators';
+export * from './classes/notification';
+export * from './classes/notification-options';
 export { guidGenerator } from './utils/guid';
 
 // export *  from './classes/plugin';

@@ -1,3 +1,5 @@
+import { IWidget } from './widget';
+
 export interface IHeaderOptions {
   dense?: boolean;
   title?: string;
@@ -6,4 +8,5 @@ export interface IHeaderOptions {
   showNotifications?: boolean;
   breadcrumbItems?: any[];
   hideToolbar?: boolean;
+  titleWidget?: IWidget;
 }
