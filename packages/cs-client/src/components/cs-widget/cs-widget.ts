@@ -4,7 +4,8 @@ import {
   IWidget,
   IMenu,
   MessageBusService,
-  MessageBusHandle
+  MessageBusHandle,
+  guidGenerator
 } from '@csnext/cs-core';
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
@@ -22,10 +23,16 @@ export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
-  private dsHandle?: MessageBusHandle;
   public $refs!: {
     widget: HTMLElement;
   };
+
+  private dsHandle?: MessageBusHandle;
+
+  constructor() {
+    super();
+    this.initWidget();
+  }
 
   public updateSize(trigger = true) {
     if (!this.widget || !this.widget.events) {
@@ -45,7 +52,6 @@ export class CsWidget extends Vue {
   public onResize() {
     this.updateSize();
   }
-
 
   public get widgetBorder(): string | undefined {
     if (!this.widget) {
@@ -93,10 +99,51 @@ export class CsWidget extends Vue {
     }
   }
 
-  public created() {
-    if (!this.widget || !this.widget.options) {
+  public checkWidgetId(widget: IWidget) {
+    if (widget && !widget.id) {
+      widget.id = 'widget-' + guidGenerator();
+    }
+  }
+
+  public initWidget() {
+    if (!this.widget) {
       return;
     }
+    if (this.widget._initalized) {
+      return;
+    }
+
+    console.log('Widget widget init');
+
+    if (typeof this.widget.component === 'string') {
+      // var classNameString = 'MyClass';
+      // tslint:disable-next-line:no-eval
+      this.widget.component = this.widget.component;
+    }
+
+    if (!this.widget.events) {
+      this.widget.events = new MessageBusService();
+    }
+    if (!this.widget.options) {
+      this.widget.options = {};
+    }
+    if (!this.widget.data) {
+      this.widget.data = {};
+    }
+    this.widget._project = AppState.Instance.project;
+    this.checkWidgetId(this.widget);
+    this.widget._initalized = true;
+  }
+
+  public created() {
+    if (!this.widget) {
+      return;
+    }
+
+    if (!this.widget.options) {
+      this.widget.options = {};
+    }
+
     this.widget._component = this.widget.component;
     if (this.widget.datasource) {
       this.dsHandle = AppState.Instance.bus.subscribe(

@@ -60,6 +60,7 @@ export const csnext = {
     vue.component('cs-widget', CsWidget);
     vue.component('cs-app', CsApp);
     vue.component('cs-sidebar', CsSidebar);
+    vue.component('cs-widget', CsWidget);
     Vue.component('md-widget', MdWidget);
   }
 };
