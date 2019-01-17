@@ -23,6 +23,7 @@ import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
 import * as en from './../../assets/translations/en.json';
 import * as nl from './../../assets/translations/nl.json';
+import 'vuetify/dist/vuetify.min.css';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console

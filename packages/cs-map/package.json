@@ -19,7 +19,7 @@
     "dependencies": {
         "@csnext/cs-core": "^0.0.101",
         "@mapbox/geojson-extent": "^0.3.2",
-        "@mapbox/mapbox-gl-draw": "mapbox/mapbox-gl-draw#e117715",
+        "@mapbox/mapbox-gl-draw": "1.1.1",
         "@mapbox/mapbox-gl-geocoder": "^2.3.0",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",

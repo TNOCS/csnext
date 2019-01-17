@@ -8,11 +8,8 @@ import {
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
-import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
-import { LinePaint, MapLayerMouseEvent } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
-import SocketIOClient from 'socket.io-client';
 import io from 'socket.io-client';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
