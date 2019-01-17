@@ -13,7 +13,8 @@ import {
   IWidget,
   IMenu,
   IFooterOptions,
-  IDialog
+  IDialog,
+  MainBus
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
@@ -86,7 +87,9 @@ export class CsApp extends Vue {
     this.app.i18n.mergeLocaleMessage('nl',  {'$vuetify': vuetifyNL});
     this.InitNavigation();
 
-    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    MainBus.events.subscribe('rightsidebar', (action: string, data: any) => {
+      console.log('rightsidebar');
+    // this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
           if (

@@ -5,8 +5,7 @@ const config = buildConfig(
     'cstimeline',
     { cs: ['./src/index.ts'] },
     {
-        'cs-core': 'cs-core',
-        '@csnext/cs-client': '@csnext/cs-client',
+        '@csnext/cs-core': '@csnext/cs-core',        
         vue: 'Vue',
         'timeline-plus':'timeline-plus',
         Vue: 'Vue'

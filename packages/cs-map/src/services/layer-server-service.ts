@@ -4,21 +4,23 @@ import {
     IStartStopService,
     GeojsonPlusLayer,
     LayerStyle,
-    CsMap
+    CsMap,
+    LayerServiceOptions
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
-import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
-import { LinePaint, MapLayerMouseEvent } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
-import SocketIOClient from 'socket.io-client';
 import io from 'socket.io-client';
+import { Feature } from 'geojson';
+import { MainBus } from '@csnext/cs-core';
+import { FeatureDetails } from '../components/feature-details/feature-details';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
     public tags?: string[];
     public activeLayers?: string[];
+    public openFeatureDetails?: boolean;
 }
 
 export class LayerServerService implements ILayerService, IStartStopService {
@@ -53,15 +55,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 console.log('Reconnected');
                 for (const layer of this.layers) {
                     if (layer.isEditable === true) {
-                        this.manager!.refreshLayerSource(layer).then(ml => {
+                        this.manager!.refreshLayerSource(layer).then(() => {
                             console.log('Layer refreshed');
-                        })
+                        });
 
                         // });
                         // this.manager!
                         // .loadLayer(layer).then( l => {
-
-
                     }
                 }
             });
@@ -72,6 +72,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
                     }
                 }
                 console.log('Connection lost');
+            });
+            this.socket.on('time', data => {
+                console.log(data);
             });
         }
     }
@@ -133,7 +136,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             }
 
                             if (gl.isEditable) {
-                               this.initEditableLayer(gl, layer);
+                                this.initEditableLayer(gl, layer);
                             }
 
                             // gl.paint = {
@@ -143,6 +146,30 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             // } as LinePaint;
                             gl.initLayer(manager);
                             manager.layers.push(gl);
+                            gl.events.subscribe(
+                                'feature',
+                                (a: string, f: Feature) => {
+                                    console.log('Feature Select 2');
+                                    if (
+                                        a === CsMap.FEATURE_SELECT &&
+                                        this.options!.openFeatureDetails
+                                    ) {
+                                        MainBus.events.publish(
+                                            'rightsidebar',
+                                            'open-widget',
+                                            {
+                                                component: FeatureDetails,
+                                                data: {
+                                                    feature: f,
+                                                    layer: layer,
+                                                    manager: this
+                                                }
+                                            }
+                                        );
+                                        // console.log(AppStateBase.Instance.bus);
+                                    }
+                                }
+                            );
                             this.layers.push(gl);
                         }
 
@@ -198,6 +225,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
             let md = this.mapDraw;
 
             if (md && f.features && a === CsMap.FEATURE_SELECT) {
+                alert('selected feature');
                 let feature = f.features[0];
                 if (feature.properties) {
                     feature.id = feature.properties['_fId'];
@@ -214,19 +242,18 @@ export class LayerServerService implements ILayerService, IStartStopService {
                     md.changeMode('direct_select', {
                         featureId: featureIds[0]
                     });
-                } 
+                }
 
-                    // if (f.context.type !== 'touchend') {
+                // if (f.context.type !== 'touchend') {
 
-                    // }
-                
+                // }
 
                 console.log(featureIds);
             }
         });
 
         // listen to source change events
-        gl.events.subscribe('source', (a: string, s: LayerSource) => {
+        gl.events.subscribe('source', (a: string) => {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
                 let body = gl._source!._geojson;

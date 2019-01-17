@@ -6,9 +6,7 @@ import {
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
-import { GeojsonLayer } from '../layers/geojson-layer';
 import { LayerSource } from '../classes/layer-source';
-import { LinePaint } from 'mapbox-gl';
 import { IMapLayer } from '../classes/imap-layer';
 
 export class LayerServerOptions implements ILayerServiceOptions {

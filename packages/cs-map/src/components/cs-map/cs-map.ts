@@ -1,6 +1,6 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator } from '@csnext/cs-core';
+import { IWidget, guidGenerator, MainBus } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
 import mapboxgl, { CirclePaint } from 'mapbox-gl';
@@ -25,8 +25,6 @@ import {
     ILayerExtensionType,
     GeojsonPlusLayer
 } from '../../.';
-import { LayerEditor } from '../layer-editor/layer-editor';
-import { GeojsonLayer } from '../../layers/geojson-layer';
 
 export interface FeatureEventDetails {
     context: any;
@@ -141,7 +139,8 @@ export class CsMap extends Vue {
         }
     }
 
-    public initMapLayers() {
+    public initMapLayers() {        
+        MainBus.events.publish('rightsidebar', 'test', 'test');
         if (
             this.manager &&
             this.map &&
@@ -239,7 +238,7 @@ export class CsMap extends Vue {
                 ...(this.widget.options as MapOptions)
             };
 
-            this.initMapLayers();
+            
 
             var nav = new mapboxgl.NavigationControl({
                 showCompass: this.mapOptions.showCompass,
@@ -868,6 +867,7 @@ export class CsMap extends Vue {
             
             // check if map has loaded
             this.map.on('load', e => {
+                this.initMapLayers();
                 this.startServices();
                 this.mapLoaded(e);
                 

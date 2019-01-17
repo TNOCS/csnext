@@ -1,6 +1,15 @@
-import { IProject, MessageBusService, IDashboard, INotification } from '..';
+import {
+  IProject,
+  MessageBusService,
+  IDashboard,
+  INotification,
+  IEventObject,
+  MainBus,
+  IWidget,
+  ISidebarOptions
+} from '..';
 
-export class AppStateBase {
+export abstract class AppStateBase {
   /** True if the application has been initialized */
   public isInitialized = false;
 
@@ -8,7 +17,10 @@ export class AppStateBase {
   public project: IProject = {};
 
   /** Event bus for publish/subscribe events in application */
-  public bus = new MessageBusService();
+
+  public get bus(): MessageBusService {
+    return MainBus.events;
+  }
   /** list of past notifications */
   public notifications: INotification[] = [];
   /** Currently active dashboard */
@@ -17,4 +29,6 @@ export class AppStateBase {
   public data: { [id: string]: any } = {};
 
   public windowSize = { x: 0, y: 0 };
+
+  public abstract OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions);
 }

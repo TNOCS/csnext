@@ -25,6 +25,8 @@ export * from './classes/dialog';
 export * from './classes/form-decorators';
 export * from './classes/notification';
 export * from './classes/notification-options';
+export * from './classes/IEventObject';
+export * from './classes/MainBus';
 export { guidGenerator } from './utils/guid';
 
 // export *  from './classes/plugin';

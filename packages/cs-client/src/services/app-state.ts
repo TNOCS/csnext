@@ -12,7 +12,6 @@ import {
   guidGenerator
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
-import merge from 'deepmerge';
 import { ProjectManager } from './project-manager';
 import { CsApp, CsDashboard, Logger, CsWidget } from '../';
 import VueRouter from 'vue-router';
@@ -75,7 +74,10 @@ export class AppState extends AppStateBase {
     if (project.languages && this.i18n && this.i18n.messages) {
       if (project.languages.localeMessages) {
         const messages = Object.keys(project.languages.localeMessages);
-        messages.forEach(lang => this.i18n!.mergeLocaleMessage(lang, project.languages!.localeMessages![lang] as LocaleMessageObject));
+        messages.forEach(lang =>
+          this.i18n!.mergeLocaleMessage(lang, project.languages!
+            .localeMessages![lang] as LocaleMessageObject)
+        );
       }
       this.i18n.locale = project.languages.defaultLanguage || 'en';
       this.i18n.fallbackLocale = project.languages.fallbackLanguage || 'nl';

@@ -1,4 +1,3 @@
-import { GridLayout, GridItem } from 'vue-grid-layout';
 import { Watch } from 'vue-property-decorator';
 import {
     IWidget,
@@ -10,9 +9,13 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import './drag-layout.css';
 import { DragLayoutOptions } from './drag-layout-options';
+import {
+    VueResponsiveGridLayout,
+    VueGridItem
+} from 'vue-responsive-grid-layout';
 
-Vue.component('grid-layout', GridLayout);
-Vue.component('grid-item', GridItem);
+Vue.component('vue-responsive-grid-layout', VueResponsiveGridLayout);
+Vue.component('vue-grid-item', VueGridItem);
 
 @Component({
     template: require('./drag-layout.html'),
@@ -39,13 +42,45 @@ export class DragLayout extends Vue {
 
     public dragEnabled = false;
     public isMoving = false;
-
+    public cols = 10;
     public layout: any[] = [];
+    public breakpoint = 'md';
+
+    public layouts = {
+        md: [
+            { x: 0, y: 0, w: 2, h: 3, i: '1' },
+            { x: 2, y: 0, w: 2, h: 3, i: '2' },
+            { x: 4, y: 0, w: 2, h: 3, i: '3' },
+            { x: 0, y: 3, w: 2, h: 3, i: '4' }
+        ]
+    };
 
     public editSubscription: any;
 
     public constructor() {
         super();
+    }
+
+    public onLayoutUpdate(layout, layouts, last) {
+        this.$set(this.layouts, this.breakpoint, layout);
+    }
+
+    public onLayoutChange(layout, layouts, breakpoint) {
+        this.$set(this.layouts, breakpoint, layout);
+    }
+
+    public onLayoutInit(layout, layouts, cols, breakpoint) {
+        this.cols = cols;
+        this.breakpoint = breakpoint;
+        this.$set(this.layouts, breakpoint, layout);
+    }
+
+    public onBreakpointChange(breakpoint) {
+        this.breakpoint = breakpoint;
+    }
+
+    public onWidthChange(width, cols) {
+        this.cols = cols;
     }
 
     public findWidget(i: string) {
@@ -90,8 +125,10 @@ export class DragLayout extends Vue {
                             i: w.id
                             //   widget: w
                         });
-                    });
-                this.layout = res;
+                    });   
+                this.$set(this.layout, 'md', res);
+                this.$set(this.layout, 'lg', res);  
+                this.$forceUpdate();              
             }
         });
     }

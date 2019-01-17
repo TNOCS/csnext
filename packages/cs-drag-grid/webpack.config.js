@@ -10,7 +10,8 @@ const config = [
         {
             vue: 'Vue',
             vuetify: 'vuetify',
-            'vue-markdown': 'vue-markdown'
+            'vue-markdown': 'vue-markdown',
+            '@csnext/cs-core': '@csnext/cs-core'
         },
         'cs'
     )

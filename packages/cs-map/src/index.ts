@@ -24,6 +24,7 @@ export * from './classes/feature-type';
 export * from './components/layer-selection/layer-selection';
 export * from './components/layer-selection/layer-selection-options';
 export * from './components/cs-map/cs-map';
+export * from './components/feature-details/feature-details';
 
 // layers
 export * from './layers/base-layer';

@@ -5,8 +5,8 @@ const config = buildConfig(
     'csmap',
     { cs: ['./src/index.ts'] },
     {
-        'cs-core': 'cs-core',
-        '@csnext/cs-client': '@csnext/cs-client',
+        '@csnext/cs-core': '@csnext/cs-core',   
+        'cs-core':'cs-core',
         vue: 'Vue',
         Vue: 'Vue',
         'mapbox-gl': 'mapbox-gl',
