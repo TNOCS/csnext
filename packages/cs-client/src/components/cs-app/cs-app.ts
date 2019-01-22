@@ -8,13 +8,11 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import {
   IDashboard,
   INotification,
-  IThemeColors,
   ISidebarOptions,
   IWidget,
   IMenu,
   IFooterOptions,
-  IDialog,
-  MainBus
+  IDialog
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
@@ -87,9 +85,7 @@ export class CsApp extends Vue {
     this.app.i18n.mergeLocaleMessage('nl',  {'$vuetify': vuetifyNL});
     this.InitNavigation();
 
-    MainBus.events.subscribe('rightsidebar', (action: string, data: any) => {
-      console.log('rightsidebar');
-    // this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
           if (

@@ -8,8 +8,9 @@ export class MainBus {
     return this.pInstance || (this.pInstance = new this());
   }
 
+   /** Event bus for publish/subscribe events in application */
   public static get events() {
     return this.pEvents || (this.pEvents = new MessageBusService());
   }
-  /** Event bus for publish/subscribe events in application */
+ 
 }
