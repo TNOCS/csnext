@@ -1,14 +1,17 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { ISidebarOptions, IHeaderOptions, IMenu, IDashboard } from '@csnext/cs-core';
+import {
+  ISidebarOptions,
+  IHeaderOptions,
+  IMenu,
+  IDashboard
+} from '@csnext/cs-core';
 import { Prop } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
 import './cs-header.css';
-import { CsWidget } from '../../../typescript';
-
 @Component({
   name: 'cs-header',
-  template: require('./cs-header.html')  
+  template: require('./cs-header.html')
 } as any)
 export class CsHeader extends Vue {
   public app = AppState.Instance;
@@ -17,12 +20,6 @@ export class CsHeader extends Vue {
   @Prop() public header?: IHeaderOptions;
   @Prop() public leftSidebar?: ISidebarOptions;
   @Prop() public rightSidebar?: ISidebarOptions;
-
-  public InitTitleWidget() {
-    if (this.header && this.header.titleWidget) {
-
-    }
-  }
 
   public InitMenus() {
     if (!this.app.project.menus) {
@@ -107,7 +104,7 @@ export class CsHeader extends Vue {
       'dashboard.main',
       (action: string, dashboard: IDashboard) => {
         this.InitMenus();
-        this.InitTitleWidget();
+        // this.InitTitleWidget();
       }
     );
     // menu list changed (e.g. if dashboard menu was updated)
