@@ -3,6 +3,10 @@
   width: 100%;
 }
 
+.widget-container {
+  height: 100%;
+}
+
 .widget-buttons-container{
   position:absolute !important;
   right: 10px;
