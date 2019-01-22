@@ -1,9 +1,9 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator, MainBus } from '@csnext/cs-core';
+import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { CirclePaint } from 'mapbox-gl';
+import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { RulerControl } from 'mapbox-gl-controls';
 import { StylesControl } from 'mapbox-gl-controls';
@@ -23,12 +23,15 @@ import {
     IMapLayerType,
     IStartStopService,
     ILayerExtensionType,
-    GeojsonPlusLayer
+    GeojsonPlusLayer,
+    FeatureDetails
 } from '../../.';
 
 export interface FeatureEventDetails {
     context: any;
     features: Feature[];
+    feature?: Feature;
+    lngLat: LngLat;
 }
 
 @Component({
@@ -139,8 +142,8 @@ export class CsMap extends Vue {
         }
     }
 
-    public initMapLayers() {        
-        MainBus.events.publish('rightsidebar', 'test', 'test');
+    public initMapLayers() {
+        console.log('init map layers');
         if (
             this.manager &&
             this.map &&
@@ -150,7 +153,7 @@ export class CsMap extends Vue {
             if (this.manager.MapWidget === undefined) {
                 this.manager.MapWidget = this;
             }
-            if (this.manager._sources && this.manager._sources.images) {                
+            if (this.manager._sources && this.manager._sources.images) {
                 for (var id in this.manager._sources.images) {
                     this.addImage(id, this.manager._sources.images[id]);
                 }
@@ -188,6 +191,28 @@ export class CsMap extends Vue {
                                 'added',
                                 layer
                             );
+
+                            if (layer.events) {
+                                layer.events.subscribe(
+                                    'feature',
+                                    (a: string, f: FeatureEventDetails) => {                                        
+                                        if (a === CsMap.FEATURE_SELECT) {                                            
+                                            this.$cs.OpenRightSidebarWidget(
+                                                {
+                                                    component: FeatureDetails,
+                                                    data: {
+                                                        feature: f.feature,
+                                                        layer: layer,
+                                                        manager: this.manager
+                                                    },
+                                                    datasource: 'project'
+                                                },
+                                                { open: true }
+                                            );
+                                        }
+                                    }
+                                );
+                            }
                         }
                         resolve(layer);
                     }
@@ -195,7 +220,7 @@ export class CsMap extends Vue {
             }
         });
     }
-    
+
     public removeLayer(layer: IMapLayer) {
         if (layer.id) {
             if (typeof layer.removeLayer === 'function') {
@@ -204,7 +229,7 @@ export class CsMap extends Vue {
         }
     }
 
-    mounted() {    
+    mounted() {
         Vue.nextTick(() => {
             if (this.options.token) {
                 mapboxgl.accessToken = this.options.token;
@@ -238,8 +263,6 @@ export class CsMap extends Vue {
                 ...(this.widget.options as MapOptions)
             };
 
-            
-
             var nav = new mapboxgl.NavigationControl({
                 showCompass: this.mapOptions.showCompass,
                 showZoom: this.mapOptions.showZoom
@@ -247,32 +270,32 @@ export class CsMap extends Vue {
             this.map.addControl(nav, 'top-left');
 
             if (this.mapOptions.showStyles) {
-                    const stylesControl = new StylesControl([
-                        {
-                            name: 'Streets',
-                            url: 'mapbox://styles/mapbox/streets-v9'
-                        },
-                        {
-                            name: 'Satellite',
-                            url: 'mapbox://styles/mapbox/satellite-v9'
-                        },
-                        {
-                            name: 'Dark',
-                            url: 'mapbox://styles/mapbox/dark-v9'
-                        },
-                        {
-                            name: 'Light',
-                            url: 'mapbox://styles/mapbox/light-v9'
-                        }
-                    ]);
-                    
-                this.map.addControl(stylesControl,'bottom-right');
-                this.map.on('style.load', () => { 
+                const stylesControl = new StylesControl([
+                    {
+                        name: 'Streets',
+                        url: 'mapbox://styles/mapbox/streets-v9'
+                    },
+                    {
+                        name: 'Satellite',
+                        url: 'mapbox://styles/mapbox/satellite-v9'
+                    },
+                    {
+                        name: 'Dark',
+                        url: 'mapbox://styles/mapbox/dark-v9'
+                    },
+                    {
+                        name: 'Light',
+                        url: 'mapbox://styles/mapbox/light-v9'
+                    }
+                ]);
+
+                this.map.addControl(stylesControl, 'bottom-right');
+                this.map.on('style.load', () => {
                     if (this.manager) {
-                        this.manager.refreshLayers();                        
+                        this.manager.refreshLayers();
                         // this.man
                     }
-                 });
+                });
             }
 
             if (this.mapOptions.showRuler) {
@@ -302,386 +325,218 @@ export class CsMap extends Vue {
                     },
                     styles: [
                         {
-                            "id": "draw-radius-label",
-                            "type": "symbol",
-                            "filter": [
-                                "==",
-                                "meta",
-                                "currentPosition"
-                            ],
-                            "layout": {
-                                "text-field": "{radiusMetric}",
-                                "text-anchor": "left",
-                                "text-offset": [
-                                    1,
-                                    0
-                                ],
-                                "text-size": 16
+                            id: 'draw-radius-label',
+                            type: 'symbol',
+                            filter: ['==', 'meta', 'currentPosition'],
+                            layout: {
+                                'text-field': '{radiusMetric}',
+                                'text-anchor': 'left',
+                                'text-offset': [1, 0],
+                                'text-size': 16
                             },
-                            "paint": {
-                                "text-color": "#000",
-                                "text-halo-color": "#fff",
-                                "text-halo-width": 3,
-                                "text-halo-blur": 1
+                            paint: {
+                                'text-color': '#000',
+                                'text-halo-color': '#fff',
+                                'text-halo-width': 3,
+                                'text-halo-blur': 1
                             }
                         },
                         {
-                            "id": "draw-line",
-                            "type": "line",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "$type",
-                                    "LineString"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id: 'draw-line',
+                            type: 'line',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'LineString'],
+                                ['!=', 'mode', 'static'],
+                                ['==', 'active', 'true']
                             ],
-                            "layout": {
-                                "line-cap": "round",
-                                "line-join": "round"
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
                             },
-                            "paint": {
-                                "line-color": "#fd9c27",
-                                "line-dasharray": [
-                                    0.2,
-                                    2
-                                ],
-                                "line-width": 2
+                            paint: {
+                                'line-color': '#fd9c27',
+                                'line-dasharray': [0.2, 2],
+                                'line-width': 2
                             }
                         },
                         {
-                            "id": "draw-polygon-fill",
-                            "type": "fill",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "$type",
-                                    "Polygon"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id: 'draw-polygon-fill',
+                            type: 'fill',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Polygon'],
+                                ['!=', 'mode', 'static'],
+                                ['==', 'active', 'true']
                             ],
-                            "paint": {
-                                "fill-color": "#fd9c27",
-                                "fill-opacity": 0.1
+                            paint: {
+                                'fill-color': '#fd9c27',
+                                'fill-opacity': 0.1
                             }
                         },
                         {
-                            "id": "draw-polygon-stroke-active",
-                            "type": "line",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "$type",
-                                    "Polygon"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id: 'draw-polygon-stroke-active',
+                            type: 'line',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Polygon'],
+                                ['!=', 'mode', 'static'],
+                                ['==', 'active', 'true']
                             ],
-                            "layout": {
-                                "line-cap": "round",
-                                "line-join": "round"
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
                             },
-                            "paint": {
-                                "line-color": "#fd9c27",
-                                "line-dasharray": [
-                                    0.2,
-                                    2
-                                ],
-                                "line-width": 2
+                            paint: {
+                                'line-color': '#fd9c27',
+                                'line-dasharray': [0.2, 2],
+                                'line-width': 2
                             }
                         },
                         {
-                            "id": "draw-polygon-and-line-midpoint",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "meta",
-                                    "midpoint"
-                                ],
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ]
+                            id: 'draw-polygon-and-line-midpoint',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'midpoint'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static']
                             ],
-                            "paint": {
-                                "circle-radius": 3,
-                                "circle-color": "#fd9c27",
-                                "circle-opacity": 0.8
+                            paint: {
+                                'circle-radius': 3,
+                                'circle-color': '#fd9c27',
+                                'circle-opacity': 0.8
                             }
                         },
                         {
-                            "id": "draw-polygon-and-line-vertex-halo-active",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "meta",
-                                    "vertex"
-                                ],
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ]
+                            id: 'draw-polygon-and-line-vertex-halo-active',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static']
                             ],
-                            "paint": {
-                                "circle-radius": 5,
-                                "circle-color": "#fff"
+                            paint: {
+                                'circle-radius': 5,
+                                'circle-color': '#fff'
                             }
                         },
                         {
-                            "id": "draw-polygon-and-line-vertex-active",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "meta",
-                                    "vertex"
-                                ],
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ]
+                            id: 'draw-polygon-and-line-vertex-active',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static']
                             ],
-                            "paint": {
-                                "circle-radius": 3,
-                                "circle-color": "#fd9c27"
+                            paint: {
+                                'circle-radius': 3,
+                                'circle-color': '#fd9c27'
                             }
                         },
                         {
-                            "id": "draw-polygon-and-line-vertex-halo-active-highlight",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "meta",
-                                    "vertex"
-                                ],
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id:
+                                'draw-polygon-and-line-vertex-halo-active-highlight',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static'],
+                                ['==', 'active', 'true']
                             ],
-                            "paint": {
-                                "circle-radius": 7,
-                                "circle-color": "#fff"
+                            paint: {
+                                'circle-radius': 7,
+                                'circle-color': '#fff'
                             }
                         },
                         {
-                            "id": "draw-polygon-and-line-vertex-active-highlight",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "meta",
-                                    "vertex"
-                                ],
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "!=",
-                                    "mode",
-                                    "static"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id: 'draw-polygon-and-line-vertex-active-highlight',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', 'meta', 'vertex'],
+                                ['==', '$type', 'Point'],
+                                ['!=', 'mode', 'static'],
+                                ['==', 'active', 'true']
                             ],
-                            "paint": {
-                                "circle-radius": 5,
-                                "circle-color": "#fd9c27"
+                            paint: {
+                                'circle-radius': 5,
+                                'circle-color': '#fd9c27'
                             }
                         },
                         {
-                            "id": "draw-polygon-fill-static",
-                            "type": "fill",
-                            "filter": [
-                                "all",
+                            id: 'draw-polygon-fill-static',
+                            type: 'fill',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Polygon'],
                                 [
-                                    "==",
-                                    "$type",
-                                    "Polygon"
-                                ],
-                                [
-                                    "any",
-                                    [
-                                        "==",
-                                        "mode",
-                                        "static"
-                                    ],
-                                    [
-                                        "==",
-                                        "active",
-                                        "false"
-                                    ]
+                                    'any',
+                                    ['==', 'mode', 'static'],
+                                    ['==', 'active', 'false']
                                 ]
                             ],
-                            "paint": {
-                                "fill-color": "#fd9c27",
-                                "fill-opacity": 0.4
+                            paint: {
+                                'fill-color': '#fd9c27',
+                                'fill-opacity': 0.4
                             }
                         },
                         {
-                            "id": "draw-polygon-stroke-static",
-                            "type": "line",
-                            "filter": [
-                                "all",
+                            id: 'draw-polygon-stroke-static',
+                            type: 'line',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Polygon'],
                                 [
-                                    "==",
-                                    "$type",
-                                    "Polygon"
-                                ],
-                                [
-                                    "any",
-                                    [
-                                        "==",
-                                        "mode",
-                                        "static"
-                                    ],
-                                    [
-                                        "==",
-                                        "active",
-                                        "false"
-                                    ]
+                                    'any',
+                                    ['==', 'mode', 'static'],
+                                    ['==', 'active', 'false']
                                 ]
                             ],
-                            "layout": {
-                                "line-cap": "round",
-                                "line-join": "round"
+                            layout: {
+                                'line-cap': 'round',
+                                'line-join': 'round'
                             },
-                            "paint": {
-                                "line-color": "#fd9c27",
-                                "line-opacity": 0.5,
-                                "line-width": 2
+                            paint: {
+                                'line-color': '#fd9c27',
+                                'line-opacity': 0.5,
+                                'line-width': 2
                             }
                         },
                         {
-                            "id": "points-active",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "==",
-                                    "meta",
-                                    "feature"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "true"
-                                ]
+                            id: 'points-active',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Point'],
+                                ['==', 'meta', 'feature'],
+                                ['==', 'active', 'true']
                             ],
-                            "paint": {
-                                "circle-stroke-width": 3,
-                                "circle-stroke-color": "#fff",
-                                "circle-radius": 5,
-                                "circle-color": "#fd9c27"
+                            paint: {
+                                'circle-stroke-width': 3,
+                                'circle-stroke-color': '#fff',
+                                'circle-radius': 5,
+                                'circle-color': '#fd9c27'
                             }
                         },
                         {
-                            "id": "points",
-                            "type": "circle",
-                            "filter": [
-                                "all",
-                                [
-                                    "==",
-                                    "$type",
-                                    "Point"
-                                ],
-                                [
-                                    "==",
-                                    "meta",
-                                    "feature"
-                                ],
-                                [
-                                    "!=",
-                                    "meta",
-                                    "radius"
-                                ],
-                                [
-                                    "==",
-                                    "active",
-                                    "false"
-                                ]
+                            id: 'points',
+                            type: 'circle',
+                            filter: [
+                                'all',
+                                ['==', '$type', 'Point'],
+                                ['==', 'meta', 'feature'],
+                                ['!=', 'meta', 'radius'],
+                                ['==', 'active', 'false']
                             ],
-                            "paint": {
-                                "circle-stroke-width": 2,
-                                "circle-stroke-color": "#fff",
-                                "circle-radius": 4,
-                                "circle-color": "#fd9c27"
+                            paint: {
+                                'circle-stroke-width': 2,
+                                'circle-stroke-color': '#fff',
+                                'circle-radius': 4,
+                                'circle-color': '#fd9c27'
                             }
                         },
                         {
@@ -862,15 +717,15 @@ export class CsMap extends Vue {
 
             // this.map.on('styledata', (e:any) => {
             //     // noinspection JSUnresolvedVariable
-            //     console.log(e);    
+            //     console.log(e);
             // });
-            
+
             // check if map has loaded
             this.map.on('load', e => {
                 this.initMapLayers();
                 this.startServices();
                 this.mapLoaded(e);
-                
+
                 if (this.mapOptions.showEditor && this.manager) {
                     const layerEditorControl = new LayerEditorControl(
                         this.manager
@@ -905,8 +760,10 @@ export class CsMap extends Vue {
 
         this.map.addControl(geocoder);
 
-        if (this.manager && this.manager.layers) {  
-            let rl = this.manager.layers!.find(l => l.id === 'searchlayer') as GeojsonPlusLayer;
+        if (this.manager && this.manager.layers) {
+            let rl = this.manager.layers!.find(
+                l => l.id === 'searchlayer'
+            ) as GeojsonPlusLayer;
             if (!rl) {
                 rl = new GeojsonPlusLayer();
                 rl.id = 'searchlayer';
@@ -934,10 +791,13 @@ export class CsMap extends Vue {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l.events) {
-                        l.events.subscribe('feature', (a: string) => {
-                            if (a === CsMap.FEATURE_SELECT) {
+                        l.events.subscribe(
+                            'feature',
+                            (a: string, f: Feature) => {
+                                if (a === CsMap.FEATURE_SELECT) {
+                                }
                             }
-                        });
+                        );
                     }
                 });
             }
@@ -1034,7 +894,7 @@ export class CsMap extends Vue {
     }
 
     public destroyed() {
-    //    this.map.remove();
+        //    this.map.remove();
     }
 
     public initLayerSource(source: LayerSource): any {

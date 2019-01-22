@@ -3,6 +3,7 @@ export class LayerStyle {
     public types? : string[];
     public iconZoomLevel?: number;
     public title? : string;
+    public mapTitle?: string;
     public popup? : string;
     public fill?: boolean;
     public line?: boolean;

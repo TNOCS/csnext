@@ -6,6 +6,8 @@ import { TimeInterpolationExtension } from './extensions/time-interpolation-exte
 import { WmsTimeExtension } from './extensions/wms-time-extension';
 import { LayerServerService } from './services/layer-server-service';
 
+import { AppState } from '@csnext/cs-client';
+
 
 // classes
 export * from './classes/map-options';

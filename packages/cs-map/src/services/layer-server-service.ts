@@ -13,7 +13,6 @@ import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
 import io from 'socket.io-client';
 import { Feature } from 'geojson';
-import { MainBus } from '@csnext/cs-core';
 import { FeatureDetails } from '../components/feature-details/feature-details';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
@@ -148,24 +147,23 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             manager.layers.push(gl);
                             gl.events.subscribe(
                                 'feature',
-                                (a: string, f: Feature) => {
-                                    console.log('Feature Select 2');
+                                (a: string, f: Feature) => {                                    
                                     if (
                                         a === CsMap.FEATURE_SELECT &&
                                         this.options!.openFeatureDetails
-                                    ) {
-                                        MainBus.events.publish(
-                                            'rightsidebar',
-                                            'open-widget',
-                                            {
-                                                component: FeatureDetails,
-                                                data: {
-                                                    feature: f,
-                                                    layer: layer,
-                                                    manager: this
-                                                }
-                                            }
-                                        );
+                                    ) {                                        
+                                        // MainBus.events.publish(
+                                        //     'rightsidebar',
+                                        //     'open-widget',
+                                        //     {
+                                        //         component: FeatureDetails,
+                                        //         data: {
+                                        //             feature: f,
+                                        //             layer: layer,
+                                        //             manager: this
+                                        //         }
+                                        //     }
+                                        // );
                                         // console.log(AppStateBase.Instance.bus);
                                     }
                                 }
@@ -224,8 +222,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         gl.events.subscribe('feature', (a: string, f: any) => {
             let md = this.mapDraw;
 
-            if (md && f.features && a === CsMap.FEATURE_SELECT) {
-                alert('selected feature');
+            if (md && f.features && a === CsMap.FEATURE_SELECT) {                
                 let feature = f.features[0];
                 if (feature.properties) {
                     feature.id = feature.properties['_fId'];

@@ -18,6 +18,7 @@ import {
     ILayerExtension,
     ILayerExtensionType
 } from '../classes/ilayer-extension';
+import { BaseLayer } from './base-layer';
 
 export class GeojsonLayer implements IMapLayer, IMapLayerType {
     types = ['symbol', 'raster', 'line', 'fill', 'circle'];
@@ -252,7 +253,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
 
         l.style = {
-            ...({ title: '{name}'} as LayerStyle),
+            ...({ title: '{{title}}'} as LayerStyle),
             ...l.style
         };
 
@@ -430,6 +431,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     private click(layer: GeojsonLayer, e: any) {
         if (layer.events) {
             layer.events.publish('feature', CsMap.FEATURE_SELECT, {
+                feature: (e.features.length>0) ? e.features[0] : undefined,
                 features: e.features,
                 context: e
             } as FeatureEventDetails);
@@ -464,11 +466,13 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    private createPopup(map: CsMap, layer: GeojsonLayer, e: any) {
+    private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
         let popup: string | undefined = undefined;
-        if (layer.style && layer.style.popup) {
-            popup = layer.style.popup;
-        } else if (layer.popupContent) {
+        e.feature = BaseLayer.getFeatureFromEventDetails(e);
+        // if (layer.style && layer.style.popup) {
+        //     popup = layer.style.popup;
+        // } else 
+        if (layer.popupContent) {
             if (typeof layer.popupContent === 'string') {
                 popup = layer.popupContent;
             } else if (this.isFunction(layer.popupContent)) {

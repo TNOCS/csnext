@@ -1,6 +1,6 @@
 import {ILayerExtension, ILayerExtensionType} from '../classes/ilayer-extension';
 import {IMapLayer} from '../classes/imap-layer';
-import {MessageBusHandle} from '@csnext/cs-core/dist/utils/message-bus/message-bus-handle';
+import {MessageBusHandle} from '@csnext/cs-core';
 import {Feature, Point} from 'geojson';
 
 export interface ITimeInterpolationExtensionOptions {

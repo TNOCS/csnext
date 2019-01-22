@@ -6,7 +6,10 @@ export class FeatureType {
 }
 
 export class PropertyType {
-    
+    public title?: string;
+    public type?: string;
+    public description?: string;
+    public stringFormat?: string;
 }
 
 // "circle": {

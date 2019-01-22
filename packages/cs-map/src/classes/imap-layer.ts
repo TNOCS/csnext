@@ -1,7 +1,6 @@
 import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType} from '..';
-import {MessageBusService} from '@csnext/cs-core';
+import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
 import { ILayerExtensionType} from './ilayer-extension';
-import { MessageBusHandle } from '@csnext/cs-core/dist/utils/message-bus/message-bus-handle';
 
 export interface IMapLayerType {
     typeId?: string;

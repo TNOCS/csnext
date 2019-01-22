@@ -26,8 +26,10 @@ import centroid from '@turf/centroid';
 import { FeatureCollection, Feature } from 'geojson';
 import { MessageBusHandle } from '@csnext/cs-core';
 import { LayerStyle } from '../classes/layer-style';
+import { BaseLayer } from './base-layer';
 
-export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
+export class GeojsonPlusLayer extends BaseLayer
+    implements IMapLayer, IMapLayerType {
     types? = ['poi', 'geojson'];
 
     public getInstance(init?: Partial<GeojsonPlusLayer>) {
@@ -86,6 +88,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public _extensions: ILayerExtension[] = [];
 
     constructor(init?: Partial<IMapLayer>) {
+        super();
         Object.assign(this, init);
         this.events = new MessageBusService();
     }
@@ -123,7 +126,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             res.push({
                 title: 'Refresh',
                 action: () => {
-                    if (this._manager) {                        
+                    if (this._manager) {
                         this._manager.refreshLayer(this);
                     }
                 }
@@ -178,7 +181,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
     public moveLayer(beforeId?: string) {
         if (this._manager && this._manager.MapControl && this.id) {
             const map = this._manager.MapControl;
-            if (this.fillLayer) map.moveLayer(this.fillLayer.id!, beforeId);       
+            if (this.fillLayer) map.moveLayer(this.fillLayer.id!, beforeId);
             if (this.centerLayer) map.moveLayer(this.centerLayer.id!, beforeId);
             if (this.circleLayer) map.moveLayer(this.circleLayer.id!, beforeId);
             if (this.symbolLayer) map.moveLayer(this.symbolLayer.id!, beforeId);
@@ -203,7 +206,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    public createCenterSource() {        
+    public createCenterSource() {
         if (this.iconZoomLevel === undefined) {
             return;
         }
@@ -291,10 +294,12 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
                     ? this.symbolLayout
                     : ({
                           'icon-size': 0.45,
-                          'text-field': this.style.title,
+                          'text-field': this.style.mapTitle,
                           'text-anchor': 'center',
                           'text-size': 12,
                           'text-offset': [0, 1.5],
+                          'text-ignore-placement': true,
+                          'text-allow-overlap': true,
                           'icon-allow-overlap': true,
                           'icon-ignore-placement': true
                       } as SymbolLayout),
@@ -333,17 +338,15 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
 
         this.style = {
             ...({
-                title: '{name}',
+                title: '{title}',
                 fill: false
             } as LayerStyle),
             ...this.style
         };
 
         if (!this.popupContent) {
-            this.popupContent = (d: Feature) => {
-                return this.style.popup
-                    ? this.parsePopupString(d, this.style.popup)
-                    : `<h2>${this.title}</h2>`;
+            this.popupContent = (d: FeatureEventDetails) => {
+                return this.parsePopup(d.feature);
             };
         }
 
@@ -385,20 +388,32 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
             parentId: this.id,
             style: this.style,
             popupContent: this.popupContent,
-            layout: this.symbolLayout
-                ? this.symbolLayout
-                : ({
-                      'icon-size': 0.45,
-                      'text-field': this.style.title,
-                      'text-anchor': 'center',
-                      'text-size': 12,
-                      'text-offset': [0, 1.5],
-                      'icon-allow-overlap': true,
-                      'icon-ignore-placement': true
-                  } as SymbolLayout),
             paint: this.symbolPaint ? this.symbolPaint : {},
             filter: ['==', ['geometry-type'], 'Point']
         });
+
+        if (this.symbolLayout) {
+            this.symbolLayer.layout = this.symbolLayout;
+        } else {
+            this.symbolLayer.layout = {
+                'icon-size': 0.45,
+                'icon-allow-overlap': true,
+                'icon-ignore-placement': true
+            } as SymbolLayout;
+            if (this.style.mapTitle) {
+                this.symbolLayer.layout = {
+                    ...{
+                        'text-field': this.style.mapTitle,
+                        'text-anchor': 'center',
+                        'text-size': 12,
+                        'text-offset': [0, 1.5]
+                    },
+                    ...this.symbolLayer.layout,
+                    
+                };
+            }
+        }
+
         this.symbolLayer.initLayer(manager);
 
         this.lineLayer = new GeojsonLayer({
@@ -456,23 +471,6 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         return this;
     }
 
-    private parsePopupString(e: any, s: string) {
-        // if (e.features && e.features.length === 1) {
-        //     let f = e.features[0];
-
-        //     if (!f.properties) {
-        //         return s;
-        //     }
-        //     for (const key in f.properties) {
-        //         if (f.properties.hasOwnProperty(key)) {
-        //             const prop = f.properties[key];
-        //             s = s.split('{' + key + '}').join(prop);
-        //         }
-        //     }
-        // }
-        return s;
-    }
-
     pipeEvents(
         map: CsMap,
         layer?: GeojsonLayer,
@@ -511,7 +509,7 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         return handle;
     }
 
-    public addLayer(map: CsMap) {        
+    public addLayer(map: CsMap) {
         if (!this.symbolLayer || !this.lineLayer || !this._manager) {
             return;
         }

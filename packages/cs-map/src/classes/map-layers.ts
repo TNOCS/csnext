@@ -117,6 +117,7 @@ export class MapLayers implements IDatasource {
                     ml._featureEventHandle = ml.events.subscribe(
                         'feature',
                         (a: string, f: Feature) => {
+                            
                             // also publish this event to manager
                             this.events.publish('feature', a, f);
                         }
@@ -173,7 +174,29 @@ export class MapLayers implements IDatasource {
         layer.moveLayer(beforeId);
     }
 
-    public zoomFeature(layer: IMapLayer, featureId: string) {
+    public zoomFeature(feature: Feature, zoomLevel?: number) {
+        if (!this.map) { return; }
+        var coords: [number, number] | undefined = undefined;
+        if (feature.geometry.type === 'Point') {
+            coords = (feature.geometry as Point).coordinates as [
+                number,
+                number
+            ];
+        } else if (feature.geometry.type === 'LineString') {
+            coords = (feature.geometry as LineString).coordinates[0] as [
+                number,
+                number
+            ];
+        } else if (feature.geometry.type === 'Polygon') {
+            coords = (feature.geometry as Polygon).coordinates[0][0] as [
+                number,
+                number
+            ];
+        }
+        if (coords) this.map.map.flyTo({ center: LngLat.convert(coords), zoom: zoomLevel ? zoomLevel : this.map.map.getZoom() });
+    }
+
+    public zoomFeatureId(layer: IMapLayer, featureId: string) {
         if (!layer._source || !layer._source._geojson || !this.map) return;
         const feature = layer._source._geojson.features.find(
             f => f.id === featureId || f.properties!['_fId'] === featureId
