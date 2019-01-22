@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@csnext/cs-core": "^0.0.101",
+        "@csnext/cs-client": "^0.0.101",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "mapbox/mapbox-gl-draw#e117715",
         "@mapbox/mapbox-gl-geocoder": "^2.3.0",
@@ -32,18 +33,21 @@
         "mapbox-gl-controls": "^0.0.15",
         "numeral": "^2.0.6",
         "socket.io-client": "^2.2.0",
-        "vue-perfect-scrollbar": "^0.1.0"
+        "vue-perfect-scrollbar": "^0.1.0",
+        "handlebars":"^4.0.12"
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.3",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
         "@types/turf": "^3.5.32",
+        "@types/node": "^10.12.18",
+        "@types/handlebars":"^4.0.40",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
-        "typescript": "^3.2.2",
+        "typescript": "^3.2.4",
         "webpack": "~4.28.4",
         "webpack-cli": "^3.2.1"
     }
