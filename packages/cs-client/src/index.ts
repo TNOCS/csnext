@@ -30,8 +30,8 @@ import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import { MdWidget } from './widgets/markdown/md-widget';
-import Vue from 'vue';
-import { WidgetBase } from './widgets/widget-base';
+import Vue, { VueConstructor } from 'vue';
+import Component from 'vue-class-component';
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -53,14 +53,36 @@ export * from './widgets/vega/vega-widget-options';
 export * from './widgets/intro/intro-widget';
 export * from './widgets/intro/intro-widget-options';
 
-export const csnext = {
-  install: (vue) => {
+export const CsNext = {
+  install: (vue: VueConstructor): void => {
     const a = AppState.Instance;
     vue.component('cs-dashboard', CsDashboard);
     vue.component('cs-widget', CsWidget);
     vue.component('cs-app', CsApp);
     vue.component('cs-sidebar', CsSidebar);
     vue.component('cs-widget', CsWidget);
-    Vue.component('md-widget', MdWidget);
+    vue.component('md-widget', MdWidget);
   }
 };
+
+// // tslint:disable-next-line:interface-name
+// export interface Vue {
+//   $cs: AppState;
+// }
+declare module 'vue/types/vue' {
+  // tslint:disable-next-line:interface-name
+  export interface Vue {
+    $cs: AppState;
+  }
+}
+
+// export type PluginFunction<T> = (Vue: typeof _Vue, options?: T) => void;
+export function CsPlugin(vue: typeof Vue, options?: any): void {
+  vue.prototype.$cs = AppState.Instance;
+}
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(CsNext);
+}
+
+export default CsNext;
