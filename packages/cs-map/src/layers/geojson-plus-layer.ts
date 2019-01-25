@@ -338,7 +338,7 @@ export class GeojsonPlusLayer extends BaseLayer
 
         this.style = {
             ...({
-                title: '{title}',
+                title: '{{title}}',
                 fill: false
             } as LayerStyle),
             ...this.style

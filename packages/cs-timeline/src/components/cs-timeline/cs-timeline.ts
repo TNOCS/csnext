@@ -39,6 +39,7 @@ export class CsTimeline extends Vue {
     }
 
     public destroyed() {
+        
         //    this.map.remove();
     }
 
