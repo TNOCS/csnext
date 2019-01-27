@@ -19,7 +19,7 @@
     "dependencies": {
         "@csnext/cs-core": "^0.0.101",
         "@csnext/cs-client": "^0.0.101",
-        "timeline-plus": "https://github.com/rinzeb/timeline-plus/releases/download/v2.3.1-beta.1/timeline-plus-2.3.1.tgz"
+        "timeline-plus": "2.3.4"
     },
     "peerDependencies": {},
     "devDependencies": {
@@ -28,7 +28,7 @@
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
         "typescript": "^3.2.4",
-        "webpack": "~4.28.4",
+        "webpack": "~4.29.0",
         "webpack-cli": "^3.2.1",
         "@types/node": "^10.12.18"
     }

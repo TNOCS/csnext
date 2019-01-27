@@ -21,7 +21,7 @@
         "@csnext/cs-client": "^0.0.101",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.1",
-        "@mapbox/mapbox-gl-geocoder": "^2.3.0",
+        "@mapbox/mapbox-gl-geocoder": "^3.0.1",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
         "@turf/centroid": "^6.0.2",
@@ -40,7 +40,7 @@
         "@types/mapbox-gl": "^0.51.3",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
-        "@types/turf": "^3.5.32",
+        "@types/turf": "^3.5.32",        
         "@types/node": "^10.12.18",
         "@types/handlebars":"^4.0.40",
         "postcss-loader": "^3.0.0",
@@ -48,7 +48,7 @@
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
         "typescript": "^3.2.4",
-        "webpack": "~4.28.4",
+        "webpack": "~4.29.0",
         "webpack-cli": "^3.2.1"
     }
 }
