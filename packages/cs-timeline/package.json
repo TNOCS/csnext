@@ -19,12 +19,10 @@
     "dependencies": {
         "@csnext/cs-core": "^0.0.101",
         "@csnext/cs-client": "^0.0.101",
-        "timeline-plus": "^2.3.1"
+        "timeline-plus": "https://github.com/rinzeb/timeline-plus/releases/download/v2.3.1-beta.1/timeline-plus-2.3.1.tgz"
     },
-    "peerDependencies": {
-        
-    },
-    "devDependencies": {        
+    "peerDependencies": {},
+    "devDependencies": {
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",

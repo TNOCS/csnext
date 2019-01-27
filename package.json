@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "csnext",
-  "license": "MIT",  
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tnocs/csnext.git"
@@ -11,15 +11,15 @@
     "dev": "lerna run --parallel dev",
     "clean": "lerna run --parallel clean",
     "build": "lerna run build",
+    "build:parallel": "lerna run --parallel build",
     "dev:docs": "lerna run dev:docs",
     "build:docs": "lerna run build --scope cs-docs",
     "build:docker": "docker build -t tnocs/csnext .",
     "publish:npm": "lerna publish --force-publish=*",
     "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch",
-    "watch": "tsc -b -w packages" 
-
+    "watch": "tsc -b -w packages"
   },
   "devDependencies": {
-    "lerna": "^3.10.5"
+    "lerna": "^3.10.7"
   }
 }
