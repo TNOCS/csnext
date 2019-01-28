@@ -194,20 +194,23 @@ export class CsMap extends Vue {
                             if (layer._events) {
                                 layer._events.subscribe(
                                     'feature',
-                                    (a: string, f: FeatureEventDetails) => {                                        
-                                        if (a === CsMap.FEATURE_SELECT) {                                            
-                                            this.$cs.OpenRightSidebarWidget(
-                                                {
-                                                    component: FeatureDetails,
-                                                    data: {
-                                                        feature: f.feature,
-                                                        layer: layer,
-                                                        manager: this.manager
+                                    (a: string, f: FeatureEventDetails) => {
+                                        if (a === CsMap.FEATURE_SELECT) {
+                                            if (layer.openFeatureDetails && layer.openFeatureDetails ===true) {
+                                                this.$cs.OpenRightSidebarWidget(
+                                                    {
+                                                        component: FeatureDetails,
+                                                        data: {
+                                                            feature: f.feature,
+                                                            layer: layer,
+                                                            manager: this
+                                                                .manager
+                                                        },
+                                                        datasource: 'project'
                                                     },
-                                                    datasource: 'project'
-                                                },
-                                                { open: true }
-                                            );
+                                                    { open: true }
+                                                );
+                                            }
                                         }
                                     }
                                 );

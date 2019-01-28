@@ -32,6 +32,7 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+    public openFeatureDetails?: boolean;
     public _service?: ILayerService;
     public layout?:
         | mapboxgl.SymbolLayout
@@ -79,6 +80,14 @@ export class BaseLayer implements IMapLayer {
                     if (this._manager) {
                         this._manager.refreshLayer(this);
                     }
+                }
+            });
+            res.push({
+                title: 'Show features',
+                action: () => {
+                    // if (this._manager) {
+                    //     this._manager.refreshLayer(this);
+                    // }
                 }
             });
         } else {

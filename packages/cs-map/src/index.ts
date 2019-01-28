@@ -5,9 +5,7 @@ import { GeojsonPlusLayer } from './layers/geojson-plus-layer';
 import { TimeInterpolationExtension } from './extensions/time-interpolation-extension';
 import { WmsTimeExtension } from './extensions/wms-time-extension';
 import { LayerServerService } from './services/layer-server-service';
-
 import { AppState } from '@csnext/cs-client';
-
 
 // classes
 export * from './classes/map-options';
@@ -21,6 +19,8 @@ export * from './classes/layer-service-options';
 export * from './classes/ilayer-action';
 export * from './classes/layer-style';
 export * from './classes/feature-type';
+export * from './interfaces/source';
+export * from './interfaces/layer';
 
 // components
 export * from './components/layer-selection/layer-selection';

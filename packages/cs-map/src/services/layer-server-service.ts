@@ -102,6 +102,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             let gl = new GeojsonPlusLayer();
                             gl._service = this;
                             gl.source = s;
+                            gl.openFeatureDetails = true;
                             gl.isEditable = layer.isEditable;
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'blue';

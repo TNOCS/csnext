@@ -2,8 +2,9 @@ import { FeatureCollection } from 'geojson';
 import axios from 'axios';
 import { GeoJSONSourceRaw } from 'mapbox-gl';
 import { guidGenerator } from '@csnext/cs-core';
+import { ISource } from '..';
 
-export class LayerSource {
+export class LayerSource implements ISource {
     /** id of this layer */
     public id?: string;
     public title?: string;

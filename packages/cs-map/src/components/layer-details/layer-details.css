@@ -1,0 +1,30 @@
+.feature-property-value {
+    font-size: 16px;
+    text-align: right;    
+    justify-content: flex-end;
+}
+
+.feature-section-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.section-expansion-panel .v-expansion-panel__header {
+    padding-left: 12px;
+}
+
+.feature-property-key {
+    position: absolute;
+    font-size: 16px;
+    width: 66%;
+}
+
+.feature-property {
+
+    border-bottom: solid 1px #ccc;
+    padding: 8px 0px;
+}
+
+.section {
+    margin: 10px;
+}
