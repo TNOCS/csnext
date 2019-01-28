@@ -1,5 +1,5 @@
 import { MessageBusService } from '@csnext/cs-core';
-import { LayerSource, MapLayers, IMapLayer, LayerStyle, FeatureType } from './../.';
+import { LayerSource, MapLayers, IMapLayer, LayerStyle, FeatureType, ILayerService } from './../.';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
@@ -32,6 +32,7 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+    public _service?: ILayerService;
     public layout?:
         | mapboxgl.SymbolLayout
         | mapboxgl.FillLayout
@@ -43,7 +44,7 @@ export class BaseLayer implements IMapLayer {
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
-    public events?: MessageBusService;
+    public _events?: MessageBusService;
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
@@ -53,8 +54,44 @@ export class BaseLayer implements IMapLayer {
 
     initLayer(manager: MapLayers) {}
     setOpacity(value: number) {}
-    getLayerActions(): ILayerAction[] {
-        return [];
+    public getLayerActions(): ILayerAction[] {
+        let res: ILayerAction[] = [];
+        if (this.Visible) {
+            res.push({
+                title: 'Zoom to',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.zoomLayer(this);
+                    }
+                }
+            });
+            res.push({
+                title: 'Hide',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.hideLayer(this);
+                    }
+                }
+            });
+            res.push({
+                title: 'Refresh',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.refreshLayer(this);
+                    }
+                }
+            });
+        } else {
+            res.push({
+                title: 'Show',
+                action: () => {
+                    if (this._manager) {
+                        this._manager.showLayer(this);
+                    }
+                }
+            });
+        }
+        return res;
     }
     removeLayer(map: CsMap) {}
     moveLayer(beforeId?: string) {}

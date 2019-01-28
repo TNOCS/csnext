@@ -54,7 +54,7 @@ export class LayerServer implements ILayerService, IStartStopService {
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl.source = s;
-                            gl.color = layer.color ? layer.color : 'lightgrey';
+                            gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;

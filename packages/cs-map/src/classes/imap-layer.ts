@@ -1,4 +1,4 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType} from '..';
+import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType, ILayerService} from '..';
 import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
 import { ILayerExtensionType} from './ilayer-extension';
 
@@ -28,17 +28,19 @@ export interface IMapLayer {
     addLayer(map: CsMap);
     initLayer(manager: MapLayers);
     setOpacity(value: number);
-    getLayerActions(): ILayerAction[];
+    getLayerActions?(): ILayerAction[];
     removeLayer(map: CsMap);
     moveLayer(beforeId?: string);
     style?: LayerStyle,
-    events?: MessageBusService;
+    _events?: MessageBusService;
     extensions?: ILayerExtensionType[];
     filter?: any;
     isEditable?: boolean;
     layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
     paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
     featureTypes?: {[key:string]: FeatureType};
+    /** associated service */
+    _service?: ILayerService;
 
     /** toggle visibility of layer */
     Visible?: boolean;

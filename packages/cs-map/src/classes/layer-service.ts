@@ -1,10 +1,12 @@
-import { LayerSelectionOptions, ILayerServiceOptions } from '../.';
+import { LayerSelectionOptions, ILayerServiceOptions, ILayerAction, IMapLayer } from '../.';
 import { MapLayers } from './map-layers';
 
 export interface ILayerService {
     id: string;
     title?: string;
-    options?: ILayerServiceOptions
+    options?: ILayerServiceOptions;
+    getLayerActions?(layer: IMapLayer): ILayerAction[];
+    updateLayer?(layer: IMapLayer);
 }
 
 export interface IStartStopService extends ILayerService {

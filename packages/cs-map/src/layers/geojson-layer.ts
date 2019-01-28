@@ -55,7 +55,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
-    public events?: MessageBusService;
+    public _events?: MessageBusService;
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
@@ -145,38 +145,6 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    public getLayerActions(): ILayerAction[] {
-        let res: ILayerAction[] = [];
-        if (this.Visible) {
-            res.push({
-                title: 'Zoom to',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.zoomLayer(this);
-                    }
-                }
-            });
-            res.push({
-                title: 'Hide',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.hideLayer(this);
-                    }
-                }
-            });
-        } else {
-            res.push({
-                title: 'Show',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.showLayer(this);
-                    }
-                }
-            });
-        }
-        return res;
-    }
-
     public getBounds(): LngLatBounds | undefined {
         if (this._source) {
             // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
@@ -243,8 +211,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
 
         // check for event bus existence
-        if (!l.events) {
-            l.events = new MessageBusService();
+        if (!l._events) {
+            l._events = new MessageBusService();
         }
 
         // if no color is set, set default color
@@ -429,8 +397,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     }
 
     private click(layer: GeojsonLayer, e: any) {
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_SELECT, {
+        if (layer._events) {
+            layer._events.publish('feature', CsMap.FEATURE_SELECT, {
                 feature: (e.features.length>0) ? e.features[0] : undefined,
                 features: e.features,
                 context: e
@@ -441,8 +409,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     private mouseLeave(map: CsMap, layer: GeojsonLayer, e: any) {
         map.map.getCanvas().style.cursor = '';
         if (layer.popupContent) this.popup.remove();
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
+        if (layer._events) {
+            layer._events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
                 features: e.features,
                 context: e
             });
@@ -458,8 +426,8 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
         map.map.getCanvas().style.cursor = 'pointer';
         this.createPopup(map, layer, e);
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
+        if (layer._events) {
+            layer._events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
                 features: e.features,
                 context: e
             });

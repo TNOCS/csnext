@@ -5,12 +5,13 @@ import './layer-selection.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
 import { MapLayers, IMapLayer } from '../../.';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import { ILayerAction } from '../../classes/ilayer-action';
 
 export interface ILayerGroup {
     title: string;
     color: string;
     layers: IMapLayer[];
-    state: "all" | "none" | "some";
+    state: 'all' | 'none' | 'some';
 }
 
 @Component({
@@ -27,9 +28,7 @@ export class LayerSelection extends Vue {
     public groupsexpanded: boolean[] = [];
     public showMenu = false;
     public filter: string = '';
-    public Groups :  { [id: string]: ILayerGroup } = {};
-
-    
+    public Groups: { [id: string]: ILayerGroup } = {};
 
     // public get groupsexpanded() : boolean[]
 
@@ -51,31 +50,35 @@ export class LayerSelection extends Vue {
         this.updateGroups();
         if (localStorage.layergroupsexpanded) {
             try {
-                this.groupsexpanded = JSON.parse(localStorage.layergroupsexpanded);
-                
+                this.groupsexpanded = JSON.parse(
+                    localStorage.layergroupsexpanded
+                );
             } catch (e) {
                 this.groupsexpanded = [];
             }
-        }
-        else {
+        } else {
             this.groupsexpanded = [];
         }
     }
 
-
-
     public toggleGroup(group: ILayerGroup) {
-        if (group.layers && group.layers.findIndex(l => l.Visible === true)!==-1) {
+        if (
+            group.layers &&
+            group.layers.findIndex(l => l.Visible === true) !== -1
+        ) {
             for (const layer of group.layers) {
-                if (layer._manager) { layer._manager.hideLayer(layer); }
-            }        
+                if (layer._manager) {
+                    layer._manager.hideLayer(layer);
+                }
+            }
         } else {
             for (const layer of group.layers) {
-                if (layer._manager) { layer._manager.showLayer(layer); }
+                if (layer._manager) {
+                    layer._manager.showLayer(layer);
+                }
             }
         }
     }
-    
 
     public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
@@ -97,7 +100,7 @@ export class LayerSelection extends Vue {
                     }
                 }
             });
-            
+
             while (this.groupsexpanded.length < Object.keys(res).length) {
                 this.groupsexpanded.push(true);
             }
@@ -105,11 +108,14 @@ export class LayerSelection extends Vue {
             for (const group in res) {
                 if (res.hasOwnProperty(group)) {
                     const element = res[group];
-                    if (element.layers && element.layers.findIndex(l => l.Visible === true)!==-1) {
-                        element.state = "some";
+                    if (
+                        element.layers &&
+                        element.layers.findIndex(l => l.Visible === true) !== -1
+                    ) {
+                        element.state = 'some';
                     } else {
-                        element.state = "none"
-                    }                   
+                        element.state = 'none';
+                    }
                 }
             }
         }
@@ -158,8 +164,15 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public layerMenu(layer: IMapLayer): any[] {
-        return layer.getLayerActions();
+    public layerMenu(layer: IMapLayer): ILayerAction[] {
+        let results: ILayerAction[] = [];
+        if (layer.getLayerActions) {
+            results = [...results, ...layer.getLayerActions()];
+        }
+        if (layer._service && layer._service.getLayerActions) {
+            results = [...results, ...layer._service.getLayerActions(layer)];
+        }
+        return results;
     }
 
     public toggleLayer(layer: IMapLayer) {

@@ -5,7 +5,8 @@ import {
     GeojsonPlusLayer,
     LayerStyle,
     CsMap,
-    LayerServiceOptions
+    LayerServiceOptions,
+    ILayerAction
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
@@ -13,7 +14,7 @@ import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
 import io from 'socket.io-client';
 import { Feature } from 'geojson';
-import { FeatureDetails } from '../components/feature-details/feature-details';
+import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -94,14 +95,16 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         for (const layer of response.data) {
                             let style = layer.style as LayerStyle;
                             let s = new LayerSource();
+                            if (!layer.color) { layer.color = 'blue'; }
                             s.url = this.options.url + 'sources/' + layer.id;
                             s.id = layer.id;
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
+                            gl._service = this;
                             gl.source = s;
                             gl.isEditable = layer.isEditable;
                             gl.iconZoomLevel = style.iconZoomLevel;
-                            gl.color = layer.color ? layer.color : 'lightgrey';
+                            gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
                             gl.id = layer.id;
                             gl.extensions = layer.extensions;
@@ -116,12 +119,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 gl.type = layer.type;
                             }
                             if (layer.style && layer.style.mapbox) {
-                                gl.symbolLayout =
+                                gl._symbolLayout =
                                     layer.style.mapbox.symbolLayout;
-                                gl.symbolPaint = layer.style.mapbox.symbolPaint;
-                                gl.circlePaint = layer.style.mapbox.circlePaint;
-                                gl.fillPaint = layer.style.mapbox.fillPaint;
-                                gl.linePaint = layer.style.mapbox.linePaint;
+                                gl._symbolPaint = layer.style.mapbox.symbolPaint;
+                                gl._circlePaint = layer.style.mapbox.circlePaint;
+                                gl._fillPaint = layer.style.mapbox.fillPaint;
+                                gl._linePaint = layer.style.mapbox.linePaint;
                             }
                             gl.tags = [];
                             if (this.options.tags) {
@@ -145,13 +148,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             // } as LinePaint;
                             gl.initLayer(manager);
                             manager.layers.push(gl);
-                            gl.events.subscribe(
+                            gl._events.subscribe(
                                 'feature',
-                                (a: string, f: Feature) => {                                    
+                                (a: string, f: Feature) => {
                                     if (
                                         a === CsMap.FEATURE_SELECT &&
                                         this.options!.openFeatureDetails
-                                    ) {                                        
+                                    ) {
                                         // MainBus.events.publish(
                                         //     'rightsidebar',
                                         //     'open-widget',
@@ -189,6 +192,45 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.initSocket();
     }
 
+    public updateLayer(layer: IMapLayer) {
+        if (this.options) {
+            const url = this.options.url + 'layers/' + layer.id;
+            const def = JSON.parse(JSON.stringify(layer, (key, value) => {
+                if (key.startsWith('_')) {
+                    return undefined;
+                }
+                return value;
+            }));
+            console.log(def);            
+            // axios
+            //     .put(url, def, {
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         }
+            //     })
+            //     .then(r => {
+            //         console.log(r);
+            //     })
+            //     .catch(e => {
+            //         console.log(e);
+            //     });
+        }
+    }
+
+    public getLayerActions(layer: IMapLayer): ILayerAction[] {
+        let res: ILayerAction[] = [];
+        res.push({
+            title: 'Edit',
+            action: () => {
+                this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
+                    component: LayerServiceEditor,
+                    data: { layer: layer, service: this }
+                });
+            }
+        });
+        return res;
+    }
+
     private get mapDraw(): any {
         if (
             this.manager &&
@@ -219,10 +261,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
             });
         }
 
-        gl.events.subscribe('feature', (a: string, f: any) => {
+        gl._events.subscribe('feature', (a: string, f: any) => {
             let md = this.mapDraw;
 
-            if (md && f.features && a === CsMap.FEATURE_SELECT) {                
+            if (md && f.features && a === CsMap.FEATURE_SELECT) {
                 let feature = f.features[0];
                 if (feature.properties) {
                     feature.id = feature.properties['_fId'];
@@ -250,7 +292,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         });
 
         // listen to source change events
-        gl.events.subscribe('source', (a: string) => {
+        gl._events.subscribe('source', (a: string) => {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
                 let body = gl._source!._geojson;

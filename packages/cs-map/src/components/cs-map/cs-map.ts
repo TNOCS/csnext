@@ -191,8 +191,8 @@ export class CsMap extends Vue {
                                 layer
                             );
 
-                            if (layer.events) {
-                                layer.events.subscribe(
+                            if (layer._events) {
+                                layer._events.subscribe(
                                     'feature',
                                     (a: string, f: FeatureEventDetails) => {                                        
                                         if (a === CsMap.FEATURE_SELECT) {                                            
@@ -767,7 +767,7 @@ export class CsMap extends Vue {
                 rl = new GeojsonPlusLayer();
                 rl.id = 'searchlayer';
                 rl.title = 'Search result';
-                (rl.circlePaint = {
+                (rl._circlePaint = {
                     'circle-radius': 10,
                     'circle-color': 'grey'
                 } as CirclePaint),
@@ -789,8 +789,8 @@ export class CsMap extends Vue {
                     features: []
                 });
                 this.manager.addLayer(rl).then(l => {
-                    if (l.events) {
-                        l.events.subscribe(
+                    if (l._events) {
+                        l._events.subscribe(
                             'feature',
                             (a: string, f: Feature) => {
                                 if (a === CsMap.FEATURE_SELECT) {

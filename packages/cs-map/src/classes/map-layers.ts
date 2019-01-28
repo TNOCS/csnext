@@ -112,9 +112,9 @@ export class MapLayers implements IDatasource {
                     });
                 this.events.publish('layer', 'enabled', ml);
                 // check if not already subscribed to features events
-                if (ml.events && !ml._featureEventHandle) {
+                if (ml._events && !ml._featureEventHandle) {
                     // if not subscribe
-                    ml._featureEventHandle = ml.events.subscribe(
+                    ml._featureEventHandle = ml._events.subscribe(
                         'feature',
                         (a: string, f: Feature) => {
                             
@@ -230,8 +230,8 @@ export class MapLayers implements IDatasource {
             if (layer) this.hideLayer(layer);
         } else {
             // unsubscribe from feature events
-            if (ml.events && ml._featureEventHandle !== undefined) {
-                ml.events.unsubscribe(ml._featureEventHandle);
+            if (ml._events && ml._featureEventHandle !== undefined) {
+                ml._events.unsubscribe(ml._featureEventHandle);
                 ml._featureEventHandle = undefined;
             }
             if (this.map) {
@@ -383,12 +383,12 @@ export class MapLayers implements IDatasource {
             ml._source._geojson = g;
             let sourceId = ml._source.id;
             let source = this.MapControl.getSource(sourceId) as GeoJSONSource;
-            if (source && ml.events) {
+            if (source && ml._events) {
                 source.setData(g);
                 if (triggerEvent) {
-                    ml.events.publish('source', 'updated', source);
+                    ml._events.publish('source', 'updated', source);
                 }
-                ml.events.publish('layer', CsMap.LAYER_UPDATED, ml);
+                ml._events.publish('layer', CsMap.LAYER_UPDATED, ml);
             }
         }
         if (
@@ -457,8 +457,8 @@ export class MapLayers implements IDatasource {
             }
             let layer = this.getLayerInstance(ml.type, ml);
             if (layer) {
-                if (!ml.events) {
-                    ml.events = new MessageBusService();
+                if (!ml._events) {
+                    ml._events = new MessageBusService();
                 }
                 layer.initLayer(this);
                 this.layers.push(layer);
