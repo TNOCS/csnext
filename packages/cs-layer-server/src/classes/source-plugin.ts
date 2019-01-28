@@ -1,0 +1,48 @@
+import { LayerSource } from "./layer-source";
+import { ServerConfig, LayerMeta } from ".";
+import { Layer } from "mapbox-gl";
+
+export interface ILoadResult {
+    source: LayerSource;
+    updated: boolean;
+    meta?: LayerMeta;
+
+}
+
+export class Connection {
+    public user?: string;
+    public host?: string;
+    public database?: string;
+    public password?: string;
+    public port?: number;    
+}
+
+/** plugin for starting/using different sources */
+export interface ISourcePlugin {
+    id: string;
+    init?() : Promise<boolean>;  
+    /** import function for converting different formats to geojson */  
+    import?(file: string) : Promise<LayerSource | undefined>;
+    load?(file: string, meta?: string) : Promise<ILoadResult>;
+    query?(connection: Connection, query: string) : Promise<ILoadResult>;
+    // todo: query method
+}
+
+export interface ISourcePluginOptions {
+    [key: string]: any;
+}
+
+export interface ISourcePluginType {
+    /** extension id */
+    id: string;
+    /** extension options */
+    options?: ISourcePluginOptions;
+    /** list of supported file extensions */
+    fileExtensions?: string[];
+
+    /** supported loading source type (e.g. geojson) */
+    source?: string;
+
+    /** method to invoke actual plugin instance */
+    getInstance?: (init?: Partial<any>) => ISourcePlugin;
+}
