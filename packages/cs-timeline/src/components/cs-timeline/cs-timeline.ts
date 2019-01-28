@@ -3,8 +3,9 @@ import Vue from 'vue';
 import {IWidget, MessageBusService, IDatasource, WidgetOptions} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
-import {Timeline, DataGroup, DataItem, TimelineOptions, TimelineTooltipOption, DataSet, VisSelectProperties, TimelineEventPropertiesResult} from 'timeline-plus';
+import {Timeline, DataGroup, DataItem, TimelineOptions, DataSet, VisSelectProperties, TimelineEventPropertiesResult} from 'timeline-plus';
 export {Timeline, DataGroup, DataItem, TimelineOptions, TimelineTooltipOption, DataSet, VisSelectProperties, TimelineEventPropertiesResult} from 'timeline-plus';
+
 import 'timeline-plus/dist/timeline.min.css';
 
 export const TIME_TOPIC = 'time';
@@ -67,7 +68,7 @@ export class CsTimeline extends Vue {
 
     private async getItems(): Promise<DataSet<DataItem>> {
         let items: DataItem[] = [];
-        let tags: string[] = [];
+        let tags: string[] = [];        
         let height = this.smallView ? '5px' : '30px;';
         if (this.datasource && this.datasource.timelineItems) {
             this.datasource.timelineItems.forEach((i: DataItem) => {
@@ -173,6 +174,9 @@ export class CsTimeline extends Vue {
 
     mounted() {
         if (this.widget && this.widget.datasource) {
+            this.widget.events!.subscribe('resize', (d,a) =>{
+                this.timeline!.redraw();
+            })
             this.$cs.loadDatasource<ITimelineDataSource>(this.widget.datasource).then(d => {
                 this.datasource = d;
                 this.initTimeline();
