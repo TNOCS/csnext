@@ -15,12 +15,15 @@ const config = buildConfig(
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
         '@mapbox/mapbox-gl-draw/dist': '@mapbox/mapbox-gl-draw/dist',
-        'vue-perfect-scrollbar': 'vue-perfect-scrollbar',
-        'handlebars/runtime': 'handlebars/dist/cjs/handlebars.runtime',
-        handlebars: 'handlebars/dist/cjs/handlebars.runtime'
+        'vue-perfect-scrollbar': 'vue-perfect-scrollbar'
+        // ,
+        // 'handlebars/runtime': 'handlebars/dist/cjs/handlebars.runtime',
+        // handlebars: 'handlebars/dist/cjs/handlebars.runtime'
     },
     'csmap'
 );
+
+config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
 
 config.node = {
     fs: 'empty'
