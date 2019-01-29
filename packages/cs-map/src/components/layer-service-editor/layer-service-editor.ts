@@ -5,6 +5,7 @@ import './layer-service-editor.css';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { Vue } from 'vue-property-decorator';
 import { BaseLayer } from '../../.';
+// import { CsForm } from '@csnext/cs-form';
 
 @Component({
     name: 'layer-service-editor',
