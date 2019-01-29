@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -16,35 +16,35 @@
     "build": "tsc"
   },
   "dependencies": {
-    "dbgeo": "^1.1.0",
-    "wkx": "^0.4.6",
-    "pg-query-stream":"^1.1.2",
+    "@csnext/cs-map": "^0.0.102",
     "@macrostrat/dbgeo-stream": "^1.0.0",
-    "lockfile":"^1.0.4",
-    "@csnext/cs-map": "^0.0.101",
-    "express": "^4.16.4",
-    "@nestjs/core": "^5.6.2",
+    "@mapbox/togeojson": "^0.16.0",
     "@nestjs/common": "^5.6.2",
+    "@nestjs/core": "^5.6.2",
     "@nestjs/swagger": "^2.5.1",
-    "@nestjs/websockets":"^5.6.2",
-    "socket.io": "^2.2.0",
-    "@mapbox/togeojson": "^0.16.0", 
-    "rxjs": "^6.3.3",
+    "@nestjs/websockets": "^5.6.2",
+    "arangojs": "^6.10.0",
+    "dbgeo": "^1.1.0",
+    "express": "^4.16.4",
+    "lockfile": "^1.0.4",
     "lodash": "^4.17.11",
-    "reflect-metadata": "^0.1.13",
-    "uuid": "^3.3.2",
     "pg": "^7.8.0",
-    "arangojs": "^6.10.0"
+    "pg-query-stream": "^1.1.2",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.3.3",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2",
+    "wkx": "^0.4.6"
   },
-  "devDependencies": {      
-    "@types/pg": "^7.4.11",
-    "@types/lodash":"^4.14.120",
-    "@types/lockfile":"^1.0.0",
-    "typescript": "^3.2.4",
+  "devDependencies": {
     "@types/express": "^4.16.1",
-    "@types/node": "^10.12.18",
-    "del-cli": "^1.1.0",
+    "@types/lockfile": "^1.0.0",
+    "@types/lodash": "^4.14.120",
     "@types/mapbox-gl": "^0.51.3",
-    "@types/socket.io": "^2.1.2"
+    "@types/node": "^10.12.18",
+    "@types/pg": "^7.4.11",
+    "@types/socket.io": "^2.1.2",
+    "del-cli": "^1.1.0",
+    "typescript": "^3.2.4"
   }
 }

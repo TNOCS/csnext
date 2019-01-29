@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-core",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "description": "cscore",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -20,7 +20,7 @@
     "typescript-collections": "^1.3.2"
   },
   "devDependencies": {
-    "typescript": "^3.2.4",
-    "@types/node": "^10.12.18"
+    "@types/node": "^10.12.18",
+    "typescript": "^3.2.4"
   }
 }

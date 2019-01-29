@@ -5,4 +5,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [0.0.102](https://github.com/TNOCS/csnext/compare/v0.0.101...v0.0.102) (2019-01-29)
 
-**Note:** Version bump only for package @csnext/cs-form
+**Note:** Version bump only for package @csnext/cs-layer-server

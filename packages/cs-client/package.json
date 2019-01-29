@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.101",
+  "version": "0.0.102",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -17,18 +17,19 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.101",
+    "@csnext/cs-core": "^0.0.102",
     "axios": "^0.18.0",
     "deepmerge": "^3.1.0",
     "reflect-metadata": "^0.1.13",
     "vue-i18n": "^8.7.0",
+    "vue-mixin-decorator": "^1.0.0",
     "vue-resize-directive": "^1.1.4",
     "vue-router": "^3.0.2",
-    "vuetify": "^1.5.0-beta.2",
-    "vue-mixin-decorator":"^1.0.0"
+    "vuetify": "^1.5.0-beta.2"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.2.0",
+    "@types/node": "^10.12.18",
     "@types/vue-i18n": "^7.0.0",
     "base64-inline-loader": "^1.1.1",
     "concurrently": "^4.1.0",
@@ -55,7 +56,6 @@
     "webpack": "~4.29.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.2.1",
-    "yargs": "^12.0.5",
-    "@types/node": "^10.12.18"
+    "yargs": "^12.0.5"
   }
 }
