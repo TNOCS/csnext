@@ -4,12 +4,12 @@
         <v-spacer></v-spacer>
         <v-btn icon @click="saveForm()" v-if="Form.saveButton"><v-icon>save</v-icon> </v-btn>
     </v-toolbar> -->
-    <v-expansion-panel v-if="formObject">
-        <v-expansion-panel-content :value="[true]">
-            <div slot="header" class="form-title" v-if="Form.isPanel">
+    <v-expansion-panel expand v-model="panel" v-if="formObject">
+        <v-expansion-panel-content>
+            <div slot="header" class="form-title" >
                 {{ Form.title }}
             </div>
-            <v-form>
+            <v-form v-if="formObject">
                 <v-layout row wrap v-for="group in fieldGroups" dense>
                     <v-flex
                         :class="group.class"
@@ -17,11 +17,11 @@
                         :key="field.id"
                         style="padding-right:2px"
                         dense
-                    >                    
-                    <cs-formfield :target="Target" :field="field"></cs-formfield>
-                        
-
-                        <!-- {{ field.title }} -->
+                    >
+                        <cs-formfield
+                            :target="Target"
+                            :field="field"
+                        ></cs-formfield>
                     </v-flex>
                 </v-layout>
             </v-form>

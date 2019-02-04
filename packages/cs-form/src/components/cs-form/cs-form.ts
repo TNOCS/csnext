@@ -39,6 +39,7 @@ export class CsForm extends Vue {
     public fieldGroups: FieldGroup[] = [];
     public data?: IFormObject;   
     public formdef?: IFormOptions; 
+    public panel = [true];
 
     public get formObject() : IFormObject | undefined {        
         if (this.data) return this.data;
@@ -64,8 +65,7 @@ export class CsForm extends Vue {
 
         if (!this.Form || !this.Form.fields) {
             return;
-        }
-        console.log(this.Form);
+        } 
         this.Form.fields.map(f => {            
             if (!f.group) {
                 const newGroup = new FieldGroup();
@@ -112,7 +112,10 @@ export class CsForm extends Vue {
         if (this.formdef) {
             return this.formdef;            
         }
-        return (this.formObject as any)._form;
+        if (this.formObject && this.formObject._form) {
+            return this.formObject._form;
+        }
+        return { title: ''};
     }
 
     public beforeMount() {
