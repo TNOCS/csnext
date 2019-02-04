@@ -21,7 +21,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
     @FormField({
         title: 'Drag',
         description: 'Allow widget dragging',
-        type: 'boolean',
+        type: 'checkbox',
         group: 'edit'
     })
     public get DragEnabled(): boolean | undefined {
@@ -32,7 +32,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.dragEnabled = value;
     }
 
-    @FormField({ title: 'Resize', type: 'boolean', group: 'edit' })
+    @FormField({ title: 'Resize', type: 'checkbox', group: 'edit' })
     public get ResizeEnabled(): boolean | undefined {
         return this.resizeEnabled;
     }
@@ -41,7 +41,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
         this.resizeEnabled = value;
     }
 
-    @FormField({ title: 'Mirrored', type: 'boolean', group: 'orientation' })
+    @FormField({ title: 'Mirrored', type: 'checkbox', group: 'orientation' })
     public get IsMirrored(): boolean | undefined {
         return this.isMirrored;
     }
@@ -70,7 +70,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
 
     @FormField({
         title: 'Vertical Compact',
-        type: 'boolean',
+        type: 'checkbox',
         group: 'orientation'
     })
     public get VerticalCompact(): boolean | undefined {
