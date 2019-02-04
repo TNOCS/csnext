@@ -1,32 +1,35 @@
-<div style="height:100%; position: absolute;top:0;right:0;left:0;bottom:0">   
+<div style="height:100%; position: absolute;top:0;right:0;left:0;bottom:0">
     <v-toolbar tabs :color="layerColor">
-        <v-toolbar-title>{{ title }}</v-toolbar-title>
+        <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-            <v-btn icon slot="activator"> <v-icon>search</v-icon> </v-btn>
-            filter details
-        </v-tooltip>
-        <v-tooltip bottom>
-            <v-btn slot="activator" icon @click="centerFeature()">
-                <v-icon>map</v-icon>
+            <v-btn icon slot="activator" @click="editLayer(layer)">
+                <v-icon>edit</v-icon>
             </v-btn>
-            show on map</v-tooltip
-        >
-        <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>
+            edit layer
+        </v-tooltip>
         <v-tabs right :color="layerColor" slot="extension" v-model="tabs">
-            <v-tab href="#details">Details</v-tab>
             <v-tab href="#items">Items</v-tab>
             <v-tab href="#filters">Filter</v-tab>
         </v-tabs>
     </v-toolbar>
 
-    <VuePerfectScrollbar style="position:absolute;top:125px;bottom:0;left:0;right:0">
+    <VuePerfectScrollbar
+        style="position:absolute;top:125px;bottom:0;left:0;right:0"
+    >
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
-            <v-tab-item value="details">
-                
+            <v-tab-item value="items">
+                <v-container>
+                    <v-list v-for="feature in layer.source._geojson.features">
+                        <v-list-tile-content @click="openFeature(feature)">
+                            <v-list-tile-title class="layer-details-feature-title"
+                                v-text="layer.parseTitle(feature)"
+                            ></v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list>
+                </v-container>
             </v-tab-item>
-            <v-tab-item value="items"> <h1>items</h1> </v-tab-item>
             <v-tab-item value="filters"> <h1>items</h1> </v-tab-item>
         </v-tabs-items>
     </VuePerfectScrollbar>

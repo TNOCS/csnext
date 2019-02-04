@@ -8,6 +8,7 @@ const config = buildConfig(
         '@csnext/cs-core': '@csnext/cs-core',
         'cs-core': 'cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
+        '@csnext/cs-form': '@csnext/cs-form',
         'cs-client': 'cs-client',
         vue: 'Vue',
         Vue: 'Vue',

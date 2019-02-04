@@ -1,7 +1,14 @@
-import { MessageBusService } from '@csnext/cs-core';
-import { LayerSource, MapLayers, IMapLayer, LayerStyle, FeatureType, ILayerService } from './../.';
+import { MessageBusService, Form, FormField } from '@csnext/cs-core';
+import {
+    LayerSource,
+    MapLayers,
+    IMapLayer,
+    LayerStyle,
+    FeatureType,
+    ILayerService
+} from './../.';
 import { CsMap } from './..';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { CirclePaint } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
 import {
     ILayerExtension,
@@ -11,27 +18,37 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { Feature } from 'geojson';
 import { FeatureEventDetails } from '../components/cs-map/cs-map';
 import Handlebars from 'handlebars';
+import { LayerLegend } from '../classes/layer-legend';
 
+@Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
     getBounds() {}
 
     public _source?: LayerSource;
     public _initialized? = false;
     public typeId?: string = 'geojson';
-    public id?: string;
+    public id!: string;
     // public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
-    public title?: string;
-    // public opacity?: number;
-    public description?: string;
+
+    @FormField({ title: 'Title', type: 'string', group: 'edit' })
+    public title: string = '';
+
+    @FormField({ title: 'Description', type: 'string' })
+    public description: string = '';
     public source?: string | LayerSource;
     public visible?: boolean;
-    public mask?: boolean;
-    public tags?: string[];
-    public color?: string;
+
+    @FormField({ title: 'Opacity', type: 'number', min: 0, max: 100, step: 1 })
+    public opacity?: number = 1;
+
+    @FormField({ title: 'Opacity', type: 'chips' })
+    public tags: string[] = [];
+    public color: string = 'blue';
     public style?: LayerStyle;
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+    @FormField({ title: 'Open Feature Details', type: 'checkbox'})
     public openFeatureDetails?: boolean;
     public _service?: ILayerService;
     public layout?:
@@ -50,7 +67,11 @@ export class BaseLayer implements IMapLayer {
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
     public _opacity?: number;
-    public featureTypes?: {[key:string]: FeatureType};
+    @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
+    public featureTypes?: { [key: string]: FeatureType };
+    /** list of active layers */
+    public _legends?: LayerLegend[];
+
     addLayer(map: CsMap) {}
 
     initLayer(manager: MapLayers) {}
@@ -102,6 +123,7 @@ export class BaseLayer implements IMapLayer {
         }
         return res;
     }
+    updateLayer() {}
     removeLayer(map: CsMap) {}
     moveLayer(beforeId?: string) {}
 
@@ -111,14 +133,39 @@ export class BaseLayer implements IMapLayer {
 
     constructor(init?: Partial<IMapLayer>) {
         Object.assign(this, init);
+        if (init && init.style) {
+            Object.assign(this.style, init.style);
+        }
         // this.events = new MessageBusService();
     }
 
-    public static getFeatureFromEventDetails(e: FeatureEventDetails) : Feature | undefined {
+    public static getFeatureFromEventDetails(
+        e: FeatureEventDetails
+    ): Feature | undefined {
         if (e.features.length > 0) {
             return e.features[0];
         }
         return undefined;
+    }
+
+    public getStyleLegend(style: any) : LayerLegend[] {
+        let result : LayerLegend[] = [];
+        for (const key in style) {
+            if (style.hasOwnProperty(key)) {
+                const prop = style[key];                
+                if (prop.hasOwnProperty('stops')) {                    
+                    result.push({ property:key, stops: prop.stops });                    
+                }
+            }
+        }        
+        return result;
+    }
+
+    public updateLegends() {
+        let result : LayerLegend[] = [];
+        if (this.paint) result.concat(this.getStyleLegend(this.paint));
+        if (this.layout) result.concat(this.getStyleLegend(this.layout));
+        this._legends = result;
     }
 
     public get Visible(): boolean | undefined {

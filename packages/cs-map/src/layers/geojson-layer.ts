@@ -20,7 +20,7 @@ import {
 } from '../classes/ilayer-extension';
 import { BaseLayer } from './base-layer';
 
-export class GeojsonLayer implements IMapLayer, IMapLayerType {
+export class GeojsonLayer extends BaseLayer {
     types = ['symbol', 'raster', 'line', 'fill', 'circle'];
 
     private mapEventsRegistered = false;
@@ -29,16 +29,12 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         return result;
     }
     public typeId?: string = 'geojson';
-    public id?: string;
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
-    public title?: string;
     // public opacity?: number;
-    public description?: string;
+    
     public source?: string | LayerSource;
     public visible?: boolean;
     public mask?: boolean;
-    public tags?: string[];
-    public color?: string;
     public style?: LayerStyle;
     public parentId?: string;
     public isEditable?: boolean;
@@ -59,9 +55,10 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
-    private _opacity?: number;
+    public _opacity?: number;
 
     constructor(init?: Partial<IMapLayer>) {
+        super();
         Object.assign(this, init);
         // this.events = new MessageBusService();
     }
@@ -225,7 +222,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
             ...l.style
         };
 
-        if (l.id && l.style.icon) {
+        if (l.id && l.style.icon && this.layout) {
             this.addImage(l.id, l.style.icon);
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }

@@ -3,6 +3,12 @@
         <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
+            <v-btn @click="updateLayer()" icon slot="activator"
+                ><v-icon>check</v-icon>
+            </v-btn>
+            update layer
+        </v-tooltip>
+        <v-tooltip bottom>
             <v-btn icon slot="activator"><v-icon>delete</v-icon> </v-btn>
             delete layer
         </v-tooltip>
@@ -18,28 +24,18 @@
         style="position:absolute;top:125px;bottom:0;left:0;right:0"
     >
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
-            <v-tab-item value="layer">
-                <v-container>
-                    <v-form ref="form" lazy-validation>
-                        <v-text-field
-                            v-model="layer.title"
-                            label="Title"
-                            required
-                        ></v-text-field>
-
-                        <v-text-field
-                            v-model="layer.color"
-                            label="Color"                        
-                        ></v-text-field>
-
-                        <v-btn color="success" @click="updateLayer">
-                            Save
-                        </v-btn>
-                    </v-form>
-                </v-container>
+            <v-tab-item value="style">
+                <cs-form
+                    class="layer-editor-form"
+                    :data="layer.style"
+                ></cs-form>
             </v-tab-item>
-            <v-tab-item value="style"><h1>style</h1></v-tab-item>
-            <v-tab-item value="features"><h1>Features</h1></v-tab-item>
+            <v-tab-item value="layer">
+                <cs-form class="layer-editor-form" :data="layer"></cs-form>
+            </v-tab-item>
+            <v-tab-item value="features">
+                <cs-form class="layer-editor-form" :data="layer.featureTypes"></cs-form>
+            </v-tab-item>
         </v-tabs-items>
     </VuePerfectScrollbar>
 </div>

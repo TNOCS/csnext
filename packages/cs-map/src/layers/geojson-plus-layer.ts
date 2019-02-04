@@ -25,8 +25,9 @@ import { GeojsonLayer } from './geojson-layer';
 import centroid from '@turf/centroid';
 import { FeatureCollection, Feature } from 'geojson';
 import { MessageBusHandle } from '@csnext/cs-core';
-import { LayerStyle } from '../classes/layer-style';
+import { LayerStyle, MapboxStyles } from '../classes/layer-style';
 import { BaseLayer } from './base-layer';
+import { LayerLegend } from '../classes/layer-legend';
 
 export class GeojsonPlusLayer extends BaseLayer
     implements IMapLayer, IMapLayerType {
@@ -37,13 +38,11 @@ export class GeojsonPlusLayer extends BaseLayer
         return result;
     }
     public typeId?: string = 'poi';
-    public id?: string;
     public type?: 'poi';
-    public title?: string;
     public source?: string | LayerSource;
     public visible?: boolean;
-    public tags?: string[];
-    public color?: string;
+    public tags: string[] = [];
+
     public parentId?: string;
     public filter?: any;
     public iconZoomLevel?: number;
@@ -53,7 +52,6 @@ export class GeojsonPlusLayer extends BaseLayer
     public _lineLayer!: GeojsonLayer;
     public _fillLayer!: GeojsonLayer;
     public _circleLayer!: GeojsonLayer;
-    public opacity?: number = 100;
     public style!: LayerStyle;
     public _centerHandle?: MessageBusHandle;
     public isEditable?: boolean;
@@ -62,23 +60,23 @@ export class GeojsonPlusLayer extends BaseLayer
     public featureTypes?: { [key: string]: FeatureType };
 
     // circle style
-    public _circleLayout!: mapboxgl.CircleLayout;
-    public _circlePaint!: mapboxgl.CirclePaint;
+    public _circleLayout?: mapboxgl.CircleLayout;
+    public _circlePaint?: mapboxgl.CirclePaint;
     public _circleHandle?: MessageBusHandle;
 
     // symbol style
-    public _symbolLayout!: mapboxgl.SymbolLayout;
-    public _symbolPaint!: mapboxgl.SymbolPaint;
+    public _symbolLayout?: mapboxgl.SymbolLayout;
+    public _symbolPaint?: mapboxgl.SymbolPaint;
     public _symbolHandle?: MessageBusHandle;
 
     // line style
-    public _lineLayout!: mapboxgl.LineLayout;
-    public _linePaint!: mapboxgl.LinePaint;
+    public _lineLayout?: mapboxgl.LineLayout;
+    public _linePaint?: mapboxgl.LinePaint;
     public _lineHandle?: MessageBusHandle;
 
     // fill style
-    public _fillLayout!: mapboxgl.FillLayout;
-    public _fillPaint!: mapboxgl.FillPaint;
+    public _fillLayout?: mapboxgl.FillLayout;
+    public _fillPaint?: mapboxgl.FillPaint;
     public _fillHandle?: MessageBusHandle;
 
     public _manager?: MapLayers;
@@ -102,7 +100,38 @@ export class GeojsonPlusLayer extends BaseLayer
             return;
         }
         this.visible = value;
-    }    
+    }
+
+    public updateLegends() {
+        let result: LayerLegend[] = [];
+        if (this.style && this.style.mapbox) {
+            let styles = [
+                this.style.mapbox.circleLayout,
+                this.style.mapbox.circlePaint,
+                this.style.mapbox.symbolLayout,
+                this.style.mapbox.symbolPaint,
+                this.style.mapbox.lineLayout,
+                this.style.mapbox.linePaint,
+                this.style.mapbox.fillLayout,
+                this.style.mapbox.fillPaint
+            ];
+            for (const style of styles) {
+                if (style) {
+                    result = result.concat(this.getStyleLegend(style));
+                }
+            }
+        }
+        this._legends = result;        
+    }
+
+    public updateLayer() {
+        console.log('Updating geojson plus layer');
+        console.log(this);
+        if (this._manager) {
+            this.initLayer(this._manager);
+            this._manager.refreshLayer(this);            
+        }
+    }
 
     public setOpacity(value: number) {
         this.opacity = value;
@@ -142,9 +171,12 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager && this._manager.MapControl && this.id) {
             const map = this._manager.MapControl;
             if (this._fillLayer) map.moveLayer(this._fillLayer.id!, beforeId);
-            if (this._centerLayer) map.moveLayer(this._centerLayer.id!, beforeId);
-            if (this._circleLayer) map.moveLayer(this._circleLayer.id!, beforeId);
-            if (this._symbolLayer) map.moveLayer(this._symbolLayer.id!, beforeId);
+            if (this._centerLayer)
+                map.moveLayer(this._centerLayer.id!, beforeId);
+            if (this._circleLayer)
+                map.moveLayer(this._circleLayer.id!, beforeId);
+            if (this._symbolLayer)
+                map.moveLayer(this._symbolLayer.id!, beforeId);
             if (this._lineLayer) map.moveLayer(this._lineLayer.id!, beforeId);
         }
     }
@@ -296,13 +328,51 @@ export class GeojsonPlusLayer extends BaseLayer
             this.title = this._source.id;
         }
 
-        this.style = {
+        this.style = plainToClass(LayerStyle, {
             ...({
                 title: '{{title}}',
-                fill: false
+                fill: false,
+                mapbox: {},
+                types: []
             } as LayerStyle),
             ...this.style
-        };
+        });
+
+        this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
+
+        if (this.style.types!.includes('point')) {
+            if (!this.style.mapbox!.symbolLayout)
+                this.style.mapbox!.symbolLayout = {};
+            if (!this.style.mapbox!.symbolPaint)
+                this.style.mapbox!.symbolPaint = {};
+            if (!this.style.mapbox!.circleLayout)
+                this.style.mapbox!.circleLayout = {};
+            if (!this.style.mapbox!.circlePaint)
+                this.style.mapbox!.circlePaint = {};
+        }
+
+        if (this.style.types!.includes('line')) {
+            if (!this.style.mapbox!.lineLayout)
+                this.style.mapbox!.lineLayout = {};
+            if (!this.style.mapbox!.linePaint)
+                this.style.mapbox!.linePaint = {};
+        }
+
+        if (this.style.types!.includes('fill')) {
+            if (!this.style.mapbox!.fillLayout)
+                this.style.mapbox!.fillLayout = {};
+            if (!this.style.mapbox!.fillPaint)
+                this.style.mapbox!.fillPaint = {};
+        }
+
+        if (this.style && this.style.mapbox) {
+            this._symbolLayout = this.style.mapbox.symbolLayout;
+            this._symbolPaint = this.style.mapbox.symbolPaint;
+            this._circlePaint = this.style.mapbox.circlePaint;
+            this._circleLayout = this.style.mapbox.circleLayout;
+            this._fillPaint = this.style.mapbox.fillPaint;
+            this._linePaint = this.style.mapbox.linePaint;
+        }
 
         if (!this.popupContent) {
             this.popupContent = (d: FeatureEventDetails) => {
@@ -318,17 +388,8 @@ export class GeojsonPlusLayer extends BaseLayer
                 popupContent: this.popupContent,
                 source: this.source,
                 parentId: this.id,
-                layout: this._circleLayout ? this._circleLayout : {},
-                paint: this._circlePaint
-                    ? this._circlePaint
-                    : ({
-                          'circle-radius': 10,
-                          'circle-color': ['get', 'stroke'],
-                          'circle-opacity': 0.5,
-                          'circle-stroke-width': 1,
-                          'circle-stroke-color': ['get', 'stroke'],
-                          'circle-stroke-opacity': 1
-                      } as CirclePaint),
+                layout: this._circleLayout,
+                paint: this._circlePaint,
                 filter: ['all']
             });
             if (this.style.pointCircle) {
@@ -341,6 +402,19 @@ export class GeojsonPlusLayer extends BaseLayer
             this._circleLayer.initLayer(manager);
         }
 
+        // make sure a text style is available
+        if (this.style.mapTitle) {
+            this.style.mapbox!.symbolLayout = {
+                ...{
+                    'text-field': this.style.mapTitle,
+                    'text-anchor': 'center',
+                    'text-size': 12,
+                    'text-offset': [0, 1.5]
+                },
+                ...this.style.mapbox!.symbolLayout
+            };
+        }
+
         this._symbolLayer = new GeojsonLayer({
             id: this.id + '-symbol',
             type: 'symbol',
@@ -348,31 +422,10 @@ export class GeojsonPlusLayer extends BaseLayer
             parentId: this.id,
             style: this.style,
             popupContent: this.popupContent,
-            paint: this._symbolPaint ? this._symbolPaint : {},
+            paint: this._symbolPaint,
+            layout: this._symbolLayout,
             filter: ['==', ['geometry-type'], 'Point']
         });
-
-        if (this._symbolLayout) {
-            this._symbolLayer.layout = this._symbolLayout;
-        } else {
-            this._symbolLayer.layout = {
-                'icon-size': 0.45,
-                'icon-allow-overlap': true,
-                'icon-ignore-placement': true
-            } as SymbolLayout;
-            if (this.style.mapTitle) {
-                this._symbolLayer.layout = {
-                    ...{
-                        'text-field': this.style.mapTitle,
-                        'text-anchor': 'center',
-                        'text-size': 12,
-                        'text-offset': [0, 1.5]
-                    },
-                    ...this._symbolLayer.layout,
-                    
-                };
-            }
-        }
 
         this._symbolLayer.initLayer(manager);
 
@@ -393,7 +446,11 @@ export class GeojsonPlusLayer extends BaseLayer
             filter: ['all']
         });
         if (!this.style.line) {
-            this._lineLayer.filter.push(['==', ['geometry-type'], 'LineString']);
+            this._lineLayer.filter.push([
+                '==',
+                ['geometry-type'],
+                'LineString'
+            ]);
         }
         if (this.iconZoomLevel !== undefined) {
             this._lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
@@ -424,6 +481,8 @@ export class GeojsonPlusLayer extends BaseLayer
             this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
         }
         this._fillLayer.initLayer(manager);
+
+        this.updateLegends();
 
         // add reference to this maplayers manager
         this._manager = manager;
@@ -492,8 +551,16 @@ export class GeojsonPlusLayer extends BaseLayer
             this._symbolLayer,
             this._symbolHandle
         );
-        this._lineHandle = this.pipeEvents(map, this._lineLayer, this._lineHandle);
-        this._fillHandle = this.pipeEvents(map, this._fillLayer, this._fillHandle);
+        this._lineHandle = this.pipeEvents(
+            map,
+            this._lineLayer,
+            this._lineHandle
+        );
+        this._fillHandle = this.pipeEvents(
+            map,
+            this._fillLayer,
+            this._fillHandle
+        );
 
         this.Visible = true;
     }

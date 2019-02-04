@@ -6,7 +6,8 @@ import {
     LayerStyle,
     CsMap,
     LayerServiceOptions,
-    ILayerAction
+    ILayerAction,
+    ILayer
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
@@ -15,6 +16,8 @@ import { IMapLayer } from '../classes/imap-layer';
 import io from 'socket.io-client';
 import { Feature } from 'geojson';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
+import { LinePaint, LineLayout } from 'mapbox-gl';
+import { MapboxStyles } from '../classes/layer-style';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -92,13 +95,17 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         this.options &&
                         manager.layers
                     ) {
-                        for (const layer of response.data) {
+                        for (const layer of response.data as ILayer[]) {
                             let style = layer.style as LayerStyle;
+                            // style.mapbox = new MapboxStyles({
+                                                 
+                            // });
+
                             let s = new LayerSource();
                             if (!layer.color) { layer.color = 'blue'; }
                             s.url = this.options.url + 'sources/' + layer.id;
                             s.id = layer.id;
-                            s.type = 'geojson';
+                            s.type = 'geojson';                            
                             let gl = new GeojsonPlusLayer();
                             gl._service = this;
                             gl.source = s;
@@ -115,18 +122,18 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 console.log(gl.style.popup);
                             }
                             if (layer.sourceType) {
-                                gl.type = layer.sourceType;
+                                // gl.type = layer.sourceType;
                             } else {
-                                gl.type = layer.type;
+                                // gl.type = layer.type;
                             }
-                            if (layer.style && layer.style.mapbox) {
-                                gl._symbolLayout =
-                                    layer.style.mapbox.symbolLayout;
-                                gl._symbolPaint = layer.style.mapbox.symbolPaint;
-                                gl._circlePaint = layer.style.mapbox.circlePaint;
-                                gl._fillPaint = layer.style.mapbox.fillPaint;
-                                gl._linePaint = layer.style.mapbox.linePaint;
-                            }
+                            // if (layer.style && layer.style.mapbox) {
+                            //     gl._symbolLayout =
+                            //         layer.style.mapbox.symbolLayout;
+                            //     gl._symbolPaint = layer.style.mapbox.symbolPaint;
+                            //     gl._circlePaint = layer.style.mapbox.circlePaint;
+                            //     gl._fillPaint = layer.style.mapbox.fillPaint;
+                            //     gl._linePaint = layer.style.mapbox.linePaint;
+                            // }
                             gl.tags = [];
                             if (this.options.tags) {
                                 gl.tags = this.options.tags;
@@ -194,7 +201,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     public updateLayer(layer: IMapLayer) {
-        if (this.options) {
+        if (this.options) {            
             const url = this.options.url + 'layers/' + layer.id;
             const def = JSON.parse(JSON.stringify(layer, (key, value) => {
                 if (key.startsWith('_')) {

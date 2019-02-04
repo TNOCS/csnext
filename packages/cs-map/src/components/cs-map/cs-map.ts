@@ -258,7 +258,7 @@ export class CsMap extends Vue {
                     showZoom: true,
                     showStyles: true,
                     showRuler: true,
-                    showGeocoder: true,
+                    showGeocoder: false,
                     showLayer: true,
                     showEditor: true
                 },

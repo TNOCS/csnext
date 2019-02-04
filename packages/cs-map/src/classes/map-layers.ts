@@ -1,6 +1,6 @@
 import { IDatasource, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
-import { LayerSources, CsMap, IMapLayer, GeojsonLayer } from '../.';
+import { LayerSources, CsMap, IMapLayer, GeojsonLayer, PropertyDetails } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import {
@@ -69,6 +69,10 @@ export class MapLayers implements IDatasource {
         result.source._loaded = true;
         result.initLayer(this);
         return result;
+    }
+
+    public removeLegend(layer: IMapLayer, pd: PropertyDetails) {
+        
     }
 
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {

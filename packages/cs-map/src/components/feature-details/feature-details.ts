@@ -10,17 +10,21 @@ import { FeatureType, PropertyType } from '../../classes/feature-type';
 import { stringify } from 'querystring';
 import { pathToFileURL } from 'url';
 import { MapLayers } from '../../classes/map-layers';
+import { IMapLayer } from '../../classes/imap-layer';
+import { LayerDetails } from '../layer-details/layer-details';
+import { LayerLegend } from '../..';
 
 export class section {
     public id?: string;
     public title?: string;
-    public properties?: property[];
+    public properties?: PropertyDetails[];
 }
 
-export class property {
+export class PropertyDetails {
     public key?: string;
     public value?: any;
     public type?: PropertyType;
+    public legends?: LayerLegend[];
 }
 
 @Component({
@@ -116,16 +120,43 @@ export class FeatureDetails extends Vue {
                     } as PropertyType;
                 }
 
+                let legends : LayerLegend[] = [];
+
+                // find legend
+                if (layer._legends) {
+                    legends = layer._legends.filter(l => l.property === key);
+                    if (legends.length>0) {
+                        
+                    }
+                }
+
                 const element = this.feature.properties[key];
                 defaultSection.properties!.push({
                     key: key,
                     value: element,
-                    type: pt
+                    type: pt,
+                    legends: legends 
                 });
             }
         }
-
         return result;
+    }
+
+    public updateStyle(property: PropertyDetails) {
+        if (property && property.legends && property.legends.length>0) {
+            this.$cs.TriggerNotification({ title: property.key + ' disable'});
+        } else {
+            // this.layer
+            if (this.manager && this.layer) {
+                // this.manager.removeLegend(this.layer, property.key);
+            }
+            this.$cs.TriggerNotification({ title: property.key + ' enable'});
+        }
+        
+    }
+
+    public openLayer(layer: IMapLayer) {
+        this.$cs.OpenRightSidebarWidget({ component: LayerDetails, data: { layer: layer }});
     }
 
     public get properties(): any[] {

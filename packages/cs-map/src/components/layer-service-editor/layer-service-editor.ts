@@ -5,12 +5,12 @@ import './layer-service-editor.css';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { Vue } from 'vue-property-decorator';
 import { BaseLayer } from '../../.';
-// import { CsForm } from '@csnext/cs-form';
+import { CsForm } from '@csnext/cs-form';
 
 @Component({
     name: 'layer-service-editor',
     props: { widget: null, manager: null },
-    components: { VuePerfectScrollbar },
+    components: { VuePerfectScrollbar, 'cs-form': CsForm },
     template: require('./layer-service-editor.html')
 } as any)
 export class LayerServiceEditor extends Vue {
@@ -28,15 +28,19 @@ export class LayerServiceEditor extends Vue {
     /** get layer color */
     public get layerColor(): string {
         const layer = this.layer;
-        if (layer && layer.color) {
+        
+        if (layer && layer.color) {            
             return layer.color;
         }
         return 'blue';
     }
 
     public updateLayer() {
+        this.$cs.TriggerNotification({title: 'Updating layer'});
+        
         if (this.layer && this.layer._service && this.layer._service.updateLayer) {
-            this.layer._service.updateLayer(this.layer);
+            this.layer.updateLayer();
+            // this.layer._service.updateLayer(this.layer);
         }
     }
 }

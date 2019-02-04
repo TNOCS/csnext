@@ -7,6 +7,10 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { BaseLayer } from '../../layers/base-layer';
 import { PropertyType } from '../../classes/feature-type';
 import { MapLayers } from '../../classes/map-layers';
+import { IMapLayer } from '../../classes/imap-layer';
+import { LayerEditor } from '../layer-editor/layer-editor';
+import { LayerServiceEditor } from '../layer-service-editor/layer-service-editor';
+import { FeatureDetails } from '../feature-details/feature-details';
 
 export class section {
     public id?: string;
@@ -64,6 +68,17 @@ export class LayerDetails extends Vue {
         }
     }
 
+    public openFeature(feature: any) {
+        this.$cs.OpenRightSidebarWidget({
+            component: FeatureDetails,
+            data: {layer: this.layer, feature: feature }
+        });
+    }
 
-   
+    public editLayer(layer: IMapLayer) {        
+        this.$cs.OpenRightSidebarWidget({
+            component: LayerServiceEditor,
+            data: {layer: layer }
+        });
+    }
 }

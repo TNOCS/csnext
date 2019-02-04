@@ -61,7 +61,7 @@ export class LayerServer implements ILayerService, IStartStopService {
                             } else {
                                 gl.type = layer.type;
                             }
-                            gl.tags = this.options.tags;
+                            gl.tags = this.options.tags || [];
                             // gl.paint = {
                             //     'line-color': ['get', 'stroke'],
                             //     'line-opacity': ['get', 'stroke-opacity'],

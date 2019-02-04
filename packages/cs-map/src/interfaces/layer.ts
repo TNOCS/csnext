@@ -2,13 +2,14 @@ import { LayerSource, LayerStyle, ILayerExtensionType, FeatureType } from "../";
 
 export interface ILayer {
     /** layer id */
-    id?: string;
+    id: string;
     /** layer as shown in interface */
-    title?: string;
+    title: string;
     /** list of tags, used for clustering in layer selection */
-    tags?: string[];
-    color?: string;
-    description?: string;
+    tags: string[];
+    sourceType?: string;
+    color: string;
+    description: string;
     popupContent?: string | Function | undefined;
     opacity?: number;
     source?: string | LayerSource;

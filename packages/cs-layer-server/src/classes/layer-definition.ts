@@ -1,8 +1,9 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { LayerSource, LayerStyle, PropertyType, FeatureType } from './.';
+import { ILayer } from '@csnext/cs-map';
 
 /** Layer specification */
-export class LayerDefinition {
+export class LayerDefinition implements ILayer {
 
     @ApiModelProperty()
     /** unique id of this layer */

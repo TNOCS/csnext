@@ -23,6 +23,8 @@
 </div> -->
     <v-toolbar tabs :color="layerColor">
         <v-toolbar-title>{{ title }}</v-toolbar-title>
+        <div @click="openLayer(layer)" class="feature-layer-title">{{ layer.title }}</div>
+        
 
         <v-spacer></v-spacer>
         <v-tooltip bottom>
@@ -37,8 +39,7 @@
         >
         <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>
         <v-tabs right :color="layerColor" slot="extension" v-model="tabs">
-            <v-tab href="#details">Details</v-tab>
-            <v-tab href="#items">Items</v-tab>
+            <v-tab href="#details">Details</v-tab>           
             <v-tab href="#filters">Filter</v-tab>
         </v-tabs>
     </v-toolbar>
@@ -54,26 +55,26 @@
                     >
                         <v-expansion-panel-content v-for="section in sections">
                             <div slot="header" class="feature-section-title">
-                                {{ section.title }}
+                                {{ section.title }}                                
                             </div>
                             <div class="section">
                                 <div
                                     v-for="property in section.properties"
                                     class="feature-property"
                                 >
-                                    <div class="feature-property-key">
+                                    <div class="feature-property-key" :class="{ 'feature-legend': property.legends.length>0 }" @click="updateStyle(property)">
                                         {{ property.type.title }}
                                     </div>
                                     <div class="feature-property-value">
                                         {{ property.value }}
-                                    </div>
+                                    </div>                                    
                                 </div>
+
                             </div>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </div>
-            </v-tab-item>
-            <v-tab-item value="items"> <h1>items</h1> </v-tab-item>
+            </v-tab-item>            
             <v-tab-item value="filters"> <h1>items</h1> </v-tab-item>
         </v-tabs-items>
     </VuePerfectScrollbar>

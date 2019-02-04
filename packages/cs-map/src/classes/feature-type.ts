@@ -1,4 +1,8 @@
+import { Form, FormField } from '@csnext/cs-core';
+
+@Form({ title: 'Feature', isPanel: true})
 export class FeatureType {
+    // @FormField({ title: 'Mode', type: 'string'})
     public mode? : string;
     public notification?: string;
     public icon?: string;
