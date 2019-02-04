@@ -11,18 +11,18 @@ export class LayerDefinition implements ILayer {
 
     @ApiModelProperty()
     /** layer title */
-    public title?: string;  
+    public title: string;  
 
     @ApiModelProperty()
     /** layer description */
-    public description?: string;    
+    public description: string;    
 
     @ApiModelProperty()    
     public type?: string;
 
     @ApiModelProperty({ type: [String] })
     /** list of tags associated with this layer */
-    public tags?: string[];
+    public tags: string[];
 
     @ApiModelProperty({default:'geojson'})
     /** type of the original source used by this layer, default geojson */
@@ -57,7 +57,7 @@ export class LayerDefinition implements ILayer {
     
     @ApiModelProperty()
     /** layer color  */
-    public color?: string;    
+    public color: string;    
 
     @ApiModelProperty()
     /** location of optional meta source containing featuretypes, propertytypes, etc. */
