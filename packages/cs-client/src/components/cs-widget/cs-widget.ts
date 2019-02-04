@@ -113,8 +113,6 @@ export class CsWidget extends Vue {
       return;
     }
 
-    console.log('Widget widget init');
-
     if (typeof this.widget.component === 'string') {
       // var classNameString = 'MyClass';
       // tslint:disable-next-line:no-eval
@@ -145,7 +143,7 @@ export class CsWidget extends Vue {
     }
 
     this.widget._component = this.widget.component;
-    if (this.widget.datasource) {
+    if (this.widget && this.widget.datasource) {
       this.dsHandle = AppState.Instance.bus.subscribe(
         'ds-' + this.widget.datasource,
         (a: string, d: any) => {
