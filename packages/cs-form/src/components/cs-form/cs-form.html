@@ -1,50 +1,30 @@
-<div v-if="Form">
-    <v-toolbar flat>
+<div v-if="Form" class="cs-form-base">
+    <!-- <v-toolbar flat>
         <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="saveForm()" v-if="Form.saveButton"><v-icon>save</v-icon> </v-btn>
-    </v-toolbar>
-    <v-container>
-        <v-form>
-            <v-layout row wrap v-for="group in fieldGroups" dense>
-                <v-flex
-                    :class="group.class"
-                    v-for="field in group.fields"
-                    :key="field.id"
-                    style="padding-right:2px"
-                    dense
-                >
-                    <v-tooltip bottom :disabled="!field.description">
-                        <template slot="activator">
-                            <template v-if="field.type === 'boolean'">
-                                <v-checkbox
-                                    v-model="Target[field._key]"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-checkbox>
-                            </template>
-                            <template v-if="field.type === 'string'">
-                                <v-text-field
-                                    v-model="Target[field._key]"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-text-field>
-                            </template>
-                            <template v-if="field.type === 'number'">
-                                <v-text-field
-                                    v-model="Target[field._key]"
-                                    type="number"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-text-field>
-                            </template>
-                        </template>
-                        {{ field.description }}
-                    </v-tooltip>
+    </v-toolbar> -->
+    <v-expansion-panel v-if="formObject">
+        <v-expansion-panel-content :value="[true]">
+            <div slot="header" class="form-title" v-if="Form.isPanel">
+                {{ Form.title }}
+            </div>
+            <v-form>
+                <v-layout row wrap v-for="group in fieldGroups" dense>
+                    <v-flex
+                        :class="group.class"
+                        v-for="field in group.fields"
+                        :key="field.id"
+                        style="padding-right:2px"
+                        dense
+                    >                    
+                    <cs-formfield :target="Target" :field="field"></cs-formfield>
+                        
 
-                    <!-- {{ field.title }} -->
-                </v-flex>
-            </v-layout>
-        </v-form>        
-    </v-container>
+                        <!-- {{ field.title }} -->
+                    </v-flex>
+                </v-layout>
+            </v-form>
+        </v-expansion-panel-content>
+    </v-expansion-panel>
 </div>

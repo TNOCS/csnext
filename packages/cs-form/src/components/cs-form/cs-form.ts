@@ -10,6 +10,7 @@ import {
 import Component from 'vue-class-component';
 import './cs-form.css';
 import 'reflect-metadata';
+import { CsFormField } from '../..';
 
 export class FieldGroup {
     public id!: string;
@@ -17,11 +18,15 @@ export class FieldGroup {
     public class: string = '';
 }
 
-// import 'https://unpkg.com/timeline-plus/dist/timeline.js';
-// import 'https://unpkg.com/timeline-plus/dist/timeline.css';
-
 @Component({
-    template: require('./cs-form.html')
+    name: 'cs-form',
+    template: require('./cs-form.html'),
+    components: { 'cs-form-field': CsFormField},
+    props: {
+        widget: null,
+        data: null,
+        formdef: null
+    } as any
 })
 export class CsForm extends Vue {
     /** access the original widget from configuration */
@@ -32,22 +37,21 @@ export class CsForm extends Vue {
     public showMenu = false;
     public showFilterMenu = false;
     public fieldGroups: FieldGroup[] = [];
+    public data?: IFormObject;   
+    public formdef?: IFormOptions; 
 
-    public get formObject() : IFormObject {
-        return this.widget.data;
+    public get formObject() : IFormObject | undefined {        
+        if (this.data) return this.data;
+        if (this.widget && this.widget.data) return this.widget.data;        
+        return undefined;
     }
 
     @Prop()
-    public widget!: IWidget;
-
-    constructor() {
-        super();
-        console.log('hi');
-    }
+    public widget!: IWidget;    
 
     public saveForm() {
-        if (this.widget.data.save && typeof this.widget.data.save === 'function') {
-            this.widget.data.save().then(res => {
+        if (this.formObject && this.formObject.save && typeof this.formObject.save === 'function') {
+            this.formObject.save().then(res => {
                 console.log(this.widget.data);
                 console.log('Save confirmed');
             })
@@ -61,7 +65,8 @@ export class CsForm extends Vue {
         if (!this.Form || !this.Form.fields) {
             return;
         }
-        this.Form.fields.map(f => {
+        console.log(this.Form);
+        this.Form.fields.map(f => {            
             if (!f.group) {
                 const newGroup = new FieldGroup();
                 newGroup.id = f._key + '-group';
@@ -100,15 +105,15 @@ export class CsForm extends Vue {
     }
 
     public get Target(): any {
-        return this.widget.data;
+        return this.formObject;
     }
 
     public get Form(): IFormOptions {
-        return this.widget.data._form;
+        if (this.formdef) {
+            return this.formdef;            
+        }
+        return (this.formObject as any)._form;
     }
-
-    @Watch('widget.content')
-    dataLoaded() {}
 
     public beforeMount() {
         if (!this.widget) {

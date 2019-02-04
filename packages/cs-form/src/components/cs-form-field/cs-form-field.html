@@ -1,0 +1,102 @@
+<div v-if="field">
+    
+        <template v-if="field.type === 'boolean'">
+            <v-checkbox
+                v-model="target[field._key]"
+                :label="field.title"
+                :required="field.required"
+            ></v-checkbox>
+        </template>
+        <template v-if="field.type === 'selection'">
+            <v-select
+                :items="field.options"
+                v-model="target[field._key]"
+                :label="field.title"
+            ></v-select>
+        </template>
+        <template v-if="field.type === 'string'">
+            <v-text-field
+                v-if="field._key"
+                v-model="target[field._key]"
+                :label="field.title"
+                :required="field.required"
+            ></v-text-field>
+            <v-text-field
+                v-if="field._index"
+                v-model="target[field._index]"
+                :label="field.title"
+                :required="field.required"
+            ></v-text-field>
+        </template>
+        <template v-if="field.type === 'slider'">
+            <v-slider
+                enabled
+                v-model="target[field._key]"
+                :min="field.min"
+                :step="field.step"
+                :max="field.max"
+            ></v-slider>
+        </template>
+        <template v-if="field.type === 'checkbox'">
+            <v-checkbox
+                :label="field.title"
+                v-model="target[field._key]"
+            ></v-checkbox>
+        </template>
+        <template v-if="field.type === 'checkboxes-horizontal'">
+            {{ field.title }}
+            <v-layout>
+                <v-checkbox
+                    v-for="option in field.options"
+                    :label="option"
+                    :value="option"
+                    v-model="target[field._key]"
+                ></v-checkbox>
+            </v-layout>
+        </template>
+        <template v-if="field.type === 'number'">
+            <v-text-field
+                v-if="field._key"
+                v-model.number="target[field._key]"
+                type="number"
+                :label="field.title"
+                :required="field.required"
+            ></v-text-field>
+            <v-text-field
+                v-if="field._index>=0"
+                v-model.number="target[field._index]"
+                type="number"
+                :label="field.title"
+                :required="field.required"
+            ></v-text-field>
+        </template>
+        <template v-if="field.type === 'array'">
+            <template v-for="item in target[field._key]">
+                <cs-form :data="item" :formdef="field.arrayType"></cs-form>
+            </template>
+        </template>
+        <!-- <template v-if="field.type === 'keyvalue'">
+                {{ field }}
+                <template v-for="(item,index) in target[field._key]">
+                    
+                    <cs-form :data="target[item]" :formdef="field.arrayType"></cs-form>
+                </template>
+            </template> -->
+        <template v-if="field.type === 'chips'">
+            {{ field.title }}
+            <v-combobox
+                v-model="target[field._key]"
+                :items="target[field._key]"
+                chips
+                clearable
+                solo
+                multiple
+                flat
+            >
+            </v-combobox>
+        </template>
+        <template v-if="field.type === 'object'">
+            <cs-form :data="target[field._key]" :formdef="field.form"></cs-form>
+        </template>
+    </template>
+</div>
