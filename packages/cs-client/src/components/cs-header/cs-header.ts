@@ -86,6 +86,17 @@ export class CsHeader extends Vue {
     }
   }
 
+  public openDashboard(dashboard: IDashboard) {
+    if (dashboard) {
+      if (dashboard.url) {
+        // window.location.replace(dashboard.url);
+        window.open(dashboard.url, '_blank');
+      } else if (dashboard.path) {
+        this.$router.push(dashboard.path);
+      }
+    }
+  }
+
   public toggleMenu(menu: IMenu) {
     menu.toggleState = menu.toggleState ? !menu.toggleState : true;
     this.activateMenu(menu);

@@ -155,17 +155,6 @@ export class CsApp extends Vue {
     }
   }
 
-  public openDashboard(dashboard: IDashboard) {
-    if (dashboard) {
-      if (dashboard.url) {
-        // window.location.replace(dashboard.url);
-        window.open(dashboard.url, '_blank');
-      } else if (dashboard.path) {
-        this.$router.push(dashboard.path);
-      }
-    }
-  }
-
   public onResize() {
     this.app.windowSize = { x: window.innerWidth, y: window.innerHeight };
   }
