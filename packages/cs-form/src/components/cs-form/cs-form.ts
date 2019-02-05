@@ -11,6 +11,7 @@ import Component from 'vue-class-component';
 import './cs-form.css';
 import 'reflect-metadata';
 import { CsFormField } from '../..';
+import { plainToClass } from 'class-transformer';
 
 export class FieldGroup {
     public id!: string;
@@ -21,7 +22,7 @@ export class FieldGroup {
 @Component({
     name: 'cs-form',
     template: require('./cs-form.html'),
-    components: { 'cs-form-field': CsFormField},
+    components: { 'cs-form-field': CsFormField },
     props: {
         widget: null,
         data: null,
@@ -37,36 +38,80 @@ export class CsForm extends Vue {
     public showMenu = false;
     public showFilterMenu = false;
     public fieldGroups: FieldGroup[] = [];
-    public data?: IFormObject;   
-    public formdef?: IFormOptions; 
+    public data?: IFormObject;
+    public formdef?: IFormOptions;
     public panel = [true];
+    public keys: { [key:string] : IFormObject } = {};
 
-    public get formObject() : IFormObject | undefined {        
+    public isKeyValueList() : boolean {         
+        return (this.keys !== undefined && this.keys.length>0);
+    }
+
+    public get formObject(): IFormObject | undefined {
         if (this.data) return this.data;
-        if (this.widget && this.widget.data) return this.widget.data;        
+        if (this.widget && this.widget.data) return this.widget.data;
+        console.log('Missing object');
+        console.log(this);
         return undefined;
     }
 
     @Prop()
-    public widget!: IWidget;    
+    public widget!: IWidget;
 
-    public saveForm() {
-        if (this.formObject && this.formObject.save && typeof this.formObject.save === 'function') {
+    public saveForm() {        
+        if (
+            this.formObject &&
+            this.formObject.save &&
+            typeof this.formObject.save === 'function'
+        ) {
             this.formObject.save().then(res => {
                 console.log(this.widget.data);
                 console.log('Save confirmed');
-            })
+            });
         }
         console.log('Saving form');
     }
 
     public initGroups() {
-        this.fieldGroups = [];
+        this.fieldGroups = [];       
 
-        if (!this.Form || !this.Form.fields) {
+        if (!this.Form) {
             return;
-        } 
-        this.Form.fields.map(f => {            
+        }
+
+        if (this.Form.keys && this.Form.keyValuesType) {            
+            const newGroup = new FieldGroup();
+            newGroup.id = 'keys-group';
+            this.fieldGroups.push(newGroup);
+            this.keys = {};
+
+        
+            for (const key in this.formObject) {
+                if (this.formObject.hasOwnProperty(key)) {
+                    const value = this.formObject[key];
+                    let field = this.Form.keyValuesType() as IFormObject;
+                    for (const key in value) {
+                        if (value.hasOwnProperty(key)) {
+                            const element = value[key];
+                            field[key] = element;
+                        }
+                    }
+                    if (field._form) {           
+                        field._form.title = key;                                     
+                        this.keys[key] = field;                                                
+                    }
+                    // this.Form.fields.push(this.Form.keyValuesType);
+                    console.log(field);
+                }
+            }
+            this.$forceUpdate();
+        }
+
+        if (!this.Form.fields) {
+            return;
+        }
+
+        this.Form.fields.map(f => {
             if (!f.group) {
                 const newGroup = new FieldGroup();
                 newGroup.id = f._key + '-group';
@@ -110,12 +155,12 @@ export class CsForm extends Vue {
 
     public get Form(): IFormOptions {
         if (this.formdef) {
-            return this.formdef;            
+            return this.formdef;
         }
-        if (this.formObject && this.formObject._form) {
+        if (this.formObject && this.formObject._form) {            
             return this.formObject._form;
         }
-        return { title: ''};
+        return { title: '' };
     }
 
     public beforeMount() {

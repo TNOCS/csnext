@@ -1,5 +1,4 @@
-<div v-if="field">
-    
+<div v-if="field">    
         <template v-if="field.type === 'boolean'">
             <v-checkbox
                 v-model="target[field._key]"
@@ -75,13 +74,13 @@
                 <cs-form :data="item" :formdef="field.arrayType"></cs-form>
             </template>
         </template>
-        <!-- <template v-if="field.type === 'keyvalue'">
-                {{ field }}
+        <template v-if="field.type === 'keyvalue'">
+                
                 <template v-for="(item,index) in target[field._key]">
                     
                     <cs-form :data="target[item]" :formdef="field.arrayType"></cs-form>
                 </template>
-            </template> -->
+            </template>
         <template v-if="field.type === 'chips'">
             {{ field.title }}
             <v-combobox
@@ -98,5 +97,9 @@
         <template v-if="field.type === 'object'">
             <cs-form :data="target[field._key]" :formdef="field.form"></cs-form>
         </template>
+        <template v-if="field.type === 'form'">
+            {{ field.title }}
+                <cs-form :data="target[field._key]"></cs-form>
+            </template>
     </template>
 </div>

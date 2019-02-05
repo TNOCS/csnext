@@ -24,6 +24,12 @@ export class CsFormField extends Vue {
     public target? : object;
     public field? : IFormFieldOptions;
 
+    
+    mounted() {
+        if (this.field && this.field.type === 'form') {
+            
+        }
+    }
 }
 
 Vue.component('cs-formfield', CsFormField);

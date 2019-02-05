@@ -1,4 +1,10 @@
-<div v-if="Form" class="cs-form-base">
+<div v-if="Form" class="cs-form-base">    
+    <div  v-if="keys !== undefined" >        
+        <div v-for="(item,key,value) in keys">
+            <!-- {{ item }} -->
+            <cs-form :data="item"></cs-form>
+        </div>
+    </div>
     <!-- <v-toolbar flat>
         <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -6,10 +12,10 @@
     </v-toolbar> -->
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
-            <div slot="header" class="form-title" >
+            <div slot="header" class="form-title">
                 {{ Form.title }}
             </div>
-            <v-form v-if="formObject">
+            <v-form>
                 <v-layout row wrap v-for="group in fieldGroups" dense>
                     <v-flex
                         :class="group.class"

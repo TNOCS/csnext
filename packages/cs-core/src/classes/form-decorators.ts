@@ -1,16 +1,23 @@
 import 'reflect-metadata';
 
+export interface IFormObject {
+  _form?: IFormOptions;
+  save?(): Promise<boolean>;
+}
+
 export interface IFormOptions {
   title: string;
   fields?: IFormFieldOptions[];
   saveButton?: boolean;
   isPanel?: boolean;
   isPanelOpen?: boolean;
+  keys?: boolean;
+  keyValuesType?(): object;
 }
 
 export interface IFormObject {
   _form?: IFormOptions;
-  save(): Promise<boolean>;
+  save?(): Promise<boolean>;
 }
 
 export interface IFormFieldBaseOptions {
@@ -39,6 +46,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
     | 'selection'
     | 'array'
     | 'keyvalue'
+    | 'form'
     | 'union';
   defaultValue?: any;
   description?: string;
@@ -75,7 +83,7 @@ export function Form(options: IFormOptions) {
 
 export function FormField(options: IFormFieldOptions): any {
   return function decorator(object: any, key: string, target: any) {
-    // let res = Object.getOwnPropertyDescriptor(object,key);
+    let res = Object.getOwnPropertyDescriptor(object,key);
     options._object = object;
     options._key = key;
     options._target = target;
