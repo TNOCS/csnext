@@ -24,6 +24,12 @@
         style="position:absolute;top:125px;bottom:0;left:0;right:0"
     >
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
+            <v-tab-item value="features">
+                <cs-form
+                    class="layer-editor-form"
+                    :data="layer.featureTypes"
+                ></cs-form>
+            </v-tab-item>
             <v-tab-item value="layer">
                 <cs-form class="layer-editor-form" :data="layer"></cs-form>
             </v-tab-item>
@@ -31,12 +37,6 @@
                 <cs-form
                     class="layer-editor-form"
                     :data="layer.style"
-                ></cs-form>
-            </v-tab-item>
-            <v-tab-item value="features">
-                <cs-form
-                    class="layer-editor-form"
-                    :data="layer.featureTypes"
                 ></cs-form>
             </v-tab-item>
         </v-tabs-items>

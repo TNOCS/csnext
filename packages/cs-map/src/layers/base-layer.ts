@@ -5,7 +5,9 @@ import {
     IMapLayer,
     LayerStyle,
     FeatureType,
-    ILayerService
+    ILayerService,
+    PropertyType,
+    FeatureTypes
 } from './../.';
 import { CsMap } from './..';
 import mapboxgl, { CirclePaint } from 'mapbox-gl';
@@ -67,8 +69,8 @@ export class BaseLayer implements IMapLayer {
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
     public _opacity?: number;
-    @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
-    public featureTypes?: { [key: string]: FeatureType };
+    // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
+    public featureTypes?: FeatureTypes;
     /** list of active layers */
     public _legends?: LayerLegend[];
 
@@ -195,5 +197,6 @@ export class BaseLayer implements IMapLayer {
         } else {
             return `${this.title}`;
         }
-    }
+    }    
 }
+

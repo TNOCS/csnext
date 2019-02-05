@@ -8,7 +8,9 @@ import {
     ILayerAction,
     ILayerExtensionType,
     ILayerExtension,
-    FeatureType
+    FeatureType,
+    FeatureTypes,
+    PropertyType
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import {
@@ -28,6 +30,7 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { LayerStyle, MapboxStyles } from '../classes/layer-style';
 import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
+import { PropertyCollection } from '../classes/feature-type';
 
 export class GeojsonPlusLayer extends BaseLayer
     implements IMapLayer, IMapLayerType {
@@ -121,7 +124,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 }
             }
         }
-        this._legends = result;        
+        this._legends = result;
     }
 
     public updateLayer() {
@@ -129,7 +132,7 @@ export class GeojsonPlusLayer extends BaseLayer
         console.log(this);
         if (this._manager) {
             this.initLayer(this._manager);
-            this._manager.refreshLayer(this);            
+            this._manager.refreshLayer(this);
         }
     }
 
@@ -337,6 +340,51 @@ export class GeojsonPlusLayer extends BaseLayer
             } as LayerStyle),
             ...this.style
         });
+
+        if (this.featureTypes) {
+            let keys = Object.keys(this.featureTypes);            
+            Object.keys(this.featureTypes).forEach(k => {
+                if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
+                    this.featureTypes[k] = plainToClass(
+                        FeatureType,
+                        this.featureTypes[k]
+                    );
+
+                    let type = this.featureTypes[k];
+                    if (type.properties) {
+                        type.properties = plainToClass(PropertyCollection, type.properties);
+                        for (const pk in type.properties) {
+                            if (type.properties.hasOwnProperty(pk)) {
+                                type.properties[pk] = plainToClass(
+                                    PropertyType,
+                                    type.properties[pk]
+                                );
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        this.featureTypes = plainToClass(
+            FeatureTypes,
+            this.featureTypes
+        ) as FeatureTypes;
+
+        // debugger;
+
+        //     let type = plainToClass(FeatureType, this.featureTypes[key]);
+        //     if (type.properties) {
+        //         for (const pk in type.properties) {
+        //             if (type.properties.hasOwnProperty(pk)) {
+        //                 type.properties[pk] = plainToClass(
+        //                     PropertyType,
+        //                     type.properties[pk]
+        //                 );
+        //             }
+        //         }
+        //     }
+        // }
 
         this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
 

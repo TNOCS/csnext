@@ -5,7 +5,6 @@ import {
     GeojsonPlusLayer,
     LayerStyle,
     CsMap,
-    LayerServiceOptions,
     ILayerAction,
     ILayer
 } from '..';
@@ -14,10 +13,7 @@ import { MapLayers } from '../classes/map-layers';
 import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
 import io from 'socket.io-client';
-import { Feature } from 'geojson';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
-import { LinePaint, LineLayout } from 'mapbox-gl';
-import { MapboxStyles } from '../classes/layer-style';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -158,7 +154,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             manager.layers.push(gl);
                             gl._events.subscribe(
                                 'feature',
-                                (a: string, f: Feature) => {
+                                (a: string) => {
                                     if (
                                         a === CsMap.FEATURE_SELECT &&
                                         this.options!.openFeatureDetails
@@ -202,7 +198,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     public updateLayer(layer: IMapLayer) {
         if (this.options) {            
-            const url = this.options.url + 'layers/' + layer.id;
             const def = JSON.parse(JSON.stringify(layer, (key, value) => {
                 if (key.startsWith('_')) {
                     return undefined;
