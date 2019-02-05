@@ -23,5 +23,6 @@
     },
     "devDependencies": {
         "register-service-worker": "^1.5.2"
-    }
+    },
+    "gitHead": "f4a53514fd0dc53042ba157179bc25b6ecf075eb"
 }
