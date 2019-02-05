@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.103",
+  "version": "0.0.104",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -16,7 +16,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@csnext/cs-map": "^0.0.103",
+    "@csnext/cs-map": "^0.0.104",
     "@macrostrat/dbgeo-stream": "^1.0.0",
     "@mapbox/togeojson": "^0.16.0",
     "@nestjs/common": "^5.6.2",
