@@ -17,6 +17,7 @@ export class FieldGroup {
     public id!: string;
     public fields: IFormFieldOptions[] = [];
     public class: string = '';
+    public _visible: boolean = true;
 }
 
 @Component({
@@ -26,7 +27,8 @@ export class FieldGroup {
     props: {
         widget: null,
         data: null,
-        formdef: null
+        formdef: null,
+        key: null
     } as any
 })
 export class CsForm extends Vue {
@@ -41,10 +43,10 @@ export class CsForm extends Vue {
     public data?: IFormObject;
     public formdef?: IFormOptions;
     public panel = [true];
-    public keys: { [key:string] : IFormObject } = {};
+    public keys: { [key: string]: IFormObject } = {};
 
-    public isKeyValueList() : boolean {         
-        return (this.keys !== undefined && this.keys.length>0);
+    public isKeyValueList(): boolean {
+        return this.keys !== undefined && this.keys.length > 0;
     }
 
     public get formObject(): IFormObject | undefined {
@@ -58,7 +60,7 @@ export class CsForm extends Vue {
     @Prop()
     public widget!: IWidget;
 
-    public saveForm() {        
+    public saveForm() {
         if (
             this.formObject &&
             this.formObject.save &&
@@ -73,19 +75,18 @@ export class CsForm extends Vue {
     }
 
     public initGroups() {
-        this.fieldGroups = [];       
+        this.fieldGroups = [];
 
         if (!this.Form) {
             return;
         }
 
-        if (this.Form.keys && this.Form.keyValuesType) {            
+        if (this.Form.keys && this.Form.keyValuesType) {
             const newGroup = new FieldGroup();
             newGroup.id = 'keys-group';
             this.fieldGroups.push(newGroup);
             this.keys = {};
 
-        
             for (const key in this.formObject) {
                 if (this.formObject.hasOwnProperty(key)) {
                     const value = this.formObject[key];
@@ -96,15 +97,14 @@ export class CsForm extends Vue {
                             field[key] = element;
                         }
                     }
-                    if (field._form) {           
-                        field._form.title = key;                                     
-                        this.keys[key] = field;                                                
+                    if (field._form) {
+                        // field._form.title = key;
+                        this.keys[key] = field;
                     }
                     // this.Form.fields.push(this.Form.keyValuesType);
                     console.log(field);
                 }
             }
-            this.$forceUpdate();
         }
 
         if (!this.Form.fields) {
@@ -149,6 +149,29 @@ export class CsForm extends Vue {
         });
     }
 
+    public updateGroupVisibility(group: FieldGroup) {
+        if (
+            this.Form &&
+            this.Form.groups &&
+            this.Form.groups.hasOwnProperty(group.id)
+        ) {
+            if (typeof this.Form.groups[group.id].visible === 'function') {
+                group._visible = this.Form.groups[group.id].visible!(
+                    this.Target,
+                    this.Form
+                );
+            }
+        }
+    }
+
+    public updateAllGroupVisbility() {
+        if (this.fieldGroups) {
+            for (const group of this.fieldGroups) {
+                this.updateGroupVisibility(group);
+            }
+        }
+    }
+
     public get Target(): any {
         return this.formObject;
     }
@@ -157,7 +180,7 @@ export class CsForm extends Vue {
         if (this.formdef) {
             return this.formdef;
         }
-        if (this.formObject && this.formObject._form) {            
+        if (this.formObject && this.formObject._form) {
             return this.formObject._form;
         }
         return { title: '' };
@@ -171,6 +194,11 @@ export class CsForm extends Vue {
 
     public mounted() {
         this.initGroups();
+        this.updateAllGroupVisbility();
+        if (this.Form && this.Form.canEditKey) {
+            console.log('data');
+            console.log(this.data);
+        }
     }
 
     public destroyed() {}

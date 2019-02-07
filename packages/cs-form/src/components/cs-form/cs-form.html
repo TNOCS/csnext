@@ -1,5 +1,5 @@
-<div v-if="Form" class="cs-form-base">    
-    <div  v-if="keys !== undefined" >        
+<div v-if="Form" class="cs-form-base">
+    <div v-if="keys !== undefined">
         <div v-for="(item,key,value) in keys">
             <!-- {{ item }} -->
             <cs-form :data="item"></cs-form>
@@ -13,10 +13,22 @@
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
             <div slot="header" class="form-title">
-                {{ Form.title }}
+                <template v-if="Form.canEditKey">
+                    <v-text-field v-model="Form.title"></v-text-field>
+                </template>
+                <template v-else>
+                    
+                    {{ Form.title }}
+                </template>
             </div>
             <v-form>
-                <v-layout row wrap v-for="group in fieldGroups" dense>
+                <v-layout
+                    row
+                    wrap
+                    v-for="group in fieldGroups"
+                    v-if="group._visible"
+                    dense
+                >
                     <v-flex
                         :class="group.class"
                         v-for="field in group.fields"

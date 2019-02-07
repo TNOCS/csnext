@@ -12,6 +12,8 @@ export interface IFormOptions {
   isPanel?: boolean;
   isPanelOpen?: boolean;
   keys?: boolean;
+  canEditKey?: boolean;
+  groups?: { [name: string]: IFormGroupOptions };
   keyValuesType?(): object;
 }
 
@@ -34,6 +36,9 @@ export interface IFormUnionFieldOptions extends IFormFieldBaseOptions {
   types: IFormFieldOptions[];
 }
 
+export interface IFormGroupOptions {
+  visible?(object: IFormObject, form: IFormOptions): boolean;
+}
 export interface IFormFieldOptions extends IFormFieldBaseOptions {
   type?:
     | 'string'
@@ -60,6 +65,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   form?: IFormOptions;
   canDelete?: boolean;
   canAdd?: boolean;
+
   typeSelector?(value: object): string;
 }
 
@@ -83,7 +89,7 @@ export function Form(options: IFormOptions) {
 
 export function FormField(options: IFormFieldOptions): any {
   return function decorator(object: any, key: string, target: any) {
-    let res = Object.getOwnPropertyDescriptor(object,key);
+    const res = Object.getOwnPropertyDescriptor(object, key);
     options._object = object;
     options._key = key;
     options._target = target;
