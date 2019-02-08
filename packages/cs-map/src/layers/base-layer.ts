@@ -70,6 +70,7 @@ export class BaseLayer implements IMapLayer {
     public _extensions: ILayerExtension[] = [];
     public _opacity?: number;
     // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
+    @FormField({ title: 'Feature types', type: 'keysobject', canEditKey: true })
     public featureTypes?: FeatureTypes;
     /** list of active layers */
     public _legends?: LayerLegend[];

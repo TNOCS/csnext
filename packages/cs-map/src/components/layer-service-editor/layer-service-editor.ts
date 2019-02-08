@@ -37,6 +37,8 @@ export class LayerServiceEditor extends Vue {
 
     public updateLayer() {
         this.$cs.TriggerNotification({title: 'Updating layer'});
+        console.log('layer saved');
+        console.log(this.layer);
         
         if (this.layer && this.layer._service && this.layer._service.updateLayer) {
             this.layer.updateLayer();

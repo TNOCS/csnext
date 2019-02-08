@@ -3,7 +3,6 @@ import { Form, FormField } from '@csnext/cs-core';
 @Form({
     title: 'Property',
     isPanel: true,
-    canEditKey: true,
     groups: {
         number: {
             visible(f) {
@@ -35,8 +34,7 @@ export class PropertyType {
 
 @Form({
     title: 'Property Collection',
-    isPanel: true,    
-    keys: true,
+    isPanel: true,            
     keyValuesType: () => {
         return new PropertyType();
     }
@@ -46,9 +44,7 @@ export class PropertyCollection {
 }
 
 @Form({
-    title: 'Feature Types',
-    keys: true,
-    canEditKey: true,
+    title: 'Feature Types',   
     keyValuesType: () => {
         return new FeatureType();
     }
@@ -56,7 +52,7 @@ export class PropertyCollection {
 export class FeatureTypes {
     [key: string]: FeatureType;
 }
-@Form({ title: 'Feature', isPanel: true })
+@Form({ title: 'Feature', isPanel: true})
 export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
@@ -64,7 +60,7 @@ export class FeatureType {
     public notification?: string;
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
-    @FormField({ title: 'Properties', type: 'form' })
+    @FormField({ title: 'Properties', type: 'keysobject', canEditKey: true  })
     public properties?: PropertyCollection;
 }
 

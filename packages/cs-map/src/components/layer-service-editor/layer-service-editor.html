@@ -27,16 +27,16 @@
             <v-tab-item value="features">
                 <cs-form
                     class="layer-editor-form"
-                    :data="layer.featureTypes"
+                    :data.sync="layer.featureTypes"
                 ></cs-form>
             </v-tab-item>
             <v-tab-item value="layer">
-                <cs-form class="layer-editor-form" :data="layer"></cs-form>
+                <cs-form class="layer-editor-form" :data.sync="layer"></cs-form>
             </v-tab-item>
             <v-tab-item value="style">
                 <cs-form
                     class="layer-editor-form"
-                    :data="layer.style"
+                    :data.sync="layer.style"
                 ></cs-form>
             </v-tab-item>
         </v-tabs-items>
