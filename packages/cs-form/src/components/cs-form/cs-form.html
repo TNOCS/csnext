@@ -1,10 +1,5 @@
 <div v-if="Form" class="cs-form-base">
-    <div v-if="keys !== undefined">
-        <div v-for="(item,key,value) in keys">
-            <!-- {{ item }} -->
-            <cs-form :data="item"></cs-form>
-        </div>
-    </div>
+    
     <!-- <v-toolbar flat>
         <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -12,15 +7,22 @@
     </v-toolbar> -->
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
-            <div slot="header" class="form-title">
+            <!-- <div slot="header" class="form-title">
                 <template v-if="Form.canEditKey">
-                    <v-text-field v-model="Form.title"></v-text-field>
+                    <v-text-field v-model="keylocal"></v-text-field>
                 </template>
-                <template v-else>
-                    
+                <template v-else>                        
+                    {{ keylocal }}
+                </template>
+            </div> -->
+            <template v-if="Form.canEditKey">
                     {{ Form.title }}
                 </template>
-            </div>
+                <div v-if="keys !== undefined">
+                    <div v-for="a in keys">                        
+                        <cs-form :data.sync="item" :formkey.sync="key"></cs-form>
+                    </div>
+                </div>
             <v-form>
                 <v-layout
                     row

@@ -12,7 +12,6 @@ export interface IFormOptions {
   isPanel?: boolean;
   isPanelOpen?: boolean;
   keys?: boolean;
-  canEditKey?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
   keyValuesType?(): object;
 }
@@ -52,7 +51,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
     | 'array'
     | 'keyvalue'
     | 'form'
-    | 'union';
+    | 'union'
+    | 'keysobject';
   defaultValue?: any;
   description?: string;
   required?: boolean;
@@ -65,6 +65,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   form?: IFormOptions;
   canDelete?: boolean;
   canAdd?: boolean;
+  canEditKey?: boolean;
 
   typeSelector?(value: object): string;
 }

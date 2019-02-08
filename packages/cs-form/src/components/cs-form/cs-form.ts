@@ -28,7 +28,7 @@ export class FieldGroup {
         widget: null,
         data: null,
         formdef: null,
-        key: null
+        formkey: null
     } as any
 })
 export class CsForm extends Vue {
@@ -41,9 +41,31 @@ export class CsForm extends Vue {
     public showFilterMenu = false;
     public fieldGroups: FieldGroup[] = [];
     public data?: IFormObject;
+    public formkey?: string;
     public formdef?: IFormOptions;
     public panel = [true];
     public keys: { [key: string]: IFormObject } = {};
+
+    
+    private _formdeflocal : IFormOptions | undefined;
+    public get formdeflocal() : IFormOptions | undefined {
+        return this.formdef;
+    }
+    public set formdeflocal(v : IFormOptions | undefined) {
+        this.$emit('formdef', v);        
+    }
+    
+
+    
+    private _keylocal : string | undefined;
+    public get keylocal() : string | undefined {
+        return this.formkey;
+    }
+    public set keylocal(v : string | undefined) {
+        // this._formkey = v;
+        this.$emit('formkey', v);
+    }
+    
 
     public isKeyValueList(): boolean {
         return this.keys !== undefined && this.keys.length > 0;
@@ -81,37 +103,41 @@ export class CsForm extends Vue {
             return;
         }
 
-        if (this.Form.keys && this.Form.keyValuesType) {
-            const newGroup = new FieldGroup();
-            newGroup.id = 'keys-group';
-            this.fieldGroups.push(newGroup);
-            this.keys = {};
+        // if (this.Form.keys && this.Form.keyValuesType) {
+        //     const newGroup = new FieldGroup();
+        //     newGroup.id = 'keys-group';
+        //     this.fieldGroups.push(newGroup);
+        //     this.keys = {};
 
-            for (const key in this.formObject) {
-                if (this.formObject.hasOwnProperty(key)) {
-                    const value = this.formObject[key];
-                    let field = this.Form.keyValuesType() as IFormObject;
-                    for (const key in value) {
-                        if (value.hasOwnProperty(key)) {
-                            const element = value[key];
-                            field[key] = element;
-                        }
-                    }
-                    if (field._form) {
-                        // field._form.title = key;
-                        this.keys[key] = field;
-                    }
-                    // this.Form.fields.push(this.Form.keyValuesType);
-                    console.log(field);
-                }
-            }
-        }
+        //     for (const key in this.formObject) {
+        //         if (this.formObject.hasOwnProperty(key)) {
+        //             const value = this.formObject[key];
+        //             let field = this.Form.keyValuesType() as IFormObject;
+        //             for (const key in value) {
+        //                 if (value.hasOwnProperty(key)) {
+        //                     const element = value[key];
+        //                     field[key] = element;
+        //                 }
+        //             }
+        //             if (field._form) {
+        //                 // field._form.title = key;
+        //                 this.keys[key] = field;
+        //             }
+        //             // this.Form.fields.push(this.Form.keyValuesType);
+        //             console.log(field);
+        //         }
+        //     }
+        // }
 
         if (!this.Form.fields) {
             return;
         }
 
         this.Form.fields.map(f => {
+            if (f.type === 'keysobject') {
+                console.log('keysobject');
+                console.log(f);
+            }
             if (!f.group) {
                 const newGroup = new FieldGroup();
                 newGroup.id = f._key + '-group';
@@ -195,7 +221,7 @@ export class CsForm extends Vue {
     public mounted() {
         this.initGroups();
         this.updateAllGroupVisbility();
-        if (this.Form && this.Form.canEditKey) {
+        if (this.Form && this.Form.canEditKey && this.Form.title === 'Property Collection') {
             console.log('data');
             console.log(this.data);
         }

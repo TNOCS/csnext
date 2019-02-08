@@ -71,14 +71,14 @@
         </template>
         <template v-if="field.type === 'array'">
             <template v-for="item in target[field._key]">
-                <cs-form :data="item" :formdef="field.arrayType"></cs-form>
+                <cs-form :data="item" :formdef.sync="field.arrayType"></cs-form>
             </template>
         </template>
         <template v-if="field.type === 'keyvalue'">
                 
                 <template v-for="(item,index) in target[field._key]">
                     
-                    <cs-form :data="target[item]" :formdef="field.arrayType"></cs-form>
+                    <cs-form :data="target[item]" :formdef.sync="field.arrayType"></cs-form>
                 </template>
             </template>
         <template v-if="field.type === 'chips'">
@@ -94,8 +94,25 @@
             >
             </v-combobox>
         </template>
+        <template v-if="field.type === 'keysobject'">
+            <template v-for="(item,key, index) in target[field._key]">                
+                <v-expansion-panel expand>
+                    <v-expansion-panel-content>
+                        <div slot="header" class="form-title">
+                            <template v-if="field.canEditKey">
+                                <v-text-field v-model="key" label="key"></v-text-field>
+                            </template>
+                            <template v-else>
+                                {{ field.title }}
+                            </template>                
+                        </div>
+                        <cs-form :data="target[field._key][key]"></cs-form>
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </template>            
+        </template>
         <template v-if="field.type === 'object'">
-            <cs-form :data="target[field._key]" :formdef="field.form"></cs-form>
+            <cs-form :data="target[field._key]" :formdef.sync="field.form"></cs-form>
         </template>
         <template v-if="field.type === 'form'">
             {{ field.title }}
