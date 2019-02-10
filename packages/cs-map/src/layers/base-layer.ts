@@ -50,7 +50,7 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
-    @FormField({ title: 'Open Feature Details', type: 'checkbox'})
+    @FormField({ title: 'Open Feature Details', type: 'checkbox' })
     public openFeatureDetails?: boolean;
     public _service?: ILayerService;
     public layout?:
@@ -70,7 +70,15 @@ export class BaseLayer implements IMapLayer {
     public _extensions: ILayerExtension[] = [];
     public _opacity?: number;
     // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
-    @FormField({ title: 'Feature types', type: 'keysobject', canEditKey: true })
+    @FormField({
+        title: 'Feature types',
+        type: 'keysobject',
+        canEditKey: true,
+        canAdd: true,
+        keyValuesType: () => {
+            return new FeatureType();
+        }
+    })
     public featureTypes?: FeatureTypes;
     /** list of active layers */
     public _legends?: LayerLegend[];
@@ -151,21 +159,21 @@ export class BaseLayer implements IMapLayer {
         return undefined;
     }
 
-    public getStyleLegend(style: any) : LayerLegend[] {
-        let result : LayerLegend[] = [];
+    public getStyleLegend(style: any): LayerLegend[] {
+        let result: LayerLegend[] = [];
         for (const key in style) {
             if (style.hasOwnProperty(key)) {
-                const prop = style[key];                
-                if (prop.hasOwnProperty('stops')) {                    
-                    result.push({ property:key, stops: prop.stops });                    
+                const prop = style[key];
+                if (prop.hasOwnProperty('stops')) {
+                    result.push({ property: key, stops: prop.stops });
                 }
             }
-        }        
+        }
         return result;
     }
 
     public updateLegends() {
-        let result : LayerLegend[] = [];
+        let result: LayerLegend[] = [];
         if (this.paint) result.concat(this.getStyleLegend(this.paint));
         if (this.layout) result.concat(this.getStyleLegend(this.layout));
         this._legends = result;
@@ -198,6 +206,5 @@ export class BaseLayer implements IMapLayer {
         } else {
             return `${this.title}`;
         }
-    }    
+    }
 }
-

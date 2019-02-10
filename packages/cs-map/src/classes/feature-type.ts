@@ -34,7 +34,7 @@ export class PropertyType {
 
 @Form({
     title: 'Property Collection',
-    isPanel: true,            
+    isPanel: true,
     keyValuesType: () => {
         return new PropertyType();
     }
@@ -44,7 +44,7 @@ export class PropertyCollection {
 }
 
 @Form({
-    title: 'Feature Types',   
+    title: 'Feature Types',
     keyValuesType: () => {
         return new FeatureType();
     }
@@ -52,7 +52,7 @@ export class PropertyCollection {
 export class FeatureTypes {
     [key: string]: FeatureType;
 }
-@Form({ title: 'Feature', isPanel: true})
+@Form({ title: 'Feature', isPanel: true })
 export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
@@ -60,7 +60,16 @@ export class FeatureType {
     public notification?: string;
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
-    @FormField({ title: 'Properties', type: 'keysobject', canEditKey: true  })
+    @FormField({
+        title: 'Properties',
+        type: 'keysobject',
+        canAdd: true,
+        canDelete: true,
+        canEditKey: true,
+        keyValuesType: () => {
+            return new PropertyType();
+        }
+    })
     public properties?: PropertyCollection;
 }
 
