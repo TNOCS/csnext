@@ -95,12 +95,18 @@
             </v-combobox>
         </template>
         <template v-if="field.type === 'keysobject'">
-            <template v-for="(item,key, index) in target[field._key]">                
-                <v-expansion-panel expand>
+            <v-layout>
+            {{ field.title }}
+            <v-spacer></v-spacer>
+            <v-btn icon flat v-if="field.canAdd" @click="addKeyObject(field)"><v-icon>add</v-icon></v-btn>
+        </v-layout>
+            <template v-for="(item,key, index) in target[field._key]" >                
+                <v-expansion-panel expand :key="key">
                     <v-expansion-panel-content>
                         <div slot="header" class="form-title">
                             <template v-if="field.canEditKey">
-                                <v-text-field v-model="key" label="key"></v-text-field>
+                                    {{ target[field._key] }}
+                                <v-text-field v-model="key" :label="field.title" @change="keyObjectChange(key)"></v-text-field>
                             </template>
                             <template v-else>
                                 {{ field.title }}

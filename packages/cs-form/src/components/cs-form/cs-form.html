@@ -1,28 +1,6 @@
-<div v-if="Form" class="cs-form-base">
-    
-    <!-- <v-toolbar flat>
-        <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon @click="saveForm()" v-if="Form.saveButton"><v-icon>save</v-icon> </v-btn>
-    </v-toolbar> -->
+<div v-if="Form" class="cs-form-base">    
     <v-expansion-panel expand v-model="panel" v-if="formObject">
-        <v-expansion-panel-content>
-            <!-- <div slot="header" class="form-title">
-                <template v-if="Form.canEditKey">
-                    <v-text-field v-model="keylocal"></v-text-field>
-                </template>
-                <template v-else>                        
-                    {{ keylocal }}
-                </template>
-            </div> -->
-            <template v-if="Form.canEditKey">
-                    {{ Form.title }}
-                </template>
-                <div v-if="keys !== undefined">
-                    <div v-for="a in keys">                        
-                        <cs-form :data.sync="item" :formkey.sync="key"></cs-form>
-                    </div>
-                </div>
+        <v-expansion-panel-content>                       
             <v-form>
                 <v-layout
                     row
