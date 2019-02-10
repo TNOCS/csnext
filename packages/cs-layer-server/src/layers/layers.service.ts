@@ -491,7 +491,12 @@ export class LayerService {
                     );
 
                     if (loadResult.meta) {
-                        def.featureTypes = loadResult.meta.featureTypes;
+                        def.featureTypes = loadResult.meta.featureTypes;                        
+                        if (def.meta === undefined && loadResult.meta.featureTypes) {
+                            
+                            console.log(loadResult.meta);
+                            console.log('Save meta');
+                        }
                     }
 
                     if (loadResult.source) {

@@ -2,13 +2,15 @@ import {
   ISourcePlugin,
   ISourcePluginType,
   LayerSource,
-  ILoadResult
+  ILoadResult,
+  LayerMeta
 } from '../../classes';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Feature } from 'geojson';
 import uuidv1 from 'uuid/v1';
 import { createTileIndex } from '../../tiles/geojson-tiles';
+import { FeatureType } from '@csnext/cs-map';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
   id = 'json';
@@ -44,6 +46,8 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
             });
             return;
           } else {
+            // create meta
+            // const meta = await this.createMeta(source);
             resolve({ source: source, updated: updated });
             return;
           }
@@ -55,8 +59,35 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     });
   }
 
+  createMeta(source: LayerSource) : Promise<LayerMeta> {
+    return new Promise((resolve, reject) => {      
+      let result = new LayerMeta(); 
+      let ft = new FeatureType();
+      
+      for (const feature of source.features) {
+        for (const prop in feature.properties) {
+          if (feature.properties.hasOwnProperty(prop)) {
+            const element = feature.properties[prop];
+            if (!ft.properties.hasOwnProperty(prop)) {
+              ft.properties[prop] = {
+                title: prop,
+                description: prop
+              };              
+            }
+            // console.log(prop);
+
+            
+          }
+        }
+        
+      }
+      result.featureTypes = { main: ft};      
+      resolve(result);
+    })
+  }
+
   /** make sure geojson has been prepared, e.g. add ids to all features */
-  initSource(source: LayerSource): boolean {
+  initSource(source: LayerSource): boolean {    
     let types = [];
     let updated = false;
     if (source.features) {

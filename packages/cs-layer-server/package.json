@@ -19,10 +19,10 @@
     "@csnext/cs-map": "^0.0.105",
     "@macrostrat/dbgeo-stream": "^1.0.0",
     "@mapbox/togeojson": "^0.16.0",
-    "@nestjs/common": "^5.6.2",
-    "@nestjs/core": "^5.6.2",
+    "@nestjs/common": "^5.7.2",
+    "@nestjs/core": "^5.7.2",
     "@nestjs/swagger": "^2.5.1",
-    "@nestjs/websockets": "^5.6.2",
+    "@nestjs/websockets": "^5.7.2",
     "arangojs": "^6.10.0",
     "dbgeo": "^1.1.0",
     "express": "^4.16.4",
@@ -41,11 +41,11 @@
     "@types/lockfile": "^1.0.0",
     "@types/lodash": "^4.14.120",
     "@types/mapbox-gl": "^0.51.4",
-    "@types/node": "^10.12.21",
+    "@types/node": "^10.12.24",
     "@types/pg": "^7.4.11",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^1.1.0",
-    "typescript": "^3.3.1"
+    "typescript": "^3.3.3"
   },
   "gitHead": "f4a53514fd0dc53042ba157179bc25b6ecf075eb"
 }
