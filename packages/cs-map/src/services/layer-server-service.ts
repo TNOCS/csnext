@@ -12,8 +12,9 @@ import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
 import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
-import io from 'socket.io-client';
+
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
+import { AppState } from '@csnext/cs-client';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -25,12 +26,16 @@ export class LayerServerServiceOptions implements ILayerServiceOptions {
 export class LayerServerService implements ILayerService, IStartStopService {
     id!: string;
     title?: string | undefined;
-    public socket!: SocketIOClient.Socket;
+    // public socket!: SocketIOClient.Socket;
 
     public options?: LayerServerServiceOptions;
     public type = 'layer-server-service';
     public layers: IMapLayer[] = [];
     public manager?: MapLayers;
+
+    public get socket() : SocketIOClient.Socket | undefined {
+        return AppState.Instance.socket;
+    }
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
         let result = new LayerServerService(init);
@@ -41,42 +46,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
         Object.assign(this, init);
     }
 
-    initSocket() {
-        if (this.options && this.options.url) {
-            this.socket = io(this.options.url);
-            this.socket.on('connect', () => {
-                console.log('Connected');
-
-                // this.socket.emit('events', { test: 'test' });
-                //   AppState.Instance.TriggerNotification({ title: 'Connected' });
-            });
-            this.socket.on('reconnect', () => {
-                console.log('Reconnected');
-                for (const layer of this.layers) {
-                    if (layer.isEditable === true) {
-                        this.manager!.refreshLayerSource(layer).then(() => {
-                            console.log('Layer refreshed');
-                        });
-
-                        // });
-                        // this.manager!
-                        // .loadLayer(layer).then( l => {
-                    }
-                }
-            });
-            this.socket.on('disconnected', () => {
-                for (const layer of this.layers) {
-                    if (layer.isEditable === true && layer._source) {
-                        layer._source._loaded = false;
-                    }
-                }
-                console.log('Connection lost');
-            });
-            this.socket.on('time', data => {
-                console.log(data);
-            });
-        }
-    }
 
     async Start(manager: MapLayers) {
         this.manager = manager;
@@ -196,6 +165,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.initSocket();
     }
 
+    public initSocket() {
+
+    }
+
     public updateLayer(layer: IMapLayer) {
         if (this.options) {            
             const def = JSON.parse(JSON.stringify(layer, (key, value) => {
@@ -246,10 +219,11 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
         // listen to server
-        if (this.socket) {
+        if (this.socket !== undefined) {
             this.socket.on('layer/' + gl.id, (data: any) => {
                 console.log('got data from socket');
                 if (
+                    this.socket &&
                     data.hasOwnProperty('lastUpdatedBy') &&
                     data['lastUpdatedBy'] === this.socket.id
                 ) {
@@ -299,7 +273,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
                 let body = gl._source!._geojson;
-                if (body) {
+                if (body && this.socket) {
                     body['lastUpdatedBy'] = this.socket.id;
                     console.log(gl._source!._geojson);
                     axios

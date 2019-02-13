@@ -19,7 +19,7 @@ export * from './layout/flex-grid/flex-grid-options';
 export * from './layout/tabs/tabs';
 // export * from './layout/drag-grid/drag-layout';
 // export * from './layout/drag-grid/drag-layout-options';
-export { FlexWidgetOptions } from './layout/flex-grid/flex-widget-options';
+export * from './layout/flex-grid/flex-widget-options';
 
 // datasources
 export * from './datasources/webrequest-datasource';

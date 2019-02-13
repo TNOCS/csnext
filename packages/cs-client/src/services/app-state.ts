@@ -16,7 +16,9 @@ import { ProjectManager } from './project-manager';
 import { CsApp, CsDashboard, Logger, CsWidget } from '../';
 import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
+import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
+
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -30,6 +32,7 @@ export class AppState extends AppStateBase {
     return this.pInstance || (this.pInstance = new this());
   }
 
+  public socket?: SocketIOClient.Socket;
   /** Manages active project */
   public projectManager?: ProjectManager;
   /** Logger */
@@ -39,9 +42,46 @@ export class AppState extends AppStateBase {
   /** Vue i18n instance */
   public i18n?: VueI18n;
 
+
   private constructor() {
     super();
   }
+
+  public initSocket() {
+    
+    if (this.project && this.project.useSocket && this.project.socketServerUrl) {
+        this.socket = io(this.project.socketServerUrl);
+        this.socket.on('connect', () => {
+            
+            console.log('Connected');
+
+            // this.socket.emit('events', { test: 'test' });
+            //   AppState.Instance.TriggerNotification({ title: 'Connected' });
+        });
+        this.socket.on('reconnect', () => {
+            // console.log('Reconnected');
+            // for (const layer of this.layers) {
+            //     if (layer.isEditable === true) {
+            //         this.manager!.refreshLayerSource(layer).then(() => {
+            //             console.log('Layer refreshed');
+            //         });
+
+            //         // });
+            //         // this.manager!
+            //         // .loadLayer(layer).then( l => {
+            //     }
+            // }
+        });
+        this.socket.on('disconnected', () => {
+            // for (const layer of this.layers) {
+            //     if (layer.isEditable === true && layer._source) {
+            //         layer._source._loaded = false;
+            //     }
+            // }
+            console.log('Connection lost');
+        });
+    }
+}
 
   /** Initialize the project state, dashboard managers and data summaries handlers */
   public init(project: IProject) {
@@ -114,6 +154,7 @@ export class AppState extends AppStateBase {
     if (typeof this.project.init === 'function') {
       this.project.init();
     }
+    this.initSocket();
   }
 
   public updateDatasource(id: string, value: any) {
