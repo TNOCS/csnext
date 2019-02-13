@@ -82,7 +82,7 @@ export class FeatureDetails extends Vue {
     /** get list of available section, with their properties */
     public get sections(): section[] {
         let layer = this.layer;
-        if (!layer || !this.feature) {
+        if (!layer || !this.feature || !this.feature.properties) {
             return [];
         }
 
@@ -161,7 +161,7 @@ export class FeatureDetails extends Vue {
 
     public get properties(): any[] {
         let result: any[] = [];
-        if (this.feature) {
+        if (this.feature && this.feature.properties) {
             for (const key in this.feature.properties) {
                 if (this.feature.properties.hasOwnProperty(key)) {
                     const element = this.feature.properties[key];
