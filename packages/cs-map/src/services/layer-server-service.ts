@@ -33,8 +33,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
     public layers: IMapLayer[] = [];
     public manager?: MapLayers;
 
-    public get socket() : SocketIOClient.Socket | undefined {
-        return AppState.Instance.socket;
+    public get socket(): SocketIOClient.Socket | undefined {
+        if (this.manager && this.manager.MapWidget) {
+            return this.manager.MapWidget.$cs.socket;
+        }
     }
 
     public getInstance(init?: Partial<ILayerService>): IStartStopService {
@@ -45,7 +47,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
     }
-
 
     async Start(manager: MapLayers) {
         this.manager = manager;
@@ -63,14 +64,16 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         for (const layer of response.data as ILayer[]) {
                             let style = layer.style as LayerStyle;
                             // style.mapbox = new MapboxStyles({
-                                                 
+
                             // });
 
                             let s = new LayerSource();
-                            if (!layer.color) { layer.color = 'blue'; }
+                            if (!layer.color) {
+                                layer.color = 'blue';
+                            }
                             s.url = this.options.url + 'sources/' + layer.id;
                             s.id = layer.id;
-                            s.type = 'geojson';                            
+                            s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl._service = this;
                             gl.source = s;
@@ -121,29 +124,26 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             // } as LinePaint;
                             gl.initLayer(manager);
                             manager.layers.push(gl);
-                            gl._events.subscribe(
-                                'feature',
-                                (a: string) => {
-                                    if (
-                                        a === CsMap.FEATURE_SELECT &&
-                                        this.options!.openFeatureDetails
-                                    ) {
-                                        // MainBus.events.publish(
-                                        //     'rightsidebar',
-                                        //     'open-widget',
-                                        //     {
-                                        //         component: FeatureDetails,
-                                        //         data: {
-                                        //             feature: f,
-                                        //             layer: layer,
-                                        //             manager: this
-                                        //         }
-                                        //     }
-                                        // );
-                                        // console.log(AppStateBase.Instance.bus);
-                                    }
+                            gl._events.subscribe('feature', (a: string) => {
+                                if (
+                                    a === CsMap.FEATURE_SELECT &&
+                                    this.options!.openFeatureDetails
+                                ) {
+                                    // MainBus.events.publish(
+                                    //     'rightsidebar',
+                                    //     'open-widget',
+                                    //     {
+                                    //         component: FeatureDetails,
+                                    //         data: {
+                                    //             feature: f,
+                                    //             layer: layer,
+                                    //             manager: this
+                                    //         }
+                                    //     }
+                                    // );
+                                    // console.log(AppStateBase.Instance.bus);
                                 }
-                            );
+                            });
                             this.layers.push(gl);
                         }
 
@@ -165,31 +165,36 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.initSocket();
     }
 
-    public initSocket() {
+    public initSocket() {}
 
-    }
-
+    // save layer in backend
     public updateLayer(layer: IMapLayer) {
-        if (this.options) {            
-            const def = JSON.parse(JSON.stringify(layer, (key, value) => {
-                if (key.startsWith('_')) {
-                    return undefined;
-                }
-                return value;
-            }));
-            console.log(def);            
-            // axios
-            //     .put(url, def, {
-            //         headers: {
-            //             'Content-Type': 'application/json'
-            //         }
-            //     })
-            //     .then(r => {
-            //         console.log(r);
-            //     })
-            //     .catch(e => {
-            //         console.log(e);
-            //     });
+        if (this.options && this.options.url) {
+            const def = JSON.parse(
+                JSON.stringify(layer, (key, value) => {
+                    if (key.startsWith('_')) {
+                        return undefined;
+                    }
+                    return value;
+                })
+            );
+            delete def.source;
+
+            console.log(def);
+            let url = this.options.url + 'layers/' + layer.id;
+            console.log(this.options);
+            axios
+                .put(url, def, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(r => {
+                    console.log(r);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }
     }
 
