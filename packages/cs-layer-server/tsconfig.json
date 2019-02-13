@@ -6,11 +6,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-
+    "target": "es5",
+    "module": "commonjs",
+    
     // These settings are totally up to you
     "esModuleInterop": true,
-    "target": "es6",
-    "module": "commonjs",
     // "strict": true,
     "skipLibCheck": true,
 
@@ -23,9 +23,9 @@
 
     /* Experimental Options */
   },
-  "exclude": ["./dist"]
+  "exclude": ["./dist"],
 
   // "references": [
-  //   { "path":"../core" }
+  //   { "path":"../cs-map-core" }
   // ]
 }

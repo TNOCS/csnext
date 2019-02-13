@@ -29,6 +29,8 @@ export interface IProject {
   menus?: IMenu[];
   languages?: ILanguageOptions;
   data?: any;
+  useSocket?: boolean;
+  socketServerUrl?: string;
   _appState?: AppStateBase;
   init?();
 }

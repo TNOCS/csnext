@@ -10,13 +10,13 @@
   },
   "scripts": {
     "link": "yarn link",
+    "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
     "dev": "nodemon dist/index.js",
     "clean": "del-cli dist",
     "build": "tsc"
   },
   "dependencies": {
-    "@csnext/cs-map": "^0.0.105",
     "@macrostrat/dbgeo-stream": "^1.0.0",
     "@mapbox/togeojson": "^0.16.0",
     "@nestjs/common": "^5.7.2",

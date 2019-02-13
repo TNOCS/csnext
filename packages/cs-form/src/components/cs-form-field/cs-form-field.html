@@ -105,7 +105,7 @@
                     <v-expansion-panel-content>
                         <div slot="header" class="form-title">
                             <template v-if="field.canEditKey">
-                                    {{ target[field._key] }}
+                                    <!-- {{ target[field._key] }} -->
                                 <v-text-field v-model="key" :label="field.title" @change="keyObjectChange(key)"></v-text-field>
                             </template>
                             <template v-else>
