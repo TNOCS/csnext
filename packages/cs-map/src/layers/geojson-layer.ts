@@ -227,6 +227,10 @@ export class GeojsonLayer extends BaseLayer {
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }
 
+        if (!l.style.types || l.style.types.includes('point') && !l.style.icon) {                        
+            l.style.pointCircle = true;
+        }
+
         if (l.id && l.style.icons) {
             for (const key in l.style.icons) {
                 if (l.style.icons.hasOwnProperty(key)) {

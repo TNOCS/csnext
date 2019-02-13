@@ -9,8 +9,8 @@ import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Feature } from 'geojson';
 import uuidv1 from 'uuid/v1';
-import { createTileIndex } from '../../tiles/geojson-tiles';
-import { FeatureType } from '@csnext/cs-map';
+// import { createTileIndex } from '../../tiles/geojson-tiles';
+import { FeatureType } from '../../shared';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
   id = 'json';
@@ -31,7 +31,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
           const updated = this.initSource(source);
 
           source._localFile = file;
-          source._tiles = await createTileIndex(source, { extent: 4096 });
+          // source._tiles = await createTileIndex(source, { extent: 4096 });
           // source was updated, save again
           if (updated) {
             this.save(file, source);

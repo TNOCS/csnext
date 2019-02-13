@@ -3,11 +3,11 @@ import { DocumentBuilder, SwaggerModule, SwaggerBaseConfig } from '@nestjs/swagg
 import { INestApplication, Type } from '@nestjs/common';
 import { Module } from '@nestjs/core/injector/module';
 export { LayerController } from './layers/layers.controller';
-export { LayerSource} from './classes';
+export { LayerSource} from './shared';
 export { LayerService } from './layers/layers.service';
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
-export { TilesController } from './tiles/tiles.controller';
+// export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { WsAdapter } from '@nestjs/websockets';
 import express from 'express';

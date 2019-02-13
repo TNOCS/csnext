@@ -1,10 +1,9 @@
 import { ApiModelProperty } from "@nestjs/swagger";
-import GeoJSON from "geojson";
 
 /** actual layer source (content) for a layer */
 export class LayerSource implements GeoJSON.FeatureCollection {
     @ApiModelProperty({ required: true})
-    public type : "FeatureCollection" = "FeatureCollection";
+    public type : 'FeatureCollection' = 'FeatureCollection';
     @ApiModelProperty()
     public features!: any;
     @ApiModelProperty()

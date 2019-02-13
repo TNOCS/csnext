@@ -1,9 +1,4 @@
-import {
-    Form,
-    FormField,
-    IFormOptions,
-    IFormFieldOptions
-} from '@csnext/cs-core';
+import { Form, FormField, IFormOptions } from './';
 import {
     LinePaint,
     LineLayout,
@@ -35,18 +30,16 @@ export const MapboxStopForm: IFormOptions = {
             _index: 0,
             type: 'number',
             title: 'value',
-            group: 'stop' 
+            group: 'stop'
         },
         {
             _index: 1,
             type: 'string',
             title: 'color',
-            group: 'stop'           
+            group: 'stop'
         }
     ]
-
-}
-
+};
 
 export const MapboxColorForm: IFormOptions = {
     title: 'Color',
@@ -61,10 +54,10 @@ export const MapboxColorForm: IFormOptions = {
             _key: 'stops',
             type: 'array',
             title: 'color',
-            arrayType: MapboxStopForm  
+            arrayType: MapboxStopForm
         }
     ]
-}
+};
 
 export const CirclePaintForm: IFormOptions = {
     title: 'Circle Layout',
@@ -72,7 +65,8 @@ export const CirclePaintForm: IFormOptions = {
     fields: [
         {
             _key: 'circle-color',
-            type: 'string',            
+            type: 'object',
+            form: MapboxColorForm,
             title: 'color',
             group: 'circle-color'
         },
@@ -82,7 +76,7 @@ export const CirclePaintForm: IFormOptions = {
             title: 'opacity',
             min: 0,
             max: 1,
-            group: 'circle-color'
+            group: 'circle-opacity'
         },
         {
             _key: 'circle-radius',
@@ -90,7 +84,7 @@ export const CirclePaintForm: IFormOptions = {
             min: 0,
             defaultValue: 10,
             title: 'radius',
-            group: 'circle-color'
+            group: 'circle-opacity'
         },
         {
             _key: 'circle-stroke-width',
@@ -103,7 +97,7 @@ export const CirclePaintForm: IFormOptions = {
         {
             _key: 'circle-stroke-color',
             type: 'string',
-            defaultValue: "#000000",
+            defaultValue: '#000000',
             title: 'stroke color',
             group: 'circle-stroke'
         },
@@ -116,7 +110,6 @@ export const CirclePaintForm: IFormOptions = {
             title: 'stroke opacity',
             group: 'circle-stroke'
         }
-
     ]
 };
 
@@ -147,7 +140,6 @@ export const LineLayoutForm: IFormOptions = {
         }
     ]
 };
-
 
 export const LinePaintForm: IFormOptions = {
     title: 'Line Paint',
@@ -335,23 +327,14 @@ export const SymbolPaintForm: IFormOptions = {
         }
     ]
 };
-@Form({ title: 'Mapbox Styles' })
+
 export class MapboxStyles {
-    @FormField({ title: 'Line Paint', type: 'object', form: LinePaintForm })
     public linePaint?: LinePaint;
-    @FormField({ title: 'Line Layout', type: 'object', form: LineLayoutForm })
     public lineLayout?: LineLayout;
-    @FormField({
-        title: 'Symbol Layout',
-        type: 'object',
-        form: SymbolLayoutForm
-    })
     public symbolLayout?: SymbolLayout;
-    @FormField({ title: 'Symbol Paint', type: 'object', form: SymbolPaintForm })
     public symbolPaint?: SymbolPaint;
     public fillPaint?: FillPaint;
     public fillLayout?: FillLayout;
-    @FormField({ title: 'Circle Paint', type: 'object', form: CirclePaintForm })
     public circlePaint?: CirclePaint;
     public circleLayout?: CircleLayout;
 
@@ -360,33 +343,4 @@ export class MapboxStyles {
             Object.assign(this, styles);
         }
     }
-}
-
-@Form({ title: 'Layer Style' })
-export class LayerStyle implements ILayerStyle {
-    /** feature types available in layer (fill, line, point, .etc)*/
-    @FormField({
-        title: 'Types',
-        type: 'checkboxes-horizontal',
-        options: ['point', 'line', 'fill']
-    })
-    public types?: string[];
-    public iconZoomLevel?: number;
-    @FormField({ title: 'Feature title', type: 'string' })
-    public title?: string;
-    @FormField({ title: 'Map title', type: 'string' })
-    public mapTitle?: string;
-    @FormField({ title: 'Map Popup text', type: 'string' })
-    public popup?: string;
-    @FormField({ title: 'Use Fill', type: 'checkbox', group: 'layout' })
-    public fill?: boolean;
-    @FormField({ title: 'Use Line', type: 'checkbox', group: 'layout' })
-    public line?: boolean;
-    @FormField({ title: 'Use Point', type: 'checkbox', group: 'layout' })
-    public pointCircle?: boolean;
-    @FormField({ title: 'Icon', type: 'string' })
-    public icon?: string;
-    public icons?: { [id: string]: string };
-    @FormField({ title: 'Styles', type: 'object' })
-    public mapbox?: MapboxStyles;
 }

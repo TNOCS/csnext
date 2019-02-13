@@ -1,6 +1,6 @@
 import { ApiModelProperty } from '@nestjs/swagger';
-import { LayerSource, LayerStyle } from './.';
-import { ILayer, FeatureType, FeatureTypes } from '@csnext/cs-map';
+import { LayerStyle, ILayer, FeatureCollection, ISource } from '../shared';
+import { LayerSource} from './layer-source';
 
 /** Layer specification */
 export class LayerDefinition implements ILayer {
@@ -64,7 +64,7 @@ export class LayerDefinition implements ILayer {
     public meta?: string;
 
     public style?: LayerStyle;
-    public featureTypes?: FeatureTypes;
+    public featureTypes?: FeatureCollection;
     // public properties?: PropertyCollection    
     public _layerSource?: LayerSource;    
     

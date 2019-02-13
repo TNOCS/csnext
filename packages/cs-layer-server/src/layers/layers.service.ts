@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import * as core from '../classes';
 import path from 'path';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
-import { ISourcePluginType, ISourcePlugin, LayerDefinition } from '../classes';
+import { ISourcePluginType, ISourcePlugin, ServerConfig, LayerDefinition, LayerSource } from '../classes';
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
 import { debounce } from 'lodash';
-import { WebSocketServer, WebSocketGateway } from '@nestjs/websockets';
 import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
 import { ArangoDBSource } from '../plugins/sources/arangodb';
@@ -17,7 +15,7 @@ import { DefaultWebSocketGateway } from '../websocket-gateway';
 
 @Injectable()
 export class LayerService {
-    private config: core.ServerConfig;
+    private config: ServerConfig;
     private absoluteConfigPath!: string;
 
     handleConnection(d: Client) {
@@ -179,7 +177,7 @@ export class LayerService {
                                 source: file,
                                 sourceType: 'geojson',
                                 title: title
-                            } as core.LayerDefinition;
+                            } as LayerDefinition;
                             this.config.layers.push(layer);
 
                             this.saveServerConfigDelay();
@@ -235,9 +233,9 @@ export class LayerService {
 
     /** init layer */
     public initLayer(
-        layer: core.LayerDefinition
-    ): Promise<core.LayerDefinition> {
-        return new Promise<core.LayerDefinition>(async resolve => {
+        layer: LayerDefinition
+    ): Promise<LayerDefinition> {
+        return new Promise<LayerDefinition>(async resolve => {
             // Logger.log(`Init Layer ${layer.id}`);
             // Object.assign(this, { version: "0.0.1", sourceType: "geojson", style: {} });
             // set sourceUrl
@@ -260,6 +258,10 @@ export class LayerService {
                     const s = await this.getLayerSourceById(layer.id);
                     if (s !== undefined) {
                         layer.style.types = this.findType(s);
+                        console.log(layer.style.types);
+                        if (layer.style.types.includes('point')) {
+                            layer.style.pointCircle = true;
+                        }
                         layer.color = this.findColor(s);
                     }
                 } catch (e) {}
@@ -313,12 +315,12 @@ export class LayerService {
     }
 
     /** return all layers */
-    getLayers(): core.LayerDefinition[] {
+    getLayers(): LayerDefinition[] {
         return this.config.layers;
     }
 
     /** find one specific layer */
-    getLayerById(id: string): Promise<core.LayerDefinition | undefined> {
+    getLayerById(id: string): Promise<LayerDefinition | undefined> {
         return new Promise(async (resolve, reject) => {
             let def = this.config.layers.find((l: any) => l.id === id);
             if (def) {
@@ -332,8 +334,8 @@ export class LayerService {
     /** update defintion for layer */
     putLayerDefinitionById(
         id: string,
-        body: core.LayerDefinition
-    ): Promise<core.LayerDefinition> {
+        body: LayerDefinition
+    ): Promise<LayerDefinition> {
         return new Promise(async (resolve, reject) => {
             Logger.log(`Updating layer definition for layer ${id}`);
             let defIndex = this.config.layers.findIndex(l => l.id === id);
@@ -355,7 +357,7 @@ export class LayerService {
     /** find one specific layer */
     getLayerAndSourceById(
         id: string
-    ): Promise<core.LayerDefinition | undefined> {
+    ): Promise<LayerDefinition | undefined> {
         return new Promise(async (resolve, reject) => {
             let def = await this.getLayerById(id);
             if (def) {
@@ -367,7 +369,7 @@ export class LayerService {
         });
     }
 
-    getLayerSourceById(id: string): Promise<core.LayerSource | undefined> {
+    getLayerSourceById(id: string): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             this.getLayerById(id)
                 .then(def => {
@@ -423,8 +425,8 @@ export class LayerService {
 
     /** load & return layer source */
     loadLayerSource(
-        def: core.LayerDefinition
-    ): Promise<core.LayerSource | undefined> {
+        def: LayerDefinition
+    ): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
@@ -512,7 +514,7 @@ export class LayerService {
         });
     }
 
-    public saveSource(source: core.LayerSource) {
+    public saveSource(source: LayerSource) {
         if (source._localFile) {
             let content = JSON.stringify(
                 source,
@@ -529,7 +531,7 @@ export class LayerService {
         }
     }
 
-    putLayerSourceById(id: string, body: core.LayerSource): Promise<boolean> {
+    putLayerSourceById(id: string, body: LayerSource): Promise<boolean> {
         return new Promise(resolve => {
             console.log(`Updating source for ${id}`);
             this.getLayerSourceById(id)
