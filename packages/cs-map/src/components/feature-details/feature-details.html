@@ -27,12 +27,12 @@
             <v-tab-item value="details">
                 <div v-if="widget.data">
                     <v-expansion-panel
-                        expand
+                        expand                        
                         v-model="sectionsPanels"
                         class="section-expansion-panel"
                     >
                         <v-expansion-panel-content v-for="section in sections">
-                            <div slot="header" class="feature-section-title">
+                            <div slot="header" class="feature-section-title" v-if="sections.length>1">
                                 {{ section.title }}                                
                             </div>
                             <div class="section">
