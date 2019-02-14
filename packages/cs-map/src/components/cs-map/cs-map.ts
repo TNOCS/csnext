@@ -774,7 +774,7 @@ export class CsMap extends Vue {
                     'circle-radius': 10,
                     'circle-color': 'grey'
                 } as CirclePaint),
-                    (rl.tags = ['Schets']);
+                    (rl.tags = ['Search']);
                 rl.type = 'poi';
                 rl.style = {
                     pointCircle: true,

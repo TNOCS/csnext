@@ -18,6 +18,8 @@ export interface ILayer {
     style?: LayerStyle;
     extensions?: ILayerExtensionType[];
     filter?: any;
+    /* link to external source url */
+    externalUrl?: string;
     isEditable?: boolean;
     /** toggle visibility of layer */
     Visible?: boolean;

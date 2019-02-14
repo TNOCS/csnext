@@ -12,6 +12,7 @@ import { PostGisSource } from '../plugins/sources/postgis';
 import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
+import Axios from 'axios';
 
 @Injectable()
 export class LayerService {
@@ -374,7 +375,21 @@ export class LayerService {
             this.getLayerById(id)
                 .then(def => {
                     // check if layer source was already loaded
-                    if (def) {
+                    if (def) {                        
+                        // check if it has an external url, get it and proxy it
+                        if (def.externalUrl !== undefined) {
+                            console.log(`Loading external source for ${id}`);
+                            Axios.get(def.externalUrl).then(response => {
+                                if (response.data) {
+                                    resolve(response.data);
+                                    return;
+                                }
+                            }).catch(e => {
+                                Logger.warn(`Error loading ${def.externalUrl}`);
+                                resolve(undefined);
+                                return;
+                            })
+                        } else 
                         if (def._layerSource !== undefined) {
                             resolve(def._layerSource);
                             return;
@@ -507,6 +522,7 @@ export class LayerService {
                     }
                 } catch (e) {
                     Logger.log(`Error loading: ${def.source}`);
+                    console.log(e);
                     reject();
                 }
             }

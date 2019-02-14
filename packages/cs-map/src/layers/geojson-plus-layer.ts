@@ -428,8 +428,7 @@ export class GeojsonPlusLayer extends BaseLayer
             };
         }
 
-        if (this.style.pointCircle === true) {
-            console.log('PointCircle: ' + this.id);
+        if (this.style.pointCircle === true) {            
             this._circleLayer = new GeojsonLayer({
                 id: this.id + '-circles',
                 type: 'circle',

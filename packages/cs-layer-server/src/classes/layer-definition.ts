@@ -60,6 +60,9 @@ export class LayerDefinition implements ILayer {
     public color: string;    
 
     @ApiModelProperty()
+    public externalUrl: string;
+
+    @ApiModelProperty()
     /** location of optional meta source containing featuretypes, propertytypes, etc. */
     public meta?: string;
 
