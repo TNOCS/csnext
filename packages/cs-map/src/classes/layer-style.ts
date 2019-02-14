@@ -184,6 +184,50 @@ export const LinePaintForm: IFormOptions = {
     ]
 };
 
+
+export const FillPaintForm: IFormOptions = {
+    title: 'Fill Paint',
+    isPanel: true,
+    fields: [
+        {
+            _key: 'fill-color',
+            type: 'string',
+            title: 'color',
+            group: 'fill-color'
+        },
+        {
+            _key: 'fill-opacity',
+            type: 'number',
+            min: 0,
+            max: 1,
+            defaultValue: 1,
+            title: 'opacity',
+            group: 'fill-color'
+        },
+        {
+            _key: 'line-color',
+            type: 'string',
+            title: 'color',
+            group: 'line-color'
+        },
+        {
+            _key: 'line-opacity',
+            type: 'number',
+            min: 0,
+            max: 1,
+            defaultValue: 1,
+            title: 'opacity',
+            group: 'line-color'
+        },
+        {
+            _key: 'line-width',
+            type: 'number',
+            title: 'width',
+            group: 'line-color'
+        }        
+    ]
+};
+
 export const SymbolLayoutForm: IFormOptions = {
     title: 'Symbol Layout',
     isPanel: true,
@@ -349,6 +393,7 @@ export class MapboxStyles {
     public symbolLayout?: SymbolLayout;
     @FormField({ title: 'Symbol Paint', type: 'object', form: SymbolPaintForm })
     public symbolPaint?: SymbolPaint;
+    @FormField({ title: 'Circle Paint', type: 'object', form: FillPaintForm })
     public fillPaint?: FillPaint;
     public fillLayout?: FillLayout;
     @FormField({ title: 'Circle Paint', type: 'object', form: CirclePaintForm })
