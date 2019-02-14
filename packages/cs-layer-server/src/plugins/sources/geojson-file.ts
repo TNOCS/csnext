@@ -69,8 +69,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
             if (source.features && source.features.length > 0) {
                 let feature = source.features[0];
                 if (feature.properties) {
-                    for (const prop in feature.properties) {
-                        console.log(prop);
+                    for (const prop in feature.properties) {                        
                         if (feature.properties.hasOwnProperty(prop)) {
                             const element = feature.properties[prop];
                             // if (!ft.properties.hasOwnProperty(prop)) {
