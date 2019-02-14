@@ -58,6 +58,7 @@ export class GeojsonPlusLayer extends BaseLayer
     public style!: LayerStyle;
     public _centerHandle?: MessageBusHandle;
     public isEditable?: boolean;
+    public isLive?: boolean;
     public _centerGeoJson?: FeatureCollection;
     public _centerSource?: LayerSource;
     public featureTypes?: { [key: string]: FeatureType };

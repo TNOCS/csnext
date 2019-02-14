@@ -41,8 +41,12 @@ export class LayerDefinition implements ILayer {
     public sourceUrl?: string;
 
     @ApiModelProperty()
-    /** if dynamic, layer and features can be updated */
+    /** if editable, layer and features can be updated by client */
     public isEditable?: boolean;
+
+    @ApiModelProperty()
+    /** if live, layer and features can be updated/pushed by server */
+    public isLive?: boolean;
 
     @ApiModelProperty()
     /** if query needs connection, reference to connection key */

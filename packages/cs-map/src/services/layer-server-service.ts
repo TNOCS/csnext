@@ -79,6 +79,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.source = s;
                             gl.openFeatureDetails = true;
                             gl.isEditable = layer.isEditable;
+                            gl.isLive = layer.isLive;
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
@@ -115,6 +116,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
                             if (gl.isEditable) {
                                 this.initEditableLayer(gl, layer);
+                            } else {
+                                if (gl.isLive) {
+                                    this.initLiveLayer(gl, layer);
+                                }
                             }
 
                             // gl.paint = {
@@ -222,8 +227,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         }
     }
 
-    private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
-        // listen to server
+    private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
         if (this.socket !== undefined) {
             this.socket.on('layer/' + gl.id, (data: any) => {
                 console.log('got data from socket');
@@ -242,6 +246,11 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 }
             });
         }
+    }
+
+    private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
+        // listen to server
+        this.initLiveLayer(gl, layer);
 
         gl._events.subscribe('feature', (a: string, f: any) => {
             let md = this.mapDraw;

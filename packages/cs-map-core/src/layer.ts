@@ -20,6 +20,7 @@ export interface ILayer {
     extensions?: any[];
     filter?: any;
     isEditable?: boolean;
+    isLive?: boolean;
     /** toggle visibility of layer */
     Visible?: boolean;
     layout?:

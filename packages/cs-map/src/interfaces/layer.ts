@@ -21,6 +21,7 @@ export interface ILayer {
     /* link to external source url */
     externalUrl?: string;
     isEditable?: boolean;
+    isLive?: boolean;
     /** toggle visibility of layer */
     Visible?: boolean;
     layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
