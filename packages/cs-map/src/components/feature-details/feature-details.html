@@ -1,26 +1,4 @@
 <div style="height:100%; position: absolute;top:0;right:0;left:0;bottom:0">
-    <!-- <div v-if="widget.data">
-    <v-list>
-        <v-list-group v-for="section in sections" no-action value="true">
-            <v-list-tile slot="activator">
-                <v-list-tile-title>{{ section.title }}</v-list-tile-title>
-            </v-list-tile>
-
-            <v-list-tile
-                v-for="property in section.properties"
-                class="feature-property"
-            >
-                <v-list-tile-action>
-                    <v-icon>dashboard</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-title v-text="property.key"></v-list-tile-title>
-                <v-list-tile-action class="feature-property-value">{{
-                    property.value
-                }}</v-list-tile-action>                
-            </v-list-tile>
-        </v-list-group>
-    </v-list>
-</div> -->
     <v-toolbar tabs :color="layerColor">
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <div @click="openLayer(layer)" class="feature-layer-title">{{ layer.title }}</div>
