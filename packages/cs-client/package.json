@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.106",
+  "version": "0.0.107",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/index.d.ts",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.106",
+    "@csnext/cs-core": "^0.0.107",
     "axios": "^0.18.0",
     "deepmerge": "^3.1.0",
     "reflect-metadata": "^0.1.13",
