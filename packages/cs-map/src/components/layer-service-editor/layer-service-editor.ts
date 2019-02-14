@@ -42,7 +42,7 @@ export class LayerServiceEditor extends Vue {
         
         if (this.layer && this.layer._service && this.layer._service.updateLayer) {
             this.layer.updateLayer();
-            // this.layer._service.updateLayer(this.layer);
+            this.layer._service.updateLayer(this.layer);
         }
     }
 }
