@@ -2,7 +2,13 @@ import { Injectable } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
-import { ISourcePluginType, ISourcePlugin, ServerConfig, LayerDefinition, LayerSource } from '../classes';
+import {
+    ISourcePluginType,
+    ISourcePlugin,
+    ServerConfig,
+    LayerDefinition,
+    LayerSource
+} from '../classes';
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
@@ -179,9 +185,8 @@ export class LayerService {
                                 sourceType: 'geojson',
                                 title: title
                             } as LayerDefinition;
-                            this.config.layers.push(layer);
 
-                            this.saveServerConfigDelay();
+                            this.addLayer(layer);                                                    
 
                             // this.initLayer(layer)
                             //   .then(l => {})
@@ -197,6 +202,14 @@ export class LayerService {
             this.saveServerConfig();
         }, 5000);
     };
+
+    public addLayer(def: LayerDefinition): Promise<LayerDefinition> {
+        return new Promise((resolve, reject) => {
+            this.config.layers.push(def);
+            this.saveServerConfigDelay();
+            resolve(def);
+        });
+    }
 
     /** save active server config */
     public saveServerConfig() {
@@ -233,9 +246,7 @@ export class LayerService {
     }
 
     /** init layer */
-    public initLayer(
-        layer: LayerDefinition
-    ): Promise<LayerDefinition> {
+    public initLayer(layer: LayerDefinition): Promise<LayerDefinition> {
         return new Promise<LayerDefinition>(async resolve => {
             // Logger.log(`Init Layer ${layer.id}`);
             // Object.assign(this, { version: "0.0.1", sourceType: "geojson", style: {} });
@@ -356,9 +367,7 @@ export class LayerService {
     }
 
     /** find one specific layer */
-    getLayerAndSourceById(
-        id: string
-    ): Promise<LayerDefinition | undefined> {
+    getLayerAndSourceById(id: string): Promise<LayerDefinition | undefined> {
         return new Promise(async (resolve, reject) => {
             let def = await this.getLayerById(id);
             if (def) {
@@ -370,27 +379,37 @@ export class LayerService {
         });
     }
 
+    triggerLayerRefresh(id: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            Logger.log(`Triggering layer refresh for ${id}`);
+            resolve(true);
+        });
+    }
+
     getLayerSourceById(id: string): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             this.getLayerById(id)
                 .then(def => {
                     // check if layer source was already loaded
-                    if (def) {                        
+                    if (def) {
                         // check if it has an external url, get it and proxy it
                         if (def.externalUrl !== undefined) {
                             console.log(`Loading external source for ${id}`);
-                            Axios.get(def.externalUrl).then(response => {
-                                if (response.data) {
-                                    resolve(response.data);
+                            Axios.get(def.externalUrl)
+                                .then(response => {
+                                    if (response.data) {
+                                        resolve(response.data);
+                                        return;
+                                    }
+                                })
+                                .catch(e => {
+                                    Logger.warn(
+                                        `Error loading ${def.externalUrl}`
+                                    );
+                                    resolve(undefined);
                                     return;
-                                }
-                            }).catch(e => {
-                                Logger.warn(`Error loading ${def.externalUrl}`);
-                                resolve(undefined);
-                                return;
-                            })
-                        } else 
-                        if (def._layerSource !== undefined) {
+                                });
+                        } else if (def._layerSource !== undefined) {
                             resolve(def._layerSource);
                             return;
                         } else {
@@ -419,7 +438,7 @@ export class LayerService {
     private getExtensionSourcePlugin(ext: string): ISourcePlugin | undefined {
         const plugin = LayerService.sourcePlugins.find(
             p =>
-                p.fileExtensions !==undefined &&
+                p.fileExtensions !== undefined &&
                 p.fileExtensions.indexOf(ext.toLowerCase()) !== -1
         );
         if (plugin && typeof plugin.getInstance === 'function') {
@@ -439,9 +458,7 @@ export class LayerService {
     }
 
     /** load & return layer source */
-    loadLayerSource(
-        def: LayerDefinition
-    ): Promise<LayerSource | undefined> {
+    loadLayerSource(def: LayerDefinition): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
@@ -508,10 +525,12 @@ export class LayerService {
                     );
 
                     if (loadResult.meta) {
-                        def.featureTypes = loadResult.meta.featureTypes;                        
-                        if (def.meta === undefined && loadResult.meta.featureTypes) {
-                            
-                            console.log(loadResult.meta);
+                        def.featureTypes = loadResult.meta.featureTypes;
+                        if (
+                            def.meta === undefined &&
+                            loadResult.meta.featureTypes
+                        ) {
+                            // console.log(loadResult.meta);
                             console.log('Save meta');
                         }
                     }

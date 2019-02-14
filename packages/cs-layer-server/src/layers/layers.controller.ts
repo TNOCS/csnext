@@ -61,8 +61,6 @@ export class LayerController {
     }
   }
 
- 
-
   @ApiOperation({
     title: 'Add or update layer definition',
     description: 'Add or update layer definition'
@@ -77,7 +75,26 @@ export class LayerController {
     type: LayerDefinition
   })
   @Put(':id')
-  async putLayer(@Param('id') id: string, @Body() body: LayerDefinition): Promise<LayerDefinition | undefined> {
+  async triggerLayer(@Param('id') id: string, @Body() body: LayerDefinition): Promise<LayerDefinition | undefined> {
     return this.layerService.putLayerDefinitionById(id, body);    
+  }
+
+  @ApiOperation({
+    title: 'Trigger external layer refresh',
+    description: 'Trigger layer refresh'
+  })
+  @ApiImplicitParam({
+    name: 'id',
+    description: 'Specify the layer you want to refresh'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns true if succeeded.',
+    type: Boolean
+  })
+  
+  @Get('/triggerRefresh/:id')
+  async triggerRefresh(@Param('id') id: string): Promise<Boolean> {
+    return this.layerService.triggerLayerRefresh(id);
   }
 }
