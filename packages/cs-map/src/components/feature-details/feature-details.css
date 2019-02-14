@@ -11,6 +11,11 @@
 
 .section-expansion-panel .v-expansion-panel__header {
     padding-left: 12px;
+    
+}
+
+#feature-properties-tab .v-expansion-panel {
+    box-shadow: none !important;
 }
 
 .feature-property-key {
