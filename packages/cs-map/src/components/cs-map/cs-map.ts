@@ -13,6 +13,7 @@ import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import {
     MapLayers,
