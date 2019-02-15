@@ -104,13 +104,19 @@
                 <v-expansion-panel expand :key="key">
                     <v-expansion-panel-content>
                         <div slot="header" class="form-title">
-                            <template v-if="field.canEditKey">
-                                    <!-- {{ target[field._key] }} -->
-                                <v-text-field v-model="key" :label="field.title" @change="keyObjectChange(key)"></v-text-field>
-                            </template>
-                            <template v-else>
-                                {{ field.title }}
-                            </template>                
+                            <v-layout>                                                            
+                                <template v-if="field.canEditKey">
+                                        <!-- {{ target[field._key] }} -->
+                                    <v-layout>
+                                        <v-text-field v-model="key" :label="field.title" @change="keyObjectChange(key)"></v-text-field>
+                                        <v-btn icon flat right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn>
+                                    </v-layout>
+                                </template>
+                                <template v-else>
+                                    {{ field.title }}
+                                </template>
+                                <v-btn icon flat right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)"><v-icon>delete</v-icon></v-btn>
+                            </v-layout>                         
                         </div>
                         <cs-form :data="target[field._key][key]"></cs-form>
                     </v-expansion-panel-content>

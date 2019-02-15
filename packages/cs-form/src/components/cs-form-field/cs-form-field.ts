@@ -11,8 +11,8 @@ import { CsForm } from '../..';
     template: require('./cs-form-field.html'),
     components: { CsForm },
     props: {
-        field: null,
-        target: null
+        field: undefined,
+        target: undefined
     } as any
 })
 export class CsFormField extends Vue {
@@ -21,15 +21,34 @@ export class CsFormField extends Vue {
     public target?: object;
     public field?: IFormFieldOptions;
 
+    public deleteKeyFromObject(key: string, field: IFormFieldOptions) {        
+        if (
+            key !== undefined &&
+            field !== undefined &&
+            this.target !== undefined &&
+            field._key &&
+            this.target.hasOwnProperty(field._key)
+        ) {
+            if (this.target[field._key].hasOwnProperty(key)) {
+                delete this.target[field._key][key];
+                this.$forceUpdate();
+            }
+        }
+    }
+
     public addKeyObject(field: IFormFieldOptions) {
         if (
             !this.target ||
             !field._key ||
             !field.keyValuesType ||
-            !this.target.hasOwnProperty(field._key)            
+            !this.target.hasOwnProperty(field._key)
         ) {
             return;
         }
+        if (this.target[field._key] === undefined) {
+            this.target[field._key] = {};
+        }
+
         this.target[field._key]['new'] = field.keyValuesType();
         this.$forceUpdate();
     }
