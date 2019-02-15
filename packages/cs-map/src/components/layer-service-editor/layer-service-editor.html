@@ -15,8 +15,7 @@
         <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>
         <v-tabs right :color="layerColor" slot="extension" v-model="tabs">
             <v-tab href="#layer">Layer</v-tab>
-            <v-tab href="#style">Style</v-tab>
-            <v-tab href="#features">Features</v-tab>
+            <v-tab href="#style">Style</v-tab>            
         </v-tabs>
     </v-toolbar>
 
@@ -30,13 +29,7 @@
                     class="layer-editor-form"
                     :data.sync="layer.style"
                 ></cs-form>
-            </v-tab-item>
-            <v-tab-item value="features">
-                <cs-form
-                    class="layer-editor-form"
-                    :data.sync="layer.featureTypes"
-                ></cs-form>
-            </v-tab-item>
+            </v-tab-item>            
         </v-tabs-items>
     </div>
 </simplebar>
