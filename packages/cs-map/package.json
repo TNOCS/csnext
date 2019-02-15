@@ -35,7 +35,7 @@
         "mapbox-gl-controls": "^0.0.15",
         "numeral": "^2.0.6",
         "socket.io-client": "^2.2.0",
-        "vue-perfect-scrollbar": "^0.1.0"
+        "vuebar": "^0.0.20"
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.4",

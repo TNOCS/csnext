@@ -2,7 +2,6 @@ import Component from 'vue-class-component';
 import { IWidget } from '@csnext/cs-core';
 
 import './layer-service-editor.css';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { Vue } from 'vue-property-decorator';
 import { BaseLayer } from '../../.';
 import { CsForm } from '@csnext/cs-form';
@@ -10,7 +9,7 @@ import { CsForm } from '@csnext/cs-form';
 @Component({
     name: 'layer-service-editor',
     props: { widget: null, manager: null },
-    components: { VuePerfectScrollbar, 'cs-form': CsForm },
+    components: { 'cs-form': CsForm },
     template: require('./layer-service-editor.html')
 } as any)
 export class LayerServiceEditor extends Vue {

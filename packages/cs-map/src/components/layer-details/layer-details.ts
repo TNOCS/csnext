@@ -3,7 +3,6 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-details.css';
 import { Vue } from 'vue-property-decorator';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { BaseLayer } from '../../layers/base-layer';
 import { PropertyType } from '../../classes/feature-type';
 import { MapLayers } from '../../classes/map-layers';
@@ -27,7 +26,6 @@ export class property {
 @Component({
     name: 'feature-details',
     props: { widget: null },
-    components: { VuePerfectScrollbar },
     template: require('./layer-details.html')
 } as any)
 export class LayerDetails extends Vue {

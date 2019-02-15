@@ -15,8 +15,7 @@ const config = buildConfig(
         'mapbox-gl': 'mapbox-gl',
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
-        '@mapbox/mapbox-gl-draw/dist': '@mapbox/mapbox-gl-draw/dist',
-        'vue-perfect-scrollbar': 'vue-perfect-scrollbar'
+        '@mapbox/mapbox-gl-draw/dist': '@mapbox/mapbox-gl-draw/dist'
         // ,
         // 'handlebars/runtime': 'handlebars/dist/cjs/handlebars.runtime',
         // handlebars: 'handlebars/dist/cjs/handlebars.runtime'

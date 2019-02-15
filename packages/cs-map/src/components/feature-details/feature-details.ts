@@ -3,7 +3,6 @@ import { IWidget } from '@csnext/cs-core';
 
 import './feature-details.css';
 import { Vue } from 'vue-property-decorator';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { Feature } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
@@ -13,6 +12,8 @@ import { MapLayers } from '../../classes/map-layers';
 import { IMapLayer } from '../../classes/imap-layer';
 import { LayerDetails } from '../layer-details/layer-details';
 import { LayerLegend } from '../..';
+
+import simplebar from 'simplebar-vue';
 
 export class section {
     public id?: string;
@@ -30,7 +31,7 @@ export class PropertyDetails {
 @Component({
     name: 'feature-details',
     props: { widget: null },
-    components: { VuePerfectScrollbar },
+    components: {simplebar},
     template: require('./feature-details.html')
 } as any)
 export class FeatureDetails extends Vue {

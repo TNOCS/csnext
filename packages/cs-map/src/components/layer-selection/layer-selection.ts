@@ -4,9 +4,9 @@ import { IWidget } from '@csnext/cs-core';
 import './layer-selection.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
 import { MapLayers, IMapLayer } from '../../.';
-import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import { ILayerAction } from '../../classes/ilayer-action';
 
+import simplebar from 'simplebar-vue';
 export interface ILayerGroup {
     title: string;
     color: string;
@@ -17,7 +17,7 @@ export interface ILayerGroup {
 @Component({
     name: 'layer-selection',
     props: { widget: null },
-    components: { VuePerfectScrollbar },
+    components: { simplebar}, 
     template: require('./layer-selection.html')
 } as any)
 export class LayerSelection extends Vue {

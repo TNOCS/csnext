@@ -24,6 +24,7 @@ import * as en from './../../assets/translations/en.json';
 import * as nl from './../../assets/translations/nl.json';
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
+import 'simplebar/dist/simplebar.min.css';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
