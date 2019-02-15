@@ -5,11 +5,12 @@ import './layer-service-editor.css';
 import { Vue } from 'vue-property-decorator';
 import { BaseLayer } from '../../.';
 import { CsForm } from '@csnext/cs-form';
+import simplebar from 'simplebar-vue';
 
 @Component({
     name: 'layer-service-editor',
     props: { widget: null, manager: null },
-    components: { 'cs-form': CsForm },
+    components: { 'cs-form': CsForm, simplebar },
     template: require('./layer-service-editor.html')
 } as any)
 export class LayerServiceEditor extends Vue {

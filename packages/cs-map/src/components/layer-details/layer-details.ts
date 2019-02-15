@@ -10,6 +10,7 @@ import { IMapLayer } from '../../classes/imap-layer';
 import { LayerEditor } from '../layer-editor/layer-editor';
 import { LayerServiceEditor } from '../layer-service-editor/layer-service-editor';
 import { FeatureDetails } from '../feature-details/feature-details';
+import simplebar from 'simplebar-vue';
 
 export class section {
     public id?: string;
@@ -26,6 +27,7 @@ export class property {
 @Component({
     name: 'feature-details',
     props: { widget: null },
+    components: { simplebar}, 
     template: require('./layer-details.html')
 } as any)
 export class LayerDetails extends Vue {
