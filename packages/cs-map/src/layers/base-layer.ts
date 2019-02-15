@@ -75,6 +75,7 @@ export class BaseLayer implements IMapLayer {
         type: 'keysobject',
         canEditKey: true,
         canAdd: true,
+        canDelete: true,
         keyValuesType: () => {
             return new FeatureType();
         }
