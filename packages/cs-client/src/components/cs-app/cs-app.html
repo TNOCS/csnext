@@ -17,7 +17,7 @@
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-card-text>
-        <component :is="dialog.component"></component>
+        <component :is="dialog.component" :data="dialog.data"></component>
       </v-card-text>
       <div style="flex: 1 1 auto;"></div>
     </v-card>

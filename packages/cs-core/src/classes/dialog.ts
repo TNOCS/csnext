@@ -5,4 +5,5 @@ export interface IDialog {
   fullscreen?: boolean;
   scrollable?: boolean;
   toolbar?: boolean;
+  data?: any;
 }
