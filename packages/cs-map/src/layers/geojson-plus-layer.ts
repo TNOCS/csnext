@@ -10,7 +10,8 @@ import {
     ILayerExtension,
     FeatureType,
     FeatureTypes,
-    PropertyType
+    PropertyType,
+    PropertyDetails
 } from './../.';
 import extent from '@mapbox/geojson-extent';
 import {
@@ -126,6 +127,43 @@ export class GeojsonPlusLayer extends BaseLayer
             }
         }
         this._legends = result;
+    }
+
+    public setLegend(property: PropertyDetails | PropertyType | string) {
+        if (typeof property === 'string') {
+            // AppState.Instance.TriggerNotification({
+            //     title: 'set property ' + property
+            // });
+        } else if (property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox) {
+                let propdetails = property as PropertyDetails;
+                let color = {
+                    property: propdetails.key,
+                    stops: [
+                        // "temperature" is 0   -> circle color will be blue
+                        [propdetails.type!.min, 'blue'],
+                        // "temperature" is 100 -> circle color will be red
+                        [propdetails.type!.max, 'red']
+                    ]
+                };
+                console.log(color);
+                if (this.style.mapbox.fillPaint) {
+                    this.style.mapbox.fillPaint['fill-color'] = color;
+                }
+                if (this.style.mapbox.circlePaint) {
+                    this.style.mapbox.circlePaint['circle-color'] = color;
+                }
+                if (this.style.mapbox.linePaint) {
+                    this.style.mapbox.linePaint['line-color'] = color;
+                }
+            }
+            // AppState.Instance.TriggerNotification({
+            //     title: 'set property ' + (property as PropertyDetails).key
+            // });
+        }
+        if (this._manager) {
+            this._manager.refreshLayer(this);
+        }
     }
 
     public updateLayer() {
@@ -343,7 +381,7 @@ export class GeojsonPlusLayer extends BaseLayer
         });
 
         if (this.featureTypes) {
-            let keys = Object.keys(this.featureTypes);            
+            let keys = Object.keys(this.featureTypes);
             Object.keys(this.featureTypes).forEach(k => {
                 if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
                     this.featureTypes[k] = plainToClass(
@@ -353,7 +391,10 @@ export class GeojsonPlusLayer extends BaseLayer
 
                     let type = this.featureTypes[k];
                     if (type.properties) {
-                        type.properties = plainToClass(PropertyCollection, type.properties);
+                        type.properties = plainToClass(
+                            PropertyCollection,
+                            type.properties
+                        );
                         for (const pk in type.properties) {
                             if (type.properties.hasOwnProperty(pk)) {
                                 type.properties[pk] = plainToClass(
@@ -429,7 +470,7 @@ export class GeojsonPlusLayer extends BaseLayer
             };
         }
 
-        if (this.style.pointCircle === true) {            
+        if (this.style.pointCircle === true) {
             this._circleLayer = new GeojsonLayer({
                 id: this.id + '-circles',
                 type: 'circle',

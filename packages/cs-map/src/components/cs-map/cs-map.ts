@@ -197,7 +197,7 @@ export class CsMap extends Vue {
                                     'feature',
                                     (a: string, f: FeatureEventDetails) => {
                                         if (a === CsMap.FEATURE_SELECT) {
-                                            if (layer.openFeatureDetails && layer.openFeatureDetails ===true) {
+                                            if (layer.openFeatureDetails && layer.openFeatureDetails ===true) {                                                
                                                 this.$cs.OpenRightSidebarWidget(
                                                     {
                                                         component: FeatureDetails,

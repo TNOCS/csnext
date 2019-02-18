@@ -1,4 +1,4 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType, ILayerService, ILayer} from '..';
+import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
 import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
 import { ILayerExtensionType} from './ilayer-extension';
 import { LayerLegend } from './layer-legend';
@@ -21,6 +21,7 @@ export interface IMapLayer extends ILayer {
     moveLayer(beforeId?: string);    
     updateLayer();
     updateLegends();
+    setLegend(property: PropertyDetails | PropertyType | string);
     _events?: MessageBusService;
     _legends?: LayerLegend[];
     

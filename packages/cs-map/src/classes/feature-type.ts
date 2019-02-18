@@ -21,6 +21,7 @@ export class PropertyType {
         required: true,
         options: ['text', 'number']
     })
+    public _key?: string;
     public type?: string;
     public description?: string;
     public stringFormat?: string;

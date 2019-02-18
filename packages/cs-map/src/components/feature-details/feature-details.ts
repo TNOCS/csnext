@@ -150,8 +150,10 @@ export class FeatureDetails extends Vue {
             // this.layer
             if (this.manager && this.layer) {
                 // this.manager.removeLegend(this.layer, property.key);
+                this.layer.setLegend(property);
+                // this.$cs.TriggerNotification({ title: property.key + ' enable'});
             }
-            this.$cs.TriggerNotification({ title: property.key + ' enable'});
+            
         }
         
     }

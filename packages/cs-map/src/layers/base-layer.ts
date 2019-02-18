@@ -7,7 +7,8 @@ import {
     FeatureType,
     ILayerService,
     PropertyType,
-    FeatureTypes
+    FeatureTypes,
+    PropertyDetails
 } from './../.';
 import { CsMap } from './..';
 import mapboxgl, { CirclePaint } from 'mapbox-gl';
@@ -21,6 +22,7 @@ import { Feature } from 'geojson';
 import { FeatureEventDetails } from '../components/cs-map/cs-map';
 import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
+import { AppState } from '@csnext/cs-client';
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
@@ -76,6 +78,7 @@ export class BaseLayer implements IMapLayer {
         canEditKey: true,
         canAdd: true,
         canDelete: true,
+        addUsingDialog: true,
         keyValuesType: () => {
             return new FeatureType();
         }
@@ -158,6 +161,18 @@ export class BaseLayer implements IMapLayer {
             return e.features[0];
         }
         return undefined;
+    }
+
+    public setLegend(property: PropertyDetails | PropertyType | string) {
+        // if (typeof property === 'string') {
+        //     AppState.Instance.TriggerNotification({
+        //         title: 'set property ' + property
+        //     });
+        // } else if (property.hasOwnProperty('key')) {
+        //     AppState.Instance.TriggerNotification({
+        //         title: 'set property ' + (property as PropertyDetails).key
+        //     });
+        // }
     }
 
     public getStyleLegend(style: any): LayerLegend[] {
