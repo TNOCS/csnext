@@ -1,8 +1,7 @@
-import { Watch, Prop } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import {
     IWidget,
-    guidGenerator,
     IFormOptions,
     IFormObject,
     IFormFieldOptions
@@ -11,7 +10,6 @@ import Component from 'vue-class-component';
 import './cs-form.css';
 import 'reflect-metadata';
 import { CsFormField } from '../..';
-import { plainToClass } from 'class-transformer';
 
 export class FieldGroup {
     public id!: string;
@@ -58,6 +56,10 @@ export class CsForm extends Vue {
         return undefined;
     }
 
+    public set formObject(obj: IFormObject | undefined) {
+        this.data = obj;
+    }
+
     @Prop()
     public widget!: IWidget;
 
@@ -67,7 +69,7 @@ export class CsForm extends Vue {
             this.formObject.save &&
             typeof this.formObject.save === 'function'
         ) {
-            this.formObject.save().then(res => {
+            this.formObject.save().then(() => {
                 console.log(this.widget.data);
                 console.log('Save confirmed');
             });

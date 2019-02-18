@@ -1,6 +1,8 @@
-import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, IFormFieldOptions } from '@csnext/cs-core';
+import {
+    IFormFieldOptions,
+    IDialog
+} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-form-field.css';
 import 'reflect-metadata';
@@ -21,7 +23,7 @@ export class CsFormField extends Vue {
     public target?: object;
     public field?: IFormFieldOptions;
 
-    public deleteKeyFromObject(key: string, field: IFormFieldOptions) {        
+    public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (
             key !== undefined &&
             field !== undefined &&
@@ -50,6 +52,15 @@ export class CsFormField extends Vue {
         }
 
         this.target[field._key]['new'] = field.keyValuesType();
+        if (field.addUsingDialog) {
+            // let form = new CsForm();
+            // this.$cs.TriggerDialog({
+            //     component: CsForm,
+            //     data: this.target[field._key]['new'],
+            //     toolbar: true,
+            //     title: field.title
+            // } as IDialog);
+        }
         this.$forceUpdate();
     }
 
