@@ -126,7 +126,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 }
             }
         }
-        this._legends = result;
+        this._legends = result;        
     }
 
     public setLegend(property: PropertyDetails | PropertyType | string) {
@@ -164,6 +164,8 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager) {
             this._manager.refreshLayer(this);
         }
+        this.updateLegends();   
+        console.log(this._legends);     
     }
 
     public updateLayer() {
