@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.108",
+  "version": "0.0.109",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -28,15 +28,15 @@
     "express": "^4.16.4",
     "lockfile": "^1.0.4",
     "lodash": "^4.17.11",
-    "simple-statistics": "^7.0.1",
+    "moment": "^2.24.0",
     "pg": "^7.8.0",
     "pg-query-stream": "^1.1.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.4.0",
+    "simple-statistics": "^7.0.1",
     "socket.io": "^2.2.0",
     "uuid": "^3.3.2",
-    "wkx": "^0.4.6",
-    "moment": "^2.24.0"
+    "wkx": "^0.4.6"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",
