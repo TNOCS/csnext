@@ -19,10 +19,10 @@
         "access": "public"
     },
     "dependencies": {
-        "@vue/cli-shared-utils": "^3.4.0"
+        "@vue/cli-shared-utils": "^3.4.1"
     },
     "devDependencies": {
-        "register-service-worker": "^1.6.0"
+        "register-service-worker": "^1.6.2"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
