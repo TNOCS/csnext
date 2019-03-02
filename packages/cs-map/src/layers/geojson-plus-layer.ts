@@ -129,7 +129,7 @@ export class GeojsonPlusLayer extends BaseLayer
         this._legends = result;        
     }
 
-    public setLegend(property: PropertyDetails | PropertyType | string) {
+    public setLegend(property: PropertyDetails | PropertyType | string, refreshLayer = true) {
         if (typeof property === 'string') {
             // AppState.Instance.TriggerNotification({
             //     title: 'set property ' + property
@@ -145,8 +145,7 @@ export class GeojsonPlusLayer extends BaseLayer
                         // "temperature" is 100 -> circle color will be red
                         [propdetails.type!.max, 'red']
                     ]
-                };
-                console.log(color);
+                };                
                 if (this.style.mapbox.fillPaint) {
                     this.style.mapbox.fillPaint['fill-color'] = color;
                 }
@@ -161,7 +160,7 @@ export class GeojsonPlusLayer extends BaseLayer
             //     title: 'set property ' + (property as PropertyDetails).key
             // });
         }
-        if (this._manager) {
+        if (this._manager && refreshLayer) {            
             this._manager.refreshLayer(this);
         }
         this.updateLegends();   

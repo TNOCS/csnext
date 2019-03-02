@@ -163,7 +163,7 @@ export class BaseLayer implements IMapLayer {
         return undefined;
     }
 
-    public setLegend(property: PropertyDetails | PropertyType | string) {
+    public setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean) {
         // if (typeof property === 'string') {
         //     AppState.Instance.TriggerNotification({
         //         title: 'set property ' + property
@@ -180,8 +180,8 @@ export class BaseLayer implements IMapLayer {
         for (const key in style) {
             if (style.hasOwnProperty(key)) {
                 const prop = style[key];
-                if (prop.hasOwnProperty('stops')) {
-                    result.push({ property: key, stops: prop.stops });
+                if (prop.hasOwnProperty('stops')) {                    
+                    result.push({ property: prop.property, stops: prop.stops, styleProperty: key });
                 }
             }
         }

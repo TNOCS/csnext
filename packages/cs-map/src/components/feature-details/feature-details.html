@@ -17,7 +17,7 @@
             show on map</v-tooltip
         >
         <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>
-        <v-tabs right :color="layerColor" slot="extension" v-model="tabs">
+        <v-tabs right color="transparent" slot="extension" v-model="tabs">
             <v-tab href="#details">Details</v-tab>
             <v-tab href="#filters">Filter</v-tab>
         </v-tabs>
@@ -53,7 +53,7 @@
                                         :class="{ 'feature-legend': property.legends.length>0 }"
                                         @click="updateStyle(property)"
                                     >
-                                        {{ property.type.title }}
+                                        {{ property.type.title }}                                        
                                     </div>
                                     <div class="feature-property-value">
                                         {{ property.value }}
