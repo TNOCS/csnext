@@ -116,8 +116,6 @@ export class CsForm extends Vue {
 
         this.Form.fields.map(f => {
             if (f.type === 'keysobject') {
-                console.log('keysobject');
-                console.log(f);
             }
             if (!f.group) {
                 const newGroup = new FieldGroup();
