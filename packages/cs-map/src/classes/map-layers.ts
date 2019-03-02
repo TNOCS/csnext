@@ -1,6 +1,12 @@
 import { IDatasource, MessageBusService } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
-import { LayerSources, CsMap, IMapLayer, GeojsonLayer, PropertyDetails } from '../.';
+import {
+    LayerSources,
+    CsMap,
+    IMapLayer,
+    GeojsonLayer,
+    PropertyDetails
+} from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import {
@@ -10,10 +16,7 @@ import {
     LineString,
     Polygon
 } from 'geojson';
-import {
-    ILayerService,
-    IStartStopService
-} from './layer-service';
+import { ILayerService, IStartStopService } from './layer-service';
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 
 export class MapLayers implements IDatasource {
@@ -71,9 +74,7 @@ export class MapLayers implements IDatasource {
         return result;
     }
 
-    public removeLegend(layer: IMapLayer, pd: PropertyDetails) {
-        
-    }
+    public removeLegend(layer: IMapLayer, pd: PropertyDetails) {}
 
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
@@ -114,6 +115,7 @@ export class MapLayers implements IDatasource {
                     .catch(() => {
                         reject();
                     });
+
                 this.events.publish('layer', 'enabled', ml);
                 // check if not already subscribed to features events
                 if (ml._events && !ml._featureEventHandle) {
@@ -121,7 +123,6 @@ export class MapLayers implements IDatasource {
                     ml._featureEventHandle = ml._events.subscribe(
                         'feature',
                         (a: string, f: Feature) => {
-                            
                             // also publish this event to manager
                             this.events.publish('feature', a, f);
                         }
@@ -156,7 +157,7 @@ export class MapLayers implements IDatasource {
     public refreshLayers() {
         if (this.layers) {
             for (const layer of this.layers) {
-                this.refreshLayer(layer);                
+                this.refreshLayer(layer);
             }
         }
     }
@@ -164,7 +165,7 @@ export class MapLayers implements IDatasource {
     public refreshLayer(layer: IMapLayer) {
         if (layer.Visible) {
             this.hideLayer(layer);
-            this.showLayer(layer);          
+            this.showLayer(layer);
         }
     }
 
@@ -179,7 +180,9 @@ export class MapLayers implements IDatasource {
     }
 
     public zoomFeature(feature: Feature, zoomLevel?: number) {
-        if (!this.map) { return; }
+        if (!this.map) {
+            return;
+        }
         var coords: [number, number] | undefined = undefined;
         if (feature.geometry.type === 'Point') {
             coords = (feature.geometry as Point).coordinates as [
@@ -197,7 +200,11 @@ export class MapLayers implements IDatasource {
                 number
             ];
         }
-        if (coords) this.map.map.flyTo({ center: LngLat.convert(coords), zoom: zoomLevel ? zoomLevel : this.map.map.getZoom() });
+        if (coords)
+            this.map.map.flyTo({
+                center: LngLat.convert(coords),
+                zoom: zoomLevel ? zoomLevel : this.map.map.getZoom()
+            });
     }
 
     public zoomFeatureId(layer: IMapLayer, featureId: string) {
@@ -466,6 +473,12 @@ export class MapLayers implements IDatasource {
                 }
                 layer.initLayer(this);
                 this.layers.push(layer);
+                if (layer.style) {
+                    // if specified, set default legend
+                    if (layer.style.defaultLegendProperty) {
+                        ml.setLegend(layer.style.defaultLegendProperty, false);
+                    }
+                }
                 this.showLayer(layer)
                     .then(m => resolve(m))
                     .catch(e => reject(e));

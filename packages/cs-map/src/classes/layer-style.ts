@@ -26,6 +26,7 @@ export interface ILayerStyle {
     pointCircle?: boolean;
     icon?: string;
     icons?: { [id: string]: string };
+    defaultLegendProperty?: string;
 }
 
 export const MapboxStopForm: IFormOptions = {
@@ -432,6 +433,8 @@ export class LayerStyle implements ILayerStyle {
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
     public icons?: { [id: string]: string };
+    @FormField({ title: 'Default layer property', type: 'string' })
+    public defaultLegendProperty?: string;
     @FormField({ title: 'Styles', type: 'object' })
     public mapbox?: MapboxStyles;
 }

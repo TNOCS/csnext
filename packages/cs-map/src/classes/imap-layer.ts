@@ -21,7 +21,7 @@ export interface IMapLayer extends ILayer {
     moveLayer(beforeId?: string);    
     updateLayer();
     updateLegends();
-    setLegend(property: PropertyDetails | PropertyType | string);
+    setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean);
     _events?: MessageBusService;
     _legends?: LayerLegend[];
     
