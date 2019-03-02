@@ -1,7 +1,7 @@
 module.exports = {
     title: 'Common Sense',
     description: '',
-    base: '/csnext/',
+    base: '/',
     dest: '../../docs/',
     head: [
         ['link', { rel: 'icon', href: `/logo.png` }],
