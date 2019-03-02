@@ -26,7 +26,9 @@ const config = buildConfig(
 config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
 
 config.node = {
-    fs: 'empty'
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
 };
 
 module.exports = [config];
