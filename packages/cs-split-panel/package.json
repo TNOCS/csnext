@@ -22,13 +22,13 @@
     "vue-split-panel": "^1.0.4"
   },
   "devDependencies": {
-    "@types/node": "^11.9.5",
+    "@types/node": "^11.9.6",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
-    "webpack": "~4.29.5",
+    "webpack": "~4.29.6",
     "webpack-bundle-analyzer": "^3.0.4",
     "webpack-cli": "^3.2.3"
   },

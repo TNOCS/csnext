@@ -22,13 +22,13 @@
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
-        "@types/node": "^10.12.24",
+        "@types/node": "^11.9.6",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
-        "typescript": "^3.3.3",
-        "webpack": "~4.29.3",
+        "typescript": "^3.3.3333",
+        "webpack": "~4.29.6",
         "webpack-cli": "^3.2.3"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
