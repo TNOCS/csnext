@@ -134,7 +134,7 @@
 
     <!-- right side bar button -->
 
-    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent" @click="rightSidebar.open=!rightSidebar.open"
+    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0" @click="rightSidebar.open=!rightSidebar.open"
       class="header-icon" flat>
       <v-tooltip bottom>
         <v-icon slot="activator" v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
