@@ -186,7 +186,7 @@ export class LayerService {
                                 title: title
                             } as LayerDefinition;
 
-                            this.addLayer(layer);                                                    
+                            this.addLayer(layer);
 
                             // this.initLayer(layer)
                             //   .then(l => {})
@@ -395,20 +395,45 @@ export class LayerService {
                         // check if it has an external url, get it and proxy it
                         if (def.externalUrl !== undefined) {
                             console.log(`Loading external source for ${id}`);
-                            Axios.get(def.externalUrl)
-                                .then(response => {
-                                    if (response.data) {
-                                        resolve(response.data);
+                            // check if cache is valid and available
+                            if (
+                                def.externalCacheDuration > 0 &&
+                                def._layerSource
+                            ) {
+                                resolve(def._layerSource);
+                            } else {
+                                Axios.get(def.externalUrl)
+                                    .then(async response => {
+                                        if (response.data) {
+                                            if (def.externalCacheDuration > 0) {
+                                                def._layerSource =
+                                                    response.data;
+                                                try {
+                                                    // create layer meta data
+                                                    const meta = await new GeojsonSource().createMeta(
+                                                        def._layerSource
+                                                    );
+                                                    if (
+                                                        meta &&
+                                                        meta.featureTypes
+                                                    ) {
+                                                        def.featureTypes =
+                                                            meta.featureTypes;
+                                                    }
+                                                } catch (e) {}
+                                            }
+                                            resolve(response.data);
+                                            return;
+                                        }
+                                    })
+                                    .catch(e => {
+                                        Logger.warn(
+                                            `Error loading ${def.externalUrl}`
+                                        );
+                                        resolve(undefined);
                                         return;
-                                    }
-                                })
-                                .catch(e => {
-                                    Logger.warn(
-                                        `Error loading ${def.externalUrl}`
-                                    );
-                                    resolve(undefined);
-                                    return;
-                                });
+                                    });
+                            }
                         } else if (def._layerSource !== undefined) {
                             resolve(def._layerSource);
                             return;

@@ -103,7 +103,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         }
     }
 
-    createMeta(source: LayerSource): Promise<LayerMeta> {
+    public createMeta(source: LayerSource): Promise<LayerMeta> {
         return new Promise((resolve, reject) => {
             let result = new LayerMeta();
             let ft = new FeatureType();

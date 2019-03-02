@@ -9,6 +9,7 @@ export class LayerStyle {
     public line?: boolean;
     public popup?: string;
     public pointCircle?: boolean;
+    public defaultLegendProperty?: string;
 }
 
 export class MapboxStyle {
