@@ -32,6 +32,7 @@ import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import { MdWidget } from './widgets/markdown/md-widget';
 import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
+import { VegaWidget } from './widgets/vega/vega-widget';
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -63,6 +64,7 @@ export const CsNext = {
     vue.component('cs-sidebar', CsSidebar);
     vue.component('cs-widget', CsWidget);
     vue.component('md-widget', MdWidget);
+    vue.component('vega-widget', VegaWidget);
   }
 };
 

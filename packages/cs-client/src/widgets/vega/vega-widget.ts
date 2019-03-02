@@ -1,47 +1,69 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 
 declare var vega: any;
 
 @Component({
   name: 'vega-widget',
-  template: '<div :id="\'vega-\' + widget.id"></div>',
+  template: '<div :id="\'vega-\' + id"></div>',
   props: {
+    data: null,
     widget: null
   }
 } as any)
 export class VegaWidget extends Vue {
   public view: any;
+  public data?: any;
 
   /** access the original widget from configuration */
   public widget!: IWidget;
+  // tslint:disable-next-line:variable-name
+  private _id?: string;
 
-  @Watch('widget.data', { deep: true})
+  public get id(): string {
+    if (this.widget !== undefined && this.widget.id) {
+      return this.widget.id;
+    }
+    if (!this._id) {
+      return (this._id = guidGenerator());
+    }
+    return this._id;
+  }
+
+  @Watch('widget.data', { deep: true })
   public dataChanged() {
     this.updateChart();
   }
 
-  @Watch('widget.content', { deep: true})
+  @Watch('widget.content', { deep: true })
   public contentChanged() {
     this.updateChart();
+  }
+
+  public mounted() {
+    // alert('Init chart');
   }
 
   private updateChart() {
     Vue.nextTick(() => {
       // check if path for definition is available
-      const data = this.widget.content ? this.widget.content.graph : this.widget.data;      
-      if (data && data.path) {
+      if (!this.data) {
+        this.data = this.widget.content
+          ? this.widget.content.graph
+          : this.widget.data;
+      }
+      if (this.data && this.data.path) {
         vega
           .loader()
-          .load(data.path)
+          .load(this.data.path)
           .then((d: any) => {
             this.viewRender(JSON.parse(d));
           });
       } else {
-        if (data) {
-          this.viewRender(data);
+        if (this.data) {
+          this.viewRender(this.data);
         }
       }
     });
@@ -62,7 +84,7 @@ export class VegaWidget extends Vue {
       }
       this.view = new vega.View(vega.parse(spec))
         .renderer('canvas') // set renderer (canvas or svg)
-        .initialize('#vega-' + this.widget.id) // initialize view within parent DOM container
+        .initialize('#vega-' + this.id) // initialize view within parent DOM container
         .hover() // enable hover encode set processing
         .run();
     });
