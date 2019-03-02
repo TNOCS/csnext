@@ -7,7 +7,8 @@ import {
   ISidebarOptions,
   NavigationOptions,
   AppStateBase,
-  ILanguageOptions
+  ILanguageOptions,
+  ServerConnection
 } from './..';
 import { IMenu } from './menu';
 import { INotificationOptions } from './notification-options';
@@ -29,8 +30,7 @@ export interface IProject {
   menus?: IMenu[];
   languages?: ILanguageOptions;
   data?: any;
-  useSocket?: boolean;
-  socketServerUrl?: string;
+  server?: ServerConnection;
   _appState?: AppStateBase;
   init?();
 }

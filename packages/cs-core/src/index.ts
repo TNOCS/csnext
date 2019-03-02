@@ -27,6 +27,7 @@ export * from './classes/notification';
 export * from './classes/notification-options';
 export * from './classes/IEventObject';
 export * from './classes/MainBus';
+export * from './classes/server-connection';
 export { guidGenerator } from './utils/guid';
 
 // export *  from './classes/plugin';
