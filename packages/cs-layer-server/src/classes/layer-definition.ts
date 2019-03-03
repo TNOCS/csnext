@@ -17,9 +17,6 @@ export class LayerDefinition implements ILayer {
     /** layer description */
     public description: string;    
 
-    @ApiModelProperty()    
-    public type?: string;
-
     @ApiModelProperty({ type: [String] })
     /** list of tags associated with this layer */
     public tags: string[];

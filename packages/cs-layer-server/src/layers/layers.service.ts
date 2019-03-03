@@ -7,7 +7,8 @@ import {
     ISourcePlugin,
     ServerConfig,
     LayerDefinition,
-    LayerSource
+    LayerSource,
+    Helpers
 } from '../classes';
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
@@ -33,7 +34,7 @@ export class LayerService {
     public static sourcePlugins: ISourcePluginType[] = [];
 
     /** register new source plugin  */
-    public static AddSourcePlugin(type: ISourcePluginType) {        
+    public static AddSourcePlugin(type: ISourcePluginType) {
         if (
             LayerService.sourcePlugins.findIndex(et => et.id === type.id) === -1
         ) {
@@ -204,9 +205,22 @@ export class LayerService {
 
     public addLayer(def: LayerDefinition): Promise<LayerDefinition> {
         return new Promise((resolve, reject) => {
-            this.config.layers.push(def);
+            let newDef = Object.assign(
+                {
+                    id: Helpers.guidGenerator(),
+                    sourceType: 'geojson',
+                    version: '0.0.1',
+                    color: 'blue',
+                    isLive: false,
+                    tags: [],
+                    isEditable: false,
+                    tileSupport: false
+                },
+                def
+            );
+            this.config.layers.push(newDef);
             this.saveServerConfigDelay();
-            resolve(def);
+            resolve(newDef);
         });
     }
 
@@ -268,7 +282,7 @@ export class LayerService {
                 try {
                     const s = await this.getLayerSourceById(layer.id);
                     if (s !== undefined) {
-                        layer.style.types = this.findType(s);                        
+                        layer.style.types = this.findType(s);
                         if (layer.style.types.includes('point')) {
                             layer.style.pointCircle = true;
                         }
@@ -354,13 +368,29 @@ export class LayerService {
                     ...this.config.layers[defIndex],
                     ...body
                 };
+
+                this.saveServerConfig();
+                resolve(body);
             } else {
                 // create new layer
-                reject();
-                return;
+                try {
+                    let newLayerDef = await this.addLayer(body);
+                    const plugin = this.getSourcePlugin(newLayerDef.sourceType);
+                    if (plugin && typeof plugin.createEmpty === 'function') {
+                        try {
+                            
+                            const newSource = await plugin.createEmpty(path.join(this.config.serverPath, this.config.sourcePath),  
+                                newLayerDef
+                            );
+                            newLayerDef = newSource.def;
+                        } catch (e) {}
+                    }
+                    this.saveServerConfig();
+                    resolve(newLayerDef);
+                } catch (e) {
+                    reject();
+                }
             }
-            this.saveServerConfig();            
-            resolve(body);
         });
     }
 
@@ -553,7 +583,7 @@ export class LayerService {
                             def.meta === undefined &&
                             loadResult.meta.featureTypes
                         ) {
-                            // console.log(loadResult.meta);                            
+                            // console.log(loadResult.meta);
                         }
                     }
 
@@ -589,11 +619,11 @@ export class LayerService {
     }
 
     putLayerSourceById(id: string, body: LayerSource): Promise<boolean> {
-        return new Promise(resolve => {            
+        return new Promise(resolve => {
             this.getLayerSourceById(id)
                 .then(s => {
                     if (s) {
-                        s.features = body.features;                        
+                        s.features = body.features;
                         if (this.socket && this.socket.server) {
                             this.socket.server.emit(
                                 'layer/' + id,

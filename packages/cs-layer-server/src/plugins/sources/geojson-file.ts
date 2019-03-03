@@ -3,11 +3,13 @@ import {
     ISourcePluginType,
     LayerSource,
     ILoadResult,
-    LayerMeta
+    LayerMeta,
+    LayerDefinition
 } from '../../classes';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Feature } from 'geojson';
+import path from 'path';
 import uuidv1 from 'uuid/v1';
 import moment from 'moment';
 import {
@@ -35,6 +37,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     load(file: string, meta?: string): Promise<ILoadResult> {
         return new Promise(async (resolve, reject) => {
             if (fs.existsSync(file)) {
+                console.log(file);
                 try {
                     // Logger.log(`Loading: ${file}`);
                     const sourceContent = fs.readFileSync(file, 'utf8');
@@ -45,7 +48,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     // source._tiles = await createTileIndex(source, { extent: 4096 });
                     // source was updated, save again
                     if (updated) {
-                        this.save(file, source);
+                        this.saveSource(file, source);
                     }
 
                     if (meta) {
@@ -103,6 +106,38 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         }
     }
 
+    public createEmpty(
+        folder: string,
+        def: LayerDefinition
+    ): Promise<{ def: LayerDefinition; source: LayerSource }> {
+        return new Promise((resolve, reject) => {
+            console.log('Creating new file');
+            if (def.id) {
+
+                const sourceFolder = path.join(folder, def.id);
+                def.source = def.id + '.json';
+                const sourceFile = path.join(sourceFolder, def.source);
+                if (!fs.existsSync(sourceFolder)) {
+                    console.log('Creating new folder');
+                    console.log(sourceFolder);
+                    fs.mkdirSync(sourceFolder);
+                }
+
+                console.log('Creating source');
+
+                let source = new LayerSource();
+                source.id = def.id;
+                source.type = 'FeatureCollection';
+                source.features = [];
+                console.log('Saving source');
+                this.saveSource(sourceFile, source);
+                resolve({ def: def, source: source });
+                return;
+            }
+            reject();
+        });
+    }
+
     public createMeta(source: LayerSource): Promise<LayerMeta> {
         return new Promise((resolve, reject) => {
             let result = new LayerMeta();
@@ -134,71 +169,79 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
 
                                     let pt = ft.properties[prop];
                                     if (pt && pt.type !== undefined) {
-                                        if (pt.type === 'number' && typeof element === 'string') {
+                                        if (
+                                            pt.type === 'number' &&
+                                            typeof element === 'string'
+                                        ) {
                                             element = parseFloat(element);
                                             feature.properties[prop] = element;
                                         }
                                         pt._values.push(element);
 
-                                        
-
                                         // // determine min/max
-                                        // if (pt.type === 'number') {
-                                        //     const value =
-                                        //         typeof element === 'number'
-                                        //             ? element
-                                        //             : parseFloat(element);
-                                        //     if (
-                                        //         pt.min === undefined ||
-                                        //         value < pt.min
-                                        //     ) {
-                                        //         pt.min = value;
-                                        //     }
-                                        //     if (
-                                        //         pt.max === undefined ||
-                                        //         value > pt.max
-                                        //     ) {
-                                        //         pt.max = value;
-                                        //     }
-                                        // }
+                                        //
+                                        if (pt.type === 'number') {
+                                            //     const value =
+                                            //         typeof element === 'number'
+                                            //             ? element
+                                            //             : parseFloat(element);
+                                            //     if (
+                                            //         pt.min === undefined ||
+                                            //         value < pt.min
+                                            //     ) {
+                                            //         pt.min = value;
+                                            //     }
+                                            //     if (
+                                            //         pt.max === undefined ||
+                                            //         value > pt.max
+                                            //     ) {
+                                            //         pt.max = value;
+                                            //     }
+                                            // }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            for (const pt in ft.properties) {
-                if (ft.properties.hasOwnProperty(pt)) {
-                    const proptype = ft.properties[pt];
-                    proptype.count = proptype._values.length;
-                    let unique: any[] = _.uniq(proptype._values);
-                    proptype.unique = unique.length;
-                    if (proptype.unique < 7) {
-                        proptype.options = unique;
-                    }
-
-                    if (proptype.type === 'number' && proptype._values) {
-                        if (unique.length > 1) {
-                            proptype.min = parseFloat(min(proptype._values).toString());
-                            proptype.max = parseFloat(max(proptype._values).toString());
-                            proptype.mean = mean(proptype._values);
-                            if (proptype.count > 10) {
-                                proptype.median = median(proptype._values);
-                                proptype.sd = standardDeviation(
-                                    proptype._values
-                                );                                
-                            }
+                for (const pt in ft.properties) {
+                    if (ft.properties.hasOwnProperty(pt)) {
+                        const proptype = ft.properties[pt];
+                        proptype.count = proptype._values.length;
+                        let unique: any[] = _.uniq(proptype._values);
+                        proptype.unique = unique.length;
+                        if (proptype.unique < 7) {
+                            proptype.options = unique;
                         }
 
-                        // let steps = ckmeans(proptype._values, 5);
-                        proptype.legend = {};
+                        if (proptype.type === 'number' && proptype._values) {
+                            if (unique.length > 1) {
+                                proptype.min = parseFloat(
+                                    min(proptype._values).toString()
+                                );
+                                proptype.max = parseFloat(
+                                    max(proptype._values).toString()
+                                );
+                                proptype.mean = mean(proptype._values);
+                                if (proptype.count > 10) {
+                                    proptype.median = median(proptype._values);
+                                    proptype.sd = standardDeviation(
+                                        proptype._values
+                                    );
+                                }
+                            }
+
+                            // let steps = ckmeans(proptype._values, 5);
+                            proptype.legend = {};
+                        }
+                        delete proptype._values;
                     }
-                    delete proptype._values;
                 }
+                result.featureTypes = { main: ft };
+                
             }
-            result.featureTypes = { main: ft };
             resolve(result);
         });
     }
@@ -247,7 +290,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         });
     }
 
-    save(file: string, source: LayerSource) {
+    saveSource(file: string, source: LayerSource) {
         Logger.log(`Saving: ${file}`);
         fs.writeFileSync(
             file,
