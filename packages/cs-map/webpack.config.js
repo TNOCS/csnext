@@ -23,6 +23,7 @@ const config = buildConfig(
     'csmap'
 );
 
+
 config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
 
 config.node = {

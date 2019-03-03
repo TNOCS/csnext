@@ -12,6 +12,7 @@ import { MapLayers } from '../../classes/map-layers';
 import { IMapLayer } from '../../classes/imap-layer';
 import { LayerDetails } from '../layer-details/layer-details';
 import { LayerLegend } from '../..';
+import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
 
@@ -132,12 +133,18 @@ export class FeatureDetails extends Vue {
                 }
 
                 const element = this.feature.properties[key];
-                defaultSection.properties!.push({
+                let prop = {
                     key: key,
                     value: element,
                     type: pt,
-                    legends: legends 
-                });
+                    legends: legends,                    
+                    display: element
+                };
+                if (pt.stringFormat !== undefined) {
+                    const template = Handlebars.compile(pt.stringFormat);
+                    prop.display = template(prop);
+                } 
+                defaultSection.properties!.push(prop);
             }
         }
         return result;
