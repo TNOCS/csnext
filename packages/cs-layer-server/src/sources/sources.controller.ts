@@ -39,8 +39,7 @@ export class SourceController {
   async putLayerSource(
     @Param("id") id: string,
     @Body() body: LayerSource
-  ): Promise<boolean> {
-    console.log(id);
+  ): Promise<boolean> {    
     return await this.layerService.putLayerSourceById(id, body);
   }
 }

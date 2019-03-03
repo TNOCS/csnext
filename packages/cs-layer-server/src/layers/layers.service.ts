@@ -27,14 +27,13 @@ export class LayerService {
 
     handleConnection(d: Client) {
         // this.server.emit('buttonCount',AppService.buttonCount);
-        console.log(`Connection received from ${d.id}`);
+        Logger.log(`Connection received from ${d.id}`);
     }
 
     public static sourcePlugins: ISourcePluginType[] = [];
 
     /** register new source plugin  */
-    public static AddSourcePlugin(type: ISourcePluginType) {
-        console.log(type);
+    public static AddSourcePlugin(type: ISourcePluginType) {        
         if (
             LayerService.sourcePlugins.findIndex(et => et.id === type.id) === -1
         ) {
@@ -269,8 +268,7 @@ export class LayerService {
                 try {
                     const s = await this.getLayerSourceById(layer.id);
                     if (s !== undefined) {
-                        layer.style.types = this.findType(s);
-                        console.log(layer.style.types);
+                        layer.style.types = this.findType(s);                        
                         if (layer.style.types.includes('point')) {
                             layer.style.pointCircle = true;
                         }
@@ -357,11 +355,11 @@ export class LayerService {
                     ...body
                 };
             } else {
+                // create new layer
                 reject();
                 return;
             }
-            this.saveServerConfig();
-            console.log(body.title);
+            this.saveServerConfig();            
             resolve(body);
         });
     }
@@ -394,7 +392,7 @@ export class LayerService {
                     if (def) {
                         // check if it has an external url, get it and proxy it
                         if (def.externalUrl !== undefined) {
-                            console.log(`Loading external source for ${id}`);
+                            Logger.log(`Loading external source for ${id}`);
                             // check if cache is valid and available
                             if (
                                 def.externalCacheDuration > 0 &&
@@ -555,8 +553,7 @@ export class LayerService {
                             def.meta === undefined &&
                             loadResult.meta.featureTypes
                         ) {
-                            // console.log(loadResult.meta);
-                            console.log('Save meta');
+                            // console.log(loadResult.meta);                            
                         }
                     }
 
@@ -592,14 +589,11 @@ export class LayerService {
     }
 
     putLayerSourceById(id: string, body: LayerSource): Promise<boolean> {
-        return new Promise(resolve => {
-            console.log(`Updating source for ${id}`);
+        return new Promise(resolve => {            
             this.getLayerSourceById(id)
                 .then(s => {
                     if (s) {
-                        s.features = body.features;
-                        console.log('emitting data');
-                        console.log('layer/' + id);
+                        s.features = body.features;                        
                         if (this.socket && this.socket.server) {
                             this.socket.server.emit(
                                 'layer/' + id,
