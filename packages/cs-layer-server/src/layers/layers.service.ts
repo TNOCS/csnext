@@ -18,6 +18,7 @@ import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
 import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
+import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 
@@ -355,6 +356,44 @@ export class LayerService {
         });
     }
 
+    updateFeature(
+        sourceid: string,
+        feature: Feature,
+        featureId?: string        
+    ): Promise<Feature | undefined> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // find source
+                let source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {
+
+                    // if featureid was given, update feature
+                    if (featureId !== undefined) {
+                        feature.id = featureId;
+                    }
+
+                    // generate id, if no feature id was
+                    if (feature.id === undefined) {
+                        feature.id = uuidv1();
+                    }
+
+                    // find existing feature
+                    let existingFeatureIndex = source.features.findIndex(f => f.id === feature.id);
+                    // not found, add
+                    if (existingFeatureIndex === -1) {
+                        source.features.push(feature);
+                    } else {
+                        // update existing feature
+                        source.features[existingFeatureIndex] = feature;
+                    }
+                }
+                resolve(feature);
+            } catch (e) {                
+                reject('Source not found');
+            }
+        });
+    }
+
     /** update defintion for layer */
     putLayerDefinitionById(
         id: string,
@@ -378,8 +417,11 @@ export class LayerService {
                     const plugin = this.getSourcePlugin(newLayerDef.sourceType);
                     if (plugin && typeof plugin.createEmpty === 'function') {
                         try {
-                            
-                            const newSource = await plugin.createEmpty(path.join(this.config.serverPath, this.config.sourcePath),  
+                            const newSource = await plugin.createEmpty(
+                                path.join(
+                                    this.config.serverPath,
+                                    this.config.sourcePath
+                                ),
                                 newLayerDef
                             );
                             newLayerDef = newSource.def;

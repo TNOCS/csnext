@@ -37,7 +37,7 @@ export class FeatureController {
     type: LayerDefinition
   })
   @Post(':sourceid/:featureid')
-  postFeature(@Body() body: Feature): Feature {
-    return body;
+  postFeature(@Body() body: Feature, @Param('sourceid') sourceid: string, @Param('featureid') featureid?: string): Promise<Feature | undefined> {    
+      return this.layerService.updateFeature(sourceid, body, featureid);
   }
 }
