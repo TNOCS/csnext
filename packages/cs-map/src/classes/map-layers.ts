@@ -308,14 +308,23 @@ export class MapLayers implements IDatasource {
             layer._source._geojson &&
             feature.id !== undefined
         ) {
+            // find existing feature
             let index = layer._source._geojson.features.findIndex(
                 f => f.id === feature.id
             );
+            // if found, replace it
             if (index >= 0) {
                 layer._source._geojson.features[index] = feature;
                 if (updateSource) {
                     this.updateLayerSource(layer);
                 }
+            }
+            else {
+                // add new feature
+                layer._source._geojson.features.push(feature);
+                if (updateSource) {
+                    this.updateLayerSource(layer);
+                }                
             }
         }
     }

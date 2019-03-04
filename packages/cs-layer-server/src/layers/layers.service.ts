@@ -356,17 +356,17 @@ export class LayerService {
         });
     }
 
+    /** add or update feature */
     updateFeature(
         sourceid: string,
         feature: Feature,
-        featureId?: string        
+        featureId?: string
     ): Promise<Feature | undefined> {
         return new Promise(async (resolve, reject) => {
             try {
                 // find source
                 let source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
-
                     // if featureid was given, update feature
                     if (featureId !== undefined) {
                         feature.id = featureId;
@@ -378,7 +378,9 @@ export class LayerService {
                     }
 
                     // find existing feature
-                    let existingFeatureIndex = source.features.findIndex(f => f.id === feature.id);
+                    let existingFeatureIndex = source.features.findIndex(
+                        f => f.id === feature.id
+                    );
                     // not found, add
                     if (existingFeatureIndex === -1) {
                         source.features.push(feature);
@@ -386,9 +388,48 @@ export class LayerService {
                         // update existing feature
                         source.features[existingFeatureIndex] = feature;
                     }
+                    new GeojsonSource().initFeature(feature);
+
+                    // send update over socket
+                    if (this.socket && this.socket.server) {
+                        this.socket.server.emit(
+                            'layer/' + sourceid + '/features',
+                            JSON.stringify({ action: 'update', feature: feature})
+                        );
+                    }
+                    this.saveSource(source);
                 }
                 resolve(feature);
-            } catch (e) {                
+            } catch (e) {
+                reject('Source not found');
+            }
+        });
+    }
+
+    /** add or update feature */
+    deleteFeature(sourceid: string, featureId: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // find source
+                let source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {    
+                    // actually remove feature
+                    source.features = source.features.filter(
+                        f => !f.id || f.id !== featureId
+                    );
+
+                    // send update over socket
+                    if (this.socket && this.socket.server) {
+                        this.socket.server.emit(
+                            'layer/' + sourceid + '/features',
+                            JSON.stringify({ action: 'delete', feature: { id: featureId}})
+                        );
+                    }
+
+                    this.saveSource(source);
+                    resolve(true);
+                }
+            } catch (e) {
                 reject('Source not found');
             }
         });
