@@ -2,7 +2,7 @@ import { Form, FormField } from '@csnext/cs-core';
 
 @Form({
     title: 'Property',
-    isPanel: true,
+    hideTitle: true,
     groups: {
         number: {
             visible(f) {
@@ -34,8 +34,7 @@ export class PropertyType {
 }
 
 @Form({
-    title: 'Property Collection',
-    isPanel: true,
+    title: 'Property Collection',    
     keyValuesType: () => {
         return new PropertyType();
     }
@@ -53,7 +52,7 @@ export class PropertyCollection {
 export class FeatureTypes {
     [key: string]: FeatureType;
 }
-@Form({ title: 'Feature', isPanel: true })
+@Form({ title: 'Feature', hideTitle: true })
 export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
