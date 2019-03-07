@@ -45,8 +45,9 @@ export class BaseLayer implements IMapLayer {
     @FormField({ title: 'Opacity', type: 'number', min: 0, max: 100, step: 1 })
     public opacity?: number = 1;
 
-    @FormField({ title: 'Opacity', type: 'chips' })
+    @FormField({ title: 'Tags', type: 'chips' })
     public tags: string[] = [];
+    @FormField({ title: 'Color', type: 'string' })
     public color: string = 'blue';
     public style?: LayerStyle;
     public parentId?: string;
