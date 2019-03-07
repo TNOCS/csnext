@@ -1,7 +1,7 @@
 <div v-if="Form" class="cs-form-base">
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
-            <div slot="header" class="form-title">
+            <div slot="header" class="form-title" v-if="!Form.hideTitle">
                 {{ Form.title }}
             </div>
             <v-form>

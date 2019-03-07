@@ -10,6 +10,7 @@ export interface IFormOptions {
   fields?: IFormFieldOptions[];
   saveButton?: boolean;
   isPanel?: boolean;
+  hideTitle?: boolean;
   isPanelOpen?: boolean;
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
