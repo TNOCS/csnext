@@ -73,7 +73,8 @@ export class LayerDefinition implements ILayer {
     public style?: LayerStyle;
     public featureTypes?: FeatureCollection;
     // public properties?: PropertyCollection    
-    public _layerSource?: LayerSource;    
+    public _layerSource?: LayerSource;
+    public _localMeta?: string;
     
 }
 

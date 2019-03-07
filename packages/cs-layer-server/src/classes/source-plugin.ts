@@ -27,6 +27,7 @@ export interface ISourcePlugin {
     load?(file: string, meta?: string) : Promise<ILoadResult>;
     query?(connection: Connection, query: string) : Promise<ILoadResult>;
     createEmpty?(folder: string, def: LayerDefinition) : Promise<{ def: LayerDefinition, source: LayerSource}>;
+    saveMeta?(def: LayerDefinition);
     // todo: query method
 }
 

@@ -21,6 +21,7 @@ import { Inject } from '@nestjs/common/decorators';
 import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
+import { Server } from 'tls';
 
 @Injectable()
 export class LayerService {
@@ -228,19 +229,42 @@ export class LayerService {
     /** save active server config */
     public saveServerConfig() {
         Logger.log(`Saving server config: ${this.absoluteConfigPath}`);
-        // lockSync(lockFile);
-        let config = JSON.stringify(
-            this.config,
-            (key, value) => {
+
+        // create a duplicate without underscores;
+        let duplicate = JSON.parse(
+            JSON.stringify(this.config)
+        ) as ServerConfig;
+
+        // if layer has meta file defined, store them seperatly and remove features types from main config
+        duplicate.layers.map(l => {
+            if (l.meta !== undefined) {
+                this.saveMetaConfig(l);
+                delete l.featureTypes;
+            }
+        });
+
+        // save to file
+        fs.writeFileSync(
+            this.absoluteConfigPath,
+            JSON.stringify(duplicate, (key, value) => {
                 if (key.startsWith('_')) {
                     return undefined;
                 }
                 return value;
-            },
-            2
+            }, 2);
         );
-        fs.writeFileSync(this.absoluteConfigPath, config);
         // unlockSync(lockFile);
+    }
+
+    /** save meta for layer definition */
+    public saveMetaConfig(def: LayerDefinition) {
+        if (def.meta === undefined || def.featureTypes === undefined) {
+            return;
+        }
+        const plugin = this.getSourcePlugin(def.sourceType);
+        if (plugin && typeof plugin.saveMeta === 'function') {
+            plugin.saveMeta(def);
+        }
     }
 
     /** initialize all layers */
@@ -394,7 +418,10 @@ export class LayerService {
                     if (this.socket && this.socket.server) {
                         this.socket.server.emit(
                             'layer/' + sourceid + '/features',
-                            JSON.stringify({ action: 'update', feature: feature})
+                            JSON.stringify({
+                                action: 'update',
+                                feature: feature
+                            })
                         );
                     }
                     this.saveSource(source);
@@ -412,7 +439,7 @@ export class LayerService {
             try {
                 // find source
                 let source = await this.getLayerSourceById(sourceid);
-                if (source && source.features) {    
+                if (source && source.features) {
                     // actually remove feature
                     source.features = source.features.filter(
                         f => !f.id || f.id !== featureId
@@ -422,7 +449,10 @@ export class LayerService {
                     if (this.socket && this.socket.server) {
                         this.socket.server.emit(
                             'layer/' + sourceid + '/features',
-                            JSON.stringify({ action: 'delete', feature: { id: featureId}})
+                            JSON.stringify({
+                                action: 'delete',
+                                feature: { id: featureId }
+                            })
                         );
                     }
 
@@ -444,6 +474,7 @@ export class LayerService {
             Logger.log(`Updating layer definition for layer ${id}`);
             let defIndex = this.config.layers.findIndex(l => l.id === id);
             if (defIndex >= 0) {
+                // update layer definition in config
                 this.config.layers[defIndex] = {
                     ...this.config.layers[defIndex],
                     ...body
@@ -645,28 +676,25 @@ export class LayerService {
                         def.id,
                         def.source
                     );
-
-                    let metaFileName: string | undefined = undefined;
-                    if (def.meta) {
-                        metaFileName = path.join(
-                            this.config.serverPath || '',
-                            this.config.sourcePath || '',
-                            def.id,
-                            def.meta
-                        );
+                    
+                    if (def.meta) {                        
+                        this.updateMetaFilePath(def);
                     }
                     const loadResult = await plugin.load(
                         fileName,
-                        metaFileName
+                        def._localMeta
                     );
 
+                    // update feature types from meta data
                     if (loadResult.meta) {
                         def.featureTypes = loadResult.meta.featureTypes;
+                        // if meta data was returned, but no meta file, create a meta file
                         if (
                             def.meta === undefined &&
                             loadResult.meta.featureTypes
                         ) {
-                            // console.log(loadResult.meta);
+                            def.meta = def.id + '.meta.json';
+                            this.updateMetaFilePath(def);                            
                         }
                     }
 
@@ -682,6 +710,10 @@ export class LayerService {
             }
             // reject();
         });
+    }
+
+    private updateMetaFilePath(def: LayerDefinition) {
+        def._localMeta = path.join(this.config.serverPath || '', this.config.sourcePath || '', def.id, def.meta);
     }
 
     public saveSource(source: LayerSource) {

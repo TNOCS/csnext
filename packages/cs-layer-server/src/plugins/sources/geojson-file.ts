@@ -43,8 +43,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     const sourceContent = fs.readFileSync(file, 'utf8');
                     const source = JSON.parse(sourceContent);
                     const updated = this.initSource(source);
-
-                    source._localFile = file;
+                    
                     // source._tiles = await createTileIndex(source, { extent: 4096 });
                     // source was updated, save again
                     if (updated) {
@@ -113,7 +112,6 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         return new Promise((resolve, reject) => {
             console.log('Creating new file');
             if (def.id) {
-
                 const sourceFolder = path.join(folder, def.id);
                 def.source = def.id + '.json';
                 const sourceFile = path.join(sourceFolder, def.source);
@@ -240,10 +238,28 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     }
                 }
                 result.featureTypes = { main: ft };
-                
             }
             resolve(result);
         });
+    }
+
+    public saveMeta(def: LayerDefinition) {
+        console.log(`Saving ${def._localMeta}`);
+        if (def._localMeta) {
+            fs.writeFileSync(
+                def._localMeta,
+                JSON.stringify(
+                    { featureTypes: def.featureTypes },
+                    (key, value) => {
+                        if (key.startsWith('_')) {
+                            return undefined;
+                        }
+                        return value;
+                    },
+                    2
+                )
+            );
+        }
     }
 
     /** make sure geojson has been prepared, e.g. add ids to all features */
