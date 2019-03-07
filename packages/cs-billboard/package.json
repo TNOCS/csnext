@@ -22,7 +22,7 @@
     "billboard.js": "^1.7.1"
   },
   "devDependencies": {
-    "@types/node": "^11.9.6",
+    "@types/node": "^11.10.5",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",

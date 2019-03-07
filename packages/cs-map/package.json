@@ -39,7 +39,7 @@
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.4",
-        "@types/node": "^11.10.4",
+        "@types/node": "^11.10.5",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
         "@types/turf": "^3.5.32",
