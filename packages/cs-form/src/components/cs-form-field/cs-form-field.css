@@ -1,42 +1,58 @@
 .timeline-container {
     align-content: stretch;
     height: 100%;
-  }
+}
 
-  .form-title {
+.form-title {
     font-weight: 600;
     font-size: 125%;
-  }
+}
 
-  .cs-form-base .v-expansion-panel__header {
+.keys-object-form-field {
+    /* margin-left: 15px; */
+}
+
+.keys-object-form-fields:hover {
+  border-left-style: solid;    
+    border-left-color: gray;
+    border-left-width: 4px;
+    margin-left:8px;
+}
+
+.keys-object-form-fields {
+  padding-left:3px;
+  margin-left: 12px;  
+}
+
+.cs-form-base .v-expansion-panel__header {
     padding: 0 !important;
-  }
-  
-  .high-timeline-item {
+}
+
+.high-timeline-item {
     background-color: red;
-  }
-  
-  .medium-timeline-item {
+}
+
+.medium-timeline-item {
     background-color: orange;
-  }
-  
-  .low-timeline-item {
+}
+
+.low-timeline-item {
     background-color: green;
-  }
-  
-  .nan-timeline-item {
+}
+
+.nan-timeline-item {
     background-color: gray;
-  }
-  
-  .vis-item-content {
+}
+
+.vis-item-content {
     color: black;
-  }
-  
-  .vis-custom-time {
+}
+
+.vis-custom-time {
     width: 6px;
-  }
-  
-  .timeline-custom-header {
+}
+
+.timeline-custom-header {
     width: 80px;
     height: 50px;
     background: black;
@@ -47,5 +63,4 @@
     transform: translateY(-25px);
     left: 300px;
     z-index: 100;
-  }
-  
+}
