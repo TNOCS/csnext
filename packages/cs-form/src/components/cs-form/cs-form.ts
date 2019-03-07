@@ -26,7 +26,8 @@ export class FieldGroup {
         widget: null,
         data: null,
         formdef: null,
-        formkey: null
+        formkey: null,
+        field: null
     } as any
 })
 export class CsForm extends Vue {
@@ -43,7 +44,9 @@ export class CsForm extends Vue {
     public formdef?: IFormOptions;
     public panel = [true];
     public keys: { [key: string]: IFormObject } = {};
-    
+    /** specify a single field to show, others are hidden */
+    public field?: string;
+
     public isKeyValueList(): boolean {
         return this.keys !== undefined && this.keys.length > 0;
     }
@@ -115,24 +118,27 @@ export class CsForm extends Vue {
         }
 
         this.Form.fields.map(f => {
-            if (f.type === 'keysobject') {
-            }
-            if (!f.group) {
-                const newGroup = new FieldGroup();
-                newGroup.id = f._key + '-group';
-                newGroup.fields.push(f);
-                this.fieldGroups.push(newGroup);
-            } else {
-                const group = this.fieldGroups.find(
-                    field => f.group === field.id
-                );
-                if (group) {
-                    group.fields.push(f);
-                } else {
+            // show all fields, or optionally filter only specified field
+            if (!this.field || this.field === f._key) {
+                if (f.type === 'keysobject') {
+                }
+                if (!f.group) {
                     const newGroup = new FieldGroup();
-                    newGroup.id = f.group;
+                    newGroup.id = f._key + '-group';
                     newGroup.fields.push(f);
                     this.fieldGroups.push(newGroup);
+                } else {
+                    const group = this.fieldGroups.find(
+                        field => f.group === field.id
+                    );
+                    if (group) {
+                        group.fields.push(f);
+                    } else {
+                        const newGroup = new FieldGroup();
+                        newGroup.id = f.group;
+                        newGroup.fields.push(f);
+                        this.fieldGroups.push(newGroup);
+                    }
                 }
             }
         });
