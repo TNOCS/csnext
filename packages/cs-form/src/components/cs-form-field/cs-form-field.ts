@@ -38,6 +38,22 @@ export class CsFormField extends Vue {
         }
     }
 
+    public updateKey(key: string, field: IFormFieldOptions) {
+        console.log('Update key');
+        if (
+            key !== undefined &&
+            field !== undefined &&
+            this.target !== undefined &&
+            field._key &&
+            this.target.hasOwnProperty(field._key)
+        ) {
+            if (this.target[field._key].hasOwnProperty(key)) {
+                // delete this.target[field._key][key];
+                this.$forceUpdate();
+            }
+        }
+    }
+
     public addKeyObject(field: IFormFieldOptions) {
         if (
             !this.target ||
@@ -64,8 +80,29 @@ export class CsFormField extends Vue {
         this.$forceUpdate();
     }
 
-    keyObjectChange(key: string) {
-        console.log(key);
+    keyObjectChange(field: IFormFieldOptions, oldValue: string, newValue: string) {
+        let renameProp = (
+            oldProp,
+            newProp,
+        { [oldProp]: old, ...others }
+        ) => ({
+            [newProp]: old,
+            ...others
+        });
+
+        if (
+            !this.target ||
+            !field._key ||
+            !field.keyValuesType ||
+            !this.target.hasOwnProperty(field._key)
+        ) {
+            return;
+        }
+
+        this.target[field._key] = renameProp(oldValue, newValue, this.target[field._key]);
+
+        console.log('Key event');
+        console.log(oldValue + ' -> ' + newValue);
     }
 
     mounted() {

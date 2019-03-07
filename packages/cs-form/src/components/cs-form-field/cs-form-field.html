@@ -108,8 +108,8 @@
                                 <template v-if="field.canEditKey">
                                         <!-- {{ target[field._key] }} -->
                                     <v-layout>
-                                        <v-text-field v-model="key" :label="field.title" @change="keyObjectChange(key)"></v-text-field>
-                                        <v-btn icon flat right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn>
+                                        <v-text-field :value="key" :label="field.title" @change="keyObjectChange(field, key, $event)"></v-text-field>
+                                        <!-- <v-btn icon flat right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
                                     </v-layout>
                                 </template>
                                 <template v-else>
