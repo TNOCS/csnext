@@ -24,6 +24,7 @@ export class PropertyType {
     public _key?: string;
     public type?: string;
     public description?: string;
+    @FormField({ title: 'String format', type: 'string'})
     public stringFormat?: string;
     @FormField({ title: 'Min', type: 'number', group: 'number' })
     public min?: number;
