@@ -58,11 +58,11 @@ export class CsFormField extends Vue {
         if (
             !this.target ||
             !field._key ||
-            !field.keyValuesType ||
-            !this.target.hasOwnProperty(field._key)
+            !field.keyValuesType           
         ) {
             return;
         }
+        // check if field already exists, if not create one       
         if (this.target[field._key] === undefined) {
             this.target[field._key] = {};
         }
