@@ -45,6 +45,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
     | 'number'
     | 'slider'
     | 'chips'
+    | 'color'
     | 'checkboxes-horizontal'
     | 'checkbox'
     | 'object'

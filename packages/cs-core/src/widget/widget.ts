@@ -1,9 +1,4 @@
-import { IMessageBusService } from './../utils/message-bus/message-bus-service';
-import { EditorSchema } from './editor-schema';
-import { IDashboard } from '../index';
-import { WidgetOptions } from './widget-options';
-import { IProject } from './project';
-import { IDashboardManager } from './dashboard-manager-config';
+import { WidgetOptions, IMessageBusService, IDashboard, IDashboardManager, IProject } from '..';
 
 export enum WidgetType {
   component,
@@ -20,7 +15,6 @@ export interface IWidget {
   data?: any;
   options?: WidgetOptions;
   editorWidget?: IWidget;
-  Schema?: EditorSchema;
   events?: IMessageBusService;
   _dashboard?: IDashboard;
   _manager?: IDashboardManager;

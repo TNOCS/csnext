@@ -3,7 +3,6 @@ import {
   MessageBusService,
   IDashboard,
   INotification,
-  IEventObject,
   MainBus,
   IWidget,
   ISidebarOptions

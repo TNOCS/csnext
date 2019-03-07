@@ -12,5 +12,4 @@ export class MainBus {
   public static get events() {
     return this.pEvents || (this.pEvents = new MessageBusService());
   }
- 
 }

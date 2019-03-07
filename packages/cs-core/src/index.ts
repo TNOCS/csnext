@@ -1,33 +1,35 @@
-export * from './classes/project';
-export * from './classes/app-state-base';
-export * from './classes/menu';
-export * from './classes/dashboard-options';
-export * from './classes/dashboard';
-export { GridDashboardOptions } from './classes/grid-dashboard-options';
-export * from './classes/widget';
-export * from './classes/datasource';
-export * from './classes/language-options';
-export * from './classes/layout-manager-config';
-export * from './classes/dashboard-manager-config';
-export * from './classes/app-theme';
-export * from './classes/theme-colors';
-export * from './classes/footer-options';
-export * from './classes/header-options';
-export * from './classes/navigation-options';
-export * from './classes/sidebar-options';
-export * from './classes/editor-schema';
+export * from './project/project';
+export * from './project/app-state-base';
+export * from './project/datasource';
+export * from './project/language-options';
+export * from './project/app-theme';
+export * from './project/theme-colors';
+export * from './project/footer-options';
+export * from './project/header-options';
+export * from './project/navigation-options';
+export * from './project/sidebar-options';
+export * from './project/server-connection';
+
+export * from './interactions/menu';
+
+export * from './dashboard/dashboard-options';
+export * from './dashboard/dashboard';
+export * from './dashboard/grid-dashboard-options';
+export * from './dashboard/layout-manager-config';
+export * from './dashboard/dashboard-manager-config';
+
+export * from './widget/widget';
+export * from './widget/widget-options';
+
 export * from './utils/message-bus/message-bus-service';
 export * from './utils/message-bus/message-bus-handle';
-// export * from './utils/message-bus/typed-event';
-export * from './classes/widget-options';
-export * from './classes/search-options';
-export * from './classes/dialog';
-export * from './classes/form-decorators';
-export * from './classes/notification';
-export * from './classes/notification-options';
-export * from './classes/IEventObject';
-export * from './classes/MainBus';
-export * from './classes/server-connection';
-export { guidGenerator } from './utils/guid';
+export * from './interactions/search-options';
+export * from './interactions/dialog';
+export * from './interactions/notification';
+export * from './interactions/notification-options';
 
-// export *  from './classes/plugin';
+export * from './bus/main-bus';
+
+export * from './utils/guid';
+
+export * from './form/form-decorators';

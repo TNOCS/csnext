@@ -1,4 +1,4 @@
-import { INotification } from './notification';
+import { INotification } from './..';
 /** options for notifications in project */
 export interface INotificationOptions {
   /** show/hide notifictions */

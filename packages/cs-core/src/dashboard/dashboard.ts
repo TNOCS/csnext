@@ -1,5 +1,4 @@
-import { IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu } from '../';
-import { IFooterOptions } from './footer-options';
+import { IFooterOptions, IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu } from '../';
 
 export interface IDashboard {
   // dashboard id

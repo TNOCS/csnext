@@ -1,6 +1,3 @@
-import { IProject } from './project';
-import { IMenu } from '..';
-
 export interface IDatasource {
   id?: string;
   handlers?: IDatasourceHandler[];

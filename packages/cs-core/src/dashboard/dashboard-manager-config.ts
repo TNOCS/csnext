@@ -1,5 +1,4 @@
-import { IWidget } from './widget';
-import { IDashboard } from './dashboard';
+import { IWidget, IDashboard } from './..';
 
 export interface IDashboardManagerConfig {
   id: string;

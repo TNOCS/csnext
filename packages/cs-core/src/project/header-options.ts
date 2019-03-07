@@ -1,4 +1,4 @@
-import { IWidget } from './widget';
+import { IWidget } from './..';
 
 export interface IHeaderOptions {
   dense?: boolean;

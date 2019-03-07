@@ -1,4 +1,4 @@
-import { IMenu } from './menu';
+import { IMenu } from './../';
 
 export class WidgetOptions {
   public datasource?: string;

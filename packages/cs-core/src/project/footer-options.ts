@@ -1,4 +1,4 @@
-import { IDashboard } from './dashboard';
+import { IDashboard } from './..';
 
 export interface IFooterOptions {
   visible?: boolean;

@@ -8,10 +8,10 @@ import {
   NavigationOptions,
   AppStateBase,
   ILanguageOptions,
-  ServerConnection
+  ServerConnection,
+  IMenu,
+  INotificationOptions
 } from './..';
-import { IMenu } from './menu';
-import { INotificationOptions } from './notification-options';
 
 /** project definition */
 export interface IProject {

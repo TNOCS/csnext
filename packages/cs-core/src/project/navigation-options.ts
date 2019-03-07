@@ -1,4 +1,4 @@
-import { ISearchOptions } from './search-options';
+import { ISearchOptions } from './..';
 
 export class NavigationOptions {
   public style?: 'left' | 'left-hierarchy' | 'tabs' | 'bottom';

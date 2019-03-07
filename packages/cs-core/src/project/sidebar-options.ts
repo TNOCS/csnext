@@ -1,4 +1,4 @@
-import { IWidget, IDashboard } from './../index';
+import { IWidget, IDashboard } from './..';
 
 export interface ISidebarOptions {
   open?: boolean;
