@@ -2,8 +2,8 @@ import Component from 'vue-class-component';
 import { IWidget } from '@csnext/cs-core';
 
 import './feature-details.css';
-import { Vue } from 'vue-property-decorator';
-import { Feature } from 'geojson';
+import { Vue, Watch } from 'vue-property-decorator';
+import { Feature, GeoJsonProperties } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
 import { stringify } from 'querystring';
@@ -32,13 +32,24 @@ export class PropertyDetails {
 @Component({
     name: 'feature-details',
     props: { widget: null },
-    components: {simplebar},
+    components: { simplebar },
     template: require('./feature-details.html')
 } as any)
 export class FeatureDetails extends Vue {
     public widget!: IWidget;
     public sectionsPanels: boolean[] = [];
     public tabs = null;
+    public filterProperties: string = '';
+    public filterPropertiesEnabled = false;
+
+    @Watch('filterProperties')
+    filterChanged(newValue: string) {
+        this.updateFilter();
+    }
+
+    public updateFilter() {
+        this.$forceUpdate();
+    }
 
     /** get active layer */
     public get layer(): BaseLayer | undefined {
@@ -81,6 +92,16 @@ export class FeatureDetails extends Vue {
         return undefined;
     }
 
+    private propertyFilter(prop: PropertyType, filter: string): boolean {
+        if (!filter || filter.length === 0) return true;
+        const lowerCaseFilter = filter.toLowerCase();
+        if (prop._key && prop._key.toLowerCase().indexOf(lowerCaseFilter) >= 0)
+            return true;
+        if (prop.title && prop.title.toLowerCase().indexOf(lowerCaseFilter) >= 0)
+            return true;
+        return false;
+    }
+
     /** get list of available section, with their properties */
     public get sections(): section[] {
         let layer = this.layer;
@@ -116,58 +137,65 @@ export class FeatureDetails extends Vue {
                 }
                 if (typeof pt === 'string') {
                     pt = {
+                        _key: pt,
                         title: pt,
                         type: 'string',
                         description: pt
                     } as PropertyType;
                 }
+                if (
+                    !this.filterPropertiesEnabled ||
+                    this.propertyFilter(pt, this.filterProperties)
+                ) {
+                    let legends: LayerLegend[] = [];
 
-                let legends : LayerLegend[] = [];
-
-                // find legend
-                if (layer._legends) {
-                    legends = layer._legends.filter(l => l.property === key);
-                    if (legends.length>0) {
-                        
+                    // find legend
+                    if (layer._legends) {
+                        legends = layer._legends.filter(
+                            l => l.property === key
+                        );
+                        if (legends.length > 0) {
+                        }
                     }
-                }
 
-                const element = this.feature.properties[key];
-                let prop = {
-                    key: key,
-                    value: element,
-                    type: pt,
-                    legends: legends,                    
-                    display: element
-                };
-                if (pt.stringFormat !== undefined) {
-                    const template = Handlebars.compile(pt.stringFormat);
-                    prop.display = template(prop);
-                } 
-                defaultSection.properties!.push(prop);
+                    const element = this.feature.properties[key];
+                    let prop = {
+                        key: key,
+                        value: element,
+                        type: pt,
+                        legends: legends,
+                        display: element
+                    };
+                    if (pt.stringFormat !== undefined) {
+                        const template = Handlebars.compile(pt.stringFormat);
+                        prop.display = template(prop);
+                    }
+                    defaultSection.properties!.push(prop);
+                }
             }
         }
         return result;
     }
 
     public updateStyle(property: PropertyDetails) {
-        if (property && property.legends && property.legends.length>0) {
-            this.$cs.TriggerNotification({ title: property.key + ' disable'});
+        if (property && property.legends && property.legends.length > 0) {
+            this.$cs.TriggerNotification({ title: property.key + ' disable' });
         } else {
             // this.layer
             if (this.manager && this.layer) {
-                // this.manager.removeLegend(this.layer, property.key);                
+                // this.manager.removeLegend(this.layer, property.key);
                 this.layer.setLegend(property, true);
                 this.$forceUpdate();
                 // this.$cs.TriggerNotification({ title: property.key + ' enable'});
             }
-            
         }
-        
     }
 
     public openLayer(layer: IMapLayer) {
-        this.$cs.OpenRightSidebarWidget({ component: LayerDetails, data: { layer: layer }});
+        this.$cs.OpenRightSidebarWidget({
+            component: LayerDetails,
+            data: { layer: layer }
+        });
     }
 
     public get properties(): any[] {

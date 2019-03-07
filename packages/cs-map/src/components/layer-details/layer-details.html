@@ -1,26 +1,28 @@
-<div style="height:100%; position: absolute;top:0;right:0;left:0;bottom:0">
-    <v-toolbar tabs :color="layerColor">
+<simplebar>
+    <v-toolbar tabs :color="layer.color">
         <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
+        <v-tooltip bottom>
+            <v-btn icon slot="activator"> <v-icon>search</v-icon> </v-btn>
+            filter details
+        </v-tooltip>
         <v-tooltip bottom>
             <v-btn icon slot="activator" @click="editLayer(layer)">
                 <v-icon>edit</v-icon>
             </v-btn>
             edit layer
         </v-tooltip>
-        <v-tabs right slot="extension" v-model="tabs">
+        <v-tabs right slot="extension" color="transparent" v-model="tabs">
             <v-tab href="#items">Items</v-tab>
-            <v-tab href="#filters">Filter</v-tab>
+            <!-- <v-tab href="#filters">Filter</v-tab> -->
         </v-tabs>
     </v-toolbar>
 
-    <simplebar
-        style="position:absolute;top:125px;bottom:0;left:0;right:0"
-    >
+    <div>
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
             <v-tab-item value="items">
-                <v-container>
+                <v-container>                    
                     <v-list v-for="feature in layer.source._geojson.features">
                         <v-list-tile-content @click="openFeature(feature)">
                             <v-list-tile-title class="layer-details-feature-title"
@@ -30,7 +32,7 @@
                     </v-list>
                 </v-container>
             </v-tab-item>
-            <v-tab-item value="filters"> <h1>items</h1> </v-tab-item>
+            <!-- <v-tab-item value="filters"> <h1>items</h1> </v-tab-item> -->
         </v-tabs-items>
-    </simplebar>
-</div>
+    </div>
+</simplebar>

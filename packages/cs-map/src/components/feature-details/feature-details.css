@@ -9,6 +9,11 @@
     font-weight: 700;
 }
 
+.feature-details-title {
+    margin-top:25px;
+    font-weight: 600;
+}
+
 .section-expansion-panel .v-expansion-panel__header {
     padding-left: 12px;
     
