@@ -251,7 +251,7 @@ export class LayerService {
                     return undefined;
                 }
                 return value;
-            }, 2);
+            }, 2) 
         );
         // unlockSync(lockFile);
     }
