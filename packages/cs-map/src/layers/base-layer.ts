@@ -23,6 +23,7 @@ import { FeatureEventDetails } from '../components/cs-map/cs-map';
 import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
 import { AppState } from '@csnext/cs-client';
+import { LayerDetails } from '../components/layer-details/layer-details';
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
@@ -53,8 +54,12 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+
     @FormField({ title: 'Open Feature Details', type: 'checkbox' })
     public openFeatureDetails?: boolean;
+    @FormField({ title: 'Disable Feature List', type: 'checkbox' })
+    public disableFeatureList?: boolean;
+
     public _service?: ILayerService;
     public layout?:
         | mapboxgl.SymbolLayout
@@ -119,14 +124,21 @@ export class BaseLayer implements IMapLayer {
                     }
                 }
             });
-            res.push({
-                title: 'Show features',
-                action: () => {
-                    // if (this._manager) {
-                    //     this._manager.refreshLayer(this);
-                    // }
-                }
-            });
+            if (!this.disableFeatureList) {
+                res.push({
+                    title: 'Show features',
+                    action: () => {
+                        if (this._manager) {
+                            this._manager.MapWidget!.$cs.OpenRightSidebarWidget(
+                                {
+                                    component: LayerDetails,
+                                    data: { layer: this }
+                                }
+                            );
+                        }
+                    }
+                });
+            }
         } else {
             res.push({
                 title: 'Show',
@@ -164,7 +176,10 @@ export class BaseLayer implements IMapLayer {
         return undefined;
     }
 
-    public setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean) {
+    public setLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer: boolean
+    ) {
         // if (typeof property === 'string') {
         //     AppState.Instance.TriggerNotification({
         //         title: 'set property ' + property
@@ -181,8 +196,12 @@ export class BaseLayer implements IMapLayer {
         for (const key in style) {
             if (style.hasOwnProperty(key)) {
                 const prop = style[key];
-                if (prop.hasOwnProperty('stops')) {                    
-                    result.push({ property: prop.property, stops: prop.stops, styleProperty: key });
+                if (prop.hasOwnProperty('stops')) {
+                    result.push({
+                        property: prop.property,
+                        stops: prop.stops,
+                        styleProperty: key
+                    });
                 }
             }
         }

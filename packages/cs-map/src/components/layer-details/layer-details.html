@@ -3,9 +3,15 @@
         <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-tooltip bottom>
-            <v-btn icon slot="activator"> <v-icon>search</v-icon> </v-btn>
-            filter details
+        <v-tooltip bottom v-if="tabs === 'items'">
+            <v-btn
+                @click="filterPropertiesEnabled = !filterPropertiesEnabled"
+                icon
+                slot="activator"
+            >
+                <v-icon>search</v-icon>
+            </v-btn>
+            filter features
         </v-tooltip>
         <v-tooltip bottom>
             <v-btn icon slot="activator" @click="editLayer(layer)">
@@ -14,18 +20,27 @@
             edit layer
         </v-tooltip>
         <v-tabs right slot="extension" color="transparent" v-model="tabs">
-            <v-tab href="#items">Items</v-tab>
+            <v-tab href="#items" v-if="!layer.disableFeatureList">Items</v-tab>
             <!-- <v-tab href="#filters">Filter</v-tab> -->
         </v-tabs>
     </v-toolbar>
 
     <div>
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
-            <v-tab-item value="items">
-                <v-container>                    
+            <v-tab-item value="items" v-if="!layer.disableFeatureList">
+                <v-text-field
+                    solo
+                    v-if="filterPropertiesEnabled"
+                    class="layer-filter-field"
+                    v-model="filterItems"
+                    label="filter"
+                    append-icon="search"
+                ></v-text-field>
+                <v-container>
                     <v-list v-for="feature in layer.source._geojson.features">
                         <v-list-tile-content @click="openFeature(feature)">
-                            <v-list-tile-title class="layer-details-feature-title"
+                            <v-list-tile-title
+                                class="layer-details-feature-title"
                                 v-text="layer.parseTitle(feature)"
                             ></v-list-tile-title>
                         </v-list-tile-content>

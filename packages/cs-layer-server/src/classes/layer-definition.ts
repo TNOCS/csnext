@@ -67,6 +67,9 @@ export class LayerDefinition implements ILayer {
     public externalCacheDuration: number;
 
     @ApiModelProperty()
+    public disableFeatureList: boolean;
+
+    @ApiModelProperty()
     /** location of optional meta source containing featuretypes, propertytypes, etc. */
     public meta?: string;
 
