@@ -1,6 +1,6 @@
 <simplebar>
     <v-toolbar tabs :color="layer.color">
-        <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
+        <v-toolbar-title class="layer-details-title">{{ layer.title }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
         <v-tooltip bottom v-if="tabs === 'items'">
@@ -37,7 +37,7 @@
                     append-icon="search"
                 ></v-text-field>
                 <v-container>
-                    <v-list v-for="feature in layer.source._geojson.features">
+                    <v-list v-for="feature in filteredFeatures">
                         <v-list-tile-content @click="openFeature(feature)">
                             <v-list-tile-title
                                 class="layer-details-feature-title"

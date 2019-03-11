@@ -2,7 +2,7 @@ import Component from 'vue-class-component';
 import { IWidget } from '@csnext/cs-core';
 
 import './layer-details.css';
-import { Vue } from 'vue-property-decorator';
+import { Vue, Watch } from 'vue-property-decorator';
 import { BaseLayer } from '../../layers/base-layer';
 import { PropertyType } from '../../classes/feature-type';
 import { MapLayers } from '../../classes/map-layers';
@@ -11,6 +11,7 @@ import { LayerEditor } from '../layer-editor/layer-editor';
 import { LayerServiceEditor } from '../layer-service-editor/layer-service-editor';
 import { FeatureDetails } from '../feature-details/feature-details';
 import simplebar from 'simplebar-vue';
+import { Feature } from 'geojson';
 
 export class section {
     public id?: string;
@@ -27,13 +28,16 @@ export class property {
 @Component({
     name: 'feature-details',
     props: { widget: null },
-    components: { simplebar}, 
+    components: { simplebar },
     template: require('./layer-details.html')
 } as any)
 export class LayerDetails extends Vue {
     public widget!: IWidget;
     public sectionsPanels: boolean[] = [];
     public tabs = null;
+    public filterProperties: string = '';
+    public filterPropertiesEnabled = false;
+    public filterItems = '';
 
     /** get active layer */
     public get layer(): BaseLayer | undefined {
@@ -41,6 +45,26 @@ export class LayerDetails extends Vue {
             return this.widget.data.layer as BaseLayer;
         }
         return undefined;
+    }
+
+    @Watch('filterItems')
+    private filterChanged() {
+        this.$forceUpdate();
+    }
+
+    /** returns true if features is included filter */
+    private filterFeature(f: Feature, s: string) : boolean {
+        if (!this.layer) { return false; }
+        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase())>=0;
+    }
+
+    public get filteredFeatures(): Feature[] {
+        if (this.layer && this.layer._source && this.layer._source._geojson) {
+            return this.layer._source._geojson.features.filter(f => {
+                return this.filterFeature(f, this.filterItems);
+            })
+        }
+        return [];
     }
 
     /** get feature title */
@@ -71,14 +95,14 @@ export class LayerDetails extends Vue {
     public openFeature(feature: any) {
         this.$cs.OpenRightSidebarWidget({
             component: FeatureDetails,
-            data: {layer: this.layer, feature: feature }
+            data: { layer: this.layer, feature: feature }
         });
     }
 
-    public editLayer(layer: IMapLayer) {        
+    public editLayer(layer: IMapLayer) {
         this.$cs.OpenRightSidebarWidget({
             component: LayerServiceEditor,
-            data: {layer: layer }
+            data: { layer: layer }
         });
     }
 }
