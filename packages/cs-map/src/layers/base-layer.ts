@@ -176,42 +176,53 @@ export class BaseLayer implements IMapLayer {
         return undefined;
     }
 
+    public removeLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer: boolean
+    ) {}
+
     public setLegend(
         property: PropertyDetails | PropertyType | string,
         refreshLayer: boolean
-    ) {
-        // if (typeof property === 'string') {
-        //     AppState.Instance.TriggerNotification({
-        //         title: 'set property ' + property
-        //     });
-        // } else if (property.hasOwnProperty('key')) {
-        //     AppState.Instance.TriggerNotification({
-        //         title: 'set property ' + (property as PropertyDetails).key
-        //     });
-        // }
+    ) {}
+
+    public getStyleLegendKey(styleKey: string): LayerLegend[] {
+        let result: LayerLegend[] = [];
+        if (
+            this.style &&
+            this.style.mapbox &&
+            this.style.mapbox.hasOwnProperty(styleKey)
+        ) {
+            const style = this.style!.mapbox![styleKey];
+            result = result.concat(this.getStyleLegend(styleKey, style));
+        }
+        return result;
     }
 
-    public getStyleLegend(style: any): LayerLegend[] {
+    public getStyleLegend(styleKey: string, style: any): LayerLegend[] {
         let result: LayerLegend[] = [];
-        for (const key in style) {
-            if (style.hasOwnProperty(key)) {
-                const prop = style[key];
-                if (prop.hasOwnProperty('stops')) {
-                    result.push({
-                        property: prop.property,
-                        stops: prop.stops,
-                        styleProperty: key
-                    });
+            for (const key in style) {
+                if (style.hasOwnProperty(key)) {
+                    const prop = style[key];
+                    if (prop.hasOwnProperty('stops')) {
+                        result.push({
+                            property: prop.property,
+                            stops: prop.stops,
+                            styleProperty: key,
+                            style: style,
+                            styleKey: styleKey
+                        });
+                    }
                 }
             }
-        }
+        
         return result;
     }
 
     public updateLegends() {
         let result: LayerLegend[] = [];
-        if (this.paint) result.concat(this.getStyleLegend(this.paint));
-        if (this.layout) result.concat(this.getStyleLegend(this.layout));
+        if (this.paint) result.concat(this.getStyleLegend('paint', this.paint));
+        if (this.layout) result.concat(this.getStyleLegend('layout', this.layout));
         this._legends = result;
     }
 

@@ -437,4 +437,5 @@ export class LayerStyle implements ILayerStyle {
     public defaultLegendProperty?: string;
     @FormField({ title: 'Styles', type: 'object' })
     public mapbox?: MapboxStyles;
+    public _originalMapbox?: MapboxStyles;
 }

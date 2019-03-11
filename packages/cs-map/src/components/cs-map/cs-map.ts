@@ -179,12 +179,14 @@ export class CsMap extends Vue {
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);
+                        this.addSource(layer._source);            
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
                             layer.addLayer(this);
                         }
+
+                       
                         if (this.manager) {
                             this.manager.events.publish(
                                 'layer',

@@ -110,31 +110,60 @@ export class GeojsonPlusLayer extends BaseLayer
     public updateLegends() {
         let result: LayerLegend[] = [];
         if (this.style && this.style.mapbox) {
-            let styles = [
-                this.style.mapbox.circleLayout,
-                this.style.mapbox.circlePaint,
-                this.style.mapbox.symbolLayout,
-                this.style.mapbox.symbolPaint,
-                this.style.mapbox.lineLayout,
-                this.style.mapbox.linePaint,
-                this.style.mapbox.fillLayout,
-                this.style.mapbox.fillPaint
-            ];
-            for (const style of styles) {
-                if (style) {
-                    result = result.concat(this.getStyleLegend(style));
+            for (const styleKey of Object.keys(this.style.mapbox)) {
+                if (styleKey) {
+                    result = result.concat(this.getStyleLegendKey(styleKey));
                 }
             }
         }
-        this._legends = result;        
+        this._legends = result;
     }
 
-    public setLegend(property: PropertyDetails | PropertyType | string, refreshLayer = true) {
+    public removeLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
         if (typeof property === 'string') {
             // AppState.Instance.TriggerNotification({
             //     title: 'set property ' + property
             // });
         } else if (property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox) {
+                (property as PropertyDetails).legends!.forEach(l => {
+                    if (this.style && this.style._originalMapbox) {
+                        l.style[l.styleProperty] = this.style._originalMapbox[
+                            l.styleKey
+                        ][l.styleProperty];
+                    }
+                });
+            }
+        }
+        if (this._manager && refreshLayer) {
+            this._manager.refreshLayer(this);
+        }
+        this.updateLegends();
+        // console.log(this._legends);
+    }
+
+    public setLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
+        if (typeof property === 'string') {
+            // find property details
+            if (
+                this.featureTypes &&
+                this.featureTypes.hasOwnProperty('main') &&
+                this.featureTypes['main'].properties
+            ) {
+                let val = property;
+                property = {
+                    type: this.featureTypes['main'].properties[property],
+                    key: val
+                } as any;
+            }
+        }
+        if (property.hasOwnProperty('key')) {
             if (this.style && this.style.mapbox) {
                 let propdetails = property as PropertyDetails;
                 let color = {
@@ -145,7 +174,7 @@ export class GeojsonPlusLayer extends BaseLayer
                         // "temperature" is 100 -> circle color will be red
                         [propdetails.type!.max, 'red']
                     ]
-                };                
+                };
                 if (this.style.mapbox.fillPaint) {
                     this.style.mapbox.fillPaint['fill-color'] = color;
                 }
@@ -156,15 +185,12 @@ export class GeojsonPlusLayer extends BaseLayer
                     this.style.mapbox.linePaint['line-color'] = color;
                 }
             }
-            // AppState.Instance.TriggerNotification({
-            //     title: 'set property ' + (property as PropertyDetails).key
-            // });
         }
-        if (this._manager && refreshLayer) {            
+        if (this._manager && refreshLayer) {
             this._manager.refreshLayer(this);
         }
-        this.updateLegends();   
-        console.log(this._legends);     
+        this.updateLegends();
+        console.log(this._legends);
     }
 
     public updateLayer() {
@@ -414,21 +440,6 @@ export class GeojsonPlusLayer extends BaseLayer
             this.featureTypes
         ) as FeatureTypes;
 
-        // debugger;
-
-        //     let type = plainToClass(FeatureType, this.featureTypes[key]);
-        //     if (type.properties) {
-        //         for (const pk in type.properties) {
-        //             if (type.properties.hasOwnProperty(pk)) {
-        //                 type.properties[pk] = plainToClass(
-        //                     PropertyType,
-        //                     type.properties[pk]
-        //                 );
-        //             }
-        //         }
-        //     }
-        // }
-
         this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
 
         if (this.style.types!.includes('point')) {
@@ -463,6 +474,13 @@ export class GeojsonPlusLayer extends BaseLayer
             this._circleLayout = this.style.mapbox.circleLayout;
             this._fillPaint = this.style.mapbox.fillPaint;
             this._linePaint = this.style.mapbox.linePaint;
+        }
+
+        // store original layouts
+        if (!this.style._originalMapbox) {
+            this.style._originalMapbox = JSON.parse(
+                JSON.stringify(this.style.mapbox)
+            );
         }
 
         if (!this.popupContent) {
@@ -571,6 +589,13 @@ export class GeojsonPlusLayer extends BaseLayer
             this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
         }
         this._fillLayer.initLayer(manager);
+
+        if (this.style) {
+            // if specified, set default legend
+            if (this.style.defaultLegendProperty) {
+                this.setLegend(this.style.defaultLegendProperty, false);
+            }
+        }
 
         this.updateLegends();
 

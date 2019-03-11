@@ -101,7 +101,7 @@ export class MapLayers implements IDatasource {
             if (this.map) {
                 this.map
                     .showLayer(ml)
-                    .then(maplayer => {
+                    .then(maplayer => {                    
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
                             this.events.publish(
@@ -484,7 +484,7 @@ export class MapLayers implements IDatasource {
                 this.layers.push(layer);
                 if (layer.style) {
                     // if specified, set default legend
-                    if (layer.style.defaultLegendProperty) {
+                    if (layer.style.defaultLegendProperty) {                        
                         ml.setLegend(layer.style.defaultLegendProperty, false);
                     }
                 }
