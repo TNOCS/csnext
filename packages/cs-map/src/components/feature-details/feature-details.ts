@@ -97,7 +97,10 @@ export class FeatureDetails extends Vue {
         const lowerCaseFilter = filter.toLowerCase();
         if (prop._key && prop._key.toLowerCase().indexOf(lowerCaseFilter) >= 0)
             return true;
-        if (prop.title && prop.title.toLowerCase().indexOf(lowerCaseFilter) >= 0)
+        if (
+            prop.title &&
+            prop.title.toLowerCase().indexOf(lowerCaseFilter) >= 0
+        )
             return true;
         return false;
     }
@@ -179,7 +182,11 @@ export class FeatureDetails extends Vue {
 
     public updateStyle(property: PropertyDetails) {
         if (property && property.legends && property.legends.length > 0) {
-            this.$cs.TriggerNotification({ title: property.key + ' disable' });
+            if (this.manager && this.layer) {
+                this.layer.removeLegend(property, true);
+            }
+
+            // this.$cs.TriggerNotification({ title: property.key + ' disable' });
         } else {
             // this.layer
             if (this.manager && this.layer) {
