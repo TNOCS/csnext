@@ -9,6 +9,7 @@ export * from './project/header-options';
 export * from './project/navigation-options';
 export * from './project/sidebar-options';
 export * from './project/server-connection';
+export * from './project/time-datasource';
 
 export * from './interactions/menu';
 

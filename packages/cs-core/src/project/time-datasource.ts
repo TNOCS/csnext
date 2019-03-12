@@ -1,5 +1,11 @@
-export interface IDatasource {
-  id?: string;
+import { IDatasource, MessageBusService} from '..';
+
+export class TimeDataSource implements IDatasource {
+  public start?: number;
+  public end?: number;
+  public id = 'timedatasource';
+
+  public events = new MessageBusService();
   source?: string;
   data?: any;
   options?: any;
@@ -13,6 +19,4 @@ export interface IDatasource {
     datasources?: { [id: string]: IDatasource },
     data?: any
   ): Promise<any>;
-  // {(value: any) => void, (reason?: any) => void }
-  // | PromiseLike<object> | undefined
 }
