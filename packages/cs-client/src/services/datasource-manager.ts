@@ -1,6 +1,5 @@
-import {
-  IDatasource
-} from '@csnext/cs-core';
+import { IDatasource } from '@csnext/cs-core';
+import { rejects } from 'assert';
 
 /**
  * The DatasourceManager maintains a list of all datasource processors and all datasources?.
@@ -20,6 +19,14 @@ export class DatasourceManager {
   public load<T>(source: IDatasource | string): Promise<T> {
     const datasource =
       typeof source === 'string' ? this.datasources[source] : source;
+    // check if datasource is available
+    if (datasource === undefined) {
+      return new Promise((resolve, reject) => {
+        reject();
+        return;
+      });
+    }
+    // if data is already loaded, resolve datasource directly
     if (datasource.loaded) {
       return new Promise((resolve, reject) => {
         resolve(datasource as T);
@@ -27,6 +34,7 @@ export class DatasourceManager {
       });
     }
 
+    // if data is available, resolve data directly
     if (datasource.data) {
       return new Promise((resolve, reject) => {
         resolve(datasource.data);
@@ -34,19 +42,13 @@ export class DatasourceManager {
       });
     }
 
+    // if an execute function is available, call function and return promise
     if (typeof datasource.execute !== 'function') {
       return new Promise(resolve => {
         resolve(datasource as T);
         return;
       });
     }
-
-    // if (typeof datasource.execute === 'function' && datasource.loaded) {
-    //   return new Promise((resolve, reject) => {
-    //     resolve(datasource as any);
-    //     return;
-    //   });
-    // }
 
     // run processors
     return new Promise((resolve, reject) => {
