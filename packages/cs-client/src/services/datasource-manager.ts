@@ -20,7 +20,6 @@ export class DatasourceManager {
   public load<T>(source: IDatasource | string): Promise<T> {
     const datasource =
       typeof source === 'string' ? this.datasources[source] : source;
-    
     if (datasource.loaded) {
       return new Promise((resolve, reject) => {
         resolve(datasource as T);

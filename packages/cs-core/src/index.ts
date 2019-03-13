@@ -1,6 +1,5 @@
 export * from './project/project';
 export * from './project/app-state-base';
-export * from './project/datasource';
 export * from './project/language-options';
 export * from './project/app-theme';
 export * from './project/theme-colors';
@@ -9,7 +8,10 @@ export * from './project/header-options';
 export * from './project/navigation-options';
 export * from './project/sidebar-options';
 export * from './project/server-connection';
-export * from './project/time-datasource';
+
+export * from './datasources/datasource';
+export * from './datasources/time-datasource';
+export * from './datasources/log-datasource';
 
 export * from './interactions/menu';
 

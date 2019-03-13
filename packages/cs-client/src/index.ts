@@ -21,9 +21,6 @@ export * from './layout/tabs/tabs';
 // export * from './layout/drag-grid/drag-layout-options';
 export * from './layout/flex-grid/flex-widget-options';
 
-// datasources
-export * from './datasources/webrequest-datasource';
-
 // components
 import { CsApp } from './components/cs-app/cs-app';
 import { CsWidget } from './components/cs-widget/cs-widget';
