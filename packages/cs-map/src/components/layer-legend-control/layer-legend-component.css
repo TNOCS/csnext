@@ -1,0 +1,11 @@
+.layer-editor-component {
+    padding: 5px;
+}
+
+.layer-editor-type-image {
+    /* width: 32px !important; */
+    margin: 10px;
+    margin-right:13px;
+    margin-top:15px;
+    cursor: pointer;
+}

@@ -18,4 +18,5 @@ export class MapOptions extends WidgetOptions
     public showGeocoder?: boolean = true;
     public showDraw?: boolean = false;
     public showEditor?: boolean = false;
+    public showLegend?: boolean = true;
 }
