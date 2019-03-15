@@ -8,6 +8,7 @@ import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
 import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
+import { LinePaint } from 'mapbox-gl';
 
 export class LayerServerOptions implements ILayerServiceOptions {
     public url?: string;
