@@ -11,7 +11,8 @@ export * from './project/server-connection';
 
 export * from './datasources/datasource';
 export * from './datasources/time-datasource';
-export * from './datasources/log-datasource';
+export * from './datasources/log/log-datasource';
+export * from './datasources/log/log-item';
 
 export * from './interactions/menu';
 
@@ -32,6 +33,7 @@ export * from './interactions/notification';
 export * from './interactions/notification-options';
 
 export * from './bus/main-bus';
+export * from './bus/topics';
 
 export * from './utils/guid';
 
