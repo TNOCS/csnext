@@ -9,8 +9,18 @@ import { Module } from '@nestjs/core/injector/module';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
 export { LayerService } from './layers/layers.service';
+
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
+export * from './logs/log-service';
+export * from './logs/log-controller';
+export * from './classes/layer-definition';
+export * from './classes/layer-source';
+export * from './classes/layer-meta';
+export * from './classes/layer-style';
+export * from './classes/log-definition';
+export * from './classes/log-item';
+export * from './classes/log-source';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { WsAdapter } from '@nestjs/websockets';
