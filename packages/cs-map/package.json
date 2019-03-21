@@ -22,14 +22,14 @@
         "@csnext/cs-form": "^0.0.109",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.1",
-        "@mapbox/mapbox-gl-geocoder": "^3.1.4",
+        "@mapbox/mapbox-gl-geocoder": "^3.1.6",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
         "@turf/centroid": "^6.0.2",
         "@turf/length": "^6.0.2",
         "axios": "^0.18.0",
         "class-transformer": "^0.2.0",
-        "handlebars": "^4.1.0",
+        "handlebars": "^4.1.1",
         "lodash.debounce": "^4.0.8",
         "mapbox-gl": "^0.53.1",
         "mapbox-gl-controls": "^0.0.15",
@@ -39,18 +39,18 @@
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.4",
-        "@types/node": "^11.10.5",
+        "@types/node": "^11.11.3",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
         "@types/turf": "^3.5.32",
         "handlebars-loader": "^1.7.1",
         "postcss-loader": "^3.0.0",
-        "raw-loader": "^1.0.0",
+        "raw-loader": "^2.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
         "typescript": "^3.3.3333",
         "webpack": "~4.29.6",
-        "webpack-cli": "^3.2.3"
+        "webpack-cli": "^3.3.0"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
