@@ -13,7 +13,7 @@
     "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
     "dev": "nodemon dist/index.js",
-    "clean": "del-cli dist",
+    "clean": "del-cli dist lib node_modules",
     "build": "tsc"
   },
   "dependencies": {
@@ -47,7 +47,7 @@
     "@types/lockfile": "^1.0.1",
     "@types/lodash": "^4.14.123",
     "@types/mapbox-gl": "^0.51.4",
-    "@types/node": "^11.11.4",
+    "@types/node": "^11.11.5",
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^1.1.0",

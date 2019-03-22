@@ -1,9 +1,12 @@
-import { IDatasource, MessageBusService, Topics, ILogItem } from '../..';
+import { IDatasource, MessageBusService, Topics } from '@csnext/cs-core';
+import { ILogItem } from '../..';
 
 export class LogDataSource implements IDatasource {
   public id = 'logdatasource';
   public items: ILogItem[] = [];
   public events = new MessageBusService();
+
+  constructor(public logid?: string) {}
 
   public addItem(item: ILogItem) {
     this.items.push(item);
@@ -29,6 +32,9 @@ export class LogDataSource implements IDatasource {
     data?: any
   ): Promise<LogDataSource> {
     return new Promise<LogDataSource>((resolve, reject) => {
+      if (this.logid) {
+        console.log(`Loading ${this.logid}`);
+      }
       resolve(this);
     });
   }

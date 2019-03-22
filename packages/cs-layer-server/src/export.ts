@@ -4,8 +4,9 @@ import {
     SwaggerModule,
     SwaggerBaseConfig
 } from '@nestjs/swagger';
-import { INestApplication, Type, Logger } from '@nestjs/common';
-import { Module } from '@nestjs/core/injector/module';
+import { INestApplication, Logger } from '@nestjs/common';
+import { WsAdapter } from '@nestjs/platform-ws';
+import { ExpressAdapter } from '@nestjs/platform-express';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
 export { LayerService } from './layers/layers.service';
@@ -23,7 +24,7 @@ export * from './classes/log-item';
 export * from './classes/log-source';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
-import { WsAdapter } from '@nestjs/websockets';
+
 import express from 'express';
 
 export class NestServer {
@@ -40,11 +41,14 @@ export class NestServer {
         swaggerConfig?: SwaggerBaseConfig
     ): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-            this.app = await NestFactory.create(moduleType, this.server, {
-                cors: true
-            });
+            let expressAdapter = new ExpressAdapter(express);
+            // expressAdapter.enableCors( { origin: '*' });
+            // expressAdapter.enableCors({});
 
-            // get config from env settings
+            this.app = await NestFactory.create(moduleType);
+            
+
+            // // get config from env settings
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
             }

@@ -193,7 +193,9 @@ export class LayerService {
                             // this.initLayer(layer)
                             //   .then(l => {})
                             //   .catch(r => {});
-                        });
+                        }).catch(e => {
+                            Logger.log(`Import failed for ${id}`);
+                        })
                 }
             });
         }

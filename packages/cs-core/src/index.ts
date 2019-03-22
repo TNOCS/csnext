@@ -11,8 +11,6 @@ export * from './project/server-connection';
 
 export * from './datasources/datasource';
 export * from './datasources/time-datasource';
-export * from './datasources/log/log-datasource';
-export * from './datasources/log/log-item';
 
 export * from './interactions/menu';
 
