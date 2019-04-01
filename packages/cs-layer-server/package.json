@@ -19,13 +19,13 @@
   "dependencies": {
     "@macrostrat/dbgeo-stream": "^1.0.0",
     "@mapbox/togeojson": "^0.16.0",
-    "@nestjs/common": "^6.0.2",
-    "@nestjs/core": "^6.0.2",
+    "@nestjs/common": "^6.0.5",
+    "@nestjs/core": "^6.0.5",
     "@nestjs/swagger": "^3.0.2",
-    "@nestjs/websockets": "^6.0.2",
-    "@nestjs/platform-ws": "^6.0.2",
-    "@nestjs/platform-express": "^6.0.2",
-    "@nestjs/platform-socket.io": "^6.0.2",
+    "@nestjs/websockets": "^6.0.5",
+    "@nestjs/platform-ws": "^6.0.5",
+    "@nestjs/platform-express": "^6.0.5",
+    "@nestjs/platform-socket.io": "^6.0.5",
     "swagger-ui-express":"^4.0.2",
     "arangojs": "^6.10.0",
     "dbgeo": "^1.1.0",
@@ -47,11 +47,11 @@
     "@types/lockfile": "^1.0.1",
     "@types/lodash": "^4.14.123",
     "@types/mapbox-gl": "^0.51.4",
-    "@types/node": "^11.11.5",
+    "@types/node": "^11.12.2",
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^1.1.0",
-    "typescript": "^3.3.4000"
+    "typescript": "^3.4.1"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
