@@ -12,6 +12,7 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { LayerEditorControl } from './../layer-editor/layer-editor-control';
+import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -142,7 +143,7 @@ export class CsMap extends Vue {
         }
     }
 
-    public initMapLayers() {
+    public initMapLayers() {        
         console.log('init map layers');
         if (
             this.manager &&
@@ -168,6 +169,7 @@ export class CsMap extends Vue {
                     }
                 });
             }
+            
         }
     }
 
@@ -179,14 +181,13 @@ export class CsMap extends Vue {
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);            
+                        this.addSource(layer._source);
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
                             layer.addLayer(this);
                         }
 
-                       
                         if (this.manager) {
                             this.manager.events.publish(
                                 'layer',
@@ -199,7 +200,13 @@ export class CsMap extends Vue {
                                     'feature',
                                     (a: string, f: FeatureEventDetails) => {
                                         if (a === CsMap.FEATURE_SELECT) {
-                                            if (layer.openFeatureDetails && layer.openFeatureDetails ===true) {                                                
+                                            if (
+                                                this.$cs && 
+                                                layer.openFeatureDetails &&
+                                                layer.openFeatureDetails ===
+                                                    true
+                                            ) {
+                                                
                                                 this.$cs.OpenRightSidebarWidget(
                                                     {
                                                         component: FeatureDetails,
@@ -731,12 +738,25 @@ export class CsMap extends Vue {
                 this.startServices();
                 this.mapLoaded(e);
 
-                if (this.mapOptions.showEditor && this.manager) {
-                    const layerEditorControl = new LayerEditorControl(
-                        this.manager
-                    );
-                    this.map.addControl(layerEditorControl);
+                if (this.manager) {
+                    // add layer editor control (adding features, lines, etc.)
+                    if (this.mapOptions.showEditor) {
+                        const layerEditorControl = new LayerEditorControl(
+                            this.manager
+                        );
+                        this.map.addControl(layerEditorControl);
+                    }
+
+                    // add legend control
+                    if (this.mapOptions.showLegend) {
+                        const layerLegendControl = new LayerLegendControl(
+                            this.manager
+                        );
+                        this.map.addControl(layerLegendControl, "bottom-left");
+                    }
                 }
+
+                // add geocoder
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
                 }

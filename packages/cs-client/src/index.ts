@@ -9,6 +9,10 @@ export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
 export * from './services/layout-manager';
 
+// data sources
+export * from './datasources/log/log-datasource';
+export * from './datasources/log/log-item';
+
 // layout managers
 export * from './layout/single/single';
 export * from './layout/grid/grid';
@@ -20,9 +24,6 @@ export * from './layout/tabs/tabs';
 // export * from './layout/drag-grid/drag-layout';
 // export * from './layout/drag-grid/drag-layout-options';
 export * from './layout/flex-grid/flex-widget-options';
-
-// datasources
-export * from './datasources/webrequest-datasource';
 
 // components
 import { CsApp } from './components/cs-app/cs-app';

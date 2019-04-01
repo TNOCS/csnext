@@ -1,0 +1,37 @@
+<div
+    class="mapboxgl-ctrl mapboxgl-ctrl-group layer-editor-component"
+    v-if="activeLayer"
+>
+    <v-menu open-on-hover top offset-y>
+        <template v-slot:activator="{ on }">
+            <div v-on="on">layer: {{ activeLayer.title }}</div>
+        </template>
+        <v-list>
+            <v-list-tile
+                v-for="(layer, index) in layers"
+                :key="index"
+                @click="selectLayer(layer)"
+            >
+                <v-list-tile-title>{{ layer.title }}</v-list-tile-title>
+            </v-list-tile>
+        </v-list>
+    </v-menu>
+
+    {{ activeLayer.title }}
+
+    <template v-if="activeLegend" v-for="stop in activeLegend.stops">
+        <span>{{ activeLegend.stop[0] }}</span
+        >-<span>{{ activeLegend.stop[1] }}</span>
+    </template>
+
+    <!-- <div v-for="layer in layers">layer: {{ layer.id }}</div> -->
+    <!-- <v-layout>
+        <img
+            v-for="(value,key,index) in types"
+            :key="key"
+            :src="value.icon"
+            @click="addIcon(key)"
+            class="layer-editor-type-image"
+        />
+    </v-layout> -->
+</div>

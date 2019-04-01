@@ -1,6 +1,5 @@
 export * from './project/project';
 export * from './project/app-state-base';
-export * from './project/datasource';
 export * from './project/language-options';
 export * from './project/app-theme';
 export * from './project/theme-colors';
@@ -9,6 +8,9 @@ export * from './project/header-options';
 export * from './project/navigation-options';
 export * from './project/sidebar-options';
 export * from './project/server-connection';
+
+export * from './datasources/datasource';
+export * from './datasources/time-datasource';
 
 export * from './interactions/menu';
 
@@ -29,6 +31,7 @@ export * from './interactions/notification';
 export * from './interactions/notification-options';
 
 export * from './bus/main-bus';
+export * from './bus/topics';
 
 export * from './utils/guid';
 

@@ -4,16 +4,27 @@ import {
     SwaggerModule,
     SwaggerBaseConfig
 } from '@nestjs/swagger';
-import { INestApplication, Type, Logger } from '@nestjs/common';
-import { Module } from '@nestjs/core/injector/module';
+import { INestApplication, Logger } from '@nestjs/common';
+import { WsAdapter } from '@nestjs/platform-ws';
+import { ExpressAdapter } from '@nestjs/platform-express';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
 export { LayerService } from './layers/layers.service';
+
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
+export * from './logs/log-service';
+export * from './logs/log-controller';
+export * from './classes/layer-definition';
+export * from './classes/layer-source';
+export * from './classes/layer-meta';
+export * from './classes/layer-style';
+export * from './classes/log-definition';
+export * from './classes/log-item';
+export * from './classes/log-source';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
-import { WsAdapter } from '@nestjs/websockets';
+
 import express from 'express';
 
 export class NestServer {
@@ -30,11 +41,9 @@ export class NestServer {
         swaggerConfig?: SwaggerBaseConfig
     ): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-            this.app = await NestFactory.create(moduleType, this.server, {
-                cors: true
-            });
-
-            // get config from env settings
+            this.app = await NestFactory.create(moduleType);
+            
+            // // get config from env settings
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
             }
@@ -64,6 +73,7 @@ export class NestServer {
             );
             this.server.get('/swagger.json', (_req, res) => res.json(document));
             SwaggerModule.setup('api', this.app, document);
+            this.app.enableCors({ origin: true});
 
             await this.app.listen(port, host, () => {
                 this.app.useWebSocketAdapter(new WsAdapter());

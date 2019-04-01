@@ -17,7 +17,7 @@ export interface ILayerGroup {
 @Component({
     name: 'layer-selection',
     props: { widget: null },
-    components: { simplebar}, 
+    components: { simplebar },
     template: require('./layer-selection.html')
 } as any)
 export class LayerSelection extends Vue {
@@ -83,8 +83,8 @@ export class LayerSelection extends Vue {
     public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
         this.groupsexpanded = [];
-        if (this.MapManager && this.MapManager.layers) {
-            this.MapManager.layers.forEach(l => {
+        if (this.MapManager && this.MapManager.layers) {            
+            this.MapManager.layers.forEach(l => {                
                 if (l.title) {
                     if (
                         this.filter.length === 0 ||

@@ -13,6 +13,8 @@ import { MapLayers } from '../classes/map-layers';
 import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
+import { LinePaint } from 'mapbox-gl';
+import { AppState } from '@csnext/cs-client';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
@@ -206,10 +208,14 @@ export class LayerServerService implements ILayerService, IStartStopService {
         res.push({
             title: 'Edit',
             action: () => {
-                this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
+                AppState.Instance.OpenRightSidebarWidget({
                     component: LayerServiceEditor,
                     data: { layer: layer, service: this }
                 });
+                // this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
+                //     component: LayerServiceEditor,
+                //     data: { layer: layer, service: this }
+                // });
             }
         });
         return res;
@@ -226,7 +232,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
-        if (this.socket !== undefined) {
+        if (this.socket && this.socket !== undefined) {
             // listen to complete layer updates
             this.socket.on('layer/' + gl.id, (data: any) => {
                 this.updateLiveLayer(data, gl);

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
 import { LayerSource } from '../classes/layer-source';
 import { IMapLayer } from '../classes/imap-layer';
+import { LinePaint } from 'mapbox-gl';
 
 export class LayerServerOptions implements ILayerServiceOptions {
     public url?: string;
@@ -62,11 +63,11 @@ export class LayerServer implements ILayerService, IStartStopService {
                                 gl.type = layer.type;
                             }
                             gl.tags = this.options.tags || [];
-                            // gl.paint = {
-                            //     'line-color': ['get', 'stroke'],
-                            //     'line-opacity': ['get', 'stroke-opacity'],
-                            //     'line-width': ['get', 'stroke-width']
-                            // } as LinePaint;
+                            gl.paint = {
+                                'line-color': ['get', 'stroke'],
+                                'line-opacity': ['get', 'stroke-opacity'],
+                                'line-width': ['get', 'stroke-width']
+                            } as LinePaint;
                             gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);

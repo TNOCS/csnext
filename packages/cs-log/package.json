@@ -1,10 +1,10 @@
 {
-    "name": "@csnext/cs-timeline",
+    "name": "@csnext/cs-log",
     "version": "0.0.109",
-    "description": "cs-timeline",
-    "main": "./lib/cstimeline.cs.js",
+    "description": "cs-log",
+    "main": "./lib/cslog.cs.js",
     "types": "./dist/index.d.ts",
-    "url": "https://github.com/TNOCS/cs-timeline",
+    "url": "https://github.com/TNOCS/cs-log",
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",
     "scripts": {
@@ -18,8 +18,7 @@
     },
     "dependencies": {
         "@csnext/cs-client": "^0.0.109",
-        "@csnext/cs-core": "^0.0.109",
-        "timeline-plus": "https://github.com/rinzeb/timeline-plus/releases/download/v2.3.1-beta.1/timeline-plus-2.3.1.tgz"
+        "@csnext/cs-core": "^0.0.109"
     },
     "devDependencies": {
         "@types/node": "^11.12.2",

@@ -11,7 +11,7 @@
         "link": "yarn link",
         "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "webpack --mode development",
-        "clean": "del-cli dist lib"
+        "clean": "del-cli dist lib node_modules"
     },
     "publishConfig": {
         "access": "public"
@@ -22,24 +22,26 @@
         "@csnext/cs-form": "^0.0.109",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.1",
-        "@mapbox/mapbox-gl-geocoder": "^3.1.4",
+        "@mapbox/mapbox-gl-geocoder": "^3.1.6",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
         "@turf/centroid": "^6.0.2",
         "@turf/length": "^6.0.2",
         "axios": "^0.18.0",
         "class-transformer": "^0.2.0",
-        "handlebars": "^4.1.0",
+        "handlebars": "^4.1.1",
+        "simplebar-vue": "^0.1.6",
         "lodash.debounce": "^4.0.8",
         "mapbox-gl": "^0.53.1",
         "mapbox-gl-controls": "^0.0.15",
+        "@babel/polyfill": "^7.4.0",
         "numeral": "^2.0.6",
         "socket.io-client": "^2.2.0",
-        "vuebar": "^0.0.20"
+        "core-js": "^2.6.5"
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.4",
-        "@types/node": "^11.10.5",
+        "@types/node": "^11.12.2",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
         "@types/turf": "^3.5.32",
@@ -48,9 +50,9 @@
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
-        "typescript": "^3.3.3333",
+        "typescript": "^3.4.1",
         "webpack": "~4.29.6",
-        "webpack-cli": "^3.2.3"
+        "webpack-cli": "^3.3.0"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
