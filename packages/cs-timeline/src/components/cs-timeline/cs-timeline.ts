@@ -226,6 +226,9 @@ export class CsTimeline extends Vue {
             case 'set-time':
                 this.setDate(data);
                 break;
+            case 'update':
+                this.update();
+                break;
             default:
                 break;
         }
