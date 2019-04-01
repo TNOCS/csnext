@@ -225,8 +225,11 @@ export class AppState extends AppStateBase {
       }
       this.project.rightSidebar.dashboard.widgets.push(widget);
       if (options) {
-        if (options.open) {
+        if (options.open !== undefined) {
           this.project.rightSidebar.open = options.open;
+        }
+        if (options.width !== undefined) {
+          this.project.rightSidebar.width = options.width;
         }
       } else {
         this.project.rightSidebar.open = true;
