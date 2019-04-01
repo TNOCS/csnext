@@ -1,10 +1,5 @@
 import 'reflect-metadata';
 
-export interface IFormObject {
-  _form?: IFormOptions;
-  save?(): Promise<boolean>;
-}
-
 export interface IFormOptions {
   title: string;
   fields?: IFormFieldOptions[];
