@@ -41,13 +41,8 @@ export class NestServer {
         swaggerConfig?: SwaggerBaseConfig
     ): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-            let expressAdapter = new ExpressAdapter(express);
-            // expressAdapter.enableCors( { origin: '*' });
-            // expressAdapter.enableCors({});
-
             this.app = await NestFactory.create(moduleType);
             
-
             // // get config from env settings
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
@@ -78,6 +73,7 @@ export class NestServer {
             );
             this.server.get('/swagger.json', (_req, res) => res.json(document));
             SwaggerModule.setup('api', this.app, document);
+            this.app.enableCors({ origin: true});
 
             await this.app.listen(port, host, () => {
                 this.app.useWebSocketAdapter(new WsAdapter());
