@@ -58,14 +58,20 @@
     opacity: 1;
 }
 
+.layer-group-item-title {
+    max-width: 340px;
+    overflow-x: hidden;
+}
+
 .layer-group-item {        
     padding-left: 15px;
     height: 45px;
     padding-top: 8px;
+    white-space: nowrap;
 }
 
 .layer-options-button {
-    right: 0;
+    right: 10px;
     margin: 0;
     color: lightgray !important;
     margin-top: -10px;
