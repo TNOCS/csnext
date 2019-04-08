@@ -15,4 +15,6 @@ export class WidgetOptions {
   public menus?: IMenu[];
   public widgetBorder?: string;
   public hide?: boolean;
+  public showToolbar?: boolean;
+  public title?: string;
 }

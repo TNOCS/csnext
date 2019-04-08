@@ -80,6 +80,9 @@ export class CsWidget extends Vue {
       if (opt.height) {
         res['max-height'] = opt.height + 'px';
       }
+      if (this.widget.options && this.widget.options.showToolbar) {
+        res.height = 'calc(100% - 30px)';
+      }
     }
     return res;
   }
