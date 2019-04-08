@@ -12,6 +12,7 @@ export * from './services/layout-manager';
 // data sources
 export * from './datasources/log/log-datasource';
 export * from './datasources/log/log-item';
+export * from './datasources/log/log-manager';
 
 // layout managers
 export * from './layout/single/single';

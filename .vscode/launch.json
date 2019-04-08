@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Server",
-            "program": "C:\\arnoud\\actueel\\driver\\copper\\packages\\server\\src\\index.ts",
+            "program": "C:\\arnoud\\actueel\\driver\\copper\\packages\\server\\dist\\index.js",
             "outFiles": [
                 "C:\\arnoud\\actueel\\driver\\copper/**/*.js"
             ]
