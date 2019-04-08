@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-map",
-    "version": "0.0.109",
+    "version": "0.0.110",
     "description": "cs-map",
     "main": "./lib/csmap.cs.js",
     "types": "./dist/index.d.ts",
@@ -17,9 +17,10 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.109",
-        "@csnext/cs-core": "^0.0.109",
-        "@csnext/cs-form": "^0.0.109",
+        "@babel/polyfill": "^7.4.0",
+        "@csnext/cs-client": "^0.0.110",
+        "@csnext/cs-core": "^0.0.110",
+        "@csnext/cs-form": "^0.0.110",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.1",
         "@mapbox/mapbox-gl-geocoder": "^3.1.6",
@@ -29,15 +30,14 @@
         "@turf/length": "^6.0.2",
         "axios": "^0.18.0",
         "class-transformer": "^0.2.0",
+        "core-js": "^2.6.5",
         "handlebars": "^4.1.1",
-        "simplebar-vue": "^0.1.6",
         "lodash.debounce": "^4.0.8",
         "mapbox-gl": "^0.53.1",
         "mapbox-gl-controls": "^0.0.15",
-        "@babel/polyfill": "^7.4.0",
         "numeral": "^2.0.6",
-        "socket.io-client": "^2.2.0",
-        "core-js": "^2.6.5"
+        "simplebar-vue": "^0.1.6",
+        "socket.io-client": "^2.2.0"
     },
     "devDependencies": {
         "@types/mapbox-gl": "^0.51.4",
