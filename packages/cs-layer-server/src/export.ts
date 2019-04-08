@@ -6,7 +6,6 @@ import {
 } from '@nestjs/swagger';
 import { INestApplication, Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
-import { ExpressAdapter } from '@nestjs/platform-express';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
 export { LayerService } from './layers/layers.service';
@@ -22,6 +21,7 @@ export * from './classes/layer-style';
 export * from './classes/log-definition';
 export * from './classes/log-item';
 export * from './classes/log-source';
+export * from './log-items/log-items-controller';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 
