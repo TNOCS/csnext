@@ -12,8 +12,8 @@ export { LayerService } from './layers/layers.service';
 
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
-export * from './logs/log-service';
-export * from './logs/log-controller';
+export { LogService } from './logs/log-service';
+export { LogController} from './logs/log-controller';
 export * from './classes/layer-definition';
 export * from './classes/layer-source';
 export * from './classes/layer-meta';
