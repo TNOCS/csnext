@@ -1,10 +1,12 @@
 export interface ILogItem {
     className?: string;
     content?: any;
-    end?: number;
+    endTime?: number;
+    end?: Date;
     group?: any;
     id: string;
-    start: number;
+    startTime?: number;
+    start?: Date;
     style?: string;
     subgroup?: string;
     title?: string;

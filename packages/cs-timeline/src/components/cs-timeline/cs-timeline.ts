@@ -31,9 +31,11 @@ export {
 } from 'timeline-plus';
 
 import 'timeline-plus/dist/timeline.min.css';
+import { LogDataSource, LogManager } from '@csnext/cs-client';
 
 export interface TimelineWidgetOptions extends WidgetOptions {
-    timelineOptions: TimelineOptions;
+    timelineOptions?: TimelineOptions;
+    logSource?: string;
 }
 
 export interface ITimelineDataSource extends IDatasource {
@@ -53,6 +55,7 @@ export class CsTimeline extends Vue {
     // public datasource?: ITimelineDataSource;
     public groups: DataGroup[] = [];
     public currentTime: Date = new Date();
+    public log: LogManager = new LogManager();
 
     public get TimeDatasource(): TimeDataSource {
         if (!this.widget.content) return new TimeDataSource();
@@ -61,6 +64,13 @@ export class CsTimeline extends Vue {
 
     @Prop()
     public widget!: IWidget;
+    public get WidgetOptions(): TimelineWidgetOptions {
+        if (this.widget.options) {
+            return this.widget.options as TimelineWidgetOptions;
+        } else {
+            return {};
+        }
+    }
 
     public beforeMount() {
         if (!this.widget) {
@@ -82,9 +92,10 @@ export class CsTimeline extends Vue {
     private async update() {
         if (this.timeline) {
             console.log('Updating timeline');
-            let items = await this.getItems();
+            let items = this.getItems();
             this.timeline.setGroups(this.groups);
             this.timeline.setItems(items);
+            this.timeline.fit();
         }
     }
 
@@ -93,10 +104,19 @@ export class CsTimeline extends Vue {
         this.update();
     }
 
-    private async getItems(): Promise<DataSet<DataItem>> {
+    private getItems(): DataSet<DataItem> {
         let items: DataItem[] = [];
         let tags: string[] = [];
         let height = this.smallView ? '5px' : '30px;';
+        if (this.log && this.log.items) {
+            this.log.items.forEach(i => {
+                // make sure id is unique
+                if (items.findIndex(item => item.id === i.id) === -1) {
+                    i.start = new Date(i.start);
+                    items.push(i);
+                }
+            })
+        }
         // if (this.datasource && this.datasource.timelineItems) {
         //     this.datasource.timelineItems.forEach((i: DataItem) => {
         //         items.push(i);
@@ -205,7 +225,7 @@ export class CsTimeline extends Vue {
     private setDate(date: Date) {
         Vue.nextTick(() => {
             this.timeline!.setCustomTime(date, 'focustime');
-        });        
+        });
         this.currentTime = new Date(date);
         if (this.TimeDatasource.events) {
             this.TimeDatasource.focusTime = this.currentTime.getTime();
@@ -236,11 +256,22 @@ export class CsTimeline extends Vue {
 
     mounted() {
         if (this.widget) {
+
             this.widget.events!.subscribe('resize', (d, a) => {
                 this.timeline!.redraw();
             });
-
             this.initTimeline();
+            if (this.WidgetOptions.logSource) {
+                // this.log.init(this.WidgetOptions.logSource, this.$cs).then(r => {
+                //     Vue.nextTick(() => {
+                //         this.update();
+                //     })
+
+                // }).catch(e => {
+
+                // })
+            }
+
         }
     }
 }
