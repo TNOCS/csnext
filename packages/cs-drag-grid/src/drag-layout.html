@@ -1,51 +1,30 @@
-<div>
-    <vue-responsive-grid-layout
-        :style="{border: '1px solid #000'}"
-        :layouts="layouts"
-        :compact-type="'vertical'"
-        :breakpoint="breakpoint"
-        :cols="cols"
-        ref="layout"
-        @layout-update="onLayoutUpdate"
-        @layout-change="onLayoutChange"
-        @layout-init="onLayoutInit"
-        @width-change="onWidthChange"
-        @breakpoint-change="onBreakpointChange"
-    >
-        <template slot-scope="props">
-            <!-- :class="{'no-item-animation':dashboard.options.Animations}" -->
-            <vue-grid-item
-                v-for="item in props.layout"
-                :class="{'grid-item-moving': isMoving}"
-                :i="item.i"
-                :key="item.i"
-                :w.sync="item.w"
-                :h.sync="item.h"
-                :x="item.x"
-                :y="item.y"
-                :container-width="props.containerWidth"
-                :row-height="props.rowHeight"
-                :is-draggable="true"
-                :is-resizable="true"
-                :class-name="'grid-item'"
-                :cols="props.cols"
-                :height-from-children="false"
-                :max-rows="props.maxRows"
+<div>    
+    <grid-layout 
+        :layout="layout" 
+        :col-num="dashboard.options.ColNum" 
+        :row-height="dashboard.options.RowHeight" 
+        :is-draggable="dashboard.options.DragEnabled" 
+        :is-resizable="dashboard.options.ResizeEnabled" 
+        :is-mirrored="dashboard.options.IsMirrored"
+        :vertical-compact="dashboard.options.VerticalCompact" 
+        :margin="Margin" 
+        :use-css-transforms="false" 
+        @layout-updated="layoutUpdatedEvent"
+        >
+        <!-- @layout-updated="layoutUpdatedEvent" -->
+        <grid-item v-for="widget in layout" :class="{'grid-item-moving': isMoving}" :key="widget.i" 
+            :x="widget.x" 
+            :y="widget.y" 
+            :w="widget.w"
+            :h="widget.h" 
+            :i="widget.i"         
             >
-                <cs-widget
-                    v-if="!isMoving"
-                    :key="item.i"
-                    :widget="findWidget(item.i)"
-                    style="height:100%; width:100%"
-                ></cs-widget>
-            </vue-grid-item>
-        </template>
-    </vue-responsive-grid-layout>
-    <!--
-        <div :id="'muuri-' + dashboard.id" class="muuri-grid">
-            <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-                <muuri-widget :widget="widget" :grid="grid"></muuri-widget>
-            </div>
+            <cs-widget v-if="!isMoving" :key="widget.i" :widget="widget.widget" style="height:100%; width:100%"></cs-widget>
+        </grid-item>
+    </grid-layout>
+    <!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">
+        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
+            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
         </div>
-    -->
+    </div> -->
 </div>
