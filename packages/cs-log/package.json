@@ -23,12 +23,12 @@
         "simplebar-vue": "^0.1.6"
     },
     "devDependencies": {
-        "@types/node": "^11.12.2",
+        "@types/node": "^11.13.2",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
-        "typescript": "^3.4.1",
+        "typescript": "^3.4.3",
         "webpack": "~4.29.6",
         "webpack-cli": "^3.3.0"
     },

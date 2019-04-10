@@ -47,11 +47,11 @@
     "@types/lockfile": "^1.0.1",
     "@types/lodash": "^4.14.123",
     "@types/mapbox-gl": "^0.51.4",
-    "@types/node": "^11.12.2",
+    "@types/node": "^11.13.2",
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^1.1.0",
-    "typescript": "^3.4.1"
+    "typescript": "^3.4.3"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
