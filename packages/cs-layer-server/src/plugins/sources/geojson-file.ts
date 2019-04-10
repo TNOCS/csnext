@@ -37,7 +37,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     load(file: string, meta?: string): Promise<ILoadResult> {
         return new Promise(async (resolve, reject) => {
             if (fs.existsSync(file)) {
-                console.log(file);
+                // console.log(file);
                 try {
                     // Logger.log(`Loading: ${file}`);
                     const sourceContent = fs.readFileSync(file, 'utf8');
@@ -110,14 +110,14 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         def: LayerDefinition
     ): Promise<{ def: LayerDefinition; source: LayerSource }> {
         return new Promise((resolve, reject) => {
-            console.log('Creating new file');
+            // console.log('Creating new file');
             if (def.id) {
                 const sourceFolder = path.join(folder, def.id);
                 def.source = def.id + '.json';
                 const sourceFile = path.join(sourceFolder, def.source);
                 if (!fs.existsSync(sourceFolder)) {
-                    console.log('Creating new folder');
-                    console.log(sourceFolder);
+                    // console.log('Creating new folder');
+                    // console.log(sourceFolder);
                     fs.mkdirSync(sourceFolder);
                 }
 
@@ -127,7 +127,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                 source.id = def.id;
                 source.type = 'FeatureCollection';
                 source.features = [];
-                console.log('Saving source');
+                // console.log('Saving source');
                 this.saveSource(sourceFile, source);
                 resolve({ def: def, source: source });
                 return;
@@ -244,7 +244,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     }
 
     public saveMeta(def: LayerDefinition) {
-        console.log(`Saving ${def._localMeta}`);
+        // console.log(`Saving ${def._localMeta}`);
         if (def._localMeta) {
             fs.writeFileSync(
                 def._localMeta,
@@ -307,7 +307,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     }
 
     saveSource(file: string, source: LayerSource) {
-        Logger.log(`Saving: ${file}`);
+        // Logger.log(`Saving: ${file}`);
         fs.writeFileSync(
             file,
             JSON.stringify(
