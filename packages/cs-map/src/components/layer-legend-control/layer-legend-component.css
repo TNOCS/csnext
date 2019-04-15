@@ -2,6 +2,22 @@
     padding: 5px;
 }
 
+.map-legend-layer-title {
+    font-weight: 600;
+}
+
+.map-legend-color-rectangle {
+    width: 15px;
+    height: 15px;
+    background: gray;
+    position: absolute;
+}
+
+.map-legend-color-text {
+    position: relative;
+    margin-left: 20px;
+}
+
 .layer-editor-type-image {
     /* width: 32px !important; */
     margin: 10px;

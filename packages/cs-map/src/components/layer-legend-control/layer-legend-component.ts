@@ -1,10 +1,9 @@
 import Component from 'vue-class-component';
-import { IWidget, MessageBusHandle, guidGenerator } from '@csnext/cs-core';
+import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 
 import './layer-legend-component.css';
-import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer, CsMap, FeatureType } from '../../.';
-import { Feature } from 'geojson';
+import { Vue } from 'vue-property-decorator';
+import { MapLayers, IMapLayer, FeatureType } from '../../.';
 import { LayerLegend } from '../../classes/layer-legend';
 
 @Component({
@@ -25,24 +24,6 @@ export class LayerLegendComponent extends Vue {
     public activeLayer: IMapLayer | any = {};
     public activeLegend: LayerLegend | any = {};
 
-    private updateLegendList() {
-        if (this.manager && this.manager.layers) {
-            this.layers = this.manager.layers.filter(
-                l => l.Visible && l._legends && l._legends.length > 0
-            );
-            if (this.layers.length > 0) {
-                if (this.activeLayer === undefined)
-                    this.activeLayer = this.layers[0];
-                if (this.activeLayer._legends) {
-                    this.activeLegend = this.activeLayer._legends[0];
-                }
-                this.$forceUpdate();
-                // Vue.set(this, 'activeLayer', this.layers[0]);
-            }
-            // this.layers.forEach(l => console.log(l._legends));
-        }
-    }
-
     public selectLayer(layer: IMapLayer) {
         this.activeLayer = layer;
     }
@@ -51,10 +32,32 @@ export class LayerLegendComponent extends Vue {
         this.map = this.manager.MapControl;
         this.mapDraw = this.manager.MapWidget!.mapDraw;
 
-        this.manager.events.subscribe('layer', (a: string, l: IMapLayer) => {
+        this.manager.events.subscribe('layer', () => {
             this.updateLegendList();
         });
 
         this.updateLegendList();
+    }
+
+    private updateLegendList() {
+        Vue.nextTick(() => {
+            if (this.manager && this.manager.layers) {
+                this.layers = this.manager.layers.filter(
+                    l => l.Visible && l._legends && l._legends.length > 0
+                );
+                if (this.layers.length > 0) {
+                    // this.activeLayer = this.layers[0];
+                    Vue.set(this, 'activeLayer', this.layers[0]);
+                    // if (this.activeLayer === undefined) {
+                    //     this.activeLayer = this.layers[0];
+                    // }
+                    if (this.activeLayer._legends) {
+                        // this.activeLegend = this.activeLayer._legends[0];
+                        Vue.set(this, 'activeLegend', this.activeLayer._legends[0]);
+                    }
+                }
+                // this.layers.forEach(l => console.log(l._legends));
+            }
+        });
     }
 }

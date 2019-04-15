@@ -4,7 +4,7 @@
 >
     <v-menu open-on-hover top offset-y>
         <template v-slot:activator="{ on }">
-            <div v-on="on">layer: {{ activeLayer.title }}</div>
+            <div v-on="on" class="map-legend-layer-title">{{ activeLayer.title }}</div>
         </template>
         <v-list>
             <v-list-tile
@@ -17,11 +17,16 @@
         </v-list>
     </v-menu>
 
-    {{ activeLayer.title }}
+    <template v-if="activeLegend">
+        {{ activeLegend.property }}
 
-    <template v-if="activeLegend" v-for="stop in activeLegend.stops">
-        <span>{{ activeLegend.stop[0] }}</span
-        >-<span>{{ activeLegend.stop[1] }}</span>
+        <!-- {{ activeLayer }} -->
+
+        <div v-for="stop in activeLegend.stops">
+            <span class="map-legend-color-rectangle" :style="{background:stop[1]}"></span>
+            <span class="map-legend-color-text">{{ stop[0] }}</span>
+            <!-- <span>{{ stop[1] }}</span> -->
+        </div>
     </template>
 
     <!-- <div v-for="layer in layers">layer: {{ layer.id }}</div> -->
