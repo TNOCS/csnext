@@ -26,6 +26,7 @@ export class LayerLegendComponent extends Vue {
 
     public selectLayer(layer: IMapLayer) {
         this.activeLayer = layer;
+        this.updateLegendList();
     }
 
     public mounted() {
@@ -40,24 +41,19 @@ export class LayerLegendComponent extends Vue {
     }
 
     private updateLegendList() {
-        Vue.nextTick(() => {
-            if (this.manager && this.manager.layers) {
-                this.layers = this.manager.layers.filter(
-                    l => l.Visible && l._legends && l._legends.length > 0
-                );
-                if (this.layers.length > 0) {
-                    // this.activeLayer = this.layers[0];
+
+        if (this.manager && this.manager.layers) {
+            this.layers = this.manager.layers.filter(
+                l => l.Visible && l._legends && l._legends.length > 0
+            );
+            if (this.layers.length > 0) {
+                if (this.activeLayer === undefined || !this.activeLayer.hasOwnProperty('id')) {
                     Vue.set(this, 'activeLayer', this.layers[0]);
-                    // if (this.activeLayer === undefined) {
-                    //     this.activeLayer = this.layers[0];
-                    // }
-                    if (this.activeLayer._legends) {
-                        // this.activeLegend = this.activeLayer._legends[0];
-                        Vue.set(this, 'activeLegend', this.activeLayer._legends[0]);
-                    }
                 }
-                // this.layers.forEach(l => console.log(l._legends));
+                if (this.activeLayer._legends) {
+                    Vue.set(this, 'activeLegend', this.activeLayer._legends[0]);
+                }
             }
-        });
+        }
     }
 }
