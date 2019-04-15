@@ -6,7 +6,7 @@
         <template v-slot:activator="{ on }">
             <div v-on="on" class="map-legend-layer-title">{{ activeLayer.title }}</div>
         </template>
-        <v-list>
+        <v-list v-if="layers.length>1">
             <v-list-tile
                 v-for="(layer, index) in layers"
                 :key="index"
