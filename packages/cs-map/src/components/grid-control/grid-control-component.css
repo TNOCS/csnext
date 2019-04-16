@@ -1,0 +1,20 @@
+.grid-control {
+    padding: 5px;
+}
+
+.grid-control-component
+{
+    padding: 5px;
+}
+
+.grid-style-icon {
+    cursor: pointer;
+}
+
+.grid-style-title {
+    font-size:14px;
+    margin-top:3px;
+    font-weight: 700;
+    margin-left: 3px;
+    cursor: pointer;
+}
