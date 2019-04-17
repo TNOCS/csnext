@@ -6,6 +6,7 @@ import { TimeInterpolationExtension } from './extensions/time-interpolation-exte
 import { WmsTimeExtension } from './extensions/wms-time-extension';
 import { LayerServerService } from './services/layer-server-service';
 import { AppState } from '@csnext/cs-client';
+import { GridLayer } from './layers/grid-layer';
 
 // classes
 export * from './classes/map-options';
@@ -34,6 +35,7 @@ export * from './layers/base-layer';
 export * from './layers/geojson-layer';
 export * from './layers/mask-layer';
 export * from './layers/geojson-plus-layer';
+export * from './layers/grid-layer';
 
 // services
 export * from './services/layer-server';
@@ -45,6 +47,7 @@ export * from './extensions/wms-time-extension';
 
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
+CsMap.AddLayerType(new GridLayer());
 CsMap.AddLayerExtension(new TimeInterpolationExtension());
 CsMap.AddLayerExtension(new WmsTimeExtension());
 CsMap.AddLayerServiceType(new LayerServer());

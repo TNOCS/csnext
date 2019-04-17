@@ -21,17 +21,12 @@ import {
 import { BaseLayer } from './base-layer';
 
 export class GeojsonLayer extends BaseLayer {
-    types = ['symbol', 'raster', 'line', 'fill', 'circle'];
 
-    private mapEventsRegistered = false;
-    public getInstance(init?: Partial<IMapLayer>) {
-        let result = new GeojsonLayer(init);
-        return result;
-    }
+    public types = ['symbol', 'raster', 'line', 'fill', 'circle'];
+
     public typeId?: string = 'geojson';
     public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
     // public opacity?: number;
-    
     public source?: string | LayerSource;
     public visible?: boolean;
     public mask?: boolean;
@@ -52,15 +47,30 @@ export class GeojsonLayer extends BaseLayer {
         | mapboxgl.CirclePaint;
     public _manager?: MapLayers;
     public _events?: MessageBusService;
-    public popupContent?: string | Function | undefined;
+    public popupContent?: string | (Function) | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
     public _opacity?: number;
+    public _source?: LayerSource;
+    public _initialized?= false;
+
+    private mapEventsRegistered = false;
+
+    // Create a popup, but don't add it to the map yet.
+    private popup = new mapboxgl.Popup({
+        closeButton: false
+    });
+
 
     constructor(init?: Partial<IMapLayer>) {
         super();
         Object.assign(this, init);
         // this.events = new MessageBusService();
+    }
+
+    public getInstance(init?: Partial<IMapLayer>) {
+        const result = new GeojsonLayer(init);
+        return result;
     }
 
     public get Visible(): boolean | undefined {
@@ -111,7 +121,7 @@ export class GeojsonLayer extends BaseLayer {
         return this._opacity;
     }
 
-    layerTypeProps(): string[] {
+    public layerTypeProps(): string[] {
         let props: string[] = [];
         if (this.type === 'symbol') {
             props.push('text');
@@ -122,7 +132,7 @@ export class GeojsonLayer extends BaseLayer {
         return props;
     }
 
-    setOpacity(value: number) {
+    public setOpacity(value: number) {
         this._opacity = value;
         if (
             this._initialized &&
@@ -156,18 +166,6 @@ export class GeojsonLayer extends BaseLayer {
             return undefined;
         }
     }
-
-    private isFunction(functionToCheck) {
-        return (
-            functionToCheck &&
-            {}.toString.call(functionToCheck) === '[object Function]'
-        );
-    }
-
-    // Create a popup, but don't add it to the map yet.
-    private popup = new mapboxgl.Popup({
-        closeButton: false
-    });
 
     public initLayer(manager: MapLayers) {
         // check if we need to create an instance first of maplayer (needed if imported from json)
@@ -218,7 +216,7 @@ export class GeojsonLayer extends BaseLayer {
         }
 
         l.style = {
-            ...({ title: '{{title}}'} as LayerStyle),
+            ...({ title: '{{title}}' } as LayerStyle),
             ...l.style
         };
 
@@ -227,7 +225,7 @@ export class GeojsonLayer extends BaseLayer {
             (this.layout as SymbolLayout)['icon-image'] = l.id;
         }
 
-        if (!l.style.types || l.style.types.includes('point') && !l.style.icon) {                        
+        if (!l.style.types || l.style.types.includes('point') && !l.style.icon) {
             l.style.pointCircle = true;
         }
 
@@ -261,44 +259,14 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    private registerLayerExtensions() {
-        if (this.extensions) {
-            this.extensions.forEach(ext => {
-                const extensionType = CsMap.layerExtensions.find(
-                    le => le.id === ext.id
-                );
-                if (extensionType && extensionType.getInstance) {
-                    const extension = extensionType.getInstance(ext.options);
-                    this._extensions.push(extension);
-                    extension.start(this);
-                } else {
-                    console.warn(`Could not find extension ${ext.id}`);
-                }
-            });
+    public removeLayer(map: CsMap) {
+        this.removeExtensions();
+        if (this.id) {
+            if (map.map.getLayer(this.id) !== undefined) {
+                map.map.removeLayer(this.id);
+            }
         }
-    }
-
-    private registerMapEvents(map: CsMap) {
-        if (this.id && !this.mapEventsRegistered) {
-            map.map.on('touchend', this.id, e => {
-                console.log('Start click');
-                this.click(this, e);
-                
-            });
-            map.map.on('click', this.id, e => {
-                this.click(this, e);
-            });
-            map.map.on('mousemove', this.id, e => {
-                this.mouseMove(map, this, e);
-            });
-            map.map.on('mouseenter', this.id, e => {
-                this.mouseEnter(map, this, e);
-            });
-            map.map.on('mouseleave', this.id, e => {
-                this.mouseLeave(map, this, e);
-            });
-            this.mapEventsRegistered = true;
-        }
+        this.Visible = false;
     }
 
     public addLayer(map: CsMap) {
@@ -326,25 +294,11 @@ export class GeojsonLayer extends BaseLayer {
                         );
                     }
                 }
-            } catch (e) {}
+            } catch (e) { }
             this.type = 'fill';
-            // this.source = { type: 'geojson', data: difference.default(bboxPoly, mask)}
-
-            //         let res = {
-            //             id: id,
-            //             source: {
-            //                 type: 'geojson',
-            //                 data: difference.default(bboxPoly, mask)
-            //             },
-            //             type: 'fill',
-            //             paint: paint
-            //         } as Layer;
-
-            //         return res;
-            //     }
         }
 
-        let mblayer = {
+        const mblayer = {
             id: this.id,
             type: this.type,
             source: this._source.id,
@@ -353,15 +307,11 @@ export class GeojsonLayer extends BaseLayer {
         if (this.layout) {
             mblayer.layout = this.layout;
         }
-        
+
         if (this.paint) {
             mblayer.paint = this.paint;
         }
 
-        // mblayer.paint = {
-        //     'fill-color': ['get', 'color'],
-        //     'fill-opacity': 0.3
-        //   } as FillPaint;
         if (this.filter) {
             mblayer.filter = this.filter;
         }
@@ -378,6 +328,45 @@ export class GeojsonLayer extends BaseLayer {
         // map.zoomLayer(this);
     }
 
+    private registerLayerExtensions() {
+        if (this.extensions) {
+            this.extensions.forEach(ext => {
+                const extensionType = CsMap.layerExtensions.find(
+                    le => le.id === ext.id
+                );
+                if (extensionType && extensionType.getInstance) {
+                    const extension = extensionType.getInstance(ext.options);
+                    this._extensions.push(extension);
+                    extension.start(this);
+                } else {
+                    console.warn(`Could not find extension ${ext.id}`);
+                }
+            });
+        }
+    }
+
+
+    private registerMapEvents(map: CsMap) {
+        if (this.id && !this.mapEventsRegistered) {
+            map.map.on('touchend', this.id, e => {
+                this.click(this, e);
+            });
+            map.map.on('click', this.id, e => {
+                this.click(this, e);
+            });
+            map.map.on('mousemove', this.id, e => {
+                this.mouseMove(map, this, e);
+            });
+            map.map.on('mouseenter', this.id, e => {
+                this.mouseEnter(map, this, e);
+            });
+            map.map.on('mouseleave', this.id, e => {
+                this.mouseLeave(map, this, e);
+            });
+            this.mapEventsRegistered = true;
+        }
+    }
+
     private removeExtensions() {
         if (this._extensions && this._extensions.length) {
             this._extensions.forEach(extension => {
@@ -387,20 +376,10 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    public removeLayer(map: CsMap) {
-        this.removeExtensions();
-        if (this.id) {
-            if (map.map.getLayer(this.id) !== undefined) {
-                map.map.removeLayer(this.id);
-            }
-        }
-        this.Visible = false;
-    }
-
     private click(layer: GeojsonLayer, e: any) {
         if (layer._events) {
             layer._events.publish('feature', CsMap.FEATURE_SELECT, {
-                feature: (e.features.length>0) ? e.features[0] : undefined,
+                feature: (e.features.length > 0) ? e.features[0] : undefined,
                 features: e.features,
                 context: e
             } as FeatureEventDetails);
@@ -447,7 +426,7 @@ export class GeojsonLayer extends BaseLayer {
             } else if (this.isFunction(layer.popupContent)) {
                 popup = layer.popupContent(e);
             }
-            
+
         }
         if (popup) {
             this.popup
@@ -457,6 +436,11 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    public _source?: LayerSource;
-    public _initialized? = false;
+    private isFunction(functionToCheck) {
+        return (
+            functionToCheck &&
+            {}.toString.call(functionToCheck) === '[object Function]'
+        );
+    }
+
 }

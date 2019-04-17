@@ -74,7 +74,7 @@ export class MapLayers implements IDatasource {
         return result;
     }
 
-    public removeLegend(layer: IMapLayer, pd: PropertyDetails) {}
+    public removeLegend(layer: IMapLayer, pd: PropertyDetails) { }
 
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
@@ -101,7 +101,7 @@ export class MapLayers implements IDatasource {
             if (this.map) {
                 this.map
                     .showLayer(ml)
-                    .then(maplayer => {                    
+                    .then(maplayer => {
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
                             this.events.publish(
@@ -324,7 +324,7 @@ export class MapLayers implements IDatasource {
                 layer._source._geojson.features.push(feature);
                 if (updateSource) {
                     this.updateLayerSource(layer);
-                }                
+                }
             }
         }
     }
@@ -477,22 +477,22 @@ export class MapLayers implements IDatasource {
             }
             let layer = this.getLayerInstance(ml.type, ml);
             if (layer) {
-                if (!ml._events) {
-                    ml._events = new MessageBusService();
+                if (!layer._events) {
+                    layer._events = new MessageBusService();
                 }
                 layer.initLayer(this);
                 this.layers.push(layer);
                 if (layer.style) {
                     // if specified, set default legend
-                    if (layer.style.defaultLegendProperty) {                        
-                        ml.setLegend(layer.style.defaultLegendProperty, false);
+                    if (layer.style.defaultLegendProperty) {
+                        layer.setLegend(layer.style.defaultLegendProperty, false);
                     }
                 }
                 this.showLayer(layer)
                     .then(m => resolve(m))
                     .catch(e => reject(e));
             }
-            this.events.publish('layer', 'added', ml);
+            this.events.publish('layer', 'added', layer);
         });
     }
 

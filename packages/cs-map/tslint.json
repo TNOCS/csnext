@@ -3,6 +3,9 @@
   "rules": {
     "quotemark": [true, "single", "double"],
     "max-line-length": false,
+    "naming-convention": [
+      {"type": "default", "format": "camelCase", "leadingUnderscore": "allow", "trailingUnderscore": "allow"},
+    ],
     "whitespace": [true,
       "check-branch",
       "check-decl",

@@ -27,6 +27,7 @@ import {
     GeojsonPlusLayer,
     FeatureDetails
 } from '../../.';
+import { GridControl } from '../grid-control/grid-control';
 
 export interface FeatureEventDetails {
     context: any;
@@ -39,9 +40,6 @@ export interface FeatureEventDetails {
     template: require('./cs-map.html')
 })
 export class CsMap extends Vue {
-    /** access the original widget from configuration */
-
-    private mapOptions!: MapOptions;
 
     public static FEATURE_SELECT = 'select';
     public static FEATURE_CREATED = 'created';
@@ -55,17 +53,19 @@ export class CsMap extends Vue {
     public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
     public static DRAWLAYER = 'drawlayer';
 
+    public static layerTypes: IMapLayerType[] = [];
+    public static serviceTypes: IStartStopService[] = [];
+    public static layerExtensions: ILayerExtensionType[] = [];
+
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
     public mapDraw!: any;
 
-    public static layerTypes: IMapLayerType[] = [];
-    public static serviceTypes: IStartStopService[] = [];
-    public static layerExtensions: ILayerExtensionType[] = [];
+    private mapOptions!: MapOptions;
 
-    /** register new layertype  */
-    public static AddLayerExtension(type: ILayerExtensionType) {
+      /** register new layertype  */
+      public static AddLayerExtension(type: ILayerExtensionType) {
         if (CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1) {
             CsMap.layerExtensions.push(type);
         }
@@ -86,6 +86,11 @@ export class CsMap extends Vue {
         }
     }
 
+    @Watch('widget.content')
+    public dataLoaded() {
+        this.initMapLayers();
+    }
+
     public get manager(): MapLayers | undefined {
         if (this.widget) {
             if (this.widget.content) {
@@ -104,10 +109,6 @@ export class CsMap extends Vue {
         return new MapOptions();
     }
 
-    @Watch('widget.content')
-    dataLoaded() {
-        this.initMapLayers();
-    }
 
     public beforeMount() {
         if (!this.widget) {
@@ -143,7 +144,7 @@ export class CsMap extends Vue {
         }
     }
 
-    public initMapLayers() {        
+    public initMapLayers() {
         console.log('init map layers');
         if (
             this.manager &&
@@ -169,7 +170,7 @@ export class CsMap extends Vue {
                     }
                 });
             }
-            
+
         }
     }
 
@@ -201,12 +202,12 @@ export class CsMap extends Vue {
                                     (a: string, f: FeatureEventDetails) => {
                                         if (a === CsMap.FEATURE_SELECT) {
                                             if (
-                                                this.$cs && 
+                                                this.$cs &&
                                                 layer.openFeatureDetails &&
                                                 layer.openFeatureDetails ===
-                                                    true
+                                                true
                                             ) {
-                                                
+
                                                 this.$cs.OpenRightSidebarWidget(
                                                     {
                                                         component: FeatureDetails,
@@ -241,7 +242,7 @@ export class CsMap extends Vue {
         }
     }
 
-    mounted() {
+    public mounted() {
         Vue.nextTick(() => {
             if (this.options.token) {
                 mapboxgl.accessToken = this.options.token;
@@ -752,7 +753,14 @@ export class CsMap extends Vue {
                         const layerLegendControl = new LayerLegendControl(
                             this.manager
                         );
-                        this.map.addControl(layerLegendControl, "bottom-left");
+                        this.map.addControl(layerLegendControl, 'bottom-left');
+                    }
+
+                    if (this.mapOptions.showGrid) {
+                        const gridControl = new GridControl(
+                            this.manager
+                        );
+                        this.map.addControl(gridControl, 'bottom-right');
                     }
                 }
 
@@ -763,6 +771,52 @@ export class CsMap extends Vue {
             });
         });
     }
+
+    public addSource(source: LayerSource) {
+        if (source.id) {
+            let original = this.map.getSource(source.id);
+            if (original !== undefined) {
+                if (original.type === 'geojson' && source._geojson) {
+                    original.setData(source._geojson);
+                }
+            } else {
+                switch (source.type) {
+                    case 'raster':
+                        if (source.url) {
+                            this.map.addSource(source.id, {
+                                type: source.type,
+                                tiles: [source.url],
+                                tileSize: source.tileSize
+                            });
+                        }
+                        break;
+                    default:
+                        source.type = 'geojson';
+                        this.map.addSource(source.id, {
+                            type: source.type,
+                            data: source._geojson
+                        });
+                        break;
+                }
+                // let vs = this.map.getSource(source.id) as GeoJSONSource;
+            }
+        }
+    }
+
+    public destroyed() {
+        //    this.map.remove();
+    }
+
+    public initLayerSource(source: LayerSource): any {
+        // load datasource
+        if (source.id && source._geojson) {
+            if (!this.map.isSourceLoaded(source.id)) {
+                this.addSource(source);
+            }
+        }
+    }
+
+    
 
     private addGeocoder() {
         this.map.on('moveend', () => {
@@ -887,47 +941,5 @@ export class CsMap extends Vue {
         //   });
     }
 
-    public addSource(source: LayerSource) {
-        if (source.id) {
-            let original = this.map.getSource(source.id);
-            if (original !== undefined) {
-                if (original.type === 'geojson' && source._geojson) {
-                    original.setData(source._geojson);
-                }
-            } else {
-                switch (source.type) {
-                    case 'raster':
-                        if (source.url) {
-                            this.map.addSource(source.id, {
-                                type: source.type,
-                                tiles: [source.url],
-                                tileSize: source.tileSize
-                            });
-                        }
-                        break;
-                    default:
-                        source.type = 'geojson';
-                        this.map.addSource(source.id, {
-                            type: source.type,
-                            data: source._geojson
-                        });
-                        break;
-                }
-                // let vs = this.map.getSource(source.id) as GeoJSONSource;
-            }
-        }
-    }
-
-    public destroyed() {
-        //    this.map.remove();
-    }
-
-    public initLayerSource(source: LayerSource): any {
-        // load datasource
-        if (source.id && source._geojson) {
-            if (!this.map.isSourceLoaded(source.id)) {
-                this.addSource(source);
-            }
-        }
-    }
+  
 }
