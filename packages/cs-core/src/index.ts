@@ -8,6 +8,7 @@ export * from './project/header-options';
 export * from './project/navigation-options';
 export * from './project/sidebar-options';
 export * from './project/server-connection';
+export * from './project/user-options';
 
 export * from './datasources/datasource';
 export * from './datasources/time-datasource';

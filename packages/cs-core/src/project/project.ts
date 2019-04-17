@@ -10,7 +10,8 @@ import {
   ILanguageOptions,
   ServerConnection,
   IMenu,
-  INotificationOptions
+  INotificationOptions,
+  IUserOptions
 } from './..';
 
 /** project definition */
@@ -19,6 +20,7 @@ export interface IProject {
   title?: string;
   logo?: string;
   navigation?: NavigationOptions;
+  user?: IUserOptions;
   footer?: IFooterOptions;
   datasources?: { [id: string]: IDatasource | any };
   dashboards?: IDashboard[];
