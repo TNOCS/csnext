@@ -10,7 +10,7 @@
   "scripts": {
     "link": "yarn link",
     "dev": "tsc -w",
-    "clean": "del-cli dist lib node_modules",
+    "clean": "del-cli package-lock.json dist lib node_modules",
     "build": "tsc"
   },
   "publishConfig": {
@@ -20,7 +20,7 @@
     "typescript-collections": "^1.3.2"
   },
   "devDependencies": {
-    "@types/node": "^11.13.2",
+    "@types/node": "^11.13.4",
     "typescript": "^3.4.3"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"

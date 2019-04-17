@@ -22,7 +22,7 @@
     "rebuild": "yarn clean && yarn && yarn build"
   },  
   "devDependencies": {
-    "lerna": "^3.13.1",
+    "lerna": "^3.13.3",
     "del-cli": "^1.1.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",

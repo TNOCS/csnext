@@ -19,17 +19,17 @@
     "dependencies": {
         "@csnext/cs-client": "^0.0.111",
         "@csnext/cs-core": "^0.0.111",
-        "handlebars": "^4.1.1",
-        "simplebar-vue": "^0.1.6"
+        "handlebars": "^4.1.2",
+        "simplebar-vue": "^1.0.0-alpha.3"
     },
     "devDependencies": {
-        "@types/node": "^11.13.2",
+        "@types/node": "^11.13.4",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.3.3",
         "typescript": "^3.4.3",
-        "webpack": "~4.29.6",
+        "webpack": "^4.30.0",
         "webpack-cli": "^3.3.0"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
