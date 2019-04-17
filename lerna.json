@@ -3,6 +3,7 @@
   "packages": [
     "packages/*"
   ],
+  "ignore": "@csnext/cs-layer-server",
   "command": {
     "publish": {
       "allowBranch": "*",

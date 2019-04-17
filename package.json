@@ -8,9 +8,9 @@
   },
   "scripts": {
     "postinstall": "lerna bootstrap --hoist && lerna run link",
-    "dev": "lerna run --parallel dev",
+    "dev": "lerna run --ignore @csnext/cs-layer-server --parallel dev",
     "clean": "lerna run --parallel clean",
-    "build": "lerna run build",
+    "build": "lerna run --ignore @csnext/cs-layer-server  build",
     "unlink": "lerna run unlink",
     "build:parallel": "lerna run --parallel build",
     "dev:docs": "lerna run dev:docs",
