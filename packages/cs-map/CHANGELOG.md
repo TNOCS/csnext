@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.113](https://github.com/TNOCS/csnext/compare/v0.0.112...v0.0.113) (2019-04-23)
+
+**Note:** Version bump only for package @csnext/cs-map
+
+
+
+
+
 ## [0.0.112](https://github.com/TNOCS/csnext/compare/v0.0.111...v0.0.112) (2019-04-23)
 
 **Note:** Version bump only for package @csnext/cs-map
