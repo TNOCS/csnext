@@ -19,7 +19,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@vue/cli-shared-utils": "^3.5.1"
+        "@vue/cli-shared-utils": "^3.7.0"
     },
     "devDependencies": {
         "register-service-worker": "^1.6.2"

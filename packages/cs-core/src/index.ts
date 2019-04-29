@@ -35,5 +35,6 @@ export * from './bus/main-bus';
 export * from './bus/topics';
 
 export * from './utils/guid';
+export * from './utils/function';
 
 export * from './form/form-decorators';
