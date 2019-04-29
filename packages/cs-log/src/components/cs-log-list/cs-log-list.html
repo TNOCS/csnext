@@ -1,6 +1,6 @@
 <simplebar>
     <v-list two-line>
-        <v-list-tile v-for="item in log.items" :key="item.id" avatar @click="openDetails(item)">
+        <v-list-tile v-for="item in visibleItems" :key="item.id" avatar @click="openDetails(item)">
             <!-- <v-list-tile-avatar>
                 <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
             </v-list-tile-avatar> -->

@@ -61,7 +61,7 @@ export class LogController {
         if (source && source.toString() === 'true') {
             return this.logService.getLogAndSourceById(id);
         } else {
-            if (source && source === true) {
+            if (source && source.toString() === 'true') {
               return await this.logService.getLogById(id) 
             } else 
             return {
