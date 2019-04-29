@@ -5,5 +5,6 @@ export class LogListOptions extends WidgetOptions {
     public titleTemplate? : string;
     public subTitleTemplate? : string;
     public openDetailsOnClick? = true;
+    public reverseOrder? = false;
     public detailsComponent? = 'cs-log-details';
 }

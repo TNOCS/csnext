@@ -1,4 +1,4 @@
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 import { IWidget} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-log-list.css';
@@ -6,16 +6,23 @@ import { WidgetBase, LogManager, ILogItem } from '@csnext/cs-client';
 import { LogListOptions } from '../../classes/log-list-options';
 import simplebar from 'simplebar-vue';
 import Handlebars from 'handlebars';
+import Vue from 'vue';
 
 @Component({
     template: require('./cs-log-list.html'),
-    components: { simplebar }
+    components: { simplebar },
 })
 export class CsLogList extends WidgetBase {    
     public titleTemplate!: Handlebars.TemplateDelegate<any>;
     public subTitleTemplate!: Handlebars.TemplateDelegate<any>;
     public log: LogManager = new LogManager();
-
+    private visibleItems: ILogItem[] = [];
+    public reverseOrder: boolean = false;
+    
+    @Watch('log.items')
+    private LogItemsChanged() {
+        this.setVisibleItems();
+    }
 
     public get WidgetOptions(): LogListOptions {
         if (this.widget.options) {
@@ -42,6 +49,10 @@ export class CsLogList extends WidgetBase {
         }
     }
 
+    private setVisibleItems() {
+        Vue.set(this, 'visibleItems', this.reverseOrder ? this.log.items.slice().reverse() : this.log.items.slice());        
+    }
+
     /** load all log sources as specified in widget options */
     public InitLog() {
         // build handlebar templates
@@ -49,6 +60,10 @@ export class CsLogList extends WidgetBase {
         if (this.WidgetOptions.subTitleTemplate) {
             this.subTitleTemplate = Handlebars.compile(this.WidgetOptions.subTitleTemplate);
         }
+
+        // set reversed option
+        this.reverseOrder = this.WidgetOptions.reverseOrder || false;
+        this.setVisibleItems();
 
         // init log sources
         if (this.WidgetOptions.logSource) {
