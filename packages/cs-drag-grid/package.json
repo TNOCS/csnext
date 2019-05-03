@@ -22,15 +22,15 @@
     "vue-grid-layout": "^2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^11.13.4",
+    "@types/node": "^11.13.8",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.4.3",
+    "ts-loader": "^5.4.4",
+    "typescript": "^3.4.5",
     "webpack": "^4.30.0",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.1"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }

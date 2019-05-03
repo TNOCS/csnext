@@ -5,7 +5,8 @@ import {
   IDashboard,
   IWidget,
   guidGenerator,
-  MessageBusService
+  MessageBusService,
+  isFunction
 } from '@csnext/cs-core';
 import {
   CsApp,
@@ -26,7 +27,7 @@ export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
   public app = AppState.Instance;
 
-   @Watch('dashboard')
+  @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
     this.initDashboard(n);
   }
@@ -87,15 +88,21 @@ export class CsDashboard extends Vue {
 
     // load datasource, if configured
     if (widget.datasource !== undefined) {
+      // widget.content = {};
       this.app.loadDatasource(widget.datasource).then(d => {
-        this.$nextTick(() => {
-          Vue.set(widget, 'content', d);
-        });
+        this.setWidgetContent(widget, d);
       });
     } else if (this.dashboard && this.dashboard.content) {
-      Vue.set(widget, 'content', this.dashboard.content);
+      this.setWidgetContent(widget, this.dashboard.content);
     }
     widget._initalized = true;
+  }
+
+  public setWidgetContent(widget: IWidget, content: any) {
+    Vue.set(widget, 'content', content);
+    if (widget._component && widget._component.dataLoaded) {
+      widget.component.dataLoaded(content);
+    }
   }
 
   /** init dashboard: load datasources, init widgets and init manager  */

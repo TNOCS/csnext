@@ -33,10 +33,10 @@
     "lockfile": "^1.0.4",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "pg": "^7.9.0",
+    "pg": "^7.10.0",
     "pg-query-stream": "^2.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.4.0",
+    "rxjs": "^6.5.1",
     "simple-statistics": "^7.0.2",
     "socket.io": "^2.2.0",
     "swagger-ui-express": "^4.0.2",
@@ -48,11 +48,11 @@
     "@types/lockfile": "^1.0.1",
     "@types/lodash": "^4.14.123",
     "@types/mapbox-gl": "^0.51.4",
-    "@types/node": "^11.13.4",
+    "@types/node": "^11.13.8",
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^1.1.0",
-    "typescript": "^3.4.3"
+    "typescript": "^3.4.5"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
