@@ -174,10 +174,34 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 })
                 .catch(() => { });
         }
-        this.initSocket();
     }
 
-    public initSocket() { }
+    public disableLayerSocket(gl: GeojsonPlusLayer) {
+        if (this.socket && this.socket !== undefined) {
+            this.socket.off('layer/' + gl.id);
+            this.socket.off('layer/' + gl.id + '/features');            
+        }
+    }
+
+    public initLayerSocket(gl: GeojsonPlusLayer) {
+
+        if (this.socket && this.socket !== undefined) {
+
+            if (gl.Visible && gl.socketEmitters) {
+                // listen to complete layer updates
+
+                this.socket.on('layer/' + gl.id, (data: any) => {
+                    this.updateLiveLayer(data, gl);
+                });
+
+                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
+                    console.log('Got features');
+                    this.updateLiveLayerFeatures(data, gl, true);
+                });
+
+            }
+        }
+    }
 
     // save layer in backend
     public updateLayer(layer: IMapLayer) {
@@ -239,16 +263,18 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
-        if (this.socket && this.socket !== undefined) {
-            // listen to complete layer updates
-            this.socket.on('layer/' + gl.id, (data: any) => {
-                this.updateLiveLayer(data, gl);
-            });
+        this.initLayerSocket(gl);
 
-            this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
-                this.updateLiveLayerFeatures(data, gl, true);
-            });
-        }
+        gl._events.subscribe('layer', (a: string, d: any) => {
+            switch (a) {
+                case CsMap.LAYER_ACTIVATED:
+                    this.initLayerSocket(gl);
+                    break;
+                case CsMap.LAYER_DISABLED:
+                    this.disableLayerSocket(gl);
+                    break;
+            }
+        });
     }
 
     /** update live layer, after complete update */
@@ -288,12 +314,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
             if (data.hasOwnProperty(id)) {
                 const featureAction = data[id];
                 this.updateLiveLayerFeature(featureAction, gl, false);
-                
+
             }
         }
         if (forceUpdate && this.manager) {
             // update source
-            this.manager.updateLayerSource(gl);            
+            this.manager.updateLayerSource(gl);
         }
     }
 

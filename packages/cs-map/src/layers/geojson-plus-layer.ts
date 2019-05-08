@@ -90,6 +90,8 @@ export class GeojsonPlusLayer extends BaseLayer
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
 
+    public socketEmitters: { [key: string]: SocketIOClient.Emitter} = {};
+
     constructor(init?: Partial<IMapLayer>) {
         super();
         Object.assign(this, init);

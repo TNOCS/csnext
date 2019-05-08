@@ -48,6 +48,8 @@ export class CsMap extends Vue {
     public static FEATURE_MOUSE_LEAVE = 'leave';
     public static FEATURE_UPDATED = 'updated';
     public static LAYER_UPDATED = 'layer.updated';
+    public static LAYER_ACTIVATED = 'layer.activated';
+    public static LAYER_DISABLED = 'layer.disabled';
     public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
     public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
     public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
@@ -64,8 +66,8 @@ export class CsMap extends Vue {
 
     private mapOptions!: MapOptions;
 
-      /** register new layertype  */
-      public static AddLayerExtension(type: ILayerExtensionType) {
+    /** register new layertype  */
+    public static AddLayerExtension(type: ILayerExtensionType) {
         if (CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1) {
             CsMap.layerExtensions.push(type);
         }
@@ -197,6 +199,7 @@ export class CsMap extends Vue {
                             );
 
                             if (layer._events) {
+                                layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
                                 layer._events.subscribe(
                                     'feature',
                                     (a: string, f: FeatureEventDetails) => {
@@ -238,6 +241,9 @@ export class CsMap extends Vue {
         if (layer.id) {
             if (typeof layer.removeLayer === 'function') {
                 layer.removeLayer(this);
+                if (layer._events) {                    
+                    layer._events.publish('layer', CsMap.LAYER_DISABLED);
+                }
             }
         }
     }
@@ -816,7 +822,7 @@ export class CsMap extends Vue {
         }
     }
 
-    
+
 
     private addGeocoder() {
         this.map.on('moveend', () => {
@@ -941,5 +947,5 @@ export class CsMap extends Vue {
         //   });
     }
 
-  
+
 }
