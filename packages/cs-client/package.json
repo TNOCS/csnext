@@ -28,13 +28,14 @@
     "vue-mixin-decorator": "^1.1.1",
     "vue-resize-directive": "^1.2.0",
     "vue-router": "^3.0.6",
-    "vuetify": "^1.5.13"
+    "vuetify": "^1.5.13",
+    "please-wait": "^0.0.5"
   },
   "devDependencies": {
     "@types/deepmerge": "^2.2.0",
     "@types/node": "^11.13.8",
     "@types/vue-i18n": "^7.0.0",
-    "@types/webpack": "^4.4.29",
+    "@types/webpack": "^4.4.29",    
     "base64-inline-loader": "^1.1.1",
     "concurrently": "^4.1.0",
     "cpx": "^1.5.0",
@@ -59,7 +60,8 @@
     "webpack": "^4.30.0",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.1",
-    "yargs": "^13.2.2"
+    "yargs": "^13.2.2",
+    "thread-loader": "^2.1.2"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
