@@ -136,14 +136,14 @@
 
     <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0" @click="rightSidebar.open=!rightSidebar.open"
       class="header-icon" flat>
-      <v-tooltip bottom>
-        <v-icon slot="activator" v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
-        <span>{{$t('CLOSE_RIGHT_SIDEBAR')}}</span>
+      <!-- <v-tooltip bottom> -->
+        <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
+        <!-- <span>{{$t('CLOSE_RIGHT_SIDEBAR')}}</span> 
       </v-tooltip>
-      <v-tooltip bottom>
-        <v-icon slot="activator" v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
-        <span>{{$t('OPEN_RIGHT_SIDEBAR')}}</span>
-      </v-tooltip>
+      <v-tooltip bottom>-->
+        <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+        <!-- <span>{{$t('OPEN_RIGHT_SIDEBAR')}}</span>
+      </v-tooltip> -->
       <template v-if="rightSidebar.title">
       <span class="right-sidebar-title"  v-if="!rightSidebar.open">{{ rightSidebar.title }} </span>
       <span class="right-sidebar-title" v-if="rightSidebar.open">{{ rightSidebar.titleClose }} </span>
