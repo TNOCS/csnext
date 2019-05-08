@@ -2,7 +2,7 @@
     "name": "@csnext/vue-cli-plugin-cs",
     "description": "cs plugin for vue-cli",
     "main": "index.js",
-    "version": "0.0.114",
+    "version": "0.0.115",
     "scripts": {
         "link": "yarn link"
     },
