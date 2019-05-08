@@ -1,13 +1,36 @@
-<v-app v-resize="onResize" v-if="app.isInitialized" :dark="app.project.theme.dark" :light="!app.project.theme.dark">
-  <cs-header :leftSidebar="leftSidebar" :rightSidebar="rightSidebar"></cs-header>
-  
-  <!-- side bars -->
+<v-app
+  v-resize="onResize"
+  v-if="app.isInitialized"
+  :dark="app.project.theme.dark"
+  :light="!app.project.theme.dark"
+>
+  <!-- <cs-loading></cs-loading> -->
+  <cs-header
+    :leftSidebar="leftSidebar"
+    :rightSidebar="rightSidebar"
+  ></cs-header>
 
-  <cs-sidebar v-if="leftSidebar.visible" id="left-sidebar" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
-  <cs-sidebar v-if="rightSidebar.visible" id="right-sidebar" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
+  <!-- side bars -->
+  <cs-sidebar
+    v-if="leftSidebar.visible"
+    id="left-sidebar"
+    class="sidebar"
+    :sideBar="leftSidebar"
+  ></cs-sidebar>
+  <cs-sidebar
+    v-if="rightSidebar.visible"
+    id="right-sidebar"
+    class="sidebar"
+    :sideBar="rightSidebar"
+  ></cs-sidebar>
 
   <!-- dialogs -->
-  <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" hide-overlay transition="dialog-bottom-transition">
+  <v-dialog
+    v-model="dialog.visible"
+    :fullscreen="dialog.fullscreen"
+    hide-overlay
+    transition="dialog-bottom-transition"
+  >
     <v-card tile>
       <v-toolbar card color="primary" v-if="dialog.toolbar">
         <v-btn icon @click.native="dialog.visible = false">
@@ -24,25 +47,43 @@
   </v-dialog>
 
   <!-- content -->
-  <v-content fluid v-bind:class="{ 'floating': app.project.navigation.floating }" v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">
-    <router-view :key="$route.path">
-    </router-view>
+  <v-content
+    fluid
+    v-bind:class="{ 'floating': app.project.navigation.floating }"
+    v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
+  >
+    <router-view :key="$route.path"> </router-view>
   </v-content>
 
   <!-- mobile navigation -->
-  <v-bottom-nav app router v-if="app.project.navigation.style==='bottom'" :value="true">
-    <v-btn v-for="dashboard in app.project.dashboards" :key="dashboard.id" color="teal" flat :to="{path:dashboard.pathLink}">
-      <span>{{dashboard.title}}</span>
-      <v-icon>{{dashboard.icon}}</v-icon>
+  <v-bottom-nav
+    app
+    router
+    v-if="app.project.navigation.style==='bottom'"
+    :value="true"
+  >
+    <v-btn
+      v-for="dashboard in app.project.dashboards"
+      :key="dashboard.id"
+      color="teal"
+      flat
+      :to="{path:dashboard.pathLink}"
+    >
+      <span>{{ dashboard.title }}</span>
+      <v-icon>{{ dashboard.icon }}</v-icon>
     </v-btn>
   </v-bottom-nav>
   <!-- footer -->
   <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
 
   <!-- snackbar -->
-  <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" v-model="lastNotification._visible">
+  <v-snackbar
+    :timeout="lastNotification.timeout"
+    :top="true"
+    :multi-line="true"
+    v-model="lastNotification._visible"
+  >
     {{ lastNotification.title }}
     <v-btn flat @click.native="lastNotification._visible = false">Close</v-btn>
   </v-snackbar>
-
 </v-app>

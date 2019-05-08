@@ -25,6 +25,8 @@ import * as nl from './../../assets/translations/nl.json';
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 import 'simplebar/dist/simplebar.min.css';
+import { CsLoading } from '../cs-loader/cs-loader';
+
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
@@ -51,7 +53,8 @@ const router = new VueRouter({ routes: [] });
   components: {
     'cs-sidebar': CsSidebar,
     'cs-footer': CsFooter,
-    'cs-header': CsHeader
+    'cs-header': CsHeader,
+    'cs-loading': CsLoading
   }
 } as any)
 export class CsApp extends Vue {
@@ -70,6 +73,7 @@ export class CsApp extends Vue {
   public lastNotification: INotification = { _visible: false } as INotification;
   public showNotifications = false;
   public unReadNotifications: INotification[] = [];
+  public isLoading: boolean = true;
 
   public settings = [
     // {
@@ -77,6 +81,7 @@ export class CsApp extends Vue {
     //   title: 'dashboard settings'
     // }
   ];
+  
 
   constructor() {
     super();
@@ -213,6 +218,10 @@ export class CsApp extends Vue {
       this.SelectDashboard(adjacent);
     }
     // console.log(adjacent);
+  }
+
+  public mounted() {
+    this.isLoading = false;
   }
 
   // Add a dashboard as a route
