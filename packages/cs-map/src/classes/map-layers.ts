@@ -329,6 +329,50 @@ export class MapLayers implements IDatasource {
         }
     }
 
+    /** Replace/update a collection of features for a given layer */
+    public updateLayerFeatures(
+        ml: IMapLayer | string,
+        features: { [key: string]: Feature },
+        updateSource = true
+    ) {
+        let layer: IMapLayer | undefined = undefined;
+        if (typeof ml === 'string') {
+            if (this.layers) {
+                layer = this.layers.find(l => l.id === ml);
+            }
+        } else {
+            layer = ml;
+        }
+        if (
+            layer &&
+            layer._source &&
+            layer._source._geojson
+        ) {
+            for (const key in features) {
+                if (features.hasOwnProperty(key)) {
+                    const feature = features[key];
+                    // find existing feature
+                    let index = layer._source._geojson.features.findIndex(
+                        f => f.id === key
+                    );
+
+                    // if found, replace it
+                    if (index >= 0) {
+                        layer._source._geojson.features[index] = feature;
+                    }
+                    else {
+                        // add new feature
+                        layer._source._geojson.features.push(feature);
+                    }
+                }
+            }
+
+            if (updateSource) {
+                this.updateLayerSource(layer);
+            }
+        }
+    }
+
     public updateFeatureProperty(
         source: string,
         featureId: number,

@@ -13,4 +13,5 @@ export class LayerSource implements GeoJSON.FeatureCollection {
 
     public _localFile?: string;
     public _tiles: any;
+    public _socketQueue: {[key:string]:any} = {};
 }

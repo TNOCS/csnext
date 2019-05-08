@@ -15,12 +15,19 @@ import { IMapLayer } from '../classes/imap-layer';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
 import { LinePaint } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
+import { Feature } from 'geojson';
 
 export class LayerServerServiceOptions implements ILayerServiceOptions {
     public url?: string;
     public tags?: string[];
     public activeLayers?: string[];
     public openFeatureDetails?: boolean;
+}
+
+export interface IFeatureAction {
+    action: 'update' | 'delete';
+    feature: Feature;
+
 }
 
 export class LayerServerService implements ILayerService, IStartStopService {
@@ -165,12 +172,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         }
                     }
                 })
-                .catch(() => {});
+                .catch(() => { });
         }
         this.initSocket();
     }
 
-    public initSocket() {}
+    public initSocket() { }
 
     // save layer in backend
     public updateLayer(layer: IMapLayer) {
@@ -238,8 +245,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 this.updateLiveLayer(data, gl);
             });
 
-            this.socket.on('layer/' + gl.id + '/features', (data: any) => {
-                this.updateLiveLayerFeature(JSON.parse(data), gl);
+            this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
+                this.updateLiveLayerFeatures(data, gl, true);
             });
         }
     }
@@ -259,32 +266,35 @@ export class LayerServerService implements ILayerService, IStartStopService {
         }
     }
 
-    /** update live layer, after complete update */
-    private updateLiveLayerFeature(data: any, gl: GeojsonPlusLayer) {
+    /** update live layer, after feature update */
+    private updateLiveLayerFeature(data: IFeatureAction, gl: GeojsonPlusLayer, forceUpdate = true) {
         if (this.manager && this.socket && data.action) {
             switch (data.action) {
                 case 'update':
-                    this.manager.updateLayerFeature(gl, data.feature);
-                    console.log('Update');
-                    console.log(data.feature);
+                    this.manager.updateLayerFeature(gl, data.feature, forceUpdate);
                     break;
                 case 'delete':
                     if (data.feature && data.feature.hasOwnProperty('id')) {
-                        this.manager.deleteLayerFeature(gl, data.feature.id);
+                        this.manager.deleteLayerFeature(gl, data.feature.id as string, forceUpdate);
                     }
-                    console.log('delete');
-                    console.log(data.feature);
                     break;
             }
         }
-        //     data.hasOwnProperty('lastUpdatedBy') &&
-        //     data['lastUpdatedBy'] === this.socket.id) {
-        //     console.log('Was updated by me');
-        // }
-        // else {
-        //     console.log(data);
-        //     // gl._manager!.updateLayerSource(gl, data, false);
-        // }
+    }
+
+    /** update live layer, after feature update */
+    private updateLiveLayerFeatures(data: { [fid: string]: IFeatureAction }, gl: GeojsonPlusLayer, forceUpdate = true) {
+        for (const id in data) {
+            if (data.hasOwnProperty(id)) {
+                const featureAction = data[id];
+                this.updateLiveLayerFeature(featureAction, gl, false);
+                
+            }
+        }
+        if (forceUpdate && this.manager) {
+            // update source
+            this.manager.updateLayerSource(gl);            
+        }
     }
 
     private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {

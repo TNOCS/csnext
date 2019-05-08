@@ -14,6 +14,8 @@ import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
 import { debounce } from 'lodash';
+import { Debounce, Throttle } from 'lodash-decorators';
+
 import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
 import { ArangoDBSource } from '../plugins/sources/arangodb';
@@ -21,12 +23,14 @@ import { Inject } from '@nestjs/common/decorators';
 import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
+var AsyncLock = require('async-lock');
 import { Server } from 'tls';
 
 @Injectable()
 export class LayerService {
     private config: ServerConfig;
     private absoluteConfigPath!: string;
+    private lock = new AsyncLock();     
 
     handleConnection(d: Client) {
         // this.server.emit('buttonCount',AppService.buttonCount);
@@ -253,7 +257,7 @@ export class LayerService {
                     return undefined;
                 }
                 return value;
-            }, 2) 
+            }, 2)
         );
         // unlockSync(lockFile);
     }
@@ -315,7 +319,7 @@ export class LayerService {
                         }
                         layer.color = this.findColor(s);
                     }
-                } catch (e) {}
+                } catch (e) { }
             }
             resolve(layer);
         });
@@ -382,14 +386,47 @@ export class LayerService {
         });
     }
 
+    queueSocketUpdate(source: LayerSource, feature: Feature) {
+        if (source) {
+            if (!source._socketQueue) { source._socketQueue = {}; }            
+                   
+            this.lock.acquire(source.id, ()=> {
+                source._socketQueue[feature.id] = {
+                    action: 'update',
+                    feature: feature
+                };                
+            });
+
+        }
+    }
+
+    @Throttle(5000)
+    flushSocketQueue(source: LayerSource) {
+        if (source) {
+            if (source._socketQueue) {
+                this.lock.acquire(source.id, ()=> {
+                    if (this.socket && this.socket.server) {
+                            this.socket.server.emit(
+                            'layer/' + source.id + '/features',
+                            source._socketQueue
+                        );
+                    }
+                    console.log(`Sending queue ${Object.keys(source._socketQueue).length}`);
+                    source._socketQueue = {};
+                });
+            }
+        }
+    }
+
     /** add or update feature */
-    updateFeature(
+    public updateFeature(
         sourceid: string,
         feature: Feature,
         featureId?: string
     ): Promise<Feature | undefined> {
         return new Promise(async (resolve, reject) => {
             try {
+                // console.log(`Update feature ${feature.id}`);
                 // find source
                 let source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
@@ -416,16 +453,19 @@ export class LayerService {
                     }
                     new GeojsonSource().initFeature(feature);
 
-                    // send update over socket
-                    if (this.socket && this.socket.server) {
-                        this.socket.server.emit(
-                            'layer/' + sourceid + '/features',
-                            JSON.stringify({
-                                action: 'update',
-                                feature: feature
-                            })
-                        );
-                    }
+                    this.queueSocketUpdate(source, feature);
+                    this.flushSocketQueue(source)
+
+                    // // send update over socket
+                    // if (this.socket && this.socket.server) {
+                    //     this.socket.server.emit(
+                    //         'layer/' + sourceid + '/features',
+                    //         JSON.stringify({
+                    //             action: 'update',
+                    //             feature: feature
+                    //         })
+                    //     );
+                    // }
                     this.saveSource(source);
                 }
                 resolve(feature);
@@ -499,7 +539,7 @@ export class LayerService {
                                 newLayerDef
                             );
                             newLayerDef = newSource.def;
-                        } catch (e) {}
+                        } catch (e) { }
                     }
                     this.saveServerConfig();
                     resolve(newLayerDef);
@@ -564,7 +604,7 @@ export class LayerService {
                                                         def.featureTypes =
                                                             meta.featureTypes;
                                                     }
-                                                } catch (e) {}
+                                                } catch (e) { }
                                             }
                                             resolve(response.data);
                                             return;
@@ -678,8 +718,8 @@ export class LayerService {
                         def.id,
                         def.source
                     );
-                    
-                    if (def.meta) {                        
+
+                    if (def.meta) {
                         this.updateMetaFilePath(def);
                     }
                     const loadResult = await plugin.load(
@@ -696,7 +736,7 @@ export class LayerService {
                             loadResult.meta.featureTypes
                         ) {
                             def.meta = def.id + '.meta.json';
-                            this.updateMetaFilePath(def);                            
+                            this.updateMetaFilePath(def);
                         }
                     }
 
@@ -718,6 +758,8 @@ export class LayerService {
         def._localMeta = path.join(this.config.serverPath || '', this.config.sourcePath || '', def.id, def.meta);
     }
 
+
+    @Debounce(5000, { leading: true })
     public saveSource(source: LayerSource) {
         if (source._localFile) {
             let content = JSON.stringify(
