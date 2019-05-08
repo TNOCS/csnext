@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+
 const env = require('yargs').argv.env; // use --env with webpack 2
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
@@ -9,7 +10,20 @@ const mod = {
     {
       test: /\.ts$/,
       exclude: [/node_modules/],
-      loader: 'ts-loader'
+      use: [{ loader: 'cache-loader' },
+      {
+          loader: 'thread-loader',
+          options: {
+              // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+              workers: require('os').cpus().length - 1,
+              poolTimeout: Infinity // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+          },
+      }, {
+        loader: 'ts-loader',
+        options: {
+            happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+        }
+    }]
     },
     {
       test: /\.html$/,
@@ -18,6 +32,9 @@ const mod = {
     {
       test: /\.css$/,
       use: [
+        {
+          loader: 'vue-style-loader'
+        },
         {
           loader: 'style-loader'
         },
@@ -28,7 +45,7 @@ const mod = {
     },
     {
       test: /\.woff2$/,
-      use: 'base64-inline-loader?limit=1000&name=[name].[ext]'
+      use: ['base64-inline-loader?limit=1000&name=[name].[ext]']
     }
   ]
 };
@@ -60,6 +77,7 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
       .BundleAnalyzerPlugin;
     pl.push(
+      
       new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         openAnalyzer: false,

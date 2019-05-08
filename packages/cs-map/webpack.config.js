@@ -10,6 +10,7 @@ const config = buildConfig(
         '@csnext/cs-client': '@csnext/cs-client',
         '@csnext/cs-form': '@csnext/cs-form',
         'cs-client': 'cs-client',
+        // 'simplebar': 'simplebar',
         vue: 'Vue',
         Vue: 'Vue',
         'mapbox-gl': 'mapbox-gl',
