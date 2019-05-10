@@ -73,7 +73,7 @@ export class SplitPanel extends Vue {
     }
 
     mounted() {
-        if (this.options && this.options.presets) {
+        if (this.options && this.options.presets && Object.keys(this.options.presets).length > 1) {
             if (!this.dashboard.menus) {
                 this.dashboard.menus = [];
             }
