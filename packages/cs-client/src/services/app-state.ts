@@ -213,6 +213,24 @@ export class AppState extends AppStateBase {
     }
   }
 
+  /** If a rightsidebar exists, it will remove a specific widget */
+  public CloseRightSidebarWidget(id: string) {
+    if (
+      this.project.rightSidebar &&
+      this.project.rightSidebar.dashboard &&
+      this.project.rightSidebar.dashboard.widgets
+    ) {
+      const wi = this.project.rightSidebar.dashboard.widgets.findIndex(w => w.id === id);
+      if (wi >= 0) {
+        this.project.rightSidebar.dashboard.widgets.splice(wi, 1);
+      }
+      if (this.project.rightSidebar.dashboard.widgets.length === 0) {
+        this.project.rightSidebar.open = false;
+      }
+
+    }
+  }
+
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
   public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
     if (
