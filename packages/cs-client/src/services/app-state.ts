@@ -18,11 +18,16 @@ import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
+import { CsDialog } from '../components/cs-dialog/cs-dialog';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
 // https://github.com/Badacadabra/JavaScript-Design-Patterns/blob/master/GoF/idiomatic/Creational/Singleton/TypeScript/API/me.ts
 export class AppState extends AppStateBase {
+
+  public static DIALOG = 'dialog';
+  public static DIALOG_NEW = 'dialog-new';
+
   /** used for singleton  */
   private static pInstance: AppState;
 
@@ -195,8 +200,22 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public TriggerDialog(dialog: IDialog) {
-    this.bus.publish('dialog', 'new', dialog);
+  public TriggerDialog(dialog: IDialog): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!dialog.actionCallback) {
+        dialog.actionCallback = (action: string) => {
+          resolve(action);
+        };
+      }
+      this.bus.publish(AppState.DIALOG, AppState.DIALOG_NEW, dialog);
+    });
+  }
+
+  public TriggerQuestionDialog(title: string, text: string, options: string[]): Promise<string> {
+    const d = {
+      fullscreen: false, toolbar: true, title, text, visible: true, persistent: true, width: 400, actions: ['ja', 'nee']
+    } as IDialog;
+    return this.TriggerDialog(d);
   }
 
   /** if rightsidebar exists, clear component and close */
