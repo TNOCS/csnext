@@ -332,7 +332,7 @@ export class CsApp extends Vue {
 
     this.app.bus.subscribe(AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
-        case AppState.DIALOG_NEW:
+        case AppState.DIALOG_ADDED:
           Vue.set(this, 'dialog', dialog);
           this.dialog.visible = true;
           break;

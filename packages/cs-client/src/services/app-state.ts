@@ -26,7 +26,10 @@ import { CsDialog } from '../components/cs-dialog/cs-dialog';
 export class AppState extends AppStateBase {
 
   public static DIALOG = 'dialog';
-  public static DIALOG_NEW = 'dialog-new';
+  public static DIALOG_ADDED = 'dialog-added';
+  public static RIGHTSIDEBAR = 'rightsidebar';
+  public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
+  public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -207,7 +210,7 @@ export class AppState extends AppStateBase {
           resolve(action);
         };
       }
-      this.bus.publish(AppState.DIALOG, AppState.DIALOG_NEW, dialog);
+      this.bus.publish(AppState.DIALOG, AppState.DIALOG_ADDED, dialog);
     });
   }
 
@@ -226,14 +229,14 @@ export class AppState extends AppStateBase {
       this.project.rightSidebar.dashboard.widgets
     ) {
       while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-        this.project.rightSidebar.dashboard.widgets.pop();
+        this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
       }
       this.project.rightSidebar.open = false;
     }
   }
 
   /** If a rightsidebar exists, it will remove a specific widget */
-  public CloseRightSidebarWidget(id: string) {
+  public CloseRightSidebarWidget(id: string): boolean {
     if (
       this.project.rightSidebar &&
       this.project.rightSidebar.dashboard &&
@@ -241,13 +244,17 @@ export class AppState extends AppStateBase {
     ) {
       const wi = this.project.rightSidebar.dashboard.widgets.findIndex(w => w.id === id);
       if (wi >= 0) {
-        this.project.rightSidebar.dashboard.widgets.splice(wi, 1);
+        const widget = this.project.rightSidebar.dashboard.widgets.splice(wi, 1)[0];
+        this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_REMOVED, widget);
+        if (this.project.rightSidebar.dashboard.widgets.length === 0) {
+          this.project.rightSidebar.open = false;
+        }
+        return true;
+      } else {
+        return false;
       }
-      if (this.project.rightSidebar.dashboard.widgets.length === 0) {
-        this.project.rightSidebar.open = false;
-      }
-
     }
+    return false;
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
@@ -257,9 +264,10 @@ export class AppState extends AppStateBase {
       this.project.rightSidebar.dashboard &&
       this.project.rightSidebar.dashboard.widgets
     ) {
-      while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-        this.project.rightSidebar.dashboard.widgets.pop();
-      }
+      this.ClearRightSidebar();
+      // while (this.project.rightSidebar.dashboard.widgets.length > 0) {
+      //   this.project.rightSidebar.dashboard.widgets.pop();
+      // }
       this.project.rightSidebar.dashboard.widgets.push(widget);
       if (options) {
         if (options.open !== undefined) {
@@ -271,8 +279,17 @@ export class AppState extends AppStateBase {
       } else {
         this.project.rightSidebar.open = true;
       }
+      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
     }
   }
+
+  public ToggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
+    if (!widget.id || !this.CloseRightSidebarWidget(widget.id)) {
+      this.OpenRightSidebarWidget(widget, options);
+    }
+  }
+
+
 
   /** initializes given dashboards */
   private initializeDashboards(dashboards: IDashboard[]) {
