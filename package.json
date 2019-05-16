@@ -22,12 +22,12 @@
     "rebuild": "yarn clean && yarn && yarn build"
   },  
   "devDependencies": {
-    "lerna": "^3.13.4",
+    "lerna": "^3.14.1",
     "del-cli": "^1.1.0",
     "thread-loader": "^2.1.2",
-    "cache-loader": "^3.0.0",
+    "cache-loader": "^3.0.1",
     "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",
-    "typedoc-plugin-external-module-name": "^2.0.0"
+    "typedoc-plugin-external-module-name": "^2.1.0"
   }
 }
