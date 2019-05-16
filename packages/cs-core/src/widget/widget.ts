@@ -1,13 +1,8 @@
 import { WidgetOptions, IMessageBusService, IDashboard, IDashboardManager, IProject } from '..';
 
-export enum WidgetType {
-  component,
-  html
-}
 export interface IWidget {
   id?: string;
   title?: string;
-  type?: WidgetType;
   reference?: string;
   component?: any;
   content?: any;

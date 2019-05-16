@@ -229,7 +229,9 @@ export class AppState extends AppStateBase {
       this.project.rightSidebar.dashboard.widgets
     ) {
       while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-        this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
+        if (this.project.rightSidebar.dashboard.widgets[0].id) {
+          this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
+        }
       }
       this.project.rightSidebar.open = false;
     }

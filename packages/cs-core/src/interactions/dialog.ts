@@ -10,5 +10,5 @@ export interface IDialog {
   data?: any;
   width?: number;
   actions?: string[];
-  actionCallback?: () => {};
+  actionCallback?(action: string);
 }
