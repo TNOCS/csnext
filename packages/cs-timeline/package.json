@@ -28,8 +28,8 @@
         "style-loader": "^0.23.1",
         "ts-loader": "^5.4.4",
         "typescript": "^3.4.5",
-        "webpack": "^4.30.0",
-        "webpack-cli": "^3.3.1"
+        "webpack": "^4.31.0",
+        "webpack-cli": "^3.3.2"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
