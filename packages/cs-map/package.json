@@ -10,7 +10,7 @@
     "scripts": {
         "link": "yarn link",
         "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "webpack --mode development",
+        "build": "tsc && webpack --mode development",
         "clean": "del-cli dist lib node_modules"
     },
     "publishConfig": {
