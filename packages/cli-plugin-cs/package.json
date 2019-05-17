@@ -4,7 +4,7 @@
     "main": "index.js",
     "version": "0.0.115",
     "scripts": {
-        "link": "yarn link"
+        "link": "npm link"
     },
     "url": "https://github.com/TNOCS/csnext",
     "bugs": "https://github.com/TNOCS/csnext/issues",

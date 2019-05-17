@@ -7,9 +7,9 @@
     "url": "git+https://github.com/tnocs/csnext.git"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap --hoist && lerna run link",
+    "postinstall": "lerna bootstrap && lerna run link",
     "dev": "lerna run --parallel dev",
-    "clean": "lerna run --parallel clean",
+    "clean": "lerna run clean",
     "build": "lerna run build",
     "unlink": "lerna run unlink",
     "build:parallel": "lerna run --parallel build",
@@ -17,10 +17,10 @@
     "build:docs": "lerna run build --scope cs-docs",
     "build:docker": "docker build -t tnocs/csnext .",
     "publish:npm": "lerna publish --force-publish=*",
-    "publish:beta": "yarn build && lerna publish --force-publish=* --canary --cd-version patch",
+    "publish:beta": "npm build && lerna publish --force-publish=* --canary --cd-version patch",
     "watch": "tsc -b -w packages",
-    "rebuild": "yarn clean && yarn && yarn build"
-  },  
+    "rebuild": "npm run clean && npm install && npm run build"
+  },
   "devDependencies": {
     "lerna": "^3.14.1",
     "del-cli": "^1.1.0",
@@ -29,5 +29,6 @@
     "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",
     "typedoc-plugin-external-module-name": "^2.1.0"
-  }
+  },
+  "dependencies": {}
 }

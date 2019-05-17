@@ -2,7 +2,8 @@
     "compilerOptions": {
       "module": "es2015",
       "target": "es2015",      
-      "noImplicitAny": false,      
+      "noImplicitAny": false,
+      "composite": true,      
       "strict": true,
       "sourceMap": true,
       "lib": ["es5", "dom", "es2015", "es2015.promise", "es2016.array.include"],

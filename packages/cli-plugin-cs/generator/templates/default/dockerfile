@@ -1,8 +1,7 @@
 FROM node:10 as builder
 COPY . .
-RUN npm install yarn -g
 RUN npm install typescript -g
-RUN yarn
+RUN npm install
 RUN vue build
 
 FROM node:10

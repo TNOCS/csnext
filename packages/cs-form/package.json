@@ -8,7 +8,7 @@
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",
     "scripts": {
-        "link": "yarn link",
+        "link": "npm link",
         "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "webpack --mode development",
         "clean": "del-cli dist lib node_modules"
@@ -22,14 +22,14 @@
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
-        "@types/node": "^11.13.8",
+        "@types/node": "^12.0.2",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
-        "ts-loader": "^5.4.4",
+        "ts-loader": "^6.0.0",
         "typescript": "^3.4.5",
-        "webpack": "^4.30.0",
-        "webpack-cli": "^3.3.1"
+        "webpack": "^4.31.0",
+        "webpack-cli": "^3.3.2"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
