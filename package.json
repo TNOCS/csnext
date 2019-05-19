@@ -7,7 +7,7 @@
     "url": "git+https://github.com/tnocs/csnext.git"
   },
   "scripts": {
-    "postinstall": "lerna bootstrap && lerna run link",
+    "postinstall": "lerna bootstrap --hoist && lerna run link",
     "dev": "lerna run --parallel dev",
     "clean": "lerna run clean",
     "build": "lerna run build",
@@ -28,7 +28,8 @@
     "cache-loader": "^3.0.1",
     "typedoc": "^0.14.2",
     "typedoc-plugin-monorepo": "^0.1.0",
-    "typedoc-plugin-external-module-name": "^2.1.0"
+    "typedoc-plugin-external-module-name": "^2.1.0",
+    "webpack": "^4.31.0"
   },
   "dependencies": {}
 }

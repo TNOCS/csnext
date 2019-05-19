@@ -9,7 +9,7 @@
   "scripts": {
     "link": "npm link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
-    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development",
     "clean": "del-cli package-lock.json dist lib node_modules"
   },
@@ -48,7 +48,7 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "thread-loader": "^2.1.2",
-    "ts-loader": "^6.0.0",
+    "ts-loader": "^6.0.1",
     "tslint": "~5.16.0",
     "tslint-loader": "~3.5.4",
     "typescript": "^3.4.5",

@@ -10,8 +10,8 @@ COPY . .
 # RUN npm i
 # RUN npm run build
 WORKDIR /
-RUN yarn
-RUN yarn build
+RUN npm i
+RUN npm run build
 # RUN lerna publish --yes --skip-git --exact --cd-version=prerelease --preid=alpha.${COMMIT_SHA:0:6}
 
 # RUN npm link @csnext/vue-cli-plugin-cs;npm link @csnext/cs-core;npm link @csnext/cs-client;npm link @csnext/cs-split-panel;npm link @csnext/cs-billboard;vue create --preset preset.json cli-test-project;cd cli-test-project;vue build
