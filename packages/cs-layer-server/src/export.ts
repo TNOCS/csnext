@@ -28,7 +28,7 @@ export { DefaultWebSocketGateway } from './websocket-gateway';
 import express from 'express';
 
 export class NestServer {
-    public server = express();
+    public server: express.Express = express();
     public app!: INestApplication;
     public swaggerConfig!: SwaggerBaseConfig;
 

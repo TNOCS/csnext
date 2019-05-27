@@ -9,7 +9,8 @@ const config = [
             '@csnext/cs-core': '@csnext/cs-core',
             vue: 'Vue',
             Vue: 'Vue'
-        }
+        },
+        "cssplitpanel"
     )
 ];
 

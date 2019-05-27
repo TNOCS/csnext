@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "C:\\arnoud\\actueel\\dynamisch-draaiboek\\dd-2019\\code"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"telemetry.enableCrashReporter": false,
+		"telemetry.enableTelemetry": false,
+		"files.associations": {
+			"*.geojson": "json"
+		}
+	}
+}

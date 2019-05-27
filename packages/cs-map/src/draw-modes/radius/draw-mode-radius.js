@@ -10,7 +10,7 @@
 /* eslint-disable func-names */
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import numeral from 'numeral';
-import _extend from 'lodash/extend';
+import _extend from 'lodash.assignin';
 import lineDistance from '@turf/length';
 
 const RadiusMode = _extend({}, MapboxDraw.modes.draw_line_string);

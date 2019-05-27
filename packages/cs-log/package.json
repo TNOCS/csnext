@@ -8,10 +8,10 @@
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",
     "scripts": {
-        "link": "npm link",
+        "link": "yarn link",
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "webpack --mode development",
-        "clean": "del-cli dist lib node_modules"
+        "clean": "del-cli pnpm-lock.yaml dist lib node_modules tsconfig.tsbuildinfo"
     },
     "publishConfig": {
         "access": "public"
@@ -20,17 +20,22 @@
         "@csnext/cs-client": "^0.0.115",
         "@csnext/cs-core": "^0.0.115",
         "handlebars": "^4.1.2",
-        "simplebar-vue": "^1.0.0-alpha.10"
+        "simplebar-vue": "^1.0.0"
     },
     "devDependencies": {
         "@types/node": "^12.0.2",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
+        "css-loader": "^2.1.1",
         "ts-loader": "^6.0.1",
         "typescript": "^3.4.5",
-        "webpack": "^4.31.0",
-        "webpack-cli": "^3.3.2"
+        "webpack": "^4.32.0",
+        "webpack-cli": "^3.3.2",
+        "cache-loader": "^3.0.1",
+        "webpack-bundle-analyzer": "^3.3.2",
+        "yargs": "^13.2.4",
+        "thread-loader": "^2.1.2"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }

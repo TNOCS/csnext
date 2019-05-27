@@ -9,9 +9,9 @@ module.exports = (api, options, rootOptions) => {
     const pkg = {
         scripts: {
             'cs-dev':
-                'npm link @csnext/cs-client && npm link @csnext/cs-core && npm link @csnext/vue-cli-plugin-cs',
+                'pnpm link @csnext/cs-client && pnpm link @csnext/cs-core && pnpm link @csnext/vue-cli-plugin-cs',
             'cs-unlink':
-                'npm unlink @csnext/cs-client && npm unlink @csnext/cs-core && npm unlink @csnext/vue-cli-plugin-cs',
+                'pnpm unlink @csnext/cs-client && pnpm unlink @csnext/cs-core && pnpm unlink @csnext/vue-cli-plugin-cs',
         },
         dependencies: {
             '@csnext/cs-client': version,

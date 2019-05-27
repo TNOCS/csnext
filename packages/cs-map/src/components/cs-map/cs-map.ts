@@ -9,7 +9,7 @@ import { RulerControl, StylesControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import _mapDrawOption from './map-draw-opt.json';
+// import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';

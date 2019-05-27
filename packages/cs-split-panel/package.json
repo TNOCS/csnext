@@ -3,15 +3,15 @@
   "version": "0.0.115",
   "description": "cs-split-panel",
   "main": "./lib/cssplitpanel.cs.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "url": "https://github.com/TNOCS/cs-split-panel",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
-    "link": "npm link",
-    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "link": "yarn link",
+    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development",
-    "clean": "del-cli dist lib node_modules"
+    "clean": "del-cli pnpm-lock.yaml dist lib node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
     "access": "public"
@@ -19,18 +19,23 @@
   "dependencies": {
     "@csnext/cs-client": "^0.0.115",
     "@csnext/cs-core": "^0.0.115",
-    "vue-split-panel": "^1.0.4"
+    "vue-split-panel": "^1.0.4",
+    "vue": "^2.6.10"
   },
   "devDependencies": {
     "@types/node": "^12.0.2",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
+    "css-loader": "^2.1.1",
     "ts-loader": "^6.0.1",
     "typescript": "^3.4.5",
-    "webpack": "^4.31.0",
+    "webpack": "^4.32.0",
     "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-cli": "^3.3.2"
+    "webpack-cli": "^3.3.2",
+    "cache-loader": "^3.0.1",
+    "yargs": "^13.2.4",
+    "thread-loader": "^2.1.2"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }

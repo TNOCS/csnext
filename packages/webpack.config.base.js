@@ -11,19 +11,19 @@ const mod = {
       test: /\.ts$/,
       exclude: [/node_modules/],
       use: [
-      //   { loader: 'cache-loader' },
-      // {
-      //     loader: 'thread-loader',
-      //     options: {
-      //         // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-      //         workers: require('os').cpus().length - 1
-      //         // poolTimeout: Infinity // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
-      //     },
-      // },
+        { loader: 'cache-loader' },
+      {
+          loader: 'thread-loader',
+          options: {
+              // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+              workers: require('os').cpus().length - 1
+              // poolTimeout: Infinity // set this to Infinity in watch mode - see https://github.com/webpack-contrib/thread-loader
+          },
+      },
        {
         loader: 'ts-loader',
         options: {
-            // happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+            happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
         }
     }]
     },
@@ -75,19 +75,19 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
   let pl = []; //new HardSourceWebpackPlugin()
   pl.push(new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]));
 
-  // if (analyzer) {
-  //   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  //     .BundleAnalyzerPlugin;
-  //   pl.push(
+  if (analyzer) {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+      .BundleAnalyzerPlugin;
+    pl.push(
       
-  //     new BundleAnalyzerPlugin({
-  //       analyzerMode: 'static',
-  //       openAnalyzer: false,
-  //       reportFilename: 'reports/report.' + analyzer + '.html',
-  //       generateStatsFile: false
-  //     })
-  //   );
-  // }
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: false,
+        reportFilename: 'reports/report.' + analyzer + '.html',
+        generateStatsFile: false
+      })
+    );
+  }
 
   return (baseConfig = {
     entry: entry,
