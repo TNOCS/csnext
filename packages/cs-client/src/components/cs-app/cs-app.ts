@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Vuetify, { VuetifyObject } from 'vuetify';
-// import vuetifyEN from 'vuetify/src/locale/en';
-// import vuetifyNL from 'vuetify/src/locale/nl';
+import vuetifyEN from 'vuetify/src/locale/en';
+import vuetifyNL from 'vuetify/src/locale/nl';
 import Component from 'vue-class-component';
 import VueRouter, { RouteConfig } from 'vue-router';
 import {
@@ -20,8 +20,8 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
-// import * as en from './../../assets/translations/en.json';
-// import * as nl from './../../assets/translations/nl.json';
+import * as en from './../../assets/translations/en.json';
+import * as nl from './../../assets/translations/nl.json';
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 // import 'simplebar/dist/simplebar.min.css';
@@ -87,8 +87,8 @@ export class CsApp extends Vue {
     super();
     this.app.router = router;
     this.app.i18n = i18n;
-    // this.app.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
-    // this.app.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
+    this.app.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
+    this.app.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
     this.InitNavigation();
 
     this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {

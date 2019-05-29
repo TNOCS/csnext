@@ -2,6 +2,7 @@
     "private": true,
     "name": "csnext",
     "license": "MIT",
+    "workspaces": ["packages/*"],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/tnocs/csnext.git"
@@ -10,9 +11,9 @@
         "unsafe-perm": true
     },
     "scripts": {
-        "postinstall": "lerna bootstrap --no-hoist && yarn run link",
+        "postinstall2": "lerna bootstrap --hoist && yarn run link",
         "dev": "lerna run --parallel dev",
-        "clean": "del-cli pnpm-lock.yaml node_modules yarn.lock package-lock.json && lerna run clean",
+        "clean": "lerna run clean && del-cli pnpm-lock.yaml node_modules yarn.lock yarn-error.log package-lock.json",
         "link": "lerna run link",
         "build": "lerna run build",
         "unlink": "lerna run unlink",
@@ -26,17 +27,17 @@
         "rebuild": "yarn run clean && yarn install && yarn run build"
     },
     "devDependencies": {
-        "del-cli": "^1.1.0",
-        "vue": "^2.6.10",
-        "vue-style-loader": "^4.1.2",
-        "vue-class-component": "^7.1.0",
-        "css-loader": "^2.1.1",
-        "vue-property-decorator": "^8.1.1",
-        "reflect-metadata": "^0.1.13",
         "core-js": "^2.6.7",
+        "css-loader": "^2.1.1",
+        "del-cli": "^1.1.0",
+        "reflect-metadata": "^0.1.13",
+        "vue": "^2.6.10",
+        "vue-class-component": "^7.1.0",
+        "vue-property-decorator": "^8.1.1",
+        "vue-style-loader": "^4.1.2",
         "webpack": "^4.32.2",
-        "yargs": "^13.2.4",
-        "webpack-bundle-analyzer": "^3.3.2"
+        "webpack-bundle-analyzer": "^3.3.2",
+        "yargs": "^13.2.4"
     },
     "dependencies": {}
 }

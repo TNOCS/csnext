@@ -10,8 +10,8 @@
     "scripts": {
         "link": "yarn link",
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "webpack --mode development",
-        "clean": "del-cli pnpm-lock.yaml dist lib node_modules tsconfig.tsbuildinfo"
+        "build": "webpack --mode development && tsc",
+        "clean": "del-cli pnpm-lock.yaml yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
     },
     "publishConfig": {
         "access": "public"
@@ -22,7 +22,7 @@
         "@csnext/cs-core": "^0.0.115",
         "@csnext/cs-form": "^0.0.115",
         "@mapbox/geojson-extent": "^0.3.2",
-        "@mapbox/mapbox-gl-draw": "1.1.1",
+        "@mapbox/mapbox-gl-draw": "1.1.2",
         "@mapbox/mapbox-gl-geocoder": "^4.3.0",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
@@ -42,7 +42,7 @@
         "vue": "^2.6.10"
     },
     "devDependencies": {
-        "@types/mapbox-gl": "^0.51.6",
+        "@types/mapbox-gl": "^0.51.7",
         "@types/node": "^12.0.2",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32",

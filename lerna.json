@@ -3,7 +3,7 @@
   "packages": [
     "packages/*"
   ],
-  
+  "npmClient": "yarn",
   "command": {
     "publish": {
       "allowBranch": "*",

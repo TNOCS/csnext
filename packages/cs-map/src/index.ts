@@ -5,7 +5,6 @@ import { GeojsonPlusLayer } from './layers/geojson-plus-layer';
 import { TimeInterpolationExtension } from './extensions/time-interpolation-extension';
 import { WmsTimeExtension } from './extensions/wms-time-extension';
 import { LayerServerService } from './services/layer-server-service';
-import { AppState } from '@csnext/cs-client';
 import { GridLayer } from './layers/grid-layer';
 
 // classes

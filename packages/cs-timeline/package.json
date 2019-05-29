@@ -10,8 +10,8 @@
     "scripts": {
         "link": "yarn link",
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "webpack --mode development",
-        "clean": "del-cli pnpm-lock.yaml package-lock.json dist lib node_modules tsconfig.tsbuildinfo"
+        "build": "webpack --mode development && tsc",
+        "clean": "del-cli pnpm-lock.yaml yarn.lock yarn-error.log package-lock.json dist lib node_modules tsconfig.tsbuildinfo"
     },
     "publishConfig": {
         "access": "public"

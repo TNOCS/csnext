@@ -8,7 +8,12 @@ const config = [
       cs: ['./src/index.ts']
     },
     {
-      vue: 'Vue',
+      vue: {
+        commonjs: 'vue',
+        commonjs2: 'vue',
+        amd: 'vue',
+        root: 'Vue'
+      },
       vuetify: 'vuetify',
       '@csnext/cs-core': '@csnext/cs-core',
       'vue-markdown': 'vue-markdown',

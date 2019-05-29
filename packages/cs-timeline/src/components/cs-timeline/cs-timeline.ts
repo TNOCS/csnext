@@ -262,6 +262,7 @@ export class CsTimeline extends Vue {
             });
             this.initTimeline();
             if (this.WidgetOptions.logSource) {
+                
                 // this.log.init(this.WidgetOptions.logSource, this.$cs).then(r => {
                 //     Vue.nextTick(() => {
                 //         this.update();
