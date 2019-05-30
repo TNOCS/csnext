@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Vuetify, { VuetifyObject } from 'vuetify';
-import vuetifyEN from 'vuetify/src/locale/en';
-import vuetifyNL from 'vuetify/src/locale/nl';
+import vuetifyEN from 'vuetify/es5/locale/en';
+import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
 import VueRouter, { RouteConfig } from 'vue-router';
 import {
@@ -26,7 +26,6 @@ import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 // import 'simplebar/dist/simplebar.min.css';
 import { CsLoading } from '../cs-loader/cs-loader';
-
 
 // register needed plugins'
 // tslint:disable-next-line:no-console

@@ -7,5 +7,6 @@
     "outDir": "./dist",
     "rootDir": "./src/"     
   },
+  "include": ["src/", "src/assets/translations/*.json"],
   "exclude": ["./dist"]
 }
