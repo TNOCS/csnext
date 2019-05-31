@@ -53,57 +53,14 @@ export class CsDashboard extends Vue {
   }
 
   public initWidget(widget: IWidget) {
-    // init widget
-    if (!widget) {
-      return;
-    }
-    if (widget._initalized) {
-      return;
-    }
-
-    if (typeof widget.component === 'string') {
-      // var classNameString = 'MyClass';
-      // tslint:disable-next-line:no-eval
-      widget.component = widget.component;
-    }
-
-    if (!widget.events) {
-      widget.events = new MessageBusService();
-    }
-    if (!widget.options) {
-      widget.options = {};
-    }
-    if (!widget.data) {
-      widget.data = {};
-    }
-    if (this.dashboard) {
+    if (this.dashboard && !widget._dashboard) {
       widget._dashboard = this.dashboard;
       if (this.dashboard._manager) {
         widget._manager = this.dashboard._manager;
       }
     }
-    widget._project = AppState.Instance.project;
-    this.checkWidgetId(widget);
-    this.checkDefaultWidgetOptions(widget);
-
-    // load datasource, if configured
-    if (widget.datasource !== undefined) {
-      // widget.content = {};
-      this.app.loadDatasource(widget.datasource).then(d => {
-        this.setWidgetContent(widget, d);
-      });
-    } else if (this.dashboard && this.dashboard.content) {
-      this.setWidgetContent(widget, this.dashboard.content);
-    }
-    widget._initalized = true;
   }
 
-  public setWidgetContent(widget: IWidget, content: any) {
-    Vue.set(widget, 'content', content);
-    if (widget._component && widget._component.dataLoaded) {
-      widget.component.dataLoaded(content);
-    }
-  }
 
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
@@ -123,9 +80,6 @@ export class CsDashboard extends Vue {
     if (!dashboard.options) {
       dashboard.options = {};
     }
-    // if (dashboard.options) {
-    //   dashboard.options._dashboard = dashboard;
-    // }
 
     if (this.app.project.menus && dashboard.isMain) {
       const dashboardEditButton = this.app.project.menus.find(
@@ -242,20 +196,4 @@ export class CsDashboard extends Vue {
     return new Vue();
   }
 
-  private checkDefaultWidgetOptions(widget: IWidget) {
-    if (
-      !widget.options ||
-      !widget._dashboard ||
-      !widget._dashboard.defaultWidgetOptions
-    ) {
-      return;
-    }
-    if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
-      for (const key in widget._dashboard.defaultWidgetOptions) {
-        if (!widget.options.hasOwnProperty(key)) {
-          widget.options[key] = widget._dashboard.defaultWidgetOptions[key];
-        }
-      }
-    }
-  }
 }

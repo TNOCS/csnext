@@ -108,18 +108,13 @@ export class CsWidget extends Vue {
     }
   }
 
+
   public initWidget() {
     if (!this.widget) {
       return;
     }
     if (this.widget._initalized) {
       return;
-    }
-
-    if (typeof this.widget.component === 'string') {
-      // var classNameString = 'MyClass';
-      // tslint:disable-next-line:no-eval
-      this.widget.component = this.widget.component;
     }
 
     if (!this.widget.events) {
@@ -131,9 +126,25 @@ export class CsWidget extends Vue {
     if (!this.widget.data) {
       this.widget.data = {};
     }
-    this.widget._project = AppState.Instance.project;
+    this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
+    if (this.widget.datasource !== undefined) {
+      this.$cs.loadDatasource(this.widget.datasource).then(d => {
+        if (this.widget) {
+          this.setWidgetContent(this.widget, d);
+        }
+      });
+    } else if (this.widget._dashboard && this.widget._dashboard.content) {
+      this.setWidgetContent(this.widget, this.widget._dashboard.content);
+    }
     this.widget._initalized = true;
+  }
+
+  public setWidgetContent(widget: IWidget, content: any) {
+    Vue.set(widget, 'content', content);
+    // if (widget._component && widget._component.dataLoaded) {
+    //   widget.component.dataLoaded(content);
+    // }
   }
 
   public created() {
@@ -221,5 +232,24 @@ export class CsWidget extends Vue {
 
   public mouseLeave() {
     this.mouseOver = false;
+  }
+
+
+
+  private checkDefaultWidgetOptions(widget: IWidget) {
+    if (
+      !widget.options ||
+      !widget._dashboard ||
+      !widget._dashboard.defaultWidgetOptions
+    ) {
+      return;
+    }
+    if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
+      for (const key in widget._dashboard.defaultWidgetOptions) {
+        if (!widget.options.hasOwnProperty(key)) {
+          widget.options[key] = widget._dashboard.defaultWidgetOptions[key];
+        }
+      }
+    }
   }
 }
