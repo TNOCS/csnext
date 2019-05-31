@@ -11200,10 +11200,10 @@ vuepress@0.14.11:
     webpackbar "^2.6.1"
     workbox-build "^3.1.0"
 
-vuetify@^1.5.14:
-  version "1.5.14"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.14.tgz#ff67d0b8a398be5297da159b6cd1b31f4d2898b8"
-  integrity sha512-7iM+TfghR/wu/Gl+k37lKr0N8Ddr6SxzqHtoK1dIyHgCH6SJRkpaXPw2MC5/FsAg9aUDJbYNWrzSeu5eHw+Q/w==
+vuetify@^2.0.0-beta.0:
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.0.0-beta.0.tgz#bec3ba0ce1a6eb560ae438211bd0f0c6ce93850a"
+  integrity sha512-cMyTkRDZWeyhwdHIoLPeviPhDpd2plit4MWAS6vLUPS21w6bOwSfZ79IO/BIfwTeglt6KZ9T+zA9Uet7e7evCg==
 
 watchpack@^1.5.0:
   version "1.6.0"
@@ -11793,6 +11793,11 @@ yargs@^8.0.1:
     which-module "^2.0.0"
     y18n "^3.2.1"
     yargs-parser "^7.0.0"
+
+yarn@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.16.0.tgz#5701b58ac555ff91f7b889b7d791b3dc86f8f999"
+  integrity sha512-cfemyGlnWKA1zopUUgebTPf8C4WkPIZ+TJmklwcEAJ4u6oWPtJeAzrsamaGGh/+b1XWe8W51yzAImC4AWbWR1g==
 
 yeast@0.1.2:
   version "0.1.2"
