@@ -30,6 +30,8 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR = 'rightsidebar';
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
+  public static YES = 'YES';
+  public static NO = 'NO';
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -214,9 +216,21 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public TriggerQuestionDialog(title: string, text: string, options: string[]): Promise<string> {
+  public TriggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const cb = (action: string) => {
+        resolve(action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO);
+      };
+      const d = {
+        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: [this.Translate(AppState.YES), this.Translate(AppState.NO)], actionCallback: cb
+      } as IDialog;
+      this.TriggerDialog(d);
+    });
+  }
+
+  public TriggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string> {
     const d = {
-      fullscreen: false, toolbar: true, title, text, visible: true, persistent: true, width: 400, actions: ['ja', 'nee']
+      fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: actions.map(a => this.Translate(a))
     } as IDialog;
     return this.TriggerDialog(d);
   }
@@ -291,7 +305,13 @@ export class AppState extends AppStateBase {
     }
   }
 
-
+  public Translate(textKey: string, values?: { [key: string]: any }): string {
+    if (this.i18n) {
+      return this.i18n.t(textKey, values).toString();
+    } else {
+      return textKey;
+    }
+  }
 
   /** initializes given dashboards */
   private initializeDashboards(dashboards: IDashboard[]) {

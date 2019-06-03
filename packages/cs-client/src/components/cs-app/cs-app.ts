@@ -33,8 +33,8 @@ Vue.use(VueRouter);
 Vue.use(VueI18n);
 const i18n = new VueI18n({
   locale: 'en', // set locale
-  fallbackLocale: 'nl'
-  // messages: { 'en': en.default, 'nl': nl.default } as VueI18n.LocaleMessages // set locale messages
+  fallbackLocale: 'nl',
+  messages: { 'en': en.default, 'nl': nl.default } as VueI18n.LocaleMessages // set locale messages
 });
 Vue.use(Vuetify, {
   lang: {
