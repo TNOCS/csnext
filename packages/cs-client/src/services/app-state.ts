@@ -134,7 +134,7 @@ export class AppState extends AppStateBase {
     if (
       this.project.navigation &&
       this.project.navigation.style &&
-      ['left', 'left-hierarchy'].includes(this.project.navigation.style) &&
+      ['left', 'left-hierarchy', 'tabs-left'].includes(this.project.navigation.style) &&
       !this.project.leftSidebar
     ) {
       this.project.leftSidebar = {
