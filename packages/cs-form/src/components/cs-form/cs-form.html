@@ -1,4 +1,14 @@
 <div v-if="Form" class="cs-form-base">
+    <v-toolbar dense v-if="Form.showToolbar">
+        <v-toolbar-title>{{ Form.title }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon @click="saveForm()">
+            <v-icon>save</v-icon>
+        </v-btn>
+
+    </v-toolbar>
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
             <div slot="header" class="form-title" v-if="!Form.hideTitle">
