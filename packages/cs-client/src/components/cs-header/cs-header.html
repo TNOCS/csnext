@@ -8,13 +8,19 @@
     <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
 
     
-    <v-menu bottom>
-      <div slot="activator" class="header-title-container" :style="{color:app.project.theme.colors.headerColor}">
-        <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense">
-          <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon>
-          <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item">
+    <v-menu bottom class="header-title-menu">
+      <div slot="activator"  :style="{color:app.project.theme.colors.headerColor}">
+        <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense" :items="app.project.header.breadcrumbItems">
+            <template v-slot:divider>
+                <v-icon>forward</v-icon>
+              </template>
+              <template v-slot:item="props">
+                  <a style="color:black !important" :href="props.item.href">{{ props.item }}</a>
+                </template>
+          <!-- <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
+          <!-- <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item" style="color:black">
             {{$t(item)}}
-          </v-breadcrumbs-item>
+          </v-breadcrumbs-item> -->
         </v-breadcrumbs>
         <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{$t(app.project.header.title)}}</v-toolbar-title>
       </div>

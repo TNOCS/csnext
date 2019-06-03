@@ -32,10 +32,6 @@
 }
 
 
-.header-title-container {
-  margin-left: 16px;
-}
-
 @media only screen and (max-width: 480px) {
   .header-breadcrumbs {
     display: none !important;
@@ -54,17 +50,10 @@
   padding: 0 !important;
 }
 
-.breadcrumbs__item {
-  color:hsla(0,0%,100%,.5);
-}
-
 .header-breadcrumbs>li {
   padding: 0 !important;
 }
 
-.header-title {
-  margin-left: 0 !important;
-}
 
 .floating {
   margin-top: -48px !important;
