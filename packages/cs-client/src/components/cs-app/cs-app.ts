@@ -34,7 +34,7 @@ Vue.use(VueI18n);
 const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'nl',
-  messages: { 'en': en.default, 'nl': nl.default } as VueI18n.LocaleMessages // set locale messages
+  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
 });
 Vue.use(Vuetify, {
   lang: {
@@ -81,13 +81,14 @@ export class CsApp extends Vue {
     // }
   ];
 
-
   constructor() {
     super();
     this.app.router = router;
     this.app.i18n = i18n;
     this.app.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
     this.app.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
+    this.app.i18n.mergeLocaleMessage('en', (en as any).default);
+    this.app.i18n.mergeLocaleMessage('nl', (nl as any).default);
     this.InitNavigation();
 
     this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {

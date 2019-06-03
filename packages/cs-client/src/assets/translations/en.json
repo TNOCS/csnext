@@ -1,11 +1,9 @@
 {
-  "default": {
-    "IS_LOADING": "Is loading",
-    "OPEN_RIGHT_SIDEBAR": "Open left sidepanel",
-    "CLOSE_RIGHT_SIDEBAR": "Close right sidepanel",
-    "LANGUAGE": "Language",
-    "LANGUAGE_SETTINGS": "Language settings",
-    "YES": "Yes",
-    "NO": "No"
-  }
+  "IS_LOADING": "Is loading",
+  "OPEN_RIGHT_SIDEBAR": "Open left sidepanel",
+  "CLOSE_RIGHT_SIDEBAR": "Close right sidepanel",
+  "LANGUAGE": "Language",
+  "LANGUAGE_SETTINGS": "Language settings",
+  "YES": "Yes",
+  "NO": "No"
 }
