@@ -26,9 +26,9 @@
 
     <!-- tabs -->
 
-    <v-tabs v-if="app.project.navigation.style==='tabs'" color="primary" class="cs-navigation-tabbar">
+    <v-tabs v-if="['tabs', 'tabs-left'].includes(app.project.navigation.style)" color="primary" class="cs-navigation-tabbar">
       <v-tab v-for="dashboard in app.project.dashboards" @click="openDashboard(dashboard)" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
-        <v-menu v-if="dashboard.dashboards" bottom open-on-hover>
+        <v-menu v-if="['tabs', 'tabs-left'].includes(app.project.navigation.style) && dashboard.dashboards" bottom open-on-hover>
           <a slot="activator" class="v-tabs__item">
             {{$t(dashboard.title)}}
             <v-icon>arrow_drop_down</v-icon>

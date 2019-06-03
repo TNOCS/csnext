@@ -3,7 +3,7 @@
     "version": "0.0.115",
     "description": "cs-form",
     "main": "./lib/csform.cs.js",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/src/index.d.ts",
     "url": "https://github.com/TNOCS/cs-form",
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",

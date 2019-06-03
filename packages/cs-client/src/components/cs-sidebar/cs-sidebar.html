@@ -31,7 +31,7 @@
   <div v-if="sideBar.dashboard">
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
-  <div v-else-if="app.project.navigation.style==='left' && !sideBar.right">
+  <div v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right">
     <v-list>
       <v-list-tile v-for="item in app.project.dashboards" :value="item.active" :to="item.path" no-action v-bind:key="item.path">
         <v-list-tile-action>

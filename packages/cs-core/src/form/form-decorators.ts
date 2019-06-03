@@ -6,6 +6,7 @@ export interface IFormOptions {
   saveButton?: boolean;
   isPanel?: boolean;
   hideTitle?: boolean;
+  showToolbar?: boolean;
   isPanelOpen?: boolean;
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
