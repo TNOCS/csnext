@@ -1,4 +1,8 @@
-<div v-if="field">    
+<div v-if="field"> 
+        <template v-if="field.type === 'timepicker'">
+            <v-datetime-picker :label="field.title"
+                v-model="target[field._key]"></v-datetime-picker>   
+        </template>
         <template v-if="field.type === 'boolean'">
             <v-checkbox
                 v-model="target[field._key]"

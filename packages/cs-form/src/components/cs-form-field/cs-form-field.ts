@@ -22,6 +22,7 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
+    public timepickermenu = false;
 
     public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (
@@ -112,3 +113,92 @@ export class CsFormField extends Vue {
 }
 
 Vue.component('cs-formfield', CsFormField);
+
+Vue.component('v-datetime-picker',{
+    name:'v-datetime-picker',
+    template: `
+    <v-menu
+              lazy
+              :close-on-content-click="false"
+              v-model="menu"
+              transition="v-scale-transition"
+              offset-y
+              :nudge-left="40">
+          <v-text-field
+                  slot="activator"
+                  :label="label"
+                  v-model="actualDatetime"
+                  readonly
+          ></v-text-field>
+          <v-layout>
+                  <v-date-picker
+                          v-model="dateModel"
+                          no-title
+                          scrollable
+                          actions
+                          @input="checkHours"
+                  ></v-date-picker>
+                  <v-time-picker
+                          ref="timer"
+                          v-model="timeModel"
+                          no-title
+                          scrollable
+                          format="24hr"
+                          actions
+                          @input="checkMinutes"
+                  ></v-time-picker>
+              </v-layout>
+      </v-menu>
+    `,
+            props: {
+              datetime: {
+                  type:Date,
+                  required:true,
+              },
+              label: {
+                  type:String,
+                  default:''
+              }
+          },
+          data(){
+              return {
+                  dateModel: '',
+                  timeModel: '',
+                  menu:false
+              }
+          },
+          watch: {
+              menu(val) {
+                  if (val) {
+                      if(this.$refs.timer)
+                          this.$refs.timer.selectingHour=true
+                  }
+              }
+          },
+          computed: {
+              actualDatetime() {
+                  return this.dateModel+' '+this.timeModel+':00'
+              }
+          },
+          methods: {
+              checkMinutes(val) {
+                  if(this.$refs.timer.selectingHour===false) {
+                      this.timeModel=val
+                      this.$refs.timer.selectingHour = true
+                      this.menu=false
+                      this.$emit('input',this.actualDatetime)
+                  }
+              },
+              checkHours(val) {
+                  this.dateModel=val
+              }
+          },
+          created(){
+              let datetime = new Date(this.$attrs.value);
+              if (datetime) {
+                this.dateModel = datetime.toISOString().split(' ')[0];
+                this.timeModel = datetime.toISOString().split(' ')[1];
+              }
+          }
+    
+  });
