@@ -6,7 +6,8 @@ import {
     IDatasource,
     WidgetOptions,
     TimeDataSource,
-    Topics
+    Topics,
+    MessageBusHandle
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
@@ -55,7 +56,11 @@ export class CsTimeline extends Vue {
     // public datasource?: ITimelineDataSource;
     public groups: DataGroup[] = [];
     public currentTime: Date = new Date();
-    public log: LogManager = new LogManager();
+    // public log: LogManager = new LogManager();
+    public logSource?: LogDataSource;
+
+    private timeHandle?: MessageBusHandle;
+    private resizeHandle?: MessageBusHandle;
 
     public get TimeDatasource(): TimeDataSource {
         if (!this.widget.content) return new TimeDataSource();
@@ -93,9 +98,10 @@ export class CsTimeline extends Vue {
         if (this.timeline) {
             console.log('Updating timeline');
             let items = this.getItems();
-            this.timeline.setGroups(this.groups);
+            // this.timeline.setGroups(this.groups);
             this.timeline.setItems(items);
-            this.timeline.fit();
+            // this.timeline.fit();
+            this.timeline.redraw();
         }
     }
 
@@ -108,15 +114,23 @@ export class CsTimeline extends Vue {
         let items: DataItem[] = [];
         let tags: string[] = [];
         let height = this.smallView ? '5px' : '30px;';
-        if (this.log && this.log.items) {
-            this.log.items.forEach(i => {
-                // make sure id is unique
-                if (items.findIndex(item => item.id === i.id) === -1) {
-                    i.start = new Date(i.start);
-                    items.push(i);
-                }
-            })
+        if (this.logSource && this.logSource.items) {
+            for (const item of this.logSource.items) {
+                item.content = item.title;
+                if (item.startDate) { item.start = new Date(item.startDate); }
+                if (item.endDate) { item.end = new Date(item.endDate); }
+                items.push(item);
+            }
         }
+        // if (this.log && this.log.items) {
+        //     this.log.items.forEach(i => {
+        //         // make sure id is unique
+        //         if (items.findIndex(item => item.id === i.id) === -1) {
+        //             i.start = new Date(i.start);
+        //             items.push(i);
+        //         }
+        //     })
+        // }
         // if (this.datasource && this.datasource.timelineItems) {
         //     this.datasource.timelineItems.forEach((i: DataItem) => {
         //         items.push(i);
@@ -158,10 +172,38 @@ export class CsTimeline extends Vue {
         let options: TimelineWidgetOptions =
             (this.widget.options as TimelineWidgetOptions) ||
             ({} as TimelineWidgetOptions);
+        if (options.timelineOptions) {
+            options.timelineOptions!.onAdd = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        this.logSource.addItem(item);
+                    }
+                    callback(item);
+                }
+            }
+            options.timelineOptions!.onMove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        this.logSource.updateItem(item);
+                    }
+                    callback(item);
+                }
+            }
+
+            options.timelineOptions!.onRemove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        this.logSource.removeItem(item);
+                    }
+                    callback(item);
+
+                }
+            }
+        }
         this.timeline = new Timeline(
             container,
             items,
-            this.groups,
+            // this.groups,
             options.timelineOptions || {}
         );
         this.setTimelineEvents();
@@ -187,11 +229,12 @@ export class CsTimeline extends Vue {
                 'moved',
                 this.currentTime
             );
-            this.TimeDatasource.events.subscribe(
+            this.timeHandle = this.TimeDatasource.events.subscribe(
                 Topics.TIME_TOPIC,
                 this.handleIncomingTimeEvent
             );
         }
+
     }
 
     private handleTimeChanged(d: { id: string; time: Date }) {
@@ -208,6 +251,9 @@ export class CsTimeline extends Vue {
         ) {
             let id = data.items[0];
             console.log('Selected item ' + id);
+            if (this.logSource) {
+                this.logSource.selectItemId(id);
+            }
             this.TimeDatasource.events.publish(
                 Topics.TIME_TOPIC,
                 'moved',
@@ -254,24 +300,43 @@ export class CsTimeline extends Vue {
         }
     }
 
+    public beforeDestroy() {
+        if (this.timeHandle && this.TimeDatasource.events) {
+            this.TimeDatasource.events.unsubscribe(this.timeHandle);
+        }
+
+        if (this.widget && this.widget.events && this.resizeHandle) {
+            this.widget.events.unsubscribe(this.resizeHandle);
+        }
+    }
+
+    public initLogSource() {
+        if (this.WidgetOptions.logSource) {
+            this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
+                this.logSource = r;
+                this.logSource.bus.subscribe('updated', (a: string, e: any) => {
+                    this.update();
+                })
+                Vue.nextTick(() => {
+
+                    console.log(r);
+                    this.update();
+                })
+            }).catch(e => {
+
+            })
+        }
+    }
+
     mounted() {
         if (this.widget) {
 
-            this.widget.events!.subscribe('resize', (d, a) => {
+            this.resizeHandle = this.widget.events!.subscribe('resize', (d, a) => {
                 this.timeline!.redraw();
             });
+            this.initLogSource();
             this.initTimeline();
-            if (this.WidgetOptions.logSource) {
-                
-                // this.log.init(this.WidgetOptions.logSource, this.$cs).then(r => {
-                //     Vue.nextTick(() => {
-                //         this.update();
-                //     })
 
-                // }).catch(e => {
-
-                // })
-            }
 
         }
     }
