@@ -107,8 +107,7 @@ export class CsWidget extends Vue {
       widget.id = 'widget-' + guidGenerator();
     }
   }
-
-
+  
   public initWidget() {
     if (!this.widget) {
       return;
@@ -158,7 +157,7 @@ export class CsWidget extends Vue {
 
     this.widget._component = this.widget.component;
     if (this.widget && this.widget.datasource) {
-      this.dsHandle = AppState.Instance.bus.subscribe(
+      this.dsHandle = this.$cs.bus.subscribe(
         'ds-' + this.widget.datasource,
         (a: string, d: any) => {
           if (a === 'updated') {
@@ -178,7 +177,7 @@ export class CsWidget extends Vue {
           if (
             this.widget &&
             this.widget.editorWidget &&
-            this.app.project.rightSidebar
+            this.$cs.project.rightSidebar
           ) {
             const editor = this.widget.editorWidget;
             editor.data = {
@@ -190,7 +189,7 @@ export class CsWidget extends Vue {
                   ? this.widget._dashboard._manager
                   : null
             };
-            this.app.bus.publish('right-sidebar', 'open-widget', editor);
+            this.$cs.bus.publish('right-sidebar', 'open-widget', editor);
           }
         }
       });
@@ -213,6 +212,12 @@ export class CsWidget extends Vue {
           }
         }
       });
+    }
+  }
+
+  public beforeDestroy() {
+    if (this.dsHandle) {
+      this.$cs.bus.unsubscribe(this.dsHandle);
     }
   }
 
