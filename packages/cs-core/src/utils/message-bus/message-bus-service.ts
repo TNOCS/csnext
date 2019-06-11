@@ -2,7 +2,8 @@ import { MessageBusHandle, IMessageBusCallback } from './message-bus-handle';
 
 export interface IMessageBusService {
   publish(topic: string, title: string, data?: any): void;
-  subscribe(topic: string, callback: IMessageBusCallback): void;
+  subscribe(topic: string, callback: IMessageBusCallback): MessageBusHandle;
+  unsubscribe(handle: MessageBusHandle);
 }
 /**
  * Simple message bus service, used for subscribing and unsubsubscribing to topics.
