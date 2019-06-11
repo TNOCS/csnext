@@ -30,6 +30,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR = 'rightsidebar';
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
+  public static DASHBOARD_MAIN = 'dashboard.main';
   public static YES = 'YES';
   public static NO = 'NO';
 
@@ -63,32 +64,15 @@ export class AppState extends AppStateBase {
       this.project.server.socketServerUrl
     ) {
       this.socket = io(this.project.server.socketServerUrl);
-      this.socket.on('connect', () => {
-        console.log('Connected');
-        // this.socket.emit('events', { test: 'test' });
-        //   AppState.Instance.TriggerNotification({ title: 'Connected' });
-      });
-      this.socket.on('reconnect', () => {
-        // console.log('Reconnected');
-        // for (const layer of this.layers) {
-        //     if (layer.isEditable === true) {
-        //         this.manager!.refreshLayerSource(layer).then(() => {
-        //             console.log('Layer refreshed');
-        //         });
-        //         // });
-        //         // this.manager!
-        //         // .loadLayer(layer).then( l => {
-        //     }
-        // }
-      });
-      this.socket.on('disconnected', () => {
-        // for (const layer of this.layers) {
-        //     if (layer.isEditable === true && layer._source) {
-        //         layer._source._loaded = false;
-        //     }
-        // }
-        console.log('Connection lost');
-      });
+      // this.socket.on('connect', () => {
+
+      // });
+      // this.socket.on('reconnect', () => {
+
+      // });
+      // this.socket.on('disconnected', () => {
+
+      // });
     }
   }
 
@@ -273,30 +257,73 @@ export class AppState extends AppStateBase {
     return false;
   }
 
-  /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
-    if (
-      this.project.rightSidebar &&
-      this.project.rightSidebar.dashboard &&
-      this.project.rightSidebar.dashboard.widgets
-    ) {
-      this.ClearRightSidebar();
-      // while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-      //   this.project.rightSidebar.dashboard.widgets.pop();
-      // }
-      this.project.rightSidebar.dashboard.widgets.push(widget);
-      if (options) {
-        if (options.open !== undefined) {
-          this.project.rightSidebar.open = options.open;
-        }
-        if (options.width !== undefined) {
-          this.project.rightSidebar.width = options.width;
-        }
-      } else {
-        this.project.rightSidebar.open = true;
+  public OpenRightSidebarKey(key: string) {
+
+    if (this.project.rightSidebar) {
+      if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
+      if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
+        this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
-      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
+      const d = this.project.rightSidebar.sidebars[key];
+      this.OpenRightSidebar(d);
     }
+  }
+
+  public OpenRightSidebar(dashboard?: IDashboard) {
+    if (this.project.rightSidebar) {
+      Vue.set(this.project.rightSidebar, 'dashboard', dashboard);
+      this.project.rightSidebar.open = true;
+    }
+  }
+
+  public ToggleRightSidebar(key?: string) {
+    if (!this.project.rightSidebar) { return; }
+    if (key && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
+      const d = this.project.rightSidebar.sidebars[key];
+      if (!this.project.rightSidebar.dashboard) {
+        this.OpenRightSidebar(d);
+      } else if (this.project.rightSidebar.dashboard.id === d.id) {
+        this.project.rightSidebar.open = false;
+        delete this.project.rightSidebar.dashboard;
+      } else {
+        delete this.project.rightSidebar.dashboard;
+        this.OpenRightSidebar(d);
+      }
+    } else {
+      this.project.rightSidebar.open = !this.project.rightSidebar.open;
+    }
+  }
+
+  /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
+  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default') {
+
+    this.OpenRightSidebarKey(key);
+    this.ClearRightSidebar();
+    // while (this.project.rightSidebar.dashboard.widgets.length > 0) {
+    //   this.project.rightSidebar.dashboard.widgets.pop();
+
+    Vue.nextTick(() => {
+      if (
+        this.project.rightSidebar &&
+        this.project.rightSidebar.dashboard &&
+        this.project.rightSidebar.dashboard.widgets
+      ) {
+        this.project.rightSidebar.dashboard.widgets.push(widget);
+        if (options) {
+          if (options.open !== undefined) {
+            this.project.rightSidebar.open = options.open;
+          }
+          if (options.width !== undefined) {
+            this.project.rightSidebar.width = options.width;
+          }
+        } else {
+          this.project.rightSidebar.open = true;
+        }
+      }
+    });
+    // }
+    this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
+
   }
 
   public ToggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {

@@ -18,4 +18,5 @@ export interface ISidebarOptions {
   canMinifiy?: boolean;
   width?: number;
   visible?: boolean;
+  sidebars?: { [key: string]: IDashboard };
 }

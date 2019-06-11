@@ -4,7 +4,8 @@ import {
   ISidebarOptions,
   IHeaderOptions,
   IMenu,
-  IDashboard
+  IDashboard,
+  MessageBusHandle
 } from '@csnext/cs-core';
 import { Prop } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
@@ -14,27 +15,35 @@ import './cs-header.css';
   template: require('./cs-header.html')
 } as any)
 export class CsHeader extends Vue {
-  public app = AppState.Instance;
   public allMenus: IMenu[] = [];
 
   @Prop() public header?: IHeaderOptions;
   @Prop() public leftSidebar?: ISidebarOptions;
   @Prop() public rightSidebar?: ISidebarOptions;
 
+  // public sideBarButtons = [
+  //   {
+
+  //   }
+  // ]
+
+  private dashboardHandle?: MessageBusHandle;
+  private menuHandle?: MessageBusHandle;
+
   public InitMenus() {
-    if (!this.app.project.menus) {
-      this.app.project.menus = [];
+    if (!this.$cs.project.menus) {
+      this.$cs.project.menus = [];
     }
     if (
-      this.app.project.languages &&
-      this.app.project.languages.showLanguageSwitchMenu
+      this.$cs.project.languages &&
+      this.$cs.project.languages.showLanguageSwitchMenu
     ) {
       if (
-        !this.app.project.menus.find(
+        !this.$cs.project.menus.find(
           menu => menu.id === CsApp.LANUAGE_SWITCH_ID
         )
       ) {
-        this.app.project.menus.push({
+        this.$cs.project.menus.push({
           id: CsApp.LANUAGE_SWITCH_ID,
           icon: 'translate',
           title: 'LANGUAGE',
@@ -46,8 +55,8 @@ export class CsHeader extends Vue {
       }
     }
     // create edit dashboard button
-    if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
-      this.app.project.menus.push({
+    if (!this.$cs.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
+      this.$cs.project.menus.push({
         id: CsApp.DASHBOARD_EDIT_ID,
         icon: 'mode_edit',
         title: 'Edit Dashboard',
@@ -55,22 +64,22 @@ export class CsHeader extends Vue {
         visible: false,
         action: m => {
           // notify dashboard manager that edit was started
-          if (this.app.activeDashboard) {
+          if (this.$cs.activeDashboard) {
             // if there is a manager with own editdashboard implementation use that
             if (
-              this.app.activeDashboard._manager &&
-              this.app.activeDashboard._manager.editDashboard
+              this.$cs.activeDashboard._manager &&
+              this.$cs.activeDashboard._manager.editDashboard
             ) {
-              this.app.activeDashboard._manager.editDashboard(
-                this.app.activeDashboard
+              this.$cs.activeDashboard._manager.editDashboard(
+                this.$cs.activeDashboard
               );
             } else {
-              if (this.app.project.rightSidebar) {
+              if (this.$cs.project.rightSidebar) {
                 // let s = Vue.component('test', { template: '<h1>editor</h1>'});
-                // this.app.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
+                // this.$cs.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
                 AppState.Instance.OpenRightSidebarWidget({
                   component: CsSettings,
-                  data: { obj: this.app.activeDashboard.options }
+                  data: { obj: this.$cs.activeDashboard.options }
                 });
               }
             }
@@ -80,10 +89,14 @@ export class CsHeader extends Vue {
       });
     }
 
-    this.allMenus = this.app.project.menus;
-    if (this.app.activeDashboard && this.app.activeDashboard.menus) {
-      this.allMenus = [...this.allMenus, ...this.app.activeDashboard.menus];
+    this.allMenus = this.$cs.project.menus;
+    if (this.$cs.activeDashboard && this.$cs.activeDashboard.menus) {
+      this.allMenus = [...this.allMenus, ...this.$cs.activeDashboard.menus];
     }
+  }
+
+  public openRightSidebar(key: string) {
+    this.$cs.ToggleRightSidebar(key);
   }
 
   public openDashboard(dashboard: IDashboard) {
@@ -109,17 +122,27 @@ export class CsHeader extends Vue {
     }
   }
 
+  public beforeDestroy() {
+    if (this.dashboardHandle) {
+      this.$cs.bus.unsubscribe(this.dashboardHandle);
+    }
+
+    if (this.menuHandle) {
+      this.$cs.bus.unsubscribe(this.menuHandle);
+    }
+  }
+
   public created() {
     // listen to dashboard init events
-    this.app.bus.subscribe(
-      'dashboard.main',
+    this.dashboardHandle = this.$cs.bus.subscribe(
+      AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.InitMenus();
         // this.InitTitleWidget();
       }
     );
     // menu list changed (e.g. if dashboard menu was updated)
-    this.app.bus.subscribe('menus', (action: string) => {
+    this.menuHandle = this.$cs.bus.subscribe('menus', (action: string) => {
       this.InitMenus();
     });
   }

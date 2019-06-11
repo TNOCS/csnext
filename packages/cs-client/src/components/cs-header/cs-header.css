@@ -1,9 +1,23 @@
 .header-title-menu {
-    margin-left:20px;
+  margin-left: 20px;
 }
 
+#main-toolbar {
+  padding-right: 0px;
+}
 
 .header-title {
-    margin-left: 0 !important;
+  margin-left: 0 !important;
 }
-  
+
+.sidebar-dashboard-selected {
+  background: red;
+}
+
+.sidebar-header-button {
+  margin: 0px !important;
+  padding: 0px !important;
+  min-width: 75px !important;
+  height: 100% !important;
+  border-left: 1px darkgray solid;
+}

@@ -1,40 +1,40 @@
-<v-toolbar v-if="!app.project.header.hideToolbar" :floating="app.project.navigation.floating" :class="{'floating-toolbar': app.project.navigation.floating}"
+<v-toolbar v-if="!$cs.project.header.hideToolbar" :floating="$cs.project.navigation.floating" :class="{'floating-toolbar': $cs.project.navigation.floating}"
     :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped" id="main-toolbar" :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
-    absolute :dense="app.project.header.dense" app>
+    absolute :dense="$cs.project.header.dense" app>
 
     <!-- header -->
     <v-toolbar-side-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent" class="header-icon" @click="leftSidebar.open = !leftSidebar.open"></v-toolbar-side-icon>
-    <!-- :style="{color:app.project.theme.colors.menu}" -->
-    <img v-if="app.project.header.logo" :src="app.project.header.logo" class="app-project-logo"></img>
+    <!-- :style="{color:$cs.project.theme.colors.menu}" -->
+    <img v-if="$cs.project.header.logo" :src="$cs.project.header.logo" class="app-project-logo"></img>
 
     
     <v-menu bottom class="header-title-menu">
-      <div slot="activator"  :style="{color:app.project.theme.colors.headerColor}">
-        <v-breadcrumbs class="header-breadcrumbs" v-if="app.project.header.breadcrumbs && !app.project.header.dense" :items="app.project.header.breadcrumbItems">
+      <div slot="activator"  :style="{color:$cs.project.theme.colors.headerColor}">
+        <v-breadcrumbs class="header-breadcrumbs" v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense" :items="$cs.project.header.breadcrumbItems">
             <template v-slot:divider>
                 <v-icon>forward</v-icon>
               </template>
               <template v-slot:item="props">
                   <a style="color:black !important" :href="props.item.href">{{ props.item }}</a>
                 </template>
-          <!-- <v-icon :style="{color:app.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
-          <!-- <v-breadcrumbs-item v-for="item in app.project.header.breadcrumbItems" :key="item" style="color:black">
+          <!-- <v-icon :style="{color:$cs.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
+          <!-- <v-breadcrumbs-item v-for="item in $cs.project.header.breadcrumbItems" :key="item" style="color:black">
             {{$cs.Translate(item)}}
           </v-breadcrumbs-item> -->
         </v-breadcrumbs>
-        <v-toolbar-title class="header-title" v-if="!app.project.navigation.hideTitle">{{$cs.Translate(app.project.header.title)}}</v-toolbar-title>
+        <v-toolbar-title class="header-title" v-if="!$cs.project.navigation.hideTitle">{{$cs.Translate($cs.project.header.title)}}</v-toolbar-title>
       </div>
-      <template v-if="app.project.header.titleWidget">                  
-        <cs-widget :widget="app.project.header.titleWidget" >        
+      <template v-if="$cs.project.header.titleWidget">                  
+        <cs-widget :widget="$cs.project.header.titleWidget" >        
         </cs-widget>        
       </template>
     </v-menu>
 
     <!-- tabs -->
 
-    <v-tabs v-if="['tabs', 'tabs-left'].includes(app.project.navigation.style)" color="primary" class="cs-navigation-tabbar">
-      <v-tab v-for="dashboard in app.project.dashboards" @click="openDashboard(dashboard)" :style="{color:app.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
-        <v-menu v-if="['tabs', 'tabs-left'].includes(app.project.navigation.style) && dashboard.dashboards" bottom open-on-hover>
+    <v-tabs v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style)" color="primary" class="cs-navigation-tabbar">
+      <v-tab v-for="dashboard in $cs.project.dashboards" @click="openDashboard(dashboard)" :style="{color:$cs.project.theme.colors.headerColor}" router :key="dashboard.id" :to="{path:dashboard.path}">
+        <v-menu v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style) && dashboard.dashboards" bottom open-on-hover>
           <a slot="activator" class="v-tabs__item">
             {{$cs.Translate(dashboard.title)}}
             <v-icon>arrow_drop_down</v-icon>
@@ -55,19 +55,19 @@
 
     <!-- search -->
 
-    <v-text-field v-if="app.project.navigation.search && app.project.navigation.search.enabled" prepend-icon="search" hide-details
+    <v-text-field v-if="$cs.project.navigation.search && $cs.project.navigation.search.enabled" prepend-icon="search" hide-details
       single-line></v-text-field>
 
-    <v-btn v-if="app.project.search" icon>
-      <v-icon :style="{color:app.project.theme.colors.menu}">search</v-icon>
+    <v-btn v-if="$cs.project.search" icon>
+      <v-icon :style="{color:$cs.project.theme.colors.menu}">search</v-icon>
     </v-btn>
 
     <!-- notifications -->
 
-    <v-menu v-if="app.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200" v-model="showNotifications">
+    <v-menu v-if="$cs.project.header.showNotifications" :close-on-content-click="false" class="app-menu" :nudge-width="200" v-model="showNotifications">
       <v-badge slot="activator" color="red" overlap>
         <span v-if="unReadNotifications.length>0" slot="badge">{{ unReadNotifications.length }}</span>
-        <v-icon :style="{color:app.project.theme.colors.menu}">message</v-icon>
+        <v-icon :style="{color:$cs.project.theme.colors.menu}">message</v-icon>
       </v-badge>
       <!-- <v-btn color="indigo" dark >Menu as Popover</v-btn> -->
       <v-card>
@@ -85,7 +85,7 @@
                 <v-icon color="yellow darken-2">delete</v-icon>
               </v-list-tile-action>
             </v-list-tile>
-            <!-- <v-divider v-if="index + 1 < app.project.notifications.items.length" :key="index"></v-divider> -->
+            <!-- <v-divider v-if="index + 1 < $cs.project.notifications.items.length" :key="index"></v-divider> -->
           </template>
         </v-list>
         <v-card-actions>
@@ -101,7 +101,7 @@
       offset-y >
       <template v-if="menu.toggleButton">
         <v-tooltip slot="activator" bottom>
-          <v-btn icon slot="activator" v-model="menu.toggleState" @click="toggleMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
+          <v-btn icon slot="activator" v-model="menu.toggleState" @click="toggleMenu(menu)" :style="{color:$cs.project.theme.colors.headerColor}">
             <v-icon v-if="!menu.toggleState">{{menu.icon}}</v-icon>
             <v-icon v-else>{{menu.toggleIcon}}</v-icon>
           </v-btn>
@@ -111,7 +111,7 @@
       </template>
       <template v-if="menu.textButton">
         <v-tooltip slot="activator" bottom>
-          <v-btn depressed slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
+          <v-btn depressed slot="activator" @click.delegate="activateMenu(menu)" :style="{color:$cs.project.theme.colors.headerColor}">
             {{ menu.title }}
             <v-icon v-if="menu.icon" right dark>{{ menu.icon }}</v-icon>
           </v-btn>
@@ -120,7 +120,7 @@
       </template>
       <template v-else>
         <v-tooltip slot="activator" bottom>
-          <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:app.project.theme.colors.headerColor}">
+          <v-btn icon slot="activator" @click.delegate="activateMenu(menu)" :style="{color:$cs.project.theme.colors.headerColor}">
             <v-icon>{{menu.icon}}</v-icon>
           </v-btn>
           {{$cs.Translate(menu.toolTip)}}
@@ -129,7 +129,7 @@
 
       <v-list v-if="menu.items && menu.items.length>0">
         <v-list-tile v-for="menuItem in menu.items" :key="menuItem.title" v-if="menuItem.visible" @click.delegate="activateMenu(menuItem)">
-          <v-icon v-if="menuItem.icon" :style="{color:app.project.theme.colors.menu}">{{menuItem.icon}}</v-icon>
+          <v-icon v-if="menuItem.icon" :style="{color:$cs.project.theme.colors.menu}">{{menuItem.icon}}</v-icon>
           <v-list-tile-title>{{ menuItem.title }}</v-list-tile-title>
         </v-list-tile>
       </v-list>
@@ -137,22 +137,32 @@
         <component :is="menu.component" :data="menu.data"></component>
       </v-card>
     </v-menu>
-
     <!-- right side bar button -->
 
-    <v-btn v-if="rightSidebar && rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0" @click="rightSidebar.open=!rightSidebar.open"
-      class="header-icon" flat>
-      <!-- <v-tooltip bottom> -->
-        <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
-        <!-- <span>{{$cs.Translate('CLOSE_RIGHT_SIDEBAR')}}</span> 
-      </v-tooltip>
-      <v-tooltip bottom>-->
-        <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
-        <!-- <span>{{$cs.Translate('OPEN_RIGHT_SIDEBAR')}}</span>
-      </v-tooltip> -->
-      <template v-if="rightSidebar.title">
-      <span class="right-sidebar-title"  v-if="!rightSidebar.open">{{ rightSidebar.title }} </span>
-      <span class="right-sidebar-title" v-if="rightSidebar.open">{{ rightSidebar.titleClose }} </span>
+    <template v-if="rightSidebar">
+      <template v-if="rightSidebar.sidebars" >
+        <v-btn class="sidebar-header-button" v-if="item.widgets.length>0" :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}" v-for="(item, key, index) in rightSidebar.sidebars" flat small @click="openRightSidebar(key)">
+            <v-icon>{{item.icon}}</v-icon>
+        </v-btn>
+      </template>
+      <template v-else>
+      <v-btn v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0" @click="rightSidebar.open=!rightSidebar.open"
+        class="header-icon" flat>
+        <!-- <v-tooltip bottom> -->
+          <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
+          <!-- <span>{{$cs.Translate('CLOSE_RIGHT_SIDEBAR')}}</span> 
+        </v-tooltip>
+        <v-tooltip bottom>-->
+          <v-icon v-if="!rightSidebar.open">keyboard_arrow_left</v-icon>
+          <!-- <span>{{$cs.Translate('OPEN_RIGHT_SIDEBAR')}}</span>
+        </v-tooltip> -->
+        <template v-if="rightSidebar.title">
+          <span class="right-sidebar-title"  v-if="!rightSidebar.open">{{ rightSidebar.title }} </span>
+          <span class="right-sidebar-title" v-if="rightSidebar.open">{{ rightSidebar.titleClose }} </span>
+        </template>
+      </v-btn>
     </template>
-    </v-btn>
+    </template>
+
+    
   </v-toolbar>
