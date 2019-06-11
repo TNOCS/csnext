@@ -7,6 +7,7 @@ import Component from 'vue-class-component';
 import './cs-form-field.css';
 import 'reflect-metadata';
 import { CsForm } from '../..';
+import dayjs from 'dayjs';
 
 @Component({
     name: 'cs-formfield',
@@ -153,7 +154,7 @@ Vue.component('v-datetime-picker',{
             props: {
               datetime: {
                   type:Date,
-                  required:true,
+                  required:false,
               },
               label: {
                   type:String,
@@ -177,7 +178,7 @@ Vue.component('v-datetime-picker',{
           },
           computed: {
               actualDatetime() {
-                  return this.dateModel+' '+this.timeModel+':00'
+                  return this.dateModel+' '+this.timeModel + ':00'
               }
           },
           methods: {
@@ -186,7 +187,7 @@ Vue.component('v-datetime-picker',{
                       this.timeModel=val
                       this.$refs.timer.selectingHour = true
                       this.menu=false
-                      this.$emit('input',this.actualDatetime)
+                      this.$emit('input',new Date(this.actualDatetime).getTime())
                   }
               },
               checkHours(val) {
@@ -194,10 +195,10 @@ Vue.component('v-datetime-picker',{
               }
           },
           created(){
-              let datetime = new Date(this.$attrs.value);
+              let datetime = dayjs(this.$attrs.value);
               if (datetime) {
-                this.dateModel = datetime.toISOString().split(' ')[0];
-                this.timeModel = datetime.toISOString().split(' ')[1];
+                this.dateModel = datetime.format('YYYY-MM-DD');
+                this.timeModel = datetime.format('HH:mm:ss');
               }
           }
     
