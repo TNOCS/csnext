@@ -12,7 +12,8 @@ import {
   IWidget,
   IMenu,
   IFooterOptions,
-  IDialog
+  IDialog,
+  MessageBusHandle
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
@@ -59,8 +60,8 @@ const router = new VueRouter({ routes: [] });
 export class CsApp extends Vue {
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
   public static LANUAGE_SWITCH_ID = 'switch_language';
-
   public app = AppState.Instance;
+
   public settingsDialog = false;
   public $vuetify!: VuetifyObject;
   public active = null;
@@ -81,44 +82,72 @@ export class CsApp extends Vue {
     // }
   ];
 
+  private rightSideBarHandle?: MessageBusHandle;
+  private widgetHandle?: MessageBusHandle;
+  private dialogHandle?: MessageBusHandle;
+  private dashboardHandle?: MessageBusHandle;
+  private notificationHandle?: MessageBusHandle;
+
   constructor() {
     super();
-    this.app.router = router;
-    this.app.i18n = i18n;
-    this.app.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
-    this.app.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
-    this.app.i18n.mergeLocaleMessage('en', (en as any).default);
-    this.app.i18n.mergeLocaleMessage('nl', (nl as any).default);
+    this.$cs.router = router;
+    this.$cs.i18n = i18n;
+    this.$cs.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
+    this.$cs.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
+    this.$cs.i18n.mergeLocaleMessage('en', (en as any).default);
+    this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default);
     this.InitNavigation();
 
-    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    this.rightSideBarHandle = this.$cs.bus.subscribe('right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
           if (
-            this.app.project.rightSidebar &&
-            this.app.project.rightSidebar.dashboard &&
-            this.app.project.rightSidebar.dashboard.widgets
+            this.$cs.project.rightSidebar &&
+            this.$cs.project.rightSidebar.dashboard &&
+            this.$cs.project.rightSidebar.dashboard.widgets
           ) {
-            while (this.app.project.rightSidebar.dashboard.widgets.length > 0) {
-              this.app.project.rightSidebar.dashboard.widgets.pop();
+            while (this.$cs.project.rightSidebar.dashboard.widgets.length > 0) {
+              this.$cs.project.rightSidebar.dashboard.widgets.pop();
             }
-            this.app.project.rightSidebar.dashboard.widgets.push(data);
-            this.app.project.rightSidebar.open = true;
+            this.$cs.project.rightSidebar.dashboard.widgets.push(data);
+            this.$cs.project.rightSidebar.open = true;
           }
           break;
       }
     });
-    this.app.bus.subscribe('widget', (action: string, widget: IWidget) => {
+    this.widgetHandle = this.$cs.bus.subscribe('widget', (action: string, widget: IWidget) => {
       switch (action) {
         case 'edit':
-          if (this.app.project.leftSidebar) {
-            this.app.project.leftSidebar.component = CsSettings;
-            // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
-            this.app.project.leftSidebar.open = true;
+          if (this.$cs.project.leftSidebar) {
+            this.$cs.project.leftSidebar.component = CsSettings;
+            // this.$set(this.$cs.project.rightSidebar, 'component', CsSettings);
+            this.$cs.project.leftSidebar.open = true;
           }
           break;
       }
     });
+  }
+
+  public beforeDestroy() {
+    if (this.rightSideBarHandle) {
+      this.$cs.bus.unsubscribe(this.rightSideBarHandle);
+    }
+
+    if (this.widgetHandle) {
+      this.$cs.bus.unsubscribe(this.widgetHandle);
+    }
+
+    if (this.dialogHandle) {
+      this.$cs.bus.unsubscribe(this.dialogHandle);
+    }
+
+    if (this.dashboardHandle) {
+      this.$cs.bus.unsubscribe(this.dashboardHandle);
+    }
+
+    if (this.notificationHandle) {
+      this.$cs.bus.unsubscribe(this.notificationHandle);
+    }
   }
 
   @Watch('app.project.dashboards')
@@ -144,30 +173,30 @@ export class CsApp extends Vue {
   @Watch('$route')
   public routeChanged(n: any, o: any) {
     if (
-      this.app.project &&
-      this.app.project.header &&
-      this.app.project.header.breadcrumbs
+      this.$cs.project &&
+      this.$cs.project.header &&
+      this.$cs.project.header.breadcrumbs
     ) {
-      this.app.project.header.breadcrumbItems = [];
+      this.$cs.project.header.breadcrumbItems = [];
       n.fullPath.split('/').forEach(s => {
         if (
           s &&
-          this.app.project.header &&
-          this.app.project.header.breadcrumbItems
+          this.$cs.project.header &&
+          this.$cs.project.header.breadcrumbItems
         ) {
-          this.app.project.header.breadcrumbItems.push(s);
+          this.$cs.project.header.breadcrumbItems.push(s);
         }
       });
     }
   }
 
   public onResize() {
-    this.app.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    this.$cs.windowSize = { x: window.innerWidth, y: window.innerHeight };
   }
 
   public InitTheme() {
-    if (this.app.project && this.app.project.theme) {
-      this.$vuetify.theme = this.app.project.theme.colors as any;
+    if (this.$cs.project && this.$cs.project.theme) {
+      this.$vuetify.theme = this.$cs.project.theme.colors as any;
     }
   }
 
@@ -200,19 +229,19 @@ export class CsApp extends Vue {
   // swipe gesture
   public swipe(direction: string) {
     if (
-      !this.app.activeDashboard ||
-      !this.app.activeDashboard.options ||
-      !this.app.activeDashboard.options.TouchGesturesEnabled
+      !this.$cs.activeDashboard ||
+      !this.$cs.activeDashboard.options ||
+      !this.$cs.activeDashboard.options.TouchGesturesEnabled
     ) {
       return;
     }
-    const d = this.app.activeDashboard;
+    const d = this.$cs.activeDashboard;
     const adjacent = this.getAdjacentDashboard(
       direction,
-      this.app.activeDashboard,
+      this.$cs.activeDashboard,
       d.parent && d.parent.dashboards
         ? d.parent.dashboards
-        : this.app.project.dashboards
+        : this.$cs.project.dashboards
     );
     if (adjacent) {
       this.SelectDashboard(adjacent);
@@ -247,12 +276,12 @@ export class CsApp extends Vue {
 
   // Make sure all dashboards are available as routes
   public InitNavigation() {
-    if (!this.app || !this.app.project || !this.app.project.dashboards) {
+    if (!this.$cs || !this.$cs.project || !this.$cs.project.dashboards) {
       return;
     }
 
     // create routes for dashboards
-    this.app.project.dashboards.forEach(d => {
+    this.$cs.project.dashboards.forEach(d => {
       this.AddDashboardRoute(d);
     });
 
@@ -280,10 +309,10 @@ export class CsApp extends Vue {
         this.leftSidebar = d.leftSidebar;
         this.leftSidebar.visible = true;
         // Vue.set(this, 'leftSidebar', d.leftSidebar);
-      } else if (this.app.project.leftSidebar) {
-        this.leftSidebar = this.app.project.leftSidebar;
+      } else if (this.$cs.project.leftSidebar) {
+        this.leftSidebar = this.$cs.project.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
+        // Vue.set(this, 'leftSidebar', this.$cs.project.leftSidebar);
       } else {
         this.leftSidebar = {};
       }
@@ -293,11 +322,11 @@ export class CsApp extends Vue {
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
         // Vue.set(this, 'rightSidebar', d.rightSidebar);
-      } else if (this.app.project.rightSidebar) {
-        this.rightSidebar = this.app.project.rightSidebar;
+      } else if (this.$cs.project.rightSidebar) {
+        this.rightSidebar = this.$cs.project.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
+        // Vue.set(this, 'rightSidebar', this.$cs.project.rightSidebar);
       } else {
         this.rightSidebar = {};
       }
@@ -311,9 +340,9 @@ export class CsApp extends Vue {
         this.footer.visible = true;
       }
       // Vue.set(this, 'rightSidebar', d.rightSidebar);
-    } else if (this.app.project.footer) {
-      this.footer = this.app.project.footer;
-      // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
+    } else if (this.$cs.project.footer) {
+      this.footer = this.$cs.project.footer;
+      // Vue.set(this, 'rightSidebar', this.$cs.project.rightSidebar);
     } else {
       this.footer = {};
     }
@@ -330,7 +359,7 @@ export class CsApp extends Vue {
     this.onResize();
     this.InitNotifications();
 
-    this.app.bus.subscribe(AppState.DIALOG, (action: string, dialog: IDialog) => {
+    this.dialogHandle = this.$cs.bus.subscribe(AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
         case AppState.DIALOG_ADDED:
           Vue.set(this, 'dialog', dialog);
@@ -340,17 +369,17 @@ export class CsApp extends Vue {
     });
 
     // listen to dashboard init events
-    this.app.bus.subscribe(
-      'dashboard.main',
+    this.dashboardHandle = this.$cs.bus.subscribe(
+      AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.UpdateSideBars(dashboard);
         this.UpdateFooter(dashboard);
       }
     );
 
-    if (this.app.activeDashboard) {
-      this.UpdateSideBars(this.app.activeDashboard);
-      this.UpdateFooter(this.app.activeDashboard);
+    if (this.$cs.activeDashboard) {
+      this.UpdateSideBars(this.$cs.activeDashboard);
+      this.UpdateFooter(this.$cs.activeDashboard);
     }
   }
 
@@ -365,20 +394,20 @@ export class CsApp extends Vue {
   /** Update list of unread notification  */
   public UpdateNotifications() {
     if (
-      !this.app.project.notifications ||
-      !this.app.project.notifications.items
+      !this.$cs.project.notifications ||
+      !this.$cs.project.notifications.items
     ) {
       return;
     }
     this.$set(
       this,
       'unReadNotifications',
-      this.app.project.notifications.items.filter(not => !not.isRead)
+      this.$cs.project.notifications.items.filter(not => !not.isRead)
     );
   }
   public InitNotifications() {
-    if (this.app.bus) {
-      this.app.bus.subscribe(
+    if (this.$cs.bus) {
+      this.notificationHandle = this.$cs.bus.subscribe(
         'notification',
         (action: string, notification: INotification) => {
           if (action === 'new') {

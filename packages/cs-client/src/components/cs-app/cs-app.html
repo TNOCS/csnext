@@ -1,8 +1,8 @@
 <v-app
   v-resize="onResize"
-  v-if="app.isInitialized"
-  :dark="app.project.theme.dark"
-  :light="!app.project.theme.dark"
+  v-if="$cs.isInitialized"
+  :dark="$cs.project.theme.dark"
+  :light="!$cs.project.theme.dark"
 >
   <!-- <cs-loading></cs-loading> -->
   <cs-header
@@ -64,7 +64,7 @@
   <!-- content -->
   <v-content
     fluid
-    v-bind:class="{ 'floating': app.project.navigation.floating }"
+    v-bind:class="{ 'floating': $cs.project.navigation.floating }"
     v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
   >
     <router-view :key="$route.path"> </router-view>
@@ -74,11 +74,11 @@
   <v-bottom-nav
     app
     router
-    v-if="app.project.navigation.style==='bottom'"
+    v-if="$cs.project.navigation.style==='bottom'"
     :value="true"
   >
     <v-btn
-      v-for="dashboard in app.project.dashboards"
+      v-for="dashboard in $cs.project.dashboards"
       :key="dashboard.id"
       color="teal"
       flat
