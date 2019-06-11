@@ -1,5 +1,5 @@
 import { Prop, Watch } from 'vue-property-decorator';
-import { IWidget} from '@csnext/cs-core';
+import { IWidget, MessageBusHandle} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-log-list.css';
 import { WidgetBase, LogManager, ILogItem } from '@csnext/cs-client';
@@ -18,6 +18,8 @@ export class CsLogList extends WidgetBase {
     public log: LogManager = new LogManager();
     private visibleItems: ILogItem[] = [];
     public reverseOrder: boolean = false;
+
+    private resizeHandle?: MessageBusHandle;
     
     @Watch('log.items')
     private LogItemsChanged() {
@@ -80,10 +82,16 @@ export class CsLogList extends WidgetBase {
         }
     }
 
+    public beforeDestroy() {
+        if (this.widget && this.resizeHandle) {
+            this.widget.events!.unsubscribe(this.resizeHandle);
+        }
+    }
+
     mounted() {
         this.InitLog();
         if (this.widget) {
-            this.widget.events!.subscribe('resize', () => {
+            this.resizeHandle = this.widget.events!.subscribe('resize', () => {
                 // this.timeline!.redraw();
             });
         }
