@@ -118,8 +118,8 @@ export class CsTimeline extends Vue {
             for (const item of this.logSource.items) {
                 item.content = item.title;
                 if (item.startDate) { item.start = new Date(item.startDate); }
-                if (item.endDate) { item.end = new Date(item.endDate); }
-                items.push(item);
+                if (item.endDate) { item.end = new Date(item.endDate); }                
+                items.push(item as DataItem);
             }
         }
         // if (this.log && this.log.items) {
