@@ -25,7 +25,6 @@ import {
 } as any)
 export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
-  public app = AppState.Instance;
 
   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
@@ -34,7 +33,7 @@ export class CsDashboard extends Vue {
 
   @Watch('dashboard.menus')
   public menusChanged() {
-    this.app.bus.publish('menus', 'changed');
+    this.$cs.bus.publish('menus', 'changed');
   }
 
   @Watch('dashboard.widgets', { immediate: true })
@@ -61,7 +60,6 @@ export class CsDashboard extends Vue {
     }
   }
 
-
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
     if (dashboard.showLoadAnimation) {
@@ -81,8 +79,8 @@ export class CsDashboard extends Vue {
       dashboard.options = {};
     }
 
-    if (this.app.project.menus && dashboard.isMain) {
-      const dashboardEditButton = this.app.project.menus.find(
+    if (this.$cs.project.menus && dashboard.isMain) {
+      const dashboardEditButton = this.$cs.project.menus.find(
         mi => mi.id === CsApp.DASHBOARD_EDIT_ID
       );
       if (dashboardEditButton) {
@@ -92,8 +90,8 @@ export class CsDashboard extends Vue {
     }
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
-      this.app.activeDashboard = this.dashboard;
-      this.app.bus.publish('dashboard.main', 'init', this.dashboard);
+      this.$cs.activeDashboard = this.dashboard;
+      this.$cs.bus.publish(AppState.DASHBOARD_MAIN, 'init', this.dashboard);
     }
 
     // init widgets
@@ -124,7 +122,7 @@ export class CsDashboard extends Vue {
 
     // load default datasource, if configured
     if (dashboard.datasource) {
-      this.app
+      this.$cs
         .loadDatasource(dashboard.datasource)
         .then(d => {
           if (!this.dashboard) {
