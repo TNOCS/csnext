@@ -1,4 +1,6 @@
 
+import Vue from 'vue';
+
 Vue.component('v-datetime-picker',{
     name:'v-datetime-picker',
     template: `
