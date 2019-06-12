@@ -118,7 +118,7 @@ export class CsTimeline extends Vue {
             for (const item of this.logSource.items) {
                 item.content = item.title;
                 if (item.startDate) { item.start = new Date(item.startDate); }
-                if (item.endDate) { item.end = new Date(item.endDate); }                
+                if (item.endDate) { item.end = new Date(item.endDate); }
                 items.push(item as DataItem);
             }
         }
@@ -176,7 +176,7 @@ export class CsTimeline extends Vue {
             options.timelineOptions!.onAdd = (item, callback) => {
                 if (item) {
                     if (this.logSource) {
-                        this.logSource.addItem(item);
+                        // this.logSource.addItem(item);
                     }
                     callback(item);
                 }
@@ -184,7 +184,16 @@ export class CsTimeline extends Vue {
             options.timelineOptions!.onMove = (item, callback) => {
                 if (item) {
                     if (this.logSource) {
-                        this.logSource.updateItem(item);
+                        let it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            it.start = new Date(item.start);
+                            it.startDate = it.start.getTime();
+                            if (item.end) {
+                                it.end = new Date(item.end);
+                                it.endDate = it.end.getTime();                                
+                            }
+                            this.logSource.updateItem(it);
+                        }
                     }
                     callback(item);
                 }
@@ -193,7 +202,10 @@ export class CsTimeline extends Vue {
             options.timelineOptions!.onRemove = (item, callback) => {
                 if (item) {
                     if (this.logSource) {
-                        this.logSource.removeItem(item);
+                        let it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            this.logSource.removeItem(it);
+                        }
                     }
                     callback(item);
 
@@ -252,7 +264,7 @@ export class CsTimeline extends Vue {
             let id = data.items[0];
             console.log('Selected item ' + id);
             if (this.logSource) {
-                this.logSource.selectItemId(id);
+                // this.logSource.selectItemId(id);
             }
             this.TimeDatasource.events.publish(
                 Topics.TIME_TOPIC,
