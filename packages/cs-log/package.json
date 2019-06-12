@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-log",
-    "version": "0.0.115",
+    "version": "0.0.116",
     "description": "cs-log",
     "main": "./lib/cslog.cs.js",
     "types": "./dist/index.d.ts",
@@ -17,25 +17,25 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.115",
-        "@csnext/cs-core": "^0.0.115",
+        "@csnext/cs-client": "^0.0.116",
+        "@csnext/cs-core": "^0.0.116",
         "handlebars": "^4.1.2",
         "simplebar-vue": "^1.0.0"
     },
     "devDependencies": {
         "@types/node": "^12.0.4",
+        "cache-loader": "^3.0.1",
+        "css-loader": "^2.1.1",
         "postcss-loader": "^3.0.0",
         "raw-loader": "^1.0.0",
         "style-loader": "^0.23.1",
-        "css-loader": "^2.1.1",
+        "thread-loader": "^2.1.2",
         "ts-loader": "^6.0.2",
         "typescript": "^3.5.1",
         "webpack": "^4.32.2",
-        "webpack-cli": "^3.3.2",
-        "cache-loader": "^3.0.1",
         "webpack-bundle-analyzer": "^3.3.2",
-        "yargs": "^13.2.4",
-        "thread-loader": "^2.1.2"
+        "webpack-cli": "^3.3.2",
+        "yargs": "^13.2.4"
     },
     "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }
