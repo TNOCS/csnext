@@ -8,7 +8,7 @@
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
-    "link": "npm link",
+    "link": "yarn link",
     "dev": "tsc -w",
     "clean": "del-cli pnpm-lock.yaml package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo",
     "build": "tsc"
