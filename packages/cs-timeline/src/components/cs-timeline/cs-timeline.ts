@@ -7,7 +7,8 @@ import {
     WidgetOptions,
     TimeDataSource,
     Topics,
-    MessageBusHandle
+    MessageBusHandle,
+    isFunction
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
@@ -177,9 +178,9 @@ export class CsTimeline extends Vue {
                 if (item) {
                     if (this.logSource) {
                         // this.logSource.addItem(item);
-                    }
-                    callback(item);
+                    }                    
                 }
+                callback(item);
             }
             options.timelineOptions!.onMove = (item, callback) => {
                 if (item) {
@@ -194,9 +195,9 @@ export class CsTimeline extends Vue {
                             }
                             this.logSource.updateItem(it);
                         }
-                    }
-                    callback(item);
+                    }                    
                 }
+                callback(item);
             }
 
             options.timelineOptions!.onRemove = (item, callback) => {
@@ -206,10 +207,9 @@ export class CsTimeline extends Vue {
                         if (it) {
                             this.logSource.removeItem(it);
                         }
-                    }
-                    callback(item);
-
+                    }                    
                 }
+                callback(item);
             }
         }
         this.timeline = new Timeline(
@@ -257,13 +257,15 @@ export class CsTimeline extends Vue {
 
     private handleEventSelect(data: VisSelectProperties) {
         if (
+            (data as any).event.type === 'tap' &&
             data.items &&
             data.items.length === 1 &&
             this.TimeDatasource.events
         ) {
             let id = data.items[0];
             console.log('Selected item ' + id);
-            if (this.logSource) {
+            if (this.logSource && isFunction(this.logSource.selectItemId)) {
+                this.logSource.selectItemId(id.toString());
                 // this.logSource.selectItemId(id);
             }
             this.TimeDatasource.events.publish(
