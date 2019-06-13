@@ -7,8 +7,8 @@ import Component from 'vue-class-component';
 import './cs-form-field.css';
 import 'reflect-metadata';
 import { CsForm } from '../..';
-import dayjs from 'dayjs';
-import "./v-datetime-picker";
+
+import "../v-datetime-picker/v-datetime-picker";
 
 @Component({
     name: 'cs-formfield',
@@ -24,7 +24,6 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
-    public timepickermenu = false;
 
     public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (
