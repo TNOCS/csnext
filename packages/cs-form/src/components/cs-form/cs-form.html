@@ -20,6 +20,7 @@
                     wrap
                     v-for="group in fieldGroups"
                     v-if="group._visible"
+                    :key="group.id"
                     dense
                 >
                     <v-flex
