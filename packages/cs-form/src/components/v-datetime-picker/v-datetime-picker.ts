@@ -5,20 +5,23 @@ import { Prop, Watch } from 'vue-property-decorator';
 
 @Component({
     name: 'v-datetime-picker',
-    template: require('./v-datetime-picker.html')    
+    template: require('./v-datetime-picker.html')
 })
 export class VDatetimePicker extends Vue {
     /** access the original widget from configuration */
     @Prop()
     public label?: string;
 
+    @Prop()
+    public required?: boolean;
+
     public dateModel = '';
     public timeModel = '';
     public dateMenu = false;
     public timeMenu = false;
 
-    @Watch('dateModel')    
-    @Watch('timeModel')    
+    @Watch('dateModel')
+    @Watch('timeModel')
     updateDateModel(n: string, o: string) {
         if (n !== o) {
             this.update();
@@ -26,7 +29,7 @@ export class VDatetimePicker extends Vue {
     }
 
     public update() {
-        try {            
+        try {
             let d = this.dateModel;
             if (this.timeModel) {
                 d += ' ' + this.timeModel + ':00';
@@ -45,10 +48,12 @@ export class VDatetimePicker extends Vue {
     }
 
     updateModels() {
-        let datetime = dayjs(this.$attrs.value);
-        if (datetime) {
-            this.dateModel = datetime.format('YYYY-MM-DD');
-            this.timeModel = datetime.format('HH:mm:ss');
+        if (this.$attrs.value.toString() !== "0") {
+            let datetime = dayjs(this.$attrs.value);
+            if (datetime) {
+                this.dateModel = datetime.format('YYYY-MM-DD');
+                this.timeModel = datetime.format('HH:mm:ss');
+            }
         }
     }
 }

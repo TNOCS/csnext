@@ -16,6 +16,8 @@
                     :label="label"
                     prepend-icon="event"
                     v-on="on"
+                    clear-icon="clear"
+                    :clearable="!required"
                 ></v-text-field>
             </template>
             <v-date-picker
@@ -44,6 +46,8 @@
                     :label="label"
                     prepend-icon="access_time"
                     v-on="on"
+                    clear-icon="clear"
+                    :clearable="!required"
                 ></v-text-field>
             </template>
             <v-time-picker
