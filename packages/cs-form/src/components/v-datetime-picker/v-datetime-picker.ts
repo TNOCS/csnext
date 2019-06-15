@@ -51,7 +51,7 @@ export class VDatetimePicker extends Vue {
 
     @Watch('$attrs.value')
     updateModels() {
-        if (this.$attrs.value.toString() !== "0") {
+        if (this.$attrs.value && this.$attrs.value.toString() !== "0") {
             let datetime = dayjs(this.$attrs.value);
             if (datetime) {
                 const date = datetime.format('YYYY-MM-DD');
