@@ -37,20 +37,21 @@ export interface IFormGroupOptions {
 }
 export interface IFormFieldOptions extends IFormFieldBaseOptions {
   type?:
-    | 'string'
-    | 'number'
-    | 'slider'
-    | 'chips'
-    | 'color'
-    | 'checkboxes-horizontal'
-    | 'checkbox'
-    | 'object'
-    | 'selection'
-    | 'array'
-    | 'keyvalue'
-    | 'form'
-    | 'union'
-    | 'keysobject';
+  | 'string'
+  | 'number'
+  | 'slider'
+  | 'chips'
+  | 'color'
+  | 'combobox'
+  | 'checkboxes-horizontal'
+  | 'checkbox'
+  | 'object'
+  | 'selection'
+  | 'array'
+  | 'keyvalue'
+  | 'form'
+  | 'union'
+  | 'keysobject';
   defaultValue?: any;
   description?: string;
   required?: boolean;
@@ -58,7 +59,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   min?: number;
   max?: number;
   step?: number;
-  options?: any[];
+  options?: any[] | (() => any[]);
   arrayType?: IFormFieldOptions;
   form?: IFormOptions;
   canDelete?: boolean;

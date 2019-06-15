@@ -40,6 +40,14 @@ export class CsFormField extends Vue {
         }
     }
 
+    public fieldOptions(field: IFormFieldOptions) {
+        if (typeof field.options === 'function') {
+            return field.options();
+        } else {
+            return field.options;
+        }
+    }
+
     public updateKey(key: string, field: IFormFieldOptions) {
         console.log('Update key');
         if (
