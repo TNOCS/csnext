@@ -28,6 +28,8 @@ export class VDatetimePicker extends Vue {
         }
     }
 
+  
+
     public update() {
         try {
             let d = this.dateModel;
@@ -35,7 +37,7 @@ export class VDatetimePicker extends Vue {
                 d += ' ' + this.timeModel + ':00';
             }
             let date = new Date(d).getTime();
-            this.$attrs.value = date.toString();
+            // this.$attrs.value = date.toString();
             this.$emit('input', date);
         }
         catch (e) {
@@ -47,12 +49,15 @@ export class VDatetimePicker extends Vue {
         this.updateModels();
     }
 
+    @Watch('$attrs.value')
     updateModels() {
         if (this.$attrs.value.toString() !== "0") {
             let datetime = dayjs(this.$attrs.value);
             if (datetime) {
-                this.dateModel = datetime.format('YYYY-MM-DD');
-                this.timeModel = datetime.format('HH:mm:ss');
+                const date = datetime.format('YYYY-MM-DD');
+                if (date !== this.dateModel) { this.dateModel = date; }
+                const time = datetime.format('HH:mm:ss');
+                if (time !== this.timeModel) this.timeModel = time;
             }
         }
     }
