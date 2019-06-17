@@ -66,6 +66,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   canAdd?: boolean;
   canEditKey?: boolean;
   addUsingDialog?: boolean;
+  readonly?: boolean;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
 }
