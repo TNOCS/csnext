@@ -33,7 +33,7 @@ export {
 } from 'timeline-plus';
 
 import 'timeline-plus/dist/timeline.min.css';
-import { LogDataSource, LogManager } from '@csnext/cs-client';
+import { LogDataSource, LogManager, ILogItem } from '@csnext/cs-client';
 
 export interface TimelineWidgetOptions extends WidgetOptions {
     timelineOptions?: TimelineOptions;
@@ -55,6 +55,7 @@ export class CsTimeline extends Vue {
 
     public timeline?: Timeline;
     // public datasource?: ITimelineDataSource;
+    public items = new DataSet();
     public groups: DataGroup[] = [];
     public currentTime: Date = new Date();
     // public log: LogManager = new LogManager();
@@ -98,9 +99,9 @@ export class CsTimeline extends Vue {
     private async update() {
         if (this.timeline) {
             console.log('Updating timeline');
-            let items = this.getItems();
-            // this.timeline.setGroups(this.groups);
-            this.timeline.setItems(items);
+            this.updateItems();
+            this.timeline.setGroups(this.groups);
+            this.timeline.setItems(this.items);
             // this.timeline.fit();
             this.timeline.redraw();
         }
@@ -111,15 +112,19 @@ export class CsTimeline extends Vue {
         this.update();
     }
 
-    private getItems(): DataSet<DataItem> {
+    private updateItems() {
         let items: DataItem[] = [];
+        let groups: DataGroup[] = [];
         let tags: string[] = [];
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                item.content = item.title;
+                item.content = item.content;
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
+                if (item.group) {
+                    this.addGroup(item.group);
+                }
                 items.push(item as DataItem);
             }
         }
@@ -138,7 +143,7 @@ export class CsTimeline extends Vue {
         //         this.addGroup(i.group);
         //     });
         // }
-        return new DataSet(items);
+        this.items = new DataSet(items);
     }
 
     private addGroup(groupName: string) {
@@ -169,7 +174,7 @@ export class CsTimeline extends Vue {
             );
         }
 
-        let items = await this.getItems();
+        let items = await this.updateItems();
         let options: TimelineWidgetOptions =
             (this.widget.options as TimelineWidgetOptions) ||
             ({} as TimelineWidgetOptions);
@@ -178,7 +183,7 @@ export class CsTimeline extends Vue {
                 if (item) {
                     if (this.logSource) {
                         // this.logSource.addItem(item);
-                    }                    
+                    }
                 }
                 callback(item);
             }
@@ -189,13 +194,16 @@ export class CsTimeline extends Vue {
                         if (it) {
                             it.start = new Date(item.start);
                             it.startDate = it.start.getTime();
+                            if (item.group) {
+                                it.group = item.group.toString();
+                            }
                             if (item.end) {
                                 it.end = new Date(item.end);
-                                it.endDate = it.end.getTime();                                
+                                it.endDate = it.end.getTime();
                             }
                             this.logSource.updateItem(it);
                         }
-                    }                    
+                    }
                 }
                 callback(item);
             }
@@ -207,15 +215,16 @@ export class CsTimeline extends Vue {
                         if (it) {
                             this.logSource.removeItem(it);
                         }
-                    }                    
+                    }
                 }
                 callback(item);
             }
+
         }
         this.timeline = new Timeline(
             container,
-            items,
-            // this.groups,
+            this.items,
+            this.groups,
             options.timelineOptions || {}
         );
         this.setTimelineEvents();

@@ -141,7 +141,7 @@
 
     <template v-if="rightSidebar">
       <template v-if="rightSidebar.sidebars" >
-        <v-btn class="sidebar-header-button" v-if="item.widgets.length>0" :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}" v-for="(item, key, index) in rightSidebar.sidebars" flat small @click="openRightSidebar(key)">
+        <v-btn class="sidebar-header-button" v-if="item.widgets.length>0" :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}" v-for="(item, key, index) in rightSidebar.sidebars" :key="index" flat small @click="openRightSidebar(key)">
             <v-icon>{{item.icon}}</v-icon>
         </v-btn>
       </template>
