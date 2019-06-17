@@ -99,6 +99,6 @@
     v-model="lastNotification._visible"
   >
     {{ lastNotification.title }}
-    <v-btn flat @click.native="lastNotification._visible = false">Close</v-btn>
+    <v-btn flat @click.native="lastNotification._visible = false">{{$cs.Translate('CLOSE')}}</v-btn>
   </v-snackbar>
 </v-app>
