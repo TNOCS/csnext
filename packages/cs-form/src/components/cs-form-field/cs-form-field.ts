@@ -1,11 +1,9 @@
 import Vue from 'vue';
 import {
     IFormFieldOptions,
-    IDialog
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-form-field.css';
-import 'reflect-metadata';
 import { CsForm } from '../..';
 
 import "../v-datetime-picker/v-datetime-picker";

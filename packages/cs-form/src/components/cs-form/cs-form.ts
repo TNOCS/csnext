@@ -8,7 +8,6 @@ import {
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-form.css';
-import 'reflect-metadata';
 import { CsFormField } from '../..';
 
 export class FieldGroup {
