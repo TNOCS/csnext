@@ -21,8 +21,10 @@ import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
 import './../../assets/fonts/fonts.css';
-import * as en from './../../assets/translations/en.json';
-import * as nl from './../../assets/translations/nl.json';
+// tslint:disable-next-line:no-var-requires
+const en = require('./../../assets/translations/en.json');
+// tslint:disable-next-line:no-var-requires
+const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 // import 'simplebar/dist/simplebar.min.css';

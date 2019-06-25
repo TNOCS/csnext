@@ -4,9 +4,8 @@
   "compilerOptions": {  
     /* Basic Options */    
     "resolveJsonModule": true,
-    "outDir": "./dist",
-    "rootDir": "./src/"     
+    "outDir": "./dist" 
   },
-  "include": ["src/", "src/assets/translations/*.json"],
+  "include": ["src/", "**/*.json"],
   "exclude": ["./dist"]
 }

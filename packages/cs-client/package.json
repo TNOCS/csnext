@@ -2,7 +2,7 @@
   "name": "@csnext/cs-client",
   "version": "0.0.117",
   "main": "./lib/csclient.cs.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "license": "MIT",
   "url": "https://github.com/TNOCS/csnext",
   "bugs": "https://github.com/TNOCS/csnext/issues",
@@ -10,7 +10,7 @@
     "link": "yarn link",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --mode development && tsc",
+    "build": "webpack --mode production",
     "clean": "del-cli pnpm-lock.yaml package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {

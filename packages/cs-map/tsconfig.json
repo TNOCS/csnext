@@ -4,7 +4,9 @@
   "compilerOptions": {
     /* Basic Options */
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true
   },
   "exclude": ["./dist"]
 }
