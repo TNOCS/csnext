@@ -921,11 +921,11 @@ export class CsMap extends Vue {
                 }
             });
 
-            geocoder.on('result', (d) => {
+            geocoder.on('result', (d: any) => {
                 if (this.manager) {
                     this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
                 }
-            }
+            });
 
             geocoder.on('clear', () => {
                 if (this.manager) {
