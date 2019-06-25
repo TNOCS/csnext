@@ -5,7 +5,8 @@ import Component from 'vue-class-component';
 import './cs-map.css';
 import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
 import { Feature } from 'geojson';
-import { RulerControl, StylesControl } from 'mapbox-gl-controls';
+import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
+import { RulerControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -15,6 +16,7 @@ import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import "mapbox-gl-style-switcher/styles.css";
 
 import {
     MapLayers,
@@ -54,6 +56,9 @@ export class CsMap extends Vue {
     public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
     public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
     public static DRAWLAYER = 'drawlayer';
+    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
+    public static MAP_CLICK = 'map.click';
+    public static SEARCH_RESULT_SELECT = 'search.select';
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -241,7 +246,7 @@ export class CsMap extends Vue {
         if (layer.id) {
             if (typeof layer.removeLayer === 'function') {
                 layer.removeLayer(this);
-                if (layer._events) {                    
+                if (layer._events) {
                     layer._events.publish('layer', CsMap.LAYER_DISABLED);
                 }
             }
@@ -268,6 +273,19 @@ export class CsMap extends Vue {
             // init map
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
+            this.map.on('dblclick', (ev) => {
+                if (this.manager) {
+                    this.manager.events.publish('map', CsMap.MAP_DOUBLE_CLICK, ev);
+                }
+            });
+
+            this.map.on('click', (ev) => {
+                if (this.manager) {
+                    this.manager.events.publish('map', CsMap.MAP_CLICK, ev);
+                }
+            });
+
+
             // ad navigation control
             this.mapOptions = {
                 ...{
@@ -277,48 +295,18 @@ export class CsMap extends Vue {
                     showRuler: true,
                     showGeocoder: false,
                     showLayer: true,
-                    showEditor: true
+                    showEditor: true,
+                    doubleClickZoom: true
                 },
                 ...(this.widget.options as MapOptions)
             };
 
-            var nav = new mapboxgl.NavigationControl({
-                showCompass: this.mapOptions.showCompass,
-                showZoom: this.mapOptions.showZoom
-            });
-            this.map.addControl(nav, 'top-left');
 
-            if (this.mapOptions.showStyles) {
-                const stylesControl = new StylesControl([
-                    {
-                        name: 'Streets',
-                        url: 'mapbox://styles/mapbox/streets-v9'
-                    },
-                    {
-                        name: 'Satellite',
-                        url: 'mapbox://styles/mapbox/satellite-v9'
-                    },
-                    {
-                        name: 'Dark',
-                        url: 'mapbox://styles/mapbox/dark-v9'
-                    },
-                    {
-                        name: 'Light',
-                        url: 'mapbox://styles/mapbox/light-v9'
-                    }
-                ]);
 
-                this.map.addControl(stylesControl, 'bottom-right');
-                this.map.on('style.load', () => {
-                    if (this.manager) {
-                        this.manager.refreshLayers();
-                        // this.man
-                    }
-                });
-            }
-
-            if (this.mapOptions.showRuler) {
-                this.map.addControl(new RulerControl(), 'top-left');
+            if (this.mapOptions.doubleClickZoom) {
+                this.map['doubleClickZoom'].enable();
+            } else {
+                this.map['doubleClickZoom'].disable();
             }
 
             // subscribe to widget events
@@ -774,6 +762,38 @@ export class CsMap extends Vue {
                 if (this.mapOptions.showGeocoder) {
                     this.addGeocoder();
                 }
+
+                var nav = new mapboxgl.NavigationControl({
+                    showCompass: this.mapOptions.showCompass,
+                    showZoom: this.mapOptions.showZoom
+                });
+                this.map.addControl(nav, 'top-left');
+
+                if (this.mapOptions.showStyles) {
+                    const styles: MapboxStyleDefinition[] = [
+                        { title: "Dark", uri: "mapbox://styles/mapbox/dark-v9" },
+                        { title: "Light", uri: "mapbox://styles/mapbox/light-v9" },
+                        { title: "Outdoors", uri: "mapbox://styles/mapbox/outdoors-v10" },
+                        { title: "Satellite", uri: "mapbox://styles/mapbox/satellite-streets-v10" },
+                        { title: "Streets", uri: "mapbox://styles/mapbox/streets-v10" }
+                    ];
+
+                    this.map.addControl(new MapboxStyleSwitcherControl(styles));
+
+                    // this.map.addControl(stylesControl, 'bottom-right');
+                    this.map.on('style.load', () => {
+                        if (this.manager) {
+                            this.manager.refreshLayers();
+                            // this.man
+                        }
+                    });
+
+
+                }
+
+                if (this.mapOptions.showRuler) {
+                    this.map.addControl(new RulerControl(), 'top-left');
+                }
             });
         });
     }
@@ -900,6 +920,12 @@ export class CsMap extends Vue {
                     this.manager.updateLayerSource(rl, ev);
                 }
             });
+
+            geocoder.on('result', (d) => {
+                if (this.manager) {
+                    this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
+                }
+            }
 
             geocoder.on('clear', () => {
                 if (this.manager) {
