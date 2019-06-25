@@ -57,11 +57,11 @@ export class NestServer {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
             }
             if (!port) {
-                port = parseInt(process.env.LAYER_SERVER_PORT || '4000');
+                port = parseInt(process.env.LAYER_SERVER_PORT || '3009');
             }
             if (!external) {
                 external =
-                    process.env.LAYER_SERVER_EXTERNAL || 'localhost:4000';
+                    process.env.LAYER_SERVER_EXTERNAL || 'localhost:3009';
             }
 
             if (swaggerConfig) {

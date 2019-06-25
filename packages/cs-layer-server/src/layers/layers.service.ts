@@ -30,7 +30,7 @@ import { Server } from 'tls';
 export class LayerService {
     private config: ServerConfig;
     private absoluteConfigPath!: string;
-    private lock = new AsyncLock();     
+    private lock = new AsyncLock();
 
     handleConnection(d: Client) {
         // this.server.emit('buttonCount',AppService.buttonCount);
@@ -119,7 +119,11 @@ export class LayerService {
             );
             // make sure it exists
             if (!fs.existsSync(absoluteImportPath)) {
-                fs.mkdirSync(absoluteImportPath);
+                try {
+                    fs.mkdirSync(absoluteImportPath);
+                } catch (e) {
+                    Logger.error('Error creating import path');
+                }
             }
 
             // construct import completed folder
@@ -388,13 +392,13 @@ export class LayerService {
 
     queueSocketUpdate(source: LayerSource, feature: Feature) {
         if (source) {
-            if (!source._socketQueue) { source._socketQueue = {}; }            
-                   
-            this.lock.acquire(source.id, ()=> {
+            if (!source._socketQueue) { source._socketQueue = {}; }
+
+            this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
                     feature: feature
-                };                
+                };
             });
 
         }
@@ -404,9 +408,9 @@ export class LayerService {
     flushSocketQueue(source: LayerSource) {
         if (source) {
             if (source._socketQueue) {
-                this.lock.acquire(source.id, ()=> {
+                this.lock.acquire(source.id, () => {
                     if (this.socket && this.socket.server) {
-                            this.socket.server.emit(
+                        this.socket.server.emit(
                             'layer/' + source.id + '/features',
                             source._socketQueue
                         );
