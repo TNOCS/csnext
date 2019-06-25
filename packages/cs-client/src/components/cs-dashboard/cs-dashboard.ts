@@ -92,6 +92,9 @@ export class CsDashboard extends Vue {
     if (dashboard.isMain) {
       this.$cs.activeDashboard = this.dashboard;
       this.$cs.bus.publish(AppState.DASHBOARD_MAIN, 'init', this.dashboard);
+      if (dashboard.options && dashboard.options.CloseRightSidebar && this.$cs.project.rightSidebar) {
+        this.$cs.project.rightSidebar.open = false;
+      }
     }
 
     // init widgets
