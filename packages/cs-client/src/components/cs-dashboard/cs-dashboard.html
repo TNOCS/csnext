@@ -1,5 +1,29 @@
-<div :class="dashboard.options.class">
-  <component v-show="!dashboard._loading" :is="component" :dashboard="dashboard" :id="'dashboard-' + dashboard.id"></component>
-  <div v-if="dashboard.showLoadAnimation && dashboard._loading">{{$t('IS_LOADING')}}</div>
-</div>
+<v-layout column :class="dashboard.options.class">
+  <div
+    v-if="dashboard.options.navigation && dashboard.options.navigation.stepper"
+  >
+    <v-stepper :value="stepperValue" non-linear>
+      <v-stepper-header>
+        <template v-for="(item, index) in dashboard.dashboards">
+          <v-stepper-step
+            :key="index"
+            :step="index + 1"
+            editable            
+          >
+            {{ item.title }} </v-stepper-step
+          ><v-divider></v-divider
+        ></template>
+      </v-stepper-header>
+    </v-stepper>
+  </div>
 
+  <component
+    v-show="!dashboard._loading"
+    :is="component"
+    :dashboard="dashboard"
+    :id="'dashboard-' + dashboard.id"
+  ></component>
+  <div v-if="dashboard.showLoadAnimation && dashboard._loading">
+    {{ $t('IS_LOADING') }}
+  </div>
+</v-layout>

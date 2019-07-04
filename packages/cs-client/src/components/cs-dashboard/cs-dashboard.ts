@@ -25,6 +25,7 @@ import {
 } as any)
 export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
+  public stepperValue: number = 1;
 
   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
@@ -39,9 +40,9 @@ export class CsDashboard extends Vue {
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[]) {
     if (n && n.length > 0) {
-      n.forEach(w => {
+      for (const w of n) {
         this.initWidget(w);
-      });
+      }
     }
   }
 
@@ -99,9 +100,9 @@ export class CsDashboard extends Vue {
 
     // init widgets
     if (this.dashboard && this.dashboard.widgets) {
-      this.dashboard.widgets.forEach(w => {
+      for (const w of this.dashboard.widgets) {
         this.initWidget(w);
-      });
+      }
     }
 
     // init dashboard manager
@@ -122,6 +123,8 @@ export class CsDashboard extends Vue {
     if (dashboard._manager && dashboard._manager.dashboardLoaded) {
       dashboard._manager.dashboardLoaded(dashboard);
     }
+
+    this.$cs.UpdateBreadCrumbs();
 
     // load default datasource, if configured
     if (dashboard.datasource) {

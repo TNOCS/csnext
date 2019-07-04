@@ -107,10 +107,10 @@ export class AppState extends AppStateBase {
     if (project.languages && this.i18n && this.i18n.messages) {
       if (project.languages.localeMessages) {
         const messages = Object.keys(project.languages.localeMessages);
-        messages.forEach(lang =>
+        for (const lang of messages) {
           this.i18n!.mergeLocaleMessage(lang, project.languages!
             .localeMessages![lang] as LocaleMessageObject)
-        );
+        }
       }
       this.i18n.locale = project.languages.defaultLanguage || 'en';
       this.i18n.fallbackLocale = project.languages.fallbackLanguage || 'nl';
@@ -148,6 +148,24 @@ export class AppState extends AppStateBase {
       this.project.init();
     }
     this.initSocket();
+  }
+
+  public UpdateBreadCrumbs(d?: IDashboard) {
+    if (!d) { d = this.activeDashboard; }
+    if (
+      d &&
+      this.project &&
+      this.project.header &&
+      this.project.header.breadcrumbs
+    ) {
+      if (!this.project.header.breadcrumbItems) {
+        this.project.header.breadcrumbItems = [];
+      }
+      this.project.header.breadcrumbItems.unshift(d.title);
+      if (d.parent) {
+        this.UpdateBreadCrumbs(d.parent);
+      }
+    }
   }
 
   public updateDatasource(id: string, value: any) {
@@ -343,7 +361,7 @@ export class AppState extends AppStateBase {
   /** initializes given dashboards */
   private initializeDashboards(dashboards: IDashboard[]) {
     if (dashboards) {
-      dashboards.forEach(d => {
+      for (const d of dashboards) {
         d.isMain = true;
         if (!d.pathLink) {
           d.pathLink = d.path;
@@ -351,7 +369,7 @@ export class AppState extends AppStateBase {
         if (d.dashboards) {
           this.initializeDashboards(d.dashboards);
         }
-      });
+      }
     }
   }
 }

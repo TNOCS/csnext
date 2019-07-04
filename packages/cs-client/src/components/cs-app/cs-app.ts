@@ -172,26 +172,6 @@ export class CsApp extends Vue {
     this.rightSidebar.dashboard = n;
   }
 
-  @Watch('$route')
-  public routeChanged(n: any, o: any) {
-    if (
-      this.$cs.project &&
-      this.$cs.project.header &&
-      this.$cs.project.header.breadcrumbs
-    ) {
-      this.$cs.project.header.breadcrumbItems = [];
-      n.fullPath.split('/').forEach(s => {
-        if (
-          s &&
-          this.$cs.project.header &&
-          this.$cs.project.header.breadcrumbItems
-        ) {
-          this.$cs.project.header.breadcrumbItems.push(s);
-        }
-      });
-    }
-  }
-
   public onResize() {
     this.$cs.windowSize = { x: window.innerWidth, y: window.innerHeight };
   }
@@ -258,10 +238,10 @@ export class CsApp extends Vue {
   // Add a dashboard as a route
   public AddDashboardRoute(d: IDashboard) {
     if (d.dashboards && d.dashboards.length > 0) {
-      d.dashboards.forEach(dash => {
+      for (const dash of d.dashboards) {
         dash.parent = d;
         this.AddDashboardRoute(dash);
-      });
+      }
     } else if (d.path) {
       router.addRoutes([
         {
@@ -283,10 +263,9 @@ export class CsApp extends Vue {
     }
 
     // create routes for dashboards
-    this.$cs.project.dashboards.forEach(d => {
+    for (const d of this.$cs.project.dashboards) {
       this.AddDashboardRoute(d);
-    });
-
+    }
     Logger.info('navigation', 'navigation initialized');
   }
 
