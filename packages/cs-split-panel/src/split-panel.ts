@@ -1,38 +1,70 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { IDashboard, IMenu } from '@csnext/cs-core';
-import VueSplit from 'vue-split-panel';
 import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
 import { SplitPanelOptions } from './split-panel-options';
+import { SplitComp } from './split-comp';
+import VueSplitGrid from 'vue-split-grid';
 
-const splitComp = Vue.component('split-comp', {
-    template: require('./split-comp.html'),
-    props: ['options', 'dashboard'],
-    // data: { dashboard: null },
-    methods: {
-        getWidget: (id: string, dashboard: IDashboard) => {
-            if (dashboard && dashboard.widgets) {
-                return dashboard.widgets.find(w => w.id === id);
-            }
-        }
-    }
-});
+Vue.use(VueSplitGrid);
+
+// const splitComp = Vue.component('split-comp', {
+//     template: require('./split-comp.html'),
+//     props: ['options', 'dashboard'],
+//     // data: { dashboard: null },
+//     methods: {
+//         getWidget: (id: string, dashboard: IDashboard) => {
+//             if (dashboard && dashboard.widgets) {
+//                 return dashboard.widgets.find(w => w.id === id);
+//             }
+//         },
+//         reset: () => {
+//             alert('Reset');
+//         }
+//     }
+// });
 
 @Component({
     template: require('./split-panel.html'),
+    components: { SplitComp },
     props: {
         dashboard: null
     }
 } as any)
 export class SplitPanel extends Vue {
+    
     public dashboard!: IDashboard;
-    public $refs!: {
-        mySplit: any;
-    };
+
     public presetMenu?: IMenu;
 
+    public $refs!: {
+        splitcomp: SplitComp;
+    };
+
     public splitOptions?: SplitPanelOptions;
+
+    public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
+
+        if (this.options) {
+            this.$set(this.options, 'splitpanel', splitPanel);
+            // this.options.splitpanel = splitPanel;
+            // this.options.defaultPreset = key;
+            // this.$refs.splitcomp.optionsUpdated();
+
+            // this.$forceUpdate();
+            // this.$refs.splitcomp.optionsUpdated();
+            // this.dashboard.component.initDashboard(this.dashboard);
+            
+
+
+
+
+        };
+
+
+
+    }
 
     public get options(): SplitPanelDashboardOptions | undefined {
         // if no splitpanel was defined, but a list of presets, take first
@@ -63,7 +95,7 @@ export class SplitPanel extends Vue {
                     ];
                 } else {
                     this.options.splitpanel = {
-                        direction: 'horizontal',
+                        direction: 'row',
                         elements: [],
                         disableVerticalScroll: false
                     };
@@ -108,4 +140,4 @@ export class SplitPanel extends Vue {
     }
 }
 
-Vue.use(VueSplit);
+

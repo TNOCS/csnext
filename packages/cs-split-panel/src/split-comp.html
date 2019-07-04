@@ -1,5 +1,6 @@
-<Split style="height: 100%; width: 100%" :direction="options.direction" :gutterSize="8">
-  <SplitArea v-for="element in options.elements" :key="element.widgetId" :size="element.size" :minSize="element.minSize" :expandToMin="true" :class="{'hide-vertical-scroll':options.disableVerticalScroll}">
+<SplitGrid style="height: 100%; width: 100%" :show="true" :direction="options.direction" :gutterSize="8" ref="splitmain">
+  <template v-for="element in options.elements">
+  <SplitGridArea :key="element.widgetId" :size="element.size" :minSize="element.minSize" :expandToMin="true" :class="{'hide-vertical-scroll':options.disableVerticalScroll}">
     <template v-if="element.widgetId">
         <cs-widget :widget="getWidget(element.widgetId, dashboard)"></cs-widget>      
     </template>
@@ -7,5 +8,7 @@
       <!-- {{ element.elements }} -->
       <split-comp :options="element.splitpanel" :dashboard="dashboard"></split-comp>
     </template>
-  </SplitArea>
-</Split>
+  </SplitGridArea>
+  <SplitGridGutter></SplitGridGutter>
+</template>
+</SplitGrid>
