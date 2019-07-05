@@ -7,6 +7,7 @@ export interface IDashboardOptions {
   Background?: string;
   EditButton?: boolean;
   CloseRightSidebar?: boolean;
+  navigation?: DashboardNavigationOptions;
   // allow left & right swipe gestures to switch between dashboards
   TouchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
