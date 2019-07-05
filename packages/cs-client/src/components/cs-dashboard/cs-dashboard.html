@@ -1,20 +1,30 @@
-<v-layout column :class="dashboard.options.class">
+<v-layout column class="grid-manager" :class="dashboard.options.class">
   <div
-    v-if="dashboard.options.navigation && dashboard.options.navigation.stepper"
+    v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation"
   >
-    <v-stepper :value="stepperValue" non-linear>
-      <v-stepper-header>
-        <template v-for="(item, index) in dashboard.dashboards">
-          <v-stepper-step
-            :key="index"
-            :step="index + 1"
-            editable            
-          >
-            {{ item.title }} </v-stepper-step
-          ><v-divider></v-divider
-        ></template>
-      </v-stepper-header>
-    </v-stepper>
+    <template v-if="dashboard.parent.options.navigation.type=== 'stepper'">
+      <v-stepper :value="selectedStepper" non-linear>
+        <v-stepper-header>
+          <template v-for="(item, index) in dashboard.parent.dashboards">
+            <v-stepper-step
+              :key="index"
+              :step="index + 1"
+              editable
+              @click="selectStepperDashboard(item)"
+            >
+              {{ item.title }} </v-stepper-step
+            ><v-divider></v-divider
+          ></template>
+        </v-stepper-header>
+      </v-stepper>
+    </template>
+    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">
+      <v-tabs>
+        <template v-for="(item, index) in dashboard.parent.dashboards">
+          <v-tab @click="selectStepperDashboard(item)"  :active="item.id === dashboard.id"> {{ item.title }} </v-tab>
+        </template>
+      </v-tabs>
+    </template>
   </div>
 
   <component

@@ -25,7 +25,7 @@ import {
 } as any)
 export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
-  public stepperValue: number = 1;
+  public selectedStepper: number = 1;
 
   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
@@ -43,6 +43,12 @@ export class CsDashboard extends Vue {
       for (const w of n) {
         this.initWidget(w);
       }
+    }
+  }
+
+  public selectStepperDashboard(dashboard: IDashboard) {
+    if (this.$router && dashboard.path) {
+      this.$router.push(dashboard.path);
     }
   }
 
@@ -72,12 +78,17 @@ export class CsDashboard extends Vue {
     if (!dashboard.events) {
       dashboard.events = new MessageBusService();
     }
+
     if (dashboard.hideFromNavigation === undefined) {
       dashboard.hideFromNavigation = false;
     }
 
     if (!dashboard.options) {
       dashboard.options = {};
+    }
+
+    if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation && dashboard.parent.dashboards) {
+      this.selectedStepper = dashboard.parent.dashboards.indexOf(dashboard) + 1;
     }
 
     if (this.$cs.project.menus && dashboard.isMain) {

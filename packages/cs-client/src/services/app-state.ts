@@ -109,7 +109,7 @@ export class AppState extends AppStateBase {
         const messages = Object.keys(project.languages.localeMessages);
         for (const lang of messages) {
           this.i18n!.mergeLocaleMessage(lang, project.languages!
-            .localeMessages![lang] as LocaleMessageObject)
+            .localeMessages![lang] as LocaleMessageObject);
         }
       }
       this.i18n.locale = project.languages.defaultLanguage || 'en';

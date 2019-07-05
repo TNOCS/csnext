@@ -1,4 +1,5 @@
 import { IDashboard } from './dashboard';
+import { DashboardNavigationOptions } from '..';
 
 export interface IDashboardOptions {
   class?: string;
@@ -20,6 +21,7 @@ export class BaseDashboardOptions implements IDashboardOptions {
 
   // tslint:disable-next-line:variable-name
   public _dashboard?: IDashboard;
+  public navigation?: DashboardNavigationOptions;
   public icon?: string;
 
 }
