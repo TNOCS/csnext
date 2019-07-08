@@ -18,12 +18,12 @@
         </v-stepper-header>
       </v-stepper>
     </template>
-    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">
-      <v-tabs>
+    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">      
+      <v-tabs v-model="selectedTab">
         <template v-for="(item, index) in dashboard.parent.dashboards">
           <v-tab
-            @click="selectStepperDashboard(item)"
-            :active="item.id === dashboard.id"
+            @click="selectStepperDashboard(item)"            
+            :key="index"
           >
             {{ item.title }}
           </v-tab>

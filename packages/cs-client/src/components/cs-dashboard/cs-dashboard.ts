@@ -27,6 +27,7 @@ import {
 export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
   public selectedStepper: number = 1;
+  public selectedTab: number = 0;
 
   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
@@ -89,7 +90,9 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation && dashboard.parent.dashboards) {
-      this.selectedStepper = dashboard.parent.dashboards.indexOf(dashboard) + 1;
+      this.selectedTab = dashboard.parent.dashboards.indexOf(dashboard);
+      this.selectedStepper = this.selectedTab + 1;
+
     }
 
     if (this.$cs.project.menus && dashboard.isMain) {
