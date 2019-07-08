@@ -1,5 +1,6 @@
 <v-layout column>
-  <v-flex shrink
+  <v-flex
+    shrink
     v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation"
   >
     <template v-if="dashboard.parent.options.navigation.type=== 'stepper'">
@@ -12,20 +13,18 @@
               editable
               @click="selectStepperDashboard(item)"
             >
-              {{ item.title }} </v-stepper-step
+              {{ $cs.Translate(item.title) }} </v-stepper-step
             ><v-divider></v-divider
           ></template>
         </v-stepper-header>
       </v-stepper>
     </template>
-    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">      
+    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">
       <v-tabs v-model="selectedTab">
         <template v-for="(item, index) in dashboard.parent.dashboards">
-          <v-tab
-            @click="selectStepperDashboard(item)"            
-            :key="index"
-          >
-            {{ item.title }}
+          <v-tab @click="selectStepperDashboard(item)" :key="index">
+            <v-icon v-if="item.icon">{{item.icon}}</v-icon>
+            {{ $cs.Translate(item.title) }}
           </v-tab>
         </template>
       </v-tabs>
