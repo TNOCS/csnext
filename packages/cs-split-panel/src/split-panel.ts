@@ -5,9 +5,9 @@ import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
 import { SplitPanelOptions } from './split-panel-options';
 import { SplitComp } from './split-comp';
-import VueSplitGrid from 'vue-split-grid';
+import VueSplit from 'vue-split-panel';
 
-Vue.use(VueSplitGrid);
+// Vue.use(VueSplitGrid);
 
 // const splitComp = Vue.component('split-comp', {
 //     template: require('./split-comp.html'),
@@ -95,7 +95,7 @@ export class SplitPanel extends Vue {
                     ];
                 } else {
                     this.options.splitpanel = {
-                        direction: 'row',
+                        direction: 'horizontal',
                         elements: [],
                         disableVerticalScroll: false
                     };
@@ -139,5 +139,7 @@ export class SplitPanel extends Vue {
         }
     }
 }
+
+Vue.use(VueSplit);
 
 
