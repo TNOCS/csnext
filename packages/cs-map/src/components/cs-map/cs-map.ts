@@ -787,13 +787,11 @@ export class CsMap extends Vue {
                             // this.man
                         }
                     });
-
-
                 }
 
-                if (this.mapOptions.showRuler) {
-                    this.map.addControl(new RulerControl(), 'top-left');
-                }
+                // if (this.mapOptions.showRuler) {
+                //     this.map.addControl(new RulerControl(), 'top-left');
+                // }
             });
         });
     }
