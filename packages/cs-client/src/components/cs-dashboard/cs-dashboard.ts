@@ -8,6 +8,7 @@ import {
   MessageBusService,
   isFunction
 } from '@csnext/cs-core';
+import './cs-dashboard.css';
 import {
   CsApp,
   AppState,

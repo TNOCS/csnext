@@ -1,5 +1,5 @@
-<v-layout column class="grid-manager" :class="dashboard.options.class">
-  <div
+<v-layout column>
+  <v-flex shrink
     v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation"
   >
     <template v-if="dashboard.parent.options.navigation.type=== 'stepper'">
@@ -21,18 +21,27 @@
     <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">
       <v-tabs>
         <template v-for="(item, index) in dashboard.parent.dashboards">
-          <v-tab @click="selectStepperDashboard(item)"  :active="item.id === dashboard.id"> {{ item.title }} </v-tab>
+          <v-tab
+            @click="selectStepperDashboard(item)"
+            :active="item.id === dashboard.id"
+          >
+            {{ item.title }}
+          </v-tab>
         </template>
       </v-tabs>
     </template>
-  </div>
+  </v-flex>
 
-  <component
-    v-show="!dashboard._loading"
-    :is="component"
-    :dashboard="dashboard"
-    :id="'dashboard-' + dashboard.id"
-  ></component>
+  <v-flex grow>
+    <component
+      v-show="!dashboard._loading"
+      :is="component"
+      :dashboard="dashboard"
+      :id="'dashboard-' + dashboard.id"
+      class="dashboard-content"
+      :class="dashboard.options.class"
+    ></component>
+  </v-flex>
   <div v-if="dashboard.showLoadAnimation && dashboard._loading">
     {{ $t('IS_LOADING') }}
   </div>
