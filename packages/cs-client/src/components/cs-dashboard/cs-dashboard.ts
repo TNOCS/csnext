@@ -108,6 +108,8 @@ export class CsDashboard extends Vue {
       if (dashboard.options && dashboard.options.CloseRightSidebar && this.$cs.project.rightSidebar) {
         this.$cs.project.rightSidebar.open = false;
       }
+      this.$cs.UpdateBreadCrumbs();
+      this.$forceUpdate();
     }
 
     // init widgets
@@ -135,9 +137,6 @@ export class CsDashboard extends Vue {
     if (dashboard._manager && dashboard._manager.dashboardLoaded) {
       dashboard._manager.dashboardLoaded(dashboard);
     }
-
-    this.$cs.UpdateBreadCrumbs();
-
     // load default datasource, if configured
     if (dashboard.datasource) {
       this.$cs

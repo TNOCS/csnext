@@ -10,6 +10,7 @@
     
     <v-menu bottom class="header-title-menu">
       <div slot="activator"  :style="{color:$cs.project.theme.colors.headerColor}">
+          <v-toolbar-title class="header-title" v-if="!$cs.project.navigation.hideTitle">{{$cs.Translate($cs.project.header.title)}}</v-toolbar-title>
         <v-breadcrumbs class="header-breadcrumbs" v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense" :items="$cs.project.header.breadcrumbItems">
             <template v-slot:divider>
                 <v-icon>forward</v-icon>
@@ -22,7 +23,7 @@
             {{$cs.Translate(item)}}
           </v-breadcrumbs-item> -->
         </v-breadcrumbs>
-        <v-toolbar-title class="header-title" v-if="!$cs.project.navigation.hideTitle">{{$cs.Translate($cs.project.header.title)}}</v-toolbar-title>
+        
       </div>
       <template v-if="$cs.project.header.titleWidget">                  
         <cs-widget :widget="$cs.project.header.titleWidget" >        

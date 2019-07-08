@@ -150,7 +150,7 @@ export class AppState extends AppStateBase {
     this.initSocket();
   }
 
-  public UpdateBreadCrumbs(d?: IDashboard) {
+  public UpdateBreadCrumbs(d?: IDashboard, main = true) {
     if (!d) { d = this.activeDashboard; }
     if (
       d &&
@@ -158,12 +158,15 @@ export class AppState extends AppStateBase {
       this.project.header &&
       this.project.header.breadcrumbs
     ) {
-      if (!this.project.header.breadcrumbItems) {
-        this.project.header.breadcrumbItems = [];
+      if (!this.project.header.breadcrumbItems || main) {
+        Vue.set(this.project.header, 'breadcrumbItems', []);
+        // this.project.header.breadcrumbItems = [];
       }
-      this.project.header.breadcrumbItems.unshift(d.title);
+      if (d.title && this.project.header.breadcrumbItems) {
+        this.project.header.breadcrumbItems.unshift(d.title.toLowerCase());
+      }
       if (d.parent) {
-        this.UpdateBreadCrumbs(d.parent);
+        this.UpdateBreadCrumbs(d.parent, false);
       }
     }
   }
