@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard } from '@csnext/cs-core';
+import { IDashboard, IWidget } from '@csnext/cs-core';
 import './split-panel.css';
 import { Watch } from 'vue-property-decorator';
 
@@ -21,7 +21,7 @@ export class SplitComp extends Vue {
 
         this.$refs.splitmain.destroy();
         // this.$refs.splitmain.init();
-        
+
         // this.$refs.splitmain.changeAreaSize();
         // this.$forceUpdate();
 
@@ -34,7 +34,7 @@ export class SplitComp extends Vue {
 
     }
 
-    public getWidget(id: string, dashboard: IDashboard) {
+    public getWidget(id: string, dashboard: IDashboard): IWidget | undefined {
         if (dashboard && dashboard.widgets) {
             return dashboard.widgets.find(w => w.id === id);
         }
