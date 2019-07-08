@@ -624,7 +624,7 @@
     "@babel/helper-regex" "7.0.0-beta.47"
     regexpu-core "^4.1.3"
 
-"@babel/polyfill@^7.4.4":
+"@babel/polyfill@^7.2.5", "@babel/polyfill@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.4.4.tgz#78801cf3dbe657844eeabf31c1cae3828051e893"
   integrity sha512-WlthFLfhQQhh+A2Gn5NSFl0Huxz36x86Jn+E9OW7ibK8edKPq+KLy4apM1yDpQ8kJOVi1OVjpP4vSDLdrI04dg==
@@ -9551,6 +9551,11 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
+scrollbarwidth@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/scrollbarwidth/-/scrollbarwidth-0.1.3.tgz#1b0de64e288c38c427f4a01fe00a462a04b94fdf"
+  integrity sha1-Gw3mTiiMOMQn9KAf4ApGKgS5T98=
+
 section-matter@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/section-matter/-/section-matter-1.0.0.tgz#e9041953506780ec01d59f292a19c7b850b84167"
@@ -10474,11 +10479,11 @@ timed-out@^4.0.0, timed-out@^4.0.1:
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
   integrity sha1-8y6srFoXW+ol1/q1Zas+2HQe9W8=
 
-timeline-plus@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/timeline-plus/-/timeline-plus-2.4.0.tgz#8d2843f088c44b8d95c626536a2b8cbdf3c07034"
-  integrity sha512-cYNQpdWZ88pe5hJehOsSzSoWEkRzchJ7FbMxIDRBAzXpp/boFDnY4QUH9RMJ4BJbnQeHuKzFHNhV5omkxl4wBw==
+"timeline-plus@https://github.com/rinzeb/timeline-plus/releases/download/v2.3.1-beta.1/timeline-plus-2.3.1.tgz":
+  version "2.3.1"
+  resolved "https://github.com/rinzeb/timeline-plus/releases/download/v2.3.1-beta.1/timeline-plus-2.3.1.tgz#5e521e4709317ebfe302bb36c27f06b2f6cbe2f5"
   dependencies:
+    "@babel/polyfill" "^7.2.5"
     emitter-component "^1.1.1"
     hammerjs "^2.0.8"
     keycharm "^0.2.0"
