@@ -1,4 +1,4 @@
-import { IMenu } from './../';
+import { IMenu, ToolbarOptions } from './../';
 
 export class WidgetOptions {
   public datasource?: string;
@@ -16,5 +16,6 @@ export class WidgetOptions {
   public widgetBorder?: string;
   public hide?: boolean;
   public showToolbar?: boolean;
+  public toolbarOptions?: ToolbarOptions;
   public title?: string;
 }

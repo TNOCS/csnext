@@ -1,11 +1,12 @@
 import { IDashboard } from './dashboard';
-import { DashboardNavigationOptions } from '..';
+import { DashboardNavigationOptions, ToolbarOptions } from '..';
 
 export interface IDashboardOptions {
   class?: string;
   // Fullscreen?: boolean;
   Background?: string;
   EditButton?: boolean;
+  ToolbarOptions?: ToolbarOptions;
   CloseRightSidebar?: boolean;
   navigation?: DashboardNavigationOptions;
   // allow left & right swipe gestures to switch between dashboards

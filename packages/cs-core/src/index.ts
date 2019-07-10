@@ -21,6 +21,7 @@ export * from './dashboard/dashboard';
 export * from './dashboard/grid-dashboard-options';
 export * from './dashboard/layout-manager-config';
 export * from './dashboard/dashboard-manager-config';
+export * from './dashboard/toolbar-options';
 
 export * from './widget/widget';
 export * from './widget/widget-options';
