@@ -101,14 +101,14 @@ export class CsDashboard extends Vue {
       );
       if (dashboardEditButton) {
         dashboardEditButton.visible =
-          dashboardEditButton && dashboard.options.EditButton;
+          dashboardEditButton && dashboard.options.editButton;
       }
     }
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
       this.$cs.activeDashboard = this.dashboard;
       this.$cs.bus.publish(AppState.DASHBOARD_MAIN, 'init', this.dashboard);
-      if (dashboard.options && dashboard.options.CloseRightSidebar && this.$cs.project.rightSidebar) {
+      if (dashboard.options && dashboard.options.closeRightSidebar && this.$cs.project.rightSidebar) {
         this.$cs.project.rightSidebar.open = false;
       }
       this.$cs.UpdateBreadCrumbs();

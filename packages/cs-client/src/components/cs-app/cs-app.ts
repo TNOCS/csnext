@@ -213,7 +213,7 @@ export class CsApp extends Vue {
     if (
       !this.$cs.activeDashboard ||
       !this.$cs.activeDashboard.options ||
-      !this.$cs.activeDashboard.options.TouchGesturesEnabled
+      !this.$cs.activeDashboard.options.touchGesturesEnabled
     ) {
       return;
     }

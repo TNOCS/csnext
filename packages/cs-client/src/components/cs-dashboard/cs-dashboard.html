@@ -4,6 +4,7 @@
     v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation"
   >
     <template v-if="dashboard.parent.options.navigation.type=== 'stepper'">
+      
       <v-stepper :value="selectedStepper" non-linear>
         <v-stepper-header>
           <template v-for="(item, index) in dashboard.parent.dashboards">
@@ -23,7 +24,7 @@
       <v-tabs v-model="selectedTab">
         <template v-for="(item, index) in dashboard.parent.dashboards">
           <v-tab @click="selectStepperDashboard(item)" :key="index">
-            <v-icon v-if="item.icon">{{item.icon}}</v-icon>
+            <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
             {{ $cs.Translate(item.title) }}
           </v-tab>
         </template>

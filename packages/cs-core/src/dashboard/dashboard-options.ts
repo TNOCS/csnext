@@ -4,22 +4,22 @@ import { DashboardNavigationOptions, ToolbarOptions } from '..';
 export interface IDashboardOptions {
   class?: string;
   // Fullscreen?: boolean;
-  Background?: string;
-  EditButton?: boolean;
-  ToolbarOptions?: ToolbarOptions;
-  CloseRightSidebar?: boolean;
+  background?: string;
+  editButton?: boolean;
+  toolbarOptions?: ToolbarOptions;
+  closeRightSidebar?: boolean;
   navigation?: DashboardNavigationOptions;
   // allow left & right swipe gestures to switch between dashboards
-  TouchGesturesEnabled?: boolean;
+  touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
 }
 
 export class BaseDashboardOptions implements IDashboardOptions {
   public class?: string;
-  public Background?: string;
-  public EditButton?: boolean;
+  public background?: string;
+  public editButton?: boolean;
   // allow left & right swipe gestures to switch between dashboards
-  public TouchGesturesEnabled?: boolean;
+  public touchGesturesEnabled?: boolean;
 
   // tslint:disable-next-line:variable-name
   public _dashboard?: IDashboard;
