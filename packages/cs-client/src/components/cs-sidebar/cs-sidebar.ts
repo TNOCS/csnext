@@ -11,6 +11,7 @@ import './cs-sidebar.css';
 } as any)
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
+  public menu = false;
 
   @Prop() public sideBar?: ISidebarOptions;
 
@@ -29,6 +30,11 @@ export class CsSidebar extends Vue {
 
       this.$forceUpdate();
     });
+  }
+
+  public toggleMini() {
+    if (!this.sideBar) { return; }
+    Vue.set(this.sideBar, 'mini', !this.sideBar.mini);
   }
 
   public SelectDashboard(d: IDashboard) {

@@ -14,7 +14,7 @@ RUN yarn run build
 # RUN pnpm recursive run build --no-bail
 # RUN lerna publish --yes --skip-git --exact --cd-version=prerelease --preid=alpha.${COMMIT_SHA:0:6}
 
-# RUN pnpm link @csnext/vue-cli-plugin-cs;pnpm link @csnext/cs-core;pnpm link @csnext/cs-client;pnpm link @csnext/cs-split-panel;pnpm link @csnext/cs-billboard;vue create --preset preset.json cli-test-project;cd cli-test-project;vue build
+# RUN yarn link @csnext/vue-cli-plugin-cs;yarn link @csnext/cs-core;yarn link @csnext/cs-client;yarn link @csnext/cs-split-panel;yarn link @csnext/cs-billboard;vue create --preset preset.json cli-test-project;cd cli-test-project;vue build
 # WORKDIR /packages/cs-client
 # RUN ["vue","serve"]
 

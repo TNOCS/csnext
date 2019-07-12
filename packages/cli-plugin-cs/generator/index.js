@@ -9,7 +9,7 @@ module.exports = (api, options, rootOptions) => {
     const pkg = {
         scripts: {
             'cs-dev':
-                'pnpm link @csnext/cs-client && pnpm link @csnext/cs-core && pnpm link @csnext/vue-cli-plugin-cs',
+                'yarn link @csnext/cs-client && yarn link @csnext/cs-core && yarn link @csnext/vue-cli-plugin-cs',
             'cs-unlink':
                 'pnpm unlink @csnext/cs-client && pnpm unlink @csnext/cs-core && pnpm unlink @csnext/vue-cli-plugin-cs',
         },
