@@ -16,7 +16,7 @@ export * from './datasources/time-datasource';
 export * from './interactions/menu';
 
 export * from './dashboard/dashboard-options';
-export * from './dashboard/dashboard-navigation-options';
+export * from './dashboard/dashboard-toolbar-options';
 export * from './dashboard/dashboard';
 export * from './dashboard/grid-dashboard-options';
 export * from './dashboard/layout-manager-config';

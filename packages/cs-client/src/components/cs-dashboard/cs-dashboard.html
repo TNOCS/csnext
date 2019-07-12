@@ -1,35 +1,44 @@
 <v-layout column>
-  <v-flex
-    shrink
-    v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.navigation"
-  >
-    <template v-if="dashboard.parent.options.navigation.type=== 'stepper'">
-      
-      <v-stepper :value="selectedStepper" non-linear>
-        <v-stepper-header>
-          <template v-for="(item, index) in dashboard.parent.dashboards">
-            <v-stepper-step
-              :key="index"
-              :step="index + 1"
-              editable
-              @click="selectStepperDashboard(item)"
-            >
-              {{ $cs.Translate(item.title) }} </v-stepper-step
-            ><v-divider></v-divider
-          ></template>
-        </v-stepper-header>
-      </v-stepper>
-    </template>
-    <template v-else-if="dashboard.parent.options.navigation.type=== 'tabs'">
-      <v-tabs v-model="selectedTab">
-        <template v-for="(item, index) in dashboard.parent.dashboards">
-          <v-tab @click="selectStepperDashboard(item)" :key="index">
-            <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
-            {{ $cs.Translate(item.title) }}
-          </v-tab>
+  <v-flex shrink>
+    <v-toolbar dense flat secondary class="dashboard-toolbar" v-if="showToolbar()">
+      <v-toolbar-title>{{ $cs.Translate(dashboard.title) }}</v-toolbar-title>
+      <template
+        v-slot:extension
+        v-if="dashboard.parent && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation"
+      >
+        <template v-if="dashboard.parent.options.toolbar.navigation === 'stepper'">
+          <v-stepper
+            :value="selectedStepper"
+            class="dashboard-stepper"
+            non-linear
+          >
+            <v-stepper-header>
+              <template v-for="(item, index) in dashboard.parent.dashboards">
+                <v-stepper-step
+                  :key="index"
+                  :step="index + 1"
+                  editable
+                  @click="selectStepperDashboard(item)"
+                  >{{ $cs.Translate(item.title) }} </v-stepper-step
+                ><v-divider></v-divider
+              ></template>
+            </v-stepper-header>
+          </v-stepper>
         </template>
-      </v-tabs>
-    </template>
+        <template
+          v-else-if="dashboard.parent.options.toolbar.navigation=== 'tabs'"
+        >
+          <v-tabs color="transparent" v-model="selectedTab">
+            <template v-for="(item, index) in dashboard.parent.dashboards">
+              <v-tab @click="selectStepperDashboard(item)" :key="index">
+                <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+                {{ $cs.Translate(item.title) }}
+              </v-tab>
+            </template>
+          </v-tabs>
+        </template>
+      </template>
+    </v-toolbar>
   </v-flex>
 
   <v-flex grow>

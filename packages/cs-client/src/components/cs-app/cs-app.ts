@@ -242,7 +242,7 @@ export class CsApp extends Vue {
         dash.parent = d;
         this.AddDashboardRoute(dash);
       }
-      if (d.options && d.options.navigation && d.dashboards && d.dashboards.length > 0) {
+      if (d.options && d.options.toolbar && d.options.toolbar.navigation && d.dashboards && d.dashboards.length > 0) {
         this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path }});
       }
     } else if (d.path) {

@@ -1,5 +1,5 @@
 import { IDashboard } from './dashboard';
-import { DashboardNavigationOptions, ToolbarOptions } from '..';
+import { DashboardToolbarOptions, ToolbarOptions } from '..';
 
 export interface IDashboardOptions {
   class?: string;
@@ -8,7 +8,7 @@ export interface IDashboardOptions {
   editButton?: boolean;
   toolbarOptions?: ToolbarOptions;
   closeRightSidebar?: boolean;
-  navigation?: DashboardNavigationOptions;
+  toolbar?: DashboardToolbarOptions;
   // allow left & right swipe gestures to switch between dashboards
   touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
@@ -23,7 +23,7 @@ export class BaseDashboardOptions implements IDashboardOptions {
 
   // tslint:disable-next-line:variable-name
   public _dashboard?: IDashboard;
-  public navigation?: DashboardNavigationOptions;
+  public toolbar?: DashboardToolbarOptions;
   public icon?: string;
 
 }

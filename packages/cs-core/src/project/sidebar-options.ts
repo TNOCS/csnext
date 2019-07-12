@@ -15,7 +15,7 @@ export interface ISidebarOptions {
   canPin?: boolean;
   dashboard?: IDashboard;
   widget?: IWidget;
-  canMinifiy?: boolean;
+  canMinify?: boolean;
   width?: number;
   visible?: boolean;
   sidebars?: { [key: string]: IDashboard };
