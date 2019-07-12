@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-split-panel",
-  "version": "0.0.117",
+  "version": "0.0.118",
   "description": "cs-split-panel",
   "main": "./lib/cssplitpanel.cs.js",
   "types": "./dist/src/index.d.ts",

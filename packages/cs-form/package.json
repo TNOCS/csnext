@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-form",
-    "version": "0.0.117",
+    "version": "0.0.118",
     "description": "cs-form",
     "main": "./lib/csform.cs.js",
     "types": "./dist/src/index.d.ts",

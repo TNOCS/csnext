@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-drag-grid",
-  "version": "0.0.117",
+  "version": "0.0.118",
   "description": "cs-drag-grid",
   "main": "./lib/csdraggrid.cs.js",
   "types": "./dist/index.d.ts",

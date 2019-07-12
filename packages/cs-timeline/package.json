@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-timeline",
-    "version": "0.0.117",
+    "version": "0.0.118",
     "description": "cs-timeline",
     "main": "./lib/cstimeline.cs.js",
     "types": "./dist/src/index.d.ts",
