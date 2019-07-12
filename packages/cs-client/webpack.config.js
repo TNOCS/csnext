@@ -16,7 +16,6 @@ const config = [
       },
       vuetify: 'vuetify',
       '@csnext/cs-core': '@csnext/cs-core',
-      'vue-markdown': 'vue-markdown',
       'vue-router': 'vue-router'
     },
     'csclient'
