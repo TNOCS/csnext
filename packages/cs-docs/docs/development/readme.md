@@ -2,7 +2,7 @@
 
 ## Development
 
-In most cases you want to use the CS NPM hosted packages for your dashboard. If you want to extend/change the CS library yourself, you can work with them locally using the [pnpm link](https://yarnpkg.com/lang/en/docs/cli/link/) feature. After checking out the [csNext code](https://github.com/TNOCS/csnext), use the following commands to setup a development environment
+In most cases you want to use the CS NPM hosted packages for your dashboard. If you want to extend/change the CS library yourself, you can work with them locally using the [yarn link](https://yarnpkg.com/lang/en/docs/cli/link/) feature. After checking out the [csNext code](https://github.com/TNOCS/csnext), use the following commands to setup a development environment
 
 ``` bash
 # install all dependencies and create links 
