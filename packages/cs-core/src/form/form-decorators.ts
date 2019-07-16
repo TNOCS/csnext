@@ -7,6 +7,7 @@ export interface IFormOptions {
   isPanel?: boolean;
   hideTitle?: boolean;
   showToolbar?: boolean;
+  toolbarClass?: string;
   isPanelOpen?: boolean;
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
@@ -38,6 +39,7 @@ export interface IFormGroupOptions {
 export interface IFormFieldOptions extends IFormFieldBaseOptions {
   type?:
   | 'string'
+  | 'textarea'
   | 'number'
   | 'slider'
   | 'chips'

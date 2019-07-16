@@ -41,6 +41,7 @@ export interface IFormGroupOptions {
 export interface IFormFieldOptions extends IFormFieldBaseOptions {
   type?:
     | 'string'
+    | 'textarea'
     | 'number'
     | 'slider'
     | 'chips'

@@ -38,6 +38,22 @@
                 :required="field.required"
             ></v-text-field>
         </template>
+        <template v-if="field.type === 'textarea'">
+            <v-textarea
+                v-if="field._key"
+                v-model="target[field._key]"
+                :label="field.title"
+                :required="field.required"
+                auto-grow
+                rows="2"
+            ></v-textarea>
+            <v-textarea
+                v-if="field._index"
+                v-model="target[field._index]"
+                :label="field.title"
+                :required="field.required"
+            ></v-textarea>
+        </template>
         <template v-if="field.type === 'slider'">
             <v-slider
                 enabled

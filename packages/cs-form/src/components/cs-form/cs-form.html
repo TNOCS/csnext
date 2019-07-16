@@ -1,10 +1,10 @@
 <div v-if="Form" class="cs-form-base">
-    <v-toolbar dense v-if="Form.showToolbar">
-        <v-toolbar-title>{{ Form.title }}</v-toolbar-title>
+    <v-toolbar dense v-if="Form.showToolbar" :class="[Form.toolbarClass]">
+        <v-toolbar-title>{{ $cs.Translate(Form.title) }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
-        <v-btn icon @click="saveForm()">
+        <v-btn icon dark @click="saveForm()">
             <v-icon>save</v-icon>
         </v-btn>
 
@@ -12,7 +12,7 @@
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>
             <div slot="header" class="form-title" v-if="!Form.hideTitle">
-                {{ Form.title }}
+                {{ $cs.Translate(Form.title) }}
             </div>
             <v-form>
                 <v-layout
