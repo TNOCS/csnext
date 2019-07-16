@@ -41,7 +41,7 @@
     </v-toolbar>
   </v-flex>
 
-  <v-flex grow>
+  <v-flex grow style="height:1px"><!-- https://stackoverflow.com/questions/14962468/flexbox-and-vertical-scroll-in-a-full-height-app-using-newer-flexbox-api -->
     <component
       v-show="!dashboard._loading"
       :is="component"
