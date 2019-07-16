@@ -11,7 +11,7 @@
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development",
-    "clean": "del-cli pnpm-lock.yaml package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
+    "clean": "del-cli pnpm-lock.yaml pnpm-debug.log package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
     "access": "public"
