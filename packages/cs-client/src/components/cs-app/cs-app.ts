@@ -96,8 +96,8 @@ export class CsApp extends Vue {
     this.$cs.i18n = i18n;
     this.$cs.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
     this.$cs.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
-    this.$cs.i18n.mergeLocaleMessage('en', (en as any).default);
-    this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default);
+    this.$cs.i18n.mergeLocaleMessage('en', (en as any).default ? (en as any).default : en);
+    this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default ? (nl as any).default : nl);
     this.InitNavigation();
 
     this.rightSideBarHandle = this.$cs.bus.subscribe('right-sidebar', (action: string, data: any) => {
