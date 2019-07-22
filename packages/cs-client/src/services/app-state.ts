@@ -163,7 +163,7 @@ export class AppState extends AppStateBase {
         // this.project.header.breadcrumbItems = [];
       }
       if (d.title && this.project.header.breadcrumbItems) {
-        this.project.header.breadcrumbItems.unshift(d.title.toLowerCase());
+        this.project.header.breadcrumbItems.unshift(d.title);
       }
       if (d.parent) {
         this.UpdateBreadCrumbs(d.parent, false);

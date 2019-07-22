@@ -69,7 +69,7 @@
   <div
     v-else-if="app.project.navigation.style==='left-hierarchy' && !sideBar.right"
   >
-    <v-list>
+    <v-list class="cs-sidebar-list">
       <v-list-group
         v-for="item in app.project.dashboards"
         :value="item.active"
@@ -81,15 +81,14 @@
         <v-list-tile slot="activator">
           <v-list-tile-action>
             <v-menu
+              content-class="sidebar"
               v-if=""
               :open-on-hover="!!sideBar.mini && !!item.dashboards"
               :nudge-width="200"
               offset-x
             >
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click="SelectDashboard(item)">
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-btn>
+                <v-icon v-on="on" @click="SelectDashboard(item)">{{ item.icon }}</v-icon>
               </template>
               <v-card>                
                 <!-- <v-card-title>{{
