@@ -7,5 +7,6 @@
   "LANGUAGE_SETTINGS": "Taalinstellingen",
   "YES": "Ja",
   "NO": "Nee",
-  "SEARCH": "Zoeken"
+  "SEARCH": "Zoeken",
+  "FIELD_REQUIRED": "Dit veld is vereist"
 }

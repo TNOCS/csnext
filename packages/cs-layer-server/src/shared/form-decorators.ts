@@ -56,6 +56,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
     | 'keysobject';
   defaultValue?: any;
   description?: string;
+  readonly?: boolean;
   required?: boolean;
   group?: string;
   min?: number;

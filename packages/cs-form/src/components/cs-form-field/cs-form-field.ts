@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import {
-    IFormFieldOptions,
+    IFormFieldOptions
 } from '@csnext/cs-core';
+import '@csnext/cs-client';
 import Component from 'vue-class-component';
 import './cs-form-field.css';
 import { CsForm } from '../..';
@@ -22,6 +23,19 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
+    private rules: {[key: string]: Function} = {
+        required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
+        valueMin: val => {
+            if (!this.field || !this.field.min) return true;
+            if (typeof +val === 'number' && +val >= this.field.min) return true;
+            return this.$cs.Translate(`Value should be >= ${this.field.min}`);
+        },
+        valueMax: val => {
+            if (!this.field || !this.field.max) return true;
+            if (typeof +val === 'number' && +val <= this.field.max) return true;
+            return this.$cs.Translate(`Value should be <= ${this.field.max}`);
+        },
+    };
 
     public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (

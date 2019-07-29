@@ -7,5 +7,6 @@
   "LANGUAGE_SETTINGS": "Language settings",
   "YES": "Yes",
   "NO": "No",
-  "SEARCH": "Search"
+  "SEARCH": "Search",
+  "FIELD_REQUIRED": "This field is required"
 }

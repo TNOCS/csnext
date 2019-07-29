@@ -8,6 +8,10 @@
             <v-icon>save</v-icon>
         </v-btn>
 
+        <v-btn icon dark @click="closeForm()">
+            <v-icon>clear</v-icon>
+        </v-btn>
+
     </v-toolbar>
     <v-expansion-panel expand v-model="panel" v-if="formObject">
         <v-expansion-panel-content>

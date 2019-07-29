@@ -79,6 +79,11 @@ export class CsForm extends Vue {
         console.log('Saving form');
     }
 
+    public closeForm() {
+        this.$cs.ClearRightSidebar();
+        console.log('Closing form');
+    }
+
     public initGroups() {
         this.fieldGroups = [];
 
