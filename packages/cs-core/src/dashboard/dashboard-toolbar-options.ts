@@ -1,3 +1,3 @@
 export class DashboardToolbarOptions {
-  public navigation = 'stepper' || 'tabs';
+  public navigation = 'stepper' || 'stepper-inline' || 'tabs';
 }

@@ -75,6 +75,18 @@ export class CsDashboard extends Vue {
     if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.navigation) { return true; }
   }
 
+  public denseToolbar() {
+    if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.toolbar && this.dashboard.options.toolbar.dense) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.dense) { return true; }
+  }
+
+  public hideTitle() {
+    if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.toolbar && this.dashboard.options.toolbar.hideTitle) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.hideTitle) { return true; }
+  }
+
   /** init dashboard: load datasources, init widgets and init manager  */
   public initDashboard(dashboard: IDashboard) {
     if (dashboard.showLoadAnimation) {
