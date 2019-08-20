@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-    IFormFieldOptions
+    IFormFieldOptions, IFormObject
 } from '@csnext/cs-core';
 import '@csnext/cs-client';
 import Component from 'vue-class-component';
@@ -8,6 +8,7 @@ import './cs-form-field.css';
 import { CsForm } from '../..';
 
 import "../v-datetime-picker/v-datetime-picker";
+import { Emit } from 'vue-property-decorator';
 
 @Component({
     name: 'cs-formfield',
@@ -15,7 +16,7 @@ import "../v-datetime-picker/v-datetime-picker";
     components: { CsForm },
     props: {
         field: undefined,
-        target: undefined
+        target: undefined        
     } as any
 })
 export class CsFormField extends Vue {
@@ -23,6 +24,13 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
+    
+    @Emit()
+    changed(field: IFormFieldOptions) {
+
+    }
+
+
     private rules: {[key: string]: Function} = {
         required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
         valueMin: val => {
@@ -50,6 +58,10 @@ export class CsFormField extends Vue {
                 this.$forceUpdate();
             }
         }
+    }
+
+    public fieldUpdated(field: IFormFieldOptions) {
+        this.changed(field);
     }
 
     public fieldOptions(field: IFormFieldOptions) {

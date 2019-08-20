@@ -9,6 +9,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
         <template v-if="field.type === 'selection'">
@@ -17,6 +18,7 @@
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-select>
         </template>
         <template v-if="field.type === 'combobox'">
@@ -24,7 +26,8 @@
                     :items="fieldOptions(field)"
                     v-model="target[field._key]"
                     :label="$cs.Translate(field.title)"
-                    :disabled="field.readonly"
+                    :disabled="field.readonly"      
+                    @change="fieldUpdated(field)"              
                 ></v-combobox>
             </template>
         <template v-if="field.type === 'string'">
@@ -35,6 +38,8 @@
                 :required="field.required"
                 :rules="field.required ? [rules.required] : []"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
+
             ></v-text-field>
             <v-text-field
                 v-if="field._index"
@@ -42,6 +47,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
         </template>
         <template v-if="field.type === 'textarea'">
@@ -51,6 +57,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
                 auto-grow
                 rows="2"
             ></v-textarea>
@@ -60,6 +67,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-textarea>
         </template>
         <template v-if="field.type === 'slider'">
@@ -70,6 +78,7 @@
                 :step="field.step"
                 :max="field.max"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-slider>
         </template>
         <template v-if="field.type === 'checkbox'">
@@ -77,6 +86,7 @@
                 :label="$cs.Translate(field.title)"
                 v-model="target[field._key]"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
         <template v-if="field.type === 'checkboxes-horizontal'">
@@ -87,6 +97,7 @@
                     :key="option"
                     :label="option"
                     :value="option"
+                    @change="fieldUpdated(field)"
                     :disabled="field.readonly"
                     v-model="target[field._key]"
                 ></v-checkbox>
@@ -101,6 +112,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
             <v-text-field
                 v-if="field._index>=0"
@@ -109,6 +121,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
         </template>
         <template v-if="field.type === 'array'">
@@ -132,6 +145,7 @@
                 solo
                 multiple
                 text
+                @change="fieldUpdated(field)"
             >
             </v-combobox>
         </template>

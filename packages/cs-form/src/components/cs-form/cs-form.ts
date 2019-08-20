@@ -80,6 +80,7 @@ export class CsForm extends Vue {
     }
 
     public closeForm() {
+        this.saveForm();
         this.$cs.ClearRightSidebar();
         console.log('Closing form');
     }
@@ -162,6 +163,10 @@ export class CsForm extends Vue {
                     break;
             }
         });
+    }
+
+    public fieldChanged(field: IFormFieldOptions) {
+        this.saveForm();
     }
 
     public updateGroupVisibility(group: FieldGroup) {

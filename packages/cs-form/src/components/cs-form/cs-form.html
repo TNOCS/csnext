@@ -4,9 +4,9 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon @click="saveForm()">
+        <!-- <v-btn icon @click="saveForm()">
             <v-icon>save</v-icon>
-        </v-btn>
+        </v-btn> -->
 
         <v-btn icon @click="closeForm()">
             <v-icon>clear</v-icon>
@@ -41,6 +41,7 @@
                             <cs-formfield
                                 :target="Target"
                                 :field="field"
+                                @changed="fieldChanged"
                             ></cs-formfield>
                         </v-col>
                     </v-row>
