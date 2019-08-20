@@ -22,19 +22,19 @@
     "billboard.js": "^1.8.0"
   },
   "devDependencies": {
-    "@types/node": "^12.0.12",
+    "@types/node": "^12.7.2",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
+    "typescript": "^3.5.3",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
     "vue-markdown": "^2.2.4",
     "vue-property-decorator": "^8.2.1",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.6"
   },
   "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
 }

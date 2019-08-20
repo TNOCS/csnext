@@ -14,7 +14,7 @@ const config = [
         amd: 'vue',
         root: 'Vue'
       },
-      vuetify: 'vuetify',
+      // vuetify: 'vuetify',
       '@csnext/cs-core': '@csnext/cs-core',
       'vue-router': 'vue-router'
     },

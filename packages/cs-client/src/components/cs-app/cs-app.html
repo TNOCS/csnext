@@ -4,6 +4,7 @@
   :dark="$cs.project.theme.dark"
   :light="!$cs.project.theme.dark"
 >
+<!--  -->
   <!-- <cs-loading></cs-loading> -->
   <cs-header
     :leftSidebar="leftSidebar"
@@ -53,7 +54,7 @@
       <v-divider></v-divider>
       <v-card-actions v-if="dialog.actions && dialog.actions.length>0">
         <v-spacer></v-spacer>
-        <v-btn v-for="action in dialog.actions" :key="action" flat @click="actionCallback(action)">
+        <v-btn v-for="action in dialog.actions" :key="action" text @click="actionCallback(action)">
           {{action}}
         </v-btn>
       </v-card-actions>
@@ -81,7 +82,7 @@
       v-for="dashboard in $cs.project.dashboards"
       :key="dashboard.id"
       color="teal"
-      flat
+      text
       :to="{path:dashboard.pathLink}"
     >
       <span>{{ dashboard.title }}</span>
@@ -99,6 +100,6 @@
     v-model="lastNotification._visible"
   >
     {{ lastNotification.title }}
-    <v-btn flat @click.native="lastNotification._visible = false">{{$cs.Translate('CLOSE')}}</v-btn>
+    <v-btn text @click.native="lastNotification._visible = false">{{$cs.Translate('CLOSE')}}</v-btn>
   </v-snackbar>
 </v-app>

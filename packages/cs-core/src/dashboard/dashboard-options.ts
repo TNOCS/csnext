@@ -8,7 +8,7 @@ export interface IDashboardOptions {
   editButton?: boolean;
   toolbarOptions?: ToolbarOptions;
   closeRightSidebar?: boolean;
-  toolbar?: DashboardToolbarOptions;
+  toolbar?: DashboardToolbarOptions;  
   // allow left & right swipe gestures to switch between dashboards
   touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;

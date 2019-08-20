@@ -73,8 +73,8 @@ export class CsLogList extends WidgetBase {
         }
     }
 
-    @Prop()
-    public widget!: IWidget;
+    // @Prop()
+    // public widget!: IWidget;
 
     public beforeMount() {
         if (!this.widget) {

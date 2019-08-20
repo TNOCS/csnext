@@ -39,7 +39,24 @@ const mod = {
     {
       test: /\.woff2$/,
       use: ['base64-inline-loader?limit=1000&name=[name].[ext]']
-    }
+    },
+    
+      {
+        test: /\.s(c|a)ss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              fiber: require('fibers'),
+              indentedSyntax: true // optional
+            }
+          }
+        ]
+      }
+    
   ]
 };
 
@@ -93,7 +110,8 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
     resolve: {
       extensions: ['.ts', '.js', '.html']
     },
-    plugins: plugins.concat(pl)
+    plugins: plugins.concat(pl),
+
   });
 }
 

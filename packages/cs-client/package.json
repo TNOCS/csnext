@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.118",
+  "version": "0.0.119-beta.8+1cac149",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/src/index.d.ts",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.119-beta.8",
+    "@csnext/cs-core": "^0.0.119-beta.8+1cac149",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "deepmerge": "^3.3.0",
@@ -26,16 +26,16 @@
     "simplebar-vue": "^1.1.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
-    "vue-i18n": "^8.11.2",
-    "vue-mixin-decorator": "^1.1.1",
+    "vue-i18n": "^8.14.0",
+    "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
-    "vue-router": "^3.0.7",
-    "vuetify": "^1.5.16"
+    "vue-router": "^3.1.2",
+    "vuetify": "^2.0.7"
   },
   "devDependencies": {
-    "@types/node": "^12.0.12",
+    "@types/node": "^12.7.2",
     "@types/socket.io-client": "^1.4.32",
-    "@types/webpack": "^4.4.34",
+    "@types/webpack": "^4.39.0",
     "@types/yargs": "^13.0.0",
     "base64-inline-loader": "^1.1.1",
     "cache-loader": "^3.0.1",
@@ -47,14 +47,14 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "raw-loader": "^1.0.0",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^7.2.0",
     "style-loader": "^0.23.1",
     "thread-loader": "^2.1.2",
     "ts-loader": "^6.0.4",
     "tslint": "~5.18.0",
     "tslint-loader": "~3.5.4",
-    "typescript": "^3.5.2",
-    "url-loader": "^2.0.1",
+    "typescript": "^3.5.3",
+    "url-loader": "^2.1.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
     "vue-markdown": "^2.2.4",
@@ -66,5 +66,5 @@
     "webpack-cli": "^3.3.5",
     "yargs": "^13.2.5"
   },
-  "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
+  "gitHead": "1cac1498771821093277af28cdaf4592c194c0f7"
 }

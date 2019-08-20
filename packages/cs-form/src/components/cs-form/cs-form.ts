@@ -41,7 +41,7 @@ export class CsForm extends Vue {
     public data?: IFormObject;
     public formkey?: string;
     public formdef?: IFormOptions;
-    public panel = [true];
+    public panel = [0];
     public keys: { [key: string]: IFormObject } = {};
     /** specify a single field to show, others are hidden */
     public field?: string;

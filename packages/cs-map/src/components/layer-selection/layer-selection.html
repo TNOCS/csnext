@@ -42,7 +42,7 @@
                             >
                                 <v-checkbox
                                     :label="layer.title"
-                                    slot="activator"
+                                    v-slot:activator="{ on }"
                                     v-model="layer.Visible"
                                     class="layer-group-item-title"
                                     @change="toggleLayer(layer)"
@@ -51,7 +51,7 @@
                             </v-tooltip>
                             <v-btn
                                 v-if="layer.Visible"
-                                flat
+                                text
                                 right
                                 icon
                                 class="layer-options-button layer-opacity-button"
@@ -61,8 +61,8 @@
                             </v-btn>
                             <v-menu bottom left v-model="layer._showMenu">
                                 <v-btn
-                                    slot="activator"
-                                    flat
+                                    v-slot:activator="{ on }"
+                                    text
                                     right
                                     icon
                                     class="layer-options-button"
@@ -70,15 +70,15 @@
                                     <v-icon>more_vert</v-icon>
                                 </v-btn>
                                 <v-list>
-                                    <v-list-tile
+                                    <v-list-item
                                         v-for="(item, i) in layerMenu(layer)"
                                         :key="i"
                                         @click="item.action(layer)"
                                     >
-                                        <v-list-tile-title
+                                        <v-list-item-title
                                             >{{ item.title }}
-                                        </v-list-tile-title>
-                                    </v-list-tile>
+                                        </v-list-item-title>
+                                    </v-list-item>
                                 </v-list>
                             </v-menu>
                         </v-layout>

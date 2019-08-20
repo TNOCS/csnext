@@ -1,4 +1,4 @@
-<div v-if="field"> 
+<div v-if="field">
         <template v-if="field.type === 'datetimepicker'">
             <v-datetime-picker :required="field.required" :label="$cs.Translate(field.title)"
                 v-model="target[field._key]"></v-datetime-picker>   
@@ -131,7 +131,7 @@
                 clearable
                 solo
                 multiple
-                flat
+                text
             >
             </v-combobox>
         </template>
@@ -139,29 +139,31 @@
             <v-layout>
             {{ $cs.Translate(field.title) }}
             <v-spacer></v-spacer>
-            <v-btn icon flat v-if="field.canAdd" @click="addKeyObject(field)"><v-icon>add</v-icon></v-btn>
+            <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)"><v-icon>add</v-icon></v-btn>
         </v-layout>
-            <div v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" >                
-                <v-expansion-panel expand :key="key">
-                    <v-expansion-panel-content>
-                        <div slot="header" class="form-title">
+            <div >                
+                <v-expansion-panels multiple :accordion="true">
+                <v-expansion-panel v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" :key="key">
+                    <v-expansion-panel-header class="form-title">
                             <v-layout>                                                            
-                                <template v-if="field.canEditKey">
-                                        <!-- {{ target[field._key] }} -->
-                                    <v-layout>
-                                        <v-text-field :value="key" :label="$cs.Translate(field.title)" @change="keyObjectChange(field, key, $event)"></v-text-field>
-                                        <!-- <v-btn icon flat right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
-                                    </v-layout>
-                                </template>
-                                <template v-else>
-                                    {{ $cs.Translate(field.title) }}
-                                </template>
-                                <v-btn icon flat right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)"><v-icon>delete</v-icon></v-btn>
-                            </v-layout>                         
-                        </div>
+                                    <template v-if="field.canEditKey">
+                                            <!-- {{ target[field._key] }} -->
+                                        <v-layout>
+                                            <v-text-field :value="key" :label="$cs.Translate(field.title)" @change="keyObjectChange(field, key, $event)"></v-text-field>
+                                            <!-- <v-btn icon text right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
+                                        </v-layout>
+                                    </template>
+                                    <template v-else>
+                                        {{ $cs.Translate(field.title) }}
+                                    </template>
+                                    <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)"><v-icon>delete</v-icon></v-btn>
+                                </v-layout>   
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>                   
                         <cs-form :data="target[field._key][key]"></cs-form>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
+            </v-expansion-panels>
             </div>            
         </div>
         <template v-if="field.type === 'object'">

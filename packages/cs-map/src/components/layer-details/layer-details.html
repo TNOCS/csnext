@@ -7,14 +7,14 @@
             <v-btn
                 @click="filterPropertiesEnabled = !filterPropertiesEnabled"
                 icon
-                slot="activator"
+                v-slot:activator="{ on }"
             >
                 <v-icon>search</v-icon>
             </v-btn>
             filter features
         </v-tooltip>
         <v-tooltip bottom>
-            <v-btn icon slot="activator" @click="editLayer(layer)">
+            <v-btn icon v-slot:activator="{ on }" @click="editLayer(layer)">
                 <v-icon>edit</v-icon>
             </v-btn>
             edit layer
@@ -38,12 +38,12 @@
                 ></v-text-field>
                 <v-container>
                     <v-list v-for="feature in filteredFeatures">
-                        <v-list-tile-content @click="openFeature(feature)">
-                            <v-list-tile-title
+                        <v-list-item-content @click="openFeature(feature)">
+                            <v-list-item-title
                                 class="layer-details-feature-title"
                                 v-text="layer.parseTitle(feature)"
-                            ></v-list-tile-title>
-                        </v-list-tile-content>
+                            ></v-list-item-title>
+                        </v-list-item-content>
                     </v-list>
                 </v-container>
             </v-tab-item>

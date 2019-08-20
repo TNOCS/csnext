@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.118",
+  "version": "0.0.119-beta.8+1cac149",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -56,7 +56,7 @@
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^2.0.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
-  "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
+  "gitHead": "1cac1498771821093277af28cdaf4592c194c0f7"
 }

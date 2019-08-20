@@ -68,7 +68,7 @@
     :nudge-left="40"
 >
     <v-text-field
-        slot="activator"
+        v-slot:activator="{ on }"
         :label="label"
         v-model="actualDatetime"
         readonly

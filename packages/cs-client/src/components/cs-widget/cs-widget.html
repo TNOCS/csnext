@@ -8,7 +8,7 @@
   ref="widget"
   v-resize:debounce.50="onResize"
 >
-  <v-toolbar dense flat v-if="widget.options.showToolbar">
+  <v-toolbar dense text v-if="widget.options.showToolbar">
     <v-toolbar-title>{{widget.options.title}}</v-toolbar-title>
   </v-toolbar>
   <component
@@ -28,9 +28,9 @@
     >
       <v-btn
         icon
-        slot="activator"
+        v-slot:activator="{ on }"
         @click.delegate="triggerMenuAction(menu)"
-        flat
+        text
         icon
         class="widget-button"
       >

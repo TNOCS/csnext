@@ -29,9 +29,11 @@ import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 // import 'simplebar/dist/simplebar.min.css';
 import { CsLoading } from '../cs-loader/cs-loader';
+import { VuetifyPreset } from 'vuetify/types/presets';
 
 // register needed plugins'
 // tslint:disable-next-line:no-console
+
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 const i18n = new VueI18n({
@@ -39,11 +41,27 @@ const i18n = new VueI18n({
   fallbackLocale: 'nl',
   messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
 });
-Vue.use(Vuetify, {
+
+// tslint:disable-next-line:align
+// const vuetify = new Vuetify({
+//     // lang: {
+//     //     t: (key, ...params) => i18n.t(key, params)
+//     // },
+//     icons: {
+//         iconfont: 'mdi'
+//     }
+// });
+
+const vuetifyOpts = {
   lang: {
     t: (key, ...params) => i18n.t(key, params)
+  },
+  icons: {
+    iconfont: 'mdi'
   }
-});
+} as VuetifyPreset;
+
+Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
 
@@ -51,6 +69,7 @@ const router = new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   i18n,
+  vuetify: new Vuetify(vuetifyOpts),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
@@ -177,6 +196,7 @@ export class CsApp extends Vue {
   }
 
   public InitTheme() {
+    // debugger
     if (this.$cs.project && this.$cs.project.theme) {
       this.$vuetify.theme = this.$cs.project.theme.colors as any;
     }
@@ -243,7 +263,7 @@ export class CsApp extends Vue {
         this.AddDashboardRoute(dash);
       }
       if (d.options && d.options.toolbar && d.options.toolbar.navigation && d.dashboards && d.dashboards.length > 0) {
-        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path }});
+        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
       }
     } else if (d.path) {
       router.addRoutes([
