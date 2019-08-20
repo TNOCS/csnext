@@ -9,27 +9,31 @@
     <img v-if="$cs.project.header.logo" :src="$cs.project.header.logo" class="app-project-logo"></img>
 
     
-    <v-menu bottom class="header-title-menu">
-      <div :style="{color:$cs.project.theme.colors.headerColor}">
-          <v-toolbar-title class="header-title" v-if="!$cs.project.navigation.hideTitle">{{$cs.Translate($cs.project.header.title)}}</v-toolbar-title>
-        <v-breadcrumbs class="header-breadcrumbs" v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense" :items="$cs.project.header.breadcrumbItems">
-            <template v-slot:divider>
-                <v-icon>forward</v-icon>
-              </template>
-              <template v-slot:item="props">
-                  <a style="color:black !important" :href="props.item.href">{{ $cs.Translate(props.item) }}</a>
-                </template>
-          <!-- <v-icon :style="{color:$cs.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
-          <!-- <v-breadcrumbs-item v-for="item in $cs.project.header.breadcrumbItems" :key="item" style="color:black">
-            {{$cs.Translate(item)}}
-          </v-breadcrumbs-item> -->
-        </v-breadcrumbs>
-        
-      </div>
-      <template v-if="$cs.project.header.titleWidget">                  
-        <cs-widget :widget="$cs.project.header.titleWidget" >        
-        </cs-widget>        
-      </template>
+    <v-menu open-on-hover bottom class="header-title-menu">
+        <template v-slot:activator="{ on }">
+            <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}">
+                <v-toolbar-title class="header-title" v-if="!$cs.project.navigation.hideTitle">{{$cs.Translate($cs.project.header.title)}}</v-toolbar-title>
+              <v-breadcrumbs class="header-breadcrumbs" v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense" :items="$cs.project.header.breadcrumbItems">
+                  <template v-slot:divider>
+                      <v-icon>forward</v-icon>
+                    </template>
+                    <template v-slot:item="props">
+                        <a style="color:black !important" :href="props.item.href">{{ $cs.Translate(props.item) }}</a>
+                      </template>
+                <!-- <v-icon :style="{color:$cs.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
+                <!-- <v-breadcrumbs-item v-for="item in $cs.project.header.breadcrumbItems" :key="item" style="color:black">
+                  {{$cs.Translate(item)}}
+                </v-breadcrumbs-item> -->
+              </v-breadcrumbs>
+              
+            </div>
+          </template>
+        <template v-if="$cs.project.header.titleWidget">                  
+            <cs-widget :widget="$cs.project.header.titleWidget" >        
+            </cs-widget>        
+          </template>
+      
+     
     </v-menu>
 
     <!-- tabs -->
