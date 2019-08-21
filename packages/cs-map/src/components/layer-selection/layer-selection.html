@@ -1,31 +1,31 @@
 <simplebar>
-        <v-text-field
-            solo
-            v-if="widget.options.searchEnabled"
-            class="layer-filter-field"
-            v-model="filter"
-            label="filter"
-            append-icon="search"
-        ></v-text-field>
+    <v-text-field
+        solo
+        v-if="widget.options.searchEnabled"
+        class="layer-filter-field"
+        v-model="filter"
+        label="filter"
+        append-icon="search"
+    ></v-text-field>
+    <v-expansion-panels>
         <v-expansion-panel
             v-if="widget.content"
             v-model="groupsexpanded"
-            expand
+            multiple
+            v-for="(group, key) in Groups"
+            class="layer-group-title"
+            :key="key"
+            multiple
         >
-            <v-expansion-panel-content
-                v-for="(group, key) in Groups"
-                class="layer-group-title"
-                :key="key"
-                expand
-            >
-                <div slot="header">
-                    <v-checkbox
-                        class="layer-group-checkbox"
-                        v-model="group.state === 'some'"
-                        @click.stop="toggleGroup(group)"
-                    ></v-checkbox
-                    ><span class="layer-group-title">{{ group.title }}</span>
-                </div>
+            <v-expansion-panel-header>
+                <v-checkbox
+                    class="layer-group-checkbox"
+                    v-model="group.state === 'some'"
+                    @click.stop="toggleGroup(group)"
+                ></v-checkbox
+                ><span class="layer-group-title">{{ group.title }}</span>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
                 <div class="layer-group-container">
                     <div v-for="layer in group.layers" :key="layer.id">
                         <v-layout
@@ -47,7 +47,7 @@
                                     class="layer-group-item-title"
                                     @change="toggleLayer(layer)"
                                 ></v-checkbox>
-                                <span>{{ layer.description }}</span>
+                                <span v-on="on">{{ layer.description }}</span>
                             </v-tooltip>
                             <v-btn
                                 v-if="layer.Visible"
@@ -61,7 +61,7 @@
                             </v-btn>
                             <v-menu bottom left v-model="layer._showMenu">
                                 <v-btn
-                                    v-slot:activator="{ on }"
+                                    v-on="on"
                                     text
                                     right
                                     icon
@@ -97,5 +97,6 @@
                     </div>
                 </div>
             </v-expansion-panel-content>
-        </v-expansion-panel>    
+        </v-expansion-panel>
+    </v-expansion-panels>
 </simplebar>
