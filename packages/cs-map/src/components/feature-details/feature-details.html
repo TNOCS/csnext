@@ -11,7 +11,13 @@
 
         <v-spacer></v-spacer>
         <v-tooltip bottom v-if="tabs === 'details'">
-            <v-btn @click="filterPropertiesEnabled = !filterPropertiesEnabled" icon v-slot:activator="{ on }"> <v-icon>search</v-icon> </v-btn>
+            <v-btn
+                @click="filterPropertiesEnabled = !filterPropertiesEnabled"
+                icon
+                v-slot:activator="{ on }"
+            >
+                <v-icon>search</v-icon>
+            </v-btn>
             filter details
         </v-tooltip>
         <v-tooltip bottom>

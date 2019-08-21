@@ -6,7 +6,6 @@ import './cs-map.css';
 import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
 import { Feature } from 'geojson';
 import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
-import { RulerControl } from 'mapbox-gl-controls';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -17,6 +16,9 @@ import { LayerLegendControl } from './../layer-legend-control/layer-legend-contr
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import "mapbox-gl-style-switcher/styles.css";
+import RulerControl from 'mapbox-gl-controls/lib/ruler';
+import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
+
 
 import {
     MapLayers,
@@ -296,6 +298,7 @@ export class CsMap extends Vue {
                     showGeocoder: false,
                     showLayer: true,
                     showEditor: true,
+                    showTraffic: true,
                     doubleClickZoom: true
                 },
                 ...(this.widget.options as MapOptions)
@@ -789,9 +792,14 @@ export class CsMap extends Vue {
                     });
                 }
 
-                // if (this.mapOptions.showRuler) {
-                //     this.map.addControl(new RulerControl(), 'top-left');
-                // }
+                if (this.mapOptions.showRuler) {
+                    this.map.addControl(new RulerControl(), 'top-left');
+                }
+
+                if (this.mapOptions.showTraffic) {
+                    this.map.addControl(new MapboxTraffic(), 'top-left');
+                }
+
             });
         });
     }

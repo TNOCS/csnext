@@ -992,6 +992,11 @@
   resolved "https://registry.yarnpkg.com/@mapbox/mapbox-gl-supported/-/mapbox-gl-supported-1.4.1.tgz#c0a03cf75f8b0ad7b57849d6c7e91b0aec4b640f"
   integrity sha512-yyKza9S6z3ELKuf6w5n6VNUB0Osu6Z93RXPfMHLIlNWohu3KqxewLOq4lMXseYJ92GwkRAxd207Pr/Z98cwmvw==
 
+"@mapbox/mapbox-gl-traffic@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@mapbox/mapbox-gl-traffic/-/mapbox-gl-traffic-1.0.2.tgz#afb120633a397a6c539865db2bde5c5933dad96b"
+  integrity sha1-r7EgYzo5emxTmGXbK95cWTPa2Ws=
+
 "@mapbox/mapbox-sdk@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@mapbox/mapbox-sdk/-/mapbox-sdk-0.5.0.tgz#4e4eba3777688df1a0ccf9882d4ce09c52b8ac8e"

@@ -43,8 +43,7 @@
                             >
                                 <template v-slot:activator="{ on }"> -->
                                     <v-checkbox
-                                        :label="layer.title"
-                                        v-on="on"
+                                        :label="layer.title"                           
                                         v-model="layer.Visible"
                                         class="layer-group-item-title"
                                         @change="toggleLayer(layer)"

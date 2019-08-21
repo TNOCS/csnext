@@ -1,8 +1,9 @@
 import { LayerEditor } from './layer-editor';
 import Vue from 'vue';
 import { MapLayers } from '../..';
+import { IControl } from 'mapbox-gl';
 
-export class LayerEditorControl {
+export class LayerEditorControl implements IControl {
     public map?: mapboxgl.Map;
     public container?: HTMLDivElement;
     
