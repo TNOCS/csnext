@@ -858,7 +858,8 @@ export class CsMap extends Vue {
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
             country: 'nl',
-            limit: 8
+            limit: 8,
+            marker: false
         });
 
         this.map.addControl(geocoder);
