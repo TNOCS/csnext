@@ -198,7 +198,14 @@ export class CsApp extends Vue {
   public InitTheme() {
     // debugger
     if (this.$cs.project && this.$cs.project.theme) {
-      this.$vuetify.theme = this.$cs.project.theme.colors as any;
+      if (this.$cs.project.theme.lightColors) {
+        this.$vuetify.theme.themes.light =  { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
+      } else {
+        this.$vuetify.theme.themes.light =  { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.colors };
+      }
+      if (this.$cs.project.theme.darkColors) {
+        this.$vuetify.theme.themes.dark =  { ...this.$vuetify.theme.themes.dark, ...this.$cs.project.theme.darkColors };
+      }
     }
   }
 

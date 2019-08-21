@@ -4,4 +4,6 @@ import { IThemeColors } from './theme-colors';
 export class AppTheme {
   public dark?: boolean;
   public colors?: IThemeColors = {};
+  public lightColors?: IThemeColors = {};
+  public darkColors?: IThemeColors = {};
 }
