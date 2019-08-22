@@ -247,9 +247,9 @@
 
   <template v-if="rightSidebar">
     <template v-if="rightSidebar.sidebars">
+        <!-- v-if="item.widgets.length>0" -->
       <v-btn
         class="sidebar-header-button"
-        v-if="item.widgets.length>0"
         :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}"
         v-for="(item, key, index) in rightSidebar.sidebars"
         :key="index"
