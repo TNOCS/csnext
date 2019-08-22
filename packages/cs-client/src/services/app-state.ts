@@ -304,8 +304,8 @@ export class AppState extends AppStateBase {
       if (!this.project.rightSidebar.dashboard) {
         this.OpenRightSidebar(d);
       } else if (this.project.rightSidebar.dashboard.id === d.id) {
-        // this.project.rightSidebar.open = false;
-        // delete this.project.rightSidebar.dashboard;
+        this.project.rightSidebar.open = !this.project.rightSidebar.open;
+        delete this.project.rightSidebar.dashboard;
         this.ClearRightSidebar();
       } else {
         // delete this.project.rightSidebar.dashboard;
