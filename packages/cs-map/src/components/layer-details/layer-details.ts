@@ -96,7 +96,7 @@ export class LayerDetails extends Vue {
         this.$cs.OpenRightSidebarWidget({
             component: FeatureDetails,
             data: { layer: this.layer, feature: feature }
-        });
+        }, {}, 'edit');
     }
 
     public editLayer(layer: IMapLayer) {
