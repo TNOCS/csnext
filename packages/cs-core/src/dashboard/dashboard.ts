@@ -34,6 +34,14 @@ export interface IDashboard {
 
   icon?: string;
 
+  badgeType?: 'none' | 'icon' | 'text';
+
+  badgeColor?: string;
+
+  badgeText?: string;
+
+  badgeIcon?: string;
+
   // id of default datasource
   datasource?: string;
 

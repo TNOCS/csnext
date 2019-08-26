@@ -676,7 +676,7 @@ export class LayerService {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
-                reject();
+                reject('no source defined');
                 return;
             }
 

@@ -212,11 +212,7 @@
     <template v-else v-slot:activator="{ on }">
       <v-tooltip bottom>
         <template v-slot:activator="{ on: tooltip }">
-          <v-btn
-            icon
-            v-on="on, tooltip"
-            @click.delegate="activateMenu(menu)""            
-          >
+          <v-btn icon v-on="on, tooltip" @click.delegate="activateMenu(menu)">
             <v-icon>{{ menu.icon }}</v-icon>
           </v-btn>
         </template>
@@ -247,7 +243,6 @@
 
   <template v-if="rightSidebar">
     <template v-if="rightSidebar.sidebars">
-     
       <v-btn
         class="sidebar-header-button"
         v-if="item.widgets.length>0"
@@ -258,7 +253,24 @@
         small
         @click="openRightSidebar(key)"
       >
-        <v-icon>{{ item.icon }}</v-icon>
+        <template v-if="item.badgeType!=='none'">
+          <v-badge overlap :color="item.badgeColor">
+            <template v-if="item.badgeType==='icon'" v-slot:badge>
+              <v-icon>
+                {{ item.badgeIcon }}
+              </v-icon>
+            </template>
+            <template v-else-if="item.badgeType==='text'" v-slot:badge>
+              <span>
+                {{ item.badgeText }}
+              </span>
+            </template>
+            <v-icon large>{{ item.icon }}</v-icon>
+          </v-badge>
+        </template>
+        <template v-else>
+          <v-icon large>{{ item.icon }}</v-icon>
+        </template>
       </v-btn>
     </template>
     <template v-else>
