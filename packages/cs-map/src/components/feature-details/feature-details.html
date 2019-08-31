@@ -1,5 +1,5 @@
-<simplebar>
-    <v-toolbar tabs :color="layerColor">
+<div>
+    <v-toolbar :color="layerColor">
         <v-toolbar-title class="feature-details-title"
             >{{ title }}
             <div>
@@ -26,7 +26,13 @@
             </v-btn>
             show on map</v-tooltip
         >
-        <v-tabs right color="transparent" slot="extension" v-model="tabs">
+        <v-tabs
+            right
+            color="transparent"
+            slot="extension"
+            v-model="tabs"
+            aligm-with-title
+        >
             <v-tab href="#details">Details</v-tab>
             <!-- <v-tab href="#filters">Filter</v-tab> -->
         </v-tabs>
@@ -44,41 +50,45 @@
                     append-icon="search"
                 ></v-text-field>
                 <div v-if="widget.data">
-                    <v-expansion-panel
-                        expand
+                    <v-expansion-panels
+                        multiple
                         v-model="sectionsPanels"
                         class="section-expansion-panel"
                     >
-                        <v-expansion-panel-content v-for="section in sections">
-                            <div
-                                slot="header"
-                                class="feature-section-title"
-                                v-if="sections.length>1"
+                        <v-expansion-panel>
+                            <v-expansion-panel-content
+                                v-for="section in sections"
                             >
-                                {{ section.title }}
-                            </div>
-                            <div class="section">
                                 <div
-                                    v-for="property in section.properties"
-                                    class="feature-property"
+                                    slot="header"
+                                    class="feature-section-title"
+                                    v-if="sections.length>1"
                                 >
+                                    {{ section.title }}
+                                </div>
+                                <div class="section">
                                     <div
-                                        class="feature-property-key"
-                                        :class="{ 'feature-legend': property.legends.length>0 }"
-                                        @click="updateStyle(property)"
+                                        v-for="property in section.properties"
+                                        class="feature-property"
                                     >
-                                        {{ property.type.title }}
-                                    </div>
-                                    <div class="feature-property-value">
-                                        {{ property.display }}
+                                        <div
+                                            class="feature-property-key"
+                                            :class="{ 'feature-legend': property.legends.length>0 }"
+                                        >
+                                            <!-- @click="updateStyle(property)" -->
+                                            {{ property.type.title }}
+                                        </div>
+                                        <div class="feature-property-value">
+                                            {{ property.display }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
+                            </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
                 </div>
             </v-tab-item>
             <!-- <v-tab-item value="filters"> <h1>items</h1> </v-tab-item> -->
         </v-tabs-items>
     </div>
-</simplebar>
+</div>

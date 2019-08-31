@@ -37,7 +37,7 @@ export class PropertyDetails {
 } as any)
 export class FeatureDetails extends Vue {
     public widget!: IWidget;
-    public sectionsPanels: boolean[] = [];
+    public sectionsPanels: number[] = [];
     public tabs = null;
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
@@ -119,7 +119,7 @@ export class FeatureDetails extends Vue {
             properties: []
         } as section;
         let result: section[] = [defaultSection];
-        this.sectionsPanels.push(true);
+        this.sectionsPanels.push(0);
 
         /** find feature type */
         let ft: FeatureType | undefined = undefined;

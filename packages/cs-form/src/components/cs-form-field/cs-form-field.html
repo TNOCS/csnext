@@ -25,7 +25,7 @@
                 <v-combobox
                     :items="fieldOptions(field)"
                     v-model="target[field._key]"
-                    :label="$cs.Translate(field.title)"
+                    :label="$cs.Translate(field.title)"                    
                     :disabled="field.readonly"      
                     @change="fieldUpdated(field)"              
                 ></v-combobox>

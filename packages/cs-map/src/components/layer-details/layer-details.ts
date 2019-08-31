@@ -95,6 +95,7 @@ export class LayerDetails extends Vue {
     public openFeature(feature: any) {
         this.$cs.OpenRightSidebarWidget({
             component: FeatureDetails,
+            id: 'featuredetails',
             data: { layer: this.layer, feature: feature }
         }, {}, 'edit');
     }

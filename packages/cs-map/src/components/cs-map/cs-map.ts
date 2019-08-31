@@ -228,8 +228,9 @@ export class CsMap extends Vue {
                                                                 .manager
                                                         },
                                                         datasource: 'project'
-                                                    },
-                                                    { open: true }
+                                                    },                                            
+                                                    { open: true },
+                                                    'feature'
                                                 );
                                             }
                                         }
