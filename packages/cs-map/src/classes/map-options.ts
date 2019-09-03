@@ -16,6 +16,7 @@ export class MapOptions extends WidgetOptions
     public showRuler?: boolean = true;
     public showStyles?: boolean = true;
     public showGeocoder?: boolean = true;
+    public showClickLayer?: boolean = true;
     public showDraw?: boolean = false;
     public showTraffic?: boolean = false;
     public showEditor?: boolean = false;
