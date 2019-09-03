@@ -99,6 +99,13 @@ export class CsDashboard extends Vue {
       dashboard.events = new MessageBusService();
     }
 
+    // init sub dashboards
+    if (this.dashboard && this.dashboard.dashboards && this.dashboard.dashboards) {
+      for (const d of this.dashboard.dashboards) {
+        this.initDashboard(d);
+      }
+    }
+
     if (dashboard.hideFromNavigation === undefined) {
       dashboard.hideFromNavigation = false;
     }
@@ -139,6 +146,8 @@ export class CsDashboard extends Vue {
         this.initWidget(w);
       }
     }
+
+    
 
     // init dashboard manager
     if (dashboard.manager && !dashboard._manager) {

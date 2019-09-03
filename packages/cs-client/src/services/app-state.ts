@@ -253,6 +253,7 @@ export class AppState extends AppStateBase {
         if (this.project.rightSidebar.dashboard.widgets[0].id) {
           this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
         }
+        this.project.rightSidebar.dashboard.widgets.shift();
       }
       this.project.rightSidebar.open = false;
     }
@@ -323,8 +324,6 @@ export class AppState extends AppStateBase {
 
     this.OpenRightSidebarKey(key);
     this.ClearRightSidebar();
-    // while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-    //   this.project.rightSidebar.dashboard.widgets.pop();
 
     Vue.nextTick(() => {
       if (

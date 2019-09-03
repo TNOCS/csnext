@@ -235,11 +235,11 @@ export class MapLayers implements IDatasource {
 
     public hideLayer(ml: string | IMapLayer) {
         if (!this.layers) return;
-        this.events.publish('layer', 'removed', ml);
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.hideLayer(layer);
         } else {
+
             // unsubscribe from feature events
             if (ml._events && ml._featureEventHandle !== undefined) {
                 ml._events.unsubscribe(ml._featureEventHandle);
@@ -257,7 +257,14 @@ export class MapLayers implements IDatasource {
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
             }
+            this.events.publish('layer', 'removed', ml);
         }
+    }
+
+    public removeLayer(layerId: string) {
+        if (!this.layers) { return; }
+        this.hideLayer(layerId);
+        this.layers = this.layers.filter(l => l.id !== layerId);
     }
 
     /** delete feature from a feature  */

@@ -4,7 +4,7 @@ import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
 import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
-import { Feature } from 'geojson';
+import { Feature, FeatureCollection } from 'geojson';
 import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -228,8 +228,9 @@ export class CsMap extends Vue {
                                                                 .manager
                                                         },
                                                         datasource: 'project'
-                                                    },
-                                                    { open: true }
+                                                    },                                            
+                                                    { open: true },
+                                                    'feature'
                                                 );
                                             }
                                         }
@@ -766,6 +767,10 @@ export class CsMap extends Vue {
                     this.addGeocoder();
                 }
 
+                if (this.mapOptions.showClickLayer) {
+                    this.addClickLayer();
+                }
+
                 var nav = new mapboxgl.NavigationControl({
                     showCompass: this.mapOptions.showCompass,
                     showZoom: this.mapOptions.showZoom
@@ -942,6 +947,68 @@ export class CsMap extends Vue {
                     });
                 }
             });
+        }
+    }
+    private addClickLayer() {
+        
+
+        if (this.manager && this.manager.layers) {
+            let rl = this.manager.layers!.find(
+                l => l.id === 'clicklayer'
+            ) as GeojsonPlusLayer;
+            if (!rl) {
+                rl = new GeojsonPlusLayer();
+                rl.id = 'clicklayer';
+                // rl.visible = false,
+                rl.title = 'Click layer';
+                (rl._circlePaint = {
+                    'circle-radius': 20,
+                    'circle-color': 'red'
+                } as CirclePaint),
+                    (rl.tags = ['Click']);
+                rl.type = 'poi';
+                rl.style = {
+                    pointCircle: true,
+                    icon:
+                        'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+                };
+                // rl.popupContent = f => {
+                //     if (f.features) {
+                //         return f.features[0].properties['place_name'];
+                //     }
+                // };
+
+                rl.source = new LayerSource({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                this.manager.addLayer(rl).then(l => {
+                    if (l._events) {
+                        l._events.subscribe(
+                            'feature',
+                            (a: string, f: Feature) => {
+                                if (a === CsMap.FEATURE_SELECT) {
+                                }
+                            }
+                        );
+                    }
+                });
+
+                this.map.on('click', (ev) => {
+                    if (this.manager) {
+                        let features = {
+                            type: 'FeatureCollection',
+                            features:  [{ id: 'click-feature', type: 'Feature', properties: {
+                                'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
+                            }, geometry: {
+                                type: "Point",
+                                coordinates: [ev.lngLat.lng, ev.lngLat.lat]
+                            }} as Feature]
+                        };
+                        this.manager.updateLayerSource(rl,features as any);
+                    }
+                });
+            }
         }
     }
 
