@@ -26,9 +26,14 @@
                     :items="fieldOptions(field)"
                     v-model="target[field._key]"
                     :label="$cs.Translate(field.title)"                    
-                    :disabled="field.readonly"      
+                    :disabled="field.readonly"     
+                    :return-object="false"
                     @change="fieldUpdated(field)"              
                 ></v-combobox>
+                
+                <!-- item-text="text" 
+                    
+                item-value="value"  -->
             </template>
         <template v-if="field.type === 'string'">
             <v-text-field
