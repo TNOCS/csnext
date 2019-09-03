@@ -80,7 +80,7 @@ const router = new VueRouter({ routes: [] });
 } as any)
 export class CsApp extends Vue {
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
-  public static LANUAGE_SWITCH_ID = 'switch_language';
+  public static LANGUAGE_SWITCH_ID = 'switch_language';
   public app = AppState.Instance;
 
   public settingsDialog = false;
@@ -422,11 +422,21 @@ export class CsApp extends Vue {
         'notification',
         (action: string, notification: INotification) => {
           if (action === 'new') {
+            if (this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              this.lastNotification.clickCallback();
+            }
             this.lastNotification = notification;
             this.UpdateNotifications();
           }
         }
       );
+    }
+  }
+  private clickNotification() {
+    this.lastNotification._visible = false;
+    if (this.lastNotification.clickCallback) {
+      this.lastNotification.clickCallback();
     }
   }
 }

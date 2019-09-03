@@ -40,11 +40,11 @@ export class CsHeader extends Vue {
     ) {
       if (
         !this.$cs.project.menus.find(
-          menu => menu.id === CsApp.LANUAGE_SWITCH_ID
+          menu => menu.id === CsApp.LANGUAGE_SWITCH_ID
         )
       ) {
         this.$cs.project.menus.push({
-          id: CsApp.LANUAGE_SWITCH_ID,
+          id: CsApp.LANGUAGE_SWITCH_ID,
           icon: 'translate',
           title: 'LANGUAGE',
           toolTip: 'LANGUAGE_SETTINGS',

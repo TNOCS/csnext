@@ -39,7 +39,6 @@
                 :rules="field.required ? [rules.required] : []"
                 :disabled="field.readonly"
                 @change="fieldUpdated(field)"
-
             ></v-text-field>
             <v-text-field
                 v-if="field._index"

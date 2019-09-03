@@ -192,14 +192,16 @@ export class AppState extends AppStateBase {
 
   /** Triggers notification */
   public TriggerNotification(notification: INotification) {
-    Object.assign(notification, {
+    notification = {...{
       id: guidGenerator(),
       timeout: 3000,
       created: new Date(),
       isRead: false,
+      buttonText: 'CLOSE',
       remember: true,
       _visible: true
-    } as INotification);
+    },
+    ...notification};
     this.bus.publish('notification', 'new', notification);
     if (
       this.project.notifications &&
