@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-core",
-  "version": "0.0.119-beta.8+1cac149",
+  "version": "0.0.119-beta.28+7068e77",
   "description": "cscore",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,5 +23,5 @@
     "@types/node": "^12.7.2",
     "typescript": "^3.5.3"
   },
-  "gitHead": "1cac1498771821093277af28cdaf4592c194c0f7"
+  "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

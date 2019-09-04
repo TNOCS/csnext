@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-drag-grid",
-  "version": "0.0.118",
+  "version": "0.0.119-beta.28+7068e77",
   "description": "cs-drag-grid",
   "main": "./lib/csdraggrid.cs.js",
   "types": "./dist/index.d.ts",
@@ -36,5 +36,5 @@
     "webpack-cli": "^3.3.6",
     "yargs": "^13.3.0"
   },
-  "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
+  "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }
