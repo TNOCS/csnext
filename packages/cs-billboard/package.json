@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-billboard",
-  "version": "0.0.119-beta.30",
+  "version": "0.0.119-beta.31",
   "description": "cs-billboard",
   "main": "./lib/csbillboard.cs.js",
   "types": "./dist/index.d.ts",
