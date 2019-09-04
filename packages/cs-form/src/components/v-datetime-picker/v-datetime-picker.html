@@ -23,6 +23,7 @@
             <v-date-picker
                 v-model="dateModel"
                 @input="dateMenu = false"
+                @change="dateChanged"
             ></v-date-picker>
         </v-menu>
     </v-flex>
@@ -55,6 +56,7 @@
                 v-model="timeModel"
                 @click:minute="$refs.timeref.save(timeModel)"
                 full-width
+                @change="dateChanged"
             ></v-time-picker>
         </v-menu>
     </v-flex>

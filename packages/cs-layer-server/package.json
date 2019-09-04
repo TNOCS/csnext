@@ -12,7 +12,7 @@
     "link": "yarn link",
     "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
-    "dev": "nodemon dist/index.js",
+    "dev": "tsc -w",
     "clean": "del-cli package-lock.json dist lib node_modules",
     "build": "tsc"
   },

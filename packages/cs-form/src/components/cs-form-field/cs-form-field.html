@@ -1,7 +1,7 @@
 <div v-if="field">
         <template v-if="field.type === 'datetimepicker'">
             <v-datetime-picker :required="field.required" :label="$cs.Translate(field.title)"
-                v-model="target[field._key]"></v-datetime-picker>   
+                v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>   
         </template>
         <template v-if="field.type === 'boolean'">
             <v-checkbox

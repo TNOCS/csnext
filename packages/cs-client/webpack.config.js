@@ -15,8 +15,7 @@ const config = [
         root: 'Vue'
       },
       // vuetify: 'vuetify',
-      '@csnext/cs-core': '@csnext/cs-core',
-      'vue-router': 'vue-router'
+      '@csnext/cs-core': '@csnext/cs-core'
     },
     'csclient'
   )

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify, { VuetifyObject } from 'vuetify';
+import Vuetify from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -16,7 +16,7 @@ import {
   MessageBusHandle
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
+import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
@@ -27,12 +27,7 @@ const en = require('./../../assets/translations/en.json');
 const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
-// import 'simplebar/dist/simplebar.min.css';
 import { CsLoading } from '../cs-loader/cs-loader';
-import { VuetifyPreset } from 'vuetify/types/presets';
-
-// register needed plugins'
-// tslint:disable-next-line:no-console
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -42,24 +37,11 @@ const i18n = new VueI18n({
   messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
 });
 
-// tslint:disable-next-line:align
-// const vuetify = new Vuetify({
-//     // lang: {
-//     //     t: (key, ...params) => i18n.t(key, params)
-//     // },
-//     icons: {
-//         iconfont: 'mdi'
-//     }
-// });
-
 const vuetifyOpts = {
   lang: {
     t: (key, ...params) => i18n.t(key, params)
-  },
-  icons: {
-    iconfont: 'mdi'
   }
-} as VuetifyPreset;
+};
 
 Vue.use(Vuetify);
 
@@ -84,7 +66,6 @@ export class CsApp extends Vue {
   public app = AppState.Instance;
 
   public settingsDialog = false;
-  public $vuetify!: VuetifyObject;
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
@@ -199,12 +180,12 @@ export class CsApp extends Vue {
     // debugger
     if (this.$cs.project && this.$cs.project.theme) {
       if (this.$cs.project.theme.lightColors) {
-        this.$vuetify.theme.themes.light =  { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
       } else {
-        this.$vuetify.theme.themes.light =  { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.colors };
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.colors };
       }
       if (this.$cs.project.theme.darkColors) {
-        this.$vuetify.theme.themes.dark =  { ...this.$vuetify.theme.themes.dark, ...this.$cs.project.theme.darkColors };
+        this.$vuetify.theme.themes.dark = { ...this.$vuetify.theme.themes.dark, ...this.$cs.project.theme.darkColors };
       }
     }
   }
