@@ -424,7 +424,7 @@ export class CsApp extends Vue {
           if (action === 'new') {
             if (this.lastNotification.clickCallback) {
               // Call callback of previous notification before closing it
-              this.lastNotification.clickCallback();
+              // this.lastNotification.clickCallback();
             }
             this.lastNotification = notification;
             this.UpdateNotifications();
