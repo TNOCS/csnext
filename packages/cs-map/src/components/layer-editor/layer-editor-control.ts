@@ -6,11 +6,8 @@ import { IControl } from 'mapbox-gl';
 export class LayerEditorControl implements IControl {
     public map?: mapboxgl.Map;
     public container?: HTMLDivElement;
-    
 
-    constructor(public manager: MapLayers) {
-        
-    }
+    constructor(public manager: MapLayers) { }
 
     onAdd(map) {
         console.log('Adding layer-editor');
@@ -26,6 +23,7 @@ export class LayerEditorControl implements IControl {
         });
         return this.container;
     }
+
     onRemove() {
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);

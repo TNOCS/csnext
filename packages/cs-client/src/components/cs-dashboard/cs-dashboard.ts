@@ -147,8 +147,6 @@ export class CsDashboard extends Vue {
       }
     }
 
-    
-
     // init dashboard manager
     if (dashboard.manager && !dashboard._manager) {
       if (

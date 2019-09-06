@@ -15,11 +15,15 @@ export class LayerEditor extends Vue {
     public widget!: IWidget;
     public manager!: MapLayers;
     public busHandle?: MessageBusHandle;
-    public layer!: IMapLayer | undefined;
+    public layer?: IMapLayer = {} as IMapLayer;
     public mapDraw: any;
     public activeType: any;
     public types?: { [key: string]: FeatureType } = {};
     public map?: mapboxgl.Map;
+
+    private hasLayer(): boolean {
+        return (!!this.layer && Object.keys(this.layer).length > 0);
+    }
 
     public addIcon(type: string) {
         if (
