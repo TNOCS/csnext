@@ -10,7 +10,7 @@ const config = buildConfig(
         '@csnext/cs-client': '@csnext/cs-client',
         // 'cs-client': 'cs-client',
         vue: 'Vue',
-        'timeline-plus': 'timeline-plus',
+        // 'timeline-plus': 'timeline-plus',
         // Vue: 'Vue'
     },
     'cstimeline'
