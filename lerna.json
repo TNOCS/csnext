@@ -15,7 +15,7 @@
   },
   "ignoreCommitters": false,
   "changelog": {
-    "repo": "damylen/csnext",
+    "repo": "tnocs/csnext",
     "labels": {
       "feature": ":rocket: New Feature",
       "bug": ":bug: Bug Fix",

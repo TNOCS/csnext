@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.119](https://github.com/damylen/csnext/compare/v0.0.120...v0.0.119) (2019-09-08)
+## [0.0.119](https://github.com/TNOCS/csnext/compare/v0.0.120...v0.0.119) (2019-09-08)
 
 **Note:** Version bump only for package @csnext/cs-form
 
@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.119-beta.33](https://github.com/damylen/csnext/compare/v0.0.119-beta.32...v0.0.119-beta.33) (2019-09-08)
+## [0.0.119-beta.33](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.32...v0.0.119-beta.33) (2019-09-08)
 
 **Note:** Version bump only for package @csnext/cs-form
 
@@ -19,7 +19,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.119-beta.32](https://github.com/damylen/csnext/compare/v0.0.119-beta.31...v0.0.119-beta.32) (2019-09-08)
+## [0.0.119-beta.32](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.31...v0.0.119-beta.32) (2019-09-08)
 
 **Note:** Version bump only for package @csnext/cs-form
 

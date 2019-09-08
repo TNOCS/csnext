@@ -7,7 +7,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/damylen/csnext.git"
+        "url": "git+https://github.com/tnocs/csnext.git"
     },
     "config": {
         "unsafe-perm": true
@@ -22,7 +22,7 @@
         "build:parallel": "lerna run --parallel build",
         "dev:docs": "lerna run dev:docs",
         "build:docs": "lerna run build --scope cs-docs",
-        "build:docker": "docker build -t damylen/csnext .",
+        "build:docker": "docker build -t tnocs/csnext .",
         "publish:npm": "lerna publish --force-publish=*",
         "publish:beta": "npm build && lerna publish --force-publish=* --canary --cd-version patch",
         "watch": "tsc -b -w packages",

@@ -16,9 +16,9 @@ install:
 
 stages:
   - name: test
-    if: (tag IS blank) OR (type != push) OR (repo != damylen/csnext)
+    if: (tag IS blank) OR (type != push) OR (repo != tnocs/csnext)
   - name: deploy
-    if: (tag IS present) AND (type = push) AND (repo = damylen/csnext)
+    if: (tag IS present) AND (type = push) AND (repo = tnocs/csnext)
 
 jobs:
   include:
@@ -38,12 +38,12 @@ jobs:
           script: bash scripts/deploy.sh
           skip_cleanup: true
           on:
-            repo: damylen/csnext
+            repo: tnocs/csnext
             tags: true
         # - provider: releases
         #   api_key: $GITHUB_API_KEY
         #   file: "release/vuetify-${TRAVIS_TAG}.zip"
         #   skip_cleanup: true
         #   on:
-        #     repo: damylen/csnext
+        #     repo: tnocs/csnext
         #     tags: true
