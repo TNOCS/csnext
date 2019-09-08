@@ -1,18 +1,48 @@
-sudo: required
-language: generic
-notifications:
-  slack: webcs:AnvBbkHIi7v9aTiS2H4suMkr#travis-ci-csnext
-services:
-  - docker
-before_install:
-  - docker build -t tnocs/csnext .
-# sudo: required
+language: node_js
+node_js: '12'
 
-# language: node_js
-# node_js:
-#   - "8"
-# cache:
-#   yarn: true
-# install:
-#   - yarn
-#   - yarn build
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.15.2
+  - export PATH="$HOME/.yarn/bin:$PATH"
+
+install:
+  - yarn --frozen-lockfile --non-interactive
+
+stages:
+  - name: test
+    if: (tag IS blank) OR (type != push) OR (repo != damylen/csnext)
+  - name: deploy
+    if: (tag IS present) AND (type = push) AND (repo = damylen/csnext)
+
+jobs:
+  include:
+    - stage: test
+      name: 'Test'
+      script:
+        - yarn
+        - yarn build
+        - yarn test
+
+    - stage: deploy
+      script:
+        - yarn
+        - yarn build
+      deploy:
+        - provider: script
+          script: bash scripts/deploy.sh
+          skip_cleanup: true
+          on:
+            repo: damylen/csnext
+            tags: true
+        # - provider: releases
+        #   api_key: $GITHUB_API_KEY
+        #   file: "release/vuetify-${TRAVIS_TAG}.zip"
+        #   skip_cleanup: true
+        #   on:
+        #     repo: damylen/csnext
+        #     tags: true
