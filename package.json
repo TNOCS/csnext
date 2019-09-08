@@ -28,7 +28,7 @@
         "watch": "tsc -b -w packages",
         "rebuild": "yarn run clean && yarn install && yarn run build",
         "test": "lerna run test",
-        "lerna:version": "lerna version --preid patch",
+        "lerna:version": "lerna version --conventional-graduate --preid patch",
         "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch from-git --yes"
     },
     "devDependencies": {
