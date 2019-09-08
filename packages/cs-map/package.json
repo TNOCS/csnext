@@ -50,24 +50,7 @@
         "@types/node": "^12.7.2",
         "@types/polylabel": "^1.0.5",
         "@types/socket.io-client": "^1.4.32",
-        "@types/turf": "^3.5.32",
-        "babel-runtime": "^6.26.0",
-        "cache-loader": "^3.0.1",
-        "css-loader": "^3.0.0",
-        "handlebars-loader": "^1.7.1",
-        "postcss-loader": "^3.0.0",
-        "raw-loader": "^1.0.0",
-        "style-loader": "^0.23.1",
-        "thread-loader": "^2.1.2",
-        "ts-loader": "^6.0.4",
-        "typescript": "^3.5.3",
-        "vue-class-component": "^7.1.0",
-        "vue-property-decorator": "^8.2.1",
-        "vue-style-loader": "^4.1.2",
-        "webpack": "^4.35.2",
-        "webpack-bundle-analyzer": "^3.3.2",
-        "webpack-cli": "^3.3.5",
-        "yargs": "^13.2.5"
+        "@types/turf": "^3.5.32"      
     },
     "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

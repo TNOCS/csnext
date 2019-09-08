@@ -22,19 +22,7 @@
     "vue-grid-layout": "^2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2",
-    "cache-loader": "^3.0.1",
-    "css-loader": "^3.2.0",
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^1.0.0",
-    "style-loader": "^0.23.1",
-    "thread-loader": "^2.1.2",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.3",
-    "webpack": "^4.39.2",
-    "webpack-bundle-analyzer": "^3.4.1",
-    "webpack-cli": "^3.3.6",
-    "yargs": "^13.3.0"
+  
   },
   "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

@@ -32,22 +32,33 @@
         "lerna:publish": "lerna publish --npm-client yarn --dist-tag beta from-git --yes"
     },
     "devDependencies": {
+        "@types/yargs": "^13.0.0",
         "core-js": "^2.6.7",
         "css-loader": "^3.2.0",
         "del-cli": "^2.0.0",
         "reflect-metadata": "^0.1.13",
         "vue": "^2.6.10",
         "vue-class-component": "^7.1.0",
-        "vue-property-decorator": "^8.2.1",
+        "vue-property-decorator": "^8.2.2",
         "vue-style-loader": "^4.1.2",
-        "webpack": "^4.39.2",
+        "webpack": "^4.39.3",
         "webpack-bundle-analyzer": "^3.4.1",
         "yargs": "^13.3.0",
         "yarn": "^1.16.0",
+        "purify-css": "^1.2.5",
         "sass": "1.22.10",
         "sass-loader": "^7.2.0",
         "fibers": "^4.0.1",
-        "deepmerge": "4.0.0"
+        "deepmerge": "4.0.0",
+        "@types/node": "^12.7.2",
+        "cache-loader": "^3.0.1",
+        "postcss-loader": "^3.0.0",
+        "raw-loader": "^1.0.0",
+        "style-loader": "^0.23.1",
+        "thread-loader": "^2.1.2",
+        "ts-loader": "^6.0.4",
+        "typescript": "^3.5.3",
+        "webpack-cli": "^3.3.6"
     },
     "dependencies": {}
 }
