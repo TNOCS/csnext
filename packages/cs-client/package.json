@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.119-beta.32",
+  "version": "0.0.119-beta.33",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/src/index.d.ts",
   "license": "MIT",
@@ -33,11 +33,10 @@
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",
-
     "base64-inline-loader": "^1.1.1",
     "cache-loader": "^3.0.1",
-    "cpx": "^1.5.0",    
-    "http-server": "~0.11.1",    
+    "cpx": "^1.5.0",
+    "http-server": "~0.11.1",
     "vue-markdown": "^2.2.4"
   },
   "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
