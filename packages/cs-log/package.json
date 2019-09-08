@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-log",
-    "version": "0.0.119-beta.33",
+    "version": "0.0.119",
     "description": "cs-log",
     "main": "./lib/cslog.cs.js",
     "types": "./dist/index.d.ts",
@@ -22,5 +22,5 @@
         "handlebars": "^4.1.2",
         "simplebar-vue": "^1.1.0"
     },
-    "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
+    "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }
