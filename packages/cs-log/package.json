@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-log",
-    "version": "0.0.120",
+    "version": "0.0.121",
     "description": "cs-log",
     "main": "./lib/cslog.cs.js",
     "types": "./dist/index.d.ts",
