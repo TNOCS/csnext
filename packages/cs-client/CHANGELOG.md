@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.119-beta.32](https://github.com/damylen/csnext/compare/v0.0.119-beta.31...v0.0.119-beta.32) (2019-09-08)
+
+**Note:** Version bump only for package @csnext/cs-client
+
+
+
+
+
+
 ## [0.0.119-beta.31](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.30...v0.0.119-beta.31) (2019-09-04)
 
 **Note:** Version bump only for package @csnext/cs-client
