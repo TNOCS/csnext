@@ -29,7 +29,7 @@
         "rebuild": "yarn run clean && yarn install && yarn run build",
         "test": "lerna run test",
         "lerna:version": "lerna version prerelease --preid beta",
-        "lerna:publish": "lerna publish --npm-client yarn --npm-tag beta from-git --yes"
+        "lerna:publish": "lerna publish --npm-client yarn --dist-tag beta from-git --yes"
     },
     "devDependencies": {
         "core-js": "^2.6.7",
