@@ -10,7 +10,7 @@
   "scripts": {
     "link": "yarn link",
     "dev": "tsc -w",
-    "clean": "del-cli pnpm-lock.yaml pnpm-debug.log package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo",
+    "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo",
     "build": "tsc"
   },
   "publishConfig": {

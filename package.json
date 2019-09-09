@@ -15,7 +15,7 @@
     "scripts": {
         "postinstall": "lerna bootstrap && yarn run link",
         "dev": "lerna run --parallel dev",
-        "clean": "lerna run clean && del-cli pnpm-lock.yaml pnpm-debug.log node_modules yarn.lock yarn-error.log package-lock.json",
+        "clean": "lerna run clean & del-cli  node_modules yarn.lock yarn-error.log package-lock.json",
         "link": "lerna run link",
         "build": "lerna run build",
         "unlink": "lerna run unlink",

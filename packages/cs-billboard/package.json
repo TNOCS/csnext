@@ -10,16 +10,18 @@
   "scripts": {
     "link": "yarn link",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "tsc && webpack --mode development",
-    "clean": "del-cli dist lib node_modules"
+    "build": "webpack --mode development && tsc",
+    "build:production": "webpack --mode production && tsc",
+    "clean": "del-cli yarn.lock yarn-error.log dist lib node_modules"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.118-beta.33",
-    "@csnext/cs-core": "^0.0.118-beta.33",
-    "billboard.js": "^1.8.0"
+    "@csnext/cs-client": "^0.0.121",
+    "@csnext/cs-core": "^0.0.121",
+    "billboard.js": "^1.10.2",
+    "vue": "^2.6.10"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

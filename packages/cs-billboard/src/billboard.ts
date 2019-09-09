@@ -1,9 +1,10 @@
 import { Watch } from 'vue-property-decorator';
-import Vue from 'vue';
 import { IWidget, IWidgetSize } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './billboard.css';
+import { WidgetBase } from '@csnext/cs-client';
 import { bb } from 'billboard.js';
+import Vue from 'vue';
 
 @Component({
     name: 'billboard',
@@ -12,7 +13,7 @@ import { bb } from 'billboard.js';
         widget: null
     }
 } as any)
-export class Billboard extends Vue {
+export class Billboard extends WidgetBase {
     /** access the original widget from configuration */
     public widget!: IWidget;
     public chart?: any;

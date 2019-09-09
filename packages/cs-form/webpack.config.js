@@ -7,10 +7,7 @@ const config = buildConfig(
     {
         '@csnext/cs-core': '@csnext/cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
-        'cs-client': 'cs-client',
-        'cs-core': 'cs-core',
-        vue: 'Vue',        
-        Vue: 'Vue'
+        vue: 'Vue'
     },
     'csform'
 );

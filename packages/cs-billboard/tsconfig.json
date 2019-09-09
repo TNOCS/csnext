@@ -3,7 +3,11 @@
   // "include": ["src/"],
   "compilerOptions": {
     /* Basic Options */
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "rootDir": "./src/"
      
-  }
+  },
+  "exclude": [
+    "./dist"
+  ]
 }
