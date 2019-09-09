@@ -212,6 +212,13 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public ClearNotifications() {
+    this.bus.publish('notification', 'clear-all');
+    if (this.project.notifications && this.project.notifications.items) {
+      this.project.notifications.items.length = 0;
+    }
+  }
+
   public TriggerDialog(dialog: IDialog): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!dialog.actionCallback) {

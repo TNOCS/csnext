@@ -409,11 +409,19 @@ export class CsApp extends Vue {
             }
             this.lastNotification = notification;
             this.UpdateNotifications();
+          } else if (action === 'clear-all') {
+            if (this.lastNotification && this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              this.lastNotification.clickCallback();
+            }
+            this.lastNotification = {_visible: false} as INotification;
+            this.UpdateNotifications();
           }
         }
       );
     }
   }
+
   private clickNotification() {
     this.lastNotification._visible = false;
     if (this.lastNotification.clickCallback) {
