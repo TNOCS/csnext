@@ -35,7 +35,7 @@
 
       <template
         v-slot:extension
-        v-if="dashboard.parent && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation"
+        v-if="dashboard.parent && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.options.toolbar.navigation !== 'stepper-inline'"
       >
         <template
           v-if="dashboard.parent.options.toolbar.navigation === 'stepper'"
