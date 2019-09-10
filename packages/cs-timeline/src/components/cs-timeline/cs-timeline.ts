@@ -38,6 +38,7 @@ import { LogDataSource, LogManager, ILogItem } from '@csnext/cs-client';
 export interface TimelineWidgetOptions extends WidgetOptions {
     timelineOptions?: TimelineOptions;
     logSource?: string;
+    showFitButton?: boolean;
 }
 
 export interface ITimelineDataSource extends IDatasource {
@@ -351,6 +352,12 @@ export class CsTimeline extends Vue {
         }
     }
 
+    fitAll() {
+        if (this.timeline) {
+            this.timeline.fit({ animation: false });
+        }
+    }
+
     mounted() {
         if (this.widget) {
 
@@ -359,6 +366,20 @@ export class CsTimeline extends Vue {
             });
             this.initLogSource();
             this.initTimeline();
+
+            if (!this.widget.options) this.widget.options = {};
+            if (!this.widget.options.menus) this.widget.options.menus = []
+
+            if (this.WidgetOptions.showFitButton) {
+                this.widget.options.menus.push({
+                    id: 'zoom',
+                    icon: 'zoom_out_map',
+                    action: () => {
+                        this.fitAll();
+                    },
+                    visible: true
+                })
+            }
 
 
         }
