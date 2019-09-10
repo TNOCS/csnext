@@ -7,7 +7,6 @@
             lazy
             transition="scale-transition"
             offset-y
-            full-width
             min-width="290px"
         >
             <template v-slot:activator="{ on }">
@@ -36,7 +35,6 @@
             lazy
             transition="scale-transition"
             offset-y
-            full-width
             max-width="290px"
             min-width="290px"
         >
@@ -55,7 +53,6 @@
                 v-if="timeMenu"
                 v-model="timeModel"
                 @click:minute="$refs.timeref.save(timeModel)"
-                full-width
                 @change="dateChanged"
             ></v-time-picker>
         </v-menu>
