@@ -1,4 +1,5 @@
-<v-layout column
+<v-layout
+  column
   @mouseenter="mouseEnter()"
   v-if="widget"
   v-show="widget.options && !widget.options.hide"
@@ -8,8 +9,20 @@
   ref="widget"
   v-resize:debounce.50="onResize"
 >
-  <v-toolbar dense text v-if="widget.options.showToolbar">
-    <v-toolbar-title>{{widget.options.title}}</v-toolbar-title>
+  <v-toolbar dense flat v-if="widget.options.showToolbar">
+    <v-toolbar-title>{{ $cs.Translate(widget.options.title) }}</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-menu
+      v-for="menu in widget.options.menus"
+      :key="menu.id"
+      v-if="menu.visible"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
+          <v-icon>{{ menu.icon }}</v-icon>
+        </v-btn>
+      </template>
+    </v-menu>
   </v-toolbar>
   <component
     :is="widget.component"
@@ -18,7 +31,7 @@
     :style="widgetStyles()"
   ></component>
   <div
-    v-if="mouseOver && widget.options.menus"
+    v-if="mouseOver && !widget.options.showToolbar && widget.options.menus"
     class="widget-buttons-container"
   >
     <v-menu
@@ -26,16 +39,11 @@
       :key="menu.id"
       v-if="menu.visible"
     >
-      <v-btn
-        icon
-        v-slot:activator="{ on }"
-        @click.delegate="triggerMenuAction(menu)"
-        text
-        icon
-        class="widget-button"
-      >
-        <v-icon size="16px">{{ menu.icon }}</v-icon>
-      </v-btn>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on" class="widget-button">
+          <v-icon>{{ menu.icon }}</v-icon>
+        </v-btn>
+      </template>
     </v-menu>
   </div>
 </v-layout>
