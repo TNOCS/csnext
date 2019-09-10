@@ -159,6 +159,11 @@ export class CsApp extends Vue {
     // this.InitMenus();
   }
 
+  @Watch('app.project.theme.dark')
+  public themeChanged() {
+    this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false
+  }
+
   @Watch('app.project.notifications', { deep: true })
   public noticationsUpdated(n: INotification[], o: INotification[]) {
     this.UpdateNotifications();
@@ -414,7 +419,7 @@ export class CsApp extends Vue {
               // Call callback of previous notification before closing it
               this.lastNotification.clickCallback();
             }
-            this.lastNotification = {_visible: false} as INotification;
+            this.lastNotification = { _visible: false } as INotification;
             this.UpdateNotifications();
           }
         }
