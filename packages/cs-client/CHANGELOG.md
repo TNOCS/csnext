@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.123](https://github.com/TNOCS/csnext/compare/v0.0.122...v0.0.123) (2019-09-11)
+
+**Note:** Version bump only for package @csnext/cs-client
+
+
+
+
+
+
 ## [0.0.122](https://github.com/TNOCS/csnext/compare/v0.0.121...v0.0.122) (2019-09-10)
 
 **Note:** Version bump only for package @csnext/cs-client

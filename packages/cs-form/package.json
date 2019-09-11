@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-form",
-    "version": "0.0.122",
+    "version": "0.0.123",
     "description": "cs-form",
     "main": "./lib/csform.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -18,8 +18,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.122",
-        "@csnext/cs-core": "^0.0.122",
+        "@csnext/cs-client": "^0.0.123",
+        "@csnext/cs-core": "^0.0.123",
         "dayjs": "^1.8.15",
         "reflect-metadata": "^0.1.13"
     },
