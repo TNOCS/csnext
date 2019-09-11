@@ -29,6 +29,7 @@ export class CsWidget extends Vue {
 
   private dsHandle?: MessageBusHandle;
 
+
   constructor() {
     super();
     this.initWidget();
@@ -107,7 +108,7 @@ export class CsWidget extends Vue {
       widget.id = 'widget-' + guidGenerator();
     }
   }
-  
+
   public initWidget() {
     if (!this.widget) {
       return;
@@ -238,8 +239,6 @@ export class CsWidget extends Vue {
   public mouseLeave() {
     this.mouseOver = false;
   }
-
-
 
   private checkDefaultWidgetOptions(widget: IWidget) {
     if (

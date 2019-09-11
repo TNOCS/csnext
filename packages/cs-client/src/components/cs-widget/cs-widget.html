@@ -40,7 +40,7 @@
       v-if="menu.visible"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on" class="widget-button">
+        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
           <v-icon>{{ menu.icon }}</v-icon>
         </v-btn>
       </template>
