@@ -8,7 +8,8 @@ import {
     TimeDataSource,
     Topics,
     MessageBusHandle,
-    isFunction
+    isFunction,
+    IMenu
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
@@ -38,7 +39,9 @@ import { LogDataSource, LogManager, ILogItem } from '@csnext/cs-client';
 export interface TimelineWidgetOptions extends WidgetOptions {
     timelineOptions?: TimelineOptions;
     logSource?: string;
+    smallView?: boolean;
     showFitButton?: boolean;
+    toggleSmallButton?: boolean;
 }
 
 export interface ITimelineDataSource extends IDatasource {
@@ -87,14 +90,12 @@ export class CsTimeline extends Vue {
     }
 
     get smallView(): boolean {
-        if (this.widget.data) return this.widget.data.smallView;
+        if (this.WidgetOptions.smallView) return this.WidgetOptions.smallView;
         return false;
     }
 
     set smallView(value: boolean) {
-        if (this.widget.data) {
-            this.widget.data.smallView = value;
-        }
+        this.WidgetOptions.smallView = value;
     }
 
     private async update() {
@@ -120,7 +121,8 @@ export class CsTimeline extends Vue {
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                item.content = item.content;
+                item.content = !this.smallView ? item.content : "";
+                item.style = "height:" + height;
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (item.group) {
@@ -222,6 +224,8 @@ export class CsTimeline extends Vue {
             }
 
         }
+
+
         this.timeline = new Timeline(
             container,
             this.items,
@@ -358,6 +362,11 @@ export class CsTimeline extends Vue {
         }
     }
 
+    toggleSmall() {
+        this.smallView = !this.smallView;
+        this.update();
+    }
+
     mounted() {
         if (this.widget) {
 
@@ -371,15 +380,34 @@ export class CsTimeline extends Vue {
             if (!this.widget.options.menus) this.widget.options.menus = []
 
             if (this.WidgetOptions.showFitButton) {
-                this.widget.options.menus.push({
-                    id: 'zoom',
-                    icon: 'zoom_out_map',
-                    action: () => {
-                        this.fitAll();
-                    },
-                    visible: true
-                })
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === 'zoom') === -1) {
+                    this.widget.options.menus.push({
+                        id: 'zoom',
+                        icon: 'zoom_out_map',
+                        action: () => {
+                            this.fitAll();
+                        },
+                        visible: true
+                    })
+                }
             }
+
+            if (this.WidgetOptions.toggleSmallButton) {
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === 'togglesmall') === -1) {
+                    this.widget.options.menus.push({
+                        id: 'togglesmall',
+                        icon: 'lines_weight',
+                        action: () => {
+                            this.toggleSmall();
+                        },
+                        visible: true
+                    })
+                }
+            }
+
+
 
 
         }
