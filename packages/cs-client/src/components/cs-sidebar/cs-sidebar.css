@@ -19,6 +19,18 @@
   height: 100%;
 }
 
+.sidebar .navbar-footer-text {
+  font-size: 80%;
+}
+
+.sidebar .navbar-footer-icon {
+  font-size: 100%;
+}
+
+.sidebar .tooltip-multiline {
+  white-space: pre-line;
+}
+
 /* .list__group__header__append-icon {
   display:none;
 } */
