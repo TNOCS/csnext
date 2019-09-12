@@ -9,4 +9,9 @@ export interface IHeaderOptions {
   breadcrumbItems?: any[];
   hideToolbar?: boolean;
   titleWidget?: IWidget;
+  infoHeader?: IInfoHeaderOptions | boolean;
+}
+
+export interface IInfoHeaderOptions {
+  
 }

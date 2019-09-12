@@ -32,6 +32,7 @@ import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import { MdWidget } from './widgets/markdown/md-widget';
+import { CsInfo } from './components/cs-info/cs-info';
 import Vue, { VueConstructor } from 'vue';
 import Component from 'vue-class-component';
 import { VegaWidget } from './widgets/vega/vega-widget';
@@ -42,6 +43,7 @@ export * from './components/cs-widget/cs-widget';
 export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
 export * from './components/cs-language-switch/cs-language-switch';
+export * from './components/cs-info/cs-info';
 
 // widgets
 export * from './widgets/widget-base';
@@ -67,6 +69,7 @@ export const CsNext = {
     vue.component('cs-widget', CsWidget);
     vue.component('md-widget', MdWidget);
     vue.component('vega-widget', VegaWidget);
+    vue.component('cs-info', CsInfo);
   }
 };
 
