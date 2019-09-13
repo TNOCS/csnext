@@ -6,6 +6,7 @@ export interface IHeaderOptions {
   logo?: string;
   breadcrumbs?: boolean;
   showNotifications?: boolean;
+  showLoadingIcon?: boolean;
   breadcrumbItems?: any[];
   hideToolbar?: boolean;
   titleWidget?: IWidget;

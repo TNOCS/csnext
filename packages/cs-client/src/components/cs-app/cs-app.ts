@@ -63,6 +63,7 @@ const router = new VueRouter({ routes: [] });
 export class CsApp extends Vue {
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
   public static LANGUAGE_SWITCH_ID = 'switch_language';
+  public static LOADING_MENU_ID = 'loading_menu';
   public app = AppState.Instance;
 
   public settingsDialog = false;
