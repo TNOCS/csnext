@@ -8,5 +8,6 @@
   "YES": "Yes",
   "NO": "No",
   "SEARCH": "Search",
-  "FIELD_REQUIRED": "This field is required"
+  "FIELD_REQUIRED": "This field is required",
+  "ABOUT": "About" 
 }
