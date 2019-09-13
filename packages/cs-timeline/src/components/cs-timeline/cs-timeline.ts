@@ -384,6 +384,7 @@ export class CsTimeline extends Vue {
                 if (this.widget.options.menus.findIndex((m: IMenu) => m.id === 'zoom') === -1) {
                     this.widget.options.menus.push({
                         id: 'zoom',
+                        toolTip: 'FIT_TIMELINE_ZOOM',
                         icon: 'zoom_out_map',
                         action: () => {
                             this.fitAll();
