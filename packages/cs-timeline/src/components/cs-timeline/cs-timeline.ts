@@ -13,28 +13,11 @@ import {
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
-import {
-    Timeline,
-    DataGroup,
-    DataItem,
-    TimelineOptions,
-    DataSet,
-    VisSelectProperties,
-    TimelineEventPropertiesResult
-} from 'timeline-plus';
-export {
-    Timeline,
-    DataGroup,
-    DataItem,
-    TimelineOptions,
-    TimelineTooltipOption,
-    DataSet,
-    VisSelectProperties,
-    TimelineEventPropertiesResult
-} from 'timeline-plus';
 
-import 'timeline-plus/dist/timeline.min.css';
+import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
 import { LogDataSource, LogManager, ILogItem } from '@csnext/cs-client';
+import { TimelineOptions, DataGroup, DataItem, Timeline, DataSet, VisSelectProperties, TimelineEventPropertiesResult } from 'vis-timeline';
+
 
 export interface TimelineWidgetOptions extends WidgetOptions {
     timelineOptions?: TimelineOptions;
@@ -99,14 +82,18 @@ export class CsTimeline extends Vue {
     }
 
     private async update() {
-        if (this.timeline) {
-            console.log('Updating timeline');
-            this.updateItems();
-            this.timeline.setGroups(this.groups);
-            this.timeline.setItems(this.items);
-            // this.timeline.fit();
-            this.timeline.redraw();
-        }
+        this.updateItems();
+        Vue.nextTick(() => {
+            if (this.timeline) {
+
+                this.timeline.setGroups(this.groups);
+                this.timeline.setItems(this.items);
+                // this.timeline.fit();
+                this.timeline.redraw();
+                this.$forceUpdate();
+            }
+        });
+
     }
 
     toggleView() {
