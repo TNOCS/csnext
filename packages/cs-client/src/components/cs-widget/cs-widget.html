@@ -31,7 +31,7 @@
     :style="widgetStyles()"
   ></component>
   <div
-    v-if="mouseOver && !widget.options.showToolbar && widget.options.menus"
+    v-if="!widget.options.showToolbar && widget.options.menus"
     class="widget-buttons-container"
   >
     <v-menu
