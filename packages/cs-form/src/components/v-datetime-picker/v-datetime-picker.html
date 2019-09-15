@@ -52,9 +52,13 @@
             <v-time-picker
                 v-if="timeMenu"
                 v-model="timeModel"
-                @click:minute="$refs.timeref.save(timeModel)"
+                :use-seconds="false"
+                :scrollable="true"
+                format="24hr"
+                @click:minute="$refs.timeref.save(timeModel)"                
                 @change="dateChanged"
             ></v-time-picker>
+            <!--  -->
         </v-menu>
     </v-flex>
 </v-layout>

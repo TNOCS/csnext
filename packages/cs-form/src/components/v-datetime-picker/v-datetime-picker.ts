@@ -47,7 +47,7 @@ export class VDatetimePicker extends Vue {
         try {
             let d = this.dateModel;
             if (this.timeModel) {
-                d += ' ' + this.timeModel + ':00';
+                d += ' ' + this.timeModel;
             }
             let date = new Date(d).getTime();
             // this.$attrs.value = date.toString();
@@ -70,7 +70,7 @@ export class VDatetimePicker extends Vue {
             if (datetime) {
                 const date = datetime.format('YYYY-MM-DD');
                 if (date !== this.dateModel) { this.dateModel = date; changed = true; }
-                const time = datetime.format('HH:mm:ss');
+                const time = datetime.format('HH:mm');
                 if (time !== this.timeModel) { this.timeModel = time; changed = true; }
             }
         }
