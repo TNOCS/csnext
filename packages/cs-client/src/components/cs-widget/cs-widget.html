@@ -37,13 +37,23 @@
     <v-menu
       v-for="menu in widget.options.menus"
       :key="menu.id"
+      :close-on-content-click="false"
       v-if="menu.visible"
+      offset-y
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
-          <v-icon>{{ menu.icon }}</v-icon>
-        </v-btn>
+        <!-- <v-tooltip bottom :disabled="!menu.toolTip">
+          <template v-slot:activator="{ on }"> -->
+            <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
+              <v-icon>{{ menu.icon }}</v-icon>
+            </v-btn>
+          <!-- </template>
+          {{ $cs.Translate(menu.toolTip) }}
+        </v-tooltip> -->
       </template>
+      <v-card v-if="menu.component" style="z-index: 1000">
+        <component :is="menu.component" :data="menu.data"></component>
+      </v-card>
     </v-menu>
   </div>
 </v-layout>
