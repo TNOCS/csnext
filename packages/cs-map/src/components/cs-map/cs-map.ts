@@ -3,9 +3,9 @@ import Vue from 'vue';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
+import mapboxgl, { CirclePaint, LngLat, MapboxOptions } from 'mapbox-gl';
 import { Feature, FeatureCollection } from 'geojson';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
+import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "./../style-switcher/style-switcher";
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -15,7 +15,6 @@ import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import "mapbox-gl-style-switcher/styles.css";
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 
@@ -66,10 +65,13 @@ export class CsMap extends Vue {
     public static serviceTypes: IStartStopService[] = [];
     public static layerExtensions: ILayerExtensionType[] = [];
 
+    public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
+
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
     public mapDraw!: any;
+
 
     private mapOptions!: MapOptions;
 
@@ -141,6 +143,12 @@ export class CsMap extends Vue {
                 }
             });
         }
+    }
+
+    public setStyle(style: MapboxStyleDefinition) {
+        this.options.style = style.id;
+        this.map.setStyle(style.uri);
+        this.updateUrlQueryParams();
     }
 
     public async startServices() {
@@ -228,7 +236,7 @@ export class CsMap extends Vue {
                                                                 .manager
                                                         },
                                                         datasource: 'project'
-                                                    },                                            
+                                                    },
                                                     { open: true },
                                                     'feature'
                                                 );
@@ -256,21 +264,61 @@ export class CsMap extends Vue {
         }
     }
 
+    private getRouteOptions(): mapboxgl.MapboxOptions {
+        let options = {} as MapboxOptions;
+        const q = this.$route.query;
+        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
+            let lng = parseFloat(q['lng'] as string);
+            let lat = parseFloat(q['lat'] as string);
+            options.center = [lng, lat];
+        }
+        if (q.hasOwnProperty('z')) {
+            options.zoom = parseFloat(q['z'] as string);
+        }
+        if (q.hasOwnProperty('style')) {
+            const styleId = q['style'] as string;
+            this.options.style = styleId;            
+            options.style = this.getStyleUri(styleId);
+        }
+        return options;
+    }
+
+    private updateUrlQueryParams() {
+        const center = this.map.getCenter();
+        const zoom = this.map.getZoom();
+        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
+        this.$router.replace({ path: this.$route.params[0], query: combined }); //this.$route.query}
+    }
+
+    private getStyleUri(styleId: string): string {
+        const style = this.styles.find(s => s.id === styleId);
+        if (style) {            
+            return style.uri;
+        }
+        return "";
+    }
+
     public mounted() {
+
         Vue.nextTick(() => {
             if (this.options.token) {
                 mapboxgl.accessToken = this.options.token;
+            }
+
+            if (!this.options.style) {
+                this.options.style = this.styles[0].id;
             }
 
             // if (!this.options.mbOptions) this.options.mbOptions = {};
             this.options.mbOptions = {
                 ...{
                     container: 'mapbox-' + this.widget.id,
-                    style: 'mapbox://styles/mapbox/basic-v9',
+                    style: this.getStyleUri(this.options.style),
                     center: [5.753699, 53.450862],
                     zoom: 10
                 },
-                ...this.options.mbOptions
+                ...this.options.mbOptions,
+                ...this.getRouteOptions()
             };
 
             // init map
@@ -287,6 +335,12 @@ export class CsMap extends Vue {
                     this.manager.events.publish('map', CsMap.MAP_CLICK, ev);
                 }
             });
+
+            // if (this.options.storePositionInUrl) {
+            this.map.on('moveend', (ev => {
+                this.updateUrlQueryParams();
+            }))
+            // }
 
 
             // ad navigation control
@@ -778,18 +832,11 @@ export class CsMap extends Vue {
                 this.map.addControl(nav, 'top-left');
 
                 if (this.mapOptions.showStyles) {
-                    const styles: MapboxStyleDefinition[] = [
-                        { title: "Dark", uri: "mapbox://styles/mapbox/dark-v9" },
-                        { title: "Light", uri: "mapbox://styles/mapbox/light-v9" },
-                        { title: "Outdoors", uri: "mapbox://styles/mapbox/outdoors-v10" },
-                        { title: "Satellite", uri: "mapbox://styles/mapbox/satellite-streets-v10" },
-                        { title: "Streets", uri: "mapbox://styles/mapbox/streets-v10" }
-                    ];
-
-                    this.map.addControl(new MapboxStyleSwitcherControl(styles));
-
+                    this.map.addControl(new MapboxStyleSwitcherControl(this.styles, this));
                     // this.map.addControl(stylesControl, 'bottom-right');
-                    this.map.on('style.load', () => {
+
+                    this.map.on('style.load', (e: any) => {
+                        let style = this.map.getStyle();
                         if (this.manager) {
                             this.manager.refreshLayers();
                             // this.man
@@ -950,7 +997,7 @@ export class CsMap extends Vue {
         }
     }
     private addClickLayer() {
-        
+
 
         if (this.manager && this.manager.layers) {
             let rl = this.manager.layers!.find(
@@ -998,14 +1045,16 @@ export class CsMap extends Vue {
                     if (this.manager) {
                         let features = {
                             type: 'FeatureCollection',
-                            features:  [{ id: 'click-feature', type: 'Feature', properties: {
-                                'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
-                            }, geometry: {
-                                type: "Point",
-                                coordinates: [ev.lngLat.lng, ev.lngLat.lat]
-                            }} as Feature]
+                            features: [{
+                                id: 'click-feature', type: 'Feature', properties: {
+                                    'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
+                                }, geometry: {
+                                    type: "Point",
+                                    coordinates: [ev.lngLat.lng, ev.lngLat.lat]
+                                }
+                            } as Feature]
                         };
-                        this.manager.updateLayerSource(rl,features as any);
+                        this.manager.updateLayerSource(rl, features as any);
                     }
                 });
             }

@@ -8,6 +8,7 @@ export class MapOptions extends WidgetOptions
     public token?: string;
     public mbOptions?: MapboxOptions;
     public activeLayers?: string[] = [];
+    public style?: string = 'basic';
 
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;
@@ -22,5 +23,6 @@ export class MapOptions extends WidgetOptions
     public showEditor?: boolean = false;
     public showLegend?: boolean = true;
     public showGrid?: boolean = true;
+    public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
 }
