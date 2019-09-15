@@ -17,6 +17,7 @@ import './cs-timeline.css';
 import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
 import { LogDataSource } from '@csnext/cs-client';
 import { TimelineOptions, DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
+import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
 // export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };
 
 
@@ -26,6 +27,7 @@ export interface TimelineWidgetOptions extends WidgetOptions {
     smallView?: boolean;
     showFitButton?: boolean;
     toggleSmallButton?: boolean;
+    showGroupSelectionButton?: boolean;
 }
 
 export interface ITimelineDataSource extends IDatasource {
@@ -35,11 +37,16 @@ export interface ITimelineDataSource extends IDatasource {
     removeItem(item: DataItem): void;
 }
 
+const TOGGLE_MENU_ID = 'togglesmall';
+const ZOOM_MENU_ID = 'zoom';
+const GROUPS_MENU_ID = 'groups';
 @Component({
     template: require('./cs-timeline.html')
 })
 export class CsTimeline extends Vue {
     /** access the original widget from configuration */
+
+    GROUP_VISIBILITY_ID = 'timeline-group-';
 
     public timeline?: Timeline;
     // public datasource?: ITimelineDataSource;
@@ -73,31 +80,32 @@ export class CsTimeline extends Vue {
         }
     }
 
-    get smallView(): boolean {
-        if (this.WidgetOptions.smallView) return this.WidgetOptions.smallView;
-        return false;
-    }
+    public smallView: boolean = false;
 
-    set smallView(value: boolean) {
-        this.WidgetOptions.smallView = value;
-    }
+    // get smallView(): boolean {
+    //     if (this.WidgetOptions.smallView) return this.WidgetOptions.smallView;
+    //     return false
+    // }
 
-    private async update() {
+    // set smallView(value: boolean) {
+    //     this.WidgetOptions.smallView = value;
+    // }
+
+    public async update() {
         this.updateItems();
         if (this.timeline) {
             this.timeline.setData({ groups: this.groups, items: this.items });
             this.timeline.setGroups(this.groups);
             this.timeline.setItems(this.items);
             this.timeline.redraw();
-            this.$forceUpdate();
             // this.timeline.fit({animation: false});
-            
+
         }
         Vue.nextTick(() => {
 
             if (this.timeline) {
                 // this.timeline.fit();
-                
+
                 // this.$forceUpdate();
             }
         });
@@ -114,7 +122,7 @@ export class CsTimeline extends Vue {
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                item.content = !this.smallView ? item.content : "";
+                // item.content = this.smallView ? '' : item.content;
                 item.style = "height:" + height;
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
@@ -142,11 +150,19 @@ export class CsTimeline extends Vue {
         this.items = items; // new DataSet(items);
     }
 
+    public setGroupVisibility(group: DataGroup, value: boolean = true) {
+        localStorage.setItem(this.GROUP_VISIBILITY_ID + group.id, value.toString());
+        this.update();
+    }
+
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
+            
+            const visible = localStorage.getItem(this.GROUP_VISIBILITY_ID + groupName);            
             this.groups.push({
                 id: groupName,
-                content: groupName
+                content: groupName,
+                visible: (!visible) ? true : (visible.toLowerCase() === 'true')
             } as DataGroup);
         }
     }
@@ -347,11 +363,6 @@ export class CsTimeline extends Vue {
         }
     }
 
-    toggleSmall() {
-        this.smallView = !this.smallView;
-        this.update();
-    }
-
     mounted() {
         if (this.widget) {
 
@@ -366,9 +377,9 @@ export class CsTimeline extends Vue {
 
             if (this.WidgetOptions.showFitButton) {
                 // check if already exists
-                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === 'zoom') === -1) {
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === ZOOM_MENU_ID) === -1) {
                     this.widget.options.menus.push({
-                        id: 'zoom',
+                        id: ZOOM_MENU_ID,
                         toolTip: 'FIT_TIMELINE_ZOOM',
                         icon: 'zoom_out_map',
                         action: () => {
@@ -381,17 +392,32 @@ export class CsTimeline extends Vue {
 
             if (this.WidgetOptions.toggleSmallButton) {
                 // check if already exists
-                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === 'togglesmall') === -1) {
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
                     this.widget.options.menus.push({
-                        id: 'togglesmall',
+                        id: TOGGLE_MENU_ID,
                         icon: 'line_weight',
                         action: () => {
-                            this.toggleSmall();
+                            this.toggleView();
                         },
                         visible: true
                     })
                 }
             }
+
+            if (this.WidgetOptions.showGroupSelectionButton) {
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === GROUPS_MENU_ID) === -1) {
+                    this.widget.options.menus.push({
+                        id: GROUPS_MENU_ID,
+                        icon: 'list',
+                        component: TimelineGroupSelection,                          
+                        data: this,                      
+                        visible: true
+                    })
+                }
+            }
+
+            
 
 
 
