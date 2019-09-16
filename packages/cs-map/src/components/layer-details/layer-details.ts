@@ -34,7 +34,7 @@ export class property {
 export class LayerDetails extends Vue {
     public widget!: IWidget;
     public sectionsPanels: boolean[] = [];
-    public tabs = null;
+    public tabs = 'layer-items';
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
     public filterItems = '';
@@ -53,9 +53,9 @@ export class LayerDetails extends Vue {
     }
 
     /** returns true if features is included filter */
-    private filterFeature(f: Feature, s: string) : boolean {
+    private filterFeature(f: Feature, s: string): boolean {
         if (!this.layer) { return false; }
-        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase())>=0;
+        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
     }
 
     public get filteredFeatures(): Feature[] {
@@ -92,12 +92,18 @@ export class LayerDetails extends Vue {
         }
     }
 
+    public fitLayer() {
+        if (this.manager && this.layer) {
+            this.manager.zoomLayer(this.layer);
+        }
+    }
+
     public openFeature(feature: any) {
         this.$cs.OpenRightSidebarWidget({
             component: FeatureDetails,
             id: 'featuredetails',
-            data: { layer: this.layer, feature: feature }
-        }, {}, 'edit');
+            data: { layer: this.layer, feature: feature, manager: this.manager }
+        }, {open: true}, 'feature');
     }
 
     public editLayer(layer: IMapLayer) {

@@ -38,7 +38,7 @@ export class PropertyDetails {
 export class FeatureDetails extends Vue {
     public widget!: IWidget;
     public sectionsPanels: number[] = [];
-    public tabs = null;
+    public tabs = 'feature-details';
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
 
@@ -201,8 +201,8 @@ export class FeatureDetails extends Vue {
     public openLayer(layer: IMapLayer) {
         this.$cs.OpenRightSidebarWidget({
             component: LayerDetails,
-            data: { layer: layer }
-        });
+            data: { layer: layer, manager: this.manager }
+        }, undefined, 'feature');
     }
 
     public get properties(): any[] {

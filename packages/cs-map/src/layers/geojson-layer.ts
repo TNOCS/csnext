@@ -351,13 +351,13 @@ export class GeojsonLayer extends BaseLayer {
             map.map.on('touchend', this.id, e => {
                 this.click(this, e);
             });
-            map.map.on('click', this.id, e => {
+            map.map.on('click', this.id, e => {                
                 this.click(this, e);
             });
             map.map.on('mousemove', this.id, e => {
                 this.mouseMove(map, this, e);
             });
-            map.map.on('mouseenter', this.id, e => {
+            map.map.on('mouseenter', this.id, e => {                
                 this.mouseEnter(map, this, e);
             });
             map.map.on('mouseleave', this.id, e => {

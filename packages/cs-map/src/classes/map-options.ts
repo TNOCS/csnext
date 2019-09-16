@@ -8,7 +8,7 @@ export class MapOptions extends WidgetOptions
     public token?: string;
     public mbOptions?: MapboxOptions;
     public activeLayers?: string[] = [];
-    public style?: string = 'basic';
+    public style?: string = 'streets';
 
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;

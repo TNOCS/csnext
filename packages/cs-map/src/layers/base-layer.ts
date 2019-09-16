@@ -246,7 +246,7 @@ export class BaseLayer implements IMapLayer {
         }
     }
 
-    public parseTitle(f?: Feature) {
+    public parseTitle(f?: Feature) {        
         if (this.style && this.style.title && f) {
             const template = Handlebars.compile(this.style.title);
             return template(f);

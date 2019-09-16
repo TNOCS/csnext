@@ -1,5 +1,5 @@
 <div>
-    <v-toolbar :color="layerColor">
+    <v-toolbar>
         <v-toolbar-title class="feature-details-title"
             >{{ title }}
             <div>
@@ -11,36 +11,41 @@
 
         <v-spacer></v-spacer>
         <v-tooltip bottom v-if="tabs === 'details'">
-            <v-btn
-                @click="filterPropertiesEnabled = !filterPropertiesEnabled"
-                icon
-                v-slot:activator="{ on }"
-            >
-                <v-icon>search</v-icon>
-            </v-btn>
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    @click="filterPropertiesEnabled = !filterPropertiesEnabled"
+                    icon
+                    v-on="on"
+                >
+                    <v-icon>search</v-icon>
+                </v-btn>
+            </template>
             filter details
         </v-tooltip>
         <v-tooltip bottom>
-            <v-btn v-slot:activator="{ on }" icon @click="centerFeature()">
-                <v-icon>map</v-icon>
-            </v-btn>
+            <template v-slot:activator="{ on }">
+                <v-btn v-on="on" icon @click="centerFeature()">
+                    <v-icon>map</v-icon>
+                </v-btn>
+            </template>
             show on map</v-tooltip
         >
-        <v-tabs
-            right
-            color="transparent"
-            slot="extension"
-            v-model="tabs"
-            aligm-with-title
-        >
-            <v-tab href="#details">Details</v-tab>
-            <!-- <v-tab href="#filters">Filter</v-tab> -->
-        </v-tabs>
+        <template v-slot:extension>
+            <v-tabs
+                right
+                v-model="tabs"
+                slider-color="yellow"
+                background-color="transparent"
+            >
+                <v-tab href="#feature-details">Details</v-tab>
+                <!-- <v-tab href="#filters">Filter</v-tab> -->
+            </v-tabs>
+        </template>
     </v-toolbar>
 
     <div style="position:absolute;top:125px;bottom:0;left:0;right:0">
-        <v-tabs-items id="feature-properties-tab" v-model="tabs">
-            <v-tab-item value="details">
+        <v-tabs-items id="feature-properties-tab" v-model="tabs" flat>
+            <v-tab-item value="feature-details">
                 <v-text-field
                     solo
                     v-if="filterPropertiesEnabled"
@@ -55,32 +60,27 @@
                         v-model="sectionsPanels"
                         class="section-expansion-panel"
                     >
-                        <v-expansion-panel>
-                            <v-expansion-panel-content
-                                v-for="section in sections"
+                        <v-expansion-panel v-for="section in sections">
+                            <v-expansion-panel-header
+                                class="feature-section-title"
+                                v-if="sections.length>1"
                             >
+                                {{ section.title }}
+                            </v-expansion-panel-header>
+                            <v-expansion-panel-content>
                                 <div
-                                    slot="header"
-                                    class="feature-section-title"
-                                    v-if="sections.length>1"
+                                    v-for="property in section.properties"
+                                    class="feature-property"
                                 >
-                                    {{ section.title }}
-                                </div>
-                                <div class="section">
                                     <div
-                                        v-for="property in section.properties"
-                                        class="feature-property"
+                                        class="feature-property-key"
+                                        :class="{ 'feature-legend': property.legends.length>0 }"
                                     >
-                                        <div
-                                            class="feature-property-key"
-                                            :class="{ 'feature-legend': property.legends.length>0 }"
-                                        >
-                                            <!-- @click="updateStyle(property)" -->
-                                            {{ property.type.title }}
-                                        </div>
-                                        <div class="feature-property-value">
-                                            {{ property.display }}
-                                        </div>
+                                        <!-- @click="updateStyle(property)" -->
+                                        {{ property.type.title }}
+                                    </div>
+                                    <div class="feature-property-value">
+                                        {{ property.display }}
                                     </div>
                                 </div>
                             </v-expansion-panel-content>

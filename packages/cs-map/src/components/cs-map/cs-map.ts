@@ -234,8 +234,7 @@ export class CsMap extends Vue {
                                                             layer: layer,
                                                             manager: this
                                                                 .manager
-                                                        },
-                                                        datasource: 'project'
+                                                        }
                                                     },
                                                     { open: true },
                                                     'feature'
@@ -287,7 +286,7 @@ export class CsMap extends Vue {
         const center = this.map.getCenter();
         const zoom = this.map.getZoom();
         const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
-        this.$router.replace({ path: this.$route.params[0], query: combined }); //this.$route.query}
+        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => {}); //this.$route.query}
     }
 
     private getStyleUri(styleId: string): string {
