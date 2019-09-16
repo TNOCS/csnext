@@ -165,6 +165,12 @@ export class CsForm extends Vue {
         });
     }
 
+    public fieldTriggered(field: IFormFieldOptions) {
+        if (this.widget.events) {
+        // this.widget.events.publish('trigger', '')
+        }
+    }
+
     public fieldChanged(field: IFormFieldOptions) {
         this.saveForm();
     }

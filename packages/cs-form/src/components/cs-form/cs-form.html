@@ -41,6 +41,7 @@
                             <cs-formfield
                                 :target="Target"
                                 :field="field"
+                                @triggered="fieldTriggered"
                                 @changed="fieldChanged"
                             ></cs-formfield>
                         </v-col>

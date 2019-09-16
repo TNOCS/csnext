@@ -54,7 +54,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'keyvalue'
   | 'form'
   | 'union'
-  | 'keysobject';
+  | 'keysobject'
+  | 'button-trigger';
   defaultValue?: any;
   description?: string;
   required?: boolean;
@@ -70,6 +71,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   canEditKey?: boolean;
   addUsingDialog?: boolean;
   readonly?: boolean;
+  icon?: string;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
 }

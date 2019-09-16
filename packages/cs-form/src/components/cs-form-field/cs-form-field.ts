@@ -30,6 +30,15 @@ export class CsFormField extends Vue {
 
     }
 
+    @Emit()
+    triggered(field: IFormFieldOptions) {
+
+    }
+
+    public triggerClick(field: IFormFieldOptions) {
+        this.triggered(field);
+    }
+
 
     private rules: {[key: string]: Function} = {
         required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
