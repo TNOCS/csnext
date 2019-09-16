@@ -233,11 +233,13 @@ export class CsTimeline extends Vue {
 
         }
 
+        options.timelineOptions = { ...{ locale: 'en'}, ...options.timelineOptions};
+
         this.timeline = new Timeline(
             container,
             this.items as DataItem[],
             this.groups,
-            options.timelineOptions || {}
+            options.timelineOptions
         );
         this.setTimelineEvents();
     }
