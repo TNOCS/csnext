@@ -50,7 +50,7 @@ export class CsDashboard extends Vue {
 
   public selectStepperDashboard(dashboard: IDashboard) {
     if (this.$router && dashboard.path) {
-      this.$router.push(dashboard.path);
+      this.$router.push(dashboard.path).catch(err => {});
     }
   }
 

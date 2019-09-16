@@ -292,7 +292,7 @@ export class CsApp extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (router && d.path && !d.dashboards) {
-      router.push(d.path);
+      router.push(d.path).catch(err => {})
     }
   }
 

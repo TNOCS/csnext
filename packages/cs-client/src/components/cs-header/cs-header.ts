@@ -116,7 +116,7 @@ export class CsHeader extends Vue {
         // window.location.replace(dashboard.url);
         window.open(dashboard.url, '_blank');
       } else if (dashboard.path) {
-        this.$router.push(dashboard.path);
+        this.$router.push(dashboard.path).catch(err => {});
       }
     }
   }
