@@ -122,7 +122,7 @@ export class CsTimeline extends Vue {
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                // item.content = this.smallView ? '' : item.content;
+                item.content = this.smallView ? '' : item.content;
                 item.style = "height:" + height;
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
