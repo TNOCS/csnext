@@ -71,16 +71,16 @@
     <v-list class="cs-sidebar-list">
       <v-list-group
         v-for="item in app.project.dashboards"
-        :value="item.active"
+        value="true"
         v-show="!item.hideFromNavigation"
         no-action
         v-bind:key="item.path"
         :append-icon="!sideBar.mini && item.dashboards ? undefined : ''"
       >
-        <v-list-item slot="activator">
+        <v-list-item slot="activator" class="sidebar-menu-list-item">
           <v-list-item-action>
             <v-menu
-              content-class="sidebar"
+              content-class="sidebar"     
               v-if=""
               :open-on-hover="!!sideBar.mini && !!item.dashboards"
               :nudge-width="200"

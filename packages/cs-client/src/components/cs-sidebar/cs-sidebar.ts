@@ -28,7 +28,7 @@ export class CsSidebar extends Vue {
         }
       }
 
-      this.$forceUpdate();
+      // this.$forceUpdate();
     });
   }
 

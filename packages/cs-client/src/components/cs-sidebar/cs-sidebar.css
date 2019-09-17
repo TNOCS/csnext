@@ -31,6 +31,24 @@
   white-space: pre-line;
 }
 
+.v-application--is-ltr .v-list-item__action:first-child {
+  margin-right: 14px !important;
+  
+}
+
+.sidebar-menu-list-item {
+  padding: 0 !important;
+}
+
+.v-application--is-ltr .v-list-group--no-action>.v-list-group__items>div>.v-list-item {
+  padding-left:58px !important;
+}
+
+.v-list-group--active>.v-list-group__header .v-list-group__header__prepend-icon .v-icon>.v-list-group__header .v-list-item, .v-list-group__header .v-list-item__content
+{
+  font-weight: 600;
+}
+
 /* .list__group__header__append-icon {
   display:none;
 } */
