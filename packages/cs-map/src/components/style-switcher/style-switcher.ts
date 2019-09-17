@@ -15,7 +15,7 @@ export class MapboxStyleSwitcherControl implements IControl
 {
     private static readonly DEFAULT_STYLE = "Streets";
     public static readonly DEFAULT_STYLES = [
-        { id: "basic", title: "Basic", uri:"mapbox://styles/mapbox/Basic-v9"},
+        { id: "basic", title: "Basic", uri:"mapbox://styles/mapbox/basic-v9"},
         { id: "dark", title: "Dark", uri:"mapbox://styles/mapbox/dark-v9"},
         { id: "light", title: "Light", uri:"mapbox://styles/mapbox/light-v9"},
         { id: "outdoors", title: "Outdoors", uri:"mapbox://styles/mapbox/outdoors-v10"},
