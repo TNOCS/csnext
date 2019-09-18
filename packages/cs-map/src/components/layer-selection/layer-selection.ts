@@ -83,6 +83,7 @@ export class LayerSelection extends Vue {
     public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
         this.groupsexpanded = [];
+        
         if (this.MapManager && this.MapManager.layers) {
             this.MapManager.layers.forEach(l => {
                 if (l.title) {

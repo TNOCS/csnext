@@ -1,6 +1,6 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator } from '@csnext/cs-core';
+import { IWidget, guidGenerator, MessageBusService, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
 import mapboxgl, { CirclePaint, LngLat, MapboxOptions } from 'mapbox-gl';
@@ -28,7 +28,9 @@ import {
     IStartStopService,
     ILayerExtensionType,
     GeojsonPlusLayer,
-    FeatureDetails
+    FeatureDetails,
+    LayerSelection,
+    LayerSelectionOptions
 } from '../../.';
 import { GridControl } from '../grid-control/grid-control';
 
@@ -64,6 +66,7 @@ export class CsMap extends Vue {
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
     public static layerExtensions: ILayerExtensionType[] = [];
+    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
 
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
@@ -125,6 +128,17 @@ export class CsMap extends Vue {
         if (!this.widget) {
             return;
         }
+    }
+
+    public beforeDestroy() {
+        for (const key in this.busHandlers) {
+            if (this.busHandlers.hasOwnProperty(key)) {
+                const element = this.busHandlers[key];
+                element.bus.unsubscribe(element.handle);
+                
+            }
+        }
+        
     }
 
     public zoomLayer(mapLayer: IMapLayer, padding = 20) {
@@ -215,35 +229,40 @@ export class CsMap extends Vue {
 
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
-                                layer._events.subscribe(
-                                    'feature',
-                                    (a: string, f: FeatureEventDetails) => {
-                                        if (a === CsMap.FEATURE_SELECT) {
-                                            if (
-                                                this.$cs &&
-                                                layer.openFeatureDetails &&
-                                                layer.openFeatureDetails ===
-                                                true
-                                            ) {
+                                this.busHandlers['layer-activated'] = {
+                                    bus: layer._events, handle: layer._events.subscribe(
+                                        'feature',
+                                        (a: string, f: FeatureEventDetails) => {
+                                            if (a === CsMap.FEATURE_SELECT) {
+                                                if (
+                                                    this.$cs &&
+                                                    layer.openFeatureDetails &&
+                                                    layer.openFeatureDetails ===
+                                                    true
+                                                ) {
 
-                                                this.$cs.OpenRightSidebarWidget(
-                                                    {
-                                                        component: FeatureDetails,
-                                                        data: {
-                                                            feature: f.feature,
-                                                            layer: layer,
-                                                            manager: this
-                                                                .manager
-                                                        }
-                                                    },
-                                                    { open: true },
-                                                    'feature'
-                                                );
+                                                    this.$cs.OpenRightSidebarWidget(
+                                                        {
+                                                            component: FeatureDetails,
+                                                            data: {
+                                                                feature: f.feature,
+                                                                layer: layer,
+                                                                manager: this
+                                                                    .manager
+                                                            }
+                                                        },
+                                                        { open: true },
+                                                        'feature'
+                                                    );
+                                                }
                                             }
                                         }
-                                    }
-                                );
+
+                                    )
+                                }
+
                             }
+
                         }
                         resolve(layer);
                     }
@@ -276,7 +295,7 @@ export class CsMap extends Vue {
         }
         if (q.hasOwnProperty('style')) {
             const styleId = q['style'] as string;
-            this.options.style = styleId;            
+            this.options.style = styleId;
             options.style = this.getStyleUri(styleId);
         }
         return options;
@@ -286,16 +305,17 @@ export class CsMap extends Vue {
         const center = this.map.getCenter();
         const zoom = this.map.getZoom();
         const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
-        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => {}); //this.$route.query}
+        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => { }); //this.$route.query}
     }
 
     private getStyleUri(styleId: string): string {
         const style = this.styles.find(s => s.id === styleId);
-        if (style) {            
+        if (style) {
             return style.uri;
         }
         return "";
     }
+
 
     public mounted() {
 
@@ -369,11 +389,14 @@ export class CsMap extends Vue {
             // subscribe to widget events
             if (this.widget.events) {
                 // check if widget has been resized
-                this.widget.events.subscribe('resize', () => {
-                    Vue.nextTick(() => {
-                        this.map.resize();
-                    });
-                });
+                this.busHandlers['map-resize'] = {
+                    bus: this.widget.events, handle: this.widget.events.subscribe('resize', () => {
+                        Vue.nextTick(() => {
+                            this.map.resize();
+                        });
+
+                    })
+                }
             }
 
             if (this.mapOptions.showDraw) {
@@ -954,13 +977,16 @@ export class CsMap extends Vue {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        l._events.subscribe(
-                            'feature',
-                            (a: string, f: Feature) => {
-                                if (a === CsMap.FEATURE_SELECT) {
-                                }
-                            }
-                        );
+                        this.busHandlers['layer-events-' + l.id] = {
+                            bus: l._events, handle:
+                                l._events.subscribe(
+                                    'feature',
+                                    (a: string, f: Feature) => {
+                                        if (a === CsMap.FEATURE_SELECT) {
+                                        }
+                                    }
+                                )
+                        }
                     }
                 });
             }
@@ -1030,13 +1056,15 @@ export class CsMap extends Vue {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        l._events.subscribe(
-                            'feature',
-                            (a: string, f: Feature) => {
-                                if (a === CsMap.FEATURE_SELECT) {
+                        this.busHandlers['layer-feature-' + l.id] = {
+                            bus: l._events, handle: l._events.subscribe(
+                                'feature',
+                                (a: string, f: Feature) => {
+                                    if (a === CsMap.FEATURE_SELECT) {
+                                    }
                                 }
-                            }
-                        );
+                            )
+                        }
                     }
                 });
 
@@ -1081,6 +1109,19 @@ export class CsMap extends Vue {
         if (this.manager && this.manager.events) {
             this.manager.events.publish('map', 'loaded', e);
         }
+
+        this.$cs.OpenRightSidebarWidget(
+            {
+                component: LayerSelection,
+                options: {
+                    class: 'form-rightbar-widget',
+                    searchEnabled: true
+                } as LayerSelectionOptions,
+                datasource: this.widget.datasource
+            },
+            { open: false },
+            'layers'
+        );
 
         // this.map.addSource('mask',);
 

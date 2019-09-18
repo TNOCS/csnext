@@ -120,6 +120,7 @@ export class MapLayers implements IDatasource {
                 // check if not already subscribed to features events
                 if (ml._events && !ml._featureEventHandle) {
                     // if not subscribe
+                    
                     ml._featureEventHandle = ml._events.subscribe(
                         'feature',
                         (a: string, f: Feature) => {
