@@ -3,7 +3,7 @@
     "version": "0.0.123",
     "description": "cs-log",
     "main": "./lib/cslog.cs.js",
-    "types": "./dist/index.d.ts",
+    "types": "./dist/src/index.d.ts",
     "url": "https://github.com/TNOCS/cs-log",
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",
