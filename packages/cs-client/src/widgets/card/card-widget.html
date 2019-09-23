@@ -1,0 +1,21 @@
+<template>
+  <v-img :src="card.backgroundImage" style="height: calc(100% - 80px)"></v-img>
+
+  <v-card-title primary-title>
+    <div>
+      <h3 class="headline mb-0">{{ card.title }}</h3>
+      <div></div>
+    </div>
+  </v-card-title>
+
+  <v-card-actions v-if="card.actions">
+    <template v-for="action in card.actions">
+      <v-btn v-if="action.route" :to="action.route" text color="orange">{{
+        action.title
+      }}</v-btn>
+      <v-btn v-else :href="action.url" text color="orange">{{
+        action.title
+      }}</v-btn>
+    </template>
+  </v-card-actions>
+</template>
