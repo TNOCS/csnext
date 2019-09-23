@@ -33,6 +33,7 @@ import {
     LayerSelectionOptions
 } from '../../.';
 import { GridControl } from '../grid-control/grid-control';
+import { WidgetBase } from '@csnext/cs-client';
 
 export interface FeatureEventDetails {
     context: any;
@@ -44,7 +45,7 @@ export interface FeatureEventDetails {
 @Component({
     template: require('./cs-map.html')
 })
-export class CsMap extends Vue {
+export class CsMap extends WidgetBase {
 
     public static FEATURE_SELECT = 'select';
     public static FEATURE_CREATED = 'created';

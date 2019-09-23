@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "@types/node": "^12.7.2",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "@types/socket.io-client": "^1.4.32"
   },
   "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

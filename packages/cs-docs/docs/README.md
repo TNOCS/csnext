@@ -8,8 +8,6 @@ features:
   details: Feature 1
 - title: Feature 2
   details: Feature 2
-- title: Feature 3
-  details: Feature 3
 footer: MIT Licensed | Copyright © 2018-present Arnoud de Jong
 ---
 

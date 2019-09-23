@@ -83,19 +83,19 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
   let pl = []; //new HardSourceWebpackPlugin()
   pl.push(new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]));
 
-  if (analyzer) {
-    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-      .BundleAnalyzerPlugin;
-    pl.push(
+  // if (analyzer) {
+  //   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  //     .BundleAnalyzerPlugin;
+  //   pl.push(
       
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        openAnalyzer: false,
-        reportFilename: 'reports/report.' + analyzer + '.html',
-        generateStatsFile: false
-      })
-    );
-  }
+  //     new BundleAnalyzerPlugin({
+  //       analyzerMode: 'static',
+  //       openAnalyzer: false,
+  //       reportFilename: 'reports/report.' + analyzer + '.html',
+  //       generateStatsFile: false
+  //     })
+  //   );
+  // }
 
   return (baseConfig = {
     entry: entry,
