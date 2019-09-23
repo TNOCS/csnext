@@ -1,22 +1,24 @@
 <v-app-bar
   v-if="!$cs.project.header.hideToolbar"
-  :floating="$cs.project.navigation.floating"
-  :class="{'floating-toolbar': $cs.project.navigation.floating}"
+  :floating="$cs.project.header.floating"
+  :class="{'floating-toolbar': $cs.project.header.floating}"
   id="main-toolbar"
   :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"
   :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
+  :flat="$cs.project.header.flat"
   app
   :dense="$cs.project.header.dense"
+  :elevation="$cs.project.header.elevation"
 >
   <!-- header -->
   <v-app-bar-nav-icon
-    v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent"
-    class="header-icon"
+    v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent && !$cs.project.header.hideMenuToggle"
+    class="header-icon"    
     @click="leftSidebar.open = !leftSidebar.open"
   ></v-app-bar-nav-icon>
   <!-- :style="{color:$cs.project.theme.colors.menu}" -->
   <img
-    v-if="$cs.project.header.logo"
+    v-if="$cs.project.header.logo && !$cs.project.header.hideLogo"
     :src="$cs.project.header.logo"
     class="app-project-logo"
   />
@@ -26,7 +28,7 @@
       <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}">
         <v-toolbar-title
           class="header-title"
-          v-if="!$cs.project.navigation.hideTitle"
+          v-if="!$cs.project.header.hideTitle"
         >
           {{ $cs.Translate($cs.project.header.title) }}</v-toolbar-title
         >
@@ -58,31 +60,36 @@
   <!-- tabs -->
 
   <v-tabs
-    v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style)"
-    color="primary"
+    :centered="$cs.project.header.tabsCentered"
+    :grow="$cs.project.header.tabsGrow"
+    :right="$cs.project.header.tabsRight"
+    background-color="transparent"
+    :hide-slider="$cs.project.header.tabsHideSlider"
+    v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style)"    
     class="cs-navigation-tabbar"
+    
   >
     <v-tab
       v-for="dashboard in $cs.project.dashboards"
-      @click="openDashboard(dashboard)"
-      :style="{color:$cs.project.theme.colors.headerColor}"
+      
+      @click="openDashboard(dashboard)"      
       router
       :key="dashboard.id"
       :to="{path:dashboard.path}"
     >
       <v-menu
         v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style) && dashboard.dashboards"
-        bottom
+        offset-y
         open-on-hover
       >
         <template v-slot:activator="{ on }">
-          <a class="v-tabs__item">
+          <a class="v-tabs__item" v-on="on">
             {{ $cs.Translate(dashboard.title) }}
             <v-icon>arrow_drop_down</v-icon>
           </a>
         </template>
 
-        <v-list class="grey lighten-3">
+        <v-list>
           <v-list-item
             v-for="subdash in dashboard.dashboards"
             :key="subdash.id"
@@ -121,7 +128,7 @@
     :nudge-width="200"
     v-model="showNotifications"
   >
-    <v-badge v-slot:activator="{ on }" color="red" overlap>
+    <v-badge v-slot:activator="{ on }" overlap>
       <span v-if="unReadNotifications.length>0" slot="badge">{{
         unReadNotifications.length
       }}</span>

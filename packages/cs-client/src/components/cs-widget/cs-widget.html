@@ -1,59 +1,77 @@
-<v-layout
-  column
+<v-card
+  :elevation="options.elevation"
+  :flat="options.flat"
+  :outlined="options.outlined"
+  stle="background-color=transparent; height: 100% !important"
+  :color="options.backgroundColor"
+  v-resize:debounce.50="onResize"
   @mouseenter="mouseEnter()"
   v-if="widget"
-  v-show="widget.options && !widget.options.hide"
+  v-show="options && !options.hide"
   @mouseleave="mouseLeave()"
   class="widget-container"
-  :class="[widget.options.class, widgetBorder]"
-  ref="widget"
-  v-resize:debounce.50="onResize"
+  :class="[widgetBorder]"
 >
-  <v-toolbar dense flat v-if="widget.options.showToolbar">
-    <v-toolbar-title>{{ $cs.Translate(widget.options.title) }}</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <v-menu
-      v-for="menu in widget.options.menus"
-      :key="menu.id"
-      v-if="menu.visible"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
-          <v-icon>{{ menu.icon }}</v-icon>
-        </v-btn>
-      </template>
-    </v-menu>
-  </v-toolbar>
-  <component
-    :is="widget.component"
-    :widget="widget"
-    class="widget-default"
-    :style="widgetStyles()"
-  ></component>
-  <div
-    v-if="!widget.options.showToolbar && widget.options.menus"
-    class="widget-buttons-container"
+  <v-layout
+    class="widget-container"
+    column
+    :class="[options.class]"
+    ref="widget"
   >
-    <v-menu
-      v-for="menu in widget.options.menus"
-      :key="menu.id"
-      :close-on-content-click="false"
-      v-if="menu.visible"
-      offset-y
+    <v-toolbar
+      v-if="options.showToolbar"
+      :elevation="options.toolbarOptions.elevation"
+      :dense="options.toolbarOptions.dense"
+      :flat="options.toolbarOptions.flat"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <!-- <v-tooltip bottom :disabled="!menu.toolTip">
+      <v-icon v-if="options.icon && !options.toolbarOptions.hideIcon">{{
+        options.icon
+      }}</v-icon>
+      <v-toolbar-title v-if="!options.toolbarOptions.hideTitle">{{
+        $cs.Translate(options.title)
+      }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu v-for="menu in options.menus" :key="menu.id" v-if="menu.visible">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
+            <v-icon>{{ menu.icon }}</v-icon>
+          </v-btn>
+        </template>
+      </v-menu>
+    </v-toolbar>
+    <div ref="component" style="height: 100%" >
+      <component
+        :is="widget.component"
+        :widget="widget"
+        class="widget-default"
+        :style="widgetStyles()"
+      ></component>
+    </div>
+    <div
+      v-if="!options.showToolbar && options.menus"
+      class="widget-buttons-container"
+    >
+      <v-menu
+        v-for="menu in options.menus"
+        :key="menu.id"
+        :close-on-content-click="false"
+        v-if="menu.visible"
+        offset-y
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <!-- <v-tooltip bottom :disabled="!menu.toolTip">
           <template v-slot:activator="{ on }"> -->
-            <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
-              <v-icon>{{ menu.icon }}</v-icon>
-            </v-btn>
+          <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
+            <v-icon>{{ menu.icon }}</v-icon>
+          </v-btn>
           <!-- </template>
           {{ $cs.Translate(menu.toolTip) }}
         </v-tooltip> -->
-      </template>
-      <v-card v-if="menu.component" style="z-index: 1000">
-        <component :is="menu.component" :data="menu.data"></component>
-      </v-card>
-    </v-menu>
-  </div>
-</v-layout>
+        </template>
+        <v-card v-if="menu.component" style="z-index: 1000">
+          <component :is="menu.component" :data="menu.data"></component>
+        </v-card>
+      </v-menu>
+    </div>
+  </v-layout>
+</v-card>

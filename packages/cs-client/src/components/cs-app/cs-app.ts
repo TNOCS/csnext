@@ -28,6 +28,7 @@ const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 import { CsLoading } from '../cs-loader/cs-loader';
+import 'simplebar/dist/simplebar.css';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);

@@ -1,33 +1,71 @@
-<v-app v-resize="onResize" v-if="$cs.isInitialized" :dark="$cs.project.theme.dark" :light="!$cs.project.theme.dark">
+<v-app
+  v-resize="onResize"
+  v-if="$cs.isInitialized"
+  :dark="$cs.project.theme.dark"
+  :light="!$cs.project.theme.dark"
+>
   <!--  -->
   <!-- <cs-loading></cs-loading> -->
-  <cs-header :leftSidebar="leftSidebar" :rightSidebar="rightSidebar"></cs-header>
+  <cs-header
+    :leftSidebar="leftSidebar"
+    :rightSidebar="rightSidebar"
+  ></cs-header>
 
   <!-- side bars -->
-  <cs-sidebar v-if="leftSidebar.visible" id="left-sidebar" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
-  <cs-sidebar v-if="rightSidebar.visible" id="right-sidebar" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
+  <cs-sidebar
+    v-if="leftSidebar.visible"
+    id="left-sidebar"
+    class="sidebar"
+    :sideBar="leftSidebar"
+  ></cs-sidebar>
+  <cs-sidebar
+    v-if="rightSidebar.visible"
+    id="right-sidebar"
+    class="sidebar"
+    :sideBar="rightSidebar"
+  ></cs-sidebar>
 
   <!-- dialogs -->
-  <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" no-click-animation :persistent="dialog.persistent"
-    :width="dialog.width" transition="dialog-bottom-transition">
+  <v-dialog
+    v-model="dialog.visible"
+    :fullscreen="dialog.fullscreen"
+    no-click-animation
+    :persistent="dialog.persistent"
+    :width="dialog.width"
+    transition="dialog-bottom-transition"
+  >
     <v-card tile>
       <v-toolbar card color="primary" v-if="dialog.toolbar">
-        <v-btn v-if="!dialog.persistent" icon @click.native="dialog.visible = false">
+        <v-btn
+          v-if="!dialog.persistent"
+          icon
+          @click.native="dialog.visible = false"
+        >
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
       <v-card-text>
-        <component v-if="dialog.component" :is="dialog.component" :data="dialog.data"></component>
+        <component
+          v-if="dialog.component"
+          :is="dialog.component"
+          :data="dialog.data"
+        ></component>
         <div v-if="dialog.text">
-          <span v-html="dialog.text"></span></div>
+          <span v-html="dialog.text"></span>
+        </div>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions v-if="dialog.actions && dialog.actions.length>0">
         <v-spacer></v-spacer>
-        <v-btn v-for="action in dialog.actions" :key="action" text @click="actionCallback(action)">
-          {{action}}
+        <v-btn
+          v-for="action in dialog.actions"
+          :key="action"
+          text
+          @click="actionCallback(action)"
+        >
+          {{ action }}
         </v-btn>
       </v-card-actions>
       <div style="flex: 1 1 auto;"></div>
@@ -35,15 +73,28 @@
   </v-dialog>
 
   <!-- content -->
-  <v-content fluid v-bind:class="{ 'floating': $cs.project.navigation.floating }"
-    v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">
+  <v-content
+    fluid 
+    v-bind:class="{ 'floating': $cs.project.header.floating }"
+    v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
+  >
     <router-view :key="$route.path"> </router-view>
   </v-content>
 
   <!-- mobile navigation -->
-  <v-bottom-nav app router v-if="$cs.project.navigation.style==='bottom'" :value="true">
-    <v-btn v-for="dashboard in $cs.project.dashboards" :key="dashboard.id" color="teal" text
-      :to="{path:dashboard.pathLink}">
+  <v-bottom-nav
+    app
+    router
+    v-if="$cs.project.navigation.style==='bottom'"
+    :value="true"
+  >
+    <v-btn
+      v-for="dashboard in $cs.project.dashboards"
+      :key="dashboard.id"
+      color="teal"
+      text
+      :to="{path:dashboard.pathLink}"
+    >
       <span>{{ dashboard.title }}</span>
       <v-icon>{{ dashboard.icon }}</v-icon>
     </v-btn>
@@ -52,10 +103,15 @@
   <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
 
   <!-- snackbar -->
-  <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" v-model="lastNotification._visible">
+  <v-snackbar
+    :timeout="lastNotification.timeout"
+    :top="true"
+    :multi-line="true"
+    v-model="lastNotification._visible"
+  >
     {{ $cs.Translate(lastNotification.title) }}
-    <v-btn text
-      @click.native="clickNotification()">
-      {{$cs.Translate(lastNotification.buttonText)}}</v-btn>
+    <v-btn text @click.native="clickNotification()">
+      {{ $cs.Translate(lastNotification.buttonText) }}</v-btn
+    >
   </v-snackbar>
 </v-app>

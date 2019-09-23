@@ -1,6 +1,7 @@
 import {
   AppTheme,
   IHeaderOptions,
+  HeaderOptions,
   IFooterOptions,
   IDatasource,
   IDashboard,
@@ -18,16 +19,17 @@ import {
 export interface IProject {
   id?: string;
   title?: string;
-  logo?: string;
+  logo?: string;  
   navigation?: NavigationOptions;
   user?: IUserOptions;
   footer?: IFooterOptions;
   datasources?: { [id: string]: IDatasource | any };
+  /** list of dashboards */
   dashboards?: IDashboard[];
   leftSidebar?: ISidebarOptions;
   rightSidebar?: ISidebarOptions;
   theme?: AppTheme;
-  header?: IHeaderOptions;
+  header?: HeaderOptions;
   notifications?: INotificationOptions;
   menus?: IMenu[];
   languages?: ILanguageOptions;

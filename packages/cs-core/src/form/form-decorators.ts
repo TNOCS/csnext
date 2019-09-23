@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 export interface IFormOptions {
-  title: string;
+  title?: string;
   fields?: IFormFieldOptions[];
   saveButton?: boolean;
   isPanel?: boolean;

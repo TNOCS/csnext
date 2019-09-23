@@ -5,11 +5,15 @@ import {
   IMenu,
   MessageBusService,
   MessageBusHandle,
-  guidGenerator
+  guidGenerator,
+  WidgetOptions
 } from '@csnext/cs-core';
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
 import { AppState } from '../..';
+import { Prop } from 'vue-property-decorator';
+
+
 
 @Component({
   name: 'cs-widget',
@@ -23,17 +27,34 @@ export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
+  private _options?: WidgetOptions;
+
+  public get options(): WidgetOptions {
+    if (this._options) return this._options;
+    if (!this.widget) return {};
+    if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
+      this._options = { ...this.widget._dashboard.defaultWidgetOptions, ...this.widget.options };
+    } else if (this.widget.options) {
+      this._options = this.widget.options;
+    } else {
+      this._options = {};
+    }
+    return this._options;
+  };
+
   public $refs!: {
     widget: HTMLElement;
+    component: HTMLElement;
   };
 
   private dsHandle?: MessageBusHandle;
-
 
   constructor() {
     super();
     this.initWidget();
   }
+
+
 
   public updateSize(trigger = true) {
     if (!this.widget || !this.widget.events) {
@@ -42,7 +63,9 @@ export class CsWidget extends Vue {
     if (this.$refs.widget) {
       this.widget._size = {
         width: this.$refs.widget.clientWidth,
-        height: this.$refs.widget.clientHeight
+        height: this.$refs.widget.clientHeight,
+        componentWidth: this.$refs.component.clientWidth,
+        componentHeight: this.$refs.component.clientHeight
       };
     }
     if (trigger) {
@@ -58,33 +81,42 @@ export class CsWidget extends Vue {
     if (!this.widget) {
       return;
     }
+    return this.options.widgetBorder;
 
-    if (this.widget.options && this.widget.options.widgetBorder) {
-      return this.widget.options.widgetBorder;
-    } else if (
-      this.widget._dashboard &&
-      this.widget._dashboard.defaultWidgetOptions &&
-      this.widget._dashboard.defaultWidgetOptions.widgetBorder
-    ) {
-      return this.widget._dashboard.defaultWidgetOptions.widgetBorder;
-    }
+    // if (this.widget.options && this.widget.options.widgetBorder) {
+    //   return this.widget.options.widgetBorder;
+    // } else if (
+    //   this.widget._dashboard &&
+    //   this.widget._dashboard.defaultWidgetOptions &&
+    //   this.widget._dashboard.defaultWidgetOptions.widgetBorder
+    // ) {
+    //   return this.widget._dashboard.defaultWidgetOptions.widgetBorder;
+    // }
   }
 
   public widgetStyles(): any {
     const res: any = {};
-    if (
-      this.widget &&
-      this.widget._dashboard &&
-      this.widget._dashboard.defaultWidgetOptions
-    ) {
-      const opt = this.widget._dashboard.defaultWidgetOptions;
-      if (opt.height) {
-        res['max-height'] = opt.height + 'px';
-      }
-      if (this.widget.options && this.widget.options.showToolbar) {
-        res.height = 'calc(100% - 30px)';
-      }
+    const opt = this.options;
+    if (opt.height) {
+      res['max-height'] = opt.height + 'px';
     }
+    if (this.options && this.options.showToolbar) {
+      res.height = 'calc(100% - 30px)';
+    }
+
+    // if (
+    //   this.widget &&
+    //   this.widget._dashboard &&
+    //   this.widget._dashboard.defaultWidgetOptions
+    // ) {
+    //   const opt = this.widget._dashboard.defaultWidgetOptions;
+    //   if (opt.height) {
+    //     res['max-height'] = opt.height + 'px';
+    //   }
+    //   if (this.widget.options && this.widget.options.showToolbar) {
+    //     res.height = 'calc(100% - 30px)';
+    //   }
+    // }
     return res;
   }
 
@@ -123,6 +155,10 @@ export class CsWidget extends Vue {
     if (!this.widget.options) {
       this.widget.options = {};
     }
+
+
+
+
     if (!this.widget.data) {
       this.widget.data = {};
     }
