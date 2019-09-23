@@ -166,9 +166,9 @@ export class CsForm extends Vue {
     }
 
     public fieldTriggered(field: IFormFieldOptions) {
-        if (this.widget.events) {
-        // this.widget.events.publish('trigger', '')
-        }
+        if (this.Form.triggerCallback && this.Target) {
+            this.Form.triggerCallback(this.Target, field);
+        }   
     }
 
     public fieldChanged(field: IFormFieldOptions) {

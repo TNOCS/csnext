@@ -12,6 +12,7 @@ export interface IFormOptions {
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
   keyValuesType?(): object;
+  triggerCallback?(obj: object, field: IFormFieldOptions): undefined;
 }
 
 export interface IFormObject {
@@ -74,6 +75,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   icon?: string;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
+  triggerCallback?(obj: object, field: IFormFieldOptions);
 }
 
 export function Form(options: IFormOptions) {

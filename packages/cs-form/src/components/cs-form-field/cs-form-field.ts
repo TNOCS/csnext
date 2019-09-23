@@ -36,6 +36,9 @@ export class CsFormField extends Vue {
     }
 
     public triggerClick(field: IFormFieldOptions) {
+        if (field.triggerCallback && this.target) {
+            field.triggerCallback(this.target, field);
+        }   
         this.triggered(field);
     }
 
