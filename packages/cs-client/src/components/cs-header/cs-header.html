@@ -25,13 +25,11 @@
 
   <v-menu open-on-hover bottom class="header-title-menu">
     <template v-slot:activator="{ on }">
-      <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}">
-        <v-toolbar-title
-          class="header-title"
-          v-if="!$cs.project.header.hideTitle"
-        >
-          {{ $cs.Translate($cs.project.header.title) }}</v-toolbar-title
-        >
+      
+      <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}" class="header-title-menu-activator">
+        <div class="header-title" v-if="!$cs.project.navigation.hideTitle">
+          {{ $cs.Translate($cs.project.header.title) }}
+        </div>
         <v-breadcrumbs
           class="header-breadcrumbs"
           v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense"
@@ -259,7 +257,7 @@
         small
         @click="openRightSidebar(key)"
       >
-        <template v-if="item.badgeType!=='none'">
+        <template v-if="item.badgeType && item.badgeType!=='none'">
           <v-badge overlap :color="item.badgeColor">
             <template v-if="item.badgeType==='icon'" v-slot:badge>
               <v-icon>

@@ -1,3 +1,7 @@
+.sidebar-dashboard-container {
+  height: 100%;
+}
+
 .leftsidebar-pin {
   float: right;
   margin: 4px;

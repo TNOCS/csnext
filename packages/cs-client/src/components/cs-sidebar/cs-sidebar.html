@@ -14,6 +14,7 @@
   app
   overflow
   stateless
+  class="cs-nav-drawer"
 >
   <v-toolbar v-if="sideBar.title">
     <v-list dense>
@@ -37,17 +38,14 @@
       <v-icon small v-if="!sideBar.mini">keyboard_arrow_left</v-icon>
     </v-btn>
   </div>
-
   <v-divider v-if="sideBar.title"></v-divider>
-  <div v-if="sideBar.component">
+  <div v-if="sideBar.component" class="sidebar-component-container">
     <component :is="sideBar.component"></component>
   </div>
-  <div v-if="sideBar.dashboard">
+  <div v-if="sideBar.dashboard" class="sidebar-dashboard-container">
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
-  <div
-    v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right"
-  >
+  <div v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right">
     <v-list>
       <v-list-item
         v-for="item in app.project.dashboards"

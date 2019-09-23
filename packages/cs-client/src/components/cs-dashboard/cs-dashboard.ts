@@ -115,9 +115,8 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.dashboards) {
-      this.selectedTab = dashboard.parent.dashboards.indexOf(dashboard);
+      this.selectedTab = dashboard.parent.dashboards.findIndex(d => dashboard.title === d.title);
       this.selectedStepper = this.selectedTab + 1;
-
     }
 
     if (this.$cs.project.menus && dashboard.isMain) {

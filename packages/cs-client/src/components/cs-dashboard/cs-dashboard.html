@@ -1,5 +1,5 @@
-<v-layout column class="cs-dashboard">
-  <v-flex shrink>
+<v-col class="cs-dashboard-col pa-0">
+  <v-flex shrink class="dashboard-toolbar-flex">
     <v-toolbar
       :dense="denseToolbar()"
       text
@@ -76,7 +76,7 @@
     </v-toolbar>
   </v-flex>
 
-  <v-flex grow
+  <v-flex grow class="dashboard-toolbar-flex"
     ><!-- https://stackoverflow.com/questions/14962468/flexbox-and-vertical-scroll-in-a-full-height-app-using-newer-flexbox-api -->
     <component
       v-show="!dashboard._loading"
@@ -90,4 +90,4 @@
   <div v-if="dashboard.showLoadAnimation && dashboard._loading">
     {{ $t('IS_LOADING') }}
   </div>
-</v-layout>
+</v-col>
