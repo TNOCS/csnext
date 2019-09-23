@@ -3,6 +3,11 @@
     height: 100%;
 }
 
+.v-input--checkbox {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
 .form-title {
     font-weight: 600;
     font-size: 125%;
