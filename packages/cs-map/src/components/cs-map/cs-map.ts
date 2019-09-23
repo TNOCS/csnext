@@ -62,6 +62,7 @@ export class CsMap extends WidgetBase {
     public static DRAWLAYER = 'drawlayer';
     public static MAP_DOUBLE_CLICK = 'map.doubleclick';
     public static MAP_CLICK = 'map.click';
+    public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
 
     public static layerTypes: IMapLayerType[] = [];
@@ -1108,7 +1109,7 @@ export class CsMap extends WidgetBase {
         }
         if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
         if (this.manager && this.manager.events) {
-            this.manager.events.publish('map', 'loaded', e);
+            this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
 
         this.$cs.OpenRightSidebarWidget(
