@@ -1,6 +1,8 @@
 import { MessageBusHandle, IMessageBusCallback } from './message-bus-handle';
+import { guidGenerator } from '../guid';
 
 export interface IMessageBusService {
+  id: string;
   publish(topic: string, title: string, data?: any): void;
   subscribe(topic: string, callback: IMessageBusCallback): MessageBusHandle;
   unsubscribe(handle: MessageBusHandle);
@@ -12,10 +14,10 @@ export interface IMessageBusService {
 export class MessageBusService implements IMessageBusService {
   private cache: { [topic: string]: IMessageBusCallback[] } = {};
   private confirms: any[] = [];
-  private id: number;
+  public id: string;
 
   constructor() {
-    this.id = new Date().getTime();
+    this.id = guidGenerator();
   }
 
   /**
