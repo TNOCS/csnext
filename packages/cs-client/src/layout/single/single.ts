@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { IWidget, IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
-import { Logger, CsWidget, AppState, LayoutManager } from '../../';
+import { LayoutManager } from '../../';
 import './single.css';
 
 @Component({
@@ -15,7 +15,8 @@ import './single.css';
 export class Single extends Vue {
   public dashboard?: IDashboard;
   public widgetAvailable = false;
-  private widget: IWidget | undefined;
+  public static id = 'single';
+  public widget?: IWidget;
 
   public created() {
     if (!this.dashboard || !this.dashboard.widgets || this.dashboard.widgets.length === 0) { return; }
@@ -24,4 +25,4 @@ export class Single extends Vue {
   }
 
 }
-LayoutManager.add({ id: 'single', name: 'single page', component: Single } as ILayoutManagerConfig);
+LayoutManager.add({ id: Single.id, name: 'single page', component: Single } as ILayoutManagerConfig);
