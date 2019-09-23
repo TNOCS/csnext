@@ -76,6 +76,15 @@ export class CsMap extends WidgetBase {
     public widget!: IWidget;
     public map!: mapboxgl.Map;
     public mapDraw!: any;
+    private _pointerPickerActivated = false;
+    public get pointPickerActivated() : boolean {
+        return this._pointerPickerActivated;
+    };
+
+    public set pointPickerActivated(value: boolean) {
+        this._pointerPickerActivated = value;
+        this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
+    }
 
 
     private mapOptions!: MapOptions;
