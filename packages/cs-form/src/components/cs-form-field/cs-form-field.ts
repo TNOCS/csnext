@@ -6,6 +6,7 @@ import '@csnext/cs-client';
 import Component from 'vue-class-component';
 import './cs-form-field.css';
 import { CsForm } from '../..';
+const debounce = require('lodash.debounce');
 
 import "../v-datetime-picker/v-datetime-picker";
 import { Emit } from 'vue-property-decorator';
@@ -16,7 +17,7 @@ import { Emit } from 'vue-property-decorator';
     components: { CsForm },
     props: {
         field: undefined,
-        target: undefined        
+        target: undefined
     } as any
 })
 export class CsFormField extends Vue {
@@ -24,7 +25,7 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
-    
+
     @Emit()
     changed(field: IFormFieldOptions) {
 
@@ -35,15 +36,17 @@ export class CsFormField extends Vue {
 
     }
 
+    private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
+
     public triggerClick(field: IFormFieldOptions) {
         if (field.triggerCallback && this.target) {
             field.triggerCallback(this.target, field);
-        }   
+        }
         this.triggered(field);
     }
 
 
-    private rules: {[key: string]: Function} = {
+    private rules: { [key: string]: Function } = {
         required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
         valueMin: val => {
             if (!this.field || !this.field.min) return true;
@@ -104,7 +107,7 @@ export class CsFormField extends Vue {
         if (
             !this.target ||
             !field._key ||
-            !field.keyValuesType           
+            !field.keyValuesType
         ) {
             return;
         }
@@ -130,7 +133,7 @@ export class CsFormField extends Vue {
         let renameProp = (
             oldProp,
             newProp,
-        { [oldProp]: old, ...others }
+            { [oldProp]: old, ...others }
         ) => ({
             [newProp]: old,
             ...others
