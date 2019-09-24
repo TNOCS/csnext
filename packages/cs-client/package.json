@@ -8,6 +8,7 @@
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "scripts": {
     "link": "yarn link",
+    "unlink": "yarn unlink",
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development",

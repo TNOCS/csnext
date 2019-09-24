@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "link": "yarn link",
+    "link": "yarn link", 
     "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
     "dev": "tsc -w",

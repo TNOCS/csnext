@@ -8,7 +8,8 @@
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
-    "link": "yarn link",
+    "link": "yarn link", 
+"unlink": "yarn unlink",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development && tsc",
     "build:production": "webpack --mode production && tsc",
