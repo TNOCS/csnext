@@ -60,9 +60,10 @@ export class LayerDetails extends Vue {
 
     public get filteredFeatures(): Feature[] {
         if (this.layer && this.layer._source && this.layer._source._geojson) {
-            return this.layer._source._geojson.features.filter(f => {
-                return this.filterFeature(f, this.filterItems);
-            })
+            return this.layer._source._geojson.features
+                .filter(f => {
+                    return this.filterFeature(f, this.filterItems);
+                });
         }
         return [];
     }
@@ -103,13 +104,13 @@ export class LayerDetails extends Vue {
             component: FeatureDetails,
             id: 'featuredetails',
             data: { layer: this.layer, feature: feature, manager: this.manager }
-        }, {open: true}, 'feature');
+        }, { open: true }, 'feature');
     }
 
     public editLayer(layer: IMapLayer) {
         this.$cs.OpenRightSidebarWidget({
             component: LayerServiceEditor,
             data: { layer: layer }
-        });
+        }, undefined, 'layers');
     }
 }

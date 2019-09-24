@@ -133,7 +133,9 @@ export class BaseLayer implements IMapLayer {
                                 {
                                     component: LayerDetails,
                                     data: { layer: this }
-                                }
+                                },
+                                undefined,
+                                'layers'
                             );
                         }
                     }
@@ -240,7 +242,8 @@ export class BaseLayer implements IMapLayer {
     public parsePopup(f?: Feature) {
         if (this.style && this.style.popup && f) {
             const template = Handlebars.compile(this.style.popup);
-            return template(f);
+            let res = template(f);
+            return res ? res : 'empty title';
         } else {
             return `<h2>${this.title}</h2>`;
         }

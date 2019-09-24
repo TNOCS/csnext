@@ -149,6 +149,8 @@ export class CsMap extends WidgetBase {
                 
             }
         }
+        this.$cs.CloseRightSidebarKey('feature');
+        this.$cs.CloseRightSidebarKey('layers');
         
     }
 

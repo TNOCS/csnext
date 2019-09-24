@@ -242,7 +242,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 AppState.Instance.OpenRightSidebarWidget({
                     component: LayerServiceEditor,
                     data: { layer: layer, service: this }
-                });
+                }, undefined, 'layers');
                 // this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
                 //     component: LayerServiceEditor,
                 //     data: { layer: layer, service: this }
