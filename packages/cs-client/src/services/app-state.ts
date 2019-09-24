@@ -228,7 +228,7 @@ export class AppState extends AppStateBase {
     if (options && !options.type) { options.type = 'string'}
     switch (options.type) {
       case "string":
-        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title} }, { open: true}, 'info');
+        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title} }, { open: false}, 'info');
         break;
     }
   }
