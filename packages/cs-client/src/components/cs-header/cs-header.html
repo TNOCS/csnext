@@ -69,11 +69,10 @@
   >
     <v-tab
       v-for="dashboard in $cs.project.dashboards"
-      
       @click="openDashboard(dashboard)"      
       router
       :key="dashboard.id"
-      :to="{path:dashboard.path}"
+      :to="{path:dashboard.pathLink}"
     >
       <v-menu
         v-if="['tabs', 'tabs-left'].includes($cs.project.navigation.style) && dashboard.dashboards"
