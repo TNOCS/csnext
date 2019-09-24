@@ -128,6 +128,13 @@ export class CsDashboard extends Vue {
           dashboardEditButton && dashboard.options.editButton;
       }
     }
+
+    if (dashboard.options.info) {      
+      this.$cs.OpenInfo(dashboard.options.info, this);
+    } else {
+      this.$cs.CloseInfo();
+    }
+
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
       this.$cs.activeDashboard = this.dashboard;

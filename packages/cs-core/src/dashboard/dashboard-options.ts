@@ -17,7 +17,8 @@ export interface IDashboardOptions {
 }
 
 export class InfoOptions {
-  public type: 'md' | 'html' | 'component' | 'md-url' | 'html-url' | 'string' = 'string';
+  public type: 'html' | 'component' | 'html-url' | 'string' = 'string';
+  public component?: any;
   public data: string | any = '';
   public title?: string = '';
 }
