@@ -21,12 +21,6 @@ export class CsHeader extends Vue {
   @Prop() public leftSidebar?: ISidebarOptions;
   @Prop() public rightSidebar?: ISidebarOptions;
 
-  // public sideBarButtons = [
-  //   {
-
-  //   }
-  // ]
-
   private busHandlers: { [key: string]: MessageBusHandle } = {};
   private loadingMenuIcon?: IMenu;
 

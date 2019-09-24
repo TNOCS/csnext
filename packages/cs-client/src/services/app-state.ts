@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import {
   AppStateBase,
-  MessageBusService,
   IProject,
   INotification,
   IDashboard,
@@ -10,7 +9,6 @@ import {
   ISidebarOptions,
   IDialog,
   guidGenerator,
-  idGenerator,
   InfoOptions
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
@@ -20,8 +18,8 @@ import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
-import { CsDialog } from '../components/cs-dialog/cs-dialog';
 import { MdWidget } from '../widgets/markdown/md-widget';
+import { KeyboardManager } from './keyboard-manager';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -56,6 +54,8 @@ export class AppState extends AppStateBase {
   public router?: VueRouter;
   /** Vue i18n instance */
   public i18n?: VueI18n;
+  /** manages keyboard shortcuts*/
+  public keyboard: KeyboardManager = new KeyboardManager();
 
   protected loaders: { [key: string]: any } = {};
 
@@ -91,6 +91,8 @@ export class AppState extends AppStateBase {
     Vue.component('cs-dashboard', CsDashboard);
     Vue.component('cs-widget', CsWidget);
     Vue.component('cs-app', CsApp);
+
+    this.keyboard.init();
 
     // merge new project details, with default project to make sure all required properties are available
     // this.project = merge(DefaultProject, project);
@@ -222,7 +224,7 @@ export class AppState extends AppStateBase {
     return this.projectManager.datasourceManager.load<T>(source);
   }
 
-  public OpenInfo(options: InfoOptions | string, source: any) {
+  public OpenInfo(options: InfoOptions | string) {
     if (typeof options === 'string') {
       options = { type: 'string', data: options};
     }
@@ -266,7 +268,7 @@ export class AppState extends AppStateBase {
   }
 
   public TriggerDialog(dialog: IDialog): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (!dialog.actionCallback) {
         dialog.actionCallback = (action: string) => {
           resolve(action);
@@ -277,7 +279,7 @@ export class AppState extends AppStateBase {
   }
 
   public TriggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const cb = (action: string) => {
         resolve(action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO);
       };

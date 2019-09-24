@@ -130,7 +130,7 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.options.info) {      
-      this.$cs.OpenInfo(dashboard.options.info, this);
+      this.$cs.OpenInfo(dashboard.options.info);
     } else {
       this.$cs.CloseInfo();
     }

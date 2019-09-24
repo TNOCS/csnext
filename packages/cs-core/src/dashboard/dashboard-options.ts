@@ -1,5 +1,6 @@
 import { IDashboard } from './dashboard';
 import { DashboardToolbarOptions, ToolbarOptions } from '..';
+import { KeyboardShortcut } from '../utils/keyboard-shortcut';
 
 export interface IDashboardOptions {
   class?: string;
@@ -13,7 +14,8 @@ export interface IDashboardOptions {
   touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
   info?: InfoOptions | string;
-
+  // trigger dashboard using keyboard short cut
+  shortcut?: KeyboardShortcut;
 }
 
 export class InfoOptions {

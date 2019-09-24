@@ -10,7 +10,6 @@ import {
   INotification,
   ISidebarOptions,
   IWidget,
-  IMenu,
   IFooterOptions,
   IDialog,
   MessageBusHandle
@@ -119,7 +118,7 @@ export class CsApp extends Vue {
           break;
       }
     });
-    this.widgetHandle = this.$cs.bus.subscribe('widget', (action: string, widget: IWidget) => {
+    this.widgetHandle = this.$cs.bus.subscribe('widget', (action: string) => {
       switch (action) {
         case 'edit':
           if (this.$cs.project.leftSidebar) {
@@ -155,7 +154,7 @@ export class CsApp extends Vue {
   }
 
   @Watch('app.project.dashboards')
-  public projectChanged(data: any) {
+  public projectChanged() {
     this.InitNavigation();
     this.InitTheme();
     // this.InitMenus();
@@ -166,13 +165,34 @@ export class CsApp extends Vue {
     this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false
   }
 
+  @Watch('app.project.rightSidebar.sidebars')
+  /** register keyboard shortcuts for sidebars */
+  public rightSidebarsChanged(n: any, o: any) {
+    for (const key in n) {
+      if (n.hasOwnProperty(key)) {
+        const sidebar = n[key] as IDashboard;
+        if (sidebar && sidebar.options && sidebar.options.shortcut) {
+          let sc = sidebar.options.shortcut;
+          if (!sc.id) { sc.id = 'sidebar-' + key; }
+          sc._callback = () => {
+            AppState.Instance.OpenRightSidebarKey(key);
+          }
+          AppState.Instance.keyboard.register(sc);
+
+
+        }
+
+      }
+    }
+  }
+
   @Watch('app.project.notifications', { deep: true })
-  public noticationsUpdated(n: INotification[], o: INotification[]) {
+  public noticationsUpdated() {
     this.UpdateNotifications();
   }
 
   @Watch('app.project.rightSidebar.dashboard')
-  public sideBarChanged(n: IDashboard, o: IDashboard) {
+  public rightSidebarChanged(n: IDashboard) {
     if (!this.rightSidebar) {
       return;
     }
@@ -261,17 +281,29 @@ export class CsApp extends Vue {
         this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
       }
     } else if (d.path) {
-      router.addRoutes([
-        {
-          name: d.id,
-          path: d.path,
-          component: CsDashboard,
-          props: route => ({ dashboard: d }),
-          alias: '/' + d.title,
-          meta: d
-        } as RouteConfig
-      ]);
+      const route = {
+        name: d.id,
+        path: d.path,
+        component: CsDashboard,
+        props: () => ({ dashboard: d }),
+        alias: '/' + d.title,
+        meta: d
+      } as RouteConfig;
+      router.addRoutes([route]);
+
+      // check for keyboard shortcut
+      if (d.options && d.options.shortcut && d.pathLink) {
+        let sc = d.options.shortcut;
+        if (!sc.id) { sc.id = 'dashboard-' + d.id; }
+        sc._callback = () => {
+          router.push(d.pathLink as any).catch(() => { });
+        }
+        this.app.keyboard.register(sc);
+      }
     }
+
+
+
   }
 
   // Make sure all dashboards are available as routes
@@ -288,12 +320,12 @@ export class CsApp extends Vue {
   }
 
   // tslint:disable-next-line:no-empty
-  public selectBreadCrumb(item: any) { }
+  public selectBreadCrumb() { }
 
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.pathLink);
     if (router && d.pathLink && !d.dashboards) {
-      router.push(d.pathLink).catch(err => {})
+      router.push(d.pathLink).catch(() => { })
     }
   }
 
@@ -429,10 +461,4 @@ export class CsApp extends Vue {
     }
   }
 
-  private clickNotification() {
-    this.lastNotification._visible = false;
-    if (this.lastNotification.clickCallback) {
-      this.lastNotification.clickCallback();
-    }
-  }
 }

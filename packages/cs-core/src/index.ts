@@ -29,6 +29,7 @@ export * from './widget/widget-options';
 
 export * from './utils/message-bus/message-bus-service';
 export * from './utils/message-bus/message-bus-handle';
+export * from './utils/keyboard-shortcut';
 export * from './interactions/search-options';
 export * from './interactions/dialog';
 export * from './interactions/notification';
