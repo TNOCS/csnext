@@ -34,6 +34,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
   public static DASHBOARD_MAIN = 'dashboard.main';
+  public static DASHBOARD_CHANGED = 'dashboard-changed';
   public static LOADERS = 'loaders';
   public static YES = 'YES';
   public static NO = 'NO';

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { ISidebarOptions, IDashboard } from '@csnext/cs-core';
+import { ISidebarOptions, IDashboard, MessageBusHandle } from '@csnext/cs-core';
 import { Prop, Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard } from '../../';
 import './cs-sidebar.css';
@@ -12,6 +12,7 @@ import './cs-sidebar.css';
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
   public menu = false;
+  private dashboardChangedHandle?: MessageBusHandle;
 
   @Prop() public sideBar?: ISidebarOptions;
 
@@ -40,7 +41,22 @@ export class CsSidebar extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (this.$router && d.path && !d.dashboards) {
-      this.$router.push(d.path).catch(err => {});
+      this.$router.push(d.path).catch(err => { });
     }
+  }
+
+  public mounted() {
+    this.dashboardChangedHandle = AppState.Instance.bus.subscribe('dashboards', (a, e) => {
+      if (a === AppState.DASHBOARD_CHANGED) {
+        this.$forceUpdate();
+      }
+    });
+  }
+
+  beforeDestroy() {
+    if (this.dashboardChangedHandle) {
+      AppState.Instance.bus.unsubscribe(this.dashboardChangedHandle);
+    }
+
   }
 }

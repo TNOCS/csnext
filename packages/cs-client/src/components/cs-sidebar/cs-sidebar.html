@@ -50,9 +50,9 @@
       <v-list-item
         v-for="item in app.project.dashboards"
         :value="item.active"
-        :to="item.path"
+        :to="item.pathLink"
         no-action
-        v-bind:key="item.path"
+        v-bind:key="item.pathLink"
       >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
@@ -73,7 +73,7 @@
           value="true"
           v-show="!item.hideFromNavigation"
           no-action
-          v-bind:key="item.path"
+          v-bind:key="item.pathLink"
           :append-icon="!sideBar.mini && item.dashboards ? undefined : ''"
         >
           <v-list-item slot="activator" class="sidebar-menu-list-item">
@@ -98,9 +98,9 @@
                   <v-list>
                     <v-list-item
                       v-for="subItem in item.dashboards"
-                      :to="subItem.path"
+                      :to="subItem.pathLink"
                       v-show="!subItem.hideFromNavigation"
-                      v-bind:key="subItem.path"
+                      v-bind:key="subItem.pathLink"
                     >
                       <!-- @click="SelectDashboard(subItem)" -->
                       <v-list-item-content>
@@ -125,9 +125,9 @@
           <v-list-item
             v-if="!sideBar.mini"
             v-for="subItem in item.dashboards"
-            :to="subItem.path"
+            :to="subItem.pathLink"
             v-show="!subItem.hideFromNavigation"
-            v-bind:key="subItem.path"
+            v-bind:key="subItem.pathLink"
           >
             <!-- @click="SelectDashboard(subItem)" -->
             <v-list-item-content>
