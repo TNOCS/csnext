@@ -27,12 +27,23 @@ export class CsHeader extends Vue {
   //   }
   // ]
 
-  private dashboardHandle?: MessageBusHandle;
-  private menuHandle?: MessageBusHandle;
+  private busHandlers: { [key: string]: MessageBusHandle } = {};
+  private loadingMenuIcon?: IMenu;
 
   public InitMenus() {
     if (!this.$cs.project.menus) {
       this.$cs.project.menus = [];
+    }
+    if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
+      this.loadingMenuIcon = {
+        id: CsApp.LOADING_MENU_ID,
+        icon: 'autorenew',
+        title: 'LOADING',
+        toolTip: 'LOADING',
+        enabled: true,
+        visible: false
+      };
+      this.$cs.project.menus.push(this.loadingMenuIcon);
     }
     if (
       this.$cs.project.languages &&
@@ -40,18 +51,19 @@ export class CsHeader extends Vue {
     ) {
       if (
         !this.$cs.project.menus.find(
-          menu => menu.id === CsApp.LANUAGE_SWITCH_ID
+          menu => menu.id === CsApp.LANGUAGE_SWITCH_ID
         )
       ) {
         this.$cs.project.menus.push({
-          id: CsApp.LANUAGE_SWITCH_ID,
+          id: CsApp.LANGUAGE_SWITCH_ID,
           icon: 'translate',
           title: 'LANGUAGE',
           toolTip: 'LANGUAGE_SETTINGS',
           enabled: true,
           visible: true,
-          component: CsLanguageSwitch
-        });
+          component: CsLanguageSwitch, 
+          buttonClass: 'sidebar-header-button'
+        } as IMenu);
       }
     }
     // create edit dashboard button
@@ -105,7 +117,7 @@ export class CsHeader extends Vue {
         // window.location.replace(dashboard.url);
         window.open(dashboard.url, '_blank');
       } else if (dashboard.path) {
-        this.$router.push(dashboard.path);
+        this.$router.push(dashboard.path).catch(err => {});
       }
     }
   }
@@ -123,18 +135,18 @@ export class CsHeader extends Vue {
   }
 
   public beforeDestroy() {
-    if (this.dashboardHandle) {
-      this.$cs.bus.unsubscribe(this.dashboardHandle);
-    }
-
-    if (this.menuHandle) {
-      this.$cs.bus.unsubscribe(this.menuHandle);
+    // remove all bus handlers
+    for (const handlers in this.busHandlers) {
+      if (this.busHandlers.hasOwnProperty(handlers)) {
+        const element = this.busHandlers[handlers];
+        this.$cs.bus.unsubscribe(element);
+      }
     }
   }
 
   public created() {
     // listen to dashboard init events
-    this.dashboardHandle = this.$cs.bus.subscribe(
+    this.busHandlers['dashboard'] = this.$cs.bus.subscribe(
       AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.InitMenus();
@@ -142,8 +154,16 @@ export class CsHeader extends Vue {
       }
     );
     // menu list changed (e.g. if dashboard menu was updated)
-    this.menuHandle = this.$cs.bus.subscribe('menus', (action: string) => {
+    this.busHandlers['menu'] = this.$cs.bus.subscribe('menus', (action: string) => {
       this.InitMenus();
     });
+
+    if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
+      this.busHandlers['loader'] = this.$cs.bus.subscribe(AppState.LOADERS, (action: string) => {
+        if (this.loadingMenuIcon) {
+          this.loadingMenuIcon.visible = Object.keys(this.$cs.GetLoaders()).length > 0;
+        }
+      })
+    }
   }
 }

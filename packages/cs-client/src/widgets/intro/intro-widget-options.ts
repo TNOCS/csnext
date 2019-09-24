@@ -5,18 +5,21 @@ export class IntroWidgetOptions extends WidgetOptions {
   public title?: string;
   public subHeader?: string;
   public backgroundImage?: string;
-  public cards?: IIntroCard[];
+  public cards?: CardOptions[];
 }
 
-export interface IIntroCard {
-  title: string;
-  description: string;
-  actions: IIntroCardAction[];
-  backgroundImage: string;
+export class CardOptions {
+  public title?: string;
+  public description?: string;
+  public actions?: CardActionOptions[];
+  public backgroundImage?: string;
+  public flat?: boolean;
+  public outlined?: boolean;
+  public elevation?: number;
 }
 
-export interface IIntroCardAction {
-  title: string;
-  route: string;
-  url: string;
+export class CardActionOptions {
+  public title?: string;
+  public route?: string;
+  public url?: string;
 }

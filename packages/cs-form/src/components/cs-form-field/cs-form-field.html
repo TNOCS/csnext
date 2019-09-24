@@ -1,14 +1,29 @@
-<div v-if="field"> 
+<div v-if="field">
+        <template v-if="field.type === 'button-trigger'">
+            <v-btn icon @click="triggerClick(field)"><v-icon>{{field.icon}}</v-icon></v-btn>  
+        </template>
+        <template v-if="field.type === 'colorpicker'">
+                <!-- <v-text-field v-model="target[field._key]"></v-text-field> -->
+            <v-menu :close-on-content-click="false" max-width="290">
+                <template v-slot:activator="{ on }">
+                    <v-text-field v-model="target[field._key]" :label="$cs.Translate(field.title)" v-on="on">
+                            <v-icon slot="append" :color="target[field._key]">color_lens</v-icon>
+                    </v-text-field>
+                </template>
+                <v-color-picker v-model="target[field._key]" mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>    
+            </v-menu>
+        </template>
         <template v-if="field.type === 'datetimepicker'">
             <v-datetime-picker :required="field.required" :label="$cs.Translate(field.title)"
-                v-model="target[field._key]"></v-datetime-picker>   
+                v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>   
         </template>
         <template v-if="field.type === 'boolean'">
-            <v-checkbox
+            <v-checkbox                
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
         <template v-if="field.type === 'selection'">
@@ -17,16 +32,36 @@
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-select>
         </template>
         <template v-if="field.type === 'combobox'">
                 <v-combobox
                     :items="fieldOptions(field)"
                     v-model="target[field._key]"
-                    :label="$cs.Translate(field.title)"
-                    :disabled="field.readonly"
+                    :label="$cs.Translate(field.title)"                    
+                    :disabled="field.readonly"     
+                    @change="fieldUpdated(field)"              
                 ></v-combobox>
+                
+                <!-- item-text="text" 
+                    
+                item-value="value"  -->
             </template>
+            <template v-if="field.type === 'combobox-objects'">
+                    <v-combobox
+                        :items="fieldOptions(field)"
+                        v-model="target[field._key]"
+                        :label="$cs.Translate(field.title)"                    
+                        :disabled="field.readonly"     
+                        :return-object="false"
+                        @change="fieldUpdated(field)"              
+                    ></v-combobox>
+                    
+                    <!-- item-text="text" 
+                        
+                    item-value="value"  -->
+                </template>
         <template v-if="field.type === 'string'">
             <v-text-field
                 v-if="field._key"
@@ -35,6 +70,7 @@
                 :required="field.required"
                 :rules="field.required ? [rules.required] : []"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
             <v-text-field
                 v-if="field._index"
@@ -42,6 +78,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
         </template>
         <template v-if="field.type === 'textarea'">
@@ -51,6 +88,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
                 auto-grow
                 rows="2"
             ></v-textarea>
@@ -60,16 +98,19 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-textarea>
         </template>
         <template v-if="field.type === 'slider'">
             <v-slider
                 enabled
+                :label="$cs.Translate(field.title)"
                 v-model="target[field._key]"
                 :min="field.min"
                 :step="field.step"
                 :max="field.max"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-slider>
         </template>
         <template v-if="field.type === 'checkbox'">
@@ -77,6 +118,7 @@
                 :label="$cs.Translate(field.title)"
                 v-model="target[field._key]"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
         <template v-if="field.type === 'checkboxes-horizontal'">
@@ -87,6 +129,7 @@
                     :key="option"
                     :label="option"
                     :value="option"
+                    @change="fieldUpdated(field)"
                     :disabled="field.readonly"
                     v-model="target[field._key]"
                 ></v-checkbox>
@@ -101,6 +144,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
             <v-text-field
                 v-if="field._index>=0"
@@ -109,6 +153,7 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                @change="fieldUpdated(field)"
             ></v-text-field>
         </template>
         <template v-if="field.type === 'array'">
@@ -131,7 +176,8 @@
                 clearable
                 solo
                 multiple
-                flat
+                text
+                @change="fieldUpdated(field)"
             >
             </v-combobox>
         </template>
@@ -139,29 +185,31 @@
             <v-layout>
             {{ $cs.Translate(field.title) }}
             <v-spacer></v-spacer>
-            <v-btn icon flat v-if="field.canAdd" @click="addKeyObject(field)"><v-icon>add</v-icon></v-btn>
+            <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)"><v-icon>add</v-icon></v-btn>
         </v-layout>
-            <div v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" >                
-                <v-expansion-panel expand :key="key">
-                    <v-expansion-panel-content>
-                        <div slot="header" class="form-title">
+            <div >                
+                <v-expansion-panels multiple :accordion="true">
+                <v-expansion-panel v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" :key="key">
+                    <v-expansion-panel-header class="form-title">
                             <v-layout>                                                            
-                                <template v-if="field.canEditKey">
-                                        <!-- {{ target[field._key] }} -->
-                                    <v-layout>
-                                        <v-text-field :value="key" :label="$cs.Translate(field.title)" @change="keyObjectChange(field, key, $event)"></v-text-field>
-                                        <!-- <v-btn icon flat right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
-                                    </v-layout>
-                                </template>
-                                <template v-else>
-                                    {{ $cs.Translate(field.title) }}
-                                </template>
-                                <v-btn icon flat right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)"><v-icon>delete</v-icon></v-btn>
-                            </v-layout>                         
-                        </div>
+                                    <template v-if="field.canEditKey">
+                                            <!-- {{ target[field._key] }} -->
+                                        <v-layout>
+                                            <v-text-field :value="key" :label="$cs.Translate(field.title)" @change="keyObjectChange(field, key, $event)"></v-text-field>
+                                            <!-- <v-btn icon text right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
+                                        </v-layout>
+                                    </template>
+                                    <template v-else>
+                                        {{ $cs.Translate(field.title) }}
+                                    </template>
+                                    <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)"><v-icon>delete</v-icon></v-btn>
+                                </v-layout>   
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>                   
                         <cs-form :data="target[field._key][key]"></cs-form>
                     </v-expansion-panel-content>
                 </v-expansion-panel>
+            </v-expansion-panels>
             </div>            
         </div>
         <template v-if="field.type === 'object'">

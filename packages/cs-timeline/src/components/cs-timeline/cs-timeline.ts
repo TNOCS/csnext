@@ -1,4 +1,4 @@
-import { Watch, Prop } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import {
     IWidget,
@@ -8,36 +8,26 @@ import {
     TimeDataSource,
     Topics,
     MessageBusHandle,
-    isFunction
+    isFunction,
+    IMenu
 } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
-import {
-    Timeline,
-    DataGroup,
-    DataItem,
-    TimelineOptions,
-    DataSet,
-    VisSelectProperties,
-    TimelineEventPropertiesResult
-} from 'timeline-plus';
-export {
-    Timeline,
-    DataGroup,
-    DataItem,
-    TimelineOptions,
-    TimelineTooltipOption,
-    DataSet,
-    VisSelectProperties,
-    TimelineEventPropertiesResult
-} from 'timeline-plus';
 
-import 'timeline-plus/dist/timeline.min.css';
-import { LogDataSource, LogManager, ILogItem } from '@csnext/cs-client';
+import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
+import { LogDataSource } from '@csnext/cs-client';
+import { TimelineOptions, DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
+import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
+// export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };
+
 
 export interface TimelineWidgetOptions extends WidgetOptions {
     timelineOptions?: TimelineOptions;
     logSource?: string;
+    smallView?: boolean;
+    showFitButton?: boolean;
+    toggleSmallButton?: boolean;
+    showGroupSelectionButton?: boolean;
 }
 
 export interface ITimelineDataSource extends IDatasource {
@@ -47,15 +37,20 @@ export interface ITimelineDataSource extends IDatasource {
     removeItem(item: DataItem): void;
 }
 
+const TOGGLE_MENU_ID = 'togglesmall';
+const ZOOM_MENU_ID = 'zoom';
+const GROUPS_MENU_ID = 'groups';
 @Component({
     template: require('./cs-timeline.html')
 })
 export class CsTimeline extends Vue {
     /** access the original widget from configuration */
 
+    GROUP_VISIBILITY_ID = 'timeline-group-';
+
     public timeline?: Timeline;
     // public datasource?: ITimelineDataSource;
-    public items = new DataSet();
+    public items: DataItem[] = [];
     public groups: DataGroup[] = [];
     public currentTime: Date = new Date();
     // public log: LogManager = new LogManager();
@@ -85,26 +80,36 @@ export class CsTimeline extends Vue {
         }
     }
 
-    get smallView(): boolean {
-        if (this.widget.data) return this.widget.data.smallView;
-        return false;
-    }
+    public smallView: boolean = false;
 
-    set smallView(value: boolean) {
-        if (this.widget.data) {
-            this.widget.data.smallView = value;
-        }
-    }
+    // get smallView(): boolean {
+    //     if (this.WidgetOptions.smallView) return this.WidgetOptions.smallView;
+    //     return false
+    // }
 
-    private async update() {
+    // set smallView(value: boolean) {
+    //     this.WidgetOptions.smallView = value;
+    // }
+
+    public async update() {
+        this.updateItems();
         if (this.timeline) {
-            console.log('Updating timeline');
-            this.updateItems();
+            this.timeline.setData({ groups: this.groups, items: this.items });
             this.timeline.setGroups(this.groups);
             this.timeline.setItems(this.items);
-            // this.timeline.fit();
             this.timeline.redraw();
+            // this.timeline.fit({animation: false});
+
         }
+        Vue.nextTick(() => {
+
+            if (this.timeline) {
+                // this.timeline.fit();
+
+                // this.$forceUpdate();
+            }
+        });
+
     }
 
     toggleView() {
@@ -114,12 +119,12 @@ export class CsTimeline extends Vue {
 
     private updateItems() {
         let items: DataItem[] = [];
-        let groups: DataGroup[] = [];
-        let tags: string[] = [];
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                item.content = item.content;
+                item.content = item.content;                
+                item.style = "height:" + height;
+                if (this.smallView) item.style+=';color:transparent';
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (item.group) {
@@ -143,14 +148,22 @@ export class CsTimeline extends Vue {
         //         this.addGroup(i.group);
         //     });
         // }
-        this.items = new DataSet(items);
+        this.items = items; // new DataSet(items);
+    }
+
+    public setGroupVisibility(group: DataGroup, value: boolean = true) {
+        localStorage.setItem(this.GROUP_VISIBILITY_ID + group.id, value.toString());
+        this.update();
     }
 
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
+            
+            const visible = localStorage.getItem(this.GROUP_VISIBILITY_ID + groupName);            
             this.groups.push({
                 id: groupName,
-                content: groupName
+                content: groupName,
+                visible: (!visible) ? true : (visible.toLowerCase() === 'true')
             } as DataGroup);
         }
     }
@@ -174,7 +187,6 @@ export class CsTimeline extends Vue {
             );
         }
 
-        let items = await this.updateItems();
         let options: TimelineWidgetOptions =
             (this.widget.options as TimelineWidgetOptions) ||
             ({} as TimelineWidgetOptions);
@@ -221,21 +233,18 @@ export class CsTimeline extends Vue {
             }
 
         }
+
+        options.timelineOptions = { ...{ locale: 'en'}, ...options.timelineOptions};
+
         this.timeline = new Timeline(
             container,
-            this.items,
+            this.items as DataItem[],
             this.groups,
-            options.timelineOptions || {}
+            options.timelineOptions
         );
         this.setTimelineEvents();
     }
 
-    private handleCalendarChanged(action: string, data: any) {
-        // this.calendarSource!.getCalendarItems().then(items => {
-        //     this.calendarItems = items;
-        //     this.update();
-        // });
-    }
 
     private setTimelineEvents() {
         if (!this.timeline) return console.log('Could not set timeline events');
@@ -264,7 +273,7 @@ export class CsTimeline extends Vue {
         }
     }
 
-    private handleEventSelect(data: VisSelectProperties) {
+    private handleEventSelect(data: any) {
         if (
             (data as any).event.type === 'tap' &&
             data.items &&
@@ -337,7 +346,7 @@ export class CsTimeline extends Vue {
         if (this.WidgetOptions.logSource) {
             this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
                 this.logSource = r;
-                this.logSource.bus.subscribe('updated', (a: string, e: any) => {
+                this.logSource.bus.subscribe('updated', () => {
                     this.update();
                 })
                 Vue.nextTick(() => {
@@ -345,20 +354,75 @@ export class CsTimeline extends Vue {
                     console.log(r);
                     this.update();
                 })
-            }).catch(e => {
+            }).catch(() => {
 
             })
+        }
+    }
+
+    fitAll() {
+        if (this.timeline) {
+            this.timeline.fit({ animation: false });
         }
     }
 
     mounted() {
         if (this.widget) {
 
-            this.resizeHandle = this.widget.events!.subscribe('resize', (d, a) => {
+            this.resizeHandle = this.widget.events!.subscribe('resize', () => {
                 this.timeline!.redraw();
             });
             this.initLogSource();
             this.initTimeline();
+
+            if (!this.widget.options) this.widget.options = {};
+            if (!this.widget.options.menus) this.widget.options.menus = []
+
+            if (this.WidgetOptions.showFitButton) {
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === ZOOM_MENU_ID) === -1) {
+                    this.widget.options.menus.push({
+                        id: ZOOM_MENU_ID,
+                        toolTip: 'FIT_TIMELINE_ZOOM',
+                        icon: 'zoom_out_map',
+                        action: () => {
+                            this.fitAll();
+                        },
+                        visible: true
+                    })
+                }
+            }
+
+            if (this.WidgetOptions.toggleSmallButton) {
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+                    this.widget.options.menus.push({
+                        id: TOGGLE_MENU_ID,
+                        icon: 'line_weight',
+                        action: () => {
+                            this.toggleView();
+                        },
+                        visible: true
+                    })
+                }
+            }
+
+            if (this.WidgetOptions.showGroupSelectionButton) {
+                // check if already exists
+                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === GROUPS_MENU_ID) === -1) {
+                    this.widget.options.menus.push({
+                        id: GROUPS_MENU_ID,
+                        icon: 'list',
+                        component: TimelineGroupSelection,                          
+                        data: this,                      
+                        visible: true
+                    })
+                }
+            }
+
+            
+
+
 
 
         }

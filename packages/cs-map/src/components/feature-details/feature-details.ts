@@ -37,8 +37,8 @@ export class PropertyDetails {
 } as any)
 export class FeatureDetails extends Vue {
     public widget!: IWidget;
-    public sectionsPanels: boolean[] = [];
-    public tabs = null;
+    public sectionsPanels: number[] = [];
+    public tabs = 'feature-details';
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
 
@@ -119,7 +119,7 @@ export class FeatureDetails extends Vue {
             properties: []
         } as section;
         let result: section[] = [defaultSection];
-        this.sectionsPanels.push(true);
+        this.sectionsPanels.push(0);
 
         /** find feature type */
         let ft: FeatureType | undefined = undefined;
@@ -201,8 +201,8 @@ export class FeatureDetails extends Vue {
     public openLayer(layer: IMapLayer) {
         this.$cs.OpenRightSidebarWidget({
             component: LayerDetails,
-            data: { layer: layer }
-        });
+            data: { layer: layer, manager: this.manager }
+        }, undefined, 'feature');
     }
 
     public get properties(): any[] {

@@ -34,7 +34,7 @@ export class property {
 export class LayerDetails extends Vue {
     public widget!: IWidget;
     public sectionsPanels: boolean[] = [];
-    public tabs = null;
+    public tabs = 'layer-items';
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
     public filterItems = '';
@@ -53,16 +53,17 @@ export class LayerDetails extends Vue {
     }
 
     /** returns true if features is included filter */
-    private filterFeature(f: Feature, s: string) : boolean {
+    private filterFeature(f: Feature, s: string): boolean {
         if (!this.layer) { return false; }
-        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase())>=0;
+        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
     }
 
     public get filteredFeatures(): Feature[] {
         if (this.layer && this.layer._source && this.layer._source._geojson) {
-            return this.layer._source._geojson.features.filter(f => {
-                return this.filterFeature(f, this.filterItems);
-            })
+            return this.layer._source._geojson.features
+                .filter(f => {
+                    return this.filterFeature(f, this.filterItems);
+                });
         }
         return [];
     }
@@ -92,17 +93,24 @@ export class LayerDetails extends Vue {
         }
     }
 
+    public fitLayer() {
+        if (this.manager && this.layer) {
+            this.manager.zoomLayer(this.layer);
+        }
+    }
+
     public openFeature(feature: any) {
         this.$cs.OpenRightSidebarWidget({
             component: FeatureDetails,
-            data: { layer: this.layer, feature: feature }
-        });
+            id: 'featuredetails',
+            data: { layer: this.layer, feature: feature, manager: this.manager }
+        }, { open: true }, 'feature');
     }
 
     public editLayer(layer: IMapLayer) {
         this.$cs.OpenRightSidebarWidget({
             component: LayerServiceEditor,
             data: { layer: layer }
-        });
+        }, undefined, 'layers');
     }
 }

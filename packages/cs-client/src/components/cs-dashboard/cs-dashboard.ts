@@ -50,7 +50,7 @@ export class CsDashboard extends Vue {
 
   public selectStepperDashboard(dashboard: IDashboard) {
     if (this.$router && dashboard.path) {
-      this.$router.push(dashboard.path);
+      this.$router.push(dashboard.path).catch(err => {});
     }
   }
 
@@ -99,6 +99,13 @@ export class CsDashboard extends Vue {
       dashboard.events = new MessageBusService();
     }
 
+    // init sub dashboards
+    if (this.dashboard && this.dashboard.dashboards && this.dashboard.dashboards) {
+      for (const d of this.dashboard.dashboards) {
+        this.initDashboard(d);
+      }
+    }
+
     if (dashboard.hideFromNavigation === undefined) {
       dashboard.hideFromNavigation = false;
     }
@@ -108,9 +115,8 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.dashboards) {
-      this.selectedTab = dashboard.parent.dashboards.indexOf(dashboard);
+      this.selectedTab = dashboard.parent.dashboards.findIndex(d => dashboard.title === d.title);
       this.selectedStepper = this.selectedTab + 1;
-
     }
 
     if (this.$cs.project.menus && dashboard.isMain) {
@@ -122,6 +128,13 @@ export class CsDashboard extends Vue {
           dashboardEditButton && dashboard.options.editButton;
       }
     }
+
+    if (dashboard.options.info) {      
+      this.$cs.OpenInfo(dashboard.options.info, this);
+    } else {
+      this.$cs.CloseInfo();
+    }
+
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
       this.$cs.activeDashboard = this.dashboard;

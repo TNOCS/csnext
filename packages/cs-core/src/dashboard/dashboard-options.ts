@@ -12,6 +12,15 @@ export interface IDashboardOptions {
   // allow left & right swipe gestures to switch between dashboards
   touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
+  info?: InfoOptions | string;
+
+}
+
+export class InfoOptions {
+  public type: 'html' | 'component' | 'html-url' | 'string' = 'string';
+  public component?: any;
+  public data: string | any = '';
+  public title?: string = '';
 }
 
 export class BaseDashboardOptions implements IDashboardOptions {
@@ -25,5 +34,6 @@ export class BaseDashboardOptions implements IDashboardOptions {
   public _dashboard?: IDashboard;
   public toolbar?: DashboardToolbarOptions;
   public icon?: string;
+  public info?: InfoOptions | string;
 
 }

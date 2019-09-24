@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@csnext/cs-docs",
-  "version": "0.0.118",
+  "version": "0.0.123",
   "description": "csdocs",
   "url": "https://github.com/TNOCS/csnext",
   "bugs": "https://github.com/TNOCS/csnext/issues",
@@ -14,6 +14,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "vuepress": "0.14.11"
+    "vuepress": "1.1.0"
   }
 }

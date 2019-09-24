@@ -1,33 +1,55 @@
-<simplebar>
+<div>
     <v-toolbar tabs :color="layer.color">
-        <v-toolbar-title class="layer-details-title">{{ layer.title }}</v-toolbar-title>
+        <v-toolbar-title class="layer-details-title">{{
+            layer.title
+        }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-tooltip bottom v-if="tabs === 'items'">
-            <v-btn
-                @click="filterPropertiesEnabled = !filterPropertiesEnabled"
-                icon
-                slot="activator"
-            >
-                <v-icon>search</v-icon>
-            </v-btn>
+        <v-tooltip bottom v-if="tabs === 'layer-items'">
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    @click="filterPropertiesEnabled = !filterPropertiesEnabled"
+                    icon
+                    v-on="on"
+                >
+                    <v-icon>search</v-icon>
+                </v-btn>
+            </template>
             filter features
         </v-tooltip>
-        <v-tooltip bottom>
-            <v-btn icon slot="activator" @click="editLayer(layer)">
-                <v-icon>edit</v-icon>
-            </v-btn>
+        <!-- <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+                <v-btn v-on="on" icon @click="editLayer(layer)">
+                    <v-icon>edit</v-icon>
+                </v-btn>
+            </template>
             edit layer
+        </v-tooltip> -->
+        <v-tooltip bottom v-if="tabs === 'layer-items'">
+            <template v-slot:activator="{ on }">
+                <v-btn @click="fitLayer()" icon v-on="on">
+                    <v-icon>zoom_out_map</v-icon>
+                </v-btn>
+            </template>
+            zoom to
         </v-tooltip>
-        <v-tabs right slot="extension" color="transparent" v-model="tabs">
-            <v-tab href="#items" v-if="!layer.disableFeatureList">Items</v-tab>
-            <!-- <v-tab href="#filters">Filter</v-tab> -->
-        </v-tabs>
+        <template v-slot:extension>
+            <v-tabs right v-model="tabs">
+                <v-tab href="#layer-items" v-if="!layer.disableFeatureList"
+                    >Items</v-tab
+                >
+                <!-- <v-tab href="#filters">Filter</v-tab> -->
+            </v-tabs>
+        </template>
     </v-toolbar>
 
     <div>
         <v-tabs-items id="feature-properties-tab" v-model="tabs">
-            <v-tab-item value="items" v-if="!layer.disableFeatureList">
+            <v-tab-item
+                value="layer-items"
+                v-if="!layer.disableFeatureList"
+                style="position: relative"
+            >
                 <v-text-field
                     solo
                     v-if="filterPropertiesEnabled"
@@ -36,18 +58,23 @@
                     label="filter"
                     append-icon="search"
                 ></v-text-field>
-                <v-container>
-                    <v-list v-for="feature in filteredFeatures">
-                        <v-list-tile-content @click="openFeature(feature)">
-                            <v-list-tile-title
-                                class="layer-details-feature-title"
-                                v-text="layer.parseTitle(feature)"
-                            ></v-list-tile-title>
-                        </v-list-tile-content>
+
+                <simplebar
+                    style="position: absolute;top:0;bottom:0;left:0;right:0"
+                >
+                    <v-list>
+                        <v-list-item v-for="feature in filteredFeatures">
+                            <v-list-item-content @click="openFeature(feature)">
+                                <v-list-item-title
+                                    v-text="layer.parseTitle(feature)"
+                                ></v-list-item-title>
+                                <!-- v-text="layer.parseTitle(feature)" -->
+                            </v-list-item-content>
+                        </v-list-item>
                     </v-list>
-                </v-container>
+                </simplebar>
             </v-tab-item>
             <!-- <v-tab-item value="filters"> <h1>items</h1> </v-tab-item> -->
         </v-tabs-items>
     </div>
-</simplebar>
+</div>

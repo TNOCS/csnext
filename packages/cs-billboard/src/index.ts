@@ -1,2 +1,2 @@
-export { Billboard } from './billboard';
-export { BillboardData } from './billboard-data';
+export { Billboard } from './components/billboard/billboard';
+export { BillboardData } from './components/billboard/billboard-data';

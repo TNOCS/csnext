@@ -88,9 +88,9 @@ export class LayerService {
                         ...JSON.parse(configString)
                     };
                     // if no serverpath has been specified in config use this one
-                    if (!this.config.serverPath) {
-                        this.config.serverPath = serverPath || '';
-                    }
+                    // if (!this.config.serverPath) {
+                    this.config.serverPath = serverPath || this.config.serverPath;
+                    // }
                     Logger.log(
                         `Config file loaded: ${this.absoluteConfigPath}`
                     );
@@ -114,6 +114,7 @@ export class LayerService {
     importLayers() {
         if (this.config.importPath) {
             let absoluteImportPath = path.join(
+
                 this.config.serverPath || '',
                 this.config.importPath
             );
@@ -128,13 +129,13 @@ export class LayerService {
 
             // construct import completed folder
             let absoluteImportCompletedPath = path.join(
-                this.config.serverPath || '',
-                this.config.importPath,
+                absoluteImportPath,
                 'completed'
             );
 
             // make sure it exists
             if (!fs.existsSync(absoluteImportCompletedPath)) {
+                Logger.log(`Creating import completed folder: ${absoluteImportPath}`);
                 fs.mkdirSync(absoluteImportCompletedPath);
             }
             Logger.log(
@@ -675,7 +676,7 @@ export class LayerService {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
-                reject();
+                reject('no source defined');
                 return;
             }
 

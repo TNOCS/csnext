@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.118",
+  "version": "0.0.123",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -9,10 +9,10 @@
     "access": "public"
   },
   "scripts": {
-    "link": "yarn link",
+    "link": "yarn link", 
     "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
-    "dev": "nodemon dist/index.js",
+    "dev": "tsc -w",
     "clean": "del-cli package-lock.json dist lib node_modules",
     "build": "tsc"
   },
@@ -56,7 +56,7 @@
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
     "del-cli": "^2.0.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
-  "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
+  "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

@@ -28,7 +28,7 @@ export class CsSidebar extends Vue {
         }
       }
 
-      this.$forceUpdate();
+      // this.$forceUpdate();
     });
   }
 
@@ -40,7 +40,7 @@ export class CsSidebar extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (this.$router && d.path && !d.dashboards) {
-      this.$router.push(d.path);
+      this.$router.push(d.path).catch(err => {});
     }
   }
 }

@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import {
-    IFormFieldOptions
+    IFormFieldOptions, IFormObject
 } from '@csnext/cs-core';
 import '@csnext/cs-client';
 import Component from 'vue-class-component';
 import './cs-form-field.css';
 import { CsForm } from '../..';
+const debounce = require('lodash.debounce');
 
 import "../v-datetime-picker/v-datetime-picker";
+import { Emit } from 'vue-property-decorator';
 
 @Component({
     name: 'cs-formfield',
@@ -23,7 +25,28 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
-    private rules: {[key: string]: Function} = {
+
+    @Emit()
+    changed(field: IFormFieldOptions) {
+
+    }
+
+    @Emit()
+    triggered(field: IFormFieldOptions) {
+
+    }
+
+    private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
+
+    public triggerClick(field: IFormFieldOptions) {
+        if (field.triggerCallback && this.target) {
+            field.triggerCallback(this.target, field);
+        }
+        this.triggered(field);
+    }
+
+
+    private rules: { [key: string]: Function } = {
         required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
         valueMin: val => {
             if (!this.field || !this.field.min) return true;
@@ -50,6 +73,10 @@ export class CsFormField extends Vue {
                 this.$forceUpdate();
             }
         }
+    }
+
+    public fieldUpdated(field: IFormFieldOptions) {
+        this.changed(field);
     }
 
     public fieldOptions(field: IFormFieldOptions) {
@@ -80,7 +107,7 @@ export class CsFormField extends Vue {
         if (
             !this.target ||
             !field._key ||
-            !field.keyValuesType           
+            !field.keyValuesType
         ) {
             return;
         }
@@ -106,7 +133,7 @@ export class CsFormField extends Vue {
         let renameProp = (
             oldProp,
             newProp,
-        { [oldProp]: old, ...others }
+            { [oldProp]: old, ...others }
         ) => ({
             [newProp]: old,
             ...others

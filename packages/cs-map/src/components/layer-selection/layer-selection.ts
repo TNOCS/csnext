@@ -25,7 +25,7 @@ export class LayerSelection extends Vue {
     public tree: any[] = [];
     public items = [];
     public open = [];
-    public groupsexpanded: boolean[] = [];
+    public groupsexpanded: number[] = [];
     public showMenu = false;
     public filter: string = '';
     public Groups: { [id: string]: ILayerGroup } = {};
@@ -83,8 +83,9 @@ export class LayerSelection extends Vue {
     public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
         this.groupsexpanded = [];
-        if (this.MapManager && this.MapManager.layers) {            
-            this.MapManager.layers.forEach(l => {                
+        
+        if (this.MapManager && this.MapManager.layers) {
+            this.MapManager.layers.forEach(l => {
                 if (l.title) {
                     if (
                         this.filter.length === 0 ||
@@ -102,8 +103,10 @@ export class LayerSelection extends Vue {
                 }
             });
 
+            let c = 0;
             while (this.groupsexpanded.length < Object.keys(res).length) {
-                this.groupsexpanded.push(true);
+                this.groupsexpanded.push(c);
+                c += 1;
             }
 
             for (const group in res) {
@@ -195,7 +198,7 @@ export class LayerSelection extends Vue {
     ) {
         if (res.hasOwnProperty(t)) {
             res[t].layers.push(l);
-            this.groupsexpanded.push(true);
+            this.groupsexpanded.push(this.groupsexpanded.length - 1);
         } else {
             res[t] = { title: t, color: 'gray', layers: [l], state: 'none' };
         }

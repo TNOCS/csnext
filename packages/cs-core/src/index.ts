@@ -1,13 +1,13 @@
-export * from './project/project';
 export * from './project/app-state-base';
-export * from './project/language-options';
 export * from './project/app-theme';
-export * from './project/theme-colors';
 export * from './project/footer-options';
 export * from './project/header-options';
+export * from './project/language-options';
 export * from './project/navigation-options';
-export * from './project/sidebar-options';
+export * from './project/project';
 export * from './project/server-connection';
+export * from './project/sidebar-options';
+export * from './project/theme-colors';
 export * from './project/user-options';
 
 export * from './datasources/datasource';
@@ -15,12 +15,13 @@ export * from './datasources/time-datasource';
 
 export * from './interactions/menu';
 
+export * from './dashboard/css-grid-dashboard-options';
+export * from './dashboard/css-grid-widget-options';
+export * from './dashboard/dashboard-manager-config';
 export * from './dashboard/dashboard-options';
 export * from './dashboard/dashboard-toolbar-options';
 export * from './dashboard/dashboard';
-export * from './dashboard/grid-dashboard-options';
 export * from './dashboard/layout-manager-config';
-export * from './dashboard/dashboard-manager-config';
 export * from './dashboard/toolbar-options';
 
 export * from './widget/widget';

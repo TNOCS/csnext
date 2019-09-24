@@ -1,31 +1,32 @@
 <simplebar>
-        <v-text-field
-            solo
-            v-if="widget.options.searchEnabled"
-            class="layer-filter-field"
-            v-model="filter"
-            label="filter"
-            append-icon="search"
-        ></v-text-field>
+    <v-text-field
+        solo
+        v-if="widget.options.searchEnabled"
+        class="layer-filter-field"
+        v-model="filter"
+        label="filter"
+        append-icon="search"
+    ></v-text-field>
+    <v-expansion-panels v-model="groupsexpanded" multiple accordion>
         <v-expansion-panel
             v-if="widget.content"
-            v-model="groupsexpanded"
-            expand
+            v-for="(group, key) in Groups"
+            :key="key"
+            
         >
-            <v-expansion-panel-content
-                v-for="(group, key) in Groups"
-                class="layer-group-title"
-                :key="key"
-                expand
-            >
-                <div slot="header">
+            <v-expansion-panel-header class="layer-group-header">
+                <template>
                     <v-checkbox
-                        class="layer-group-checkbox"
+                        class="layer-group-checkbox layer-group-title"
                         v-model="group.state === 'some'"
                         @click.stop="toggleGroup(group)"
+                        :label="group.title"
                     ></v-checkbox
-                    ><span class="layer-group-title">{{ group.title }}</span>
-                </div>
+                    >
+                    <!-- <span class="layer-group-title">{{ group.title }}</span> -->
+                </template>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
                 <div class="layer-group-container">
                     <div v-for="layer in group.layers" :key="layer.id">
                         <v-layout
@@ -35,23 +36,24 @@
                             :class="{'layer-group-item-selected':layer.Visible}"
                             :style="{'border-left-color': layer.color}"
                         >
-                            <v-tooltip
+                            <!-- <v-tooltip
                                 top
                                 style="width:100%"
                                 :disabled="!layer.description"
                             >
-                                <v-checkbox
-                                    :label="layer.title"
-                                    slot="activator"
-                                    v-model="layer.Visible"
-                                    class="layer-group-item-title"
-                                    @change="toggleLayer(layer)"
-                                ></v-checkbox>
+                                <template v-slot:activator="{ on }"> -->
+                                    <v-checkbox
+                                        :label="layer.title"                           
+                                        v-model="layer.Visible"
+                                        class="layer-group-item-title"
+                                        @change="toggleLayer(layer)"
+                                    ></v-checkbox>
+                                <!-- </template>
                                 <span>{{ layer.description }}</span>
-                            </v-tooltip>
+                            </v-tooltip> -->
                             <v-btn
                                 v-if="layer.Visible"
-                                flat
+                                text
                                 right
                                 icon
                                 class="layer-options-button layer-opacity-button"
@@ -60,25 +62,27 @@
                                 <v-icon>opacity</v-icon>
                             </v-btn>
                             <v-menu bottom left v-model="layer._showMenu">
-                                <v-btn
-                                    slot="activator"
-                                    flat
-                                    right
-                                    icon
-                                    class="layer-options-button"
-                                >
-                                    <v-icon>more_vert</v-icon>
-                                </v-btn>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        v-on="on"
+                                        text
+                                        right
+                                        icon
+                                        class="layer-options-button"
+                                    >
+                                        <v-icon>more_vert</v-icon>
+                                    </v-btn>
+                                </template>
                                 <v-list>
-                                    <v-list-tile
+                                    <v-list-item
                                         v-for="(item, i) in layerMenu(layer)"
                                         :key="i"
                                         @click="item.action(layer)"
                                     >
-                                        <v-list-tile-title
+                                        <v-list-item-title
                                             >{{ item.title }}
-                                        </v-list-tile-title>
-                                    </v-list-tile>
+                                        </v-list-item-title>
+                                    </v-list-item>
                                 </v-list>
                             </v-menu>
                         </v-layout>
@@ -97,5 +101,6 @@
                     </div>
                 </div>
             </v-expansion-panel-content>
-        </v-expansion-panel>    
+        </v-expansion-panel>
+    </v-expansion-panels>
 </simplebar>

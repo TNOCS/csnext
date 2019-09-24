@@ -5,10 +5,12 @@ import {
     IDashboard,
     guidGenerator,
     WidgetOptions} from '@csnext/cs-core';
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import './drag-layout.css';
+import { WidgetBase } from '@csnext/cs-client';
 import { DragLayoutOptions } from './drag-layout-options';
+import Vue from 'vue';
+import simplebar from 'simplebar-vue';
 
 Vue.component('grid-layout', GridLayout);
 Vue.component('grid-item', GridItem);
@@ -16,11 +18,12 @@ Vue.component('grid-item', GridItem);
 // @Form({ title: 'Drag Layout'})
 @Component({
     template: require('./drag-layout.html'),
+    components: { simplebar},
     props: {
         dashboard: null
     } as any
 })
-export class DragLayout extends Vue {
+export class DragLayout extends WidgetBase {
     public mode: any;
     public dashboard!: IDashboard;
 
@@ -43,10 +46,15 @@ export class DragLayout extends Vue {
     public layout: any[] = [];
 
     private initLayout() {
+
+        console.log('Init layout');
+
         // this.options = new DragLayoutOptions();
         let options = new DragLayoutOptions();
         Object.assign(options, this.dashboard.options);
         this.dashboard.options = options;
+
+  
         // Object.assign(this.options, this.dashboard.options);
 
         let res: any[] = [];
@@ -55,10 +63,11 @@ export class DragLayout extends Vue {
                 this.dashboard.widgets
                     .filter(w => !w.options || !w.options.background)
                     .forEach(w => {
+                        if (w.id === undefined) { w.id = guidGenerator(); }
                         if (!w.options) w.options = {};
                         w.options = {
                             width: 2,
-                            height: 4,
+                            height: 4,                            
                             ...w.options
                         };
 
@@ -108,6 +117,9 @@ export class DragLayout extends Vue {
     }
 
     public beforeMount() {        
+
+
+
         this.options = {
             itemHeight: 5,
             itemWidth: 5,
@@ -120,19 +132,21 @@ export class DragLayout extends Vue {
             ...this.dashboard.options
         } as DragLayoutOptions;
 
+       
+
         this.initLayout();
 
-        if (!this.editSubscription && this.dashboard && this.dashboard.events) {
-            this.dashboard.events.subscribe('settings', () => {
-                if (
-                    this.options &&
-                    this.dashboard.options &&
-                    this.options.DragEnabled
-                ) {
-                    this.options.DragEnabled = this.options.DragEnabled;
-                }
-            });
-        }
+        // if (!this.editSubscription && this.dashboard && this.dashboard.events) {
+        //     this.dashboard.events.subscribe('settings', () => {
+        //         if (
+        //             this.options &&
+        //             this.dashboard.options &&
+        //             this.options.DragEnabled
+        //         ) {
+        //             this.options.DragEnabled = this.options.DragEnabled;
+        //         }
+        //     });
+        // }
 
         // this.dashboard.widgets.forEach(widget => {
         //   this.initWidget(widget);

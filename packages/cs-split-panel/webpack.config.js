@@ -6,9 +6,8 @@ const config = [
         'cssplitpanel',
         { cs: ['./src/index.ts'] },
         {
-            '@csnext/cs-core': '@csnext/cs-core',
-            vue: 'Vue',
-            Vue: 'Vue'
+            '@csnext/cs-client': '@csnext/cs-client',
+            vue: 'Vue'
         },
         "cssplitpanel"
     )

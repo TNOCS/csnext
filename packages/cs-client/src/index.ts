@@ -16,7 +16,7 @@ export * from './datasources/log/log-manager';
 
 // layout managers
 export * from './layout/single/single';
-export * from './layout/grid/grid';
+export * from './layout/grid-layout/grid-layout';
 export * from './layout/css-grid/css-grid';
 export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
@@ -32,9 +32,11 @@ import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import { MdWidget } from './widgets/markdown/md-widget';
+import { CsInfo } from './components/cs-info/cs-info';
 import Vue, { VueConstructor } from 'vue';
-import Component from 'vue-class-component';
 import { VegaWidget } from './widgets/vega/vega-widget';
+import { CardWidget } from './widgets/card/card-widget';
+
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -42,6 +44,7 @@ export * from './components/cs-widget/cs-widget';
 export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
 export * from './components/cs-language-switch/cs-language-switch';
+export * from './components/cs-info/cs-info';
 
 // widgets
 export * from './widgets/widget-base';
@@ -56,6 +59,9 @@ export * from './widgets/vega/vega-widget';
 export * from './widgets/vega/vega-widget-options';
 export * from './widgets/intro/intro-widget';
 export * from './widgets/intro/intro-widget-options';
+export * from './widgets/card/card-widget';
+export * from './widgets/card/card-widget-options';
+
 
 export const CsNext = {
   install: (vue: VueConstructor): void => {
@@ -67,6 +73,8 @@ export const CsNext = {
     vue.component('cs-widget', CsWidget);
     vue.component('md-widget', MdWidget);
     vue.component('vega-widget', VegaWidget);
+    vue.component('card-widget', CardWidget);
+    vue.component('cs-info', CsInfo);
   }
 };
 

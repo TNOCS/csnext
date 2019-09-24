@@ -10,7 +10,6 @@ export class LogDataSource implements IDatasource {
 
   public get socket(): SocketIOClient.Socket | undefined {
     return AppState.Instance.socket;
-
   }
 
   constructor(public logurl?: string, public logid?: string) { }

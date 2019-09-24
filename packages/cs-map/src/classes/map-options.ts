@@ -8,6 +8,7 @@ export class MapOptions extends WidgetOptions
     public token?: string;
     public mbOptions?: MapboxOptions;
     public activeLayers?: string[] = [];
+    public style?: string = 'streets';
 
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;
@@ -16,9 +17,12 @@ export class MapOptions extends WidgetOptions
     public showRuler?: boolean = true;
     public showStyles?: boolean = true;
     public showGeocoder?: boolean = true;
+    public showClickLayer?: boolean = true;
     public showDraw?: boolean = false;
+    public showTraffic?: boolean = false;
     public showEditor?: boolean = false;
     public showLegend?: boolean = true;
     public showGrid?: boolean = true;
+    public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
 }

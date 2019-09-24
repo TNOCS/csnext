@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 export interface IFormOptions {
-  title: string;
+  title?: string;
   fields?: IFormFieldOptions[];
   saveButton?: boolean;
   isPanel?: boolean;
@@ -12,6 +12,7 @@ export interface IFormOptions {
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
   keyValuesType?(): object;
+  triggerCallback?(obj: object, field: IFormFieldOptions): undefined;
 }
 
 export interface IFormObject {
@@ -43,8 +44,9 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'number'
   | 'slider'
   | 'chips'
-  | 'color'
+  | 'colorpicker'
   | 'combobox'
+  | 'combobox-objects'
   | 'checkboxes-horizontal'
   | 'checkbox'
   | 'object'
@@ -53,7 +55,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'keyvalue'
   | 'form'
   | 'union'
-  | 'keysobject';
+  | 'keysobject'
+  | 'button-trigger';
   defaultValue?: any;
   description?: string;
   required?: boolean;
@@ -62,15 +65,17 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   max?: number;
   step?: number;
   options?: any[] | (() => any[]);
-  arrayType?: IFormFieldOptions;
+  arrayType?: IFormOptions;
   form?: IFormOptions;
   canDelete?: boolean;
   canAdd?: boolean;
   canEditKey?: boolean;
   addUsingDialog?: boolean;
   readonly?: boolean;
+  icon?: string;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
+  triggerCallback?(obj: object, field: IFormFieldOptions);
 }
 
 export function Form(options: IFormOptions) {

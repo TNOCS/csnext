@@ -8,5 +8,7 @@
   "YES": "Ja",
   "NO": "Nee",
   "SEARCH": "Zoeken",
-  "FIELD_REQUIRED": "Dit veld is vereist"
+  "FIELD_REQUIRED": "Dit veld is vereist",
+  "ABOUT": "Over",
+  "GROUP_VISIBILITY": "Groepen"
 }

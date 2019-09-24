@@ -9,6 +9,10 @@
     font-weight: 700;
 }
 
+.v-expansion-panel::before {
+    box-shadow: none !important;
+  }
+
 .feature-details-title {
     margin-top:25px;
     font-weight: 600;

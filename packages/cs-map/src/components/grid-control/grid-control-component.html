@@ -12,13 +12,13 @@
                     </div>
                 </template>
                 <v-list>
-                    <v-list-tile
+                    <v-list-item
                         v-for="(style, index) in gridStyles"
                         :key="index"
                         @click="selectGridStyle(style)"
                     >
-                        <v-list-tile-title>{{ style }}</v-list-tile-title>
-                    </v-list-tile>
+                        <v-list-item-title>{{ style }}</v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </span>

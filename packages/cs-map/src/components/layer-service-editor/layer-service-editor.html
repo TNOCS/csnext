@@ -3,13 +3,13 @@
         <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-            <v-btn @click="updateLayer()" icon slot="activator"
+            <v-btn @click="updateLayer()" icon v-slot:activator="{ on }"
                 ><v-icon>check</v-icon>
             </v-btn>
             update layer
         </v-tooltip>
         <v-tooltip bottom>
-            <v-btn icon slot="activator"><v-icon>delete</v-icon> </v-btn>
+            <v-btn icon v-slot:activator="{ on }"><v-icon>delete</v-icon> </v-btn>
             delete layer
         </v-tooltip>
         <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>

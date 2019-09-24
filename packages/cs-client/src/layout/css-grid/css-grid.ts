@@ -3,12 +3,13 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
-  GridDashboardOptions,
-  IWidget} from '@csnext/cs-core';
+  CssGridDashboardOptions,
+  CssGridWidgetOptions,
+  IWidget
+} from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './css-grid.css';
-import { GridWidgetOptions } from './css-grid-widget-options';
 
 @Component({
   template: require('./css-grid.html'),
@@ -18,20 +19,32 @@ import { GridWidgetOptions } from './css-grid-widget-options';
 } as any)
 export class CssGrid extends Vue {
   public dashboard?: IDashboard;
+  public static id = 'css-grid';
 
   public gridStyle() {
     if (!this.dashboard) {
       return;
     }
-    const style = {} as any;
-    const options = this.dashboard.options as GridDashboardOptions;
-
-    return { 'grid-template-columns': 'repeat(auto-fill, minmax(250px,1fr))' };
+    if (!this.dashboard.options) {
+      this.dashboard.options = {};
+    }
+    const options = this.dashboard.options as CssGridDashboardOptions;
+    
+    const style = { 'grid-gap': options.gap, 'column-gap': options.columnGap, 'row-gap': options.rowGap } as any;
+    if (!options.template) {
+      // style['grid-template-columns'] = 'repeat(auto-fill, minmax(150px,1fr))';
+      // style['grid-template-rows'] = 'repeat(auto-fill, minmax(150px,1fr))';
+    }
+    return style;
   }
 
-  public gridWidgetClass(widget: IWidget) {
+  public gridWidgetStyle(widget: IWidget) {
     const style: any = {};
-    const options = widget.options as GridWidgetOptions;
+    const options = widget.options as CssGridWidgetOptions;
+    if (!options) return style;
+    if (options.area) {
+      style['grid-area'] = options.area;
+    }
     if (options.columnStart) {
       style['grid-column-start'] = options.columnStart;
     }
@@ -49,7 +62,7 @@ export class CssGrid extends Vue {
 }
 
 LayoutManager.add({
-  id: 'css-grid',
+  id: CssGrid.id,
   name: 'css-grid page',
   component: CssGrid
 } as ILayoutManagerConfig);

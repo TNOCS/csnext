@@ -1,17 +1,17 @@
 <div style="height:100vh">
-  <v-jumbotron :src="options.backgroundImage">
-    <v-container fill-height>
-      <v-layout align-center>
-        <v-flex>
-          <h3 class="display-3">{{options.title}}</h3>
+  <!-- <v-img :src="options.backgroundImage"> </v-img> -->
+  <v-container fill-width>
+    <v-layout align-center>
+      <v-flex>
+        <h3 class="display-3">{{ options.title }}</h3>
 
-          <span class="subheading">{{ options.subHeader}}</span>
+        <span class="subheading">{{ options.subHeader }}</span>
 
-          <!-- <v-btn class="mx-0" large>Learn more</v-btn> -->
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-jumbotron>
+        <!-- <v-btn class="mx-0" large>Learn more</v-btn> -->
+      </v-flex>
+    </v-layout>
+  </v-container>
+
   <v-container grid-list-lg>
     <v-layout wrap v-if="options.cards">
       <v-flex xs12 sm6 md4 lg3 v-for="card in options.cards" :key="card.title">
@@ -20,15 +20,23 @@
 
           <v-card-title primary-title>
             <div>
-              <h3 class="headline mb-0">{{card.title}}</h3>
+              <h3 class="headline mb-0">{{ card.title }}</h3>
               <div></div>
             </div>
           </v-card-title>
 
-          <v-card-actions v-if="card.actions" >
+          <v-card-actions v-if="card.actions">
             <template v-for="action in card.actions">
-              <v-btn v-if="action.route" :to="action.route" flat color="orange">{{action.title}}</v-btn>
-              <v-btn v-else :href="action.url" flat color="orange">{{action.title}}</v-btn>
+              <v-btn
+                v-if="action.route"
+                :to="action.route"
+                text
+                color="orange"
+                >{{ action.title }}</v-btn
+              >
+              <v-btn v-else :href="action.url" text color="orange">{{
+                action.title
+              }}</v-btn>
             </template>
           </v-card-actions>
         </v-card>

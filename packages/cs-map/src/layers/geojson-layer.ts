@@ -73,6 +73,12 @@ export class GeojsonLayer extends BaseLayer {
         return result;
     }
 
+    public get Map(): CsMap | undefined {
+        if (this._manager && this._manager.MapWidget) {
+            return this._manager.MapWidget;
+        }
+    }
+
     public get Visible(): boolean | undefined {
         return this.visible;
     }
@@ -261,6 +267,7 @@ export class GeojsonLayer extends BaseLayer {
 
     public removeLayer(map: CsMap) {
         this.removeExtensions();
+        this.unregisterMapEvents(map);
         if (this.id) {
             if (map.map.getLayer(this.id) !== undefined) {
                 map.map.removeLayer(this.id);
@@ -345,27 +352,82 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
+    private enterEvent = this.onEnter.bind(this);
+    private leaveEvent = this.onLeave.bind(this);
+    private clickEvent = this.onClick.bind(this);
+    private moveEvent = this.onMove.bind(this);
 
     private registerMapEvents(map: CsMap) {
+        console.log('Register map events');
+
         if (this.id && !this.mapEventsRegistered) {
-            map.map.on('touchend', this.id, e => {
-                this.click(this, e);
-            });
-            map.map.on('click', this.id, e => {
-                this.click(this, e);
-            });
-            map.map.on('mousemove', this.id, e => {
-                this.mouseMove(map, this, e);
-            });
-            map.map.on('mouseenter', this.id, e => {
-                this.mouseEnter(map, this, e);
-            });
-            map.map.on('mouseleave', this.id, e => {
-                this.mouseLeave(map, this, e);
-            });
+            map.map.on('touchend', this.id, this.clickEvent);
+            map.map.on('click', this.id, this.clickEvent);
+            map.map.on('mousemove', this.id, this.moveEvent);
+            map.map.on('mouseenter', this.id, this.enterEvent);
+            map.map.on('mouseleave', this.id, this.leaveEvent);
             this.mapEventsRegistered = true;
         }
     }
+
+    private unregisterMapEvents(map: CsMap) {
+        console.log('Unregister map events');
+        if (this.id) {
+            map.map.off('touchend', this.id, this.clickEvent);
+            map.map.off('click', this.id, this.clickEvent);
+            map.map.off('mouseenter', this.id, this.enterEvent);
+            map.map.off('mouseleave', this.id, this.leaveEvent);
+            map.map.off('mousemove', this.id, this.moveEvent);
+        }
+        this.mapEventsRegistered = false;
+    }
+
+    private onMove(e) {
+        if (this.Map) {
+            if (this.popupContent && e && e.features) {
+                this.createPopup(this.Map, this, e);
+            }
+        }
+
+    }
+
+    private onClick(e) {
+        if (this.Map && this._events) {
+            this._events.publish('feature', CsMap.FEATURE_SELECT, {
+                feature: (e.features.length > 0) ? e.features[0] : undefined,
+                features: e.features,
+                context: e
+            } as FeatureEventDetails);
+        }
+    }
+
+    private onLeave(e) {
+        if (this.Map && this._events) {
+            this.Map.map.getCanvas().style.cursor = '';
+            if (this.popupContent) this.popup.remove();
+            this._events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
+                features: e.features,
+                context: e
+            });
+
+        }
+    }
+
+    private onEnter(e) {
+        console.log('on enter');
+        // this.mouseEnter(this._manager!.MapWidget!)            
+        if (this.Map && this._events) {
+            this.Map.map.getCanvas().style.cursor = 'pointer';
+            this.createPopup(this.Map, this, e);
+            this._events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
+                features: e.features,
+                context: e
+            });
+        }
+    }
+
+
+    
 
     private removeExtensions() {
         if (this._extensions && this._extensions.length) {
@@ -376,45 +438,8 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    private click(layer: GeojsonLayer, e: any) {
-        if (layer._events) {
-            layer._events.publish('feature', CsMap.FEATURE_SELECT, {
-                feature: (e.features.length > 0) ? e.features[0] : undefined,
-                features: e.features,
-                context: e
-            } as FeatureEventDetails);
-        }
-    }
-
-    private mouseLeave(map: CsMap, layer: GeojsonLayer, e: any) {
-        map.map.getCanvas().style.cursor = '';
-        if (layer.popupContent) this.popup.remove();
-        if (layer._events) {
-            layer._events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
-                features: e.features,
-                context: e
-            });
-        }
-    }
-
-    private mouseMove(map: CsMap, layer: GeojsonLayer, e: any) {
-        if (layer.popupContent && e && e.features) {
-            this.createPopup(map, layer, e);
-        }
-    }
-
-    private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
-        map.map.getCanvas().style.cursor = 'pointer';
-        this.createPopup(map, layer, e);
-        if (layer._events) {
-            layer._events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
-                features: e.features,
-                context: e
-            });
-        }
-    }
-
     private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
+        console.log('Create popup');
         let popup: string | undefined = undefined;
         e.feature = BaseLayer.getFeatureFromEventDetails(e);
         // if (layer.style && layer.style.popup) {

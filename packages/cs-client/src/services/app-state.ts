@@ -9,7 +9,9 @@ import {
   IDatasource,
   ISidebarOptions,
   IDialog,
-  guidGenerator
+  guidGenerator,
+  idGenerator,
+  InfoOptions
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 import { ProjectManager } from './project-manager';
@@ -19,6 +21,7 @@ import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { CsDialog } from '../components/cs-dialog/cs-dialog';
+import { MdWidget } from '../widgets/markdown/md-widget';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 // TODO Should we use idiomatic Typescript instead, as in
@@ -31,6 +34,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
   public static DASHBOARD_MAIN = 'dashboard.main';
+  public static LOADERS = 'loaders';
   public static YES = 'YES';
   public static NO = 'NO';
 
@@ -51,6 +55,8 @@ export class AppState extends AppStateBase {
   public router?: VueRouter;
   /** Vue i18n instance */
   public i18n?: VueI18n;
+
+  protected loaders: { [key: string]: any } = {};
 
   private constructor() {
     super();
@@ -150,6 +156,29 @@ export class AppState extends AppStateBase {
     this.initSocket();
   }
 
+  // add a new loader, if enabled it can enable the loading icon in the header 
+  public AddLoader(id?: string, title?: string): string {
+    if (id === undefined) {
+      id = guidGenerator();
+    }
+    this.loaders[id] = title || id;
+    this.bus.publish(AppState.LOADERS, 'updated');
+    return id;
+  }
+
+  // remove a loader, if this is the last loader it disables the loading icon in the header
+  public RemoveLoader(id: string) {
+    if (this.loaders.hasOwnProperty(id)) {
+      delete this.loaders[id];
+      this.bus.publish(AppState.LOADERS, 'updated');
+    }
+  }
+
+  // returns the list of existing loaders
+  public GetLoaders(): { [key: string]: string } {
+    return this.loaders;
+  }
+
   public UpdateBreadCrumbs(d?: IDashboard, main = true) {
     if (!d) { d = this.activeDashboard; }
     if (
@@ -171,6 +200,8 @@ export class AppState extends AppStateBase {
     }
   }
 
+
+
   public updateDatasource(id: string, value: any) {
     if (!this.project) {
       return;
@@ -190,16 +221,32 @@ export class AppState extends AppStateBase {
     return this.projectManager.datasourceManager.load<T>(source);
   }
 
+  public OpenInfo(options: InfoOptions | string, source: any) {
+    if (typeof options === 'string') {
+      options = { type: 'string', data: options};
+    }
+    if (options && !options.type) { options.type = 'string'}
+    switch (options.type) {
+      case "string":
+        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title} }, { open: false}, 'info');
+        break;
+    }
+  }
+
   /** Triggers notification */
   public TriggerNotification(notification: INotification) {
-    Object.assign(notification, {
-      id: guidGenerator(),
-      timeout: 3000,
-      created: new Date(),
-      isRead: false,
-      remember: true,
-      _visible: true
-    } as INotification);
+    notification = {
+      ...{
+        id: guidGenerator(),
+        timeout: 3000,
+        created: new Date(),
+        isRead: false,
+        buttonText: 'CLOSE',
+        remember: true,
+        _visible: true
+      },
+      ...notification
+    };
     this.bus.publish('notification', 'new', notification);
     if (
       this.project.notifications &&
@@ -207,6 +254,13 @@ export class AppState extends AppStateBase {
       notification.remember
     ) {
       this.project.notifications.items.push(notification);
+    }
+  }
+
+  public ClearNotifications() {
+    this.bus.publish('notification', 'clear-all');
+    if (this.project.notifications && this.project.notifications.items) {
+      this.project.notifications.items.length = 0;
     }
   }
 
@@ -251,9 +305,24 @@ export class AppState extends AppStateBase {
         if (this.project.rightSidebar.dashboard.widgets[0].id) {
           this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
         }
+        this.project.rightSidebar.dashboard.widgets.shift();
       }
       this.project.rightSidebar.open = false;
     }
+  }
+
+  public CloseRightSidebarKey(id: string): boolean {
+    if (this.project.rightSidebar && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+      this.project.rightSidebar.sidebars[id].hide = true;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public CloseInfo() {
+
+    this.CloseRightSidebarKey('info');
   }
 
   /** If a rightsidebar exists, it will remove a specific widget */
@@ -279,13 +348,13 @@ export class AppState extends AppStateBase {
   }
 
   public OpenRightSidebarKey(key: string) {
-
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
       if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
-        this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
+        this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };        
       }
       const d = this.project.rightSidebar.sidebars[key];
+      d.hide = false;
       this.OpenRightSidebar(d);
     }
   }
@@ -304,11 +373,11 @@ export class AppState extends AppStateBase {
       if (!this.project.rightSidebar.dashboard) {
         this.OpenRightSidebar(d);
       } else if (this.project.rightSidebar.dashboard.id === d.id) {
-        // this.project.rightSidebar.open = false;
-        // delete this.project.rightSidebar.dashboard;
+        this.project.rightSidebar.open = !this.project.rightSidebar.open;
+        delete this.project.rightSidebar.dashboard;
         this.ClearRightSidebar();
       } else {
-        delete this.project.rightSidebar.dashboard;
+        // delete this.project.rightSidebar.dashboard;
         this.OpenRightSidebar(d);
       }
     } else {
@@ -321,8 +390,6 @@ export class AppState extends AppStateBase {
 
     this.OpenRightSidebarKey(key);
     this.ClearRightSidebar();
-    // while (this.project.rightSidebar.dashboard.widgets.length > 0) {
-    //   this.project.rightSidebar.dashboard.widgets.pop();
 
     Vue.nextTick(() => {
       if (

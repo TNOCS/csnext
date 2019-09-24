@@ -18,5 +18,12 @@ export interface ISidebarOptions {
   canMinify?: boolean;
   width?: number;
   visible?: boolean;
+  footer?: ISidebarFooterOptions;
   sidebars?: { [key: string]: IDashboard };
+}
+
+export interface ISidebarFooterOptions {
+  icon?: string;
+  tooltip?: string;
+  title?: string;
 }

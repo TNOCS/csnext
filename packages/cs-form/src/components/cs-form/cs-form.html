@@ -4,43 +4,51 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon dark @click="saveForm()">
+        <!-- <v-btn icon @click="saveForm()">
             <v-icon>save</v-icon>
-        </v-btn>
+        </v-btn> -->
 
-        <v-btn icon dark @click="closeForm()">
+        <v-btn icon @click="closeForm()">
             <v-icon>clear</v-icon>
         </v-btn>
-
     </v-toolbar>
-    <v-expansion-panel expand v-model="panel" v-if="formObject">
-        <v-expansion-panel-content>
-            <div slot="header" class="form-title" v-if="!Form.hideTitle">
+
+    <!-- <div v-for="group in fieldGroups">
+        {{ group}}
+    </div> -->
+
+    <v-expansion-panels multiple v-model="panel" :accordion="true">
+        <v-expansion-panel>
+         
+            <v-expansion-panel-header class="form-title" v-if="!Form.hideTitle" expand-icon="none">
                 {{ $cs.Translate(Form.title) }}
-            </div>
-            <v-form>
-                <v-layout
-                    row
-                    wrap
-                    v-for="group in fieldGroups"
-                    v-if="group._visible"
-                    :key="group.id"
-                    dense
-                >
-                    <v-flex
-                        :class="group.class"
-                        v-for="field in group.fields"
-                        :key="field.id"
-                        style="padding-right:2px"
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <v-form>
+                    <v-row
+                        row
+                        wrap
+                        v-for="group in fieldGroups"
+                        v-if="group._visible"
+                        :key="group.id"
                         dense
                     >
-                        <cs-formfield
-                            :target="Target"
-                            :field="field"
-                        ></cs-formfield>
-                    </v-flex>
-                </v-layout>
-            </v-form>
-        </v-expansion-panel-content>
-    </v-expansion-panel>
+                        <v-col
+                            v-for="field in group.fields"
+                            :key="field.id"
+                            style="padding-right:2px"
+                            dense
+                        >
+                            <cs-formfield
+                                :target="Target"
+                                :field="field"                                
+                                @triggered="fieldTriggered"
+                                @changed="fieldChanged"
+                            ></cs-formfield>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </div>

@@ -33,6 +33,8 @@ import VueSplit from 'vue-split-panel';
     }
 } as any)
 export class SplitPanel extends Vue {
+
+    public static id = 'split-panel';
     
     public dashboard!: IDashboard;
 

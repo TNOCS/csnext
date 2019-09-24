@@ -41,7 +41,7 @@ export class CsForm extends Vue {
     public data?: IFormObject;
     public formkey?: string;
     public formdef?: IFormOptions;
-    public panel = [true];
+    public panel = [0];
     public keys: { [key: string]: IFormObject } = {};
     /** specify a single field to show, others are hidden */
     public field?: string;
@@ -80,6 +80,7 @@ export class CsForm extends Vue {
     }
 
     public closeForm() {
+        this.saveForm();
         this.$cs.ClearRightSidebar();
         console.log('Closing form');
     }
@@ -162,6 +163,16 @@ export class CsForm extends Vue {
                     break;
             }
         });
+    }
+
+    public fieldTriggered(field: IFormFieldOptions) {
+        if (this.Form.triggerCallback && this.Target) {
+            this.Form.triggerCallback(this.Target, field);
+        }   
+    }
+
+    public fieldChanged(field: IFormFieldOptions) {
+        this.saveForm();
     }
 
     public updateGroupVisibility(group: FieldGroup) {

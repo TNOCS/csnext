@@ -34,6 +34,14 @@ export interface IDashboard {
 
   icon?: string;
 
+  badgeType?: 'none' | 'icon' | 'text';
+
+  badgeColor?: string;
+
+  badgeText?: string;
+
+  badgeIcon?: string;
+
   // id of default datasource
   datasource?: string;
 
@@ -73,6 +81,8 @@ export interface IDashboard {
 
   // if true, won't be visible in navigation
   hideFromNavigation?: boolean;
+
+  hide?: boolean;
 
   showLoadAnimation?: boolean;
   _loading?: boolean;

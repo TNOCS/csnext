@@ -1,12 +1,11 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator } from '@csnext/cs-core';
+import { IWidget, guidGenerator, MessageBusService, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { CirclePaint, LngLat } from 'mapbox-gl';
-import { Feature } from 'geojson';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "mapbox-gl-style-switcher";
-import { RulerControl } from 'mapbox-gl-controls';
+import mapboxgl, { CirclePaint, LngLat, MapboxOptions } from 'mapbox-gl';
+import { Feature, FeatureCollection } from 'geojson';
+import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "./../style-switcher/style-switcher";
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
@@ -16,7 +15,9 @@ import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
 import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import "mapbox-gl-style-switcher/styles.css";
+import RulerControl from 'mapbox-gl-controls/lib/ruler';
+import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
+
 
 import {
     MapLayers,
@@ -27,9 +28,12 @@ import {
     IStartStopService,
     ILayerExtensionType,
     GeojsonPlusLayer,
-    FeatureDetails
+    FeatureDetails,
+    LayerSelection,
+    LayerSelectionOptions
 } from '../../.';
 import { GridControl } from '../grid-control/grid-control';
+import { WidgetBase } from '@csnext/cs-client';
 
 export interface FeatureEventDetails {
     context: any;
@@ -41,7 +45,7 @@ export interface FeatureEventDetails {
 @Component({
     template: require('./cs-map.html')
 })
-export class CsMap extends Vue {
+export class CsMap extends WidgetBase {
 
     public static FEATURE_SELECT = 'select';
     public static FEATURE_CREATED = 'created';
@@ -58,16 +62,30 @@ export class CsMap extends Vue {
     public static DRAWLAYER = 'drawlayer';
     public static MAP_DOUBLE_CLICK = 'map.doubleclick';
     public static MAP_CLICK = 'map.click';
+    public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
     public static layerExtensions: ILayerExtensionType[] = [];
+    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
+
+    public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
     @Prop()
     public widget!: IWidget;
     public map!: mapboxgl.Map;
     public mapDraw!: any;
+    private _pointerPickerActivated = false;
+    public get pointPickerActivated() : boolean {
+        return this._pointerPickerActivated;
+    };
+
+    public set pointPickerActivated(value: boolean) {
+        this._pointerPickerActivated = value;
+        this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
+    }
+
 
     private mapOptions!: MapOptions;
 
@@ -123,6 +141,19 @@ export class CsMap extends Vue {
         }
     }
 
+    public beforeDestroy() {
+        for (const key in this.busHandlers) {
+            if (this.busHandlers.hasOwnProperty(key)) {
+                const element = this.busHandlers[key];
+                element.bus.unsubscribe(element.handle);
+                
+            }
+        }
+        this.$cs.CloseRightSidebarKey('feature');
+        this.$cs.CloseRightSidebarKey('layers');
+        
+    }
+
     public zoomLayer(mapLayer: IMapLayer, padding = 20) {
         let bounds = mapLayer.getBounds();
         if (bounds) {
@@ -139,6 +170,12 @@ export class CsMap extends Vue {
                 }
             });
         }
+    }
+
+    public setStyle(style: MapboxStyleDefinition) {
+        this.options.style = style.id;
+        this.map.setStyle(style.uri);
+        this.updateUrlQueryParams();
     }
 
     public async startServices() {
@@ -205,35 +242,40 @@ export class CsMap extends Vue {
 
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
-                                layer._events.subscribe(
-                                    'feature',
-                                    (a: string, f: FeatureEventDetails) => {
-                                        if (a === CsMap.FEATURE_SELECT) {
-                                            if (
-                                                this.$cs &&
-                                                layer.openFeatureDetails &&
-                                                layer.openFeatureDetails ===
-                                                true
-                                            ) {
+                                this.busHandlers['layer-activated'] = {
+                                    bus: layer._events, handle: layer._events.subscribe(
+                                        'feature',
+                                        (a: string, f: FeatureEventDetails) => {
+                                            if (a === CsMap.FEATURE_SELECT) {
+                                                if (
+                                                    this.$cs &&
+                                                    layer.openFeatureDetails &&
+                                                    layer.openFeatureDetails ===
+                                                    true
+                                                ) {
 
-                                                this.$cs.OpenRightSidebarWidget(
-                                                    {
-                                                        component: FeatureDetails,
-                                                        data: {
-                                                            feature: f.feature,
-                                                            layer: layer,
-                                                            manager: this
-                                                                .manager
+                                                    this.$cs.OpenRightSidebarWidget(
+                                                        {
+                                                            component: FeatureDetails,
+                                                            data: {
+                                                                feature: f.feature,
+                                                                layer: layer,
+                                                                manager: this
+                                                                    .manager
+                                                            }
                                                         },
-                                                        datasource: 'project'
-                                                    },
-                                                    { open: true }
-                                                );
+                                                        { open: true },
+                                                        'feature'
+                                                    );
+                                                }
                                             }
                                         }
-                                    }
-                                );
+
+                                    )
+                                }
+
                             }
+
                         }
                         resolve(layer);
                     }
@@ -253,21 +295,62 @@ export class CsMap extends Vue {
         }
     }
 
+    private getRouteOptions(): mapboxgl.MapboxOptions {
+        let options = {} as MapboxOptions;
+        const q = this.$route.query;
+        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
+            let lng = parseFloat(q['lng'] as string);
+            let lat = parseFloat(q['lat'] as string);
+            options.center = [lng, lat];
+        }
+        if (q.hasOwnProperty('z')) {
+            options.zoom = parseFloat(q['z'] as string);
+        }
+        if (q.hasOwnProperty('style')) {
+            const styleId = q['style'] as string;
+            this.options.style = styleId;
+            options.style = this.getStyleUri(styleId);
+        }
+        return options;
+    }
+
+    private updateUrlQueryParams() {
+        const center = this.map.getCenter();
+        const zoom = this.map.getZoom();
+        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
+        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => { }); //this.$route.query}
+    }
+
+    private getStyleUri(styleId: string): string {
+        const style = this.styles.find(s => s.id === styleId);
+        if (style) {
+            return style.uri;
+        }
+        return "";
+    }
+
+
     public mounted() {
+
         Vue.nextTick(() => {
             if (this.options.token) {
                 mapboxgl.accessToken = this.options.token;
+            }
+
+            if (!this.options.style) {
+                this.options.style = this.styles[0].id;
             }
 
             // if (!this.options.mbOptions) this.options.mbOptions = {};
             this.options.mbOptions = {
                 ...{
                     container: 'mapbox-' + this.widget.id,
-                    style: 'mapbox://styles/mapbox/basic-v9',
+                    style: this.getStyleUri(this.options.style),
                     center: [5.753699, 53.450862],
                     zoom: 10
                 },
-                ...this.options.mbOptions
+                ...this.options.mbOptions,
+                ...this.getRouteOptions()
             };
 
             // init map
@@ -285,6 +368,12 @@ export class CsMap extends Vue {
                 }
             });
 
+            // if (this.options.storePositionInUrl) {
+            this.map.on('moveend', (ev => {
+                this.updateUrlQueryParams();
+            }))
+            // }
+
 
             // ad navigation control
             this.mapOptions = {
@@ -296,6 +385,7 @@ export class CsMap extends Vue {
                     showGeocoder: false,
                     showLayer: true,
                     showEditor: true,
+                    showTraffic: true,
                     doubleClickZoom: true
                 },
                 ...(this.widget.options as MapOptions)
@@ -312,11 +402,14 @@ export class CsMap extends Vue {
             // subscribe to widget events
             if (this.widget.events) {
                 // check if widget has been resized
-                this.widget.events.subscribe('resize', () => {
-                    Vue.nextTick(() => {
-                        this.map.resize();
-                    });
-                });
+                this.busHandlers['map-resize'] = {
+                    bus: this.widget.events, handle: this.widget.events.subscribe('resize', () => {
+                        Vue.nextTick(() => {
+                            this.map.resize();
+                        });
+
+                    })
+                }
             }
 
             if (this.mapOptions.showDraw) {
@@ -763,6 +856,10 @@ export class CsMap extends Vue {
                     this.addGeocoder();
                 }
 
+                if (this.mapOptions.showClickLayer) {
+                    this.addClickLayer();
+                }
+
                 var nav = new mapboxgl.NavigationControl({
                     showCompass: this.mapOptions.showCompass,
                     showZoom: this.mapOptions.showZoom
@@ -770,18 +867,11 @@ export class CsMap extends Vue {
                 this.map.addControl(nav, 'top-left');
 
                 if (this.mapOptions.showStyles) {
-                    const styles: MapboxStyleDefinition[] = [
-                        { title: "Dark", uri: "mapbox://styles/mapbox/dark-v9" },
-                        { title: "Light", uri: "mapbox://styles/mapbox/light-v9" },
-                        { title: "Outdoors", uri: "mapbox://styles/mapbox/outdoors-v10" },
-                        { title: "Satellite", uri: "mapbox://styles/mapbox/satellite-streets-v10" },
-                        { title: "Streets", uri: "mapbox://styles/mapbox/streets-v10" }
-                    ];
-
-                    this.map.addControl(new MapboxStyleSwitcherControl(styles));
-
+                    this.map.addControl(new MapboxStyleSwitcherControl(this.styles, this));
                     // this.map.addControl(stylesControl, 'bottom-right');
-                    this.map.on('style.load', () => {
+
+                    this.map.on('style.load', (e: any) => {
+                        let style = this.map.getStyle();
                         if (this.manager) {
                             this.manager.refreshLayers();
                             // this.man
@@ -789,9 +879,14 @@ export class CsMap extends Vue {
                     });
                 }
 
-                // if (this.mapOptions.showRuler) {
-                //     this.map.addControl(new RulerControl(), 'top-left');
-                // }
+                if (this.mapOptions.showRuler) {
+                    this.map.addControl(new RulerControl(), 'top-left');
+                }
+
+                if (this.mapOptions.showTraffic) {
+                    this.map.addControl(new MapboxTraffic(), 'top-left');
+                }
+
             });
         });
     }
@@ -858,7 +953,8 @@ export class CsMap extends Vue {
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
             country: 'nl',
-            limit: 8
+            limit: 8,
+            marker: false
         });
 
         this.map.addControl(geocoder);
@@ -894,13 +990,16 @@ export class CsMap extends Vue {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        l._events.subscribe(
-                            'feature',
-                            (a: string, f: Feature) => {
-                                if (a === CsMap.FEATURE_SELECT) {
-                                }
-                            }
-                        );
+                        this.busHandlers['layer-events-' + l.id] = {
+                            bus: l._events, handle:
+                                l._events.subscribe(
+                                    'feature',
+                                    (a: string, f: Feature) => {
+                                        if (a === CsMap.FEATURE_SELECT) {
+                                        }
+                                    }
+                                )
+                        }
                     }
                 });
             }
@@ -935,6 +1034,72 @@ export class CsMap extends Vue {
             });
         }
     }
+    private addClickLayer() {
+
+
+        if (this.manager && this.manager.layers) {
+            let rl = this.manager.layers!.find(
+                l => l.id === 'clicklayer'
+            ) as GeojsonPlusLayer;
+            if (!rl) {
+                rl = new GeojsonPlusLayer();
+                rl.id = 'clicklayer';
+                // rl.visible = false,
+                rl.title = 'Click layer';
+                (rl._circlePaint = {
+                    'circle-radius': 20,
+                    'circle-color': 'red'
+                } as CirclePaint),
+                    (rl.tags = ['Click']);
+                rl.type = 'poi';
+                rl.style = {
+                    pointCircle: true,
+                    icon:
+                        'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+                };
+                // rl.popupContent = f => {
+                //     if (f.features) {
+                //         return f.features[0].properties['place_name'];
+                //     }
+                // };
+
+                rl.source = new LayerSource({
+                    type: 'FeatureCollection',
+                    features: []
+                });
+                this.manager.addLayer(rl).then(l => {
+                    if (l._events) {
+                        this.busHandlers['layer-feature-' + l.id] = {
+                            bus: l._events, handle: l._events.subscribe(
+                                'feature',
+                                (a: string, f: Feature) => {
+                                    if (a === CsMap.FEATURE_SELECT) {
+                                    }
+                                }
+                            )
+                        }
+                    }
+                });
+
+                this.map.on('click', (ev) => {
+                    if (this.manager) {
+                        let features = {
+                            type: 'FeatureCollection',
+                            features: [{
+                                id: 'click-feature', type: 'Feature', properties: {
+                                    'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
+                                }, geometry: {
+                                    type: "Point",
+                                    coordinates: [ev.lngLat.lng, ev.lngLat.lat]
+                                }
+                            } as Feature]
+                        };
+                        this.manager.updateLayerSource(rl, features as any);
+                    }
+                });
+            }
+        }
+    }
 
     private mapLoaded(e: any) {
         if (!this.manager) {
@@ -955,8 +1120,21 @@ export class CsMap extends Vue {
         }
         if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
         if (this.manager && this.manager.events) {
-            this.manager.events.publish('map', 'loaded', e);
+            this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
+
+        this.$cs.OpenRightSidebarWidget(
+            {
+                component: LayerSelection,
+                options: {
+                    class: 'form-rightbar-widget',
+                    searchEnabled: true
+                } as LayerSelectionOptions,
+                datasource: this.widget.datasource
+            },
+            { open: false },
+            'layers'
+        );
 
         // this.map.addSource('mask',);
 

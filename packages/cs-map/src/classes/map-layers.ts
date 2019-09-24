@@ -1,4 +1,4 @@
-import { IDatasource, MessageBusService } from '@csnext/cs-core';
+import { IDatasource, MessageBusService, MessageBusHandle } from '@csnext/cs-core';
 import { LayerSource } from './layer-source';
 import {
     LayerSources,
@@ -18,11 +18,12 @@ import {
 } from 'geojson';
 import { ILayerService, IStartStopService } from './layer-service';
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
+import { AppState } from '@csnext/cs-client';
 
 export class MapLayers implements IDatasource {
     public _sources?: LayerSources;
-    public id = 'maplayers';
-
+    public id = 'maplayers';    
+    private pointPickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
@@ -76,6 +77,41 @@ export class MapLayers implements IDatasource {
 
     public removeLegend(layer: IMapLayer, pd: PropertyDetails) { }
 
+    public startPointPicker(title?: string): Promise<LngLat | undefined> {
+        return new Promise((resolve, reject) => {
+            if (!this.map) { return; }
+            if (this.map.pointPickerActivated) {
+                reject();
+                return;
+            }
+            AppState.Instance.TriggerNotification({
+                title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: () => {
+                    reject();
+                    this.map!.pointPickerActivated = false;
+                    if (this.pointPickerHandler) {
+                        this.events.unsubscribe(this.pointPickerHandler);
+                    }
+                    return {};
+                }
+            });
+
+            this.map.pointPickerActivated = true;
+            this.pointPickerHandler = this.events.subscribe('map', (a: string, e: any) => {
+                if (a === CsMap.MAP_CLICK) {          
+                    this.map!.pointPickerActivated = false;
+                    if (this.pointPickerHandler) {
+                        this.events.unsubscribe(this.pointPickerHandler);
+                    }
+                    if (e.lngLat) {
+                        resolve(e.lngLat);
+                    }
+                    AppState.Instance.ClearNotifications();
+                    return;
+                }
+            });
+        });
+    }
+
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (ml._source) {
@@ -120,6 +156,7 @@ export class MapLayers implements IDatasource {
                 // check if not already subscribed to features events
                 if (ml._events && !ml._featureEventHandle) {
                     // if not subscribe
+
                     ml._featureEventHandle = ml._events.subscribe(
                         'feature',
                         (a: string, f: Feature) => {
@@ -235,11 +272,11 @@ export class MapLayers implements IDatasource {
 
     public hideLayer(ml: string | IMapLayer) {
         if (!this.layers) return;
-        this.events.publish('layer', 'removed', ml);
         if (typeof ml === 'string') {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.hideLayer(layer);
         } else {
+
             // unsubscribe from feature events
             if (ml._events && ml._featureEventHandle !== undefined) {
                 ml._events.unsubscribe(ml._featureEventHandle);
@@ -257,7 +294,14 @@ export class MapLayers implements IDatasource {
                 this.map.removeLayer(ml);
                 this.events.publish('layer', 'disabled', ml);
             }
+            this.events.publish('layer', 'removed', ml);
         }
+    }
+
+    public removeLayer(layerId: string) {
+        if (!this.layers) { return; }
+        this.hideLayer(layerId);
+        this.layers = this.layers.filter(l => l.id !== layerId);
     }
 
     /** delete feature from a feature  */

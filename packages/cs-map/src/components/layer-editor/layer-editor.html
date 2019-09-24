@@ -1,12 +1,7 @@
-<div v-if="layer" class="mapboxgl-ctrl mapboxgl-ctrl-group layer-editor-component">
+<div v-if="hasLayer()" class="mapboxgl-ctrl mapboxgl-ctrl-group layer-editor-component">
     <h1>{{ manager.activeDrawLayer.title }}</h1>
     <v-layout>
-        <img
-            v-for="(value,key,index) in types"
-            :key="key"
-            :src="value.icon"
-            @click="addIcon(key)"
-            class="layer-editor-type-image"
-        />
+        <img v-for="(value,key,index) in types" :key="key" :src="value.icon" @click="addIcon(key)"
+            class="layer-editor-type-image" />
     </v-layout>
 </div>

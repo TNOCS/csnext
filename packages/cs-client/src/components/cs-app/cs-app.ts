@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify, { VuetifyObject } from 'vuetify';
+import Vuetify from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -16,7 +16,7 @@ import {
   MessageBusHandle
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
+import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 import './cs-app.css';
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
@@ -27,11 +27,9 @@ const en = require('./../../assets/translations/en.json');
 const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
-// import 'simplebar/dist/simplebar.min.css';
 import { CsLoading } from '../cs-loader/cs-loader';
+import 'simplebar/dist/simplebar.css';
 
-// register needed plugins'
-// tslint:disable-next-line:no-console
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 const i18n = new VueI18n({
@@ -39,11 +37,14 @@ const i18n = new VueI18n({
   fallbackLocale: 'nl',
   messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
 });
-Vue.use(Vuetify, {
+
+const vuetifyOpts = {
   lang: {
     t: (key, ...params) => i18n.t(key, params)
   }
-});
+};
+
+Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
 
@@ -51,6 +52,7 @@ const router = new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   i18n,
+  vuetify: new Vuetify(vuetifyOpts),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
@@ -61,11 +63,11 @@ const router = new VueRouter({ routes: [] });
 } as any)
 export class CsApp extends Vue {
   public static DASHBOARD_EDIT_ID = 'edit_dashboard';
-  public static LANUAGE_SWITCH_ID = 'switch_language';
+  public static LANGUAGE_SWITCH_ID = 'switch_language';
+  public static LOADING_MENU_ID = 'loading_menu';
   public app = AppState.Instance;
 
   public settingsDialog = false;
-  public $vuetify!: VuetifyObject;
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
@@ -159,6 +161,11 @@ export class CsApp extends Vue {
     // this.InitMenus();
   }
 
+  @Watch('app.project.theme.dark')
+  public themeChanged() {
+    this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false
+  }
+
   @Watch('app.project.notifications', { deep: true })
   public noticationsUpdated(n: INotification[], o: INotification[]) {
     this.UpdateNotifications();
@@ -177,8 +184,16 @@ export class CsApp extends Vue {
   }
 
   public InitTheme() {
+    // debugger
     if (this.$cs.project && this.$cs.project.theme) {
-      this.$vuetify.theme = this.$cs.project.theme.colors as any;
+      if (this.$cs.project.theme.lightColors) {
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
+      } else {
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.colors };
+      }
+      if (this.$cs.project.theme.darkColors) {
+        this.$vuetify.theme.themes.dark = { ...this.$vuetify.theme.themes.dark, ...this.$cs.project.theme.darkColors };
+      }
     }
   }
 
@@ -243,7 +258,7 @@ export class CsApp extends Vue {
         this.AddDashboardRoute(dash);
       }
       if (d.options && d.options.toolbar && d.options.toolbar.navigation && d.dashboards && d.dashboards.length > 0) {
-        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path }});
+        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
       }
     } else if (d.path) {
       router.addRoutes([
@@ -278,7 +293,7 @@ export class CsApp extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.path);
     if (router && d.path && !d.dashboards) {
-      router.push(d.path);
+      router.push(d.path).catch(err => {})
     }
   }
 
@@ -395,11 +410,29 @@ export class CsApp extends Vue {
         'notification',
         (action: string, notification: INotification) => {
           if (action === 'new') {
+            if (this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              // this.lastNotification.clickCallback();
+            }
             this.lastNotification = notification;
+            this.UpdateNotifications();
+          } else if (action === 'clear-all') {
+            if (this.lastNotification && this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              this.lastNotification.clickCallback();
+            }
+            this.lastNotification = { _visible: false } as INotification;
             this.UpdateNotifications();
           }
         }
       );
+    }
+  }
+
+  private clickNotification() {
+    this.lastNotification._visible = false;
+    if (this.lastNotification.clickCallback) {
+      this.lastNotification.clickCallback();
     }
   }
 }

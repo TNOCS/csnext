@@ -7,7 +7,6 @@
             lazy
             transition="scale-transition"
             offset-y
-            full-width
             min-width="290px"
         >
             <template v-slot:activator="{ on }">
@@ -23,6 +22,7 @@
             <v-date-picker
                 v-model="dateModel"
                 @input="dateMenu = false"
+                @change="dateChanged"
             ></v-date-picker>
         </v-menu>
     </v-flex>
@@ -35,7 +35,6 @@
             lazy
             transition="scale-transition"
             offset-y
-            full-width
             max-width="290px"
             min-width="290px"
         >
@@ -53,9 +52,13 @@
             <v-time-picker
                 v-if="timeMenu"
                 v-model="timeModel"
-                @click:minute="$refs.timeref.save(timeModel)"
-                full-width
+                :use-seconds="false"
+                :scrollable="true"
+                format="24hr"
+                @click:minute="$refs.timeref.save(timeModel)"                
+                @change="dateChanged"
             ></v-time-picker>
+            <!--  -->
         </v-menu>
     </v-flex>
 </v-layout>
@@ -68,7 +71,7 @@
     :nudge-left="40"
 >
     <v-text-field
-        slot="activator"
+        v-slot:activator="{ on }"
         :label="label"
         v-model="actualDatetime"
         readonly

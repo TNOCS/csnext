@@ -1,40 +1,28 @@
 {
   "name": "@csnext/cs-billboard",
-  "version": "0.0.118",
+  "version": "0.0.123",
   "description": "cs-billboard",
   "main": "./lib/csbillboard.cs.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "url": "https://github.com/TNOCS/cs-billboard",
   "bugs": "https://github.com/TNOCS/csnext/issues",
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
+    "unlink": "yarn unlink",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "tsc && webpack --mode development",
-    "clean": "del-cli dist lib node_modules"
+    "build": "webpack --mode development && tsc",
+    "build:production": "webpack --mode production && tsc",
+    "clean": "del-cli yarn.lock yarn-error.log dist lib node_modules"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.118-beta.33",
-    "@csnext/cs-core": "^0.0.118-beta.33",
-    "billboard.js": "^1.8.0"
+    "@csnext/cs-client": "^0.0.123",
+    "@csnext/cs-core": "^0.0.123",
+    "billboard.js": "^1.10.2",
+    "vue": "^2.6.10"
   },
-  "devDependencies": {
-    "@types/node": "^12.0.12",
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^1.0.0",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
-    "vue": "^2.6.10",
-    "vue-class-component": "^7.1.0",
-    "vue-markdown": "^2.2.4",
-    "vue-property-decorator": "^8.2.1",
-    "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
-  },
-  "gitHead": "377ea569eb95046ddfefcf1ca926c3a3a1402a1a"
+  "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }
