@@ -205,6 +205,7 @@
             v-on="on"
             @click.delegate="activateMenu(menu)"
             :style="{color:$cs.project.theme.colors.headerColor}"
+            :class="menu.buttonClass"
           >
             {{ menu.title }}
             <v-icon v-if="menu.icon" right dark>{{ menu.icon }}</v-icon>
@@ -216,7 +217,7 @@
     <template v-else v-slot:activator="{ on }">
       <v-tooltip bottom>
         <template v-slot:activator="{ on: tooltip }">
-          <v-btn icon v-on="on, tooltip" @click.delegate="activateMenu(menu)">
+          <v-btn :class="menu.buttonClass" small text v-on="on, tooltip" @click.delegate="activateMenu(menu)">
             <v-icon>{{ menu.icon }}</v-icon>
           </v-btn>
         </template>
@@ -249,7 +250,6 @@
     <template v-if="rightSidebar.sidebars">
       <v-btn
         class="sidebar-header-button"
-        
         :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}"
         v-for="(item, key, index) in rightSidebar.sidebars"
         v-if="item.widgets.length>0 && !item.hide"
