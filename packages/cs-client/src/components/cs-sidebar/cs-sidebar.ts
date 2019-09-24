@@ -39,9 +39,9 @@ export class CsSidebar extends Vue {
   }
 
   public SelectDashboard(d: IDashboard) {
-    Logger.info('SelectDashboard', d.path);
-    if (this.$router && d.path && !d.dashboards) {
-      this.$router.push(d.path).catch(err => { });
+    Logger.info('SelectDashboard', d.pathLink);
+    if (this.$router && d.pathLink && !d.dashboards) {
+      this.$router.push(d.pathLink).catch(err => { });
     }
   }
 

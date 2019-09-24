@@ -52,7 +52,7 @@
         :value="item.active"
         :to="item.pathLink"
         no-action
-        v-bind:key="item.pathLink"
+        :key="item.title"
       >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
@@ -73,7 +73,7 @@
           value="true"
           v-show="!item.hideFromNavigation"
           no-action
-          v-bind:key="item.pathLink"
+          :key="item.title"
           :append-icon="!sideBar.mini && item.dashboards ? undefined : ''"
         >
           <v-list-item slot="activator" class="sidebar-menu-list-item">
@@ -100,7 +100,7 @@
                       v-for="subItem in item.dashboards"
                       :to="subItem.pathLink"
                       v-show="!subItem.hideFromNavigation"
-                      v-bind:key="subItem.pathLink"
+                      :key="subItem.title"
                     >
                       <!-- @click="SelectDashboard(subItem)" -->
                       <v-list-item-content>
@@ -127,7 +127,7 @@
             v-for="subItem in item.dashboards"
             :to="subItem.pathLink"
             v-show="!subItem.hideFromNavigation"
-            v-bind:key="subItem.pathLink"
+            :key="subItem.title"
           >
             <!-- @click="SelectDashboard(subItem)" -->
             <v-list-item-content>

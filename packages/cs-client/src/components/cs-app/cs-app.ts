@@ -267,7 +267,7 @@ export class CsApp extends Vue {
           path: d.path,
           component: CsDashboard,
           props: route => ({ dashboard: d }),
-          alias: d.title,
+          alias: '/' + d.title,
           meta: d
         } as RouteConfig
       ]);
@@ -291,9 +291,9 @@ export class CsApp extends Vue {
   public selectBreadCrumb(item: any) { }
 
   public SelectDashboard(d: IDashboard) {
-    Logger.info('SelectDashboard', d.path);
-    if (router && d.path && !d.dashboards) {
-      router.push(d.path).catch(err => {})
+    Logger.info('SelectDashboard', d.pathLink);
+    if (router && d.pathLink && !d.dashboards) {
+      router.push(d.pathLink).catch(err => {})
     }
   }
 
