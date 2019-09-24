@@ -61,8 +61,9 @@ export class CsHeader extends Vue {
           toolTip: 'LANGUAGE_SETTINGS',
           enabled: true,
           visible: true,
-          component: CsLanguageSwitch
-        });
+          component: CsLanguageSwitch, 
+          buttonClass: 'sidebar-header-button'
+        } as IMenu);
       }
     }
     // create edit dashboard button

@@ -7,6 +7,7 @@ export interface IMenu {
   toggleIcon?: string;
   toggleToolTip?: string;
   textButton?: boolean;
+  buttonClass?: string;
   enabled?: boolean;
   visible?: boolean;
   toolTip?: string;
