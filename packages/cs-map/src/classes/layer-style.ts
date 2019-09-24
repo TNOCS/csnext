@@ -45,9 +45,7 @@ export const MapboxStopForm: IFormOptions = {
             group: 'stop'           
         }
     ]
-
 }
-
 
 export const MapboxColorForm: IFormOptions = {
     title: 'Color',
@@ -62,7 +60,7 @@ export const MapboxColorForm: IFormOptions = {
             _key: 'stops',
             type: 'array',
             title: 'color',
-            arrayType: MapboxStopForm  
+            arrayType: MapboxStopForm
         }
     ]
 }
