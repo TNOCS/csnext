@@ -123,8 +123,8 @@ export class CsTimeline extends Vue {
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
                 item.content = item.content;                
-                item.style = "height:" + height;
-                if (this.smallView) item.style+=';color:transparent';
+                // item.style = "height:" + height;
+                // if (this.smallView) item.style+=';color:transparent';
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (item.group) {
@@ -376,7 +376,8 @@ export class CsTimeline extends Vue {
             this.initTimeline();
 
             if (!this.widget.options) this.widget.options = {};
-            if (!this.widget.options.menus) this.widget.options.menus = []
+            if (!this.widget.options.menus) this.widget.options.menus = [];
+            this.widget.options.showToolbar = true;
 
             if (this.WidgetOptions.showFitButton) {
                 // check if already exists
@@ -393,19 +394,19 @@ export class CsTimeline extends Vue {
                 }
             }
 
-            if (this.WidgetOptions.toggleSmallButton) {
-                // check if already exists
-                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
-                    this.widget.options.menus.push({
-                        id: TOGGLE_MENU_ID,
-                        icon: 'line_weight',
-                        action: () => {
-                            this.toggleView();
-                        },
-                        visible: true
-                    })
-                }
-            }
+            // if (this.WidgetOptions.toggleSmallButton) {
+            //     // check if already exists
+            //     if (this.widget.options.menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+            //         this.widget.options.menus.push({
+            //             id: TOGGLE_MENU_ID,
+            //             icon: 'line_weight',
+            //             action: () => {
+            //                 this.toggleView();
+            //             },
+            //             visible: true
+            //         })
+            //     }
+            // }
 
             if (this.WidgetOptions.showGroupSelectionButton) {
                 // check if already exists
