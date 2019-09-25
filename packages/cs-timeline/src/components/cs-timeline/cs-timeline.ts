@@ -15,7 +15,7 @@ import Component from 'vue-class-component';
 import './cs-timeline.css';
 
 import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
-import { LogDataSource } from '@csnext/cs-client';
+import { LogDataSource, WidgetBase } from '@csnext/cs-client';
 import { TimelineOptions, DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
 import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
 // export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };
@@ -43,7 +43,7 @@ const GROUPS_MENU_ID = 'groups';
 @Component({
     template: require('./cs-timeline.html')
 })
-export class CsTimeline extends Vue {
+export class CsTimeline extends WidgetBase {
     /** access the original widget from configuration */
 
     GROUP_VISIBILITY_ID = 'timeline-group-';
@@ -56,8 +56,8 @@ export class CsTimeline extends Vue {
     // public log: LogManager = new LogManager();
     public logSource?: LogDataSource;
 
-    private timeHandle?: MessageBusHandle;
-    private resizeHandle?: MessageBusHandle;
+    // private timeHandle?: MessageBusHandle;
+    // private resizeHandle?: MessageBusHandle;
 
     public get TimeDatasource(): TimeDataSource {
         if (!this.widget.content) return new TimeDataSource();
@@ -82,15 +82,6 @@ export class CsTimeline extends Vue {
 
     public smallView: boolean = false;
 
-    // get smallView(): boolean {
-    //     if (this.WidgetOptions.smallView) return this.WidgetOptions.smallView;
-    //     return false
-    // }
-
-    // set smallView(value: boolean) {
-    //     this.WidgetOptions.smallView = value;
-    // }
-
     public async update() {
         this.updateItems();
         if (this.timeline) {
@@ -98,18 +89,7 @@ export class CsTimeline extends Vue {
             this.timeline.setGroups(this.groups);
             this.timeline.setItems(this.items);
             this.timeline.redraw();
-            // this.timeline.fit({animation: false});
-
         }
-        Vue.nextTick(() => {
-
-            if (this.timeline) {
-                // this.timeline.fit();
-
-                // this.$forceUpdate();
-            }
-        });
-
     }
 
     toggleView() {
@@ -122,7 +102,7 @@ export class CsTimeline extends Vue {
         let height = this.smallView ? '5px' : '30px;';
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
-                item.content = item.content;                
+                item.content = item.content;
                 // item.style = "height:" + height;
                 // if (this.smallView) item.style+=';color:transparent';
                 if (item.startDate) { item.start = new Date(item.startDate); }
@@ -133,21 +113,6 @@ export class CsTimeline extends Vue {
                 items.push(item as DataItem);
             }
         }
-        // if (this.log && this.log.items) {
-        //     this.log.items.forEach(i => {
-        //         // make sure id is unique
-        //         if (items.findIndex(item => item.id === i.id) === -1) {
-        //             i.start = new Date(i.start);
-        //             items.push(i);
-        //         }
-        //     })
-        // }
-        // if (this.datasource && this.datasource.timelineItems) {
-        //     this.datasource.timelineItems.forEach((i: DataItem) => {
-        //         items.push(i);
-        //         this.addGroup(i.group);
-        //     });
-        // }
         this.items = items; // new DataSet(items);
     }
 
@@ -158,8 +123,8 @@ export class CsTimeline extends Vue {
 
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
-            
-            const visible = localStorage.getItem(this.GROUP_VISIBILITY_ID + groupName);            
+
+            const visible = localStorage.getItem(this.GROUP_VISIBILITY_ID + groupName);
             this.groups.push({
                 id: groupName,
                 content: groupName,
@@ -234,7 +199,7 @@ export class CsTimeline extends Vue {
 
         }
 
-        options.timelineOptions = { ...{ locale: 'en'}, ...options.timelineOptions};
+        options.timelineOptions = { ...{ locale: 'en' }, ...options.timelineOptions };
 
         this.timeline = new Timeline(
             container,
@@ -254,22 +219,19 @@ export class CsTimeline extends Vue {
         this.currentTime = new Date(this.timeline.getWindow().start);
         this.timeline.addCustomTime(this.currentTime, 'focustime');
         if (this.TimeDatasource.events) {
-            this.TimeDatasource.events.publish(
-                Topics.TIME_TOPIC,
-                'moved',
-                this.currentTime
-            );
-            this.timeHandle = this.TimeDatasource.events.subscribe(
-                Topics.TIME_TOPIC,
-                this.handleIncomingTimeEvent
-            );
+            // this.TimeDatasource.events.publish(
+            //     Topics.TIME_TOPIC,
+            //     'moved',
+            //     this.currentTime
+            // );
+            this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);            
         }
 
     }
 
     private handleTimeChanged(d: { id: string; time: Date }) {
         if (d && d.id === 'focustime' && d.time && this.TimeDatasource.events) {
-            this.TimeDatasource.events.publish(Topics.TIME_TOPIC, 'moved', d.time);
+            this.TimeDatasource.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
         }
     }
 
@@ -316,29 +278,25 @@ export class CsTimeline extends Vue {
     }
 
     private handleIncomingTimeEvent(action: string, data: any) {
+        debugger;
         if (!this.TimeDatasource) return;
         switch (action) {
             // case 'add-item':
             //     this.datasource.addItem(data as DataItem);
             //     break;
-            case 'set-time':
+            case Topics.SET_FOCUS_TIME:
                 this.setDate(data);
+                break;
+            case Topics.SET_TIME_RANGE:
+                if (this.timeline) {
+                    this.timeline.setOptions({ start: data.start, end: data.end });
+                }
                 break;
             case 'update':
                 this.update();
                 break;
             default:
                 break;
-        }
-    }
-
-    public beforeDestroy() {
-        if (this.timeHandle && this.TimeDatasource.events) {
-            this.TimeDatasource.events.unsubscribe(this.timeHandle);
-        }
-
-        if (this.widget && this.widget.events && this.resizeHandle) {
-            this.widget.events.unsubscribe(this.resizeHandle);
         }
     }
 
@@ -369,7 +327,7 @@ export class CsTimeline extends Vue {
     mounted() {
         if (this.widget) {
 
-            this.resizeHandle = this.widget.events!.subscribe('resize', () => {
+            this.busManager.subscribe(this.widget.events, Topics.RESIZE, ()=> {
                 this.timeline!.redraw();
             });
             this.initLogSource();
@@ -414,18 +372,12 @@ export class CsTimeline extends Vue {
                     this.widget.options.menus.push({
                         id: GROUPS_MENU_ID,
                         icon: 'list',
-                        component: TimelineGroupSelection,                          
-                        data: this,                      
+                        component: TimelineGroupSelection,
+                        data: this,
                         visible: true
                     })
                 }
             }
-
-            
-
-
-
-
         }
     }
 }
