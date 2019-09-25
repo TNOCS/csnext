@@ -1,5 +1,5 @@
-export class DashboardToolbarOptions {
-  public navigation = 'stepper' || 'stepper-inline' || 'tabs';
-  public dense?: boolean;
-  public hideTitle?: boolean;
-}
+// export class DashboardToolbarOptions {
+ 
+//   public dense?: boolean;
+//   public hideTitle?: boolean;
+// }

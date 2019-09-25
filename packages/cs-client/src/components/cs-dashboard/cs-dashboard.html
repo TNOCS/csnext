@@ -11,8 +11,11 @@
         $cs.Translate(dashboard.title)
       }}</v-toolbar-title>
 
-      <template
-        v-if="dashboard.parent && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.options.toolbar.navigation === 'stepper-inline'"
+      
+    </v-toolbar>
+
+    <template
+        v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation === 'stepper-inline'"
       >
         <v-stepper
           :value="selectedStepper"
@@ -34,11 +37,11 @@
       </template>
 
       <template
-        v-slot:extension
-        v-if="dashboard.parent && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.options.toolbar.navigation !== 'stepper-inline'"
+
+        v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation !== 'stepper-inline'"
       >
         <template
-          v-if="dashboard.parent.options.toolbar.navigation === 'stepper'"
+          v-if="dashboard.parent.options.toolbarOptions.navigation === 'stepper'"
         >
           <v-stepper
             :value="selectedStepper"
@@ -59,7 +62,7 @@
           </v-stepper>
         </template>
         <template
-          v-else-if="dashboard.parent.options.toolbar.navigation=== 'tabs'"
+          v-else-if="dashboard.parent.options.toolbarOptions.navigation=== 'tabs'"
         >
           <v-tabs v-model="selectedTab">
             <v-tab
@@ -73,7 +76,6 @@
           </v-tabs>
         </template>
       </template>
-    </v-toolbar>
   </v-flex>
 
   <v-flex grow class="dashboard-toolbar-flex"

@@ -71,20 +71,27 @@ export class CsDashboard extends Vue {
 
   public showToolbar() {
     if (!this.dashboard) { return false; }
-    if (this.dashboard.options && this.dashboard.options.toolbar) { return true; }
-    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.navigation) { return true; }
+    if (this.dashboard.parent) {
+      if (this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hide) { return false; }
+    } else 
+    {
+      if (this.dashboard.options && this.dashboard.options.toolbarOptions && !this.dashboard.options.toolbarOptions.hide) { return true; }
+    }
+    
+    
   }
 
   public denseToolbar() {
+    
     if (!this.dashboard) { return false; }
-    if (this.dashboard.options && this.dashboard.options.toolbar && this.dashboard.options.toolbar.dense) { return true; }
-    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.dense) { return true; }
+    if (this.dashboard.options && this.dashboard.options.toolbarOptions && this.dashboard.options.toolbarOptions.dense) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.dense) { return true; }
   }
 
   public hideTitle() {
     if (!this.dashboard) { return false; }
-    if (this.dashboard.options && this.dashboard.options.toolbar && this.dashboard.options.toolbar.hideTitle) { return true; }
-    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbar && this.dashboard.parent.options.toolbar.hideTitle) { return true; }
+    if (this.dashboard.options && this.dashboard.options.toolbarOptions && this.dashboard.options.toolbarOptions.hideTitle) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hideTitle) { return true; }
   }
 
   /** init dashboard: load datasources, init widgets and init manager  */
@@ -114,7 +121,7 @@ export class CsDashboard extends Vue {
       dashboard.options = {};
     }
 
-    if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbar && dashboard.parent.options.toolbar.navigation && dashboard.parent.dashboards) {
+    if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.dashboards) {
       this.selectedTab = dashboard.parent.dashboards.findIndex(d => dashboard.title === d.title);
       this.selectedStepper = this.selectedTab + 1;
     }

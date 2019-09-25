@@ -6,3 +6,7 @@ export class ToolbarOptions {
     public hideTitle?: boolean;
     public elevation?: number;
 }
+
+export class DashboardToolbarOptions extends ToolbarOptions {
+    public navigation = 'stepper' || 'stepper-inline' || 'tabs';
+}
