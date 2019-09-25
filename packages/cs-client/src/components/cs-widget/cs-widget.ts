@@ -11,7 +11,6 @@ import {
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
 import { AppState } from '../..';
-import { Prop } from 'vue-property-decorator';
 
 
 
@@ -27,7 +26,7 @@ export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
-  private _options?: WidgetOptions;
+  private _options?: WidgetOptions = {};
 
   public get options(): WidgetOptions {
     if (this._options) return this._options;
@@ -276,20 +275,4 @@ export class CsWidget extends Vue {
     this.mouseOver = false;
   }
 
-  private checkDefaultWidgetOptions(widget: IWidget) {
-    if (
-      !widget.options ||
-      !widget._dashboard ||
-      !widget._dashboard.defaultWidgetOptions
-    ) {
-      return;
-    }
-    if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
-      for (const key in widget._dashboard.defaultWidgetOptions) {
-        if (!widget.options.hasOwnProperty(key)) {
-          widget.options[key] = widget._dashboard.defaultWidgetOptions[key];
-        }
-      }
-    }
-  }
 }

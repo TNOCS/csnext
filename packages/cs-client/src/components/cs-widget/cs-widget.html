@@ -19,7 +19,7 @@
     ref="widget"
   >
     <v-toolbar
-      v-if="options.showToolbar"
+      v-if="options.showToolbar && options.toolbarOptions"
       :elevation="options.toolbarOptions.elevation"
       :dense="options.toolbarOptions.dense"
       :flat="options.toolbarOptions.flat"
