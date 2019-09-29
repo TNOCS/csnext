@@ -11,16 +11,18 @@ import {
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
 import { AppState } from '../..';
-
-
+import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
 
 @Component({
   name: 'cs-widget',
   template: require('./cs-widget.html'),
   directives: { resize },
+  components: {
+    'cs-toolbar-menus': CsToolbarMenus
+  },
   props: {
     widget: null
-  }
+  }  
 } as any)
 export class CsWidget extends Vue {
   public widget?: IWidget;
@@ -155,6 +157,10 @@ export class CsWidget extends Vue {
       this.widget.options = {};
     }
 
+    if (!this.widget.options.toolbarOptions) {
+      this.widget.options.toolbarOptions = {};
+    }
+
 
 
 
@@ -177,9 +183,14 @@ export class CsWidget extends Vue {
 
   public setWidgetContent(widget: IWidget, content: any) {
     Vue.set(widget, 'content', content);
-    // if (widget._component && widget._component.dataLoaded) {
-    //   widget.component.dataLoaded(content);
-    // }
+    if (this.$refs.component) {
+      if ((this.$refs.component as any).contentLoaded) {
+        (this.$refs.component as any).contentLoaded(content);
+      }
+
+      // if (this.$refs.component)
+      // widget.component.contentLoaded(content);
+    }
   }
 
   public created() {
@@ -191,8 +202,9 @@ export class CsWidget extends Vue {
       this.widget.options = {};
     }
 
-    this.widget._component = this.widget.component;
+    this.widget._component = this.$refs.component;
     if (this.widget && this.widget.datasource) {
+
       this.dsHandle = this.$cs.bus.subscribe(
         'ds-' + this.widget.datasource,
         (a: string, d: any) => {

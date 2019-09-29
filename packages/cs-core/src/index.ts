@@ -19,7 +19,6 @@ export * from './dashboard/css-grid-dashboard-options';
 export * from './dashboard/css-grid-widget-options';
 export * from './dashboard/dashboard-manager-config';
 export * from './dashboard/dashboard-options';
-export * from './dashboard/dashboard-toolbar-options';
 export * from './dashboard/dashboard';
 export * from './dashboard/layout-manager-config';
 export * from './dashboard/toolbar-options';

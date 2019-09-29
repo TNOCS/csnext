@@ -45,6 +45,7 @@ export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
 export * from './components/cs-language-switch/cs-language-switch';
 export * from './components/cs-info/cs-info';
+export * from './components/cs-toolbar-menus/cs-toolbar-menus';
 
 // widgets
 export * from './widgets/widget-base';
@@ -75,6 +76,7 @@ export const CsNext = {
     vue.component('vega-widget', VegaWidget);
     vue.component('card-widget', CardWidget);
     vue.component('cs-info', CsInfo);
+    vue.component('cs-toolbar-menus', CsToolbarMenus);
   }
 };
 
