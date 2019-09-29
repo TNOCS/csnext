@@ -9,7 +9,7 @@ import { Watch } from 'vue-property-decorator';
   props: ['isLoading'],
   template: require('./cs-loader.html')
 } as any)
-export class CsLoading extends Vue {
+export class CsLoader extends Vue {
 
   @Watch('isLoading')
   public loadingChanged(d: any) {

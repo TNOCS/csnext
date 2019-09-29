@@ -9,7 +9,6 @@ import {
   IDashboard,
   INotification,
   ISidebarOptions,
-  IWidget,
   IFooterOptions,
   IDialog,
   MessageBusHandle
@@ -26,7 +25,7 @@ const en = require('./../../assets/translations/en.json');
 const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
-import { CsLoading } from '../cs-loader/cs-loader';
+import { CsLoader } from '../cs-loader/cs-loader';
 import 'simplebar/dist/simplebar.css';
 
 Vue.use(VueRouter);
@@ -57,7 +56,7 @@ const router = new VueRouter({ routes: [] });
     'cs-sidebar': CsSidebar,
     'cs-footer': CsFooter,
     'cs-header': CsHeader,
-    'cs-loading': CsLoading
+    'cs-loading': CsLoader
   }
 } as any)
 export class CsApp extends Vue {
