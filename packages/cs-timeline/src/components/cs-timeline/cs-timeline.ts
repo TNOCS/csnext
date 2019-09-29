@@ -16,19 +16,10 @@ import './cs-timeline.css';
 
 import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
 import { LogDataSource, WidgetBase } from '@csnext/cs-client';
-import { TimelineOptions, DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
+import { DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
 import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
+import { TimelineWidgetOptions } from '../..';
 // export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };
-
-
-export interface TimelineWidgetOptions extends WidgetOptions {
-    timelineOptions?: TimelineOptions;
-    logSource?: string;
-    smallView?: boolean;
-    showFitButton?: boolean;
-    toggleSmallButton?: boolean;
-    showGroupSelectionButton?: boolean;
-}
 
 export interface ITimelineDataSource extends IDatasource {
     events: MessageBusService;
@@ -278,7 +269,6 @@ export class CsTimeline extends WidgetBase {
     }
 
     private handleIncomingTimeEvent(action: string, data: any) {
-        debugger;
         if (!this.TimeDatasource) return;
         switch (action) {
             // case 'add-item':

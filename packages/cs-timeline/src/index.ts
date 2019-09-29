@@ -1,4 +1,4 @@
 // components
+export * from './components/cs-agenda/cs-agenda';
 export * from './components/cs-timeline/cs-timeline';
-
-// export { TimelineOptions, DataGroup, DataItem, Timeline, DataSet, VisSelectProperties, TimelineEventPropertiesResult } from 'vis-timeline';
+export * from './classes/timeline-widget-options';
