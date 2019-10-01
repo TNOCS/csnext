@@ -17,14 +17,13 @@
         {{ group}}
     </div> -->
 
-    <v-expansion-panels multiple v-model="panel" :accordion="true">
-        <v-expansion-panel>
-         
+    <v-expansion-panels multiple v-model="panel" :accordion="true" flat>
+        <v-expansion-panel >         
             <v-expansion-panel-header class="form-title" v-if="!Form.hideTitle" expand-icon="none">
                 {{ $cs.Translate(Form.title) }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-                <v-form>
+                <v-form flat>
                     <v-row
                         row
                         wrap

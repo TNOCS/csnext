@@ -14,7 +14,7 @@
             </v-menu>
         </template>
         <template v-if="field.type === 'datetimepicker'">
-            <v-datetime-picker :required="field.required" :label="$cs.Translate(field.title)"
+            <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(field.title)" :timeLabel="$cs.Translate(field.subTitle)"
                 v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>   
         </template>
         <template v-if="field.type === 'boolean'">

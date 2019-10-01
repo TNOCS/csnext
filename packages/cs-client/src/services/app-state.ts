@@ -226,12 +226,12 @@ export class AppState extends AppStateBase {
 
   public OpenInfo(options: InfoOptions | string) {
     if (typeof options === 'string') {
-      options = { type: 'string', data: options};
+      options = { type: 'string', data: options };
     }
-    if (options && !options.type) { options.type = 'string'}
+    if (options && !options.type) { options.type = 'string' }
     switch (options.type) {
       case "string":
-        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title} }, { open: false}, 'info');
+        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
         break;
     }
   }
@@ -354,7 +354,7 @@ export class AppState extends AppStateBase {
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
       if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
-        this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };        
+        this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
       const d = this.project.rightSidebar.sidebars[key];
       d.hide = false;
@@ -430,6 +430,26 @@ export class AppState extends AppStateBase {
     } else {
       return textKey;
     }
+  }
+
+  public findWidget(id: string, dashboard?: IDashboard): IWidget | undefined {
+    if (!dashboard && this.project.dashboards) {
+      for (const d of this.project.dashboards) {
+        const w = this.findWidget(id, d);
+        if (w) { return w; }
+      }
+    } else if (dashboard)
+      if (dashboard.widgets && dashboard.widgets.length > 0) {
+        let widget = dashboard.widgets.find(w => w.id === id);
+        if (widget) { return widget; }
+      } else if (dashboard.dashboards && dashboard.dashboards.length > 0) {
+        for (const d of dashboard.dashboards) {
+          let widget = this.findWidget(id, d);
+          if (widget) {
+            return widget;
+          }
+        }
+      }
   }
 
   /** initializes given dashboards */

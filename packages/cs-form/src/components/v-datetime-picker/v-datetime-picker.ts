@@ -11,7 +11,9 @@ import { debug } from 'webpack';
 export class VDatetimePicker extends Vue {
     /** access the original widget from configuration */
     @Prop()
-    public label?: string;
+    public dateLabel?: string;
+    @Prop()
+    public timeLabel?: string;
 
     @Prop()
     public required?: boolean;

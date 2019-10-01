@@ -12,7 +12,7 @@
             <template v-slot:activator="{ on }">
                 <v-text-field
                     v-model="dateModel"
-                    :label="label"
+                    :label="dateLabel"
                     prepend-icon="event"
                     v-on="on"
                     clear-icon="clear"
@@ -42,7 +42,7 @@
             <template v-slot:activator="{ on }">
                 <v-text-field
                     v-model="timeModel"
-                    :label="label"
+                    :label="timeLabel"
                     prepend-icon="access_time"
                     v-on="on"
                     clear-icon="clear"

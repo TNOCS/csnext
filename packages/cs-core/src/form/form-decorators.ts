@@ -22,6 +22,7 @@ export interface IFormObject {
 
 export interface IFormFieldBaseOptions {
   title: string;
+  subTitle?: string;
   _object?: any;
   _index?: number;
   _key?: string;
