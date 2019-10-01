@@ -32,12 +32,7 @@
       <v-icon small v-if="!sideBar.temporary">lock_outline</v-icon>
     </v-btn>
   </div>
-  <div v-if="sideBar.canMinify" class="leftsidebar-minify">
-    <v-btn small icon @click="toggleMini()">
-      <v-icon small v-if="sideBar.mini">keyboard_arrow_right</v-icon>
-      <v-icon small v-if="!sideBar.mini">keyboard_arrow_left</v-icon>
-    </v-btn>
-  </div>
+
   <v-divider v-if="sideBar.title"></v-divider>
   <div v-if="sideBar.component" class="sidebar-component-container">
     <component :is="sideBar.component"></component>
@@ -160,4 +155,10 @@
       <span v-html="sideBar.footer.tooltip || sideBar.footer.title"></span>
     </v-tooltip>
   </template>
+  <div v-if="sideBar.canMinify" class="leftsidebar-minify">
+      <v-btn small icon @click="toggleMini()">
+        <v-icon small v-if="sideBar.mini">keyboard_arrow_right</v-icon>
+        <v-icon small v-if="!sideBar.mini">keyboard_arrow_left</v-icon>
+      </v-btn>
+    </div>
 </v-navigation-drawer>
