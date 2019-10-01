@@ -12,8 +12,10 @@ export class CsToolbarMenus extends Vue {
   @Prop()
   public menus?: IMenu[]
 
-  public triggerMenuAction() {
-
+  public triggerMenuAction(menu: IMenu) {
+    if (menu.action) {
+      menu.action(menu);
+    }
   }
 
   mounted() {

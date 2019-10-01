@@ -76,7 +76,6 @@ export const CsNext = {
     vue.component('vega-widget', VegaWidget);
     vue.component('card-widget', CardWidget);
     vue.component('cs-info', CsInfo);
-    vue.component('cs-toolbar-menus', CsToolbarMenus);
   }
 };
 

@@ -1,18 +1,52 @@
 <div>
-  <v-menu
-    v-for="menu in menus"
-    :key="menu.id"
-    :close-on-content-click="false"
-    v-if="menu.visible"
-    offset-y
-  >
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
-        <v-icon>{{ menu.icon }}</v-icon>
+  <template v-for="menu in menus">
+    <v-btn-toggle v-if="menu.toggleGroup" :key="menu.id" borderless tile group>
+      <v-btn
+        v-for="item in menu.items"
+        :key="item.id"
+        @click="triggerMenuAction(item)"
+      >
+        <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+        <span v-if="item.title">{{ item.title }}</span>
       </v-btn>
-    </template>
-    <v-card v-if="menu.component" style="z-index: 1000">
-      <component :is="menu.component" :data="menu.data"></component>
-    </v-card>
-  </v-menu>
+    </v-btn-toggle>
+    <v-menu
+      :key="menu.id"
+      :close-on-content-click="true"
+      v-if="menu.visible"
+      dense
+      offset-y
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn :icon="menu.title === undefined" :outlined="menu.outlined" @click.delegate="triggerMenuAction(menu)" v-on="on">
+          <v-icon>{{ menu.icon }}</v-icon>
+          <span>{{ menu.title }}</span>
+          <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list v-if="menu.items && menu.items.length>0" dense :close-on-content-click="true">
+        <v-list-item          
+          v-for="item in menu.items"
+          :key="item.id"
+          @click="triggerMenuAction(item)"
+        >
+          <v-list-item-avatar v-if="item.icon">
+            <v-icon
+              small
+              class="primary--text"              
+              >{{item.icon}}
+            </v-icon>            
+          </v-list-item-avatar>
+          <v-list-item-title class="pr-1">{{
+            $cs.Translate(item.title)
+          }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+
+      <v-card v-if="menu.component" style="z-index: 1000">
+        <component :is="menu.component" :data="menu.data"></component>
+      </v-card>
+    </v-menu>
+  </template>
 </div>

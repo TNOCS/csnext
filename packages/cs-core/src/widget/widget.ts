@@ -3,6 +3,7 @@ import { WidgetOptions, IMessageBusService, IDashboard, IDashboardManager, IProj
 export interface IWidget {
   id?: string;
   title?: string;
+  widgets?: IWidget[];
   reference?: string;
   component?: any;
   content?: any;

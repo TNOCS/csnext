@@ -22,13 +22,14 @@ import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
   },
   props: {
     widget: null
-  }  
+  }
 } as any)
 export class CsWidget extends Vue {
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
   private _options?: WidgetOptions = {};
+  private activeWidget?: IWidget;
 
   public get options(): WidgetOptions {
     if (this._options) return this._options;
@@ -42,6 +43,14 @@ export class CsWidget extends Vue {
     }
     return this._options;
   };
+
+  public getComponent() {
+    if (this.activeWidget) {
+      return this.activeWidget.component;
+    } else if (this.widget) {
+      return this.widget.component;
+    }
+  }
 
   public $refs!: {
     widget: HTMLElement;
@@ -61,7 +70,7 @@ export class CsWidget extends Vue {
     if (!this.widget || !this.widget.events) {
       return;
     }
-    if (this.$refs.widget) {
+    if (this.$refs.widget && this.$refs.component) {
       this.widget._size = {
         width: this.$refs.widget.clientWidth,
         height: this.$refs.widget.clientHeight,
@@ -142,6 +151,10 @@ export class CsWidget extends Vue {
     }
   }
 
+  public setActiveWidget(widget: IWidget) {
+    // Vue.set(this, 'activeWidget', widget);    
+  }
+
   public initWidget() {
     if (!this.widget) {
       return;
@@ -161,11 +174,12 @@ export class CsWidget extends Vue {
       this.widget.options.toolbarOptions = {};
     }
 
-
-
-
     if (!this.widget.data) {
       this.widget.data = {};
+    }
+
+    if (!this.widget.options.menus) {
+      this.widget.options.menus = [];
     }
     this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
@@ -178,6 +192,35 @@ export class CsWidget extends Vue {
     } else if (this.widget._dashboard && this.widget._dashboard.content) {
       this.setWidgetContent(this.widget, this.widget._dashboard.content);
     }
+
+    if (this.widget.widgets && this.widget.widgets.length > 0) {
+      this.activeWidget = this.widget.widgets[0];
+      let toggleMenu: IMenu = {
+        id: guidGenerator(),
+        title: this.activeWidget.title,
+        items: [],
+        outlined: true,
+        visible: true
+      };
+      for (const w of this.widget.widgets) {
+        toggleMenu.items!.push({
+          id: guidGenerator(),
+          title: this.$cs.Translate(w.title || ''),
+          action: () => {
+            this.setActiveWidget(w);            
+            this.$forceUpdate();
+          }
+        })
+      };
+      this.widget.options.menus.push(toggleMenu);
+
+
+
+    } else {
+      this.setActiveWidget(this.widget);
+      // this.activeWidget = this.widget;
+    }
+
     this.widget._initalized = true;
   }
 

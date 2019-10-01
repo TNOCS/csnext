@@ -43,9 +43,9 @@
 
   <v-flex grow class="dashboard-toolbar-flex">
 
-    <div :class="[options.class]" class="widget-default">
+    <div :class="[options.class]" class="widget-default" style="height: 100%" >
       <component
-        :is="widget.component"
+        :is="getComponent()"
         :widget="widget"
         :style="widgetStyles()"
         ref="component"
