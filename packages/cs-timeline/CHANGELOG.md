@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.124](https://github.com/TNOCS/csnext/compare/v0.0.123...v0.0.124) (2019-10-02)
+
+**Note:** Version bump only for package @csnext/cs-timeline
+
+
+
+
+
+
 ## [0.0.123](https://github.com/TNOCS/csnext/compare/v0.0.122...v0.0.123) (2019-09-11)
 
 **Note:** Version bump only for package @csnext/cs-timeline

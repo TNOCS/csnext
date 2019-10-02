@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-timeline",
-    "version": "0.0.123",
+    "version": "0.0.124",
     "description": "cs-timeline",
     "main": "./lib/cstimeline.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -19,10 +19,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.123",
-        "@csnext/cs-core": "^0.0.123",
+        "@csnext/cs-client": "^0.0.124",
+        "@csnext/cs-core": "^0.0.124",
         "vis-timeline": "visjs/vis-timeline"
     },
-    "devDependencies": {},
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

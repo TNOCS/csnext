@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-layer-server",
-  "version": "0.0.123",
+  "version": "0.0.124",
   "main": "./dist/export.js",
   "types": "./dist/export.d.ts",
   "author": "Arnoud de Jong",
@@ -9,7 +9,7 @@
     "access": "public"
   },
   "scripts": {
-    "link": "yarn link", 
+    "link": "yarn link",
     "unlink": "yarn unlink",
     "dev:compile": "tsc -w",
     "dev": "tsc -w",

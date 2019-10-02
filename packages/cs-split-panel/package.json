@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-split-panel",
-  "version": "0.0.123",
+  "version": "0.0.124",
   "description": "cs-split-panel",
   "main": "./lib/cssplitpanel.cs.js",
   "types": "./dist/src/index.d.ts",
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.123",
+    "@csnext/cs-client": "^0.0.124",
     "vue": "^2.6.10",
     "vue-split-panel": "^1.0.4"
   },
