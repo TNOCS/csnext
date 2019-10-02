@@ -25,41 +25,43 @@ export class HeaderOptions implements IHeaderOptions {
     }
   }
   
-  @FormField({title: 'Title', type: 'string'})
+  @FormField({title: 'Title', type: 'string', group: 'title'})
   public title?: string;
-  @FormField({title: 'Logo', type: 'string'})
+  @FormField({ title: 'Hide title', type: 'checkbox', group: 'title' })
+  public hideTitle?: boolean;
+  @FormField({title: 'Logo', type: 'string', group: 'logo'})
   public logo?: string;
+  @FormField({ title: 'Hide logo', type: 'checkbox', group: 'logo' })  
+  public hideLogo?: boolean;
   @FormField({title: 'Dense', type: 'checkbox'})
   public dense?: boolean;
   @FormField({ title: 'Floating', type: 'checkbox' })
   public floating?: boolean;
-  @FormField({title: 'Breadcrumbs', type: 'checkbox'})
+  @FormField({title: 'Use breadcrumbs', type: 'checkbox'})
   public breadcrumbs?: boolean;
   public showNotifications?: boolean;
   @FormField({title: 'Show loading icon', type: 'checkbox'})
   public showLoadingIcon?: boolean;
   public breadcrumbItems?: any[];
-  @FormField({title: 'Hide toolbar', type: 'checkbox'})
-  public hideToolbar?: boolean;
+  
   public titleWidget?: IWidget;
   public infoHeader?: IInfoHeaderOptions | boolean;
-  @FormField({ title: 'Hide title', type: 'checkbox' })
-  public hideTitle?: boolean;
+
   @FormField({ title: 'Hide menu toggle', type: 'checkbox' })
   public hideMenuToggle?: boolean;
-  @FormField({ title: 'Tabs centered', type: 'checkbox' })  
+  @FormField({ title: 'Tabs centered', type: 'checkbox', group: 'tabs' })  
   public tabsCentered?: boolean;
-  @FormField({ title: 'Tabs right', type: 'checkbox' })  
+  @FormField({ title: 'Tabs right', type: 'checkbox', group: 'tabs' })  
   public tabsRight?: boolean;
-  @FormField({ title: 'Tabs grow', type: 'checkbox' })  
+  @FormField({ title: 'Tabs grow', type: 'checkbox', group: 'tabs' })  
   public tabsGrow?: boolean;
   @FormField({ title: 'Tabs hide slider', type: 'checkbox' })  
   public tabsHideSlider?: boolean;  
-  @FormField({ title: 'Hide logo', type: 'checkbox' })  
-  public hideLogo?: boolean;
-  @FormField({ title: 'Flat', type: 'checkbox' })
+  @FormField({title: 'Hide toolbar', type: 'checkbox', group: 'toolbar layout'})
+  public hideToolbar?: boolean;
+  @FormField({ title: 'Flat', type: 'checkbox', group: 'toolbar layout' })
   public flat?: boolean;
-  @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 20})
+  @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 20, group: 'toolbar layout'})
   public elevation?: number = 5;
 }
 
