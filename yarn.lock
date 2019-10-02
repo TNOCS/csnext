@@ -5246,7 +5246,7 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
-earcut@^2.1.5:
+earcut@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.2.1.tgz#3bae0b1b6fec41853b56b126f03a42a34b28f1d5"
   integrity sha512-5jIMi2RB3HtGPHcYd9Yyl0cczo84y+48lgKPxMijliNQaKAHEZJbdzLmKmdxG/mCdS/YD9DQ1gihL8mxzR0F9w==
@@ -6576,10 +6576,21 @@ handle-thing@^2.0.0:
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
   integrity sha512-d4sze1JNC454Wdo2fkuyzCr6aHcbL6PGGuFAz0Li/NcOm1tCHGnWDRmJP85dh9IhQErTc2svWFEX5xHIOo//kQ==
 
-handlebars@^4.1.2, handlebars@^4.2.0, handlebars@^4.3.0:
+handlebars@^4.1.2, handlebars@^4.2.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.3.1.tgz#6febc1890851f62a8932d495cc88d29390fa850d"
   integrity sha512-c0HoNHzDiHpBt4Kqe99N8tdLPKAnGCQ73gYMPWtAYM4PwGnf7xl8PBUHJqh9ijlzt2uQKaSRxbXRt+rZ7M2/kA==
+  dependencies:
+    neo-async "^2.6.0"
+    optimist "^0.6.1"
+    source-map "^0.6.1"
+  optionalDependencies:
+    uglify-js "^3.1.4"
+
+handlebars@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.4.0.tgz#22e1a897c5d83023d39801f35f6b65cf97ed8b25"
+  integrity sha512-xkRtOt3/3DzTKMOt3xahj2M/EqNhY988T+imYSlMgs5fVhLN2fmKVVj0LtEGmb+3UUYV5Qmm1052Mm3dIQxOvw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -8228,17 +8239,17 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mapbox-gl-controls@^1.3.2:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/mapbox-gl-controls/-/mapbox-gl-controls-1.3.3.tgz#4ec2fa31ffbe075e86c75f75b29306b293eb31dc"
-  integrity sha512-qLlW+R0lLqeDNF6dkkWr4kl7JXzLzrIqsNl+MkZ+fFoMv5i5qbClO3z/iB+K+3a0NAX8TedrIx1CpydVdjoD8A==
+mapbox-gl-controls@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/mapbox-gl-controls/-/mapbox-gl-controls-1.4.2.tgz#563ed1ef980ec9b05550bcda4527ef7471128b6d"
+  integrity sha512-7o1ADP/nCTQT6VnoHU3/CYAYd88CNmigdcVArGxLxXfLajwTYm0EQGW6Vts7SmgDbzMFvzhGel3rHutz3YyhdA==
   dependencies:
     "@turf/distance" "6.0.1"
 
-mapbox-gl@^1.3.1:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-1.3.2.tgz#6e9197485de7c0c71b1fd30e5e8e7e3824bc35dd"
-  integrity sha512-6Ro7GbTMWxcbc836m6rbBNkesgTncbE1yXWeuHlr89esSqaItKr0+ntOu8rZie3fv+GtitkbODysXzIGCA7G+w==
+mapbox-gl@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-1.4.0.tgz#6ec3c3a8f07b7ca632e99e2ea6458cef89fa776c"
+  integrity sha512-4nXRXanISou8oWLU7DH1ZetKvCJR9XtnMlQQ4Ia80wjghIHc5ljmAV/loNCI2UAGyuKINc7QcTiwUXrjE+Kv4w==
   dependencies:
     "@mapbox/geojson-rewind" "^0.4.0"
     "@mapbox/geojson-types" "^1.0.2"
@@ -8250,7 +8261,7 @@ mapbox-gl@^1.3.1:
     "@mapbox/vector-tile" "^1.3.1"
     "@mapbox/whoots-js" "^3.1.0"
     csscolorparser "~1.0.2"
-    earcut "^2.1.5"
+    earcut "^2.2.0"
     geojson-vt "^3.2.1"
     gl-matrix "^3.0.0"
     grid-index "^1.1.0"
@@ -13022,13 +13033,13 @@ vis-timeline@visjs/vis-timeline:
   version "0.0.0-no-version"
   resolved "https://codeload.github.com/visjs/vis-timeline/tar.gz/57f85127ce6b338473dee85a88a5e7c38283c650"
   dependencies:
-    "@egjs/hammerjs" "2.0.15"
-    emitter-component "1.1.1"
-    keycharm "0.2.0"
-    moment "2.24.0"
-    propagating-hammerjs "1.4.7"
-    vis-data "6.1.1"
-    vis-util "1.1.4"
+    emitter-component "^1.1.1"
+    hammerjs "^2.0.8"
+    keycharm "^0.2.0"
+    moment "^2.20.1"
+    propagating-hammerjs "^1.4.6"
+    vis-data "^6.1.1"
+    vis-util "^1.1.4"
 
 vis-util@1.1.4:
   version "1.1.4"
