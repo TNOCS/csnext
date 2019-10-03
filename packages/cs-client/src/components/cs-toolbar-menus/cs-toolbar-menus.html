@@ -19,7 +19,7 @@
       bottom
       offset-y
     >
-      <template v-if="menu.items" v-slot:activator="{ on }">
+      <template v-if="menu.items || menu.component" v-slot:activator="{ on }">
         <v-btn
           v-on="on"
           :icon="!menu.textButton"
@@ -28,7 +28,7 @@
         >
           <v-icon>{{ menu.icon }}</v-icon>
           <span v-if="menu.textButton"
-            >{{ menu.title }}
+            >{{ $cs.Translate(menu.title) }}
             <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
           </span>
         </v-btn>
@@ -44,12 +44,12 @@
             >
               <v-icon>{{ menu.icon }}</v-icon>
               <span v-if="menu.textButton"
-                >{{ menu.title }}
+                >{{ $cs.Translate(menu.title) }}
                 <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
               </span>
             </v-btn>
           </template>
-          <span v-if="menu.toolTip">{{ menu.toolTip }}</span>
+          <span v-if="menu.toolTip">{{ $cs.Translate(menu.toolTip) }}</span>
         </v-tooltip>
       </template>
 
