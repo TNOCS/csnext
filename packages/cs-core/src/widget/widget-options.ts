@@ -17,6 +17,9 @@ export class WidgetOptions {
   public canRemove?: boolean;
   public canEdit?: boolean;
   public menus?: IMenu[];
+  @FormField({ title: 'Icon', type: 'string' })
+  public icon?: string;
+
   public widgetBorder?: string;
   @FormField({ title: 'Hide menu', type: 'checkbox' })
   public hideMenu?: boolean;
