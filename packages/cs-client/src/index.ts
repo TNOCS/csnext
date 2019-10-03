@@ -8,6 +8,7 @@ export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
 export * from './services/layout-manager';
+export * from './services/dashboard-manager-base';
 
 // data sources
 export * from './datasources/log/log-datasource';
