@@ -1,4 +1,5 @@
 import { WidgetOptions, IMessageBusService, IDashboard, IDashboardManager, IProject } from '..';
+import { IWidgetSize } from './widget-size';
 
 export interface IWidget {
   id?: string;
@@ -21,9 +22,4 @@ export interface IWidget {
   _component?: any;
 }
 
-export interface IWidgetSize {
-  width: number;
-  height: number;
-  componentWidth: number;
-  componentHeight: number;
-}
+
