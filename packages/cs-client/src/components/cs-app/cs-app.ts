@@ -11,7 +11,8 @@ import {
   ISidebarOptions,
   IFooterOptions,
   IDialog,
-  MessageBusHandle
+  MessageBusHandle,
+  MessageBusManager
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
@@ -70,12 +71,13 @@ export class CsApp extends Vue {
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
-  public dialog: IDialog = { visible: false, toolbar: true };
+  public dialog: IDialog = { visible: false };
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
   public showNotifications = false;
   public unReadNotifications: INotification[] = [];
   public isLoading: boolean = true;
+  private busManager = new MessageBusManager();
 
   public settings = [
     // {
@@ -84,11 +86,11 @@ export class CsApp extends Vue {
     // }
   ];
 
-  private rightSideBarHandle?: MessageBusHandle;
-  private widgetHandle?: MessageBusHandle;
-  private dialogHandle?: MessageBusHandle;
-  private dashboardHandle?: MessageBusHandle;
-  private notificationHandle?: MessageBusHandle;
+  // private rightSideBarHandle?: MessageBusHandle;
+  // private widgetHandle?: MessageBusHandle;
+  // private dialogHandle?: MessageBusHandle;
+  // private dashboardHandle?: MessageBusHandle;
+  // private notificationHandle?: MessageBusHandle;
 
   constructor() {
     super();
@@ -100,7 +102,7 @@ export class CsApp extends Vue {
     this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default ? (nl as any).default : nl);
     this.InitNavigation();
 
-    this.rightSideBarHandle = this.$cs.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    this.busManager.subscribe(this.$cs.bus, 'right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
           if (
@@ -117,7 +119,7 @@ export class CsApp extends Vue {
           break;
       }
     });
-    this.widgetHandle = this.$cs.bus.subscribe('widget', (action: string) => {
+    this.busManager.subscribe(this.$cs.bus, 'widget', (action: string) => {
       switch (action) {
         case 'edit':
           if (this.$cs.project.leftSidebar) {
@@ -131,25 +133,7 @@ export class CsApp extends Vue {
   }
 
   public beforeDestroy() {
-    if (this.rightSideBarHandle) {
-      this.$cs.bus.unsubscribe(this.rightSideBarHandle);
-    }
-
-    if (this.widgetHandle) {
-      this.$cs.bus.unsubscribe(this.widgetHandle);
-    }
-
-    if (this.dialogHandle) {
-      this.$cs.bus.unsubscribe(this.dialogHandle);
-    }
-
-    if (this.dashboardHandle) {
-      this.$cs.bus.unsubscribe(this.dashboardHandle);
-    }
-
-    if (this.notificationHandle) {
-      this.$cs.bus.unsubscribe(this.notificationHandle);
-    }
+    this.busManager.stop();
   }
 
   @Watch('app.project.dashboards')
@@ -389,7 +373,7 @@ export class CsApp extends Vue {
     this.onResize();
     this.InitNotifications();
 
-    this.dialogHandle = this.$cs.bus.subscribe(AppState.DIALOG, (action: string, dialog: IDialog) => {
+    this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
         case AppState.DIALOG_ADDED:
           Vue.set(this, 'dialog', dialog);
@@ -399,7 +383,7 @@ export class CsApp extends Vue {
     });
 
     // listen to dashboard init events
-    this.dashboardHandle = this.$cs.bus.subscribe(
+    this.busManager.subscribe(this.$cs.bus,
       AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.UpdateSideBars(dashboard);
@@ -452,7 +436,7 @@ export class CsApp extends Vue {
 
   public InitNotifications() {
     if (this.$cs.bus) {
-      this.notificationHandle = this.$cs.bus.subscribe(
+      this.busManager.subscribe(this.$cs.bus,
         'notification',
         (action: string, notification: INotification) => {
           if (action === 'new') {
