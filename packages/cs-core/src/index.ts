@@ -20,11 +20,13 @@ export * from './dashboard/css-grid-widget-options';
 export * from './dashboard/dashboard-manager-config';
 export * from './dashboard/dashboard-options';
 export * from './dashboard/dashboard';
+export * from './dashboard/dashboard-manager';
 export * from './dashboard/layout-manager-config';
 export * from './dashboard/toolbar-options';
 
 export * from './widget/widget';
 export * from './widget/widget-options';
+export * from './widget/widget-size';
 
 export * from './utils/message-bus/message-bus-service';
 export * from './utils/message-bus/message-bus-handle';
@@ -36,6 +38,7 @@ export * from './interactions/notification-options';
 
 export * from './bus/main-bus';
 export * from './bus/topics';
+export * from './utils/message-bus/message-bus-manager';
 
 export * from './utils/guid';
 export * from './utils/function';
