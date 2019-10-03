@@ -358,7 +358,6 @@ export class GeojsonLayer extends BaseLayer {
     private moveEvent = this.onMove.bind(this);
 
     private registerMapEvents(map: CsMap) {
-        console.log('Register map events');
 
         if (this.id && !this.mapEventsRegistered) {
             map.map.on('touchend', this.id, this.clickEvent);
@@ -371,7 +370,6 @@ export class GeojsonLayer extends BaseLayer {
     }
 
     private unregisterMapEvents(map: CsMap) {
-        console.log('Unregister map events');
         if (this.id) {
             map.map.off('touchend', this.id, this.clickEvent);
             map.map.off('click', this.id, this.clickEvent);
