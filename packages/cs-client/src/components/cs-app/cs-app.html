@@ -25,8 +25,6 @@
     :sideBar="rightSidebar"
   ></cs-sidebar>
 
-  
-
   <!-- dialogs -->
   <v-dialog
     v-model="dialog.visible"
@@ -36,18 +34,21 @@
     :width="dialog.width"
     transition="dialog-bottom-transition"
   >
-    <v-card tile>
-      <v-toolbar card color="primary" v-if="dialog.toolbar">
+    <v-card>
+      <v-card-title class="headline" primary-title>
+        {{ dialog.title }}
+      </v-card-title>
+      <!-- <v-toolbar card color="primary" v-if="dialog.toolbar">
         <v-btn
           v-if="!dialog.persistent"
-          icon
+          icon          
           @click.native="dialog.visible = false"
         >
           <v-icon>close</v-icon>
         </v-btn>
         <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
-      </v-toolbar>
+      </v-toolbar> -->
       <v-card-text>
         <component
           v-if="dialog.component"
@@ -76,7 +77,7 @@
 
   <!-- content -->
   <v-content
-    fluid 
+    fluid
     v-bind:class="{ 'floating': $cs.project.header.floating }"
     v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
   >
