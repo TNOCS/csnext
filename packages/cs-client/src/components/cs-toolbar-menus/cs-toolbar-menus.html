@@ -15,32 +15,61 @@
       :close-on-content-click="true"
       v-if="menu.visible"
       dense
+      open-on-hover
+      bottom
       offset-y
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn :icon="menu.title === undefined" :outlined="menu.outlined" @click.delegate="triggerMenuAction(menu)" v-on="on">
+      <template v-if="menu.items" v-slot:activator="{ on }">
+        <v-btn
+          v-on="on"
+          :icon="!menu.textButton"
+          :outlined="menu.outlined"
+          @click.delegate="triggerMenuAction(menu)"
+        >
           <v-icon>{{ menu.icon }}</v-icon>
-          <span>{{ menu.title }}</span>
-          <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+          <span v-if="menu.textButton"
+            >{{ menu.title }}
+            <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+          </span>
         </v-btn>
       </template>
+      <template v-else v-slot:activator="{ on, attrs }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-on="on"
+              :icon="!menu.textButton"
+              :outlined="menu.outlined"
+              @click.delegate="triggerMenuAction(menu)"
+            >
+              <v-icon>{{ menu.icon }}</v-icon>
+              <span v-if="menu.textButton"
+                >{{ menu.title }}
+                <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+              </span>
+            </v-btn>
+          </template>
+          <span v-if="menu.toolTip">{{ menu.toolTip }}</span>
+        </v-tooltip>
+      </template>
 
-      <v-list v-if="menu.items && menu.items.length>0" dense :close-on-content-click="true">
-        <v-list-item          
+      <v-list
+        v-if="menu.items && menu.items.length>0"
+        dense
+        :close-on-content-click="true"
+      >
+        <v-list-item
           v-for="item in menu.items"
+          text
           :key="item.id"
           @click="triggerMenuAction(item)"
         >
-          <v-list-item-avatar v-if="item.icon">
-            <v-icon
-              small
-              class="primary--text"              
-              >{{item.icon}}
-            </v-icon>            
-          </v-list-item-avatar>
-          <v-list-item-title class="pr-1">{{
-            $cs.Translate(item.title)
-          }}</v-list-item-title>
+          <v-list-item-title class="pr-1">
+            <span v-if="item.icon"
+              ><v-icon>{{ item.icon }}</v-icon></span
+            >
+            {{ $cs.Translate(item.title) }}</v-list-item-title
+          >
         </v-list-item>
       </v-list>
 
