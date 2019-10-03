@@ -6,7 +6,7 @@ export interface IDialog {
   persistent?: boolean;
   fullscreen?: boolean;
   scrollable?: boolean;
-  toolbar?: boolean;
+  // toolbar?: boolean;
   data?: any;
   width?: number;
   actions?: string[];
