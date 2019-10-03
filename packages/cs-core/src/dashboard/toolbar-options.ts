@@ -18,12 +18,8 @@ export class ToolbarOptions {
     public collapse?: boolean;
     @FormField({ title: 'Absolute', type: 'checkbox' })
     public absolute?: boolean;
-    
-    
     @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 10 })
     public elevation?: number;
 }
 
-export class DashboardToolbarOptions extends ToolbarOptions {
-    public navigation = 'stepper' || 'stepper-inline' || 'tabs';
-}
+

@@ -23,6 +23,7 @@ export * from './dashboard/dashboard';
 export * from './dashboard/dashboard-manager';
 export * from './dashboard/layout-manager-config';
 export * from './dashboard/toolbar-options';
+export * from './dashboard/dashboard-toolbar-options';
 
 export * from './widget/widget';
 export * from './widget/widget-options';
