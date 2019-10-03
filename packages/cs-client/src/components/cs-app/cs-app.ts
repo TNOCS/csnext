@@ -435,6 +435,21 @@ export class CsApp extends Vue {
       this.$cs.project.notifications.items.filter(not => !not.isRead)
     );
   }
+
+  public clickNotification() {
+    if (this.lastNotification.clickCallback) {
+      this.lastNotification.clickCallback();
+      this.closeNotification();
+    }
+  }
+
+  public closeNotification() {
+    if (this.lastNotification) {
+      this.lastNotification = { _visible: false } as INotification;
+      this.UpdateNotifications();
+    }
+  }
+
   public InitNotifications() {
     if (this.$cs.bus) {
       this.notificationHandle = this.$cs.bus.subscribe(
@@ -452,8 +467,7 @@ export class CsApp extends Vue {
               // Call callback of previous notification before closing it
               this.lastNotification.clickCallback();
             }
-            this.lastNotification = { _visible: false } as INotification;
-            this.UpdateNotifications();
+            this.closeNotification();
           }
         }
       );
