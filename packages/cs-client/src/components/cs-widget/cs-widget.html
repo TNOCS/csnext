@@ -3,6 +3,7 @@
   :flat="options.flat"
   :outlined="options.outlined"
   :color="options.backgroundColor"
+  :raised="options.raised"
   v-resize:debounce.50="onResize"
   @mouseenter="mouseEnter()"
   v-if="widget"
@@ -12,46 +13,53 @@
   :class="[widgetBorder]"
   ref="widget"
 >
-<v-col class="cs-dashboard-col pa-0">    
-    <v-flex  v-if="options.showToolbar && options.toolbarOptions" shrink class="dashboard-toolbar-flex">
-  
-    <v-toolbar
-     
-      :elevation="options.toolbarOptions.elevation"
-      :dense="options.toolbarOptions.dense"
-      :flat="options.toolbarOptions.flat"
+  <v-col class="cs-dashboard-col pa-0">
+    <v-flex
+      v-if="options.showToolbar && options.toolbarOptions"
+      shrink
+      class="dashboard-toolbar-flex"
     >
-      <v-icon v-if="options.icon && !options.toolbarOptions.hideIcon" class="pr-3">{{
-        options.icon
-      }}</v-icon>
-      <v-toolbar-title v-if="!options.toolbarOptions.hideTitle">{{
-        $cs.Translate(options.title)
-      }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      
-      <cs-toolbar-menus :menus="options.menus"></cs-toolbar-menus>
-      <!-- <v-menu v-for="menu in options.menus" :key="menu.id" v-if="menu.visible">
+      <v-toolbar   
+        :absolute="options.toolbarOptions.absolute"
+        :prominent="options.toolbarOptions.prominent"
+        :color="options.toolbarOptions.backgroundColor"
+        :elevation="options.toolbarOptions.elevation"
+        :dense="options.toolbarOptions.dense"
+        :collapse="options.toolbarOptions.collapse"
+        :flat="options.toolbarOptions.flat"
+      >
+        <v-icon
+          v-if="options.icon && !options.toolbarOptions.hideIcon"
+          class="pr-3"
+          >{{ options.icon }}</v-icon
+        >
+        <v-toolbar-title v-if="!options.toolbarOptions.hideTitle">{{
+          $cs.Translate(options.title)
+        }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+
+        <cs-toolbar-menus v-if="!options.hideMenu && options.menus" :menus="options.menus"></cs-toolbar-menus>
+        <!-- <v-menu v-for="menu in options.menus" :key="menu.id" v-if="menu.visible">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
             <v-icon>{{ menu.icon }}</v-icon>
           </v-btn>
         </template>
       </v-menu> -->
-    </v-toolbar>
+      </v-toolbar>
+    </v-flex>
 
-  </v-flex>
-
-  <v-flex grow class="dashboard-toolbar-flex">
-
-    <div :class="[options.class]" class="widget-default" style="height: 100%" >
-      <component
-        :is="getComponent()"
-        :widget="widget"
-        :style="widgetStyles()"
-        ref="component"
-      ></component>
-      <!-- class="widget-default" -->
-    </div>
-  </v-flex>
+    <v-flex grow class="dashboard-toolbar-flex">
+      <div :class="[options.class]" class="widget-default" style="height: 100%">
+        <component
+          :is="getComponent()"
+          :widget="widget"
+          :style="widgetStyles()"
+          ref="component"
+        ></component>
+        <!-- class="widget-default" -->
+      </div>
+    </v-flex>
   </v-col>
+  <cs-toolbar-menus class="widget-buttons-container" v-if="!options.showToolbar && !options.hideMenu && options.menus" :menus="options.menus"></cs-toolbar-menus>
 </v-card>
