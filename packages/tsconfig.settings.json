@@ -13,7 +13,7 @@
       "emitDecoratorMetadata": true,
       "allowSyntheticDefaultImports": true,
       "resolveJsonModule": false,
-      "outDir": "./dist/"
+      "outDir": "./dist/"      
     },    
     "rules": {
       "quotemark": [true, "single"]
