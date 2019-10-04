@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-markdown",
-  "version": "0.0.124",
+  "version": "0.0.125",
   "description": "cs-markdown",
   "main": "./lib/csmarkdown.cs.js",
   "types": "./dist/src/index.d.ts",
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.124",
+    "@csnext/cs-client": "^0.0.125",
     "markdown-it-vue": "1.0.10"
   }
 }

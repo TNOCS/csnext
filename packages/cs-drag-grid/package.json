@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-drag-grid",
-  "version": "0.0.124",
+  "version": "0.0.125",
   "description": "cs-drag-grid",
   "main": "./lib/csdraggrid.cs.js",
   "types": "./dist/index.d.ts",
@@ -19,7 +19,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.124",
+    "@csnext/cs-client": "^0.0.125",
     "simplebar-vue": "^1.2.3",
     "vue": "2.6.10",
     "vue-grid-layout": "^2.3.6"
