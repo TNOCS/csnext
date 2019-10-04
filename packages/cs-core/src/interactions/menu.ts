@@ -1,5 +1,5 @@
 export interface IMenu {
-  id: string;
+  id?: string;
   icon?: string;
   title?: string;
   toggleGroup?: boolean;
@@ -7,7 +7,7 @@ export interface IMenu {
   toggleState?: boolean;
   toggleIcon?: string;
   toggleToolTip?: string;
-  textButton?: boolean;  
+  textButton?: boolean;
   buttonClass?: string;
   outlined?: boolean;
   enabled?: boolean;
