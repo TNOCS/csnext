@@ -4,10 +4,8 @@ import {
     IWidget,
     MessageBusService,
     IDatasource,
-    WidgetOptions,
     TimeDataSource,
     Topics,
-    MessageBusHandle,
     isFunction,
     IMenu
 } from '@csnext/cs-core';
@@ -37,7 +35,7 @@ const GROUPS_MENU_ID = 'groups';
 export class CsTimeline extends WidgetBase {
     /** access the original widget from configuration */
 
-    GROUP_VISIBILITY_ID = 'timeline-group-';
+    public GROUP_VISIBILITY_ID = 'timeline-group-';
 
     public timeline?: Timeline;
     // public datasource?: ITimelineDataSource;
@@ -46,12 +44,14 @@ export class CsTimeline extends WidgetBase {
     public currentTime: Date = new Date();
     // public log: LogManager = new LogManager();
     public logSource?: LogDataSource;
+    public smallView: boolean = false;
 
-    // private timeHandle?: MessageBusHandle;
-    // private resizeHandle?: MessageBusHandle;
+    public $refs!: {
+        timelineContainer: HTMLElement
+    };
 
     public get TimeDatasource(): TimeDataSource {
-        if (!this.widget.content) return new TimeDataSource();
+        if (!this.widget.content) { return new TimeDataSource(); }
         return this.widget.content as TimeDataSource;
     }
 
@@ -71,45 +71,227 @@ export class CsTimeline extends WidgetBase {
         }
     }
 
-    public smallView: boolean = false;
-
-    public async update() {
+    public update() {
         this.updateItems();
-        if (this.timeline) {
+        if (this.timeline && this.groups && this.items) {
             this.timeline.setData({ groups: this.groups, items: this.items });
-            this.timeline.setGroups(this.groups);
-            this.timeline.setItems(this.items);
-            this.timeline.redraw();
         }
     }
 
-    toggleView() {
+    public toggleView() {
         this.smallView = !this.smallView;
         this.update();
-    }
-
-    private updateItems() {
-        let items: DataItem[] = [];
-        let height = this.smallView ? '5px' : '30px;';
-        if (this.logSource && this.logSource.items) {
-            for (const item of this.logSource.items) {
-                item.content = item.content;
-                // item.style = "height:" + height;
-                // if (this.smallView) item.style+=';color:transparent';
-                if (item.startDate) { item.start = new Date(item.startDate); }
-                if (item.endDate) { item.end = new Date(item.endDate); }
-                if (item.group) {
-                    this.addGroup(item.group);
-                }
-                items.push(item as DataItem);
-            }
-        }
-        this.items = items; // new DataSet(items);
     }
 
     public setGroupVisibility(group: DataGroup, value: boolean = true) {
         localStorage.setItem(this.GROUP_VISIBILITY_ID + group.id, value.toString());
         this.update();
+    }
+
+    public async initTimeline() {
+        if (this.timeline) {
+            // Timeline already exists, update instead of initialize
+            return this.update();
+        }
+        if (!this.widget || !this.widget.id) {
+            return console.warn('Could not find widget container of timeline');
+        }
+        // var container = document.getElementById(`timeline-${this.widget.id}`);
+        // if (!container) {
+        //     return console.warn(
+        //         'Could not find timeline container ' + this.widget.id
+        //     );
+        // }
+
+        const options: TimelineWidgetOptions =
+            (this.widget.options as TimelineWidgetOptions) ||
+            ({} as TimelineWidgetOptions);
+        if (options.timelineOptions) {
+            options.timelineOptions!.onAdd = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        // this.logSource.addItem(item);
+                    }
+                }
+                callback(item);
+            };
+            options.timelineOptions!.onMove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        const it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            it.start = new Date(item.start);
+                            it.startDate = it.start.getTime();
+                            if (item.group) {
+                                it.group = item.group.toString();
+                            }
+                            if (item.end) {
+                                it.end = new Date(item.end);
+                                it.endDate = it.end.getTime();
+                            }
+                            this.logSource.updateItem(it);
+                        }
+                    }
+                }
+                callback(item);
+            };
+
+            options.timelineOptions!.onRemove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        const it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            this.logSource.removeItem(it);
+                        }
+                    }
+                }
+                callback(item);
+            };
+
+        }
+
+        options.timelineOptions = {
+            ...{
+                locale: 'en', margin: { item: 2 }
+            }, ...options.timelineOptions
+        };
+
+        this.timeline = new Timeline(
+            this.$refs.timelineContainer,
+            this.items as DataItem[],
+
+            options.timelineOptions
+        );
+        this.setTimelineEvents();
+    }
+
+    public initLogSource() {
+        if (this.WidgetOptions.logSource) {
+            this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
+                this.logSource = r;
+                this.logSource.bus.subscribe('updated', () => {
+                    this.update();
+                });
+                Vue.nextTick(() => {
+                    this.update();
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }
+
+    public fitAll() {
+        if (this.timeline) {
+            this.timeline.fit({ animation: false });
+        }
+    }
+
+    public setWindow(start: Date, end: Date) {
+        if (this.timeline) {
+            this.timeline.setWindow(start, end);
+        }
+    }
+
+    public initToolbar() {
+        if (!this.widget.options) { this.widget.options = {}; }
+        const menus: IMenu[] = [];
+
+        if (this.WidgetOptions.showFitButton) {
+            menus.push({
+                id: 'today',
+                toolTip: 'TODAY',
+                icon: 'today',
+                items: [
+                    {
+                        title: 'TODAY',
+                        action: () => {
+                            const todayStart = new Date();
+                            todayStart.setHours(0);
+                            const todayEnd = new Date();
+                            todayEnd.setHours(24);
+                            this.setWindow(todayStart, todayEnd);
+                        }
+                    },
+                    {
+                        title: 'WEEK',
+                        action: () => {
+                            const curr = new Date();
+                            this.setWindow(new Date(curr.setDate(curr.getDate() - curr.getDay())), new Date(curr.setDate(curr.getDate() - curr.getDay() + 7)));
+                        }
+                    },
+                    {
+                        title: 'MONTH',
+                        action: () => {
+                            const date = new Date();
+                            this.setWindow(new Date(date.getFullYear(),
+                                date.getMonth(), 1), new Date(date.getFullYear(),
+                                    date.getMonth(), this.daysInMonth(date.getMonth() + 1,
+                                        date.getFullYear())));
+                        }
+                    },
+                    {
+                        title: 'YEAR',
+                        action: () => {
+                            const date = new Date();
+                            this.setWindow(new Date(date.getFullYear(), 0, 1), new Date(date.getFullYear(), 11, 31));
+                        }
+                    }
+                ],
+                visible: true
+            } as IMenu);
+        }
+
+        // this.widget.options.menus ? this.widget.options.menus :
+        if (this.WidgetOptions.showFitButton) {
+            menus.push({
+                id: ZOOM_MENU_ID,
+                toolTip: 'FIT_TIMELINE_ZOOM',
+                icon: 'zoom_out_map',
+                action: () => {
+                    this.fitAll();
+                },
+                visible: true
+            } as IMenu);
+        }
+
+        if (this.WidgetOptions.toggleSmallButton) {
+            // check if already exists
+            if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+                menus.push({
+                    id: TOGGLE_MENU_ID,
+                    icon: 'line_weight',
+                    action: () => {
+                        this.toggleView();
+                    },
+                    visible: true
+                });
+            }
+        }
+
+        if (this.WidgetOptions.showGroupSelectionButton) {
+            // check if already exists
+            if (menus.findIndex((m: IMenu) => m.id === GROUPS_MENU_ID) === -1) {
+                menus.push({
+                    id: GROUPS_MENU_ID,
+                    icon: 'list',
+                    component: TimelineGroupSelection,
+                    data: this,
+                    visible: true
+                });
+            }
+        }
+
+        Vue.set(this.widget.options, 'menus', menus);
+    }
+
+    public mounted() {
+        this.initToolbar();
+        this.initTimeline();
+        this.initLogSource();
+        this.busManager.subscribe(this.widget.events, Topics.RESIZE, () => {
+            this.timeline!.redraw();
+        });
     }
 
     private addGroup(groupName: string) {
@@ -128,94 +310,25 @@ export class CsTimeline extends WidgetBase {
         return this.groups.find(g => g.id === id);
     }
 
-    public async initTimeline() {
-        if (this.timeline) {
-            //Timeline already exists, update instead of initialize
-            return this.update();
-        }
-        if (!this.widget || !this.widget.id) {
-            return console.warn('Could not find widget container of timeline');
-        }
-        var container = document.getElementById(this.widget.id);
-        if (!container) {
-            return console.warn(
-                'Could not find timeline container ' + this.widget.id
-            );
-        }
-
-        let options: TimelineWidgetOptions =
-            (this.widget.options as TimelineWidgetOptions) ||
-            ({} as TimelineWidgetOptions);
-        if (options.timelineOptions) {
-            options.timelineOptions!.onAdd = (item, callback) => {
-                if (item) {
-                    if (this.logSource) {
-                        // this.logSource.addItem(item);
-                    }
-                }
-                callback(item);
-            }
-            options.timelineOptions!.onMove = (item, callback) => {
-                if (item) {
-                    if (this.logSource) {
-                        let it = this.logSource.items.find(i => i.id === item.id);
-                        if (it) {
-                            it.start = new Date(item.start);
-                            it.startDate = it.start.getTime();
-                            if (item.group) {
-                                it.group = item.group.toString();
-                            }
-                            if (item.end) {
-                                it.end = new Date(item.end);
-                                it.endDate = it.end.getTime();
-                            }
-                            this.logSource.updateItem(it);
-                        }
-                    }
-                }
-                callback(item);
-            }
-
-            options.timelineOptions!.onRemove = (item, callback) => {
-                if (item) {
-                    if (this.logSource) {
-                        let it = this.logSource.items.find(i => i.id === item.id);
-                        if (it) {
-                            this.logSource.removeItem(it);
-                        }
-                    }
-                }
-                callback(item);
-            }
-
-        }
-
-        options.timelineOptions = { ...{ locale: 'en' }, ...options.timelineOptions };
-
-        this.timeline = new Timeline(
-            container,
-            this.items as DataItem[],
-            this.groups,
-            options.timelineOptions
-        );
-        this.setTimelineEvents();
-    }
-
-
     private setTimelineEvents() {
-        if (!this.timeline) return console.log('Could not set timeline events');
-        this.timeline.on('click', this.handleTimelineClick);
+        if (!this.timeline) { return console.log('Could not set timeline events'); }
+        // this.timeline.on('click', this.handleTimelineClick);
+        if (this.WidgetOptions.showFocusTime) {
+            this.timeline.addCustomTime(this.currentTime, 'focustime');
+            this.timeline.on('click', this.handleTimelineClick);
+        }
         this.timeline.on('select', this.handleEventSelect);
         this.timeline.on('timechanged', this.handleTimeChanged);
+
         this.currentTime = new Date(this.timeline.getWindow().start);
-        this.timeline.addCustomTime(this.currentTime, 'focustime');
+
         if (this.TimeDatasource.events) {
             // this.TimeDatasource.events.publish(
             //     Topics.TIME_TOPIC,
             //     'moved',
             //     this.currentTime
             // );
-            this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);            
+            this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
         }
 
     }
@@ -233,7 +346,7 @@ export class CsTimeline extends WidgetBase {
             data.items.length === 1 &&
             this.TimeDatasource.events
         ) {
-            let id = data.items[0];
+            const id = data.items[0];
             console.log('Selected item ' + id);
             if (this.logSource && isFunction(this.logSource.selectItemId)) {
                 this.logSource.selectItemId(id.toString());
@@ -248,6 +361,7 @@ export class CsTimeline extends WidgetBase {
     }
 
     private handleTimelineClick(data: TimelineEventPropertiesResult) {
+
         if (data.item === null) { // (data.what === 'background' || data.what === 'axis') {
             this.setDate(data.time);
         }
@@ -268,8 +382,31 @@ export class CsTimeline extends WidgetBase {
         }
     }
 
+    private daysInMonth(month, year) {
+        return new Date(year, month, 0).getDate();
+    }
+
+    private updateItems() {
+        const items: DataItem[] = [];
+        const height = this.smallView ? '5px' : '30px;';
+        if (this.logSource && this.logSource.items) {
+            for (const item of this.logSource.items) {
+                // item.content = item.content;
+                item.style = 'height:' + height;
+                if (this.smallView) { item.style += ''; }
+                if (item.startDate) { item.start = new Date(item.startDate); }
+                if (item.endDate) { item.end = new Date(item.endDate); }
+                if (item.group) {
+                    this.addGroup(item.group);
+                }
+                items.push(item as DataItem);
+            }
+        }
+        this.items = items; // new DataSet(items);
+    }
+
     private handleIncomingTimeEvent(action: string, data: any) {
-        if (!this.TimeDatasource) return;
+        if (!this.TimeDatasource) { return; }
         switch (action) {
             // case 'add-item':
             //     this.datasource.addItem(data as DataItem);
@@ -287,87 +424,6 @@ export class CsTimeline extends WidgetBase {
                 break;
             default:
                 break;
-        }
-    }
-
-    public initLogSource() {
-        if (this.WidgetOptions.logSource) {
-            this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
-                this.logSource = r;
-                this.logSource.bus.subscribe('updated', () => {
-                    this.update();
-                })
-                Vue.nextTick(() => {
-
-                    console.log(r);
-                    this.update();
-                })
-            }).catch(() => {
-
-            })
-        }
-    }
-
-    fitAll() {
-        if (this.timeline) {
-            this.timeline.fit({ animation: false });
-        }
-    }
-
-    mounted() {
-        if (this.widget) {
-
-            this.busManager.subscribe(this.widget.events, Topics.RESIZE, ()=> {
-                this.timeline!.redraw();
-            });
-            this.initLogSource();
-            this.initTimeline();
-
-            if (!this.widget.options) this.widget.options = {};
-            if (!this.widget.options.menus) this.widget.options.menus = [];
-            this.widget.options.showToolbar = true;
-
-            if (this.WidgetOptions.showFitButton) {
-                // check if already exists
-                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === ZOOM_MENU_ID) === -1) {
-                    this.widget.options.menus.push({
-                        id: ZOOM_MENU_ID,
-                        toolTip: 'FIT_TIMELINE_ZOOM',
-                        icon: 'zoom_out_map',
-                        action: () => {
-                            this.fitAll();
-                        },
-                        visible: true
-                    })
-                }
-            }
-
-            // if (this.WidgetOptions.toggleSmallButton) {
-            //     // check if already exists
-            //     if (this.widget.options.menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
-            //         this.widget.options.menus.push({
-            //             id: TOGGLE_MENU_ID,
-            //             icon: 'line_weight',
-            //             action: () => {
-            //                 this.toggleView();
-            //             },
-            //             visible: true
-            //         })
-            //     }
-            // }
-
-            if (this.WidgetOptions.showGroupSelectionButton) {
-                // check if already exists
-                if (this.widget.options.menus.findIndex((m: IMenu) => m.id === GROUPS_MENU_ID) === -1) {
-                    this.widget.options.menus.push({
-                        id: GROUPS_MENU_ID,
-                        icon: 'list',
-                        component: TimelineGroupSelection,
-                        data: this,
-                        visible: true
-                    })
-                }
-            }
         }
     }
 }
