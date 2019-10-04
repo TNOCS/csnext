@@ -44,7 +44,8 @@
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
-        "@types/mapbox-gl": "^0.54.3",
+        "@types/mapbox-gl": "^0.54.4",
+        
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },

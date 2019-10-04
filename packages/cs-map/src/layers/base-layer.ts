@@ -8,7 +8,8 @@ import {
     ILayerService,
     PropertyType,
     FeatureTypes,
-    PropertyDetails
+    PropertyDetails,
+    FeatureEventDetails
 } from './../.';
 import { CsMap } from './..';
 import mapboxgl, { CirclePaint } from 'mapbox-gl';
@@ -19,7 +20,6 @@ import {
 } from '../classes/ilayer-extension';
 import { MessageBusHandle } from '@csnext/cs-core';
 import { Feature } from 'geojson';
-import { FeatureEventDetails } from '../components/cs-map/cs-map';
 import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
 import { AppState } from '@csnext/cs-client';
@@ -27,10 +27,30 @@ import { LayerDetails } from '../components/layer-details/layer-details';
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
-    getBounds() {}
 
+    public get Visible(): boolean | undefined {
+        return this.visible;
+    }
+
+    public set Visible(value: boolean | undefined) {
+        if (this.visible === value) {
+            return;
+        }
+        this.visible = value;
+    }
+
+    public static getFeatureFromEventDetails(
+        e: FeatureEventDetails
+    ): Feature | undefined {
+        if (e.features.length > 0) {
+            return e.features[0];
+        }
+        return undefined;
+    }
+
+    // tslint:disable-next-line: variable-name
     public _source?: LayerSource;
-    public _initialized? = false;
+    public _initialized ? = false;
     public typeId?: string = 'geojson';
     public id!: string;
     // public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
@@ -93,12 +113,26 @@ export class BaseLayer implements IMapLayer {
     /** list of active layers */
     public _legends?: LayerLegend[];
 
-    addLayer(map: CsMap) {}
+    public _showMenu?: boolean | undefined;
+    public _showMore?: boolean | undefined;
+    public _featureEventHandle?: MessageBusHandle;
 
-    initLayer(manager: MapLayers) {}
-    setOpacity(value: number) {}
+    constructor(init?: Partial<IMapLayer>) {
+        Object.assign(this, init);
+        if (init && init.style) {
+            Object.assign(this.style, init.style);
+        }
+        // this.events = new MessageBusService();
+    }
+    // tslint:disable-next-line: no-empty
+    public getBounds() {}
+
+    public addLayer(map: CsMap) {}
+
+    public initLayer(manager: MapLayers) {}
+    public setOpacity(value: number) {}
     public getLayerActions(): ILayerAction[] {
-        let res: ILayerAction[] = [];
+        const res: ILayerAction[] = [];
         if (this.Visible) {
             res.push({
                 title: 'Zoom to',
@@ -153,30 +187,9 @@ export class BaseLayer implements IMapLayer {
         }
         return res;
     }
-    updateLayer() {}
-    removeLayer(map: CsMap) {}
-    moveLayer(beforeId?: string) {}
-
-    _showMenu?: boolean | undefined;
-    _showMore?: boolean | undefined;
-    _featureEventHandle?: MessageBusHandle;
-
-    constructor(init?: Partial<IMapLayer>) {
-        Object.assign(this, init);
-        if (init && init.style) {
-            Object.assign(this.style, init.style);
-        }
-        // this.events = new MessageBusService();
-    }
-
-    public static getFeatureFromEventDetails(
-        e: FeatureEventDetails
-    ): Feature | undefined {
-        if (e.features.length > 0) {
-            return e.features[0];
-        }
-        return undefined;
-    }
+    public updateLayer() {}
+    public removeLayer(map: CsMap) {}
+    public moveLayer(beforeId?: string) {}
 
     public removeLegend(
         property: PropertyDetails | PropertyType | string,
@@ -202,8 +215,8 @@ export class BaseLayer implements IMapLayer {
     }
 
     public getStyleLegend(styleKey: string, style: any): LayerLegend[] {
-        let result: LayerLegend[] = [];
-            for (const key in style) {
+        const result: LayerLegend[] = [];
+        for (const key in style) {
                 if (style.hasOwnProperty(key)) {
                     const prop = style[key];
                     if (prop.hasOwnProperty('stops')) {
@@ -211,45 +224,34 @@ export class BaseLayer implements IMapLayer {
                             property: prop.property,
                             stops: prop.stops,
                             styleProperty: key,
-                            style: style,
-                            styleKey: styleKey
+                            style,
+                            styleKey
                         });
                     }
                 }
             }
-        
+
         return result;
     }
 
     public updateLegends() {
-        let result: LayerLegend[] = [];
-        if (this.paint) result.concat(this.getStyleLegend('paint', this.paint));
-        if (this.layout) result.concat(this.getStyleLegend('layout', this.layout));
+        const result: LayerLegend[] = [];
+        if (this.paint) { result.concat(this.getStyleLegend('paint', this.paint)); }
+        if (this.layout) { result.concat(this.getStyleLegend('layout', this.layout)); }
         this._legends = result;
-    }
-
-    public get Visible(): boolean | undefined {
-        return this.visible;
-    }
-
-    public set Visible(value: boolean | undefined) {
-        if (this.visible === value) {
-            return;
-        }
-        this.visible = value;
     }
 
     public parsePopup(f?: Feature) {
         if (this.style && this.style.popup && f) {
             const template = Handlebars.compile(this.style.popup);
-            let res = template(f);
+            const res = template(f);
             return res ? res : 'empty title';
         } else {
             return `<h2>${this.title}</h2>`;
         }
     }
 
-    public parseTitle(f?: Feature) {        
+    public parseTitle(f?: Feature) {
         if (this.style && this.style.title && f) {
             const template = Handlebars.compile(this.style.title);
             return template(f);

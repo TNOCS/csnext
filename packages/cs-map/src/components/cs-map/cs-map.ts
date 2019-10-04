@@ -3,12 +3,12 @@ import Vue from 'vue';
 import { IWidget, guidGenerator, MessageBusService, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
-import mapboxgl, { CirclePaint, LngLat, MapboxOptions } from 'mapbox-gl';
+const MapboxDraw = require('@mapbox/mapbox-gl-draw');
+import mapboxgl, { CirclePaint, MapboxOptions } from 'mapbox-gl';
 import { Feature, FeatureCollection } from 'geojson';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from "./../style-switcher/style-switcher";
+import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from './../style-switcher/style-switcher';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
 // import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { LayerEditorControl } from './../layer-editor/layer-editor-control';
@@ -17,7 +17,6 @@ import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
-
 
 import {
     MapLayers,
@@ -30,22 +29,42 @@ import {
     GeojsonPlusLayer,
     FeatureDetails,
     LayerSelection,
-    LayerSelectionOptions
+    LayerSelectionOptions,
+    FeatureEventDetails
 } from '../../.';
 import { GridControl } from '../grid-control/grid-control';
 import { WidgetBase } from '@csnext/cs-client';
-
-export interface FeatureEventDetails {
-    context: any;
-    features: Feature[];
-    feature?: Feature;
-    lngLat: LngLat;
-}
 
 @Component({
     template: require('./cs-map.html')
 })
 export class CsMap extends WidgetBase {
+    public get pointPickerActivated(): boolean {
+        return this._pointerPickerActivated;
+    }
+
+    public set pointPickerActivated(value: boolean) {
+        this._pointerPickerActivated = value;
+        this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
+    }
+
+    public get manager(): MapLayers | undefined {
+        if (this.widget) {
+            if (this.widget.content) {
+                return this.widget.content as MapLayers;
+            } else if (this.widget.data) {
+                return this.widget.data as MapLayers;
+            }
+        }
+        return undefined;
+    }
+
+    public get options(): MapOptions {
+        if (this.widget && this.widget.options) {
+            return this.widget.options as MapOptions;
+        }
+        return new MapOptions();
+    }
 
     public static FEATURE_SELECT = 'select';
     public static FEATURE_CREATED = 'created';
@@ -68,26 +87,6 @@ export class CsMap extends WidgetBase {
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
     public static layerExtensions: ILayerExtensionType[] = [];
-    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
-
-    public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
-
-    @Prop()
-    public widget!: IWidget;
-    public map!: mapboxgl.Map;
-    public mapDraw!: any;
-    private _pointerPickerActivated = false;
-    public get pointPickerActivated() : boolean {
-        return this._pointerPickerActivated;
-    };
-
-    public set pointPickerActivated(value: boolean) {
-        this._pointerPickerActivated = value;
-        this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
-    }
-
-
-    private mapOptions!: MapOptions;
 
     /** register new layertype  */
     public static AddLayerExtension(type: ILayerExtensionType) {
@@ -110,30 +109,22 @@ export class CsMap extends WidgetBase {
             CsMap.serviceTypes.push(type);
         }
     }
+    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
+
+    public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
+
+    @Prop()
+    public widget!: IWidget;
+    public map!: mapboxgl.Map;
+    public mapDraw!: any;
+    // tslint:disable-next-line: variable-name
+    private _pointerPickerActivated = false;
+    private mapOptions!: MapOptions;
 
     @Watch('widget.content')
     public dataLoaded() {
         this.initMapLayers();
     }
-
-    public get manager(): MapLayers | undefined {
-        if (this.widget) {
-            if (this.widget.content) {
-                return this.widget.content as MapLayers;
-            } else if (this.widget.data) {
-                return this.widget.data as MapLayers;
-            }
-        }
-        return undefined;
-    }
-
-    public get options(): MapOptions {
-        if (this.widget && this.widget.options) {
-            return this.widget.options as MapOptions;
-        }
-        return new MapOptions();
-    }
-
 
     public beforeMount() {
         if (!this.widget) {
@@ -146,18 +137,18 @@ export class CsMap extends WidgetBase {
             if (this.busHandlers.hasOwnProperty(key)) {
                 const element = this.busHandlers[key];
                 element.bus.unsubscribe(element.handle);
-                
+
             }
         }
         this.$cs.CloseRightSidebarKey('feature');
         this.$cs.CloseRightSidebarKey('layers');
-        
+
     }
 
     public zoomLayer(mapLayer: IMapLayer, padding = 20) {
-        let bounds = mapLayer.getBounds();
+        const bounds = mapLayer.getBounds();
         if (bounds) {
-            this.map.fitBounds(bounds, { padding: padding });
+            this.map.fitBounds(bounds, { padding });
         }
     }
 
@@ -165,7 +156,7 @@ export class CsMap extends WidgetBase {
         if (!this.map.hasImage(id)) {
             this.map.loadImage(url, (error, image) => {
                 if (!this.map.hasImage(id)) {
-                    if (error) throw error;
+                    if (error) { throw error; }
                     this.map.addImage(id, image);
                 }
             });
@@ -200,8 +191,10 @@ export class CsMap extends WidgetBase {
                 this.manager.MapWidget = this;
             }
             if (this.manager._sources && this.manager._sources.images) {
-                for (var id in this.manager._sources.images) {
-                    this.addImage(id, this.manager._sources.images[id]);
+                for (const id in this.manager._sources.images) {
+                    if (this.manager._sources.images.hasOwnProperty(id)) {
+                        this.addImage(id, this.manager._sources.images[id]);
+                    }
                 }
             }
             this.manager.MapWidget = this;
@@ -259,7 +252,7 @@ export class CsMap extends WidgetBase {
                                                             component: FeatureDetails,
                                                             data: {
                                                                 feature: f.feature,
-                                                                layer: layer,
+                                                                layer,
                                                                 manager: this
                                                                     .manager
                                                             }
@@ -272,7 +265,7 @@ export class CsMap extends WidgetBase {
                                         }
 
                                     )
-                                }
+                                };
 
                             }
 
@@ -294,41 +287,6 @@ export class CsMap extends WidgetBase {
             }
         }
     }
-
-    private getRouteOptions(): mapboxgl.MapboxOptions {
-        let options = {} as MapboxOptions;
-        const q = this.$route.query;
-        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
-            let lng = parseFloat(q['lng'] as string);
-            let lat = parseFloat(q['lat'] as string);
-            options.center = [lng, lat];
-        }
-        if (q.hasOwnProperty('z')) {
-            options.zoom = parseFloat(q['z'] as string);
-        }
-        if (q.hasOwnProperty('style')) {
-            const styleId = q['style'] as string;
-            this.options.style = styleId;
-            options.style = this.getStyleUri(styleId);
-        }
-        return options;
-    }
-
-    private updateUrlQueryParams() {
-        const center = this.map.getCenter();
-        const zoom = this.map.getZoom();
-        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
-        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => { }); //this.$route.query}
-    }
-
-    private getStyleUri(styleId: string): string {
-        const style = this.styles.find(s => s.id === styleId);
-        if (style) {
-            return style.uri;
-        }
-        return "";
-    }
-
 
     public mounted() {
 
@@ -371,9 +329,8 @@ export class CsMap extends WidgetBase {
             // if (this.options.storePositionInUrl) {
             this.map.on('moveend', (ev => {
                 this.updateUrlQueryParams();
-            }))
+            }));
             // }
-
 
             // ad navigation control
             this.mapOptions = {
@@ -391,12 +348,10 @@ export class CsMap extends WidgetBase {
                 ...(this.widget.options as MapOptions)
             };
 
-
-
             if (this.mapOptions.doubleClickZoom) {
-                this.map['doubleClickZoom'].enable();
+                this.map.doubleClickZoom.enable();
             } else {
-                this.map['doubleClickZoom'].disable();
+                this.map.doubleClickZoom.disable();
             }
 
             // subscribe to widget events
@@ -409,7 +364,7 @@ export class CsMap extends WidgetBase {
                         });
 
                     })
-                }
+                };
             }
 
             if (this.mapOptions.showDraw) {
@@ -860,7 +815,7 @@ export class CsMap extends WidgetBase {
                     this.addClickLayer();
                 }
 
-                var nav = new mapboxgl.NavigationControl({
+                const nav = new mapboxgl.NavigationControl({
                     showCompass: this.mapOptions.showCompass,
                     showZoom: this.mapOptions.showZoom
                 });
@@ -870,8 +825,8 @@ export class CsMap extends WidgetBase {
                     this.map.addControl(new MapboxStyleSwitcherControl(this.styles, this));
                     // this.map.addControl(stylesControl, 'bottom-right');
 
-                    this.map.on('style.load', (e: any) => {
-                        let style = this.map.getStyle();
+                    this.map.on('style.load', () => {
+                        // let style = this.map.getStyle();
                         if (this.manager) {
                             this.manager.refreshLayers();
                             // this.man
@@ -893,7 +848,7 @@ export class CsMap extends WidgetBase {
 
     public addSource(source: LayerSource) {
         if (source.id) {
-            let original = this.map.getSource(source.id);
+            const original = this.map.getSource(source.id);
             if (original !== undefined) {
                 if (original.type === 'geojson' && source._geojson) {
                     original.setData(source._geojson);
@@ -935,12 +890,46 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    private getRouteOptions(): mapboxgl.MapboxOptions {
+        const options = {} as MapboxOptions;
+        const q = this.$route.query;
+        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
+            const lng = parseFloat(q.lng as string);
+            const lat = parseFloat(q.lat as string);
+            options.center = [lng, lat];
+        }
+        if (q.hasOwnProperty('z')) {
+            options.zoom = parseFloat(q.z as string);
+        }
+        if (q.hasOwnProperty('style')) {
+            const styleId = q.style as string;
+            this.options.style = styleId;
+            options.style = this.getStyleUri(styleId);
+        }
+        return options;
+    }
 
+    private updateUrlQueryParams() {
+        const center = this.map.getCenter();
+        const zoom = this.map.getZoom();
+        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
+        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => {
+            console.log(err);
+        }); // this.$route.query}
+    }
+
+    private getStyleUri(styleId: string): string {
+        const style = this.styles.find(s => s.id === styleId);
+        if (style) {
+            return style.uri;
+        }
+        return '';
+    }
 
     private addGeocoder() {
         this.map.on('moveend', () => {
             if (this.map.getZoom() > 9) {
-                var center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
+                const center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
                 geocoder.setProximity({
                     longitude: center.lng,
                     latitude: center.lat
@@ -950,7 +939,7 @@ export class CsMap extends WidgetBase {
             }
         });
 
-        var geocoder = new MapboxGeocoder({
+        const geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
             country: 'nl',
             limit: 8,
@@ -980,7 +969,7 @@ export class CsMap extends WidgetBase {
                 };
                 rl.popupContent = f => {
                     if (f.features) {
-                        return f.features[0].properties['place_name'];
+                        return f.features[0].properties.place_name;
                     }
                 };
 
@@ -996,10 +985,11 @@ export class CsMap extends WidgetBase {
                                     'feature',
                                     (a: string, f: Feature) => {
                                         if (a === CsMap.FEATURE_SELECT) {
+                                            // select feature
                                         }
                                     }
                                 )
-                        }
+                        };
                     }
                 });
             }
@@ -1007,12 +997,10 @@ export class CsMap extends WidgetBase {
             geocoder.on('results', ev => {
                 if (this.manager) {
                     for (const feature of ev.features) {
-                        feature.properties['place_name'] = feature.place_name;
+                        feature.properties.place_name = feature.place_name;
                         // set layer/feature ids
-                        feature.id = feature.properties[
-                            '_fId'
-                        ] = guidGenerator();
-                        feature.properties['_lId'] = rl.id;
+                        feature.id = feature.properties._fId = guidGenerator();
+                        feature.properties._lId = rl.id;
                     }
                     this.manager.updateLayerSource(rl, ev);
                 }
@@ -1035,8 +1023,6 @@ export class CsMap extends WidgetBase {
         }
     }
     private addClickLayer() {
-
-
         if (this.manager && this.manager.layers) {
             let rl = this.manager.layers!.find(
                 l => l.id === 'clicklayer'
@@ -1074,22 +1060,23 @@ export class CsMap extends WidgetBase {
                                 'feature',
                                 (a: string, f: Feature) => {
                                     if (a === CsMap.FEATURE_SELECT) {
+                                        // select feature
                                     }
                                 }
                             )
-                        }
+                        };
                     }
                 });
 
                 this.map.on('click', (ev) => {
                     if (this.manager) {
-                        let features = {
+                        const features = {
                             type: 'FeatureCollection',
                             features: [{
                                 id: 'click-feature', type: 'Feature', properties: {
                                     'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
                                 }, geometry: {
-                                    type: "Point",
+                                    type: 'Point',
                                     coordinates: [ev.lngLat.lng, ev.lngLat.lat]
                                 }
                             } as Feature]
@@ -1111,14 +1098,14 @@ export class CsMap extends WidgetBase {
         if (this.options.activeLayers) {
             for (const id of this.options.activeLayers) {
                 if (this.manager && this.manager.layers) {
-                    let layer = this.manager.layers.find(l => l.id === id);
+                    const layer = this.manager.layers.find(l => l.id === id);
                     if (layer) {
                         this.manager.addLayer(layer);
                     }
                 }
             }
         }
-        if (this.widget.events) this.widget.events.publish('map', 'loaded', e);
+        if (this.widget.events) { this.widget.events.publish('map', 'loaded', e); }
         if (this.manager && this.manager.events) {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
@@ -1148,6 +1135,4 @@ export class CsMap extends WidgetBase {
         //     }
         //   });
     }
-
-
 }

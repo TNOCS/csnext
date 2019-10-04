@@ -27,6 +27,7 @@ export * from './classes/layer-legend';
 export * from './components/layer-selection/layer-selection';
 export * from './components/layer-selection/layer-selection-options';
 export * from './components/cs-map/cs-map';
+export * from './components/cs-map/feature-event-details';
 export * from './components/feature-details/feature-details';
 
 // layers
@@ -39,6 +40,8 @@ export * from './layers/grid-layer';
 // services
 export * from './services/layer-server';
 export * from './services/layer-server-service';
+export * from './services/layer-server-service-options';
+export * from './services/feature-action';
 
 // extensions
 export * from './extensions/time-interpolation-extension';

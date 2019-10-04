@@ -1,12 +1,13 @@
 import {
-    ILayerServiceOptions,
     ILayerService,
     IStartStopService,
     GeojsonPlusLayer,
     LayerStyle,
     CsMap,
     ILayerAction,
-    ILayer
+    ILayer,
+    LayerServerServiceOptions,
+    IFeatureAction
 } from '..';
 import axios from 'axios';
 import { MapLayers } from '../classes/map-layers';
@@ -15,30 +16,8 @@ import { IMapLayer } from '../classes/imap-layer';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
 import { LinePaint } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
-import { Feature } from 'geojson';
-
-export class LayerServerServiceOptions implements ILayerServiceOptions {
-    public url?: string;
-    public tags?: string[];
-    public activeLayers?: string[];
-    public openFeatureDetails?: boolean;
-}
-
-export interface IFeatureAction {
-    action: 'update' | 'delete';
-    feature: Feature;
-
-}
 
 export class LayerServerService implements ILayerService, IStartStopService {
-    id!: string;
-    title?: string | undefined;
-    // public socket!: SocketIOClient.Socket;
-
-    public options?: LayerServerServiceOptions;
-    public type = 'layer-server-service';
-    public layers: IMapLayer[] = [];
-    public manager?: MapLayers;
 
     public get socket(): SocketIOClient.Socket | undefined {
         if (this.manager && this.manager.MapWidget) {
@@ -46,16 +25,35 @@ export class LayerServerService implements ILayerService, IStartStopService {
         }
     }
 
-    public getInstance(init?: Partial<ILayerService>): IStartStopService {
-        let result = new LayerServerService(init);
-        return result;
+    public get mapDraw(): any {
+        if (
+            this.manager &&
+            this.manager.MapWidget &&
+            this.manager.MapWidget.mapDraw
+        ) {
+            return this.manager.MapWidget.mapDraw;
+        }
+        return;
     }
+    public id!: string;
+    public title?: string | undefined;
+    // public socket!: SocketIOClient.Socket;
+
+    public options?: LayerServerServiceOptions;
+    public type = 'layer-server-service';
+    public layers: IMapLayer[] = [];
+    public manager?: MapLayers;
 
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
     }
 
-    async Start(manager: MapLayers) {
+    public getInstance(init?: Partial<ILayerService>): IStartStopService {
+        const result = new LayerServerService(init);
+        return result;
+    }
+
+    public async Start(manager: MapLayers) {
         this.manager = manager;
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
@@ -69,19 +67,19 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         manager.layers
                     ) {
                         for (const layer of response.data as ILayer[]) {
-                            let style = layer.style as LayerStyle;
+                            const style = layer.style as LayerStyle;
                             // style.mapbox = new MapboxStyles({
 
                             // });
 
-                            let s = new LayerSource();
+                            const s = new LayerSource();
                             if (!layer.color) {
                                 layer.color = 'blue';
                             }
                             s.url = this.options.url + 'sources/' + layer.id;
                             s.id = layer.id;
                             s.type = 'geojson';
-                            let gl = new GeojsonPlusLayer();
+                            const gl = new GeojsonPlusLayer();
                             gl._service = this;
                             gl.source = s;
                             gl.openFeatureDetails = true;
@@ -172,14 +170,14 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         }
                     }
                 })
-                .catch(() => { });
+                .catch((e) => { console.log(e); });
         }
     }
 
     public disableLayerSocket(gl: GeojsonPlusLayer) {
         if (this.socket && this.socket !== undefined) {
             this.socket.off('layer/' + gl.id);
-            this.socket.off('layer/' + gl.id + '/features');            
+            this.socket.off('layer/' + gl.id + '/features');
         }
     }
 
@@ -217,7 +215,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
             delete def.source;
 
             console.log(def);
-            let url = this.options.url + 'layers/' + layer.id;
+            const url = this.options.url + 'layers/' + layer.id;
             console.log(this.options);
             axios
                 .put(url, def, {
@@ -235,13 +233,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     public getLayerActions(layer: IMapLayer): ILayerAction[] {
-        let res: ILayerAction[] = [];
+        const res: ILayerAction[] = [];
         res.push({
             title: 'Edit',
             action: () => {
                 AppState.Instance.OpenRightSidebarWidget({
                     component: LayerServiceEditor,
-                    data: { layer: layer, service: this }
+                    data: { layer, service: this }
                 }, undefined, 'layers');
                 // this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
                 //     component: LayerServiceEditor,
@@ -252,14 +250,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
         return res;
     }
 
-    private get mapDraw(): any {
-        if (
-            this.manager &&
-            this.manager.MapWidget &&
-            this.manager.MapWidget.mapDraw
-        ) {
-            return this.manager.MapWidget.mapDraw;
-        }
+    public Stop(manager: MapLayers) {
+        this.removeExistingLayers(manager);
+        console.log('Stop service');
     }
 
     private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
@@ -282,8 +275,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (
             this.socket &&
             data.hasOwnProperty('lastUpdatedBy') &&
-            data['lastUpdatedBy'] === this.socket.id
+            data.lastUpdatedBy === this.socket.id
         ) {
+            // updated by myself
         } else {
             gl._manager!.updateLayerSource(gl, data, false);
         }
@@ -328,16 +322,16 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.initLiveLayer(gl, layer);
 
         gl._events.subscribe('feature', (a: string, f: any) => {
-            let md = this.mapDraw;
+            const md = this.mapDraw;
 
             if (md && f.features && a === CsMap.FEATURE_SELECT) {
-                let feature = f.features[0];
+                const feature = f.features[0];
                 if (feature.properties) {
-                    feature.id = feature.properties['_fId'];
+                    feature.id = feature.properties._fId;
                 }
-                let all = md.getAll();
+                const all = md.getAll();
                 console.log(all);
-                var featureIds = md.add(feature);
+                const featureIds = md.add(feature);
                 //
                 md.changeMode('simple_select', {
                     featureIds: [featureIds[0]]
@@ -361,8 +355,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
         gl._events.subscribe('source', (a: string) => {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
-                let body = gl._source!._geojson;
+                const body = gl._source!._geojson;
                 if (body && this.socket) {
+                    // tslint:disable-next-line:no-string-literal
                     body['lastUpdatedBy'] = this.socket.id;
                     console.log(gl._source!._geojson);
                     axios
@@ -396,10 +391,5 @@ export class LayerServerService implements ILayerService, IStartStopService {
             }
         }
         this.layers = [];
-    }
-
-    Stop(manager: MapLayers) {
-        this.removeExistingLayers(manager);
-        console.log('Stop service');
     }
 }
