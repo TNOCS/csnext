@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import './cs-toolbar-menus.css';
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch, PropSync } from 'vue-property-decorator';
 import { IMenu } from '@csnext/cs-core';
 
 @Component({
@@ -9,19 +9,13 @@ import { IMenu } from '@csnext/cs-core';
   template: require('./cs-toolbar-menus.html')
 } as any)
 export class CsToolbarMenus extends Vue {
-  @Prop()
-  public menus?: IMenu[]
 
-  
+  @Prop()
+  public menus?: IMenu[];
 
   public triggerMenuAction(menu: IMenu) {
     if (menu.action) {
       menu.action(menu);
     }
   }
-
-  mounted() {
-    
-  }
-
 }

@@ -13,6 +13,6 @@ export class CsLoader extends Vue {
 
   @Watch('isLoading')
   public loadingChanged(d: any) {
-    console.log('Loading changed 2');
+    console.log('Loading changed');
   }
 }

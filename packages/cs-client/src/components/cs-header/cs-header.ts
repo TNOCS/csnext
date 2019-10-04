@@ -5,7 +5,7 @@ import {
   IHeaderOptions,
   IMenu,
   IDashboard,
-  MessageBusHandle
+  MessageBusManager
 } from '@csnext/cs-core';
 import { Prop } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
@@ -21,7 +21,7 @@ export class CsHeader extends Vue {
   @Prop() public leftSidebar?: ISidebarOptions;
   @Prop() public rightSidebar?: ISidebarOptions;
 
-  private busHandlers: { [key: string]: MessageBusHandle } = {};
+  private busManager: MessageBusManager = new MessageBusManager();
   private loadingMenuIcon?: IMenu;
 
   public InitMenus() {
@@ -55,7 +55,7 @@ export class CsHeader extends Vue {
           toolTip: 'LANGUAGE_SETTINGS',
           enabled: true,
           visible: true,
-          component: CsLanguageSwitch, 
+          component: CsLanguageSwitch,
           buttonClass: 'sidebar-header-button'
         } as IMenu);
       }
@@ -68,7 +68,7 @@ export class CsHeader extends Vue {
         title: 'Edit Dashboard',
         enabled: false,
         visible: false,
-        action: m => {
+        action: () => {
           // notify dashboard manager that edit was started
           if (this.$cs.activeDashboard) {
             // if there is a manager with own editdashboard implementation use that
@@ -111,7 +111,9 @@ export class CsHeader extends Vue {
         // window.location.replace(dashboard.url);
         window.open(dashboard.url, '_blank');
       } else if (dashboard.pathLink) {
-        this.$router.push(dashboard.pathLink).catch(err => {});
+        this.$router.push(dashboard.pathLink).catch(err => {
+          console.log(err);
+        });
       }
     }
   }
@@ -130,34 +132,28 @@ export class CsHeader extends Vue {
 
   public beforeDestroy() {
     // remove all bus handlers
-    for (const handlers in this.busHandlers) {
-      if (this.busHandlers.hasOwnProperty(handlers)) {
-        const element = this.busHandlers[handlers];
-        this.$cs.bus.unsubscribe(element);
-      }
-    }
+    this.busManager.stop();
   }
 
   public created() {
     // listen to dashboard init events
-    this.busHandlers['dashboard'] = this.$cs.bus.subscribe(
-      AppState.DASHBOARD_MAIN,
-      (action: string, dashboard: IDashboard) => {
+    this.busManager.subscribe(this.$cs.bus, AppState.DASHBOARD_MAIN,
+      () => {
         this.InitMenus();
         // this.InitTitleWidget();
       }
     );
     // menu list changed (e.g. if dashboard menu was updated)
-    this.busHandlers['menu'] = this.$cs.bus.subscribe('menus', (action: string) => {
+    this.busManager.subscribe(this.$cs.bus, 'menus', () => {
       this.InitMenus();
     });
 
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
-      this.busHandlers['loader'] = this.$cs.bus.subscribe(AppState.LOADERS, (action: string) => {
+      this.busManager.subscribe(this.$cs.bus, AppState.LOADERS, () => {
         if (this.loadingMenuIcon) {
           this.loadingMenuIcon.visible = Object.keys(this.$cs.GetLoaders()).length > 0;
         }
-      })
+      });
     }
   }
 }

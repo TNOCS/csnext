@@ -38,14 +38,7 @@
         }}</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <cs-toolbar-menus v-if="!options.hideMenu && options.menus" :menus="options.menus"></cs-toolbar-menus>
-        <!-- <v-menu v-for="menu in options.menus" :key="menu.id" v-if="menu.visible">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon @click.delegate="triggerMenuAction(menu)" v-on="on">
-            <v-icon>{{ menu.icon }}</v-icon>
-          </v-btn>
-        </template>
-      </v-menu> -->
+        <cs-toolbar-menus v-if="!options.hideMenu && options.menus" :menus.sync="options.menus"></cs-toolbar-menus>
       </v-toolbar>
     </v-flex>
 

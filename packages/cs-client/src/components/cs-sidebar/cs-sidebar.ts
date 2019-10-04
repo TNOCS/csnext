@@ -12,9 +12,9 @@ import './cs-sidebar.css';
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
   public menu = false;
-  private dashboardChangedHandle?: MessageBusHandle;
 
   @Prop() public sideBar?: ISidebarOptions;
+  private dashboardChangedHandle?: MessageBusHandle;
 
   @Watch('sideBar.dashboard')
   public sideBarChanged(n: any, o: any) {
@@ -41,7 +41,7 @@ export class CsSidebar extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.pathLink);
     if (this.$router && d.pathLink && !d.dashboards) {
-      this.$router.push(d.pathLink).catch(err => { });
+      this.$router.push(d.pathLink).catch(err => { console.log(err); });
     }
   }
 
@@ -53,7 +53,7 @@ export class CsSidebar extends Vue {
     });
   }
 
-  beforeDestroy() {
+  public beforeDestroy() {
     if (this.dashboardChangedHandle) {
       AppState.Instance.bus.unsubscribe(this.dashboardChangedHandle);
     }

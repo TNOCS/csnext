@@ -25,15 +25,10 @@ import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
   }
 } as any)
 export class CsWidget extends Vue {
-  public widget?: IWidget;
-  public mouseOver = false;
-  public app = AppState.Instance;
-  private _options?: WidgetOptions = {};
-  private activeWidget?: IWidget;
 
   public get options(): WidgetOptions {
-    if (this._options) return this._options;
-    if (!this.widget) return {};
+    if (this._options) { return this._options; }
+    if (!this.widget) { return {}; }
     if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
       this._options = { ...this.widget._dashboard.defaultWidgetOptions, ...this.widget.options };
     } else if (this.widget.options) {
@@ -42,20 +37,25 @@ export class CsWidget extends Vue {
       this._options = {};
     }
     return this._options;
-  };
-
-  public getComponent() {
-    if (this.activeWidget) {
-      return this.activeWidget.component;
-    } else if (this.widget) {
-      return this.widget.component;
-    }
   }
+
+  public get widgetBorder(): string | undefined {
+    if (!this.widget) {
+      return;
+    }
+    return this.options.widgetBorder;
+  }
+  public widget?: IWidget;
+  public mouseOver = false;
+  public app = AppState.Instance;
 
   public $refs!: {
     widget: HTMLElement;
     component: HTMLElement;
   };
+  // tslint:disable-next-line:variable-name
+  private _options?: WidgetOptions = {};
+  private activeWidget?: IWidget;
 
   private dsHandle?: MessageBusHandle;
 
@@ -64,7 +64,13 @@ export class CsWidget extends Vue {
     this.initWidget();
   }
 
-
+  public getComponent() {
+    if (this.activeWidget) {
+      return this.activeWidget.component;
+    } else if (this.widget) {
+      return this.widget.component;
+    }
+  }
 
   public updateSize(trigger = true) {
     if (!this.widget || !this.widget.events) {
@@ -87,23 +93,6 @@ export class CsWidget extends Vue {
     this.updateSize();
   }
 
-  public get widgetBorder(): string | undefined {
-    if (!this.widget) {
-      return;
-    }
-    return this.options.widgetBorder;
-
-    // if (this.widget.options && this.widget.options.widgetBorder) {
-    //   return this.widget.options.widgetBorder;
-    // } else if (
-    //   this.widget._dashboard &&
-    //   this.widget._dashboard.defaultWidgetOptions &&
-    //   this.widget._dashboard.defaultWidgetOptions.widgetBorder
-    // ) {
-    //   return this.widget._dashboard.defaultWidgetOptions.widgetBorder;
-    // }
-  }
-
   public widgetStyles(): any {
     const res: any = {};
     const opt = this.options;
@@ -113,20 +102,6 @@ export class CsWidget extends Vue {
     if (this.options && this.options.showToolbar) {
       res.height = 'calc(100% - 30px)';
     }
-
-    // if (
-    //   this.widget &&
-    //   this.widget._dashboard &&
-    //   this.widget._dashboard.defaultWidgetOptions
-    // ) {
-    //   const opt = this.widget._dashboard.defaultWidgetOptions;
-    //   if (opt.height) {
-    //     res['max-height'] = opt.height + 'px';
-    //   }
-    //   if (this.widget.options && this.widget.options.showToolbar) {
-    //     res.height = 'calc(100% - 30px)';
-    //   }
-    // }
     return res;
   }
 
@@ -152,7 +127,7 @@ export class CsWidget extends Vue {
   }
 
   public setActiveWidget(widget: IWidget) {
-    // Vue.set(this, 'activeWidget', widget);    
+    // Vue.set(this, 'activeWidget', widget);
   }
 
   public initWidget() {
@@ -179,7 +154,8 @@ export class CsWidget extends Vue {
     }
 
     if (!this.widget.options.menus) {
-      this.widget.options.menus = [];
+      Vue.set(this.widget.options, 'menus', []);
+      // this.widget.options.menus = [];
     }
     this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
@@ -195,7 +171,7 @@ export class CsWidget extends Vue {
 
     if (this.widget.widgets && this.widget.widgets.length > 0) {
       this.activeWidget = this.widget.widgets[0];
-      let toggleMenu: IMenu = {
+      const toggleMenu: IMenu = {
         id: guidGenerator(),
         title: this.activeWidget.title,
         items: [],
@@ -207,14 +183,12 @@ export class CsWidget extends Vue {
           id: guidGenerator(),
           title: this.$cs.Translate(w.title || ''),
           action: () => {
-            this.setActiveWidget(w);            
+            this.setActiveWidget(w);
             this.$forceUpdate();
           }
-        })
-      };
-      this.widget.options.menus.push(toggleMenu);
-
-
+        });
+      }
+      this.widget.options.menus!.push(toggleMenu);
 
     } else {
       this.setActiveWidget(this.widget);

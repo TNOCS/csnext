@@ -16,10 +16,10 @@ import {
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
-import './cs-app.css';
+
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
-import './../../assets/fonts/fonts.css';
+
 // tslint:disable-next-line:no-var-requires
 const en = require('./../../assets/translations/en.json');
 // tslint:disable-next-line:no-var-requires
@@ -27,6 +27,9 @@ const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 import { CsLoader } from '../cs-loader/cs-loader';
+
+import './../../assets/fonts/fonts.css';
+import './cs-app.css';
 import 'simplebar/dist/simplebar.css';
 
 Vue.use(VueRouter);
@@ -78,19 +81,6 @@ export class CsApp extends Vue {
   public unReadNotifications: INotification[] = [];
   public isLoading: boolean = true;
   private busManager = new MessageBusManager();
-
-  public settings = [
-    // {
-    //   id: 'dashboard_settings',
-    //   title: 'dashboard settings'
-    // }
-  ];
-
-  // private rightSideBarHandle?: MessageBusHandle;
-  // private widgetHandle?: MessageBusHandle;
-  // private dialogHandle?: MessageBusHandle;
-  // private dashboardHandle?: MessageBusHandle;
-  // private notificationHandle?: MessageBusHandle;
 
   constructor() {
     super();
@@ -145,7 +135,7 @@ export class CsApp extends Vue {
 
   @Watch('app.project.theme.dark')
   public themeChanged() {
-    this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false
+    this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false;
   }
 
   @Watch('app.project.rightSidebar.sidebars')
@@ -155,14 +145,12 @@ export class CsApp extends Vue {
       if (n.hasOwnProperty(key)) {
         const sidebar = n[key] as IDashboard;
         if (sidebar && sidebar.options && sidebar.options.shortcut) {
-          let sc = sidebar.options.shortcut;
+          const sc = sidebar.options.shortcut;
           if (!sc.id) { sc.id = 'sidebar-' + key; }
           sc._callback = () => {
             AppState.Instance.OpenRightSidebarKey(key);
-          }
+          };
           AppState.Instance.keyboard.register(sc);
-
-
         }
 
       }
@@ -276,16 +264,16 @@ export class CsApp extends Vue {
 
       // check for keyboard shortcut
       if (d.options && d.options.shortcut && d.pathLink) {
-        let sc = d.options.shortcut;
+        const sc = d.options.shortcut;
         if (!sc.id) { sc.id = 'dashboard-' + d.id; }
         sc._callback = () => {
-          router.push(d.pathLink as any).catch(() => { });
-        }
+          router.push(d.pathLink as any).catch((e) => {
+            console.log(e);
+          });
+        };
         this.app.keyboard.register(sc);
       }
     }
-
-
 
   }
 
@@ -308,7 +296,7 @@ export class CsApp extends Vue {
   public SelectDashboard(d: IDashboard) {
     Logger.info('SelectDashboard', d.pathLink);
     if (router && d.pathLink && !d.dashboards) {
-      router.push(d.pathLink).catch(() => { })
+      router.push(d.pathLink).catch((e) => { console.log(e); });
     }
   }
 

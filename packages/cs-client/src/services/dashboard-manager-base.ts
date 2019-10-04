@@ -30,7 +30,4 @@ export class DashboardManagerBase implements IDashboardManager {
             this.busManager.stop();
         }
     }
-
-
-
 }

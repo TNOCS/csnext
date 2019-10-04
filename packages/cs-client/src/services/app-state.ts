@@ -22,8 +22,6 @@ import { MdWidget } from '../widgets/markdown/md-widget';
 import { KeyboardManager } from './keyboard-manager';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
-// TODO Should we use idiomatic Typescript instead, as in
-// https://github.com/Badacadabra/JavaScript-Design-Patterns/blob/master/GoF/idiomatic/Creational/Singleton/TypeScript/API/me.ts
 export class AppState extends AppStateBase {
 
   public static DIALOG = 'dialog';
@@ -54,7 +52,7 @@ export class AppState extends AppStateBase {
   public router?: VueRouter;
   /** Vue i18n instance */
   public i18n?: VueI18n;
-  /** manages keyboard shortcuts*/
+  /** manages keyboard shortcuts */
   public keyboard: KeyboardManager = new KeyboardManager();
 
   protected loaders: { [key: string]: any } = {};
@@ -159,7 +157,7 @@ export class AppState extends AppStateBase {
     this.initSocket();
   }
 
-  // add a new loader, if enabled it can enable the loading icon in the header 
+  // add a new loader, if enabled it can enable the loading icon in the header
   public AddLoader(id?: string, title?: string): string {
     if (id === undefined) {
       id = guidGenerator();
@@ -203,8 +201,6 @@ export class AppState extends AppStateBase {
     }
   }
 
-
-
   public updateDatasource(id: string, value: any) {
     if (!this.project) {
       return;
@@ -228,9 +224,9 @@ export class AppState extends AppStateBase {
     if (typeof options === 'string') {
       options = { type: 'string', data: options };
     }
-    if (options && !options.type) { options.type = 'string' }
+    if (options && !options.type) { options.type = 'string'; }
     switch (options.type) {
-      case "string":
+      case 'string':
         this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
         break;
     }
@@ -415,7 +411,6 @@ export class AppState extends AppStateBase {
     });
     // }
     this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
-
   }
 
   public ToggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
@@ -438,18 +433,19 @@ export class AppState extends AppStateBase {
         const w = this.findWidget(id, d);
         if (w) { return w; }
       }
-    } else if (dashboard)
+    } else if (dashboard) {
       if (dashboard.widgets && dashboard.widgets.length > 0) {
-        let widget = dashboard.widgets.find(w => w.id === id);
+        const widget = dashboard.widgets.find(w => w.id === id);
         if (widget) { return widget; }
       } else if (dashboard.dashboards && dashboard.dashboards.length > 0) {
         for (const d of dashboard.dashboards) {
-          let widget = this.findWidget(id, d);
+          const widget = this.findWidget(id, d);
           if (widget) {
             return widget;
           }
         }
       }
+ }
   }
 
   /** initializes given dashboards */
