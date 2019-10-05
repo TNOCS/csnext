@@ -7,7 +7,7 @@ export class DashboardManagerBase implements IDashboardManager {
 
     /** access the original widget from configuration */
     public busManager?: MessageBusManager;
-    public dashboard?: IDashboard;
+    public dashboard!: IDashboard;
 
     public subscribe(bus: IMessageBusService | undefined, topic: string, callback: IMessageBusCallback, id?: string) {
         if (this.busManager) {

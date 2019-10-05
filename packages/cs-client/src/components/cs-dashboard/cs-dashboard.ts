@@ -165,15 +165,15 @@ export class CsDashboard extends Vue {
         DashboardManager.dashboardManagers.hasOwnProperty(dashboard.manager) && typeof (DashboardManager.dashboardManagers[dashboard.manager].getInstance) === 'function'
       ) {
         // instantiate manager
-        let man = DashboardManager.dashboardManagers[dashboard.manager];
+        const man = DashboardManager.dashboardManagers[dashboard.manager];
         if (typeof (man.getInstance) === 'function') {
           dashboard._manager = man.getInstance();
-        }        
+        }
       } else {
         Logger.error('dashboard manager', `Dashboard manager ${dashboard.manager} not configured correctly`);
       }
     }
-    
+
     // load default datasource, if configured
     if (dashboard.datasource) {
       this.$cs
@@ -183,6 +183,17 @@ export class CsDashboard extends Vue {
             return;
           }
           this.dashboard.content = d;
+
+          // if dashboard manager availabe, trigger data loaded event
+          // TODO: more or less legacy, check if still used by projects, other wise use content loaded, simular to widgets
+          if (this.dashboard._manager && typeof (this.dashboard._manager.dataLoaded) === 'function') {
+            this.dashboard._manager.dataLoaded(d);
+          }
+
+          // if dashboard manager availabe, trigger data loaded event
+          if (this.dashboard._manager && typeof (this.dashboard._manager.contentLoaded) === 'function') {
+            this.dashboard._manager.contentLoaded(d);
+          }
 
           // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
           if (this.dashboard.widgets) {
@@ -196,11 +207,6 @@ export class CsDashboard extends Vue {
                 w._component.dataSourceUpdated(d);
               }
             });
-          }
-
-          // if dashboard manager availabe, trigger data loaded event
-          if (this.dashboard._manager && typeof this.dashboard._manager.dataLoaded === 'function') {
-            this.dashboard._manager.dataLoaded(d);
           }
         })
         .catch(() => {
@@ -220,7 +226,7 @@ export class CsDashboard extends Vue {
       return;
     }
     this.initDashboard(this.dashboard);
-    
+
   }
 
   public beforeMount() {
