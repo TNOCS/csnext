@@ -2,8 +2,8 @@ import { FormField, Form } from '../form/form-decorators';
 @Form({ title: 'Toolbar options'})
 export class ToolbarOptions {
     @FormField({ title: 'Background Color', type: 'string' })
-    public backgroundColor?: string;    
-    public hide?: boolean;    
+    public backgroundColor?: string;
+    public hide?: boolean;
     @FormField({ title: 'Flat', type: 'checkbox' })
     public flat?: boolean;
     @FormField({ title: 'Dense', type: 'checkbox' })
@@ -21,5 +21,3 @@ export class ToolbarOptions {
     @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 10 })
     public elevation?: number;
 }
-
-

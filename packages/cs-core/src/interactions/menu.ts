@@ -13,6 +13,7 @@ export interface IMenu {
   enabled?: boolean;
   visible?: boolean;
   toolTip?: string;
+  method?: string;
   items?: IMenu[];
   action?: (menu: IMenu) => void;
   component?: any;

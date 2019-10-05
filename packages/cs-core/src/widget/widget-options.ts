@@ -36,4 +36,10 @@ export class WidgetOptions {
   public flat?: boolean;
   @FormField({ title: 'Outlined', type: 'checkbox' })
   public outlined?: boolean;
+  
+  /** adds a close button that will remove widget and close rightsidebar */
+  public closeSidebarButton?: boolean;
+  
+  /** adds a hide button that will close rightsidebar, but not remove widget/menu item */
+  public hideSidebarButton?: boolean;
 }

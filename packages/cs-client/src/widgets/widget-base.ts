@@ -25,6 +25,7 @@ export class WidgetBase extends Vue {
 
   public beforeMount() {
     if (!this.widget) { return; }
+    this.widget._component = this;
     Logger.info('widget', 'init widget - ' + this.widget.id);
     this.busManager.start();
   }
