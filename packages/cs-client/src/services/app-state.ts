@@ -310,6 +310,15 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public CloseRightSidebar(): boolean {
+    if (this.project.rightSidebar) {
+      this.project.rightSidebar.open = false;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public CloseRightSidebarKey(id: string): boolean {
     if (this.project.rightSidebar && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
       this.project.rightSidebar.sidebars[id].hide = true;
@@ -445,7 +454,7 @@ export class AppState extends AppStateBase {
           }
         }
       }
- }
+    }
   }
 
   /** initializes given dashboards */

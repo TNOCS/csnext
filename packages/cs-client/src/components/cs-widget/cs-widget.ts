@@ -155,7 +155,6 @@ export class CsWidget extends Vue {
 
     if (!this.widget.options.menus) {
       Vue.set(this.widget.options, 'menus', []);
-      // this.widget.options.menus = [];
     }
     this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
@@ -193,6 +192,33 @@ export class CsWidget extends Vue {
     } else {
       this.setActiveWidget(this.widget);
       // this.activeWidget = this.widget;
+    }
+
+    // check for close button
+    if (this.widget.options.closeSidebarButton) {
+      this.widget.options.menus!.push({
+        id: 'close',
+        icon: 'close',
+        visible: true,
+        toolTip: 'CLOSE',
+        action: () => {
+          this.$cs.CloseRightSidebarWidget(this.widget!.id!);
+        }
+      });
+    }
+
+    // check for close button
+    if (this.widget.options.hideSidebarButton) {
+      this.widget.options.menus!.push({
+        id: 'close',
+        icon: 'close',
+        visible: true,
+        toolTip: 'CLOSE',
+        action: () => {
+          this.$cs.CloseRightSidebar();
+          // this.$cs.CloseRightSidebarWidget(this.widget!.id!);
+        }
+      });
     }
 
     this.widget._initalized = true;

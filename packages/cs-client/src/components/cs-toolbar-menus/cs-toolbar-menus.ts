@@ -13,9 +13,15 @@ export class CsToolbarMenus extends Vue {
   @Prop()
   public menus?: IMenu[];
 
+  @Prop()
+  public owner?: any;
+
   public triggerMenuAction(menu: IMenu) {
     if (menu.action) {
       menu.action(menu);
+    }
+    if (menu.method && this.owner && typeof (this.owner[menu.method] === 'function')) {
+      this.owner[menu.method](menu);
     }
   }
 }
