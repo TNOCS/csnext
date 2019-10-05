@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import './cs-info.css';
-import { WidgetBase } from '../../widgets/widget-base';
+import { WidgetBase } from '@csnext/cs-client';
 
 @Component({
   name: 'cs-info',
@@ -11,10 +11,7 @@ import { WidgetBase } from '../../widgets/widget-base';
 } as any)
 export class CsInfo extends WidgetBase {
 
-  constructor() {
-    super();
-    // this.initInfo();
-  }
-
-  
+ public mounted() {
+   alert('Info');
+ }
 }

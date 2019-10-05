@@ -33,11 +33,9 @@ import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import { MdWidget } from './widgets/markdown/md-widget';
-import { CsInfo } from './components/cs-info/cs-info';
 import Vue, { VueConstructor } from 'vue';
 import { VegaWidget } from './widgets/vega/vega-widget';
 import { CardWidget } from './widgets/card/card-widget';
-
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -45,7 +43,6 @@ export * from './components/cs-widget/cs-widget';
 export * from './components/cs-dashboard/cs-dashboard';
 export * from './components/cs-settings/cs-settings';
 export * from './components/cs-language-switch/cs-language-switch';
-export * from './components/cs-info/cs-info';
 export * from './components/cs-toolbar-menus/cs-toolbar-menus';
 
 // widgets
@@ -64,7 +61,6 @@ export * from './widgets/intro/intro-widget-options';
 export * from './widgets/card/card-widget';
 export * from './widgets/card/card-widget-options';
 
-
 export const CsNext = {
   install: (vue: VueConstructor): void => {
     const a = AppState.Instance;
@@ -76,7 +72,6 @@ export const CsNext = {
     vue.component('md-widget', MdWidget);
     vue.component('vega-widget', VegaWidget);
     vue.component('card-widget', CardWidget);
-    vue.component('cs-info', CsInfo);
   }
 };
 
