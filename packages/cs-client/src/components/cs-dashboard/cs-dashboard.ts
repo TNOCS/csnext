@@ -206,6 +206,10 @@ export class CsDashboard extends Vue {
               if (w._component && w._component.dataSourceUpdated) {
                 w._component.dataSourceUpdated(d);
               }
+
+              if (w._component && w._component.contentLoaded) {
+                w._component.contentLoaded(d);
+              }
             });
           }
         })
