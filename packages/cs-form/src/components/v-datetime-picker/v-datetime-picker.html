@@ -11,12 +11,13 @@
         >
             <template v-slot:activator="{ on }">
                 <v-text-field
-                    v-model="dateModel"
+                    v-model="dateFormatted"
                     :label="dateLabel"
                     prepend-icon="event"
                     v-on="on"
                     clear-icon="clear"
                     :clearable="!required"
+                    @blur="dateModel = parseDate(dateFormatted)"
                 ></v-text-field>
             </template>
             <v-date-picker
@@ -55,13 +56,14 @@
                 :use-seconds="false"
                 :scrollable="true"
                 format="24hr"
-                @click:minute="$refs.timeref.save(timeModel)"                
+                @click:minute="$refs.timeref.save(timeModel)"
                 @change="dateChanged"
             ></v-time-picker>
             <!--  -->
         </v-menu>
     </v-flex>
 </v-layout>
+
 <!-- <v-menu
     lazy
     :close-on-content-click="false"

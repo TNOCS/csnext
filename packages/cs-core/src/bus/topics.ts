@@ -7,5 +7,6 @@ export class Topics {
   public static readonly SET_FOCUS_TIME = 'set-time';
   public static readonly SET_TIME_RANGE = 'set-time-range';
   public static readonly TIMELINE_MOVED = 'moved';
+  public static readonly TIMELINE_MOVING = 'moving';
   public static readonly RESIZE = 'resize';
 }

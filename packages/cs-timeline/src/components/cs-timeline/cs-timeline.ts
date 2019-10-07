@@ -29,6 +29,7 @@ export interface ITimelineDataSource extends IDatasource {
 const TOGGLE_MENU_ID = 'togglesmall';
 const ZOOM_MENU_ID = 'zoom';
 const GROUPS_MENU_ID = 'groups';
+const NO_GROUP = 'all';
 @Component({
     template: require('./cs-timeline.html')
 })
@@ -65,9 +66,12 @@ export class CsTimeline extends WidgetBase {
         }
     }
 
-    public beforeMount() {
-        if (!this.widget) {
-            return;
+    public beforeDestroy() {
+        super.beforeDestroy();
+        if (this.timeline) {
+            this.timeline.off('select', this.handleEventSelect);
+            this.timeline.off('timechanged', this.handleTimeChanged);
+            this.timeline.off('timechange', this.handleTimeChange);
         }
     }
 
@@ -169,7 +173,7 @@ export class CsTimeline extends WidgetBase {
         if (this.WidgetOptions.logSource) {
             this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
                 this.logSource = r;
-                this.logSource.bus.subscribe('updated', () => {
+                this.busManager.subscribe(this.logSource.bus, 'updated', () => {
                     this.update();
                 });
                 Vue.nextTick(() => {
@@ -319,6 +323,7 @@ export class CsTimeline extends WidgetBase {
         }
         this.timeline.on('select', this.handleEventSelect);
         this.timeline.on('timechanged', this.handleTimeChanged);
+        this.timeline.on('timechange', this.handleTimeChange);
 
         this.currentTime = new Date(this.timeline.getWindow().start);
 
@@ -330,7 +335,12 @@ export class CsTimeline extends WidgetBase {
             // );
             this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
         }
+    }
 
+    private handleTimeChange(d: { id: string; time: Date }) {
+        if (d && d.id === 'focustime' && d.time && this.TimeDatasource.events) {
+            this.TimeDatasource.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVING, d.time);
+        }
     }
 
     private handleTimeChanged(d: { id: string; time: Date }) {
@@ -392,13 +402,14 @@ export class CsTimeline extends WidgetBase {
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
                 // item.content = item.content;
-                item.style = 'height:' + height;
+                if (!item.style) {
+                    item.style = 'height:' + height;
+                }
                 if (this.smallView) { item.style += ''; }
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
-                if (item.group) {
-                    this.addGroup(item.group);
-                }
+                if (!item.group) { item.group = NO_GROUP; }
+                this.addGroup(item.group);
                 items.push(item as DataItem);
             }
         }

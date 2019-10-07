@@ -18,6 +18,8 @@ export class VDatetimePicker extends Vue {
     @Prop()
     public required?: boolean;
 
+    public dateFormatted? : string = '';
+
     public dateModel = '';
     public timeModel = '';
     public dateMenu = false;
@@ -64,13 +66,26 @@ export class VDatetimePicker extends Vue {
         this.updateModels();
     }
 
+    parseDate(date: string) {
+        if (!date) return null
+        const [month, day, year] = date.split('-')        
+        let str = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        this.dateMenu = false;
+        this.updateModels();
+        this.dateChanged();
+        return str;
+        
+    };
+
     @Watch('$attrs.value')
     updateModels() {
         if (this.$attrs.value && this.$attrs.value.toString() !== "0") {
             let datetime = dayjs(this.$attrs.value);
+            
             let changed = false;
             if (datetime) {
                 const date = datetime.format('YYYY-MM-DD');
+                this.dateFormatted = date;
                 if (date !== this.dateModel) { this.dateModel = date; changed = true; }
                 const time = datetime.format('HH:mm');
                 if (time !== this.timeModel) { this.timeModel = time; changed = true; }
