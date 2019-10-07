@@ -5,7 +5,7 @@ import { IWidget } from '@csnext/cs-core';
 @Component({
   name: 'iframe-widget',
   template:
-    '<iframe :src="widget.data.url" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>',
+    '<iframe :src="widget.data.url" width="100%" height="100%" frameborder="0" scrolling="yes"></iframe>',
   props: {
     widget: null
   }
