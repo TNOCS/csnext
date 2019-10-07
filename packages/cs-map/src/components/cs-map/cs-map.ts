@@ -1002,7 +1002,7 @@ export class CsMap extends WidgetBase {
                         feature.id = feature.properties._fId = guidGenerator();
                         feature.properties._lId = rl.id;
                     }
-                    this.manager.updateLayerSource(rl, ev);
+                    this.manager.updateLayerSource(rl, { type: 'FeatureCollection', features: ev.features } as FeatureCollection);
                 }
             });
 
