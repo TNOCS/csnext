@@ -8,19 +8,23 @@ export class MessageBusManager {
       handle: MessageBusHandle;
     };
   } = {};
+
   public start() {
-      
+
   }
+
   public stop() {
     for (const id in this.busHandlers) {
       if (this.busHandlers.hasOwnProperty(id)) {
         const subscription = this.busHandlers[id];
         if (subscription.bus && subscription.handle) {
           subscription.bus.unsubscribe(subscription.handle);
+          delete this.busHandlers[id];
         }
       }
     }
   }
+
   public subscribe(bus: IMessageBusService | undefined, topic: string, callback: IMessageBusCallback, id?: string) {
     if (!bus) {
       return;
