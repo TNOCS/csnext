@@ -38,6 +38,7 @@ export class CsForm extends Vue {
     public showMenu = false;
     public showFilterMenu = false;
     public fieldGroups: FieldGroup[] = [];
+    public sortedFieldGroups: FieldGroup[] = [];
     public data?: IFormObject;
     public formkey?: string;
     public formdef?: IFormOptions;
@@ -161,8 +162,17 @@ export class CsForm extends Vue {
                 case 4:
                     fg.class = 'md3';
                     break;
+                case 5:
+                case 6:
+                    fg.class = 'md2';
+                    break;
+                default:
+                    fg.class = 'md4';
+                    break;
             }
         });
+
+        this.sortFieldGroups();
     }
 
     public fieldTriggered(field: IFormFieldOptions) {
@@ -187,6 +197,18 @@ export class CsForm extends Vue {
                     this.Form
                 );
             }
+        }
+    }
+
+    public sortFieldGroups() {
+        if (this.fieldGroups && Array.isArray(this.fieldGroups)) {
+            this.sortedFieldGroups = this.fieldGroups.sort((a, b) => {
+                const maxWeightA = a.fields.reduce((prev, cur) => Math.max(prev, cur.sortWeight || 0), 0);
+                const maxWeightB = b.fields.reduce((prev, cur) => Math.max(prev, cur.sortWeight || 0), 0);
+                return maxWeightB - maxWeightA;
+            })
+        } else {
+            this.sortedFieldGroups = this.fieldGroups || [];
         }
     }
 
