@@ -34,13 +34,13 @@
     "devDependencies": {
         "@types/node": "^12.7.11",
         "@types/yargs": "^13.0.3",
-        "cache-loader": "^3.0.1",
-        "core-js": "^2.6.7",
+        "cache-loader": "^4.1.0",
+        "core-js": "^3.2.1",
         "css-loader": "^3.2.0",
-        "deepmerge": "4.0.0",
+        "deepmerge": "4.1.1",
         "del-cli": "^3.0.0",
         "fibers": "^4.0.1",
-        "lerna": "^3.16.4",
+        "lerna": "^3.16.5",
         "postcss-loader": "^3.0.0",
         "purify-css": "^1.2.5",
         "raw-loader": "^1.0.0",
@@ -58,8 +58,8 @@
         "webpack": "^4.41.0",
         "webpack-bundle-analyzer": "^3.5.2",
         "webpack-cli": "^3.3.9",
-        "yargs": "^14.0.0",
-        "yarn": "^1.19.0"
+        "yargs": "^14.2.0",
+        "yarn": "^1.19.1"
     },
     "dependencies": {},
     "version": "0.0.120"

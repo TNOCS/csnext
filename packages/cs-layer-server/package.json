@@ -55,8 +55,7 @@
     "@types/node": "^12.0.8",
     "@types/pg": "^7.4.14",
     "@types/socket.io": "^2.1.2",
-    "del-cli": "^2.0.0",
-    "typescript": "^3.5.3"
+    "del-cli": "^2.0.0"
   },
   "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

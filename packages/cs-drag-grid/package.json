@@ -20,8 +20,6 @@
   },
   "dependencies": {
     "@csnext/cs-client": "^0.0.125",
-    "simplebar-vue": "^1.2.3",
-    "vue": "2.6.10",
     "vue-grid-layout": "^2.3.6"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
