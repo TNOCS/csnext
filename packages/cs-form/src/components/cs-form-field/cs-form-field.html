@@ -15,7 +15,7 @@
         </template>
         <template v-if="field.type === 'rating'">
             <div>{{ $cs.Translate(field.title) }}</div>
-                <v-rating v-model="target[field._key]" :length="field.max-field.min+1" @input="fieldUpdated(field)"></v-rating>
+                <v-rating v-model="target[field._key]" clearable :length="field.max-field.min+1" @input="fieldUpdated(field)"></v-rating>
         </template>
         <!-- <template v-if="field.type === 'datepicker'">      
             <v-date-picker :required="field.required" :dateLabel="$cs.Translate(field.title)" v-model="target[field._key]" @change="fieldUpdated(field)"></v-date-picker> 
