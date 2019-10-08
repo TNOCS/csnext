@@ -844,6 +844,18 @@ export class CsMap extends WidgetBase {
 
             });
         });
+
+        this.$cs.OpenRightSidebarWidget(
+            {
+                component: LayerSelection,
+                options: {
+                    searchEnabled: true
+                } as LayerSelectionOptions,
+                datasource: this.widget.datasource
+            },
+            { open: false },
+            'layers'
+        );
     }
 
     public addSource(source: LayerSource) {
@@ -1110,18 +1122,7 @@ export class CsMap extends WidgetBase {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
 
-        this.$cs.OpenRightSidebarWidget(
-            {
-                component: LayerSelection,
-                options: {
-                    class: 'form-rightbar-widget',
-                    searchEnabled: true
-                } as LayerSelectionOptions,
-                datasource: this.widget.datasource
-            },
-            { open: false },
-            'layers'
-        );
+        
 
         // this.map.addSource('mask',);
 
