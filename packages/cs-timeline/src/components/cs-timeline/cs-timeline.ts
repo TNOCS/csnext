@@ -67,7 +67,6 @@ export class CsTimeline extends WidgetBase {
     }
 
     public beforeDestroy() {
-        super.beforeDestroy();
         if (this.timeline) {
             this.timeline.off('select', this.handleEventSelect);
             this.timeline.off('timechanged', this.handleTimeChanged);
@@ -159,6 +158,16 @@ export class CsTimeline extends WidgetBase {
                 locale: 'en', margin: { item: 2 }
             }, ...options.timelineOptions
         };
+
+        if (this.TimeDatasource) {
+            if (this.TimeDatasource.start) {
+                options.timelineOptions.start = this.TimeDatasource.start;
+            }
+
+            if (this.TimeDatasource.end) {
+                options.timelineOptions.end = this.TimeDatasource.end;
+            }
+        }
 
         this.timeline = new Timeline(
             this.$refs.timelineContainer,
@@ -327,12 +336,7 @@ export class CsTimeline extends WidgetBase {
 
         this.currentTime = new Date(this.timeline.getWindow().start);
 
-        if (this.TimeDatasource.events) {
-            // this.TimeDatasource.events.publish(
-            //     Topics.TIME_TOPIC,
-            //     'moved',
-            //     this.currentTime
-            // );
+        if (this.TimeDatasource && this.TimeDatasource.events) {
             this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
         }
     }

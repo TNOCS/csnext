@@ -9,10 +9,13 @@ export class TimeDataSource implements IDatasource {
   public events = new MessageBusService();
 
   public setTimeRange(start: number, end: number) {
-    this.events.publish(Topics.TIME_TOPIC, Topics.SET_TIME_RANGE, { start: start, end: end });
+    this.start = start;
+    this.end = end;
+    this.events.publish(Topics.TIME_TOPIC, Topics.SET_TIME_RANGE, { 'start': start, 'end': end });
   }
 
   public setFocusTime(time: number) {
+    this.focusTime = time;
     this.events.publish(Topics.TIME_TOPIC, Topics.SET_FOCUS_TIME, time);
   }
 
