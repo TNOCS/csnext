@@ -57,7 +57,10 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'form'
   | 'union'
   | 'keysobject'
-  | 'button-trigger';
+  | 'datetimepicker'
+  | 'datepicker'
+  | 'button-trigger'
+  | 'rating';
   defaultValue?: any;
   description?: string;
   required?: boolean;

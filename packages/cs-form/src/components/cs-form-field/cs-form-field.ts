@@ -8,7 +8,8 @@ import './cs-form-field.css';
 import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
-import "../v-datetime-picker/v-datetime-picker";
+import '../v-datetime-picker/v-datetime-picker';
+import '../v-date-picker/v-date-picker';
 import { Emit } from 'vue-property-decorator';
 
 @Component({
@@ -25,18 +26,30 @@ export class CsFormField extends Vue {
 
     public target?: object;
     public field?: IFormFieldOptions;
-
-    @Emit()
-    changed(field: IFormFieldOptions) {
-
-    }
-
-    @Emit()
-    triggered(field: IFormFieldOptions) {
-
-    }
+    public datestring?: string;
+    public dateFormatted = this.formatDate(new Date().toISOString().substr(0, 10));
 
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
+
+    private rules: { [key: string]: Function } = {
+        required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
+        valueMin: val => {
+            if (!this.field || !this.field.min) { return true; }
+            if (typeof +val === 'number' && +val > this.field.min) { return true; }
+            return this.$cs.Translate(`Value should be > ${this.field.min}`);
+        },
+        valueMax: val => {
+            if (!this.field || !this.field.max) { return true; }
+            if (typeof +val === 'number' && +val < this.field.max) { return true; }
+            return this.$cs.Translate(`Value should be < ${this.field.max}`);
+        }
+    };
+
+    @Emit()
+    public changed(field: IFormFieldOptions) { }
+
+    @Emit()
+    public triggered(field: IFormFieldOptions) { }
 
     public triggerClick(field: IFormFieldOptions) {
         if (field.triggerCallback && this.target) {
@@ -45,20 +58,30 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
+    public gettanggal(str: number) {
+        if (str != null) {
+            const s = new Date(str).toISOString();
+            return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
+        }
+        return '';
+    }
 
-    private rules: { [key: string]: Function } = {
-        required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
-        valueMin: val => {
-            if (!this.field || !this.field.min) return true;
-            if (typeof +val === 'number' && +val >= this.field.min) return true;
-            return this.$cs.Translate(`Value should be >= ${this.field.min}`);
-        },
-        valueMax: val => {
-            if (!this.field || !this.field.max) return true;
-            if (typeof +val === 'number' && +val <= this.field.max) return true;
-            return this.$cs.Translate(`Value should be <= ${this.field.max}`);
-        },
-    };
+    public formatDate(date) {
+        if (!date) { return null; }
+        const [year, month, day] = date.split('-');
+        return `${month}/${day}/${year}`;
+    }
+
+    public parseDate(date) {
+        if (!date) { return null; }
+        if (typeof (date) === 'number') {
+            const nd = new Date(date);
+            return `${nd.getFullYear}-${nd.getMonth().toString().padStart(2, '0')}-${nd.getDate().toString().padStart(2, '0')}`;
+        } else {
+            const [month, day, year] = date.split('/');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+    }
 
     public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (
@@ -111,12 +134,12 @@ export class CsFormField extends Vue {
         ) {
             return;
         }
-        // check if field already exists, if not create one       
+        // check if field already exists, if not create one
         if (this.target[field._key] === undefined) {
             this.target[field._key] = {};
         }
 
-        this.target[field._key]['new'] = field.keyValuesType();
+        this.target[field._key].new = field.keyValuesType();
         if (field.addUsingDialog) {
             // let form = new CsForm();
             // this.$cs.TriggerDialog({
@@ -129,8 +152,8 @@ export class CsFormField extends Vue {
         this.$forceUpdate();
     }
 
-    keyObjectChange(field: IFormFieldOptions, oldValue: string, newValue: string) {
-        let renameProp = (
+    public keyObjectChange(field: IFormFieldOptions, oldValue: string, newValue: string) {
+        const renameProp = (
             oldProp,
             newProp,
             { [oldProp]: old, ...others }
@@ -154,9 +177,9 @@ export class CsFormField extends Vue {
         console.log(oldValue + ' -> ' + newValue);
     }
 
-    mounted() {
-        if (this.field && this.field.type === 'form') {
-        }
+    public mounted() {
+        // if (this.field && this.field.type === 'form') {
+        // }
     }
 }
 
