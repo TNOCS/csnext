@@ -247,8 +247,8 @@ export class LayerSelection extends Vue {
         this.updateGroups();
     }
 
-    @Watch('widget')
-    dataLoaded(n: MapLayers) {
+    @Watch('widget.content')
+    datasourceUpdated(n: MapLayers) {
         if (this.MapManager && this.MapManager.events) {
             this.updateGroups();
             this.MapManager.events.subscribe('layer', (a: string, e: any) => {
