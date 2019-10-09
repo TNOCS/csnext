@@ -321,7 +321,7 @@ export class CsMap extends WidgetBase {
             });
 
             this.map.on('click', (ev) => {
-                if (this.manager) {
+                if (this.manager && this.manager.events) {
                     this.manager.events.publish('map', CsMap.MAP_CLICK, ev);
                 }
             });
