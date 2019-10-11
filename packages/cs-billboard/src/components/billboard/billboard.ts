@@ -28,42 +28,69 @@ export class Billboard extends WidgetBase {
 
     @Watch('widget.content', { deep: true })
     contentUpdated() {
-        if (this.chart) {
-            this.chart.load(this.widget.content);
-        }
+        Vue.nextTick(() => {
+            if (this.chart) {
+                if (this.widget.options && this.widget.options.hasOwnProperty('property')) {
+                    const prop = this.widget.options['property'];
+                    if (this.widget.content.hasOwnProperty(prop)) {
+                        this.chart.load(this.widget.content[prop]);
+                    }
+                } else {
+                    this.chart.load(this.widget.content);
+                }
+            }
+        });
     }
 
     private getData(): any {
+        if (this.widget.content) {
+            if (this.widget.options && this.widget.options.hasOwnProperty('property')) {
+                const prop = this.widget.options['property'];
+                if (this.widget.content.hasOwnProperty(prop)) {
+                    return this.widget.content[prop];
+                }
+            } else {
+                return this.widget.content;
+            }
+        }
+
         if (this.widget.data) return this.widget.data;
-        if (this.widget.content) return this.widget.content;
+
         return undefined;
     }
 
-    public mounted() {
-        Vue.nextTick(() => {
-            let w = this.widget._size!.componentWidth | 0;
-            let h = this.widget._size!.componentHeight | 0;
-            let config =
-            {
-                bindto: '#' + this.widget.id,
-                size: {
-                    width: w,
-                    height: h
-                }
-            };
-            this.chart = bb.generate({ ...config, ...this.getData() });
+    public createChart() {
 
-            if (this.widget.events) {
-                this.widget.events.subscribe(
-                    'resize',
-                    (a: string, size: IWidgetSize) => {
-                        this.chart.resize({
-                            width: size.componentWidth - 10,
-                            height: size.componentHeight - 10
-                        });
-                    }
-                );
+        let w = this.widget._size!.componentWidth | 0;
+        let h = this.widget._size!.componentHeight | 0;
+        let config =
+        {
+            bindto: '#' + this.widget.id,
+            size: {
+                width: w,
+                height: h
             }
-        });
+        };
+        this.chart = bb.generate({ ...config, ...this.getData() });
+
+        if (this.widget.events) {
+            this.widget.events.subscribe(
+                'resize',
+                (a: string, size: IWidgetSize) => {
+                    this.chart.resize({
+                        width: size.componentWidth - 10,
+                        height: size.componentHeight - 10
+                    });
+                }
+            );
+        }
+    }
+
+    public contentLoaded() {
+
+    }
+
+    public mounted() {
+        this.createChart();
     }
 }
