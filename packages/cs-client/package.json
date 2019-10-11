@@ -21,7 +21,6 @@
   "dependencies": {
     "@csnext/cs-core": "^0.0.125",
     "axios": "^0.19.0",
-    "please-wait": "^0.0.5",
     "reflect-metadata": "^0.1.13",
     "simplebar-vue": "^1.3.0-alpha.1",
     "socket.io-client": "^2.3.0",
@@ -29,7 +28,7 @@
     "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
     "vue-router": "^3.1.3",
-    "vuetify": "^2.1.1"
+    "vuetify": "^2.1.3"
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",

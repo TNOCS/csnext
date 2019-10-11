@@ -40,7 +40,9 @@
   <div v-if="sideBar.dashboard" class="sidebar-dashboard-container">
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
-  <div v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right">
+  <div
+    v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right"
+  >
     <v-list>
       <v-list-item
         v-for="item in app.project.dashboards"
@@ -58,86 +60,87 @@
       </v-list-item>
     </v-list>
   </div>
-  <div
+
+  
+  <simplebar style="position: absolute;left:0;right:0;top:0;bottom:0;"
     v-else-if="app.project.navigation.style==='left-hierarchy' && !sideBar.right"
   >
-    <div data-simplebar style="position: absolute;top:0;bottom:0;left:0; width:100%" class="sidebar-simplebar">
-      <v-list class="cs-sidebar-list">
-        <v-list-group
-          v-for="item in app.project.dashboards"
-          value="true"
-          v-show="!item.hideFromNavigation"
-          no-action
-          :key="item.title"
-          :append-icon="!sideBar.mini && item.dashboards ? undefined : ''"
-        >
-          <v-list-item slot="activator" class="sidebar-menu-list-item">
-            <v-list-item-action>
-              <v-menu
-                content-class="sidebar"
-                v-if=""
-                :open-on-hover="!!sideBar.mini && !!item.dashboards"
-                :nudge-width="200"
-                offset-x
-              >
-                <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" @click="SelectDashboard(item)">{{
-                    item.icon
-                  }}</v-icon>
-                </template>
-                <v-card>
-                  <!-- <v-card-title>{{
+    <v-list class="cs-sidebar-list">
+      <v-list-group
+        v-for="item in app.project.dashboards"
+        value="true"
+        v-show="!item.hideFromNavigation"
+        no-action
+        :key="item.title"
+        :append-icon="!sideBar.mini && item.dashboards ? undefined : ''"
+      >
+        <v-list-item slot="activator" class="sidebar-menu-list-item">
+          <v-list-item-action>
+            <v-menu
+              content-class="sidebar"
+              v-if=""
+              :open-on-hover="!!sideBar.mini && !!item.dashboards"
+              :nudge-width="200"
+              offset-x
+            >
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" @click="SelectDashboard(item)">{{
+                  item.icon
+                }}</v-icon>
+              </template>
+              <v-card>
+                <!-- <v-card-title>{{
                   $cs.Translate(item.title)
                 }}</v-card-title>
                 <v-divider v-if="item.dashboards"></v-divider> -->
-                  <v-list>
-                    <v-list-item
-                      v-for="subItem in item.dashboards"
-                      :to="subItem.pathLink"
-                      v-show="!subItem.hideFromNavigation"
-                      :key="subItem.title"
-                    >
-                      <!-- @click="SelectDashboard(subItem)" -->
-                      <v-list-item-content>
-                        <v-list-item-title>{{
-                          $cs.Translate(subItem.title)
-                        }}</v-list-item-title>
-                      </v-list-item-content>
-                      <v-list-item-action>
-                        <v-icon>{{ subItem.action }}</v-icon>
-                      </v-list-item-action>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
-              </v-menu>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title @click="SelectDashboard(item)">{{
-                $cs.Translate(item.title)
-              }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item
-            v-if="!sideBar.mini"
-            v-for="subItem in item.dashboards"
-            :to="subItem.pathLink"
-            v-show="!subItem.hideFromNavigation"
-            :key="subItem.title"
-          >
-            <!-- @click="SelectDashboard(subItem)" -->
-            <v-list-item-content>
-              <v-list-item-title>{{
-                $cs.Translate(subItem.title)
-              }}</v-list-item-title>
-            </v-list-item-content>
-            <v-list-item-action>
-              <v-icon>{{ subItem.action }}</v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list-group>
-      </v-list>
-    </div>
-  </div>
+                <v-list>
+                  <v-list-item
+                    v-for="subItem in item.dashboards"
+                    :to="subItem.pathLink"
+                    v-show="!subItem.hideFromNavigation"
+                    :key="subItem.title"
+                  >
+                    <!-- @click="SelectDashboard(subItem)" -->
+                    <v-list-item-content>
+                      <v-list-item-title>{{
+                        $cs.Translate(subItem.title)
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                      <v-icon>{{ subItem.action }}</v-icon>
+                    </v-list-item-action>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-menu>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title @click="SelectDashboard(item)">{{
+              $cs.Translate(item.title)
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          v-if="!sideBar.mini"
+          v-for="subItem in item.dashboards"
+          :to="subItem.pathLink"
+          v-show="!subItem.hideFromNavigation"
+          :key="subItem.title"
+        >
+          <!-- @click="SelectDashboard(subItem)" -->
+          <v-list-item-content>
+            <v-list-item-title>{{
+              $cs.Translate(subItem.title)
+            }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-icon>{{ subItem.action }}</v-icon>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list-group>
+    </v-list>
+  </simplebar>
+
   <template v-slot:append>
     <v-tooltip bottom v-if="sideBar.footer" content-class="tooltip-multiline">
       <template v-slot:activator="{ on }">
@@ -156,9 +159,9 @@
     </v-tooltip>
   </template>
   <div v-if="sideBar.canMinify" class="leftsidebar-minify">
-      <v-btn small icon @click="toggleMini()">
-        <v-icon small v-if="sideBar.mini">keyboard_arrow_right</v-icon>
-        <v-icon small v-if="!sideBar.mini">keyboard_arrow_left</v-icon>
-      </v-btn>
-    </div>
+    <v-btn small icon @click="toggleMini()">
+      <v-icon small v-if="sideBar.mini">keyboard_arrow_right</v-icon>
+      <v-icon small v-if="!sideBar.mini">keyboard_arrow_left</v-icon>
+    </v-btn>
+  </div>
 </v-navigation-drawer>
