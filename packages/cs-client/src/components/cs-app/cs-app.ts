@@ -41,9 +41,9 @@ const i18n = new VueI18n({
 });
 
 const vuetifyOpts = {
-  lang: {
-    t: (key, ...params) => i18n.t(key, params)
-  }
+  // lang: {
+  //   t: (key, ...params) => i18n.t(key, params)
+  // }
 };
 
 Vue.use(Vuetify);
