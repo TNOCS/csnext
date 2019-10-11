@@ -1,7 +1,5 @@
 import Component from 'vue-class-component';
 import Vue from 'vue';
-import { pleaseWait } from 'please-wait';
-import 'please-wait/build/please-wait.css';
 import { Watch } from 'vue-property-decorator';
 
 @Component({
