@@ -28,8 +28,6 @@ export class CsSidebar extends Vue {
           this.sideBar.width = 300;
         }
       }
-
-      // this.$forceUpdate();
     });
   }
 

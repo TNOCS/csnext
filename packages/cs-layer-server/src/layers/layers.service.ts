@@ -23,7 +23,8 @@ import { Inject } from '@nestjs/common/decorators';
 import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
-var AsyncLock = require('async-lock');
+import AsyncLock from 'async-lock';
+// var AsyncLock = require('async-lock');
 import { Server } from 'tls';
 
 @Injectable()

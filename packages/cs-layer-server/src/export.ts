@@ -31,10 +31,11 @@ import express = require('express');
 import { join } from 'path';
 
 export class ServerConfig {
-    staticFolder?: string;
-    staticPath?: string;
+    public staticFolder?: string;
+    public staticPath?: string;
 }
 
+// tslint:disable-next-line: max-classes-per-file
 export class NestServer {
     // public server: express.Express = express();
     public app!: NestExpressApplication;
@@ -45,7 +46,7 @@ export class NestServer {
         moduleType: any,
         title: string,
         host?: string,
-        port?: number, 
+        port?: number,
         external?: string,
         swaggerConfig?: SwaggerBaseConfig
     ): Promise<boolean> {
@@ -57,7 +58,7 @@ export class NestServer {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
             }
             if (!port) {
-                port = parseInt(process.env.LAYER_SERVER_PORT || '3009');
+                port = parseInt(process.env.LAYER_SERVER_PORT || '3009', 0);
             }
             if (!external) {
                 external =
