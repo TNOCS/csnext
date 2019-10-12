@@ -4788,6 +4788,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+date-fns@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.4.1.tgz#b53f9bb65ae6bd9239437035710e01cf383b625e"
+  integrity sha512-2RhmH/sjDSCYW2F3ZQxOUx/I7PvzXpi89aQL2d3OAxSTwLx6NilATeUbe0menFE3Lu5lFkOFci36ivimwYHHxw==
+
 date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
@@ -12881,13 +12886,13 @@ vis-timeline@visjs/vis-timeline:
   version "0.0.0-no-version"
   resolved "https://codeload.github.com/visjs/vis-timeline/tar.gz/5df1179b4e46340ab466da4432346ea63e3e19cd"
   dependencies:
-    "@egjs/hammerjs" "2.0.15"
-    emitter-component "1.1.1"
-    keycharm "0.2.0"
-    moment "2.24.0"
-    propagating-hammerjs "1.4.7"
-    vis-data "6.1.1"
-    vis-util "1.1.4"
+    emitter-component "^1.1.1"
+    hammerjs "^2.0.8"
+    keycharm "^0.2.0"
+    moment "^2.20.1"
+    propagating-hammerjs "^1.4.6"
+    vis-data "^6.1.1"
+    vis-util "^1.1.4"
 
 vis-util@1.1.4:
   version "1.1.4"

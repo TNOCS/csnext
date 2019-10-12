@@ -9,9 +9,8 @@ import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
 import '../v-datetime-picker/v-datetime-picker';
-import '../v-date-picker/v-date-picker';
-import { Emit } from 'vue-property-decorator';
-
+import { Emit, Prop } from 'vue-property-decorator';
+import { format } from 'date-fns';
 @Component({
     name: 'cs-formfield',
     template: require('./cs-form-field.html'),
@@ -28,6 +27,8 @@ export class CsFormField extends Vue {
     public field?: IFormFieldOptions;
     public datestring?: string;
     public dateFormatted = this.formatDate(new Date().toISOString().substr(0, 10));
+    public dateMenu = false;
+    public timeMenu = false;
 
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
 
@@ -64,6 +65,54 @@ export class CsFormField extends Vue {
             return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
         }
         return '';
+    }
+
+    public get DateValue(): string {
+        if (this.target && this.field && this.field._key) {
+            return this.formattedDate(this.target[this.field._key]);
+        } else {
+            return "";
+        }
+    }
+    
+    public set DateValue(v: string) {
+        if (this.target && this.field && this.field._key) {
+            const [year, month, day] = v.split('-');
+            let date = new Date(this.target[this.field._key]);
+            date.setFullYear(parseInt(year));
+            date.setMonth(parseInt(month)-1);
+            date.setDate(parseInt(day));
+            this.target[this.field._key] = date.getTime();
+            // this.changed(this.field);
+        }
+    }
+
+    public get TimeValue(): string {
+        if (this.target && this.field && this.field._key) {
+            return this.formattedTime(this.target[this.field._key]);
+        } else {
+            return "";
+        }
+    }
+    
+    public set TimeValue(v: string) {
+        if (this.target && this.field && this.field._key) {
+            console.log(v);
+            const [hour, minute] = v.split(':');
+            let date = new Date(this.target[this.field._key]);
+            date.setHours(parseInt(hour));
+            date.setMinutes(parseInt(minute));        
+            this.target[this.field._key] = date.getTime();
+            // this.changed(this.field);
+        }
+    }
+
+    public formattedDate(date: number) {
+        return format(new Date(date), 'yyyy-MM-dd');
+    }
+
+    public formattedTime(date: number) {
+        return format(new Date(date), 'HH:mm');
     }
 
     public formatDate(date) {

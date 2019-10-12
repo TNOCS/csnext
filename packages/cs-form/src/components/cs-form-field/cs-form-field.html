@@ -21,8 +21,53 @@
             <v-date-picker :required="field.required" :dateLabel="$cs.Translate(field.title)" v-model="target[field._key]" @change="fieldUpdated(field)"></v-date-picker> 
         </template> -->
         <template v-if="field.type === 'datetimepicker'">            
-            <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(field.title)" :timeLabel="$cs.Translate(field.subTitle)"
-                v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>   
+            <v-layout>
+                <v-menu
+                v-model="dateMenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                    <v-layout>
+                    <v-btn icon v-on="on"><v-icon>event</v-icon></v-btn>
+                    <v-text-field
+                    v-model="DateValue"
+                    :label="$cs.Translate(field.title)"    
+                    @blur="fieldUpdated(field)"                                    
+                    type="date"                    
+                  ></v-text-field>
+                </v-layout>
+                </template>
+                <v-date-picker v-model="DateValue" @input="dateMenu = false" color="primary" header-color="primary"></v-date-picker>                                
+              </v-menu>
+              <v-menu
+              v-model="timeMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                  <v-layout>
+                  <v-btn icon v-on="on"><v-icon>access_time</v-icon></v-btn>
+                  <v-text-field
+                  v-model="TimeValue"
+                  :label="$cs.Translate(field.title)"                                      
+                  type="time"
+                  @blur="fieldUpdated(field)"                                    
+                  
+                ></v-text-field>
+              </v-layout>
+              </template>
+              <v-time-picker v-model="TimeValue" @input="timeMenu = false" color="primary" header-color="primary"></v-time-picker>                                
+            </v-menu>
+            </v-layout>
+            <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
+                v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>    -->
         </template>
         <template v-if="field.type === 'boolean'">
             <v-checkbox                

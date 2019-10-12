@@ -380,15 +380,10 @@ export class AppState extends AppStateBase {
   public ToggleRightSidebar(key?: string) {
     if (!this.project.rightSidebar) { return; }
     if (key && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
-      const d = this.project.rightSidebar.sidebars[key];
-      if (!this.project.rightSidebar.dashboard) {
-        this.OpenRightSidebar(d);
-      } else if (this.project.rightSidebar.dashboard.id === d.id) {
-        this.project.rightSidebar.open = !this.project.rightSidebar.open;
-        delete this.project.rightSidebar.dashboard;
-        this.ClearRightSidebar();
-      } else {
-        // delete this.project.rightSidebar.dashboard;
+      const d = this.project.rightSidebar.sidebars[key];      
+      if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
+        this.project.rightSidebar.open = !this.project.rightSidebar.open;        
+      } else {        
         this.OpenRightSidebar(d);
       }
     } else {
