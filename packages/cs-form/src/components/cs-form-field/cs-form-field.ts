@@ -36,13 +36,13 @@ export class CsFormField extends Vue {
         required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
         valueMin: val => {
             if (!this.field || !this.field.min) { return true; }
-            if (typeof +val === 'number' && +val > this.field.min) { return true; }
-            return this.$cs.Translate(`Value should be > ${this.field.min}`);
+            if (typeof +val === 'number' && +val >= this.field.min) { return true; }
+            return this.$cs.Translate(`Value should be >= ${this.field.min}`);
         },
         valueMax: val => {
             if (!this.field || !this.field.max) { return true; }
-            if (typeof +val === 'number' && +val < this.field.max) { return true; }
-            return this.$cs.Translate(`Value should be < ${this.field.max}`);
+            if (typeof +val === 'number' && +val <= this.field.max) { return true; }
+            return this.$cs.Translate(`Value should be <= ${this.field.max}`);
         }
     };
 
