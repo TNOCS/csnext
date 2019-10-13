@@ -45,6 +45,7 @@ export class CsWidget extends Vue {
     }
     return this.options.widgetBorder;
   }
+  private loadingDataSource = false;
   public widget?: IWidget;
   public mouseOver = false;
   public app = AppState.Instance;
@@ -158,15 +159,7 @@ export class CsWidget extends Vue {
     }
     this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
-    if (this.widget.datasource !== undefined) {
-      this.$cs.loadDatasource(this.widget.datasource).then(d => {
-        if (this.widget) {
-          this.setWidgetContent(this.widget, d);
-        }
-      });
-    } else if (this.widget._dashboard && this.widget._dashboard.content) {
-      this.setWidgetContent(this.widget, this.widget._dashboard.content);
-    }
+    this.checkWidgetContent();
 
     if (this.widget.widgets && this.widget.widgets.length > 0) {
       this.activeWidget = this.widget.widgets[0];
@@ -222,6 +215,25 @@ export class CsWidget extends Vue {
     }
 
     this.widget._initalized = true;
+  }
+
+  private checkWidgetContent() {
+    if (!this.widget) { return; }
+    if (this.widget.datasource !== undefined) {
+      if (this.widget.content) {
+        this.setWidgetContent(this.widget, this.widget.content);
+      } else if (!this.loadingDataSource) {
+        this.loadingDataSource = true;
+        this.$cs.loadDatasource(this.widget.datasource).then(d => {
+          this.loadingDataSource = false;
+          this.setWidgetContent(this.widget!, d);
+
+        });
+      }
+      else if (this.widget._dashboard && this.widget._dashboard.content) {
+        this.setWidgetContent(this.widget, this.widget._dashboard.content);
+      }
+    }
   }
 
   public setWidgetContent(widget: IWidget, content: any) {
@@ -314,6 +326,15 @@ export class CsWidget extends Vue {
 
   public mounted() {
     this.updateSize(false);
+    if (!this.widget) { return; }
+    this.checkWidgetContent();
+    // check if no datasource is defined
+    if (this.widget.datasource || (this.widget._dashboard && this.widget._dashboard.datasource)) {
+
+    } else if ((this.$refs.component as any).contentLoaded) {
+      // call contentloaded for empty datasources
+      (this.$refs.component as any).contentLoaded(undefined);
+    }
   }
 
   public triggerMenuAction(menu: IMenu) {
