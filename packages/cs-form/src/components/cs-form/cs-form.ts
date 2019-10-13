@@ -1,4 +1,4 @@
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 import Vue from 'vue';
 import {
     IWidget,
@@ -63,6 +63,11 @@ export class CsForm extends Vue {
         this.data = obj;
     }
 
+    @Watch('data')
+    private dataChanged() {
+        this.init();
+    }
+
     @Prop()
     public widget!: IWidget;
 
@@ -72,8 +77,7 @@ export class CsForm extends Vue {
             this.formObject.save &&
             typeof this.formObject.save === 'function'
         ) {
-            this.formObject.save().then(() => {
-                console.log(this.widget.data);
+            this.formObject.save().then(() => {                
                 console.log('Save confirmed');
             });
         }
@@ -240,9 +244,13 @@ export class CsForm extends Vue {
         }
     }
 
-    public mounted() {
+    public init() {
         this.initGroups();
         this.updateAllGroupVisbility();
+    }
+
+    public mounted() {
+        this.init();
     }
 
     public destroyed() {}
