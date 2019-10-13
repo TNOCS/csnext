@@ -1,4 +1,8 @@
-<div>
+<div style="  position: absolute;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;">
     <v-text-field
         solo
         v-if="widget.options.searchEnabled"
@@ -7,100 +11,100 @@
         label="filter"
         append-icon="search"
     ></v-text-field>
-    <v-expansion-panels v-model="groupsexpanded" multiple accordion>
-        <v-expansion-panel
-            v-if="widget.content"
-            v-for="(group, key) in Groups"
-            :key="key"
-            
-        >
-            <v-expansion-panel-header class="layer-group-header">
-                <template>
-                    <v-checkbox
-                        class="layer-group-checkbox layer-group-title"
-                        v-model="group.state === 'some'"
-                        @click.stop="toggleGroup(group)"
-                        :label="group.title"
-                    ></v-checkbox
-                    >
-                    <!-- <span class="layer-group-title">{{ group.title }}</span> -->
-                </template>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-                <div class="layer-group-container">
-                    <div v-for="layer in group.layers" :key="layer.id">
-                        <v-layout
-                            class="layer-group-item"
-                            @contextmenu="showLayerMenu"
-                            :id="layer.id"
-                            :class="{'layer-group-item-selected':layer.Visible}"
-                            :style="{'border-left-color': layer.color}"
-                        >
-                            <!-- <v-tooltip
+    <simplebar style="height: 100%">
+        <v-expansion-panels v-model="groupsexpanded" multiple accordion>
+            <v-expansion-panel
+                v-if="widget.content"
+                v-for="(group, key) in Groups"
+                :key="key"
+            >
+                <v-expansion-panel-header class="layer-group-header">
+                    <template>
+                        <v-checkbox
+                            class="layer-group-checkbox layer-group-title"
+                            v-model="group.state === 'some'"
+                            @click.stop="toggleGroup(group)"
+                            :label="group.title"
+                        ></v-checkbox>
+                        <!-- <span class="layer-group-title">{{ group.title }}</span> -->
+                    </template>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <div class="layer-group-container">
+                        <div v-for="layer in group.layers" :key="layer.id">
+                            <v-layout
+                                class="layer-group-item"
+                                @contextmenu="showLayerMenu"
+                                :id="layer.id"
+                                :class="{'layer-group-item-selected':layer.Visible}"
+                                :style="{'border-left-color': layer.color}"
+                            >
+                                <!-- <v-tooltip
                                 top
                                 style="width:100%"
                                 :disabled="!layer.description"
                             >
                                 <template v-slot:activator="{ on }"> -->
-                                    <v-checkbox
-                                        :label="layer.title"                           
-                                        v-model="layer.Visible"
-                                        class="layer-group-item-title"
-                                        @change="toggleLayer(layer)"
-                                    ></v-checkbox>
+                                <v-checkbox
+                                    :label="layer.title"
+                                    v-model="layer.Visible"
+                                    class="layer-group-item-title"
+                                    @change="toggleLayer(layer)"
+                                ></v-checkbox>
                                 <!-- </template>
                                 <span>{{ layer.description }}</span>
                             </v-tooltip> -->
-                            <v-btn
-                                v-if="layer.Visible"
-                                text
-                                right
-                                icon
-                                class="layer-options-button layer-opacity-button"
-                                @click="toggleShowMore(layer)"
+                                <v-btn
+                                    v-if="layer.Visible"
+                                    text
+                                    right
+                                    icon
+                                    class="layer-options-button layer-opacity-button"
+                                    @click="toggleShowMore(layer)"
+                                >
+                                    <v-icon>opacity</v-icon>
+                                </v-btn>
+                                <v-menu bottom left v-model="layer._showMenu">
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn
+                                            v-on="on"
+                                            text
+                                            right
+                                            icon
+                                            class="layer-options-button"
+                                        >
+                                            <v-icon>more_vert</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item
+                                            v-for="(item, i) in layerMenu(layer)"
+                                            :key="i"
+                                            @click="item.action(layer)"
+                                        >
+                                            <v-list-item-title
+                                                >{{ item.title }}
+                                            </v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+                            </v-layout>
+                            <div
+                                v-if="layer._showMore && layer.Visible"
+                                class="layer-more-options"
                             >
-                                <v-icon>opacity</v-icon>
-                            </v-btn>
-                            <v-menu bottom left v-model="layer._showMenu">
-                                <template v-slot:activator="{ on }">
-                                    <v-btn
-                                        v-on="on"
-                                        text
-                                        right
-                                        icon
-                                        class="layer-options-button"
-                                    >
-                                        <v-icon>more_vert</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list>
-                                    <v-list-item
-                                        v-for="(item, i) in layerMenu(layer)"
-                                        :key="i"
-                                        @click="item.action(layer)"
-                                    >
-                                        <v-list-item-title
-                                            >{{ item.title }}
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
-                        </v-layout>
-                        <div
-                            v-if="layer._showMore && layer.Visible"
-                            class="layer-more-options"
-                        >
-                            <v-slider
-                                v-model="layer.opacity"
-                                class="layer-opacity-slider"
-                                max="100"
-                                min="0"
-                                @change="setLayerOpacity($event, layer)"
-                            ></v-slider>
+                                <v-slider
+                                    v-model="layer.opacity"
+                                    class="layer-opacity-slider"
+                                    max="100"
+                                    min="0"
+                                    @change="setLayerOpacity($event, layer)"
+                                ></v-slider>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </v-expansion-panel-content>
-        </v-expansion-panel>
-    </v-expansion-panels>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </simplebar>
 </div>
