@@ -51,7 +51,7 @@ export class CsTimeline extends WidgetBase {
         timelineContainer: HTMLElement
     };
 
-    public get TimeDatasource(): TimeDataSource {
+    public get Time(): TimeDataSource {
         if (!this.widget.content) { return new TimeDataSource(); }
         return this.widget.content as TimeDataSource;
     }
@@ -159,13 +159,13 @@ export class CsTimeline extends WidgetBase {
             }, ...options.timelineOptions
         };
 
-        if (this.TimeDatasource) {
-            if (this.TimeDatasource.start) {
-                options.timelineOptions.start = this.TimeDatasource.start;
+        if (this.Time) {
+            if (this.Time.start) {
+                options.timelineOptions.start = this.Time.start;
             }
 
-            if (this.TimeDatasource.end) {
-                options.timelineOptions.end = this.TimeDatasource.end;
+            if (this.Time.end) {
+                options.timelineOptions.end = this.Time.end;
             }
         }
 
@@ -298,7 +298,7 @@ export class CsTimeline extends WidgetBase {
         Vue.set(this.widget.options, 'menus', menus);
     }
 
-    public mounted() {
+    public contentLoaded() {
         this.initToolbar();
         this.initTimeline();
         this.initLogSource();
@@ -306,6 +306,10 @@ export class CsTimeline extends WidgetBase {
             this.timeline!.redraw();
         });
     }
+
+    // public mounted() {
+        
+    // }
 
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
@@ -336,20 +340,20 @@ export class CsTimeline extends WidgetBase {
 
         this.currentTime = new Date(this.timeline.getWindow().start);
 
-        if (this.TimeDatasource && this.TimeDatasource.events) {
-            this.busManager.subscribe(this.TimeDatasource.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
+        if (this.Time && this.Time.events) {
+            this.busManager.subscribe(this.Time.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
         }
     }
 
     private handleTimeChange(d: { id: string; time: Date }) {
-        if (d && d.id === 'focustime' && d.time && this.TimeDatasource.events) {
-            this.TimeDatasource.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVING, d.time);
+        if (d && d.id === 'focustime' && d.time && this.Time.events) {
+            this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVING, d.time);
         }
     }
 
     private handleTimeChanged(d: { id: string; time: Date }) {
-        if (d && d.id === 'focustime' && d.time && this.TimeDatasource.events) {
-            this.TimeDatasource.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
+        if (d && d.id === 'focustime' && d.time && this.Time.events) {
+            this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
         }
     }
 
@@ -358,7 +362,7 @@ export class CsTimeline extends WidgetBase {
             (data as any).event.type === 'tap' &&
             data.items &&
             data.items.length === 1 &&
-            this.TimeDatasource.events
+            this.Time.events
         ) {
             const id = data.items[0];
             console.log('Selected item ' + id);
@@ -366,7 +370,7 @@ export class CsTimeline extends WidgetBase {
                 this.logSource.selectItemId(id.toString());
                 // this.logSource.selectItemId(id);
             }
-            this.TimeDatasource.events.publish(
+            this.Time.events.publish(
                 Topics.TIME_TOPIC,
                 'moved',
                 this.currentTime
@@ -386,9 +390,9 @@ export class CsTimeline extends WidgetBase {
             this.timeline!.setCustomTime(date, 'focustime');
         });
         this.currentTime = new Date(date);
-        if (this.TimeDatasource.events) {
-            this.TimeDatasource.focusTime = this.currentTime.getTime();
-            this.TimeDatasource.events.publish(
+        if (this.Time.events) {
+            this.Time.focusTime = this.currentTime.getTime();
+            this.Time.events.publish(
                 Topics.TIME_TOPIC,
                 'moved',
                 this.currentTime
@@ -421,7 +425,7 @@ export class CsTimeline extends WidgetBase {
     }
 
     private handleIncomingTimeEvent(action: string, data: any) {
-        if (!this.TimeDatasource) { return; }
+        if (!this.Time) { return; }
         switch (action) {
             // case 'add-item':
             //     this.datasource.addItem(data as DataItem);
