@@ -67,56 +67,60 @@ export class CsFormField extends Vue {
         return '';
     }
 
-    public get DateValue(): string {
+    public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
             return this.formattedDate(this.target[this.field._key]);
         } else {
             return "";
         }
     }
-    
-    public set DateValue(v: string) {
-        if (this.target && this.field && this.field._key) {
+
+    public set DateValue(v: string | undefined) {
+        if (v && this.target && this.field && this.field._key) {
             const [year, month, day] = v.split('-');
             let date = new Date(this.target[this.field._key]);
             date.setFullYear(parseInt(year));
-            date.setMonth(parseInt(month)-1);
+            date.setMonth(parseInt(month) - 1);
             date.setDate(parseInt(day));
             this.target[this.field._key] = date.getTime();
             // this.changed(this.field);
         }
     }
 
-    public get TimeValue(): string {
+    public get TimeValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
             return this.formattedTime(this.target[this.field._key]);
         } else {
             return "";
         }
     }
-    
-    public set TimeValue(v: string) {
-        if (this.target && this.field && this.field._key) {
+
+    public set TimeValue(v: string | undefined) {
+        if (v && this.target && this.field && this.field._key) {
             console.log(v);
             const [hour, minute] = v.split(':');
             let date = new Date(this.target[this.field._key]);
             date.setHours(parseInt(hour));
-            date.setMinutes(parseInt(minute));        
+            date.setMinutes(parseInt(minute));
             this.target[this.field._key] = date.getTime();
             // this.changed(this.field);
         }
     }
 
-    public formattedDate(date: number) {
-        return format(new Date(date), 'yyyy-MM-dd');
+    public formattedDate(date: number): string | undefined {
+        if (date) {
+            return format(new Date(date), 'yyyy-MM-dd');
+        }
     }
 
-    public formattedTime(date: number) {
-        return format(new Date(date), 'HH:mm');
+    public formattedTime(date: number): string | undefined {
+        if (date) {
+            return format(new Date(date), 'HH:mm');
+        }
     }
 
-    public formatDate(date) {
-        if (!date) { return null; }
+    public formatDate(date): string | undefined {
+        if (!date) { return undefined }
         const [year, month, day] = date.split('-');
         return `${month}/${day}/${year}`;
     }
