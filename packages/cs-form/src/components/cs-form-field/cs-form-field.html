@@ -41,7 +41,7 @@
                   ></v-text-field>
                 </v-layout>
                 </template>
-                <v-date-picker v-model="DateValue" @input="dateMenu = false" color="primary" header-color="primary"></v-date-picker>                                
+                <v-date-picker v-model="DateValue" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary"></v-date-picker>                                
               </v-menu>
               <v-menu
               v-model="timeMenu"
@@ -58,12 +58,12 @@
                   v-model="TimeValue"
                   :label="$cs.Translate(field.title)"                                      
                   type="time"
-                  @blur="fieldUpdated(field)"                                    
+                  @blur="fieldUpdated(field);"                                    
                   
                 ></v-text-field>
               </v-layout>
               </template>
-              <v-time-picker v-model="TimeValue" @input="timeMenu = false" color="primary" header-color="primary"></v-time-picker>                                
+              <v-time-picker v-model="TimeValue" format="24hr" @input="timeMenu = false;fieldUpdated(field)" color="primary" header-color="primary"></v-time-picker>                                
             </v-menu>
             </v-layout>
             <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
