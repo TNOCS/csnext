@@ -59,6 +59,12 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
+    public genColor(i : number) {
+        if (this.field && this.field.colors) {
+            return this.field.colors[i];
+        }
+    };
+
     public gettanggal(str: number) {
         if (str != null) {
             const s = new Date(str).toISOString();

@@ -72,12 +72,14 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   options?: any[] | (() => any[]);
   arrayType?: IFormOptions;
   form?: IFormOptions;
-  canDelete?: boolean;
+  canDelete?: boolean;  
+  clearable?: boolean;
   canAdd?: boolean;
   canEditKey?: boolean;
   addUsingDialog?: boolean;
   readonly?: boolean;
   icon?: string;
+  colors?: string[];
   keyValuesType?(): object;
   typeSelector?(value: object): string;
   triggerCallback?(obj: object, field: IFormFieldOptions);
