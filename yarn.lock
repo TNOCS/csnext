@@ -682,13 +682,6 @@
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-3.1.0.tgz#8ff71d51053cd5ee4981e5a501d80a536244f7fd"
   integrity sha512-GcIY79elgB+azP74j8vqkiXz8xLFfIzbQJdlwOPisgbKT00tviJQuEghOXSMVxJ00HoYJbGswr4kcllUc4xCcg==
 
-"@egjs/hammerjs@2.0.15":
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.15.tgz#b6ef675540d275f7445647a64413af425b97bb9a"
-  integrity sha512-BysW5KdNiJ1Qq4JRILaX/Lx2eJGyVPsFSwKA3aJbY+SKv57lS5ZFbEdlgj5shfYPLeJGEnK1WjfleDT+y4s1aQ==
-  dependencies:
-    "@types/hammerjs" "^2.0.36"
-
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"
@@ -1982,11 +1975,6 @@
     "@types/events" "*"
     "@types/minimatch" "*"
     "@types/node" "*"
-
-"@types/hammerjs@^2.0.36":
-  version "2.0.36"
-  resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.36.tgz#17ce0a235e9ffbcdcdf5095646b374c2bf615a4c"
-  integrity sha512-7TUK/k2/QGpEAv/BCwSHlYu3NXZhQ9ZwBYpzr9tjlPIL2C5BeGhH3DmVavRx3ZNyELX5TLC91JTz/cen6AAtIQ==
 
 "@types/lockfile@^1.0.1":
   version "1.0.1"
@@ -5298,7 +5286,7 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emitter-component@1.1.1:
+emitter-component@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/emitter-component/-/emitter-component-1.1.1.tgz#065e2dbed6959bf470679edabeaf7981d1003ab6"
   integrity sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
@@ -7705,7 +7693,7 @@ kdbush@^3.0.0:
   resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"
   integrity sha512-hRkd6/XW4HTsA9vjVpY9tuXJYLSlelnkTmVFu4M9/7MIYQtFcHpbugAU7UbOfjOiVSVYl2fqgBuJ32JUmRo5Ew==
 
-keycharm@0.2.0:
+keycharm@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/keycharm/-/keycharm-0.2.0.tgz#fa6ea2e43b90a68028843d27f2075d35a8c3e6f9"
   integrity sha1-+m6i5DuQpoAohD0n8gddNajD5vk=
@@ -8776,7 +8764,7 @@ moment-mini@^2.22.1:
   resolved "https://registry.yarnpkg.com/moment-mini/-/moment-mini-2.22.1.tgz#bc32d73e43a4505070be6b53494b17623183420d"
   integrity sha512-OUCkHOz7ehtNMYuZjNciXUfwTuz8vmF1MTbAy59ebf+ZBYZO5/tZKuChVWCX+uDo+4idJBpGltNfV8st+HwsGw==
 
-moment@2.24.0, moment@>=2.14.0, moment@^2.24.0:
+moment@>=2.14.0, moment@^2.20.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -10411,7 +10399,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-propagating-hammerjs@1.4.7:
+propagating-hammerjs@^1.4.6:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/propagating-hammerjs/-/propagating-hammerjs-1.4.7.tgz#671ab1791a7f88b9dccce8fd8b14a9655950e7d6"
   integrity sha512-oW9Wd+W2Tp5uOz6Fh4mEU7p+FoyU85smLH/mPga83Loh0pHa6AH4ZHGywvwMk3TWP31l7iUsvJyW265p4Ipwrg==
@@ -12875,10 +12863,10 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vis-data@6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.1.1.tgz#f036eabd5089cf02753e2e5797fa58dfecbba244"
-  integrity sha512-KnO7+4CF9B4IvoI/Kbgo1C18bm++NRzrwZqoWVWaM0huRp4KVCwJdYfA7GqPepABrJNILy71w+RFrO84CgaBhw==
+vis-data@^6.1.1:
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.2.1.tgz#286c57e812d1f85601d248485e519b51dca67b51"
+  integrity sha512-y80h+jJ6gQXfeWqDdts9UTrLubggx99Q0dJionQF/XxHIbcxNZ+2cuwv4y+bIapVF9nW0DyE08EcMMlicAlSWg==
   dependencies:
     vis-util "^1.1.0"
 
@@ -12894,15 +12882,7 @@ vis-timeline@visjs/vis-timeline:
     vis-data "^6.1.1"
     vis-util "^1.1.4"
 
-vis-util@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-1.1.4.tgz#5e9229a4e8c217b8797c1d0a781380560ad6240c"
-  integrity sha512-SvkG1E0KbQZ4tCPA6X8JUDcQerYvs0x+7bCRFBt5OPk8oV8+LPso1yc43A84W46DezibxUbZixM2cHebyRNr0A==
-  dependencies:
-    moment "^2.24.0"
-    vis-uuid "^1.1.3"
-
-vis-util@^1.1.0:
+vis-util@^1.1.0, vis-util@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-1.1.8.tgz#d4b5c37b2c327ed2df1cb02d0b55882156c66374"
   integrity sha512-gX461BUrYnHfDpMalvQdQ26SG/DplIvsK7u5KUCWEfPpcnTXm22FtQH5a+GIbDBcePe1sm578mpbWwTbCgRVww==
@@ -13074,10 +13054,10 @@ vuepress@1.1.0:
     envinfo "^7.2.0"
     opencollective-postinstall "^2.0.2"
 
-vuetify@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.1.3.tgz#88245154fff84e8da9c498182d3a16f55c73e3c1"
-  integrity sha512-hZ5rGXqj6Q322bbJyaxw6Fr+vBI+1bO3ahDEfxGmdTZJnwespM/WOEL1CnWTc4hIfolaGFCZEkzrbNgkuyeZ1w==
+vuetify@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.1.4.tgz#0ea1a7bb25a8aab2ff0ec680f3f6bb7e74f7f890"
+  integrity sha512-w01a9Gn75QnUZt54MIVJ1A93IgaMleTt+ZHJfFwH6w6CGn4lD6P2cxMiGUe1uXB6DRpx8Bb131wPPmdrbIeCUg==
 
 watchpack@^1.6.0:
   version "1.6.0"
