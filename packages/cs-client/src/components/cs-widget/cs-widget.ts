@@ -159,7 +159,6 @@ export class CsWidget extends Vue {
     }
     this.widget._project = this.$cs.project;
     this.checkWidgetId(this.widget);
-    this.checkWidgetContent();
 
     if (this.widget.widgets && this.widget.widgets.length > 0) {
       this.activeWidget = this.widget.widgets[0];
@@ -327,10 +326,10 @@ export class CsWidget extends Vue {
   public mounted() {
     this.updateSize(false);
     if (!this.widget) { return; }
-    this.checkWidgetContent();
+    
     // check if no datasource is defined
     if (this.widget.datasource || (this.widget._dashboard && this.widget._dashboard.datasource)) {
-
+      this.checkWidgetContent();
     } else if ((this.$refs.component as any).contentLoaded) {
       // call contentloaded for empty datasources
       (this.$refs.component as any).contentLoaded(undefined);
