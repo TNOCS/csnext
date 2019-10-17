@@ -60,41 +60,7 @@ export class CsHeader extends Vue {
         } as IMenu);
       }
     }
-    // create edit dashboard button
-    if (!this.$cs.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
-      this.$cs.project.menus.push({
-        id: CsApp.DASHBOARD_EDIT_ID,
-        icon: 'mode_edit',
-        title: 'Edit Dashboard',
-        enabled: false,
-        visible: false,
-        action: () => {
-          // notify dashboard manager that edit was started
-          if (this.$cs.activeDashboard) {
-            // if there is a manager with own editdashboard implementation use that
-            if (
-              this.$cs.activeDashboard._manager &&
-              this.$cs.activeDashboard._manager.editDashboard
-            ) {
-              this.$cs.activeDashboard._manager.editDashboard(
-                this.$cs.activeDashboard
-              );
-            } else {
-              if (this.$cs.project.rightSidebar) {
-                // let s = Vue.component('test', { template: '<h1>editor</h1>'});
-                // this.$cs.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
-                AppState.Instance.OpenRightSidebarWidget({
-                  component: CsSettings,
-                  data: { obj: this.$cs.activeDashboard.options }
-                });
-              }
-            }
-          }
-          // }
-        }
-      });
-    }
-
+   
     this.allMenus = this.$cs.project.menus;
     if (this.$cs.activeDashboard && this.$cs.activeDashboard.menus) {
       this.allMenus = [...this.allMenus, ...this.$cs.activeDashboard.menus];
