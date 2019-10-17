@@ -17,7 +17,7 @@ export interface IFormOptions {
 
 export interface IFormObject {
   _form?: IFormOptions;
-  save?(): Promise<boolean>;
+  save?(obj?: any): Promise<boolean>;
 }
 
 export interface IFormFieldBaseOptions {
