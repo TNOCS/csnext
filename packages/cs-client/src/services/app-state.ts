@@ -128,7 +128,7 @@ export class AppState extends AppStateBase {
     if (
       this.project.navigation &&
       this.project.navigation.style &&
-      ['left', 'left-hierarchy', 'tabs-left'].includes(this.project.navigation.style) &&
+      ['left', 'left-hierarchy'].includes(this.project.navigation.style) &&
       !this.project.leftSidebar
     ) {
       this.project.leftSidebar = {
@@ -183,6 +183,7 @@ export class AppState extends AppStateBase {
 
   public AddMenu(menu: IMenu) {
     if (!this.project.menus) { this.project.menus = []; }
+    if (!menu.type) { menu.type = 'icon'; }
     if (this.project.menus.findIndex(m => m.id === menu.id) === -1) {
       this.project.menus.push(menu);
     }

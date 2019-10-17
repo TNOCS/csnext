@@ -12,8 +12,7 @@
   :temporary="sideBar.temporary"
   :floating="sideBar.floating"
   app
-  overflow
-  stateless
+  overflow  
   class="cs-nav-drawer"
 >
   <v-toolbar v-if="sideBar.title">
@@ -41,7 +40,7 @@
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
   <div
-    v-else-if="['left', 'tabs-left'].includes(app.project.navigation.style) && !sideBar.right"
+    v-else-if="['left'].includes(app.project.navigation.style) && !sideBar.right"
   >
     <v-list>
       <v-list-item

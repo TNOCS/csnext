@@ -10,8 +10,8 @@ export class NavigationOptions {
     }
   }
 
-  @FormField({ title: 'style', type: 'combobox', options: ['left', 'left-hierarchy', 'tabs', 'bottom', 'tabs-left'] })
-  public style?: 'left' | 'left-hierarchy' | 'tabs' | 'bottom' | 'tabs-left';
+  @FormField({ title: 'style', type: 'combobox', options: ['left', 'left-hierarchy', 'tabs', 'bottom'] })
+  public style?: 'left' | 'left-hierarchy' | 'tabs' | 'bottom';
 
 
   public search?: ISearchOptions;
