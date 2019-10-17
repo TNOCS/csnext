@@ -276,8 +276,7 @@ export class CsTimeline extends WidgetBase {
                     icon: 'line_weight',
                     action: () => {
                         this.toggleView();
-                    },
-                    visible: true
+                    }
                 });
             }
         }
@@ -289,8 +288,7 @@ export class CsTimeline extends WidgetBase {
                     id: GROUPS_MENU_ID,
                     icon: 'list',
                     component: TimelineGroupSelection,
-                    data: this,
-                    visible: true
+                    data: this
                 });
             }
         }
