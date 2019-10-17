@@ -68,6 +68,11 @@ export class CsForm extends Vue {
         this.init();
     }
 
+    @Watch('widget.content') 
+    private datasourceChanged() {
+        this.init();
+    }
+
     @Prop()
     public widget!: IWidget;
 
@@ -77,7 +82,7 @@ export class CsForm extends Vue {
             this.formObject.save &&
             typeof this.formObject.save === 'function'
         ) {
-            this.formObject.save().then(() => {                
+            this.formObject.save(this.formObject).then(() => {                
                 console.log('Save confirmed');
             });
         }
@@ -253,5 +258,4 @@ export class CsForm extends Vue {
         this.init();
     }
 
-    public destroyed() {}
 }
