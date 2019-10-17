@@ -61,6 +61,7 @@ export class Billboard extends WidgetBase {
 
     public createChart() {
 
+        if (!this.widget || !this.widget._size) { return;}
         let w = this.widget._size!.componentWidth | 0;
         let h = this.widget._size!.componentHeight | 0;
         let config =
@@ -87,10 +88,7 @@ export class Billboard extends WidgetBase {
     }
 
     public contentLoaded() {
-
-    }
-
-    public mounted() {
         this.createChart();
     }
+
 }
