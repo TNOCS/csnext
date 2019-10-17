@@ -173,7 +173,7 @@
   <v-menu
     v-for="menu in allMenus"
     :key="menu.id"
-    v-if="menu.visible"
+    v-if="!menu.hide"
     :close-on-content-click="false"
     class="app-menu header-icon"
     offset-y

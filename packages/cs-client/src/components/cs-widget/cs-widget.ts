@@ -166,8 +166,7 @@ export class CsWidget extends Vue {
         id: guidGenerator(),
         title: this.activeWidget.title,
         items: [],
-        outlined: true,
-        visible: true
+        outlined: true
       };
       for (const w of this.widget.widgets) {
         toggleMenu.items!.push({
@@ -191,7 +190,6 @@ export class CsWidget extends Vue {
       this.widget.options.menus!.push({
         id: 'close',
         icon: 'close',
-        visible: true,
         toolTip: 'CLOSE',
         action: () => {
           this.$cs.CloseRightSidebarWidget(this.widget!.id!);
@@ -204,7 +202,6 @@ export class CsWidget extends Vue {
       this.widget.options.menus!.push({
         id: 'close',
         icon: 'close',
-        visible: true,
         toolTip: 'CLOSE',
         action: () => {
           this.$cs.CloseRightSidebar();
@@ -274,7 +271,6 @@ export class CsWidget extends Vue {
         id: 'edit',
         icon: 'mode_edit',
         title: 'edit',
-        visible: true,
         action: () => {
           if (
             this.widget &&
@@ -302,7 +298,6 @@ export class CsWidget extends Vue {
         id: 'remove',
         icon: 'delete',
         title: 'remove',
-        visible: true,
         action: () => {
           if (this.widget && this.widget._dashboard) {
             if (

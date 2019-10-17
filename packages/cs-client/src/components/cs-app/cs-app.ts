@@ -12,7 +12,8 @@ import {
   IFooterOptions,
   IDialog,
   MessageBusHandle,
-  MessageBusManager
+  MessageBusManager,
+  IMenu
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';

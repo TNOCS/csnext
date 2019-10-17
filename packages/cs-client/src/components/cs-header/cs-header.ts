@@ -35,7 +35,7 @@ export class CsHeader extends Vue {
         title: 'LOADING',
         toolTip: 'LOADING',
         enabled: true,
-        visible: false
+        hide: true
       };
       this.$cs.project.menus.push(this.loadingMenuIcon);
     }
@@ -53,8 +53,7 @@ export class CsHeader extends Vue {
           icon: 'translate',
           title: 'LANGUAGE',
           toolTip: 'LANGUAGE_SETTINGS',
-          enabled: true,
-          visible: true,
+          enabled: true,          
           component: CsLanguageSwitch,
           buttonClass: 'sidebar-header-button'
         } as IMenu);
@@ -117,7 +116,7 @@ export class CsHeader extends Vue {
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
       this.busManager.subscribe(this.$cs.bus, AppState.LOADERS, () => {
         if (this.loadingMenuIcon) {
-          this.loadingMenuIcon.visible = Object.keys(this.$cs.GetLoaders()).length > 0;
+          this.loadingMenuIcon.hide = Object.keys(this.$cs.GetLoaders()).length === 0;
         }
       });
     }

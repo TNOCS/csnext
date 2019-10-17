@@ -9,7 +9,8 @@ import {
   ISidebarOptions,
   IDialog,
   guidGenerator,
-  InfoOptions
+  InfoOptions,
+  IMenu
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 import { ProjectManager } from './project-manager';
@@ -178,6 +179,21 @@ export class AppState extends AppStateBase {
   // returns the list of existing loaders
   public GetLoaders(): { [key: string]: string } {
     return this.loaders;
+  }
+
+  public AddMenu(menu: IMenu) {
+    if (!this.project.menus) { this.project.menus = []; }
+    if (this.project.menus.findIndex(m => m.id === menu.id) === -1) {
+      this.project.menus.push(menu);
+    }
+  }
+
+  public RemoveMenu(menuId: string) {
+    if (!this.project.menus) { return; }
+    const menuItemIndex = this.project.menus.findIndex(m => m.id === menuId);
+    if (menuItemIndex>=0) {
+      this.project.menus.splice(menuItemIndex, 1);
+    }
   }
 
   public UpdateBreadCrumbs(d?: IDashboard, main = true) {
@@ -380,10 +396,10 @@ export class AppState extends AppStateBase {
   public ToggleRightSidebar(key?: string) {
     if (!this.project.rightSidebar) { return; }
     if (key && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
-      const d = this.project.rightSidebar.sidebars[key];      
+      const d = this.project.rightSidebar.sidebars[key];
       if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
-        this.project.rightSidebar.open = !this.project.rightSidebar.open;        
-      } else {        
+        this.project.rightSidebar.open = !this.project.rightSidebar.open;
+      } else {
         this.OpenRightSidebar(d);
       }
     } else {
