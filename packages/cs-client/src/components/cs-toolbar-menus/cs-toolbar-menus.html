@@ -10,10 +10,11 @@
         <span v-if="item.title">{{ item.title }}</span>
       </v-btn>
     </v-btn-toggle>
+    
     <v-menu
       :key="menu.id"
       :close-on-content-click="true"
-      v-if="menu.visible"
+      v-if="!menu.hide"      
       dense
       bottom
       offset-y
@@ -23,6 +24,8 @@
           v-on="on"
           :icon="!menu.textButton"
           :outlined="menu.outlined"
+          :color="menu.color"
+          :class="menu.buttonClass"
           @click.delegate="triggerMenuAction(menu)"
         >
           <v-icon>{{ menu.icon }}</v-icon>

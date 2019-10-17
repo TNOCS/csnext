@@ -9,10 +9,14 @@ import {
 } from '@csnext/cs-core';
 import { Prop } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
+import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
 import './cs-header.css';
 @Component({
   name: 'cs-header',
-  template: require('./cs-header.html')
+  template: require('./cs-header.html'),
+  components: {
+    'cs-toolbar-menus': CsToolbarMenus
+  }
 } as any)
 export class CsHeader extends Vue {
   public allMenus: IMenu[] = [];
@@ -23,12 +27,14 @@ export class CsHeader extends Vue {
 
   private busManager: MessageBusManager = new MessageBusManager();
   private loadingMenuIcon?: IMenu;
+  private languageSwitchMenu?: IMenu;
 
   public InitMenus() {
     if (!this.$cs.project.menus) {
       this.$cs.project.menus = [];
     }
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
+      
       this.loadingMenuIcon = {
         id: CsApp.LOADING_MENU_ID,
         icon: 'autorenew',
@@ -37,7 +43,7 @@ export class CsHeader extends Vue {
         enabled: true,
         hide: true
       };
-      this.$cs.project.menus.push(this.loadingMenuIcon);
+      this.$cs.AddMenu(this.loadingMenuIcon);      
     }
     if (
       this.$cs.project.languages &&
@@ -48,21 +54,25 @@ export class CsHeader extends Vue {
           menu => menu.id === CsApp.LANGUAGE_SWITCH_ID
         )
       ) {
-        this.$cs.project.menus.push({
+        this.languageSwitchMenu = {
           id: CsApp.LANGUAGE_SWITCH_ID,
           icon: 'translate',
           title: 'LANGUAGE',
-          toolTip: 'LANGUAGE_SETTINGS',
-          enabled: true,          
+          toolTip: 'LANGUAGE_SETTINGS',          
+          color: 'red',
           component: CsLanguageSwitch,
           buttonClass: 'sidebar-header-button'
-        } as IMenu);
+        };
+        this.$cs.AddMenu(this.languageSwitchMenu);
       }
     }
-   
-    this.allMenus = this.$cs.project.menus;
+
+    Vue.set(this, 'allMenus', this.$cs.project.menus);
+
+    // this.allMenus = this.$cs.project.menus;
     if (this.$cs.activeDashboard && this.$cs.activeDashboard.menus) {
-      this.allMenus = [...this.allMenus, ...this.$cs.activeDashboard.menus];
+      Vue.set(this, 'allMenus', [...this.allMenus, ...this.$cs.activeDashboard.menus]);
+      // this.allMenus = ;
     }
   }
 

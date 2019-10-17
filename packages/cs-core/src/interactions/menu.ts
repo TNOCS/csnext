@@ -2,6 +2,7 @@ export interface IMenu {
   id?: string;
   icon?: string;
   title?: string;
+  type?: 'icon' | 'text' | 'list' | 'component';
   toggleGroup?: boolean;
   toggleButton?: boolean;
   toggleState?: boolean;
@@ -11,7 +12,9 @@ export interface IMenu {
   buttonClass?: string;
   outlined?: boolean;
   enabled?: boolean;
-  visible?: boolean;
+  canToggle?: boolean;
+  hide?: boolean;
+  color?: string;
   toolTip?: string;
   method?: string;
   items?: IMenu[];
