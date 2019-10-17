@@ -49,11 +49,15 @@ export class SidebarOptions implements ISidebarOptions {
   mini?: boolean;
   @FormField({title: 'Clipped', type: 'checkbox'})
   clipped?: boolean;
+  @FormField({title: 'Can Pin', type: 'checkbox'})
   canPin?: boolean;
   dashboard?: IDashboard;
   widget?: IWidget;
+  @FormField({title: 'Can be minified', type: 'checkbox'})
   canMinify?: boolean;
+  @FormField({title: 'Width', type: 'number'})
   width?: number;
+  @FormField({title: 'Visible', type: 'checkbox'})
   visible?: boolean;
   footer?: ISidebarFooterOptions;
   sidebars?: {
