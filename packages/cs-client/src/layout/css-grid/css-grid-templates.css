@@ -1,0 +1,4 @@
+.left-right-template {
+  grid-column: 50% 50%;
+  grid-template-areas: 'left right';
+}

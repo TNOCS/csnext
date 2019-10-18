@@ -10,6 +10,7 @@ import {
 import { LayoutManager } from '../..';
 
 import './css-grid.css';
+import './css-grid-templates.css';
 
 @Component({
   template: require('./css-grid.html'),
