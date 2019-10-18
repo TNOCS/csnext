@@ -10,11 +10,11 @@
         <span v-if="item.title">{{ item.title }}</span>
       </v-btn>
     </v-btn-toggle>
-    
+
     <v-menu
       :key="menu.id"
       :close-on-content-click="true"
-      v-if="!menu.hide"      
+      v-if="!menu.hide"
       dense
       bottom
       offset-y
@@ -22,16 +22,22 @@
       <template v-if="menu.items || menu.component" v-slot:activator="{ on }">
         <v-btn
           v-on="on"
-          :icon="!menu.textButton"
+          :disabled="menu.disabled"
+          :fab="menu.type==='fab'"
+          :icon="!menu.type || menu.type==='icon'"
+          :text="menu.type==='text'"
           :outlined="menu.outlined"
           :color="menu.color"
+          :loading="menu.loading"
           :class="menu.buttonClass"
           @click.delegate="triggerMenuAction(menu)"
         >
-          <v-icon>{{ menu.icon }}</v-icon>
-          <span v-if="menu.textButton"
+          <v-icon v-if="menu.type!=='text'">{{ menu.icon }}</v-icon>
+          <span v-if="menu.type!=='icon'"
             >{{ $cs.Translate(menu.title) }}
-            <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+            <v-icon :color="menu.color" v-if="menu.items" right
+              >mdi-menu-down</v-icon
+            >
           </span>
         </v-btn>
       </template>
@@ -39,13 +45,18 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              v-on="on"
-              :icon="!menu.textButton"
+              v-on="on"              
+              :disabled="menu.disabled"
+              :fab="menu.type==='fab'"
+              :icon="!menu.type || menu.type==='icon'"
+              :text="menu.type==='text'"
               :outlined="menu.outlined"
+              :color="menu.color"
+              :loading="menu.loading"
               @click.delegate="triggerMenuAction(menu)"
             >
-              <v-icon>{{ menu.icon }}</v-icon>
-              <span v-if="menu.textButton"
+              <v-icon v-if="menu.icon && menu.type!=='text'">{{ menu.icon }}</v-icon>
+              <span v-if="menu.type!=='icon'"
                 >{{ $cs.Translate(menu.title) }}
                 <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
               </span>

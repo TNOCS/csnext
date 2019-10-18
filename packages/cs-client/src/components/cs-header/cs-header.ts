@@ -58,6 +58,7 @@ export class CsHeader extends Vue {
           id: CsApp.LANGUAGE_SWITCH_ID,
           icon: 'translate',
           title: 'LANGUAGE',
+          type: 'icon',
           toolTip: 'LANGUAGE_SETTINGS',          
           color: 'red',
           component: CsLanguageSwitch,
