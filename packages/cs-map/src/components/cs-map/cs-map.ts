@@ -557,7 +557,7 @@ export class CsMap extends WidgetBase {
         const zoom = this.map.getZoom();
         const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
         this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => {
-            console.log(err);
+            // console.log(err);
         }); // this.$route.query}
     }
 
