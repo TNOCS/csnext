@@ -1,9 +1,16 @@
 import { WidgetOptions, Form, FormField, IDatasource } from '@csnext/cs-core';
 import { MapboxOptions } from 'mapbox-gl'
 
-@Form({ title: 'Map Options'})
-export class MapOptions extends WidgetOptions
-{
+@Form({ title: 'Map Options' })
+export class MapOptions extends WidgetOptions {
+
+    constructor(options?: MapOptions) {
+        super();
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
+
     // @FormField({title: 'MapGL token'})
     public token?: string;
     public mbOptions?: MapboxOptions;
@@ -15,7 +22,16 @@ export class MapOptions extends WidgetOptions
     public showZoom?: boolean = true;
     public showCompass?: boolean = true;
     public showRuler?: boolean = true;
-    public showStyles?: boolean = true;
+    public showLayers?: boolean = true;
+    private _showStyles?: boolean = true;
+    public get showStyles(): boolean {
+        return this._showStyles || true;
+    }
+    public set showStyles(value: boolean) {
+        this._showStyles = value;
+    }
+
+
     public showGeocoder?: boolean = true;
     public showClickLayer?: boolean = true;
     public showDraw?: boolean = false;

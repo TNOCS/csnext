@@ -126,6 +126,12 @@ export class CsMap extends WidgetBase {
         this.initMapLayers();
     }
 
+    @Watch('widget.options', { deep: true})
+    public optionsChanged(n: any, o: any) {
+        console.log(n);
+
+    }
+
     public beforeMount() {
         if (!this.widget) {
             return;
@@ -247,6 +253,7 @@ export class CsMap extends WidgetBase {
                                                     true
                                                 ) {
 
+                                                    this.$cs.AddSidebar('feature', { icon: 'map' });
                                                     this.$cs.OpenRightSidebarWidget(
                                                         {
                                                             component: FeatureDetails,
@@ -378,391 +385,9 @@ export class CsMap extends WidgetBase {
                         combine_features: false,
                         uncombine_features: false
                     },
-                    styles: [
-                        {
-                            id: 'draw-radius-label',
-                            type: 'symbol',
-                            filter: ['==', 'meta', 'currentPosition'],
-                            layout: {
-                                'text-field': '{radiusMetric}',
-                                'text-anchor': 'left',
-                                'text-offset': [1, 0],
-                                'text-size': 16
-                            },
-                            paint: {
-                                'text-color': '#000',
-                                'text-halo-color': '#fff',
-                                'text-halo-width': 3,
-                                'text-halo-blur': 1
-                            }
-                        },
-                        {
-                            id: 'draw-line',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'LineString'],
-                                ['!=', 'mode', 'static'],
-                                ['==', 'active', 'true']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#fd9c27',
-                                'line-dasharray': [0.2, 2],
-                                'line-width': 2
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-fill',
-                            type: 'fill',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['!=', 'mode', 'static'],
-                                ['==', 'active', 'true']
-                            ],
-                            paint: {
-                                'fill-color': '#fd9c27',
-                                'fill-opacity': 0.1
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-stroke-active',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['!=', 'mode', 'static'],
-                                ['==', 'active', 'true']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#fd9c27',
-                                'line-dasharray': [0.2, 2],
-                                'line-width': 2
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-and-line-midpoint',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'midpoint'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'circle-radius': 3,
-                                'circle-color': '#fd9c27',
-                                'circle-opacity': 0.8
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-and-line-vertex-halo-active',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'circle-radius': 5,
-                                'circle-color': '#fff'
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-and-line-vertex-active',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'circle-radius': 3,
-                                'circle-color': '#fd9c27'
-                            }
-                        },
-                        {
-                            id:
-                                'draw-polygon-and-line-vertex-halo-active-highlight',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static'],
-                                ['==', 'active', 'true']
-                            ],
-                            paint: {
-                                'circle-radius': 7,
-                                'circle-color': '#fff'
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-and-line-vertex-active-highlight',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static'],
-                                ['==', 'active', 'true']
-                            ],
-                            paint: {
-                                'circle-radius': 5,
-                                'circle-color': '#fd9c27'
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-fill-static',
-                            type: 'fill',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                [
-                                    'any',
-                                    ['==', 'mode', 'static'],
-                                    ['==', 'active', 'false']
-                                ]
-                            ],
-                            paint: {
-                                'fill-color': '#fd9c27',
-                                'fill-opacity': 0.4
-                            }
-                        },
-                        {
-                            id: 'draw-polygon-stroke-static',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                [
-                                    'any',
-                                    ['==', 'mode', 'static'],
-                                    ['==', 'active', 'false']
-                                ]
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#fd9c27',
-                                'line-opacity': 0.5,
-                                'line-width': 2
-                            }
-                        },
-                        {
-                            id: 'points-active',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Point'],
-                                ['==', 'meta', 'feature'],
-                                ['==', 'active', 'true']
-                            ],
-                            paint: {
-                                'circle-stroke-width': 3,
-                                'circle-stroke-color': '#fff',
-                                'circle-radius': 5,
-                                'circle-color': '#fd9c27'
-                            }
-                        },
-                        {
-                            id: 'points',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Point'],
-                                ['==', 'meta', 'feature'],
-                                ['!=', 'meta', 'radius'],
-                                ['==', 'active', 'false']
-                            ],
-                            paint: {
-                                'circle-stroke-width': 2,
-                                'circle-stroke-color': '#fff',
-                                'circle-radius': 4,
-                                'circle-color': '#fd9c27'
-                            }
-                        },
-                        {
-                            id: 'highlight-active-points',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Point'],
-                                ['==', 'meta', 'feature'],
-                                ['==', 'active', 'true']
-                            ],
-                            paint: {
-                                'circle-radius': 17,
-                                'circle-color': '#000000'
-                            }
-                        },
-                        {
-                            id: 'points-are-blue',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Point'],
-                                ['==', 'meta', 'feature'],
-                                ['==', 'active', 'false']
-                            ],
-                            paint: {
-                                'circle-radius': 15,
-                                'circle-color': '#000088'
-                            }
-                        },
-                        {
-                            id: 'gl-draw-line',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'LineString'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#D20C0C',
-                                'line-dasharray': [0.2, 2],
-                                'line-width': 2
-                            }
-                        },
-                        // polygon fill
-                        {
-                            id: 'gl-draw-polygon-fill',
-                            type: 'fill',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'fill-color': '#D20C0C',
-                                'fill-outline-color': '#D20C0C',
-                                'fill-opacity': 0.1
-                            }
-                        },
-                        // polygon outline stroke
-                        // This doesn't style the first edge of the polygon, which uses the line stroke styling instead
-                        {
-                            id: 'gl-draw-polygon-stroke-active',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#D20C0C',
-                                'line-dasharray': [0.2, 2],
-                                'line-width': 5
-                            }
-                        },
-                        // vertex point halos
-                        {
-                            id: 'gl-draw-polygon-and-line-vertex-halo-active',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'circle-radius': 15,
-                                'circle-color': '#FFF'
-                            }
-                        },
-                        // vertex points
-                        {
-                            id: 'gl-draw-polygon-and-line-vertex-active',
-                            type: 'circle',
-                            filter: [
-                                'all',
-                                ['==', 'meta', 'vertex'],
-                                ['==', '$type', 'Point'],
-                                ['!=', 'mode', 'static']
-                            ],
-                            paint: {
-                                'circle-radius': 13,
-                                'circle-color': '#D20C0C'
-                            }
-                        },
-
-                        // INACTIVE (static, already drawn)
-                        // line stroke
-                        {
-                            id: 'gl-draw-line-static',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'LineString'],
-                                ['==', 'mode', 'static']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#000',
-                                'line-width': 5
-                            }
-                        },
-                        // polygon fill
-                        {
-                            id: 'gl-draw-polygon-fill-static',
-                            type: 'fill',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['==', 'mode', 'static']
-                            ],
-                            paint: {
-                                'fill-color': '#000',
-                                'fill-outline-color': '#000',
-                                'fill-opacity': 0.1
-                            }
-                        },
-                        // polygon outline
-                        {
-                            id: 'gl-draw-polygon-stroke-static',
-                            type: 'line',
-                            filter: [
-                                'all',
-                                ['==', '$type', 'Polygon'],
-                                ['==', 'mode', 'static']
-                            ],
-                            layout: {
-                                'line-cap': 'round',
-                                'line-join': 'round'
-                            },
-                            paint: {
-                                'line-color': '#000',
-                                'line-width': 3
-                            }
-                        }
-                    ],
-
                     modes: {
                         ...MapboxDraw.modes,
-                        draw_circle: RadiusMode // eslint-disable-line camelcase
+                        // draw_circle: RadiusMode // eslint-disable-line camelcase
                     },
                     displayControlsDefault: true
                 });
@@ -842,20 +467,26 @@ export class CsMap extends WidgetBase {
                     this.map.addControl(new MapboxTraffic(), 'top-left');
                 }
 
+                if (this.mapOptions.showLayers) {
+
+                    this.$cs.AddSidebar('layers', { icon: 'layers' });
+
+                    this.$cs.OpenRightSidebarWidget(
+                        {
+                            component: LayerSelection,
+                            options: {
+                                searchEnabled: true
+                            } as LayerSelectionOptions,
+                            datasource: this.widget.datasource
+                        },
+                        { open: false },
+                        'layers'
+                    );
+
+                }
+
             });
         });
-
-        this.$cs.OpenRightSidebarWidget(
-            {
-                component: LayerSelection,
-                options: {
-                    searchEnabled: true
-                } as LayerSelectionOptions,
-                datasource: this.widget.datasource
-            },
-            { open: false },
-            'layers'
-        );
     }
 
     public addSource(source: LayerSource) {
@@ -890,7 +521,7 @@ export class CsMap extends WidgetBase {
     }
 
     public destroyed() {
-        //    this.map.remove();
+        this.map.remove();
     }
 
     public initLayerSource(source: LayerSource): any {
@@ -1122,7 +753,7 @@ export class CsMap extends WidgetBase {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
 
-        
+
 
         // this.map.addSource('mask',);
 
