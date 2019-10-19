@@ -22,9 +22,11 @@ import {
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 
-export class MapLayers implements IDatasource {
+
+
+export class MapDatasource implements IDatasource {
     public _sources?: LayerSources;
-    public id = 'maplayers';    
+    public id = 'map-datasource';    
     private pointPickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
@@ -636,4 +638,8 @@ export class MapLayers implements IDatasource {
         }
         this.services = services;
     }
+}
+
+export class MapLayers extends MapDatasource {
+    
 }

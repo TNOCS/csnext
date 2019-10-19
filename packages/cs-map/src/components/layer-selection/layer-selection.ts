@@ -3,7 +3,7 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-selection.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer, ILayerAction } from '../../.';
+import { MapDatasource, IMapLayer, ILayerAction } from '../../.';
 
 import simplebar from 'simplebar-vue';
 export interface ILayerGroup {
@@ -203,9 +203,9 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public get MapManager(): MapLayers | undefined {
+    public get MapManager(): MapDatasource | undefined {
         if (this.widget.content) {
-            return this.widget.content as MapLayers;
+            return this.widget.content as MapDatasource;
         }
     }
 
@@ -247,7 +247,7 @@ export class LayerSelection extends Vue {
     }
 
     @Watch('widget.content')
-    datasourceUpdated(n: MapLayers) {
+    datasourceUpdated(n: MapDatasource) {
         if (this.MapManager && this.MapManager.events) {
             this.updateGroups();
             this.MapManager.events.subscribe('layer', (a: string, e: any) => {

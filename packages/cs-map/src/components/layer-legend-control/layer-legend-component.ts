@@ -3,7 +3,7 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 
 import './layer-legend-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapLayers, IMapLayer, FeatureType, LayerLegend } from '../../.';
+import { MapDatasource, IMapLayer, FeatureType, LayerLegend } from '../../.';
 
 @Component({
     name: 'layer-legend-component',
@@ -12,7 +12,7 @@ import { MapLayers, IMapLayer, FeatureType, LayerLegend } from '../../.';
 } as any)
 export class LayerLegendComponent extends Vue {
     public widget!: IWidget;
-    public manager!: MapLayers;
+    public manager!: MapDatasource;
     public busHandle?: MessageBusHandle;
     public layer!: IMapLayer | undefined;
     public mapDraw: any;

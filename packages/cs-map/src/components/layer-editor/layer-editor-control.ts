@@ -1,13 +1,13 @@
 import { LayerEditor } from './layer-editor';
 import Vue from 'vue';
-import { MapLayers } from '../..';
+import { MapDatasource } from '../..';
 import { IControl } from 'mapbox-gl';
 
 export class LayerEditorControl implements IControl {
     public map?: mapboxgl.Map;
     public container?: HTMLDivElement;
 
-    constructor(public manager: MapLayers) { }
+    constructor(public manager: MapDatasource) { }
 
     onAdd(map) {
         console.log('Adding layer-editor');

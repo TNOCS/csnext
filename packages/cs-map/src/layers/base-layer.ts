@@ -1,7 +1,7 @@
 import { MessageBusService, Form, FormField } from '@csnext/cs-core';
 import {
     LayerSource,
-    MapLayers,
+    MapDatasource,
     IMapLayer,
     LayerStyle,
     FeatureType,
@@ -91,7 +91,7 @@ export class BaseLayer implements IMapLayer {
         | mapboxgl.LinePaint
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
-    public _manager?: MapLayers;
+    public _manager?: MapDatasource;
     public _events?: MessageBusService;
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
@@ -129,7 +129,7 @@ export class BaseLayer implements IMapLayer {
 
     public addLayer(map: CsMap) {}
 
-    public initLayer(manager: MapLayers) {}
+    public initLayer(manager: MapDatasource) {}
     public setOpacity(value: number) {}
     public getLayerActions(): ILayerAction[] {
         const res: ILayerAction[] = [];

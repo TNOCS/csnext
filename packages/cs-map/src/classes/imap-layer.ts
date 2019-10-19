@@ -1,4 +1,4 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
+import {LayerSource, MapDatasource, CsMap, ILayerAction, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
 import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
 
@@ -11,9 +11,9 @@ export interface IMapLayerType {
 export interface IMapLayer extends ILayer {
     getBounds(): any;    
     _source?: LayerSource;
-    _manager?: MapLayers;    
+    _manager?: MapDatasource;    
     addLayer(map: CsMap);
-    initLayer(manager: MapLayers);
+    initLayer(manager: MapDatasource);
     setOpacity(value: number);
     getLayerActions?(): ILayerAction[];
     removeLayer(map: CsMap);

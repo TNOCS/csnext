@@ -3,7 +3,7 @@ import {
     ILayerService,
     IStartStopService,
     GeojsonPlusLayer,
-    MapLayers,
+    MapDatasource,
     LayerSource,
     IMapLayer
 
@@ -33,7 +33,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         Object.assign(this, init);
     }
 
-    async Start(manager: MapLayers) {
+    async Start(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
@@ -80,7 +80,7 @@ export class LayerServer implements ILayerService, IStartStopService {
     }
 
     /** remove previously added layers */
-    private removeExistingLayers(manager: MapLayers) {
+    private removeExistingLayers(manager: MapDatasource) {
         if (
             this.layers &&
             this.layers.length > 0 &&
@@ -95,7 +95,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         this.layers = [];
     }
 
-    Stop(manager: MapLayers) {
+    Stop(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         console.log('Stop service');
     }

@@ -1,13 +1,13 @@
 import { LayerLegendComponent } from './layer-legend-component';
 import Vue from 'vue';
-import { MapLayers } from '../..';
+import { MapDatasource } from '../..';
 
 export class LayerLegendControl {
     public map?: mapboxgl.Map;
     public container?: HTMLDivElement;
     
 
-    constructor(public manager: MapLayers) {
+    constructor(public manager: MapDatasource) {
         
     }
 

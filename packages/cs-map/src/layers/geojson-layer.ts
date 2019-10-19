@@ -1,7 +1,7 @@
 import { MessageBusService, guidGenerator } from '@csnext/cs-core';
 import {
     LayerSource,
-    MapLayers,
+    MapDatasource,
     FeatureEventDetails,
     IMapLayer,
     IMapLayerType,
@@ -45,7 +45,7 @@ export class GeojsonLayer extends BaseLayer {
         | mapboxgl.LinePaint
         | mapboxgl.FillPaint
         | mapboxgl.CirclePaint;
-    public _manager?: MapLayers;
+    public _manager?: MapDatasource;
     public _events?: MessageBusService;
     public popupContent?: string | (Function) | undefined;
     public extensions?: ILayerExtensionType[];
@@ -173,7 +173,7 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    public initLayer(manager: MapLayers) {
+    public initLayer(manager: MapDatasource) {
         // check if we need to create an instance first of maplayer (needed if imported from json)
         let l =
             typeof this.getBounds === 'function'

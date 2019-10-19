@@ -19,7 +19,7 @@ import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 
 import {
-    MapLayers,
+    MapDatasource,
     MapOptions,
     LayerSource,
     IMapLayer,
@@ -48,12 +48,12 @@ export class CsMap extends WidgetBase {
         this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
     }
 
-    public get manager(): MapLayers | undefined {
+    public get manager(): MapDatasource | undefined {
         if (this.widget) {
             if (this.widget.content) {
-                return this.widget.content as MapLayers;
+                return this.widget.content as MapDatasource;
             } else if (this.widget.data) {
-                return this.widget.data as MapLayers;
+                return this.widget.data as MapDatasource;
             }
         }
         return undefined;

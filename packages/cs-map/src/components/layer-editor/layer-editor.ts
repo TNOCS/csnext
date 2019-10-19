@@ -3,7 +3,7 @@ import { IWidget, MessageBusHandle, guidGenerator } from '@csnext/cs-core';
 
 import './layer-editor.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer, CsMap, FeatureType } from '../../.';
+import { MapDatasource, IMapLayer, CsMap, FeatureType } from '../../.';
 import { Feature } from 'geojson';
 
 @Component({
@@ -13,7 +13,7 @@ import { Feature } from 'geojson';
 } as any)
 export class LayerEditor extends Vue {
     public widget!: IWidget;
-    public manager!: MapLayers;
+    public manager!: MapDatasource;
     public busHandle?: MessageBusHandle;
     public layer?: IMapLayer = {} as IMapLayer;
     public mapDraw: any;

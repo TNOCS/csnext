@@ -6,7 +6,7 @@ import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
-import { MapLayers, IMapLayer, LayerLegend } from '../../';
+import { MapDatasource, IMapLayer, LayerLegend } from '../../';
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
@@ -74,9 +74,9 @@ export class FeatureDetails extends Vue {
         return 'blue';
     }
 
-    public get manager(): MapLayers | undefined {
+    public get manager(): MapDatasource | undefined {
         if (this.widget.data && this.widget.data.manager) {
-            return this.widget.data.manager as MapLayers;
+            return this.widget.data.manager as MapDatasource;
         }
     }
 

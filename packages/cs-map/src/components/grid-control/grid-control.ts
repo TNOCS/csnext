@@ -1,6 +1,6 @@
 import { GridControlComponent } from './grid-control-component';
 import Vue from 'vue';
-import { MapLayers, GridLayer, LayerSource } from '../..';
+import { MapDatasource, GridLayer, LayerSource } from '../..';
 import { FeatureCollection } from 'geojson';
 import { guidGenerator } from '@csnext/cs-core';
 
@@ -11,7 +11,7 @@ export class GridControl {
     public gridControl?: GridControlComponent;
 
 
-    constructor(public manager: MapLayers) {
+    constructor(public manager: MapDatasource) {
 
     }
 

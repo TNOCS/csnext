@@ -8,7 +8,7 @@ import {
     ILayer,
     LayerServerServiceOptions,
     IFeatureAction,
-    MapLayers,
+    MapDatasource,
     LayerSource,
     IMapLayer
 } from '..';
@@ -41,7 +41,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     public options?: LayerServerServiceOptions;
     public type = 'layer-server-service';
     public layers: IMapLayer[] = [];
-    public manager?: MapLayers;
+    public manager?: MapDatasource;
 
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
@@ -52,7 +52,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         return result;
     }
 
-    public async Start(manager: MapLayers) {
+    public async Start(manager: MapDatasource) {
         this.manager = manager;
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
@@ -249,7 +249,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         return res;
     }
 
-    public Stop(manager: MapLayers) {
+    public Stop(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         console.log('Stop service');
     }
@@ -377,7 +377,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     /** remove previously added layers */
-    private removeExistingLayers(manager: MapLayers) {
+    private removeExistingLayers(manager: MapDatasource) {
         if (
             this.layers &&
             this.layers.length > 0 &&

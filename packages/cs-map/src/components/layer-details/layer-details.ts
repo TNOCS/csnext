@@ -4,7 +4,7 @@ import { IWidget } from '@csnext/cs-core';
 import './layer-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 
-import { BaseLayer, MapLayers, PropertyType, IMapLayer, LayerServiceEditor } from '../..';
+import { BaseLayer, MapDatasource, PropertyType, IMapLayer, LayerServiceEditor } from '../..';
 
 import { FeatureDetails } from '../feature-details/feature-details';
 import simplebar from 'simplebar-vue';
@@ -84,9 +84,9 @@ export class LayerDetails extends Vue {
         return 'blue';
     }
 
-    public get manager(): MapLayers | undefined {
+    public get manager(): MapDatasource | undefined {
         if (this.widget.data && this.widget.data.manager) {
-            return this.widget.data.manager as MapLayers;
+            return this.widget.data.manager as MapDatasource;
         }
     }
 
