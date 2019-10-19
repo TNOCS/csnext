@@ -12,7 +12,7 @@ export * from './classes/map-options';
 export * from './classes/layer-sources';
 export * from './classes/layer-source';
 export * from './classes/layer-service';
-export * from './classes/map-layers';
+export * from './datasources/map-datasource';
 export * from './classes/imap-layer';
 export * from './classes/ilayer-extension';
 export * from './classes/layer-service-options';
@@ -29,11 +29,11 @@ export * from './components/layer-selection/layer-selection-options';
 export * from './components/cs-map/cs-map';
 export * from './components/cs-map/feature-event-details';
 export * from './components/feature-details/feature-details';
+export * from './components/layer-service-editor/layer-service-editor';
 
 // layers
 export * from './layers/base-layer';
 export * from './layers/geojson-layer';
-export * from './layers/mask-layer';
 export * from './layers/geojson-plus-layer';
 export * from './layers/grid-layer';
 

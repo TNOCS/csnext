@@ -1,11 +1,13 @@
 import { IDatasource, MessageBusService, MessageBusHandle } from '@csnext/cs-core';
-import { LayerSource } from './layer-source';
 import {
     LayerSources,
     CsMap,
     IMapLayer,
     GeojsonLayer,
-    PropertyDetails
+    PropertyDetails,
+    IStartStopService,
+    LayerSource,
+    ILayerService
 } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
@@ -16,7 +18,7 @@ import {
     LineString,
     Polygon
 } from 'geojson';
-import { ILayerService, IStartStopService } from './layer-service';
+
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 

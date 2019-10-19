@@ -3,12 +3,9 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
-import { BaseLayer } from '../../layers/base-layer';
-import { PropertyType } from '../../classes/feature-type';
-import { MapLayers } from '../../classes/map-layers';
-import { IMapLayer } from '../../classes/imap-layer';
-import { LayerEditor } from '../layer-editor/layer-editor';
-import { LayerServiceEditor } from '../layer-service-editor/layer-service-editor';
+
+import { BaseLayer, MapLayers, PropertyType, IMapLayer, LayerServiceEditor } from '../..';
+
 import { FeatureDetails } from '../feature-details/feature-details';
 import simplebar from 'simplebar-vue';
 import { Feature } from 'geojson';

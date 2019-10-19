@@ -3,18 +3,14 @@ import { IWidget } from '@csnext/cs-core';
 
 import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
-import { Feature, GeoJsonProperties } from 'geojson';
+import { Feature } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
-import { stringify } from 'querystring';
-import { pathToFileURL } from 'url';
-import { MapLayers } from '../../classes/map-layers';
-import { IMapLayer } from '../../classes/imap-layer';
-import { LayerDetails } from '../layer-details/layer-details';
-import { LayerLegend } from '../..';
+import { MapLayers, IMapLayer, LayerLegend } from '../../';
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
+import { LayerDetails } from '../layer-details/layer-details';
 
 export class section {
     public id?: string;
@@ -43,7 +39,7 @@ export class FeatureDetails extends Vue {
     public filterPropertiesEnabled = false;
 
     @Watch('filterProperties')
-    filterChanged(newValue: string) {
+    filterChanged() {
         this.updateFilter();
     }
 

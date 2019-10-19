@@ -3,8 +3,7 @@ import { IWidget } from '@csnext/cs-core';
 
 import './layer-selection.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer } from '../../.';
-import { ILayerAction } from '../../classes/ilayer-action';
+import { MapLayers, IMapLayer, ILayerAction } from '../../.';
 
 import simplebar from 'simplebar-vue';
 export interface ILayerGroup {

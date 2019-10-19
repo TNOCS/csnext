@@ -1,5 +1,4 @@
-import { LayerSelectionOptions, ILayerServiceOptions, ILayerAction, IMapLayer } from '../.';
-import { MapLayers } from './map-layers';
+import { LayerSelectionOptions, ILayerServiceOptions, ILayerAction, IMapLayer, MapLayers } from '../.';
 
 export interface ILayerService {
     id: string;

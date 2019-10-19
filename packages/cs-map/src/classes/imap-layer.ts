@@ -1,6 +1,5 @@
-import {LayerSource, MapLayers, CsMap, ILayerAction, LayerStyle, FeatureType, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
+import {LayerSource, MapLayers, CsMap, ILayerAction, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
 import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
-import { ILayerExtensionType} from './ilayer-extension';
 import { LayerLegend } from './layer-legend';
 
 export interface IMapLayerType {

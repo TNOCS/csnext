@@ -7,14 +7,13 @@ import {
     ILayerAction,
     ILayer,
     LayerServerServiceOptions,
-    IFeatureAction
+    IFeatureAction,
+    MapLayers,
+    LayerSource,
+    IMapLayer
 } from '..';
 import axios from 'axios';
-import { MapLayers } from '../classes/map-layers';
-import { LayerSource } from '../classes/layer-source';
-import { IMapLayer } from '../classes/imap-layer';
 import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
-import { LinePaint } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 
 export class LayerServerService implements ILayerService, IStartStopService {
