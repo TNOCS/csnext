@@ -38,7 +38,8 @@ Vue.use(VueI18n);
 const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'nl',
-  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
+  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages,  // set locale messages
+  silentTranslationWarn: true
 });
 
 const vuetifyOpts = {
