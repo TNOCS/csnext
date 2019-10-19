@@ -197,6 +197,27 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public AddSidebar(id: string, sidebar: IDashboard) {
+    if (!sidebar) { return; }
+    sidebar = { ...{id: id, widgets: []}, ...sidebar};
+    if (!this.project.rightSidebar) {
+      this.project.rightSidebar = {};
+    }
+    if (!this.project.rightSidebar.sidebars) {
+      this.project.rightSidebar.sidebars = {};
+    }
+    if (!this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+      this.project.rightSidebar.sidebars[id] = sidebar;
+    }
+  }
+
+  public RemoveSidebar(id: string) {
+    if (!this.project.rightSidebar || !this.project.rightSidebar.sidebars || !this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+      return;
+    }
+    delete this.project.rightSidebar.sidebars[id];
+  }
+
   public UpdateBreadCrumbs(d?: IDashboard, main = true) {
     if (!d) { d = this.activeDashboard; }
     if (
