@@ -39,8 +39,7 @@ export class CsHeader extends Vue {
         id: CsApp.LOADING_MENU_ID,
         icon: 'autorenew',
         title: 'LOADING',
-        toolTip: 'LOADING',
-        enabled: true,
+        toolTip: 'LOADING',        
         hide: true
       };
       this.$cs.AddMenu(this.loadingMenuIcon);      
