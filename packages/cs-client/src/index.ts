@@ -48,7 +48,6 @@ export * from './components/cs-toolbar-menus/cs-toolbar-menus';
 // widgets
 export * from './widgets/widget-base';
 export * from './widgets/markdown/md-widget';
-export * from './widgets/markdown/md-widget-options';
 export * from './widgets/iframe/iframe-widget';
 export * from './widgets/iframe/iframe-widget-options';
 export * from './widgets/youtube-background/youtube-background-widget';

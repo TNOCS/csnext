@@ -1,3 +1,5 @@
-<div v-if="widget !== undefined" :id="widget.id">
-    <markdown-it-vue class="md-body" :content="widget.data" :options="widget.options" />
+<div v-if="widget !== undefined" :id="widget.id" class="sidebar-simplebar">
+    <simplebar style="height: 100%">
+        <markdown-it-vue class="md-body" :content="content" :options="widget.options" />
+    </simplebar>
 </div>

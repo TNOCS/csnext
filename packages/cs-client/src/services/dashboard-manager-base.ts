@@ -1,12 +1,10 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import { IWidget, IMessageBusService, MessageBusHandle, IMessageBusCallback, MessageBusManager, IDashboardManager, IDashboard } from '@csnext/cs-core';
+import { IMessageBusService, IMessageBusCallback, MessageBusManager, IDashboardManager, IDashboard } from '@csnext/cs-core';
 import { Logger } from '../';
 
 export class DashboardManagerBase implements IDashboardManager {
 
     /** access the original widget from configuration */
-    public busManager?: MessageBusManager;
+    public busManager!: MessageBusManager;
     public dashboard!: IDashboard;
 
     public subscribe(bus: IMessageBusService | undefined, topic: string, callback: IMessageBusCallback, id?: string) {

@@ -5,22 +5,41 @@ import { WidgetBase } from '@csnext/cs-client';
 import Vue from 'vue';
 import MarkdownItVue from 'markdown-it-vue';
 import 'markdown-it-vue/dist/markdown-it-vue.css';
+import axios from 'axios';
+import simplebar from 'simplebar-vue';
+import { MdWidgetOptions } from '..';
 
 @Component({
     name: 'cs-markdown',
     template: require('./cs-markdown.html'),
-    components: { MarkdownItVue },
+    components: { MarkdownItVue, simplebar },
     props: {
         widget: null
     }
 } as any)
 export class CsMarkdown extends WidgetBase {
 
+    public content: string = "";
+    public options: MdWidgetOptions = {};
+
     @Watch('widget.data', { deep: true })
     public dataUpdated() {
-        // if (this.chart) {
-        //     this.chart.load(this.widget.data);
-        // }
+        this.updateContent();
+    }
+
+    private updateContent() {
+        if (typeof (this.widget.data) === 'string') {
+            Vue.set(this, 'content', this.widget.data);
+        } else {
+            if (this.widget.data && this.widget.data.hasOwnProperty('url')) {
+                axios.get(this.widget.data.url).then(u => {
+                    if (u && u.data) {
+                        Vue.set(this, 'content', u.data);
+                    }
+                })
+                
+            }
+        }
     }
 
     @Watch('widget.content', { deep: true })
@@ -31,29 +50,7 @@ export class CsMarkdown extends WidgetBase {
     }
 
     public mounted() {
-        Vue.nextTick(() => {
-            // this.chart = bb.generate({
-            //     bindto: '#' + this.widget.id,
-            //     data: this.getData()
-            // });
-
-            // if (this.widget.events) {
-            //     this.widget.events.subscribe(
-            //         'resize',
-            //         (a: string, size: IWidgetSize) => {
-            //             this.chart.resize({
-            //                 width: size.width-20,
-            //                 height: size.height-20
-            //             });
-            //         }
-            //     );
-            // }
-        });
+        this.updateContent();
     }
 
-    private getData(): any {
-        if (this.widget.data) { return this.widget.data; }
-        if (this.widget.content) { return this.widget.content; }
-        return undefined;
-    }
 }

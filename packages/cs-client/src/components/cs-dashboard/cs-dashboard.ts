@@ -71,6 +71,7 @@ export class CsDashboard extends Vue {
 
   public showToolbar() {
     if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.showToolbar) { return true; }
     if (this.dashboard.parent) {
       if (this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hide) { return false; }
     } else {
