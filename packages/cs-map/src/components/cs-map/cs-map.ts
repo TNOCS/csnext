@@ -1,10 +1,10 @@
 import { Watch, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator, MessageBusService, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
+import { IWidget, guidGenerator, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
 const MapboxDraw = require('@mapbox/mapbox-gl-draw');
-import mapboxgl, { CirclePaint, MapboxOptions } from 'mapbox-gl';
+import mapboxgl, { CirclePaint, MapboxOptions, GeolocateControl, ScaleControl } from 'mapbox-gl';
 import { Feature, FeatureCollection } from 'geojson';
 import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from './../style-switcher/style-switcher';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
@@ -13,10 +13,10 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import { LayerEditorControl } from './../layer-editor/layer-editor-control';
 import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
-import RadiusMode from './../../draw-modes/radius/draw-mode-radius.js';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
+import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
 
 import {
     MapDatasource,
@@ -88,6 +88,15 @@ export class CsMap extends WidgetBase {
     public static serviceTypes: IStartStopService[] = [];
     public static layerExtensions: ILayerExtensionType[] = [];
 
+    // map controls
+    private mapboxStyleSwitcherControl?: MapboxStyleSwitcherControl;
+    private rulerControl?: RulerControl;
+    private trafficControl?: MapboxTraffic;
+    private geocoderControl?: MapboxGeocoder;
+    private gridControl?: GridControl;
+    private geolocatorControl?: GeolocateControl;
+    private scaleControl?: ScaleControl;
+
     /** register new layertype  */
     public static AddLayerExtension(type: ILayerExtensionType) {
         if (CsMap.layerExtensions.findIndex(et => et.id === type.id) === -1) {
@@ -126,10 +135,143 @@ export class CsMap extends WidgetBase {
         this.initMapLayers();
     }
 
-    @Watch('widget.options', { deep: true})
-    public optionsChanged(n: any, o: any) {
-        console.log(n);
+    @Watch('widget.options.showCompass')
+    public showCompass(enabled: boolean) {
+        console.log(`Show compass: ${enabled}`);
+    }
 
+    @Watch('widget.options.showStyles')
+    public showStyles(enabled: boolean = true, old?: boolean) {
+        console.log(`Show styles: ${enabled}`);
+        if (!enabled && old && this.mapboxStyleSwitcherControl) {
+            this.map.removeControl(this.mapboxStyleSwitcherControl);
+        }
+        if (enabled) {
+            if (!this.mapboxStyleSwitcherControl) {
+                this.mapboxStyleSwitcherControl = new MapboxStyleSwitcherControl(this.styles, this);
+            }
+            this.map.addControl(this.mapboxStyleSwitcherControl);
+            // this.map.addControl(stylesControl, 'bottom-right');
+
+            //todo unsubscribe
+            this.map.on('style.load', () => {
+                // let style = this.map.getStyle();
+                if (this.manager) {
+                    this.manager.refreshLayers();
+                    // this.man
+                }
+            });
+        }
+    }
+
+    @Watch('widget.options.showRuler')
+    public showRuler(enabled: boolean = true, old?: boolean) {
+        console.log(`Show ruler: ${enabled}`);
+        if (!enabled && old && this.rulerControl) {
+            this.map.removeControl(this.rulerControl);
+        }
+        if (enabled) {
+            if (!this.rulerControl) {
+                this.rulerControl = new RulerControl();
+            }
+            this.map.addControl(this.rulerControl, 'top-left');
+        }
+    }
+
+    @Watch('widget.options.showGrid')
+    public showGrid(enabled: boolean = true, old?: boolean) {
+        console.log(`Show grid: ${enabled}`);
+
+        if (!enabled && old && this.showGrid && this.gridControl) {
+            this.map.removeControl(this.gridControl);
+        }
+        if (enabled) {
+            if (!this.gridControl && this.manager) {
+                this.gridControl = new GridControl(this);
+            }
+            if (this.gridControl) {
+                this.map.addControl(this.gridControl, 'bottom-right');
+            }
+        }
+    }
+
+    @Watch('widget.options.showScale')
+    public showScale(enabled: boolean = true, old?: boolean) {
+        console.log(`Show grid: ${enabled}`);
+
+        if (!enabled && old && this.showScale && this.scaleControl) {
+            this.map.removeControl(this.scaleControl);
+        }
+        if (enabled) {
+            if (!this.scaleControl && this.manager) {
+                this.scaleControl = new ScaleControl();
+            }
+            if (this.scaleControl) {
+                this.map.addControl(this.scaleControl, 'bottom-left');
+            }
+        }
+    }
+
+    @Watch('widget.options.showTraffic')
+    public showTraffic(enabled: boolean = true, old?: boolean) {
+        console.log(`Show traffic: ${enabled}`);
+        if (!enabled && old && this.trafficControl) {
+            this.map.removeControl(this.trafficControl);
+        }
+        if (enabled) {
+            if (!this.trafficControl) {
+                this.trafficControl = new MapboxTraffic();
+            }
+            this.map.addControl(this.trafficControl, 'top-left');
+        }
+    }
+
+    @Watch('widget.options.showGeocoder')
+    public showGeocoder(enabled: boolean = true, old?: boolean) {
+        console.log(`Show geocoder: ${enabled}`);
+        if (!enabled && old && this.geocoderControl) {
+            this.removeGeocoder();
+        }
+        if (enabled) {
+            this.addGeocoder();
+        }
+    }
+
+    @Watch('widget.options.showGeolocater')
+    public showGeolocator(enabled: boolean = true, old? : boolean) {        
+        console.log(`Show geolocator: ${enabled}`);
+        if (!enabled && old && this.geolocatorControl) {
+            this.map.removeControl(this.geolocatorControl);
+        }
+        if (enabled) {
+            if (!this.geolocatorControl) {
+                this.geolocatorControl = new GeolocateControl();
+            }
+            this.map.addControl(this.geolocatorControl, 'top-left');
+        }
+    }
+
+    @Watch('widget.options.showLayers')
+    public showLayers(enabled: boolean = true, old?: boolean) {
+        console.log(`Show layers: ${enabled}`);
+        if (!enabled && old) {
+            this.$cs.CloseRightSidebarKey('layers');
+        }
+        if (enabled) {
+            this.$cs.AddSidebar('layers', { icon: 'layers' });
+
+            this.$cs.OpenRightSidebarWidget(
+                {
+                    component: LayerSelection,
+                    options: {
+                        searchEnabled: true
+                    } as LayerSelectionOptions,
+                    datasource: this.widget.datasource
+                },
+                { open: false },
+                'layers'
+            );
+        }
     }
 
     public beforeMount() {
@@ -225,11 +367,11 @@ export class CsMap extends WidgetBase {
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);
+                        this.addSource(layer._source);                        
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
-                            layer.addLayer(this);
+                            layer.addLayer(this);                            
                         }
 
                         if (this.manager) {
@@ -334,7 +476,7 @@ export class CsMap extends WidgetBase {
             });
 
             // if (this.options.storePositionInUrl) {
-            this.map.on('moveend', (ev => {
+            this.map.on('moveend', (() => {
                 this.updateUrlQueryParams();
             }));
             // }
@@ -347,6 +489,8 @@ export class CsMap extends WidgetBase {
                     showStyles: true,
                     showRuler: true,
                     showGeocoder: false,
+                    showScale: false,
+                    showGeolocater: false,
                     showLayer: true,
                     showEditor: true,
                     showTraffic: true,
@@ -422,68 +566,33 @@ export class CsMap extends WidgetBase {
                         );
                         this.map.addControl(layerLegendControl, 'bottom-left');
                     }
-
-                    if (this.mapOptions.showGrid) {
-                        const gridControl = new GridControl(
-                            this.manager
-                        );
-                        this.map.addControl(gridControl, 'bottom-right');
-                    }
                 }
 
-                // add geocoder
-                if (this.mapOptions.showGeocoder) {
-                    this.addGeocoder();
-                }
+                this.showGrid(this.mapOptions.showGrid);
 
                 if (this.mapOptions.showClickLayer) {
                     this.addClickLayer();
                 }
 
+                this.showGeocoder(this.mapOptions.showGeocoder);
+
                 const nav = new mapboxgl.NavigationControl({
                     showCompass: this.mapOptions.showCompass,
-                    showZoom: this.mapOptions.showZoom
+                    showZoom: this.mapOptions.showZoom,
                 });
                 this.map.addControl(nav, 'top-left');
 
-                if (this.mapOptions.showStyles) {
-                    this.map.addControl(new MapboxStyleSwitcherControl(this.styles, this));
-                    // this.map.addControl(stylesControl, 'bottom-right');
+                this.showStyles(this.mapOptions.showStyles);
 
-                    this.map.on('style.load', () => {
-                        // let style = this.map.getStyle();
-                        if (this.manager) {
-                            this.manager.refreshLayers();
-                            // this.man
-                        }
-                    });
-                }
+                this.showRuler(this.mapOptions.showRuler);
 
-                if (this.mapOptions.showRuler) {
-                    this.map.addControl(new RulerControl(), 'top-left');
-                }
+                this.showTraffic(this.mapOptions.showTraffic);
 
-                if (this.mapOptions.showTraffic) {
-                    this.map.addControl(new MapboxTraffic(), 'top-left');
-                }
+                this.showLayers(this.mapOptions.showLayers);
 
-                if (this.mapOptions.showLayers) {
+                this.showGeolocator(this.mapOptions.showGeolocater);
 
-                    this.$cs.AddSidebar('layers', { icon: 'layers' });
 
-                    this.$cs.OpenRightSidebarWidget(
-                        {
-                            component: LayerSelection,
-                            options: {
-                                searchEnabled: true
-                            } as LayerSelectionOptions,
-                            datasource: this.widget.datasource
-                        },
-                        { open: false },
-                        'layers'
-                    );
-
-                }
 
             });
         });
@@ -556,7 +665,7 @@ export class CsMap extends WidgetBase {
         const center = this.map.getCenter();
         const zoom = this.map.getZoom();
         const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
-        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(err => {
+        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(() => {
             // console.log(err);
         }); // this.$route.query}
     }
@@ -569,27 +678,37 @@ export class CsMap extends WidgetBase {
         return '';
     }
 
+    private removeGeocoder() {
+        if (this.geocoderControl) {
+            this.map.removeControl(this.geocoderControl);
+        }
+
+    }
+
     private addGeocoder() {
         this.map.on('moveend', () => {
             if (this.map.getZoom() > 9) {
                 const center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
-                geocoder.setProximity({
+                this.geocoderControl.setProximity({
                     longitude: center.lng,
                     latitude: center.lat
                 });
             } else {
-                geocoder.setProximity(null);
+                this.geocoderControl.setProximity(null);
             }
         });
 
-        const geocoder = new MapboxGeocoder({
-            accessToken: mapboxgl.accessToken,
-            country: 'nl',
-            limit: 8,
-            marker: false
-        });
+        if (!this.geocoderControl) {
 
-        this.map.addControl(geocoder);
+            this.geocoderControl = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                country: 'nl',
+                limit: 8,
+                marker: false
+            });
+        }
+
+        this.map.addControl(this.geocoderControl);
 
         if (this.manager && this.manager.layers) {
             let rl = this.manager.layers!.find(
@@ -626,7 +745,7 @@ export class CsMap extends WidgetBase {
                             bus: l._events, handle:
                                 l._events.subscribe(
                                     'feature',
-                                    (a: string, f: Feature) => {
+                                    (a: string) => {
                                         if (a === CsMap.FEATURE_SELECT) {
                                             // select feature
                                         }
@@ -637,7 +756,7 @@ export class CsMap extends WidgetBase {
                 });
             }
 
-            geocoder.on('results', ev => {
+            this.geocoderControl.on('results', ev => {
                 if (this.manager) {
                     for (const feature of ev.features) {
                         feature.properties.place_name = feature.place_name;
@@ -649,13 +768,13 @@ export class CsMap extends WidgetBase {
                 }
             });
 
-            geocoder.on('result', (d: any) => {
+            this.geocoderControl.on('result', (d: any) => {
                 if (this.manager) {
                     this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
                 }
             });
 
-            geocoder.on('clear', () => {
+            this.geocoderControl.on('clear', () => {
                 if (this.manager) {
                     this.manager.updateLayerSource(rl, {
                         type: 'FeatureCollection',
@@ -665,6 +784,7 @@ export class CsMap extends WidgetBase {
             });
         }
     }
+
     private addClickLayer() {
         if (this.manager && this.manager.layers) {
             let rl = this.manager.layers!.find(
@@ -701,7 +821,7 @@ export class CsMap extends WidgetBase {
                         this.busHandlers['layer-feature-' + l.id] = {
                             bus: l._events, handle: l._events.subscribe(
                                 'feature',
-                                (a: string, f: Feature) => {
+                                (a: string) => {
                                     if (a === CsMap.FEATURE_SELECT) {
                                         // select feature
                                     }

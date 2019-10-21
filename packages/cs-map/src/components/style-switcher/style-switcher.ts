@@ -94,6 +94,8 @@ export class MapboxStyleSwitcherControl implements IControl
 
     public onRemove(): void
     {
-        return;
+        if (this.controlContainer && this.controlContainer.parentNode) {
+            this.controlContainer.parentNode.removeChild(this.controlContainer);
+        }
     }
 }

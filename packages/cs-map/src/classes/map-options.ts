@@ -31,14 +31,15 @@ export class MapOptions extends WidgetOptions {
         this._showStyles = value;
     }
 
-
+    public showScale?: boolean = false;
     public showGeocoder?: boolean = true;
     public showClickLayer?: boolean = true;
     public showDraw?: boolean = false;
     public showTraffic?: boolean = false;
     public showEditor?: boolean = false;
     public showLegend?: boolean = true;
-    public showGrid?: boolean = true;
+    public showGeolocater?: boolean = false;    
+    public showGrid?: boolean = false;
     public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
 }

@@ -1,4 +1,4 @@
-import { IDatasource, MessageBusService, MessageBusHandle } from '@csnext/cs-core';
+import { IDatasource, MessageBusService, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
 import {
     LayerSources,
     CsMap,
@@ -7,7 +7,8 @@ import {
     PropertyDetails,
     IStartStopService,
     LayerSource,
-    ILayerService
+    ILayerService,
+    LayerStyle
 } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
@@ -21,16 +22,33 @@ import {
 
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
+import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 
-
+const DEFAULT_LAYER_STYLE = {
+    mapbox: {
+        circlePaint: {
+            "circle-radius": 10,
+            "circle-color": "red"
+        },
+        linePaint: {
+            "line-width": 2,
+            "line-color": "red"
+        },
+        fillPaint: {
+            "fill-color": "blue",
+            "fill-opacity": 0.2
+        }
+    }
+} as LayerStyle;
 
 export class MapDatasource implements IDatasource {
     public _sources?: LayerSources;
-    public id = 'map-datasource';    
+    public id = 'map-datasource';
     private pointPickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
+
     public get MapWidget(): CsMap | undefined {
         return this.map;
     }
@@ -101,7 +119,7 @@ export class MapDatasource implements IDatasource {
 
             this.map.pointPickerActivated = true;
             this.pointPickerHandler = this.events.subscribe('map', (a: string, e: any) => {
-                if (a === CsMap.MAP_CLICK) {          
+                if (a === CsMap.MAP_CLICK) {
                     this.map!.pointPickerActivated = false;
                     if (this.pointPickerHandler) {
                         this.events.unsubscribe(this.pointPickerHandler);
@@ -201,6 +219,15 @@ export class MapDatasource implements IDatasource {
                 this.refreshLayer(layer);
             }
         }
+    }
+
+    public toggleLayer(layer: IMapLayer) {
+        if (!layer.Visible) {
+            this.showLayer(layer);
+        } else {
+            this.hideLayer(layer);
+        }
+        console.log(layer.title, layer.Visible);
     }
 
     public refreshLayer(layer: IMapLayer) {
@@ -561,6 +588,35 @@ export class MapDatasource implements IDatasource {
         return res;
     }
 
+
+
+    public addGeojsonLayer(title: string, url: string, style?: LayerStyle): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {            
+            let source = new LayerSource();
+            source.url = url;
+            source.title = title;
+            source.id = guidGenerator();
+            source.LoadSource().then(s => {
+                let rl = new GeojsonPlusLayer();
+                rl.tags = ["Search"];
+                rl.type = "poi";
+                rl.style = style ? style : DEFAULT_LAYER_STYLE;
+                rl.source = source;
+                rl.initLayer(this);
+                rl.popupContent = undefined;
+                if (this.layers) {
+                    this.layers.push(rl);
+                    this.showLayer(rl).then(l => {
+                        resolve(rl);
+                    })
+                }
+            }).catch(e => {
+                console.log(e);
+                reject();
+            })
+        });
+    }
+
     public addLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (!ml.type || !this.layers) {
@@ -641,5 +697,5 @@ export class MapDatasource implements IDatasource {
 }
 
 export class MapLayers extends MapDatasource {
-    
+
 }

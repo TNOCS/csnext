@@ -4,7 +4,6 @@ import {
     MapDatasource,
     FeatureEventDetails,
     IMapLayer,
-    IMapLayerType,
     LayerStyle
 } from './../.';
 import extent from '@mapbox/geojson-extent';
@@ -12,7 +11,6 @@ import { LngLatBounds, SymbolPaint, SymbolLayout, FillPaint } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
-import { ILayerAction } from '../classes/ilayer-action';
 import { Feature, Polygon } from 'geojson';
 import {
     ILayerExtension,
@@ -412,7 +410,6 @@ export class GeojsonLayer extends BaseLayer {
     }
 
     private onEnter(e) {
-        console.log('on enter');
         // this.mouseEnter(this._manager!.MapWidget!)            
         if (this.Map && this._events) {
             this.Map.map.getCanvas().style.cursor = 'pointer';
@@ -436,8 +433,7 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
-        console.log('Create popup');
+    private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {        
         let popup: string | undefined = undefined;
         e.feature = BaseLayer.getFeatureFromEventDetails(e);
         // if (layer.style && layer.style.popup) {
