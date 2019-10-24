@@ -1,5 +1,5 @@
 import { IDashboard, Info } from '@csnext/cs-core';
-import { AppState, DashboardManagerBase, DashboardManager, MdWidget } from '@csnext/cs-client';
+import { AppState, DashboardManagerBase, DashboardManager, MdWidget, TabsLayout } from '@csnext/cs-client';
 import Vue from 'vue';
 import { CsMarkdown } from '../cs-markdown/cs-markdown';
 
@@ -39,7 +39,18 @@ export class InfoDashboardManager extends DashboardManagerBase {
         this.initWidgets();
         if (!this.dashboard.options) { this.dashboard.options = {}; }
         Vue.set(this.dashboard, 'title', info.title);
-        if (info.markdownUrl) {
+        if (info.tabs) {
+            this.dashboard.layout = TabsLayout.id;
+            for (const tab of info.tabs) {
+                if (tab.markdownUrl) {
+                    this.dashboard.widgets!.push({
+                        title: tab.title,
+                        component: CsMarkdown,
+                        data: { url: tab.markdownUrl }
+                    })
+                }
+            }
+        } else if (info.markdownUrl) {
             this.dashboard.widgets!.push({
                 component: CsMarkdown,
                 data: { url: info.markdownUrl },
@@ -52,7 +63,7 @@ export class InfoDashboardManager extends DashboardManagerBase {
                         anchorLinkSpace: false,
                         anchorClassName: 'anchor',
                         anchorLinkSymbolClassName: 'octicon octicon-link'
-                      }
+                    }
                 } as any
             });
 
@@ -63,7 +74,7 @@ export class InfoDashboardManager extends DashboardManagerBase {
         if (dashboard.info) {
             this.updateInfoDashboard(dashboard.info);
         } else {
-            this.initWidgets();            
+            this.initWidgets();
         }
     }
 
