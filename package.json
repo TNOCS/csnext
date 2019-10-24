@@ -61,6 +61,8 @@
         "yargs": "^14.2.0",
         "yarn": "^1.19.1"
     },
-    "dependencies": {},
+    "dependencies": {
+        "markdown-it-link-attributes": "^3.0.0"
+    },
     "version": "0.0.120"
 }
