@@ -1,0 +1,5 @@
+# Class: PropertyLegend
+
+## Hierarchy
+
+* **PropertyLegend**

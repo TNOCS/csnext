@@ -1,0 +1,37 @@
+# Class: PropertyDetails
+
+## Hierarchy
+
+* **PropertyDetails**
+
+## Properties
+
+### `Optional` key
+
+• **key**? : *string*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:22](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/feature-details/feature-details.ts#L22)*
+
+___
+
+### `Optional` legends
+
+• **legends**? : *[LayerLegend](../interfaces/_cs_layer_server_src_shared_layer_legend_.layerlegend.md)[]*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:25](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/feature-details/feature-details.ts#L25)*
+
+___
+
+### `Optional` type
+
+• **type**? : *[PropertyType](_cs_map_src_classes_feature_type_.propertytype.md)*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:24](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/feature-details/feature-details.ts#L24)*
+
+___
+
+### `Optional` value
+
+• **value**? : *any*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:23](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/feature-details/feature-details.ts#L23)*

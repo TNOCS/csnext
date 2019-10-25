@@ -65,10 +65,15 @@ module.exports = {
                     {
                         text: 'Development',
                         link: '/development/'
-                    }                    
+                    },
+                    {
+                        text: 'References',
+                        link: '/test/'
+                    }                 
                 ],
                 sidebar: {
-                    '/guide/': genSidebarConfig('Guide')
+                    '/guide/': genSidebarConfig('Guide'),
+                    '/test/': genReferencesConfig('References')
                 }
             }
         }       
@@ -80,7 +85,15 @@ function genSidebarConfig(title) {
         {
             title,
             collapsable: false,
-            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources']
+            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources', '']
         }
     ];
+}
+
+function genReferencesConfig() {
+    const rsb = require('./references-sidebar-builder.js')
+    const config = require('./api-sidebar.json');
+
+    builder = new rsb(config)
+    return builder.build_sidenav()
 }
