@@ -1,4 +1,4 @@
-<div v-if="menus">
+<div v-if="menus" class="cs-menu-container">
   <template v-for="menu in menus">
     <v-btn-toggle v-if="menu.toggleGroup" :key="menu.id" borderless tile group>
       <v-btn
