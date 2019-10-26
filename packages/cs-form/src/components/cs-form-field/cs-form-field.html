@@ -262,8 +262,9 @@
             {{ $cs.Translate(field.title) }}
             <v-combobox
                 v-model="target[field._key]"
-                :items="target[field._key]"
+                :items="field.options"
                 :disabled="field.readonly"
+                flat
                 chips
                 :clearable="field.clearable"
                 solo
