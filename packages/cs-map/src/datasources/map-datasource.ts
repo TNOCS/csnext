@@ -8,7 +8,8 @@ import {
     IStartStopService,
     LayerSource,
     ILayerService,
-    LayerStyle
+    LayerStyle,
+    LayerEditor
 } from '../.';
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
@@ -589,17 +590,38 @@ export class MapDatasource implements IDatasource {
     }
 
 
+    public editLayer(layer: IMapLayer | string) {
+        if (typeof layer === 'string') {
+            if (this.layers) {
+                let l = this.layers.find(l => l.id === layer);
+                if (l) { this.editLayer(l); }
+            }
+        } else {
+            AppState.Instance.OpenRightSidebarWidget(
+                {
+                    component: LayerEditor,
+                    data: { layer: layer }
+                },
+                undefined,
+                "edit"
+            );
+        }
+    }
 
-    public addGeojsonLayer(title: string, url: string, style?: LayerStyle): Promise<IMapLayer> {
-        return new Promise((resolve, reject) => {            
+
+    public addGeojsonLayer(title: string, url: string, style?: LayerStyle, tags?: string[]): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
             let source = new LayerSource();
             source.url = url;
             source.title = title;
             source.id = guidGenerator();
             source.LoadSource().then(s => {
                 let rl = new GeojsonPlusLayer();
-                rl.tags = ["Search"];
+                rl.id = title;
+                rl.tags = tags ? tags : ['general'];
                 rl.type = "poi";
+                rl.title = title;
+                rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = source;
                 rl.initLayer(this);

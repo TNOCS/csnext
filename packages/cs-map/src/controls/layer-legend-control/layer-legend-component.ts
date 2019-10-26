@@ -3,7 +3,7 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 
 import './layer-legend-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapDatasource, IMapLayer, FeatureType, LayerLegend } from '../../.';
+import { MapDatasource, IMapLayer, FeatureType, LayerLegend } from '../..';
 
 @Component({
     name: 'layer-legend-component',

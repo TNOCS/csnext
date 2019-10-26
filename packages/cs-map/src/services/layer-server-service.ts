@@ -10,10 +10,10 @@ import {
     IFeatureAction,
     MapDatasource,
     LayerSource,
-    IMapLayer
+    IMapLayer,
+    LayerEditor
 } from '..';
 import axios from 'axios';
-import { LayerServiceEditor } from '../components/layer-service-editor/layer-service-editor';
 import { AppState } from '@csnext/cs-client';
 
 export class LayerServerService implements ILayerService, IStartStopService {
@@ -236,10 +236,11 @@ export class LayerServerService implements ILayerService, IStartStopService {
         res.push({
             title: 'Edit',
             action: () => {
-                AppState.Instance.OpenRightSidebarWidget({
-                    component: LayerServiceEditor,
-                    data: { layer, service: this }
-                }, undefined, 'layers');
+                this.manager!.editLayer(layer);
+                // AppState.Instance.OpenRightSidebarWidget({
+                //     component: LayerEditor,
+                //     data: { layer, service: this }
+                // }, undefined, 'layers');
                 // this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
                 //     component: LayerServiceEditor,
                 //     data: { layer: layer, service: this }

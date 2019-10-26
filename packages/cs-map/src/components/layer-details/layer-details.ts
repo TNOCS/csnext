@@ -4,7 +4,7 @@ import { IWidget } from '@csnext/cs-core';
 import './layer-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 
-import { BaseLayer, MapDatasource, PropertyType, IMapLayer, LayerServiceEditor } from '../..';
+import { BaseLayer, MapDatasource, PropertyType } from '../..';
 
 import { FeatureDetails } from '../feature-details/feature-details';
 import simplebar from 'simplebar-vue';
@@ -104,10 +104,4 @@ export class LayerDetails extends Vue {
         }, { open: true }, 'feature');
     }
 
-    public editLayer(layer: IMapLayer) {
-        this.$cs.OpenRightSidebarWidget({
-            component: LayerServiceEditor,
-            data: { layer: layer }
-        }, undefined, 'layers');
-    }
 }

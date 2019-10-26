@@ -4,7 +4,7 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 import { guidGenerator } from '@csnext/cs-core';
 import './grid-control-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapDatasource, IMapLayer, FeatureType, GridLayer, LayerSource } from '../../.';
+import { MapDatasource, IMapLayer, FeatureType, GridLayer, LayerSource } from '../..';
 
 @Component({
     name: 'grid-control-component',

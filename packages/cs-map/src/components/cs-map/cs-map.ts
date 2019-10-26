@@ -3,17 +3,15 @@ import Vue from 'vue';
 import { IWidget, guidGenerator, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 const MapboxDraw = require('@mapbox/mapbox-gl-draw');
 import mapboxgl, { CirclePaint, MapboxOptions, GeolocateControl, ScaleControl } from 'mapbox-gl';
 import { Feature, FeatureCollection } from 'geojson';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from './../style-switcher/style-switcher';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-// import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import { LayerEditorControl } from './../layer-editor/layer-editor-control';
-import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
-import 'mapbox-gl/dist/mapbox-gl.css';
+
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
@@ -30,15 +28,38 @@ import {
     FeatureDetails,
     LayerSelection,
     LayerSelectionOptions,
-    FeatureEventDetails
+    FeatureEventDetails,
+    LayerEditor
 } from '../../.';
-import { GridControl } from '../grid-control/grid-control';
+
 import { WidgetBase } from '@csnext/cs-client';
+import { MapboxStyleSwitcherControl, MapboxStyleDefinition, GridControl, LayerDraw, LayerLegendControl } from '../../controls';
+import { MapTopics } from '../../datasources/topics';
 
 @Component({
     template: require('./cs-map.html')
 })
 export class CsMap extends WidgetBase {
+
+    // topics used for events
+    public static FEATURE_SELECT = 'select';
+    public static FEATURE_CREATED = 'created';
+    public static FEATURE_DELETED = 'deleted';
+    public static FEATURE_MOUSE_ENTER = 'enter';
+    public static FEATURE_MOUSE_LEAVE = 'leave';
+    public static FEATURE_UPDATED = 'updated';
+    public static LAYER_UPDATED = 'layer.updated';
+    public static LAYER_ACTIVATED = 'layer.activated';
+    public static LAYER_DISABLED = 'layer.disabled';
+    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
+    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
+    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
+    public static DRAWLAYER = 'drawlayer';
+    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
+    public static MAP_CLICK = 'map.click';
+    public static MAP_LOADED = 'loaded';
+    public static SEARCH_RESULT_SELECT = 'search.select';
+
     public get pointPickerActivated(): boolean {
         return this._pointerPickerActivated;
     }
@@ -65,24 +86,6 @@ export class CsMap extends WidgetBase {
         }
         return new MapOptions();
     }
-
-    public static FEATURE_SELECT = 'select';
-    public static FEATURE_CREATED = 'created';
-    public static FEATURE_DELETED = 'deleted';
-    public static FEATURE_MOUSE_ENTER = 'enter';
-    public static FEATURE_MOUSE_LEAVE = 'leave';
-    public static FEATURE_UPDATED = 'updated';
-    public static LAYER_UPDATED = 'layer.updated';
-    public static LAYER_ACTIVATED = 'layer.activated';
-    public static LAYER_DISABLED = 'layer.disabled';
-    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
-    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
-    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
-    public static DRAWLAYER = 'drawlayer';
-    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
-    public static MAP_CLICK = 'map.click';
-    public static MAP_LOADED = 'loaded';
-    public static SEARCH_RESULT_SELECT = 'search.select';
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -238,7 +241,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showGeolocater')
-    public showGeolocator(enabled: boolean = true, old? : boolean) {        
+    public showGeolocator(enabled: boolean = true, old?: boolean) {
         console.log(`Show geolocator: ${enabled}`);
         if (!enabled && old && this.geolocatorControl) {
             this.map.removeControl(this.geolocatorControl);
@@ -367,11 +370,11 @@ export class CsMap extends WidgetBase {
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);                        
+                        this.addSource(layer._source);
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
-                            layer.addLayer(this);                            
+                            layer.addLayer(this);
                         }
 
                         if (this.manager) {
@@ -553,7 +556,7 @@ export class CsMap extends WidgetBase {
                 if (this.manager) {
                     // add layer editor control (adding features, lines, etc.)
                     if (this.mapOptions.showEditor) {
-                        const layerEditorControl = new LayerEditorControl(
+                        const layerEditorControl = new LayerDraw(
                             this.manager
                         );
                         this.map.addControl(layerEditorControl);
@@ -597,6 +600,7 @@ export class CsMap extends WidgetBase {
             });
         });
     }
+
 
     public addSource(source: LayerSource) {
         if (source.id) {
@@ -873,18 +877,5 @@ export class CsMap extends WidgetBase {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
 
-
-
-        // this.map.addSource('mask',);
-
-        //     {
-        //     "id": "zmask",
-        //     "source": "mask",
-        //     "type": "fill",
-        //     "paint": {
-        //       "fill-color": "#4192DD",
-        //       'fill-opacity': 0.999
-        //     }
-        //   });
     }
 }

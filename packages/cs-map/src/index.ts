@@ -29,7 +29,7 @@ export * from './components/layer-selection/layer-selection-options';
 export * from './components/cs-map/cs-map';
 export * from './components/cs-map/feature-event-details';
 export * from './components/feature-details/feature-details';
-export * from './components/layer-service-editor/layer-service-editor';
+export * from './components/layer-editor/layer-editor';
 
 // layers
 export * from './layers/base-layer';
