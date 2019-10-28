@@ -11,6 +11,7 @@ import {
     LayerStyle,
     LayerEditor
 } from '../.';
+
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import {
@@ -24,6 +25,8 @@ import {
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
+import { FeatureTypes } from '../classes/feature-type';
+import { MetaFile } from '../classes/meta-file';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -609,7 +612,7 @@ export class MapDatasource implements IDatasource {
     }
 
 
-    public addGeojsonLayer(title: string, url: string, style?: LayerStyle, tags?: string[]): Promise<IMapLayer> {
+    public addGeojsonLayer(title: string, url: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             let source = new LayerSource();
             source.url = url;
@@ -621,10 +624,20 @@ export class MapDatasource implements IDatasource {
                 rl.tags = tags ? tags : ['general'];
                 rl.type = "poi";
                 rl.title = title;
+                rl.defaultFeatureType = defaultFeatureType;
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = source;
+                if (typeof featureTypes === 'string') {
+                    rl.featureTypesUrl = featureTypes;
+                } else {
+                    rl.featureTypes = featureTypes;
+                }
+
+               
+                
                 rl.initLayer(this);
+
                 rl.popupContent = undefined;
                 if (this.layers) {
                     this.layers.push(rl);

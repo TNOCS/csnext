@@ -4,6 +4,10 @@
     justify-content: flex-end;
 }
 
+.feature-details-container {
+    margin-top: 25px;
+}
+
 .feature-section-title {
     font-size: 16px;
     font-weight: 700;
@@ -20,6 +24,7 @@
 
 .section-expansion-panel .v-expansion-panel__header {
     padding-left: 12px;
+    margin-right: 12px;
     
 }
 

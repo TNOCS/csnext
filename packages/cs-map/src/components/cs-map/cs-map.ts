@@ -34,7 +34,6 @@ import {
 
 import { WidgetBase } from '@csnext/cs-client';
 import { MapboxStyleSwitcherControl, MapboxStyleDefinition, GridControl, LayerDraw, LayerLegendControl } from '../../controls';
-import { MapTopics } from '../../datasources/topics';
 
 @Component({
     template: require('./cs-map.html')
@@ -402,6 +401,14 @@ export class CsMap extends WidgetBase {
                                                     this.$cs.OpenRightSidebarWidget(
                                                         {
                                                             component: FeatureDetails,
+                                                            options: {
+                                                                showToolbar: false,
+                                                                toolbarOptions: {
+                                                                    backgroundColor: 'primary',
+                                                                    dense: true                                                            
+                                                                },
+                                                                hideSidebarButton: true
+                                                            },
                                                             data: {
                                                                 feature: f.feature,
                                                                 layer,

@@ -74,6 +74,8 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+    /** if multiple feature types are avaible, this is the default feature type key  */
+    public defaultFeatureType?: string;
 
     @FormField({ title: 'Open Feature Details', type: 'checkbox' })
     public openFeatureDetails?: boolean;
