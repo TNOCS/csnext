@@ -8,7 +8,6 @@ import './cs-form-field.css';
 import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
-import '../v-datetime-picker/v-datetime-picker';
 import { Emit, Prop } from 'vue-property-decorator';
 import { format } from 'date-fns';
 @Component({
