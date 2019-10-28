@@ -12920,10 +12920,10 @@ vis-data@6.1.1:
   dependencies:
     vis-util "^1.1.0"
 
-vis-timeline@6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-6.0.3.tgz#9fc3ed33857255ec72eb048153f609121b92d2d8"
-  integrity sha512-qqgOdfGcNoA22GPwQo7jYJp3vbdY23BFuNDS7vQI2T/gnAiayf4tMCBzlnok63z4M/gHWpyLZCN0lScw6WidZg==
+vis-timeline@6.0.4:
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-6.0.4.tgz#c247eb3eb6d70f6f43cf46feca2cc8eaab57561b"
+  integrity sha512-xhlEeRmtIgIvYPGOHx6aj6hlydzQ988N/lNVesMPBZ4lyMII/ilbZY//Qe+gJgc7MhP5HyuiVAs3Gy+YZIpCNg==
   dependencies:
     "@egjs/hammerjs" "2.0.15"
     emitter-component "1.1.1"
