@@ -611,8 +611,10 @@ export class MapDatasource implements IDatasource {
         }
     }
 
+    
 
-    public addGeojsonLayer(title: string, url: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
+
+    public addGeojsonLayer(title: string, url?: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             let source = new LayerSource();
             source.url = url;
@@ -634,8 +636,6 @@ export class MapDatasource implements IDatasource {
                     rl.featureTypes = featureTypes;
                 }
 
-               
-                
                 rl.initLayer(this);
 
                 rl.popupContent = undefined;
