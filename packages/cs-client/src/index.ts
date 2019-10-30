@@ -35,6 +35,7 @@ import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import Vue, { VueConstructor } from 'vue';
 import { VegaWidget } from './widgets/vega/vega-widget';
 import { CardWidget } from './widgets/card/card-widget';
+import { HtmlWidget } from './widgets/html-widget/html-widget';
 
 // export components
 export * from './components/cs-app/cs-app';
@@ -51,6 +52,7 @@ export * from './widgets/iframe/iframe-widget-options';
 export * from './widgets/youtube-background/youtube-background-widget';
 export * from './widgets/image-widget';
 export * from './widgets/svg-widget';
+export * from './widgets/html-widget/html-widget';
 export * from './widgets/vega/vega-widget';
 export * from './widgets/vega/vega-widget-options';
 export * from './widgets/intro/intro-widget';
@@ -67,6 +69,7 @@ export const CsNext = {
     vue.component('cs-sidebar', CsSidebar);
     vue.component('cs-widget', CsWidget);
     vue.component('vega-widget', VegaWidget);
+    vue.component('vega-widget', HtmlWidget);
     vue.component('card-widget', CardWidget);
   }
 };

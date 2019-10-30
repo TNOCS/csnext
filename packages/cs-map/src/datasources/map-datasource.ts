@@ -27,6 +27,7 @@ import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import { FeatureTypes } from '../classes/feature-type';
 import { MetaFile } from '../classes/meta-file';
+import Vue from 'vue';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -247,6 +248,8 @@ export class MapDatasource implements IDatasource {
         }
     }
 
+    
+
     public moveLayer(layer: IMapLayer, beforeId?: string) {
         layer.moveLayer(beforeId);
     }
@@ -311,6 +314,8 @@ export class MapDatasource implements IDatasource {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.hideLayer(layer);
         } else {
+            Vue.set(ml, 'Visible', false);
+            // ml.Visible = false;
 
             // unsubscribe from feature events
             if (ml._events && ml._featureEventHandle !== undefined) {

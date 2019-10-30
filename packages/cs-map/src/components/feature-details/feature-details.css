@@ -5,7 +5,11 @@
 }
 
 .feature-details-container {
-    margin-top: 25px;
+    position: absolute;
+    top:50px;
+    bottom:0;
+    left:0;
+    right: 0;
 }
 
 .feature-section-title {

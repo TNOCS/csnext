@@ -23,6 +23,7 @@ export interface IMapLayer extends ILayer {
     setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean);
     _events?: MessageBusService;
     _legends?: LayerLegend[];
+    hideInLayerList?: boolean;
     
     /** associated service */
     _service?: ILayerService;

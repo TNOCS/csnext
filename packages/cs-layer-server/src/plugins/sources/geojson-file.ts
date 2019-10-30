@@ -223,12 +223,12 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                                     max(proptype._values).toString()
                                 );
                                 proptype.mean = mean(proptype._values);
-                                if (proptype.count > 10) {
-                                    proptype.median = median(proptype._values);
-                                    proptype.sd = standardDeviation(
-                                        proptype._values
-                                    );
-                                }
+                                // if (proptype.count > 10) {
+                                //     proptype.median = median(proptype._values);
+                                //     proptype.sd = standardDeviation(
+                                //         proptype._values
+                                //     );
+                                // }
                             }
 
                             // let steps = ckmeans(proptype._values, 5);

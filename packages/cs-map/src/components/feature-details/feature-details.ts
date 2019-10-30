@@ -6,7 +6,7 @@ import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
-import { MapDatasource, IMapLayer, LayerLegend } from '../../';
+import { MapDatasource, IMapLayer, LayerLegend, FeatureEventDetails, CsMap } from '../../';
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
@@ -134,70 +134,73 @@ export class FeatureDetails extends WidgetBase {
 
         /** lookup all properties */
         for (const key in this.feature.properties) {
-            if (key[0] !== '_' && this.feature.properties.hasOwnProperty(key)) {
+            if (key[0] !== '_') {
                 let pt: PropertyType | string = key;
                 /** find property type */
                 if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(key)) {
                     pt = ft.propertyMap[key];
+                } else {
+                    // debugger;
                 }
                 let proptype: PropertyType;
                 if (typeof pt === 'string') {
-                    // proptype = {
-                    //     _key: key,
-                    //     title: key,
-                    //     type: 'string',
-                    //     description: key
-                    // } as PropertyType;
+                    proptype = {
+                        _key: key,
+                        title: key,
+                        type: 'string',
+                        description: key
+                    } as PropertyType;
                 } else {
                     proptype = pt;
+                }
 
-                    if (!this.filterPropertiesEnabled ||
-                        this.propertyFilter(proptype, this.filterProperties)
-                    ) {
-                        let legends: LayerLegend[] = [];
+                if (!this.filterPropertiesEnabled ||
+                    this.propertyFilter(proptype, this.filterProperties)
+                ) {
+                    let legends: LayerLegend[] = [];
 
-                        // find legend
-                        if (layer._legends) {
-                            legends = layer._legends.filter(
-                                l => l.property === key
-                            );
-                            if (legends.length > 0) {
-                            }
+                    // find legend
+                    if (layer._legends) {
+                        legends = layer._legends.filter(
+                            l => l.property === key
+                        );
+                        if (legends.length > 0) {
                         }
+                    }
 
-                        const element = this.feature.properties[key];
-                        let prop = {
-                            key: key,
-                            value: element,
-                            type: proptype,
-                            legends: legends,
-                            display: element
-                        };
-                        if (proptype.stringFormat !== undefined) {
-                            prop.display = prop.value; // String.format(pt.stringFormat, prop.value);
+                    const element = this.feature.properties[key];
+                    let prop = {
+                        key: key,
+                        value: element,
+                        type: proptype,
+                        legends: legends,
+                        display: element
+                    };
+                    if (proptype.stringFormat !== undefined) {
+                        prop.display = prop.value; // String.format(pt.stringFormat, prop.value);
+                    }
+                    if (proptype.handlebarFormat !== undefined) {
+                        const template = Handlebars.compile(proptype.stringFormat);
+                        prop.display = template(prop);
+                    }
+
+                    let section: section | undefined = defaultSection;
+                    if (proptype.section) {
+                        section = result.find(t => t.id === (pt as PropertyType).section);
+                        if (!section) {
+                            section = { id: proptype.section, title: proptype.section, properties: [] };
+                            result.push(section);
+                            this.sectionsPanels.push(result.length - 1);
                         }
-                        if (proptype.handlebarFormat !== undefined) {
-                            const template = Handlebars.compile(proptype.stringFormat);
-                            prop.display = template(prop);
-                        }
-
-                        let section: section | undefined = defaultSection;
-                        if (proptype.section) {
-                            section = result.find(t => t.id === (pt as PropertyType).section);
-                            if (!section) {
-                                section = { id: proptype.section, title: proptype.section, properties: [] };
-                                result.push(section);
-                                this.sectionsPanels.push(result.length - 1);
-                            }
-                        } else {
-                            debugger;
-                        }
-
-                        // section.properties!.push(prop as any);
-
-                        section.properties!.push(prop);
+                    } else {
 
                     }
+
+                    // section.properties!.push(prop as any);
+
+                    section.properties!.push(prop);
+
+
                 }
             }
         }
@@ -251,5 +254,15 @@ export class FeatureDetails extends WidgetBase {
 
     public contentLoaded() {
         this.updateSections();
+
+        if (this.layer) {
+            this.busManager.subscribe(this.layer._events, 'feature', (
+                (a: string, f: FeatureEventDetails) => {
+                    if (a === CsMap.FEATURE_SELECT) {                        
+                        this.widget.data.feature = f.feature;
+                        this.widget.data.layer = f.layer;
+                    }
+                }));
+        }
     }
 }

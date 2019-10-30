@@ -44,6 +44,7 @@ import { PropertyCollection } from '../classes/feature-type';
 import Axios from 'axios';
 import { MetaFile } from '../classes/meta-file';
 import { uniq } from 'lodash';
+import { PropType } from 'vue';
 
 export type LayerFeatureTypes = { [key: string]: FeatureType };
 export class GeojsonPlusLayer extends BaseLayer
@@ -161,6 +162,67 @@ export class GeojsonPlusLayer extends BaseLayer
         // console.log(this._legends);
     }
 
+    updateMetaProperty(ft: FeatureType, prop: PropertyType) {
+        prop._values = [];
+        if (!ft.properties || !ft.propertyMap || !this._source || !this._source._geojson) { return; }
+        let source = this._source!._geojson;
+        if (source.features && source.features.length > 0) {
+            //   let feature = source.features[0];
+            for (const feature of source.features) {
+                if (feature.properties) {
+                    if (prop.label && feature.properties.hasOwnProperty(prop.label)) {
+                        if (prop.type !== undefined) {
+                            let value = feature.properties[prop.label];
+                            if (
+                                prop.type === 'number' &&
+                                typeof value === 'string'
+                            ) {
+                                value = parseFloat(value);
+                                feature.properties[prop.label] = value;
+                            }
+                            prop._values!.push(value);
+                        }
+
+                    }
+
+
+                }
+            }
+        }
+
+
+        prop.count = prop._values.length;
+        let unique: any[] = uniq(prop._values);
+        prop.unique = unique.length;
+        if (prop.unique < 7) {
+            // prop.options =  unique.reduce(i => ) new Map(unique, (i) => [i,i] as [string, string]);
+        }
+
+        if (prop.type === 'number' && prop._values) {
+            if (unique.length > 1) {
+                prop.min = parseFloat(
+                    min(prop._values).toString()
+                );
+                prop.max = parseFloat(
+                    max(prop._values).toString()
+                );
+                prop.mean = mean(prop._values);
+                if (prop.count > 10) {
+                    prop.median = median(prop._values);
+                    prop.sd = standardDeviation(
+                        prop._values
+                    );
+                }
+            }
+
+            // let steps = ckmeans(prop._values, 5);
+            // prop.legend = {};
+        }
+        delete prop._values;
+
+    }
+
+
     public updateMeta() {
         if (!this.defaultFeatureType || !this.featureTypes || !this.featureTypes.hasOwnProperty(this.defaultFeatureType)) {
             return;
@@ -257,6 +319,7 @@ export class GeojsonPlusLayer extends BaseLayer
         if (property.hasOwnProperty('key')) {
             if (this.style && this.style.mapbox) {
                 let propdetails = property as PropertyDetails;
+                this.updateMetaProperty(this.featureTypes![this.defaultFeatureType!], propdetails.type as PropertyType);
                 if (propdetails.type && propdetails.type.min && propdetails.type.max) {
                     let color = {
                         property: propdetails.key,
@@ -280,7 +343,7 @@ export class GeojsonPlusLayer extends BaseLayer
             }
         }
         if (this._manager && refreshLayer) {
-            // this._manager.refreshLayer(this);
+            this._manager.refreshLayer(this);
         }
         this.updateLegends();
         console.log(this._legends);
@@ -296,7 +359,7 @@ export class GeojsonPlusLayer extends BaseLayer
     }
 
     public setOpacity(value: number) {
-        this.opacity = value;
+        this.style.opacity = value;
         if (this._circleLayer) {
             this._circleLayer.setOpacity(value);
         }
@@ -498,7 +561,7 @@ export class GeojsonPlusLayer extends BaseLayer
             ) as FeatureTypes;
 
 
-            this.updateMeta();
+            // this.updateMeta();
 
         }
     }

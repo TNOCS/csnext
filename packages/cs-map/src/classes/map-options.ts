@@ -42,4 +42,5 @@ export class MapOptions extends WidgetOptions {
     public showGrid?: boolean = false;
     public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
+    public showBuildings?: boolean = false;
 }

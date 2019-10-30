@@ -59,6 +59,8 @@ export class CsMap extends WidgetBase {
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
 
+    private readonly FEATURE_SIDEBAR_ID = 'feature';
+
     public get pointPickerActivated(): boolean {
         return this._pointerPickerActivated;
     }
@@ -120,7 +122,7 @@ export class CsMap extends WidgetBase {
             CsMap.serviceTypes.push(type);
         }
     }
-    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
+    // public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
 
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
@@ -253,6 +255,52 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    @Watch('widget.options.showBuildings')
+    public showBuildings(enabled: boolean = true, old?: boolean) {
+        if (!enabled && old) {
+            this.map.removeLayer('3d-buildings');
+        }
+        if (enabled) {
+
+            let layers = this.map.getStyle().layers;
+            if (!layers) { return; }
+
+            var labelLayerId;
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].type === 'symbol' && layers[i].layout!['text-field']) {
+                    labelLayerId = layers[i].id;
+                    break;
+                }
+            }
+            this.map.addLayer({
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                        "interpolate", ["linear"], ["zoom"],
+                        15, 0,
+                        15.05, ["get", "height"]
+                    ],
+                    'fill-extrusion-base': [
+                        "interpolate", ["linear"], ["zoom"],
+                        15, 0,
+                        15.05, ["get", "min_height"]
+                    ],
+                    'fill-extrusion-opacity': .6
+                }
+            }, labelLayerId);
+        }
+
+    }
+
     @Watch('widget.options.showLayers')
     public showLayers(enabled: boolean = true, old?: boolean) {
         console.log(`Show layers: ${enabled}`);
@@ -283,13 +331,6 @@ export class CsMap extends WidgetBase {
     }
 
     public beforeDestroy() {
-        for (const key in this.busHandlers) {
-            if (this.busHandlers.hasOwnProperty(key)) {
-                const element = this.busHandlers[key];
-                element.bus.unsubscribe(element.handle);
-
-            }
-        }
         this.$cs.CloseRightSidebarKey('feature');
         this.$cs.CloseRightSidebarKey('layers');
 
@@ -385,46 +426,42 @@ export class CsMap extends WidgetBase {
 
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
-                                this.busHandlers['layer-activated'] = {
-                                    bus: layer._events, handle: layer._events.subscribe(
-                                        'feature',
-                                        (a: string, f: FeatureEventDetails) => {
-                                            if (a === CsMap.FEATURE_SELECT) {
-                                                if (
-                                                    this.$cs &&
-                                                    layer.openFeatureDetails &&
-                                                    layer.openFeatureDetails ===
-                                                    true
-                                                ) {
-
-                                                    this.$cs.AddSidebar('feature', { icon: 'map' });
-                                                    this.$cs.OpenRightSidebarWidget(
-                                                        {
-                                                            component: FeatureDetails,
-                                                            options: {
-                                                                showToolbar: false,
-                                                                toolbarOptions: {
-                                                                    backgroundColor: 'primary',
-                                                                    dense: true                                                            
-                                                                },
-                                                                hideSidebarButton: true
+                                this.busManager.subscribe(layer._events, 'feature', (
+                                    (a: string, f: FeatureEventDetails) => {                                       
+                                        if (a === CsMap.FEATURE_SELECT) {
+                                            if (
+                                                this.$cs &&
+                                                layer.openFeatureDetails &&
+                                                layer.openFeatureDetails ===
+                                                true
+                                            ) {                                                                                                
+                                                this.$cs.AddSidebar('feature', { icon: 'map' });
+                                                this.$cs.OpenRightSidebarWidget(
+                                                    {
+                                                        id: 'feature-details-component',
+                                                        component: FeatureDetails,
+                                                        options: {
+                                                            showToolbar: false,
+                                                            toolbarOptions: {
+                                                                backgroundColor: 'primary',
+                                                                dense: true
                                                             },
-                                                            data: {
-                                                                feature: f.feature,
-                                                                layer,
-                                                                manager: this
-                                                                    .manager
-                                                            }
+                                                            hideSidebarButton: true
                                                         },
-                                                        { open: true },
-                                                        'feature'
-                                                    );
-                                                }
+                                                        data: {
+                                                            feature: f.feature,
+                                                            layer,
+                                                            manager: this
+                                                                .manager
+                                                        }
+                                                    },
+                                                    { open: true },
+                                                    this.FEATURE_SIDEBAR_ID,
+                                                    false
+                                                );
                                             }
                                         }
-
-                                    )
-                                };
+                                    }));
 
                             }
 
@@ -518,14 +555,11 @@ export class CsMap extends WidgetBase {
             // subscribe to widget events
             if (this.widget.events) {
                 // check if widget has been resized
-                this.busHandlers['map-resize'] = {
-                    bus: this.widget.events, handle: this.widget.events.subscribe('resize', () => {
-                        Vue.nextTick(() => {
-                            this.map.resize();
-                        });
-
-                    })
-                };
+                this.busManager.subscribe(this.widget.events, 'resize', () => {
+                    Vue.nextTick(() => {
+                        this.map.resize();
+                    });
+                });                
             }
 
             if (this.mapOptions.showDraw) {
@@ -601,6 +635,8 @@ export class CsMap extends WidgetBase {
                 this.showLayers(this.mapOptions.showLayers);
 
                 this.showGeolocator(this.mapOptions.showGeolocater);
+
+                this.showBuildings(this.mapOptions.showBuildings);
 
 
 
@@ -752,17 +788,11 @@ export class CsMap extends WidgetBase {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        this.busHandlers['layer-events-' + l.id] = {
-                            bus: l._events, handle:
-                                l._events.subscribe(
-                                    'feature',
-                                    (a: string) => {
-                                        if (a === CsMap.FEATURE_SELECT) {
-                                            // select feature
-                                        }
-                                    }
-                                )
-                        };
+                        this.busManager.subscribe(l._events, 'feature', (a:string) =>{
+                            if (a === CsMap.FEATURE_SELECT) {
+                                // select feature
+                            }
+                        });                        
                     }
                 });
             }
@@ -829,16 +859,12 @@ export class CsMap extends WidgetBase {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        this.busHandlers['layer-feature-' + l.id] = {
-                            bus: l._events, handle: l._events.subscribe(
-                                'feature',
-                                (a: string) => {
-                                    if (a === CsMap.FEATURE_SELECT) {
-                                        // select feature
-                                    }
-                                }
-                            )
-                        };
+                        this.busManager.subscribe(l._events, 'feature', (a: string) => {
+                            if (a === CsMap.FEATURE_SELECT) {
+                                // select feature
+                            }
+                        })
+                        
                     }
                 });
 

@@ -85,7 +85,7 @@ export class LayerSelection extends Vue {
         
         if (this.MapManager && this.MapManager.layers) {
             this.MapManager.layers.forEach(l => {
-                if (l.title) {
+                if (l.title && !l.hideInLayerList) {
                     if (
                         this.filter.length === 0 ||
                         l.title
@@ -181,7 +181,7 @@ export class LayerSelection extends Vue {
     public toggleLayer(layer: IMapLayer) {
         if (!layer._manager) {
             return;
-        }
+        }       
         if (layer.Visible) {
             layer._manager.showLayer(layer);
         } else {

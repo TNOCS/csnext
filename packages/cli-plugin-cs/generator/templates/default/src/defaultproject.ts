@@ -1,6 +1,6 @@
 
 import {  IProject,  IMenu, INotification} from '@csnext/cs-core';
-import { MdWidget, AppState } from '@csnext/cs-client';
+import { HtmlWidget, AppState } from '@csnext/cs-client';
 import './assets/example.css'
 
 export const project: IProject = {
@@ -19,7 +19,7 @@ export const project: IProject = {
     permanent: false,
     temporary: true,
     dashboard: {
-      widgets: [{ component: MdWidget, data: 'left sidebar' }],
+      widgets: [{ component: HtmlWidget, data: 'left sidebar' }],
     },
   },
   theme: {
@@ -41,7 +41,7 @@ export const project: IProject = {
     clipped: false,
     temporary: false,
     dashboard: {
-      widgets: [{ component: MdWidget, data: 'right sidebar' }],
+      widgets: [{ component: HtmlWidget, data: 'right sidebar' }],
     },
   },
   menus: [
@@ -85,7 +85,7 @@ export const project: IProject = {
         icon: 'assignment',
         path: '/',
         layout: 'grid',
-        widgets: [ { component: MdWidget, options: { class: 'widget-1'}, data: 'welcome'}]
+        widgets: [ { component: HtmlWidget, options: { class: 'widget-1'}, data: 'welcome'}]
       },
     ]
     //   <%_ if (options.csPlugins.indexOf('drag-grid')!==-1) { _%>
@@ -95,7 +95,7 @@ export const project: IProject = {
     //       path: '/dragGrid',
     //       layout: 'drag-grid',          
     //       options: <IMuuriOptions>{ DragEnabled: true, gap: 5},
-    //       widgets: [{ component: MdWidget, data: 'widget 1', options: <WidgetOptions>{ width: 3, height: 3}}]
+    //       widgets: [{ component: HtmlWidget, data: 'widget 1', options: <WidgetOptions>{ width: 3, height: 3}}]
     //     }        
     //     <%_ } _%>        
     
