@@ -8,8 +8,10 @@ import {
     IStartStopService,
     LayerSource,
     ILayerService,
-    LayerStyle
+    LayerStyle,
+    LayerEditor
 } from '../.';
+
 import { guidGenerator } from '@csnext/cs-core';
 import { plainToClass } from 'class-transformer';
 import {
@@ -23,6 +25,9 @@ import {
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
+import { FeatureTypes } from '../classes/feature-type';
+import { MetaFile } from '../classes/meta-file';
+import Vue from 'vue';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -243,6 +248,8 @@ export class MapDatasource implements IDatasource {
         }
     }
 
+    
+
     public moveLayer(layer: IMapLayer, beforeId?: string) {
         layer.moveLayer(beforeId);
     }
@@ -307,6 +314,8 @@ export class MapDatasource implements IDatasource {
             let layer = this.layers.find(l => l.id === ml);
             if (layer) this.hideLayer(layer);
         } else {
+            Vue.set(ml, 'Visible', false);
+            // ml.Visible = false;
 
             // unsubscribe from feature events
             if (ml._events && ml._featureEventHandle !== undefined) {
@@ -589,20 +598,51 @@ export class MapDatasource implements IDatasource {
     }
 
 
+    public editLayer(layer: IMapLayer | string) {
+        if (typeof layer === 'string') {
+            if (this.layers) {
+                let l = this.layers.find(l => l.id === layer);
+                if (l) { this.editLayer(l); }
+            }
+        } else {
+            AppState.Instance.OpenRightSidebarWidget(
+                {
+                    component: LayerEditor,
+                    data: { layer: layer }
+                },
+                undefined,
+                "edit"
+            );
+        }
+    }
 
-    public addGeojsonLayer(title: string, url: string, style?: LayerStyle): Promise<IMapLayer> {
-        return new Promise((resolve, reject) => {            
+    
+
+
+    public addGeojsonLayer(title: string, url?: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
             let source = new LayerSource();
             source.url = url;
             source.title = title;
             source.id = guidGenerator();
             source.LoadSource().then(s => {
                 let rl = new GeojsonPlusLayer();
-                rl.tags = ["Search"];
+                rl.id = title;
+                rl.tags = tags ? tags : ['general'];
                 rl.type = "poi";
+                rl.title = title;
+                rl.defaultFeatureType = defaultFeatureType;
+                rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = source;
+                if (typeof featureTypes === 'string') {
+                    rl.featureTypesUrl = featureTypes;
+                } else {
+                    rl.featureTypes = featureTypes;
+                }
+
                 rl.initLayer(this);
+
                 rl.popupContent = undefined;
                 if (this.layers) {
                     this.layers.push(rl);

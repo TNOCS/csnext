@@ -6,11 +6,12 @@ import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 import { BaseLayer } from '../../layers/base-layer';
 import { FeatureType, PropertyType } from '../../classes/feature-type';
-import { MapDatasource, IMapLayer, LayerLegend } from '../../';
+import { MapDatasource, IMapLayer, LayerLegend, FeatureEventDetails, CsMap } from '../../';
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
 import { LayerDetails } from '../layer-details/layer-details';
+import { WidgetBase } from '@csnext/cs-client';
 
 export class section {
     public id?: string;
@@ -31,12 +32,13 @@ export class PropertyDetails {
     components: { simplebar },
     template: require('./feature-details.html')
 } as any)
-export class FeatureDetails extends Vue {
+export class FeatureDetails extends WidgetBase {
     public widget!: IWidget;
     public sectionsPanels: number[] = [];
     public tabs = 'feature-details';
     public filterProperties: string = '';
     public filterPropertiesEnabled = false;
+    public sections: section[] = [];
 
     @Watch('filterProperties')
     filterChanged() {
@@ -102,7 +104,7 @@ export class FeatureDetails extends Vue {
     }
 
     /** get list of available section, with their properties */
-    public get sections(): section[] {
+    public updateSections() {
         let layer = this.layer;
         if (!layer || !this.feature || !this.feature.properties) {
             return [];
@@ -111,40 +113,49 @@ export class FeatureDetails extends Vue {
         // create default section
         let defaultSection = {
             id: 'default',
-            title: 'default',
+            title: 'PROPERTIES',
             properties: []
         } as section;
         let result: section[] = [defaultSection];
-        this.sectionsPanels.push(0);
+        this.sectionsPanels = [0];
 
         /** find feature type */
         let ft: FeatureType | undefined = undefined;
         if (
-            layer.featureTypes &&
-            Object.keys(layer.featureTypes).length === 1
-        ) {
-            ft = layer.featureTypes[Object.keys(layer.featureTypes)[0]];
+            layer.featureTypes) {
+            if (layer.defaultFeatureType &&
+                layer.featureTypes.hasOwnProperty(layer.defaultFeatureType)
+            ) {
+                ft = layer.featureTypes[layer.defaultFeatureType];
+            } else {
+                ft = layer.featureTypes[Object.keys(layer.featureTypes)[0]];
+            }
         }
 
         /** lookup all properties */
         for (const key in this.feature.properties) {
-            if (key[0] !== '_' && this.feature.properties.hasOwnProperty(key)) {
+            if (key[0] !== '_') {
                 let pt: PropertyType | string = key;
                 /** find property type */
-                if (ft && ft.properties && ft.properties.hasOwnProperty(key)) {
-                    pt = ft.properties[key];
+                if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(key)) {
+                    pt = ft.propertyMap[key];
+                } else {
+                    // debugger;
                 }
+                let proptype: PropertyType;
                 if (typeof pt === 'string') {
-                    pt = {
-                        _key: pt,
-                        title: pt,
+                    proptype = {
+                        _key: key,
+                        title: key,
                         type: 'string',
-                        description: pt
+                        description: key
                     } as PropertyType;
+                } else {
+                    proptype = pt;
                 }
-                if (
-                    !this.filterPropertiesEnabled ||
-                    this.propertyFilter(pt, this.filterProperties)
+
+                if (!this.filterPropertiesEnabled ||
+                    this.propertyFilter(proptype, this.filterProperties)
                 ) {
                     let legends: LayerLegend[] = [];
 
@@ -161,19 +172,39 @@ export class FeatureDetails extends Vue {
                     let prop = {
                         key: key,
                         value: element,
-                        type: pt,
+                        type: proptype,
                         legends: legends,
                         display: element
                     };
-                    if (pt.stringFormat !== undefined) {
-                        const template = Handlebars.compile(pt.stringFormat);
+                    if (proptype.stringFormat !== undefined) {
+                        prop.display = prop.value; // String.format(pt.stringFormat, prop.value);
+                    }
+                    if (proptype.handlebarFormat !== undefined) {
+                        const template = Handlebars.compile(proptype.stringFormat);
                         prop.display = template(prop);
                     }
-                    defaultSection.properties!.push(prop);
+
+                    let section: section | undefined = defaultSection;
+                    if (proptype.section) {
+                        section = result.find(t => t.id === (pt as PropertyType).section);
+                        if (!section) {
+                            section = { id: proptype.section, title: proptype.section, properties: [] };
+                            result.push(section);
+                            this.sectionsPanels.push(result.length - 1);
+                        }
+                    } else {
+
+                    }
+
+                    // section.properties!.push(prop as any);
+
+                    section.properties!.push(prop);
+
+
                 }
             }
         }
-        return result;
+        Vue.set(this, 'sections', result);
     }
 
     public updateStyle(property: PropertyDetails) {
@@ -218,6 +249,20 @@ export class FeatureDetails extends Vue {
     public centerFeature() {
         if (this.feature && this.manager) {
             this.manager.zoomFeature(this.feature, 14);
+        }
+    }
+
+    public contentLoaded() {
+        this.updateSections();
+
+        if (this.layer) {
+            this.busManager.subscribe(this.layer._events, 'feature', (
+                (a: string, f: FeatureEventDetails) => {
+                    if (a === CsMap.FEATURE_SELECT) {                        
+                        this.widget.data.feature = f.feature;
+                        this.widget.data.layer = f.layer;
+                    }
+                }));
         }
     }
 }

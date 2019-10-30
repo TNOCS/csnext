@@ -63,9 +63,6 @@ export class BaseLayer implements IMapLayer {
     public source?: string | LayerSource;
     public visible?: boolean;
 
-    @FormField({ title: 'Opacity', type: 'number', min: 0, max: 100, step: 1 })
-    public opacity?: number = 1;
-
     @FormField({ title: 'Tags', type: 'chips' })
     public tags: string[] = [];
     @FormField({ title: 'Color', type: 'string' })
@@ -74,6 +71,11 @@ export class BaseLayer implements IMapLayer {
     public parentId?: string;
     public _parent?: IMapLayer;
     public filter?: any;
+    /** if multiple feature types are avaible, this is the default feature type key  */
+    public defaultFeatureType?: string;
+
+    @FormField({ title: 'Hide in layer list', type: 'checkbox' })
+    public hideInLayerList?: boolean;
 
     @FormField({ title: 'Open Feature Details', type: 'checkbox' })
     public openFeatureDetails?: boolean;
@@ -96,7 +98,7 @@ export class BaseLayer implements IMapLayer {
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
-    public _opacity?: number;
+    
     // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
     @FormField({
         title: 'Feature types',

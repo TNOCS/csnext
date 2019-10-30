@@ -48,7 +48,6 @@ export class GeojsonLayer extends BaseLayer {
     public popupContent?: string | (Function) | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
-    public _opacity?: number;
     public _source?: LayerSource;
     public _initialized?= false;
 
@@ -98,6 +97,7 @@ export class GeojsonLayer extends BaseLayer {
     }
 
     public get opacity(): number | undefined {
+        if (!this.style) { this.style = new LayerStyle(); }
         if (
             this._initialized &&
             this.id &&
@@ -117,12 +117,14 @@ export class GeojsonLayer extends BaseLayer {
                         maxOpacity = op;
                     }
                 }
-                this._opacity = maxOpacity;
+                this.style._opacity = maxOpacity;
             } catch (e) {
-                this._opacity = 100;
+
+                this.style._opacity = 100;
+
             }
         }
-        return this._opacity;
+        return this.style._opacity;
     }
 
     public layerTypeProps(): string[] {
@@ -137,7 +139,9 @@ export class GeojsonLayer extends BaseLayer {
     }
 
     public setOpacity(value: number) {
-        this._opacity = value;
+        if (!this.style) { this.style = new LayerStyle(); }
+        this.style._opacity = value;
+
         if (
             this._initialized &&
             this.id &&
@@ -151,7 +155,7 @@ export class GeojsonLayer extends BaseLayer {
                     value / 100.0
                 );
                 if (!this.paint) this.paint = {};
-                this.paint[prop + '-opacity'] = this._opacity / 100.0;
+                this.paint[prop + '-opacity'] = this.style._opacity / 100.0;
             }
         }
     }
@@ -192,7 +196,9 @@ export class GeojsonLayer extends BaseLayer {
                 l._source = manager._sources.layers[l.source];
             }
         } else {
-            l._source = l.source = plainToClass(LayerSource, l.source);
+            if (!l._source) {
+                l._source = l.source = plainToClass(LayerSource, l.source);
+            }
         }
         // if no title has been set
         if (l.title === undefined) {
@@ -392,7 +398,9 @@ export class GeojsonLayer extends BaseLayer {
             this._events.publish('feature', CsMap.FEATURE_SELECT, {
                 feature: (e.features.length > 0) ? e.features[0] : undefined,
                 features: e.features,
-                context: e
+                context: e,
+                lngLat: e.lngLat,
+                layer: this
             } as FeatureEventDetails);
         }
     }
@@ -422,7 +430,7 @@ export class GeojsonLayer extends BaseLayer {
     }
 
 
-    
+
 
     private removeExtensions() {
         if (this._extensions && this._extensions.length) {
@@ -433,7 +441,7 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
-    private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {        
+    private createPopup(map: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
         let popup: string | undefined = undefined;
         e.feature = BaseLayer.getFeatureFromEventDetails(e);
         // if (layer.style && layer.style.popup) {

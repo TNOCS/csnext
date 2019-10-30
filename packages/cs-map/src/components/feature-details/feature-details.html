@@ -1,5 +1,5 @@
-<div>
-    <v-toolbar>
+<div class="feature-details-container">
+    <!-- <v-toolbar>
         <v-toolbar-title class="feature-details-title"
             >{{ title }}
             <div>
@@ -38,57 +38,57 @@
                 background-color="transparent"
             >
                 <v-tab href="#feature-details">Details</v-tab>
-                <!-- <v-tab href="#filters">Filter</v-tab> -->
+                 <v-tab href="#filters">Filter</v-tab> 
             </v-tabs>
         </template>
-    </v-toolbar>
+    </v-toolbar> -->
 
-    <div style="position:absolute;top:125px;bottom:0;left:0;right:0">
-        <v-tabs-items id="feature-properties-tab" v-model="tabs" flat>
-            <v-tab-item value="feature-details">
-                <v-text-field
-                    solo
-                    v-if="filterPropertiesEnabled"
-                    class="layer-filter-field"
-                    v-model="filterProperties"
-                    label="filter"
-                    append-icon="search"
-                ></v-text-field>
-                <div v-if="widget.data">
-                    <v-expansion-panels
-                        multiple
-                        v-model="sectionsPanels"
-                        class="section-expansion-panel"
+    <!-- <v-tabs-items id="feature-properties-tab" v-model="tabs" flat>
+        <v-tab-item value="feature-details" >
+            <v-text-field
+                solo
+                v-if="filterPropertiesEnabled"
+                class="layer-filter-field"
+                v-model="filterProperties"
+                label="filter"
+                append-icon="search"
+            ></v-text-field> -->
+
+            <simplebar v-if="sections" style="height:100%; padding-right: 12px" >
+                <v-expansion-panels
+                    multiple 
+                    v-model="sectionsPanels"
+                    class="section-expansion-panel"
+                >
+                    <v-expansion-panel
+                        v-for="section in sections"
+                        :key="section.id"
                     >
-                        <v-expansion-panel v-for="section in sections">
-                            <v-expansion-panel-header
-                                class="feature-section-title"
-                                v-if="sections.length>1"
+                        <v-expansion-panel-header class="feature-section-title">
+                            {{ section.title }}
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <div
+                                v-for="property in section.properties"
+                                class="feature-property"
                             >
-                                {{ section.title }}
-                            </v-expansion-panel-header>
-                            <v-expansion-panel-content>
                                 <div
-                                    v-for="property in section.properties"
-                                    class="feature-property"
+                                    class="feature-property-key"
+                                    @click="updateStyle(property)"
+                                    :class="{ 'feature-legend': property.legends.length>0 }"
                                 >
-                                    <div
-                                        class="feature-property-key"
-                                        :class="{ 'feature-legend': property.legends.length>0 }"
-                                    >
-                                        <!-- @click="updateStyle(property)" -->
-                                        {{ property.type.title }}
-                                    </div>
-                                    <div class="feature-property-value">
-                                        {{ property.display }}
-                                    </div>
+                                    <!--  -->
+                                    {{ property.type.title }}
                                 </div>
-                            </v-expansion-panel-content>
-                        </v-expansion-panel>
-                    </v-expansion-panels>
-                </div>
-            </v-tab-item>
-            <!-- <v-tab-item value="filters"> <h1>items</h1> </v-tab-item> -->
-        </v-tabs-items>
-    </div>
+                                <div class="feature-property-value">
+                                    {{ property.display }}
+                                </div>
+                            </div>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </simplebar>
+        <!-- </v-tab-item>
+        
+    </v-tabs-items> -->
 </div>

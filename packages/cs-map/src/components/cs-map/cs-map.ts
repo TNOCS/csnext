@@ -3,17 +3,15 @@ import Vue from 'vue';
 import { IWidget, guidGenerator, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 const MapboxDraw = require('@mapbox/mapbox-gl-draw');
 import mapboxgl, { CirclePaint, MapboxOptions, GeolocateControl, ScaleControl } from 'mapbox-gl';
 import { Feature, FeatureCollection } from 'geojson';
-import { MapboxStyleDefinition, MapboxStyleSwitcherControl } from './../style-switcher/style-switcher';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-// import _mapDrawOption from './map-draw-opt.json';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-import { LayerEditorControl } from './../layer-editor/layer-editor-control';
-import { LayerLegendControl } from './../layer-legend-control/layer-legend-control';
-import 'mapbox-gl/dist/mapbox-gl.css';
+
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
@@ -30,15 +28,39 @@ import {
     FeatureDetails,
     LayerSelection,
     LayerSelectionOptions,
-    FeatureEventDetails
+    FeatureEventDetails,
+    LayerEditor
 } from '../../.';
-import { GridControl } from '../grid-control/grid-control';
+
 import { WidgetBase } from '@csnext/cs-client';
+import { MapboxStyleSwitcherControl, MapboxStyleDefinition, GridControl, LayerDraw, LayerLegendControl } from '../../controls';
 
 @Component({
     template: require('./cs-map.html')
 })
 export class CsMap extends WidgetBase {
+
+    // topics used for events
+    public static FEATURE_SELECT = 'select';
+    public static FEATURE_CREATED = 'created';
+    public static FEATURE_DELETED = 'deleted';
+    public static FEATURE_MOUSE_ENTER = 'enter';
+    public static FEATURE_MOUSE_LEAVE = 'leave';
+    public static FEATURE_UPDATED = 'updated';
+    public static LAYER_UPDATED = 'layer.updated';
+    public static LAYER_ACTIVATED = 'layer.activated';
+    public static LAYER_DISABLED = 'layer.disabled';
+    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
+    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
+    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
+    public static DRAWLAYER = 'drawlayer';
+    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
+    public static MAP_CLICK = 'map.click';
+    public static MAP_LOADED = 'loaded';
+    public static SEARCH_RESULT_SELECT = 'search.select';
+
+    private readonly FEATURE_SIDEBAR_ID = 'feature';
+
     public get pointPickerActivated(): boolean {
         return this._pointerPickerActivated;
     }
@@ -65,24 +87,6 @@ export class CsMap extends WidgetBase {
         }
         return new MapOptions();
     }
-
-    public static FEATURE_SELECT = 'select';
-    public static FEATURE_CREATED = 'created';
-    public static FEATURE_DELETED = 'deleted';
-    public static FEATURE_MOUSE_ENTER = 'enter';
-    public static FEATURE_MOUSE_LEAVE = 'leave';
-    public static FEATURE_UPDATED = 'updated';
-    public static LAYER_UPDATED = 'layer.updated';
-    public static LAYER_ACTIVATED = 'layer.activated';
-    public static LAYER_DISABLED = 'layer.disabled';
-    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
-    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
-    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
-    public static DRAWLAYER = 'drawlayer';
-    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
-    public static MAP_CLICK = 'map.click';
-    public static MAP_LOADED = 'loaded';
-    public static SEARCH_RESULT_SELECT = 'search.select';
 
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -118,7 +122,7 @@ export class CsMap extends WidgetBase {
             CsMap.serviceTypes.push(type);
         }
     }
-    public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
+    // public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
 
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
@@ -238,7 +242,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showGeolocater')
-    public showGeolocator(enabled: boolean = true, old? : boolean) {        
+    public showGeolocator(enabled: boolean = true, old?: boolean) {
         console.log(`Show geolocator: ${enabled}`);
         if (!enabled && old && this.geolocatorControl) {
             this.map.removeControl(this.geolocatorControl);
@@ -249,6 +253,52 @@ export class CsMap extends WidgetBase {
             }
             this.map.addControl(this.geolocatorControl, 'top-left');
         }
+    }
+
+    @Watch('widget.options.showBuildings')
+    public showBuildings(enabled: boolean = true, old?: boolean) {
+        if (!enabled && old) {
+            this.map.removeLayer('3d-buildings');
+        }
+        if (enabled) {
+
+            let layers = this.map.getStyle().layers;
+            if (!layers) { return; }
+
+            var labelLayerId;
+            for (var i = 0; i < layers.length; i++) {
+                if (layers[i].type === 'symbol' && layers[i].layout!['text-field']) {
+                    labelLayerId = layers[i].id;
+                    break;
+                }
+            }
+            this.map.addLayer({
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+
+                    // use an 'interpolate' expression to add a smooth transition effect to the
+                    // buildings as the user zooms in
+                    'fill-extrusion-height': [
+                        "interpolate", ["linear"], ["zoom"],
+                        15, 0,
+                        15.05, ["get", "height"]
+                    ],
+                    'fill-extrusion-base': [
+                        "interpolate", ["linear"], ["zoom"],
+                        15, 0,
+                        15.05, ["get", "min_height"]
+                    ],
+                    'fill-extrusion-opacity': .6
+                }
+            }, labelLayerId);
+        }
+
     }
 
     @Watch('widget.options.showLayers')
@@ -281,13 +331,6 @@ export class CsMap extends WidgetBase {
     }
 
     public beforeDestroy() {
-        for (const key in this.busHandlers) {
-            if (this.busHandlers.hasOwnProperty(key)) {
-                const element = this.busHandlers[key];
-                element.bus.unsubscribe(element.handle);
-
-            }
-        }
         this.$cs.CloseRightSidebarKey('feature');
         this.$cs.CloseRightSidebarKey('layers');
 
@@ -367,11 +410,11 @@ export class CsMap extends WidgetBase {
                 layer._source.LoadSource().then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);                        
+                        this.addSource(layer._source);
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
-                            layer.addLayer(this);                            
+                            layer.addLayer(this);
                         }
 
                         if (this.manager) {
@@ -383,38 +426,42 @@ export class CsMap extends WidgetBase {
 
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
-                                this.busHandlers['layer-activated'] = {
-                                    bus: layer._events, handle: layer._events.subscribe(
-                                        'feature',
-                                        (a: string, f: FeatureEventDetails) => {
-                                            if (a === CsMap.FEATURE_SELECT) {
-                                                if (
-                                                    this.$cs &&
-                                                    layer.openFeatureDetails &&
-                                                    layer.openFeatureDetails ===
-                                                    true
-                                                ) {
-
-                                                    this.$cs.AddSidebar('feature', { icon: 'map' });
-                                                    this.$cs.OpenRightSidebarWidget(
-                                                        {
-                                                            component: FeatureDetails,
-                                                            data: {
-                                                                feature: f.feature,
-                                                                layer,
-                                                                manager: this
-                                                                    .manager
-                                                            }
+                                this.busManager.subscribe(layer._events, 'feature', (
+                                    (a: string, f: FeatureEventDetails) => {                                       
+                                        if (a === CsMap.FEATURE_SELECT) {
+                                            if (
+                                                this.$cs &&
+                                                layer.openFeatureDetails &&
+                                                layer.openFeatureDetails ===
+                                                true
+                                            ) {                                                                                                
+                                                this.$cs.AddSidebar('feature', { icon: 'map' });
+                                                this.$cs.OpenRightSidebarWidget(
+                                                    {
+                                                        id: 'feature-details-component',
+                                                        component: FeatureDetails,
+                                                        options: {
+                                                            showToolbar: false,
+                                                            toolbarOptions: {
+                                                                backgroundColor: 'primary',
+                                                                dense: true
+                                                            },
+                                                            hideSidebarButton: true
                                                         },
-                                                        { open: true },
-                                                        'feature'
-                                                    );
-                                                }
+                                                        data: {
+                                                            feature: f.feature,
+                                                            layer,
+                                                            manager: this
+                                                                .manager
+                                                        }
+                                                    },
+                                                    { open: true },
+                                                    this.FEATURE_SIDEBAR_ID,
+                                                    false
+                                                );
                                             }
                                         }
-
-                                    )
-                                };
+                                    }));
 
                             }
 
@@ -508,14 +555,11 @@ export class CsMap extends WidgetBase {
             // subscribe to widget events
             if (this.widget.events) {
                 // check if widget has been resized
-                this.busHandlers['map-resize'] = {
-                    bus: this.widget.events, handle: this.widget.events.subscribe('resize', () => {
-                        Vue.nextTick(() => {
-                            this.map.resize();
-                        });
-
-                    })
-                };
+                this.busManager.subscribe(this.widget.events, 'resize', () => {
+                    Vue.nextTick(() => {
+                        this.map.resize();
+                    });
+                });                
             }
 
             if (this.mapOptions.showDraw) {
@@ -553,7 +597,7 @@ export class CsMap extends WidgetBase {
                 if (this.manager) {
                     // add layer editor control (adding features, lines, etc.)
                     if (this.mapOptions.showEditor) {
-                        const layerEditorControl = new LayerEditorControl(
+                        const layerEditorControl = new LayerDraw(
                             this.manager
                         );
                         this.map.addControl(layerEditorControl);
@@ -592,11 +636,14 @@ export class CsMap extends WidgetBase {
 
                 this.showGeolocator(this.mapOptions.showGeolocater);
 
+                this.showBuildings(this.mapOptions.showBuildings);
+
 
 
             });
         });
     }
+
 
     public addSource(source: LayerSource) {
         if (source.id) {
@@ -741,17 +788,11 @@ export class CsMap extends WidgetBase {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        this.busHandlers['layer-events-' + l.id] = {
-                            bus: l._events, handle:
-                                l._events.subscribe(
-                                    'feature',
-                                    (a: string) => {
-                                        if (a === CsMap.FEATURE_SELECT) {
-                                            // select feature
-                                        }
-                                    }
-                                )
-                        };
+                        this.busManager.subscribe(l._events, 'feature', (a:string) =>{
+                            if (a === CsMap.FEATURE_SELECT) {
+                                // select feature
+                            }
+                        });                        
                     }
                 });
             }
@@ -818,16 +859,12 @@ export class CsMap extends WidgetBase {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        this.busHandlers['layer-feature-' + l.id] = {
-                            bus: l._events, handle: l._events.subscribe(
-                                'feature',
-                                (a: string) => {
-                                    if (a === CsMap.FEATURE_SELECT) {
-                                        // select feature
-                                    }
-                                }
-                            )
-                        };
+                        this.busManager.subscribe(l._events, 'feature', (a: string) => {
+                            if (a === CsMap.FEATURE_SELECT) {
+                                // select feature
+                            }
+                        })
+                        
                     }
                 });
 
@@ -873,18 +910,5 @@ export class CsMap extends WidgetBase {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
 
-
-
-        // this.map.addSource('mask',);
-
-        //     {
-        //     "id": "zmask",
-        //     "source": "mask",
-        //     "type": "fill",
-        //     "paint": {
-        //       "fill-color": "#4192DD",
-        //       'fill-opacity': 0.999
-        //     }
-        //   });
     }
 }

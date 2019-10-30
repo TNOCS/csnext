@@ -14,12 +14,11 @@ import {
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 import { ProjectManager } from './project-manager';
-import { CsApp, CsDashboard, Logger, CsWidget } from '../';
+import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget } from '../';
 import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
-import { MdWidget } from '../widgets/markdown/md-widget';
 import { KeyboardManager } from './keyboard-manager';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
@@ -265,7 +264,7 @@ export class AppState extends AppStateBase {
     if (options && !options.type) { options.type = 'string'; }
     switch (options.type) {
       case 'string':
-        this.OpenRightSidebarWidget({ component: MdWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
+        this.OpenRightSidebarWidget({ component: HtmlWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
         break;
     }
   }
@@ -430,7 +429,12 @@ export class AppState extends AppStateBase {
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default') {
+  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
+
+    if (!replace && widget.id && this.findWidget(widget.id)) {
+      return;
+    }
+
 
     this.OpenRightSidebarKey(key);
     this.ClearRightSidebar();

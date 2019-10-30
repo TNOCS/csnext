@@ -40,20 +40,20 @@ export class GridControl implements IControl {
             styleElement.innerText = style.title;
             styleElement.classList.add(style.title.replace(/[^a-z0-9-]/gi, '_'));
             styleElement.dataset.uri = JSON.stringify(style);
-            styleElement.addEventListener("click", event => {
-                const srcElement = event.srcElement as HTMLButtonElement;
+            // styleElement.addEventListener("click", event => {
+            //     const srcElement = event.srcElement as HTMLButtonElement;
 
 
-                // update style
+            //     // update style
 
-                mapStyleContainer.style.display = "none";
-                styleButton.style.display = "block";
-                const elms = mapStyleContainer.getElementsByClassName("active");
-                while (elms[0]) {
-                    elms[0].classList.remove("active");
-                }
-                srcElement.classList.add("active");
-            });
+            //     mapStyleContainer.style.display = "none";
+            //     styleButton.style.display = "block";
+            //     const elms = mapStyleContainer.getElementsByClassName("active");
+            //     while (elms[0]) {
+            //         elms[0].classList.remove("active");
+            //     }
+            //     srcElement.classList.add("active");
+            // });
             // if (style.title === MapboxStyleSwitcherControl.DEFAULT_STYLE)
             // {
             //     styleElement.classList.add("active");
@@ -61,7 +61,7 @@ export class GridControl implements IControl {
             mapStyleContainer.appendChild(styleElement);
         }
         styleButton.classList.add("mapboxgl-ctrl-icon");
-        styleButton.classList.add("mapboxgl-style-switcher");
+        styleButton.classList.add("mapboxgl-grid-switcher");
         styleButton.addEventListener("click", () => {
             // styleButton.style.display = "none";
             // mapStyleContainer.style.display = "block";
@@ -89,7 +89,12 @@ export class GridControl implements IControl {
     public toggleGrid() {
         if (!this.manager) { return; }
         if (this.layer) {
-            this.manager.toggleLayer(this.layer);
+            if (!this.layer.Visible) {
+                this.manager.showLayer(this.layer);
+            } else {
+                this.manager.hideLayer(this.layer);
+            }
+
         } else {
             // add layer
             this.layer = new GridLayer();
@@ -97,11 +102,100 @@ export class GridControl implements IControl {
             this.layer.style = { line: true, mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
             this.layer.filter = ['>=', ['zoom'], ['number', ['get', 'level']]];
             this.layer.id = 'map-grid';
+            this.layer.hideInLayerList = true;
             this.layer.tags = ['map'];
-            this.layer.type = 'line';
-            this.layer.source = new LayerSource({ type: 'FeatureCollection', features: [] });
-            this.layer.source._loaded = true;
-            this.layer.source.id = guidGenerator();
+            this.layer.type = 'line';        
+
+            let gs: FeatureCollection = { type: 'FeatureCollection', features: [] };
+            for (let x = -180; x <= 180; x++) {
+                gs.features.push({
+                    type: 'Feature',
+                    properties: {
+                        name: x,
+                        level: 5,
+                    },
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [
+                            [
+                                x,
+                                -90
+                            ],
+                            [
+                                x,
+                                90
+                            ]
+                        ]
+                    }
+                });
+
+                for (let sx = 1; sx < 10; sx++) {
+                    gs.features.push({
+                        type: 'Feature',
+                        properties: {
+                            name: x,
+                            level: 8
+                        },
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [
+                                    x + (sx / 10.0),
+                                    -90
+                                ],
+                                [
+                                    x + (sx / 10.0),
+                                    90
+                                ]
+                            ]
+                        }
+                    });
+                }
+            }
+
+            for (let y = -90; y <= 90; y++) {
+                gs.features.push({
+                    type: 'Feature',
+                    properties: { name: y, level: 5 },
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [
+                            [
+                                -180,
+                                y
+                            ],
+                            [
+                                180, y
+                            ]
+                        ]
+                    }
+                });
+
+                for (let sy = 1; sy < 10; sy++) {
+                    gs.features.push({
+                        type: 'Feature',
+                        properties: {
+                            name: y,
+                            level: 8
+                        },
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [
+                                    -180,
+                                    y + (sy / 10.0)
+                                ],
+                                [
+                                    180, y + (sy / 10.0)
+                                ]
+                            ]
+                        }
+                    });
+                }
+            }
+
+            this.layer._source = new LayerSource(gs);
+            this.layer._source._loaded = true;
 
             this.manager.events.subscribe('layer', (a: string, e: any) => {
                 if (a === 'removed' && this.gridEnabled && e.id === this.layer.id) {
@@ -116,95 +210,7 @@ export class GridControl implements IControl {
             //     this.layer.addLayer(this.manager.MapWidget);
             // }
             this.manager.addLayer(this.layer).then(l => {
-                let gs: FeatureCollection = { type: 'FeatureCollection', features: [] };
-                for (let x = -180; x <= 180; x++) {
-                    gs.features.push({
-                        type: 'Feature',
-                        properties: {
-                            name: x,
-                            level: 5,
-                        },
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: [
-                                [
-                                    x,
-                                    -90
-                                ],
-                                [
-                                    x,
-                                    90
-                                ]
-                            ]
-                        }
-                    });
-
-                    for (let sx = 1; sx < 10; sx++) {
-                        gs.features.push({
-                            type: 'Feature',
-                            properties: {
-                                name: x,
-                                level: 8
-                            },
-                            geometry: {
-                                type: 'LineString',
-                                coordinates: [
-                                    [
-                                        x + (sx / 10.0),
-                                        -90
-                                    ],
-                                    [
-                                        x + (sx / 10.0),
-                                        90
-                                    ]
-                                ]
-                            }
-                        });
-                    }
-                }
-
-                for (let y = -90; y <= 90; y++) {
-                    gs.features.push({
-                        type: 'Feature',
-                        properties: { name: y, level: 5 },
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: [
-                                [
-                                    -180,
-                                    y
-                                ],
-                                [
-                                    180, y
-                                ]
-                            ]
-                        }
-                    });
-
-                    for (let sy = 1; sy < 10; sy++) {
-                        gs.features.push({
-                            type: 'Feature',
-                            properties: {
-                                name: y,
-                                level: 8
-                            },
-                            geometry: {
-                                type: 'LineString',
-                                coordinates: [
-                                    [
-                                        -180,
-                                        y + (sy / 10.0)
-                                    ],
-                                    [
-                                        180, y + (sy / 10.0)
-                                    ]
-                                ]
-                            }
-                        });
-                    }
-                }
-
-                this.manager.updateLayerSource(l, gs);
+                this.manager.showLayer(this.layer);                
             }).catch(e => {
                 console.log(e);
 

@@ -2,14 +2,6 @@
     padding: 5px;
 }
 
-.layer-editor-form {
-    padding: 5px;
-}
-
-.layer-editor-form .v-expansion-panel {
-    box-shadow: none !important;
-}
-
 .layer-editor-type-image {
     /* width: 32px !important; */
     margin: 10px;

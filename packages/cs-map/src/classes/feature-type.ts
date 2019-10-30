@@ -22,27 +22,44 @@ export class PropertyType {
         options: ['text', 'number']
     })
     public _key?: string;
+    @FormField({ title: 'Label', type: 'string' })
+    public label!: string;
     public type?: string;
     public description?: string;
-    @FormField({ title: 'String format', type: 'string'})
+    @FormField({ title: 'String format', type: 'string' })
     public stringFormat?: string;
+    @FormField({ title: 'Handlebar format', type: 'string' })
+    public handlebarFormat?: string;
     @FormField({ title: 'Min', type: 'number', group: 'number' })
     public min?: number;
     @FormField({ title: 'Max', type: 'number', group: 'number' })
     public max?: number;
+    public count?: number;
+    public unique?: number;
+    // public options?: any[];
+    public mean?: number;
+    public median?: number;
+    public sd?: number;
+
     @FormField({ title: 'Default', type: 'number', group: 'number' })
     public default?: number;
+    public options?: { [key: string]: string};
+    @FormField({ title: 'Section', type: 'string' })
+    public section?: string;
+    public _values?: any[];
+    
 }
 
-@Form({
-    title: 'Property Collection',    
-    keyValuesType: () => {
-        return new PropertyType();
-    }
-})
-export class PropertyCollection {
-    [key: string]: string | PropertyType;
-}
+// @Form({
+//     title: 'Property Collection',
+//     keyValuesType: () => {
+//         return new PropertyType();
+//     }
+// })
+// export class PropertyCollection {
+//     [key: string]: string | PropertyType;
+// }
+export type PropertyCollection = PropertyType[];
 
 @Form({
     title: 'Feature Types',
@@ -72,6 +89,11 @@ export class FeatureType {
         }
     })
     public properties?: PropertyCollection;
+    /**  list of properties from propertyTypeData (as key) used for this featureType, seperated by a semi column
+     * e.g: name;birthday;birthplay
+    */
+    public propertyTypeKeys?: string;
+    public propertyMap!: { [label: string]: PropertyType };
 }
 
 // "circle": {

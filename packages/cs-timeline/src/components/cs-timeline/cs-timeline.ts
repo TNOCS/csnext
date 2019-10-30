@@ -182,6 +182,13 @@ export class CsTimeline extends WidgetBase {
         if (this.WidgetOptions.logSource) {
             this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
                 this.logSource = r;
+                this.busManager.subscribe(this.logSource.bus, Topics.LOG_TOPIC, (a: string, id: string) => {
+                    if (a === Topics.SELECT_LOG_ITEM) {
+                        if (id && this.timeline) {
+                            this.timeline.setSelection(id);
+                        }
+                    }
+                })
                 this.busManager.subscribe(this.logSource.bus, 'updated', () => {
                     this.update();
                 });
@@ -303,6 +310,7 @@ export class CsTimeline extends WidgetBase {
         this.busManager.subscribe(this.widget.events, Topics.RESIZE, () => {
             this.timeline!.redraw();
         });
+        
     }
 
     // public mounted() {

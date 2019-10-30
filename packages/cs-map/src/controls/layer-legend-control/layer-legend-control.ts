@@ -11,8 +11,7 @@ export class LayerLegendControl {
         
     }
 
-    onAdd(map) {        
-        console.log('Adding layer-editor');
+    onAdd(map) {                
         this.map = map;
         this.container = document.createElement('div');
         this.container.id = 'layer-legend-' + this.manager.id;

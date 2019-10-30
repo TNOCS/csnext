@@ -234,13 +234,10 @@ export class CsWidget extends Vue {
 
   public setWidgetContent(widget: IWidget, content: any) {
     Vue.set(widget, 'content', content);
-    if (this.$refs.component) {
+    if (this.$refs.component !== undefined) {
       if ((this.$refs.component as any).contentLoaded) {
         (this.$refs.component as any).contentLoaded(content);
       }
-
-      // if (this.$refs.component)
-      // widget.component.contentLoaded(content);
     }
   }
 
@@ -321,13 +318,14 @@ export class CsWidget extends Vue {
   public mounted() {
     this.updateSize(false);
     if (!this.widget) { return; }
-    
+    if (!this.widget.component) { return; }
     // check if no datasource is defined
     if (this.widget.datasource || (this.widget._dashboard && this.widget._dashboard.datasource)) {
       this.checkWidgetContent();
     } else if ((this.$refs.component as any).contentLoaded) {
+      this.setWidgetContent(this.widget, undefined);
       // call contentloaded for empty datasources
-      (this.$refs.component as any).contentLoaded(undefined);
+      // (this.$refs.component as any).contentLoaded(undefined);
     }
   }
 
