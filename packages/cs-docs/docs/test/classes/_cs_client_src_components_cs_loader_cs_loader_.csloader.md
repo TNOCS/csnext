@@ -12,7 +12,7 @@
 
 ▸ **loadingChanged**(`d`: any): *void*
 
-*Defined in [cs-client/src/components/cs-loader/cs-loader.ts:13](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-loader/cs-loader.ts#L13)*
+*Defined in [cs-client/src/components/cs-loader/cs-loader.ts:13](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-loader/cs-loader.ts#L13)*
 
 **Parameters:**
 

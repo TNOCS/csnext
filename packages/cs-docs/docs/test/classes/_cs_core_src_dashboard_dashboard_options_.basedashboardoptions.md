@@ -18,7 +18,7 @@
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[_dashboard](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-_dashboard)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:36](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L36)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:36](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L36)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[background](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-background)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L30)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L30)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[class](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-class)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:29](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L29)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:29](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L29)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[editButton](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-editbutton)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L31)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:31](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L31)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • **icon**? : *string*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:38](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L38)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:38](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L38)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[info](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-info)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:39](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L39)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:39](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L39)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **toolbar**? : *[DashboardToolbarOptions](_cs_core_src_dashboard_dashboard_toolbar_options_.dashboardtoolbaroptions.md)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:37](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L37)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:37](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L37)*
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 *Implementation of [IDashboardOptions](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md).[touchGesturesEnabled](../interfaces/_cs_core_src_dashboard_dashboard_options_.idashboardoptions.md#optional-touchgesturesenabled)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:33](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/dashboard/dashboard-options.ts#L33)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:33](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L33)*

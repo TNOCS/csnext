@@ -12,7 +12,7 @@
 
 \+ **new CardWidget**(): *[CardWidget](_cs_client_src_widgets_card_card_widget_.cardwidget.md)*
 
-*Defined in [cs-client/src/widgets/card/card-widget.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget.ts#L30)*
+*Defined in [cs-client/src/widgets/card/card-widget.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget.ts#L30)*
 
 **Returns:** *[CardWidget](_cs_client_src_widgets_card_card_widget_.cardwidget.md)*
 
@@ -22,7 +22,7 @@
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [cs-client/src/widgets/card/card-widget.ts:19](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget.ts#L19)*
+*Defined in [cs-client/src/widgets/card/card-widget.ts:19](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget.ts#L19)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **widget**? : *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-client/src/widgets/card/card-widget.ts:17](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget.ts#L17)*
+*Defined in [cs-client/src/widgets/card/card-widget.ts:17](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget.ts#L17)*
 
 ## Accessors
 
@@ -38,7 +38,7 @@ ___
 
 • **get card**(): *[CardOptions](_cs_client_src_widgets_intro_intro_widget_options_.cardoptions.md) | undefined*
 
-*Defined in [cs-client/src/widgets/card/card-widget.ts:21](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget.ts#L21)*
+*Defined in [cs-client/src/widgets/card/card-widget.ts:21](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget.ts#L21)*
 
 **Returns:** *[CardOptions](_cs_client_src_widgets_intro_intro_widget_options_.cardoptions.md) | undefined*
 
@@ -48,6 +48,6 @@ ___
 
 • **get options**(): *[CardWidgetOptions](_cs_client_src_widgets_card_card_widget_options_.cardwidgetoptions.md) | undefined*
 
-*Defined in [cs-client/src/widgets/card/card-widget.ts:25](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget.ts#L25)*
+*Defined in [cs-client/src/widgets/card/card-widget.ts:25](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget.ts#L25)*
 
 **Returns:** *[CardWidgetOptions](_cs_client_src_widgets_card_card_widget_options_.cardwidgetoptions.md) | undefined*

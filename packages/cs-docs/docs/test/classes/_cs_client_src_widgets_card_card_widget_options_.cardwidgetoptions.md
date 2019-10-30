@@ -14,4 +14,4 @@ Markdown widget options, from vue-markdown (https://github.com/miaolz123/vue-mar
 
 • **card**? : *[CardOptions](_cs_client_src_widgets_intro_intro_widget_options_.cardoptions.md)*
 
-*Defined in [cs-client/src/widgets/card/card-widget-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/card/card-widget-options.ts#L6)*
+*Defined in [cs-client/src/widgets/card/card-widget-options.ts:6](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/card/card-widget-options.ts#L6)*

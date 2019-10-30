@@ -12,6 +12,6 @@
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-client/src/widgets/iframe/iframe-widget.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/widgets/iframe/iframe-widget.ts#L16)*
+*Defined in [cs-client/src/widgets/iframe/iframe-widget.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/widgets/iframe/iframe-widget.ts#L16)*
 
 access the original widget from configuration

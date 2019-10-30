@@ -10,7 +10,7 @@
 
 • **id**? : *string*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:14](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-details/layer-details.ts#L14)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:14](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L14)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **properties**? : *[property](_cs_map_src_components_layer_details_layer_details_.property.md)[]*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-details/layer-details.ts#L16)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L16)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:15](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-details/layer-details.ts#L15)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:15](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L15)*

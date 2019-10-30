@@ -10,7 +10,7 @@
 
 • **get Instance**(): *[Logger](_cs_client_src_services_logger_.logger.md)*
 
-*Defined in [cs-client/src/services/logger.ts:18](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/logger.ts#L18)*
+*Defined in [cs-client/src/services/logger.ts:18](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/logger.ts#L18)*
 
 **Returns:** *[Logger](_cs_client_src_services_logger_.logger.md)*
 
@@ -20,7 +20,7 @@
 
 ▸ **error**(`component`: string, `msg`: any): *void*
 
-*Defined in [cs-client/src/services/logger.ts:13](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/logger.ts#L13)*
+*Defined in [cs-client/src/services/logger.ts:13](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/logger.ts#L13)*
 
 **Parameters:**
 
@@ -37,7 +37,7 @@ ___
 
 ▸ **info**(`component`: string, `msg`: any): *void*
 
-*Defined in [cs-client/src/services/logger.ts:3](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/logger.ts#L3)*
+*Defined in [cs-client/src/services/logger.ts:3](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/logger.ts#L3)*
 
 **Parameters:**
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **warn**(`component`: string, `msg`: any): *void*
 
-*Defined in [cs-client/src/services/logger.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/logger.ts#L8)*
+*Defined in [cs-client/src/services/logger.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/logger.ts#L8)*
 
 **Parameters:**
 

@@ -31,7 +31,7 @@ onBar.on((bar)=>console.log(bar));
 
 ▸ **emit**(`event`: T): *void*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:48](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/typed-event/typed-event.ts#L48)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:48](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/typed-event/typed-event.ts#L48)*
 
 **Parameters:**
 
@@ -47,7 +47,7 @@ ___
 
 ▸ **off**(`listener`: [IListener](../modules/_cs_core_src_utils_typed_event_typed_event_.md#ilistener)‹T›): *void*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:43](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/typed-event/typed-event.ts#L43)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:43](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/typed-event/typed-event.ts#L43)*
 
 **Parameters:**
 
@@ -63,7 +63,7 @@ ___
 
 ▸ **on**(`listener`: [IListener](../modules/_cs_core_src_utils_typed_event_typed_event_.md#ilistener)‹T›): *[IDisposable](../interfaces/_cs_core_src_utils_typed_event_typed_event_.idisposable.md)*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:32](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/typed-event/typed-event.ts#L32)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:32](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/typed-event/typed-event.ts#L32)*
 
 **Parameters:**
 
@@ -79,7 +79,7 @@ ___
 
 ▸ **once**(`listener`: [IListener](../modules/_cs_core_src_utils_typed_event_typed_event_.md#ilistener)‹T›): *void*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:39](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/typed-event/typed-event.ts#L39)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:39](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/typed-event/typed-event.ts#L39)*
 
 **Parameters:**
 
@@ -95,7 +95,7 @@ ___
 
 ▸ **pipe**(`te`: [EventEmitter](_cs_core_src_utils_typed_event_typed_event_.eventemitter.md)‹T›): *[IDisposable](../interfaces/_cs_core_src_utils_typed_event_typed_event_.idisposable.md)*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:57](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/typed-event/typed-event.ts#L57)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:57](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/typed-event/typed-event.ts#L57)*
 
 **Parameters:**
 

@@ -12,7 +12,7 @@ Helper class to manage message bus subscriptions/handles. Is used by Widget and 
 
 • **busHandlers**: *object*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:5](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L5)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:5](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L5)*
 
 #### Type declaration:
 
@@ -24,7 +24,7 @@ Helper class to manage message bus subscriptions/handles. Is used by Widget and 
 
 ▸ **start**(): *void*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:12](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L12)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L12)*
 
 **Returns:** *void*
 
@@ -34,7 +34,7 @@ ___
 
 ▸ **stop**(): *void*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L16)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L16)*
 
 **Returns:** *void*
 
@@ -44,7 +44,7 @@ ___
 
 ▸ **subscribe**(`bus`: [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md) | undefined, `topic`: string, `callback`: [IMessageBusCallback](../interfaces/_cs_core_src_utils_message_bus_message_bus_handle_.imessagebuscallback.md), `id?`: string): *void*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:28](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L28)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-manager.ts:28](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/message-bus-manager.ts#L28)*
 
 **Parameters:**
 

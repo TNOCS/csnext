@@ -14,7 +14,7 @@ AppState is a singleton class used for project defintion, keeping track of avail
 
 • **i18n**? : *VueI18n*
 
-*Defined in [cs-client/src/services/app-state.ts:55](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L55)*
+*Defined in [cs-client/src/services/app-state.ts:54](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L54)*
 
 Vue i18n instance
 
@@ -24,7 +24,7 @@ ___
 
 • **keyboard**: *[KeyboardManager](_cs_client_src_services_keyboard_manager_.keyboardmanager.md)* =  new KeyboardManager()
 
-*Defined in [cs-client/src/services/app-state.ts:57](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L57)*
+*Defined in [cs-client/src/services/app-state.ts:56](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L56)*
 
 manages keyboard shortcuts
 
@@ -34,7 +34,7 @@ ___
 
 • **loaders**: *object*
 
-*Defined in [cs-client/src/services/app-state.ts:59](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L59)*
+*Defined in [cs-client/src/services/app-state.ts:58](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L58)*
 
 #### Type declaration:
 
@@ -46,7 +46,7 @@ ___
 
 • **logger**: *any* =  Logger.Instance
 
-*Defined in [cs-client/src/services/app-state.ts:51](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L51)*
+*Defined in [cs-client/src/services/app-state.ts:50](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L50)*
 
 Logger
 
@@ -56,7 +56,7 @@ ___
 
 • **projectManager**? : *[ProjectManager](_cs_client_src_services_project_manager_.projectmanager.md)*
 
-*Defined in [cs-client/src/services/app-state.ts:49](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L49)*
+*Defined in [cs-client/src/services/app-state.ts:48](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L48)*
 
 Manages active project
 
@@ -66,7 +66,7 @@ ___
 
 • **router**? : *VueRouter*
 
-*Defined in [cs-client/src/services/app-state.ts:53](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L53)*
+*Defined in [cs-client/src/services/app-state.ts:52](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L52)*
 
 Vue router instance
 
@@ -76,7 +76,7 @@ ___
 
 • **socket**? : *Socket*
 
-*Defined in [cs-client/src/services/app-state.ts:47](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L47)*
+*Defined in [cs-client/src/services/app-state.ts:46](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L46)*
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 ▪ **DASHBOARD_CHANGED**: *string* = "dashboard-changed"
 
-*Defined in [cs-client/src/services/app-state.ts:34](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L34)*
+*Defined in [cs-client/src/services/app-state.ts:33](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L33)*
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 ▪ **DASHBOARD_MAIN**: *string* = "dashboard.main"
 
-*Defined in [cs-client/src/services/app-state.ts:33](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L33)*
+*Defined in [cs-client/src/services/app-state.ts:32](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L32)*
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 ▪ **DIALOG**: *string* = "dialog"
 
-*Defined in [cs-client/src/services/app-state.ts:28](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L28)*
+*Defined in [cs-client/src/services/app-state.ts:27](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L27)*
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 ▪ **DIALOG_ADDED**: *string* = "dialog-added"
 
-*Defined in [cs-client/src/services/app-state.ts:29](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L29)*
+*Defined in [cs-client/src/services/app-state.ts:28](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L28)*
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 ▪ **LOADERS**: *string* = "loaders"
 
-*Defined in [cs-client/src/services/app-state.ts:35](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L35)*
+*Defined in [cs-client/src/services/app-state.ts:34](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L34)*
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 ▪ **NO**: *string* = "NO"
 
-*Defined in [cs-client/src/services/app-state.ts:37](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L37)*
+*Defined in [cs-client/src/services/app-state.ts:36](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L36)*
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 ▪ **RIGHTSIDEBAR**: *string* = "rightsidebar"
 
-*Defined in [cs-client/src/services/app-state.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L30)*
+*Defined in [cs-client/src/services/app-state.ts:29](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L29)*
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 ▪ **RIGHTSIDEBAR_ADDED**: *string* = "rightsidebar-added"
 
-*Defined in [cs-client/src/services/app-state.ts:32](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L32)*
+*Defined in [cs-client/src/services/app-state.ts:31](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L31)*
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 ▪ **RIGHTSIDEBAR_REMOVED**: *string* = "rightsidebar-removed"
 
-*Defined in [cs-client/src/services/app-state.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L31)*
+*Defined in [cs-client/src/services/app-state.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L30)*
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 ▪ **YES**: *string* = "YES"
 
-*Defined in [cs-client/src/services/app-state.ts:36](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L36)*
+*Defined in [cs-client/src/services/app-state.ts:35](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L35)*
 
 ## Accessors
 
@@ -164,7 +164,7 @@ ___
 
 • **get Instance**(): *[AppState](_cs_client_src_services_app_state_.appstate.md)*
 
-*Defined in [cs-client/src/services/app-state.ts:43](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L43)*
+*Defined in [cs-client/src/services/app-state.ts:42](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L42)*
 
 Get singleton instance of appstate
 
@@ -176,7 +176,7 @@ Get singleton instance of appstate
 
 ▸ **AddLoader**(`id?`: string, `title?`: string): *string*
 
-*Defined in [cs-client/src/services/app-state.ts:162](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L162)*
+*Defined in [cs-client/src/services/app-state.ts:161](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L161)*
 
 **Parameters:**
 
@@ -193,7 +193,7 @@ ___
 
 ▸ **AddMenu**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:184](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L184)*
+*Defined in [cs-client/src/services/app-state.ts:183](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L183)*
 
 **Parameters:**
 
@@ -209,7 +209,7 @@ ___
 
 ▸ **AddSidebar**(`id`: string, `sidebar`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:200](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L200)*
+*Defined in [cs-client/src/services/app-state.ts:199](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L199)*
 
 **Parameters:**
 
@@ -226,7 +226,7 @@ ___
 
 ▸ **ClearNotifications**(): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:297](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L297)*
+*Defined in [cs-client/src/services/app-state.ts:296](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L296)*
 
 **Returns:** *void*
 
@@ -236,7 +236,7 @@ ___
 
 ▸ **ClearRightSidebar**(): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:335](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L335)*
+*Defined in [cs-client/src/services/app-state.ts:334](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L334)*
 
 if rightsidebar exists, clear component and close
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **CloseInfo**(): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:369](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L369)*
+*Defined in [cs-client/src/services/app-state.ts:368](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L368)*
 
 **Returns:** *void*
 
@@ -258,7 +258,7 @@ ___
 
 ▸ **CloseRightSidebar**(): *boolean*
 
-*Defined in [cs-client/src/services/app-state.ts:351](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L351)*
+*Defined in [cs-client/src/services/app-state.ts:350](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L350)*
 
 **Returns:** *boolean*
 
@@ -268,7 +268,7 @@ ___
 
 ▸ **CloseRightSidebarKey**(`id`: string): *boolean*
 
-*Defined in [cs-client/src/services/app-state.ts:360](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L360)*
+*Defined in [cs-client/src/services/app-state.ts:359](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L359)*
 
 **Parameters:**
 
@@ -284,7 +284,7 @@ ___
 
 ▸ **CloseRightSidebarWidget**(`id`: string): *boolean*
 
-*Defined in [cs-client/src/services/app-state.ts:375](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L375)*
+*Defined in [cs-client/src/services/app-state.ts:374](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L374)*
 
 If a rightsidebar exists, it will remove a specific widget
 
@@ -302,7 +302,7 @@ ___
 
 ▸ **GetLoaders**(): *object*
 
-*Defined in [cs-client/src/services/app-state.ts:180](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L180)*
+*Defined in [cs-client/src/services/app-state.ts:179](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L179)*
 
 **Returns:** *object*
 
@@ -314,7 +314,7 @@ ___
 
 ▸ **OpenInfo**(`options`: [InfoOptions](_cs_core_src_dashboard_dashboard_options_.infooptions.md) | string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:261](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L261)*
+*Defined in [cs-client/src/services/app-state.ts:260](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L260)*
 
 **Parameters:**
 
@@ -330,7 +330,7 @@ ___
 
 ▸ **OpenRightSidebar**(`dashboard?`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:411](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L411)*
+*Defined in [cs-client/src/services/app-state.ts:410](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L410)*
 
 **Parameters:**
 
@@ -346,7 +346,7 @@ ___
 
 ▸ **OpenRightSidebarKey**(`key`: string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:396](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L396)*
+*Defined in [cs-client/src/services/app-state.ts:395](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L395)*
 
 **Parameters:**
 
@@ -360,9 +360,9 @@ ___
 
 ###  OpenRightSidebarWidget
 
-▸ **OpenRightSidebarWidget**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md), `options?`: [ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md), `key`: string): *void*
+▸ **OpenRightSidebarWidget**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md), `options?`: [ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md), `key`: string, `replace`: boolean): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:433](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L433)*
+*Defined in [cs-client/src/services/app-state.ts:432](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L432)*
 
 If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget
 
@@ -373,6 +373,7 @@ Name | Type | Default |
 `widget` | [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md) | - |
 `options?` | [ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md) | - |
 `key` | string | "default" |
+`replace` | boolean | true |
 
 **Returns:** *void*
 
@@ -382,7 +383,7 @@ ___
 
 ▸ **RemoveLoader**(`id`: string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:172](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L172)*
+*Defined in [cs-client/src/services/app-state.ts:171](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L171)*
 
 **Parameters:**
 
@@ -398,7 +399,7 @@ ___
 
 ▸ **RemoveMenu**(`menuId`: string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:192](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L192)*
+*Defined in [cs-client/src/services/app-state.ts:191](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L191)*
 
 **Parameters:**
 
@@ -414,7 +415,7 @@ ___
 
 ▸ **RemoveSidebar**(`id`: string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:214](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L214)*
+*Defined in [cs-client/src/services/app-state.ts:213](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L213)*
 
 **Parameters:**
 
@@ -430,7 +431,7 @@ ___
 
 ▸ **ToggleRightSidebar**(`key?`: string): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:418](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L418)*
+*Defined in [cs-client/src/services/app-state.ts:417](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L417)*
 
 **Parameters:**
 
@@ -446,7 +447,7 @@ ___
 
 ▸ **ToggleRightSidebarWidget**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md), `options?`: [ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:461](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L461)*
+*Defined in [cs-client/src/services/app-state.ts:465](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L465)*
 
 **Parameters:**
 
@@ -463,7 +464,7 @@ ___
 
 ▸ **Translate**(`textKey`: string, `values?`: object): *string*
 
-*Defined in [cs-client/src/services/app-state.ts:467](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L467)*
+*Defined in [cs-client/src/services/app-state.ts:471](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L471)*
 
 **Parameters:**
 
@@ -480,7 +481,7 @@ ___
 
 ▸ **TriggerDialog**(`dialog`: [IDialog](../interfaces/_cs_core_src_interactions_dialog_.idialog.md)): *Promise‹string›*
 
-*Defined in [cs-client/src/services/app-state.ts:304](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L304)*
+*Defined in [cs-client/src/services/app-state.ts:303](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L303)*
 
 **Parameters:**
 
@@ -496,7 +497,7 @@ ___
 
 ▸ **TriggerNotification**(`notification`: [INotification](../interfaces/_cs_core_src_interactions_notification_.inotification.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:274](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L274)*
+*Defined in [cs-client/src/services/app-state.ts:273](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L273)*
 
 Triggers notification
 
@@ -514,7 +515,7 @@ ___
 
 ▸ **TriggerQuestionDialog**(`title`: string, `text`: string, `actions`: string[]): *Promise‹string›*
 
-*Defined in [cs-client/src/services/app-state.ts:327](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L327)*
+*Defined in [cs-client/src/services/app-state.ts:326](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L326)*
 
 **Parameters:**
 
@@ -532,7 +533,7 @@ ___
 
 ▸ **TriggerYesNoQuestionDialog**(`title`: string, `text`: string): *Promise‹string›*
 
-*Defined in [cs-client/src/services/app-state.ts:315](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L315)*
+*Defined in [cs-client/src/services/app-state.ts:314](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L314)*
 
 **Parameters:**
 
@@ -549,7 +550,7 @@ ___
 
 ▸ **UpdateBreadCrumbs**(`d?`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md), `main`: boolean): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:221](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L221)*
+*Defined in [cs-client/src/services/app-state.ts:220](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L220)*
 
 **Parameters:**
 
@@ -566,7 +567,7 @@ ___
 
 ▸ **findWidget**(`id`: string, `dashboard?`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md) | undefined*
 
-*Defined in [cs-client/src/services/app-state.ts:475](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L475)*
+*Defined in [cs-client/src/services/app-state.ts:479](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L479)*
 
 **Parameters:**
 
@@ -583,7 +584,7 @@ ___
 
 ▸ **init**(`project`: [IProject](../interfaces/_cs_core_src_project_project_.iproject.md)): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:86](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L86)*
+*Defined in [cs-client/src/services/app-state.ts:85](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L85)*
 
 Initialize the project state, dashboard managers and data summaries handlers
 
@@ -601,7 +602,7 @@ ___
 
 ▸ **initSocket**(): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:65](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L65)*
+*Defined in [cs-client/src/services/app-state.ts:64](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L64)*
 
 **Returns:** *void*
 
@@ -611,7 +612,7 @@ ___
 
 ▸ **loadDatasource**<**T**>(`source`: [IDatasource](../interfaces/_cs_core_src_datasources_datasource_.idatasource.md) | string): *Promise‹T›*
 
-*Defined in [cs-client/src/services/app-state.ts:254](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L254)*
+*Defined in [cs-client/src/services/app-state.ts:253](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L253)*
 
 loads specific datasource in memory. Returns selected datasource as a promise
 
@@ -633,7 +634,7 @@ ___
 
 ▸ **updateDatasource**(`id`: string, `value`: any): *void*
 
-*Defined in [cs-client/src/services/app-state.ts:242](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/app-state.ts#L242)*
+*Defined in [cs-client/src/services/app-state.ts:241](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/app-state.ts#L241)*
 
 **Parameters:**
 

@@ -19,7 +19,7 @@
 
 *Inherited from [ILayerExtensionType](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md).[getInstance](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md#optional-getinstance)*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:12](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/ilayer-extension.ts#L12)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L12)*
 
 #### Type declaration:
 
@@ -39,7 +39,7 @@ ___
 
 *Inherited from [ILayerExtensionType](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md).[id](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md#id)*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/ilayer-extension.ts#L9)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L9)*
 
 extension id
 
@@ -51,7 +51,7 @@ ___
 
 *Inherited from [ILayerExtensionType](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md).[options](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md#optional-options)*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:11](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/ilayer-extension.ts#L11)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L11)*
 
 extension options
 
@@ -61,7 +61,7 @@ extension options
 
 ▸ **start**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *any*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/ilayer-extension.ts#L16)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L16)*
 
 **Parameters:**
 
@@ -77,6 +77,6 @@ ___
 
 ▸ **stop**(): *any*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:17](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/ilayer-extension.ts#L17)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:17](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L17)*
 
 **Returns:** *any*

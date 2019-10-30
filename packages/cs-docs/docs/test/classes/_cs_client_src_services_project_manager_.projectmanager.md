@@ -10,7 +10,7 @@
 
 \+ **new ProjectManager**(`project`: [IProject](../interfaces/_cs_core_src_project_project_.iproject.md)): *[ProjectManager](_cs_client_src_services_project_manager_.projectmanager.md)*
 
-*Defined in [cs-client/src/services/project-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/project-manager.ts#L9)*
+*Defined in [cs-client/src/services/project-manager.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/project-manager.ts#L9)*
 
 **Parameters:**
 
@@ -26,7 +26,7 @@ Name | Type | Default |
 
 • **dashboardManager**: *[DashboardManager](_cs_client_src_services_dashboard_manager_.dashboardmanager.md)*
 
-*Defined in [cs-client/src/services/project-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/project-manager.ts#L9)*
+*Defined in [cs-client/src/services/project-manager.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/project-manager.ts#L9)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **datasourceManager**: *[DatasourceManager](_cs_client_src_services_datasource_manager_.datasourcemanager.md)*
 
-*Defined in [cs-client/src/services/project-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/project-manager.ts#L7)*
+*Defined in [cs-client/src/services/project-manager.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/project-manager.ts#L7)*
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 • **layoutManager**: *[LayoutManager](_cs_client_src_services_layout_manager_.layoutmanager.md)*
 
-*Defined in [cs-client/src/services/project-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/services/project-manager.ts#L8)*
+*Defined in [cs-client/src/services/project-manager.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/services/project-manager.ts#L8)*

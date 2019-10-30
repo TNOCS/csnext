@@ -12,7 +12,7 @@
 
 • **dateFormatted**: *string* =  this.formatDate(new Date().toISOString().substr(0, 10))
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:29](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L29)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:28](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L28)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **dateMenu**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L30)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:29](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L29)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **datestring**? : *string*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:28](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L28)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:27](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L27)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **field**? : *[IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:27](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L27)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:26](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L26)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **target**? : *object*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:26](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L26)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:25](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L25)*
 
 access the original widget from configuration
 
@@ -54,7 +54,7 @@ ___
 
 • **timeMenu**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L31)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L30)*
 
 ## Accessors
 
@@ -62,13 +62,13 @@ ___
 
 • **get DateValue**(): *string | undefined*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:76](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L76)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:75](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L75)*
 
 **Returns:** *string | undefined*
 
 • **set DateValue**(`v`: string | undefined): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:84](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L84)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:83](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L83)*
 
 **Parameters:**
 
@@ -84,13 +84,13 @@ ___
 
 • **get TimeValue**(): *string | undefined*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:96](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L96)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:95](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L95)*
 
 **Returns:** *string | undefined*
 
 • **set TimeValue**(`v`: string | undefined): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:104](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L104)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:103](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L103)*
 
 **Parameters:**
 
@@ -106,7 +106,7 @@ Name | Type |
 
 ▸ **addKeyObject**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:188](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L188)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:187](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L187)*
 
 **Parameters:**
 
@@ -122,7 +122,7 @@ ___
 
 ▸ **changed**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:50](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L50)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:49](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L49)*
 
 **Parameters:**
 
@@ -138,7 +138,7 @@ ___
 
 ▸ **deleteKeyFromObject**(`key`: string, `field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:145](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L145)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:144](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L144)*
 
 **Parameters:**
 
@@ -155,7 +155,7 @@ ___
 
 ▸ **fieldOptions**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *any*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:164](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L164)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:163](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L163)*
 
 **Parameters:**
 
@@ -171,7 +171,7 @@ ___
 
 ▸ **fieldUpdated**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:160](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L160)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:159](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L159)*
 
 **Parameters:**
 
@@ -187,7 +187,7 @@ ___
 
 ▸ **formatDate**(`date`: any): *string | undefined*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:128](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L128)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:127](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L127)*
 
 **Parameters:**
 
@@ -203,7 +203,7 @@ ___
 
 ▸ **formattedDate**(`date`: number): *string | undefined*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:116](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L116)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:115](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L115)*
 
 **Parameters:**
 
@@ -219,7 +219,7 @@ ___
 
 ▸ **formattedTime**(`date`: number): *string | undefined*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:122](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L122)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:121](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L121)*
 
 **Parameters:**
 
@@ -235,7 +235,7 @@ ___
 
 ▸ **genColor**(`i`: number): *any*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:62](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L62)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:61](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L61)*
 
 **Parameters:**
 
@@ -251,7 +251,7 @@ ___
 
 ▸ **gettanggal**(`str`: number): *string*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:68](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L68)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:67](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L67)*
 
 **Parameters:**
 
@@ -267,7 +267,7 @@ ___
 
 ▸ **keyObjectChange**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md), `oldValue`: string, `newValue`: string): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:214](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L214)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:213](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L213)*
 
 **Parameters:**
 
@@ -285,7 +285,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:239](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L239)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:238](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L238)*
 
 **Returns:** *void*
 
@@ -295,7 +295,7 @@ ___
 
 ▸ **parseDate**(`date`: any): *string*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:134](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L134)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:133](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L133)*
 
 **Parameters:**
 
@@ -311,7 +311,7 @@ ___
 
 ▸ **triggerClick**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:55](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L55)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:54](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L54)*
 
 **Parameters:**
 
@@ -327,7 +327,7 @@ ___
 
 ▸ **triggered**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:53](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L53)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:52](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L52)*
 
 **Parameters:**
 
@@ -343,7 +343,7 @@ ___
 
 ▸ **updateKey**(`key`: string, `field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:172](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L172)*
+*Defined in [cs-form/src/components/cs-form-field/cs-form-field.ts:171](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-form/src/components/cs-form-field/cs-form-field.ts#L171)*
 
 **Parameters:**
 

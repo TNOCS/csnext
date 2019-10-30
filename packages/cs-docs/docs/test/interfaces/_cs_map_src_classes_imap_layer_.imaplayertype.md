@@ -10,7 +10,7 @@
 
 • **getInstance**? : *function*
 
-*Defined in [cs-map/src/classes/imap-layer.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/imap-layer.ts#L8)*
+*Defined in [cs-map/src/classes/imap-layer.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/imap-layer.ts#L8)*
 
 #### Type declaration:
 
@@ -28,7 +28,7 @@ ___
 
 • **typeId**? : *string*
 
-*Defined in [cs-map/src/classes/imap-layer.ts:6](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/imap-layer.ts#L6)*
+*Defined in [cs-map/src/classes/imap-layer.ts:6](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/imap-layer.ts#L6)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **types**? : *string[]*
 
-*Defined in [cs-map/src/classes/imap-layer.ts:7](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/imap-layer.ts#L7)*
+*Defined in [cs-map/src/classes/imap-layer.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/imap-layer.ts#L7)*

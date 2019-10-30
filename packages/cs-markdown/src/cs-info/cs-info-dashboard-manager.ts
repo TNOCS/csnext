@@ -1,5 +1,5 @@
 import { IDashboard, Info } from '@csnext/cs-core';
-import { AppState, DashboardManagerBase, DashboardManager } from '@csnext/cs-client';
+import { AppState, DashboardManagerBase, DashboardManager, TabsLayout } from '@csnext/cs-client';
 import Vue from 'vue';
 import { CsMarkdown } from '../cs-markdown/cs-markdown';
 

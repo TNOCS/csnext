@@ -12,7 +12,7 @@
 
 • **allMenus**: *[IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)[]* =  []
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:22](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L22)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L22)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **header**? : *[IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md)*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:24](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L24)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:24](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L24)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **leftSidebar**? : *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:25](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L25)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:25](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L25)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **rightSidebar**? : *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:26](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L26)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:26](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L26)*
 
 ## Methods
 
@@ -44,7 +44,7 @@ ___
 
 ▸ **InitMenus**(): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:32](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L32)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:32](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L32)*
 
 **Returns:** *void*
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **activateMenu**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:102](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L102)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:102](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L102)*
 
 **Parameters:**
 
@@ -70,7 +70,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:108](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L108)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:108](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L108)*
 
 **Returns:** *void*
 
@@ -80,7 +80,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:113](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L113)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:113](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L113)*
 
 **Returns:** *void*
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **openDashboard**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:83](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L83)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:83](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L83)*
 
 **Parameters:**
 
@@ -106,7 +106,7 @@ ___
 
 ▸ **openRightSidebar**(`key`: string): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:79](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L79)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:79](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L79)*
 
 **Parameters:**
 
@@ -122,7 +122,7 @@ ___
 
 ▸ **toggleMenu**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [cs-client/src/components/cs-header/cs-header.ts:96](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-header/cs-header.ts#L96)*
+*Defined in [cs-client/src/components/cs-header/cs-header.ts:96](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-header/cs-header.ts#L96)*
 
 **Parameters:**
 
