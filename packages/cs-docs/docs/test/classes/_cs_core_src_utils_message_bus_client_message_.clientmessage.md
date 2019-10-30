@@ -10,7 +10,7 @@
 
 \+ **new ClientMessage**(`action`: string, `data`: any): *[ClientMessage](_cs_core_src_utils_message_bus_client_message_.clientmessage.md)*
 
-*Defined in [cs-core/src/utils/message-bus/client-message.ts:2](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/client-message.ts#L2)*
+*Defined in [cs-core/src/utils/message-bus/client-message.ts:2](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/client-message.ts#L2)*
 
 **Parameters:**
 
@@ -27,7 +27,7 @@ Name | Type |
 
 • **action**: *string*
 
-*Defined in [cs-core/src/utils/message-bus/client-message.ts:3](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/client-message.ts#L3)*
+*Defined in [cs-core/src/utils/message-bus/client-message.ts:3](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/client-message.ts#L3)*
 
 ___
 
@@ -35,4 +35,4 @@ ___
 
 • **data**: *any*
 
-*Defined in [cs-core/src/utils/message-bus/client-message.ts:3](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/client-message.ts#L3)*
+*Defined in [cs-core/src/utils/message-bus/client-message.ts:3](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/client-message.ts#L3)*

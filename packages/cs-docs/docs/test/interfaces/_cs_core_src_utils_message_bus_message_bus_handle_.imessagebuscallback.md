@@ -8,7 +8,7 @@
 
 ▸ (`title`: string, `data?`: any): *any*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-handle.ts:4](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/message-bus-handle.ts#L4)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-handle.ts:4](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/message-bus-handle.ts#L4)*
 
 **Parameters:**
 

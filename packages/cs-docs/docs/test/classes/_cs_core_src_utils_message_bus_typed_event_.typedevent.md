@@ -8,13 +8,21 @@
 
 * [IBaseEvent](../interfaces/_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md)
 
+## Properties
+
+### `Private` _listeners
+
+• **_listeners**: *any[]* =  []
+
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/typed-event.ts#L11)*
+
 ## Methods
 
 ###  add
 
 ▸ **add**(`listener`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:13](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/typed-event.ts#L13)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:13](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/typed-event.ts#L13)*
 
 **Parameters:**
 
@@ -30,7 +38,7 @@ ___
 
 ▸ **remove**(`listener?`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:19](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/typed-event.ts#L19)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:19](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/typed-event.ts#L19)*
 
 **Parameters:**
 
@@ -48,7 +56,7 @@ ___
 
 *Implementation of [IBaseEvent](../interfaces/_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md)*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:34](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/utils/message-bus/typed-event.ts#L34)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:34](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/utils/message-bus/typed-event.ts#L34)*
 
 **Parameters:**
 

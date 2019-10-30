@@ -12,7 +12,15 @@
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:15](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L15)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:15](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L15)*
+
+___
+
+### `Private` `Optional` dashboardChangedHandle
+
+• **dashboardChangedHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
+
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:19](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L19)*
 
 ___
 
@@ -20,7 +28,7 @@ ___
 
 • **menu**: *boolean* = false
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L16)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:16](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L16)*
 
 ___
 
@@ -28,7 +36,7 @@ ___
 
 • **sideBar**? : *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:18](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L18)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:18](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L18)*
 
 ## Methods
 
@@ -36,7 +44,7 @@ ___
 
 ▸ **SelectDashboard**(`d`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:41](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L41)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:41](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L41)*
 
 **Parameters:**
 
@@ -52,7 +60,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:56](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L56)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:56](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L56)*
 
 **Returns:** *void*
 
@@ -62,7 +70,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:48](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L48)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:48](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L48)*
 
 **Returns:** *void*
 
@@ -72,7 +80,7 @@ ___
 
 ▸ **sideBarChanged**(`n`: any, `o`: any): *void*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L22)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:22](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L22)*
 
 **Parameters:**
 
@@ -89,6 +97,6 @@ ___
 
 ▸ **toggleMini**(): *void*
 
-*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:36](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L36)*
+*Defined in [cs-client/src/components/cs-sidebar/cs-sidebar.ts:36](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-sidebar/cs-sidebar.ts#L36)*
 
 **Returns:** *void*

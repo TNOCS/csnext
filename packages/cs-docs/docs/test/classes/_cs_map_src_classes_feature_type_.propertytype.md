@@ -10,7 +10,7 @@
 
 • **_key**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:24](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L24)*
+*Defined in [cs-map/src/classes/feature-type.ts:24](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L24)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **_values**? : *any[]*
 
-*Defined in [cs-map/src/classes/feature-type.ts:49](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L49)*
+*Defined in [cs-map/src/classes/feature-type.ts:49](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L49)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **count**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:37](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L37)*
+*Defined in [cs-map/src/classes/feature-type.ts:37](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L37)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **default**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:45](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L45)*
+*Defined in [cs-map/src/classes/feature-type.ts:45](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L45)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **description**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:28](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L28)*
+*Defined in [cs-map/src/classes/feature-type.ts:28](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L28)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **handlebarFormat**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:32](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L32)*
+*Defined in [cs-map/src/classes/feature-type.ts:32](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L32)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **label**: *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:26](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L26)*
+*Defined in [cs-map/src/classes/feature-type.ts:26](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L26)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **max**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:36](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L36)*
+*Defined in [cs-map/src/classes/feature-type.ts:36](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L36)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **mean**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:40](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L40)*
+*Defined in [cs-map/src/classes/feature-type.ts:40](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L40)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **median**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:41](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L41)*
+*Defined in [cs-map/src/classes/feature-type.ts:41](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L41)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **min**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:34](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L34)*
+*Defined in [cs-map/src/classes/feature-type.ts:34](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L34)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **options**? : *object*
 
-*Defined in [cs-map/src/classes/feature-type.ts:46](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L46)*
+*Defined in [cs-map/src/classes/feature-type.ts:46](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L46)*
 
 #### Type declaration:
 
@@ -110,7 +110,7 @@ ___
 
 • **sd**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:42](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L42)*
+*Defined in [cs-map/src/classes/feature-type.ts:42](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L42)*
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 • **section**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:48](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L48)*
+*Defined in [cs-map/src/classes/feature-type.ts:48](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L48)*
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 • **stringFormat**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L30)*
+*Defined in [cs-map/src/classes/feature-type.ts:30](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L30)*
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L16)*
+*Defined in [cs-map/src/classes/feature-type.ts:16](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L16)*
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 • **type**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:27](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L27)*
+*Defined in [cs-map/src/classes/feature-type.ts:27](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L27)*
 
 ___
 
@@ -150,4 +150,4 @@ ___
 
 • **unique**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:38](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/feature-type.ts#L38)*
+*Defined in [cs-map/src/classes/feature-type.ts:38](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/feature-type.ts#L38)*

@@ -8,11 +8,7 @@
         "**/cs-log/**",
         "**/cs-layer-server/**"
     ],
-
     "mode": "modules",
-    "excludeExternals": true,
-    "excludeNotExported": true,
-    "excludePrivate": true,
     "ignoreCompilerErrors": true,
     "experimentalDecorators": true
 }

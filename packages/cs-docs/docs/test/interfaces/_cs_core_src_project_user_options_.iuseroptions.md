@@ -10,4 +10,4 @@
 
 • **showUserMenu**? : *boolean*
 
-*Defined in [cs-core/src/project/user-options.ts:3](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/project/user-options.ts#L3)*
+*Defined in [cs-core/src/project/user-options.ts:3](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/project/user-options.ts#L3)*

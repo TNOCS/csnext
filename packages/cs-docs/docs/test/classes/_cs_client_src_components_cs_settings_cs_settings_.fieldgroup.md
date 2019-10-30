@@ -10,7 +10,7 @@
 
 • **class**: *string* = ""
 
-*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-settings/cs-settings.ts#L11)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-settings/cs-settings.ts#L11)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **fields**: *[IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)[]* =  []
 
-*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:10](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-settings/cs-settings.ts#L10)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:10](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-settings/cs-settings.ts#L10)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **id**: *string*
 
-*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-client/src/components/cs-settings/cs-settings.ts#L9)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:9](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-client/src/components/cs-settings/cs-settings.ts#L9)*

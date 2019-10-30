@@ -10,7 +10,7 @@
 
 \+ **new MapboxStyles**(`styles?`: [MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)): *[MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)*
 
-*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L400)*
+*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L400)*
 
 **Parameters:**
 
@@ -26,7 +26,7 @@ Name | Type |
 
 • **circleLayout**? : *CircleLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L400)*
+*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L400)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **circlePaint**? : *CirclePaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:399](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L399)*
+*Defined in [cs-map/src/classes/layer-style.ts:399](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L399)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **fillLayout**? : *FillLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:397](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L397)*
+*Defined in [cs-map/src/classes/layer-style.ts:397](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L397)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **fillPaint**? : *FillPaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:396](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L396)*
+*Defined in [cs-map/src/classes/layer-style.ts:396](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L396)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **lineLayout**? : *LineLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:386](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L386)*
+*Defined in [cs-map/src/classes/layer-style.ts:386](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L386)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **linePaint**? : *LinePaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:384](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L384)*
+*Defined in [cs-map/src/classes/layer-style.ts:384](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L384)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **symbolLayout**? : *SymbolLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:392](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L392)*
+*Defined in [cs-map/src/classes/layer-style.ts:392](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L392)*
 
 ___
 
@@ -82,4 +82,4 @@ ___
 
 • **symbolPaint**? : *SymbolPaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:394](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/layer-style.ts#L394)*
+*Defined in [cs-map/src/classes/layer-style.ts:394](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/layer-style.ts#L394)*

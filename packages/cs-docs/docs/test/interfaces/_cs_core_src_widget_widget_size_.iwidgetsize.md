@@ -10,7 +10,7 @@
 
 • **componentHeight**: *number*
 
-*Defined in [cs-core/src/widget/widget-size.ts:5](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/widget/widget-size.ts#L5)*
+*Defined in [cs-core/src/widget/widget-size.ts:5](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/widget/widget-size.ts#L5)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **componentWidth**: *number*
 
-*Defined in [cs-core/src/widget/widget-size.ts:4](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/widget/widget-size.ts#L4)*
+*Defined in [cs-core/src/widget/widget-size.ts:4](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/widget/widget-size.ts#L4)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **height**: *number*
 
-*Defined in [cs-core/src/widget/widget-size.ts:3](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/widget/widget-size.ts#L3)*
+*Defined in [cs-core/src/widget/widget-size.ts:3](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/widget/widget-size.ts#L3)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **width**: *number*
 
-*Defined in [cs-core/src/widget/widget-size.ts:2](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/widget/widget-size.ts#L2)*
+*Defined in [cs-core/src/widget/widget-size.ts:2](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/widget/widget-size.ts#L2)*

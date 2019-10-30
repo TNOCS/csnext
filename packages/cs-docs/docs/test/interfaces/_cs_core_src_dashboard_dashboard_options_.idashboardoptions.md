@@ -15,7 +15,7 @@
 
 • **_dashboard**? : *[IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:15](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L15)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:15](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L15)*
 
 ___
 
@@ -23,7 +23,7 @@ ___
 
 • **background**? : *string*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L8)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:8](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L8)*
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 • **class**? : *string*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:6](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L6)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:6](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L6)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **closeRightSidebar**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L12)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:12](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L12)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 • **editButton**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L9)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:9](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L9)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 • **info**? : *[InfoOptions](../classes/_cs_core_src_dashboard_dashboard_options_.infooptions.md) | string*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L16)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:16](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L16)*
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 • **shortcut**? : *[KeyboardShortcut](../classes/_cs_core_src_utils_keyboard_shortcut_.keyboardshortcut.md)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:18](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L18)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:18](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L18)*
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 • **showToolbar**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:10](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L10)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:10](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L10)*
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 • **toolbarOptions**? : *[DashboardToolbarOptions](../classes/_cs_core_src_dashboard_dashboard_toolbar_options_.dashboardtoolbaroptions.md)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L11)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L11)*
 
 ___
 
@@ -87,4 +87,4 @@ ___
 
 • **touchGesturesEnabled**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:14](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/dashboard/dashboard-options.ts#L14)*
+*Defined in [cs-core/src/dashboard/dashboard-options.ts:14](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/dashboard/dashboard-options.ts#L14)*

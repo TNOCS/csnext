@@ -12,7 +12,7 @@
 
 ▸ **contentUpdated**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info.ts:24](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-info/cs-info.ts#L24)*
+*Defined in [cs-markdown/src/cs-info/cs-info.ts:24](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-info/cs-info.ts#L24)*
 
 **Returns:** *void*
 
@@ -22,9 +22,19 @@ ___
 
 ▸ **dataUpdated**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info.ts:17](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-info/cs-info.ts#L17)*
+*Defined in [cs-markdown/src/cs-info/cs-info.ts:17](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-info/cs-info.ts#L17)*
 
 **Returns:** *void*
+
+___
+
+### `Private` getData
+
+▸ **getData**(): *any*
+
+*Defined in [cs-markdown/src/cs-info/cs-info.ts:51](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-info/cs-info.ts#L51)*
+
+**Returns:** *any*
 
 ___
 
@@ -32,6 +42,6 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-info/cs-info.ts#L30)*
+*Defined in [cs-markdown/src/cs-info/cs-info.ts:30](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-info/cs-info.ts#L30)*
 
 **Returns:** *void*

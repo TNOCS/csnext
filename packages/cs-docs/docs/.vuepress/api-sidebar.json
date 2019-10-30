@@ -43,6 +43,8 @@
       "modules/_cs_client_src_datasources_log_log_manager_",
       "classes/_cs_client_src_datasources_log_log_manager_.logmanager",
       "modules/_cs_client_src_index_",
+      "modules/_cs_client_src_index_._vue_types_vue_",
+      "interfaces/_cs_client_src_index_._vue_types_vue_.vue",
       "modules/_cs_client_src_layout_css_grid_css_grid_",
       "classes/_cs_client_src_layout_css_grid_css_grid_.cssgrid",
       "modules/_cs_client_src_layout_flex_grid_flex_grid_",
@@ -329,8 +331,6 @@
       "classes/_cs_markdown_src_cs_info_cs_info_dashboard_manager_.infodashboardmanager",
       "modules/_cs_markdown_src_cs_markdown_cs_markdown_",
       "classes/_cs_markdown_src_cs_markdown_cs_markdown_.csmarkdown",
-      "modules/_cs_markdown_src_cs_markdown_md_widget_options_",
-      "classes/_cs_markdown_src_cs_markdown_md_widget_options_widgetoptions.md",
       "modules/_cs_markdown_src_index_",
       "modules/_cs_split_panel_src_index_",
       "modules/_cs_split_panel_src_split_comp_",
@@ -354,6 +354,13 @@
       "modules/_cs_timeline_src_components_timeline_group_selection_timeline_group_selection_",
       "classes/_cs_timeline_src_components_timeline_group_selection_timeline_group_selection_.timelinegroupselection",
       "modules/_cs_timeline_src_index_"
+    ]
+  },
+  {
+    "title": "Modules",
+    "children": [
+      "modules/_cs_client_src_index_._vue_types_vue_",
+      "interfaces/_cs_client_src_index_._vue_types_vue_.vue"
     ]
   },
   {
@@ -481,7 +488,6 @@
       "classes/_cs_markdown_src_cs_info_cs_info_.csinfo",
       "classes/_cs_markdown_src_cs_info_cs_info_dashboard_manager_.infodashboardmanager",
       "classes/_cs_markdown_src_cs_markdown_cs_markdown_.csmarkdown",
-      "classes/_cs_markdown_src_cs_markdown_md_widget_options_widgetoptions.md",
       "classes/_cs_split_panel_src_split_comp_.splitcomp",
       "classes/_cs_split_panel_src_split_element_.splitelement",
       "classes/_cs_split_panel_src_split_panel_.splitpanel",

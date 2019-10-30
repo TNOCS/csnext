@@ -12,7 +12,7 @@
 
 • **direction**: *"horizontal" | "vertical"* = "horizontal"
 
-*Defined in [cs-split-panel/src/split-panel-options.ts:6](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-split-panel/src/split-panel-options.ts#L6)*
+*Defined in [cs-split-panel/src/split-panel-options.ts:6](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-split-panel/src/split-panel-options.ts#L6)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **disableVerticalScroll**: *boolean* = false
 
-*Defined in [cs-split-panel/src/split-panel-options.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-split-panel/src/split-panel-options.ts#L8)*
+*Defined in [cs-split-panel/src/split-panel-options.ts:8](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-split-panel/src/split-panel-options.ts#L8)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **elements**: *[SplitElement](_cs_split_panel_src_split_element_.splitelement.md)[]* =  []
 
-*Defined in [cs-split-panel/src/split-panel-options.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-split-panel/src/split-panel-options.ts#L7)*
+*Defined in [cs-split-panel/src/split-panel-options.ts:7](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-split-panel/src/split-panel-options.ts#L7)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-split-panel/src/split-panel-options.ts:5](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-split-panel/src/split-panel-options.ts#L5)*
+*Defined in [cs-split-panel/src/split-panel-options.ts:5](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-split-panel/src/split-panel-options.ts#L5)*

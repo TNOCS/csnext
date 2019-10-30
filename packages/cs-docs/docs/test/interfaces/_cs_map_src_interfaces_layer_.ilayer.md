@@ -10,7 +10,7 @@
 
 • **Visible**? : *boolean*
 
-*Defined in [cs-map/src/interfaces/layer.ts:26](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L26)*
+*Defined in [cs-map/src/interfaces/layer.ts:26](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L26)*
 
 toggle visibility of layer
 
@@ -20,7 +20,7 @@ ___
 
 • **color**: *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L11)*
+*Defined in [cs-map/src/interfaces/layer.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L11)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **description**: *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L12)*
+*Defined in [cs-map/src/interfaces/layer.ts:12](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L12)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **extensions**? : *[ILayerExtensionType](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)[]*
 
-*Defined in [cs-map/src/interfaces/layer.ts:19](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L19)*
+*Defined in [cs-map/src/interfaces/layer.ts:19](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L19)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **externalUrl**? : *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L22)*
+*Defined in [cs-map/src/interfaces/layer.ts:22](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L22)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **featureTypes**? : *object*
 
-*Defined in [cs-map/src/interfaces/layer.ts:29](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L29)*
+*Defined in [cs-map/src/interfaces/layer.ts:29](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L29)*
 
 #### Type declaration:
 
@@ -64,7 +64,7 @@ ___
 
 • **filter**? : *any*
 
-*Defined in [cs-map/src/interfaces/layer.ts:20](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L20)*
+*Defined in [cs-map/src/interfaces/layer.ts:20](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L20)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:5](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L5)*
+*Defined in [cs-map/src/interfaces/layer.ts:5](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L5)*
 
 layer id
 
@@ -82,7 +82,7 @@ ___
 
 • **isEditable**? : *boolean*
 
-*Defined in [cs-map/src/interfaces/layer.ts:23](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L23)*
+*Defined in [cs-map/src/interfaces/layer.ts:23](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L23)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **isLive**? : *boolean*
 
-*Defined in [cs-map/src/interfaces/layer.ts:24](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L24)*
+*Defined in [cs-map/src/interfaces/layer.ts:24](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L24)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **layout**? : *SymbolLayout | FillLayout | LineLayout | CircleLayout*
 
-*Defined in [cs-map/src/interfaces/layer.ts:27](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L27)*
+*Defined in [cs-map/src/interfaces/layer.ts:27](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L27)*
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **opacity**? : *number*
 
-*Defined in [cs-map/src/interfaces/layer.ts:14](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L14)*
+*Defined in [cs-map/src/interfaces/layer.ts:14](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L14)*
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 • **openFeatureDetails**? : *boolean*
 
-*Defined in [cs-map/src/interfaces/layer.ts:30](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L30)*
+*Defined in [cs-map/src/interfaces/layer.ts:30](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L30)*
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 • **paint**? : *SymbolPaint | LinePaint | FillPaint | CirclePaint*
 
-*Defined in [cs-map/src/interfaces/layer.ts:28](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L28)*
+*Defined in [cs-map/src/interfaces/layer.ts:28](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L28)*
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 • **parentId**? : *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:17](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L17)*
+*Defined in [cs-map/src/interfaces/layer.ts:17](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L17)*
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 • **popupContent**? : *string | Function | undefined*
 
-*Defined in [cs-map/src/interfaces/layer.ts:13](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L13)*
+*Defined in [cs-map/src/interfaces/layer.ts:13](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L13)*
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 • **source**? : *string | [LayerSource](../classes/_cs_map_src_classes_layer_source_.layersource.md)*
 
-*Defined in [cs-map/src/interfaces/layer.ts:15](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L15)*
+*Defined in [cs-map/src/interfaces/layer.ts:15](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L15)*
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 • **sourceType**? : *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:10](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L10)*
+*Defined in [cs-map/src/interfaces/layer.ts:10](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L10)*
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 • **style**? : *[LayerStyle](../classes/_cs_map_src_classes_layer_style_.layerstyle.md)*
 
-*Defined in [cs-map/src/interfaces/layer.ts:18](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L18)*
+*Defined in [cs-map/src/interfaces/layer.ts:18](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L18)*
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 • **tags**: *string[]*
 
-*Defined in [cs-map/src/interfaces/layer.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L9)*
+*Defined in [cs-map/src/interfaces/layer.ts:9](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L9)*
 
 list of tags, used for clustering in layer selection
 
@@ -180,7 +180,7 @@ ___
 
 • **title**: *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L7)*
+*Defined in [cs-map/src/interfaces/layer.ts:7](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L7)*
 
 layer as shown in interface
 
@@ -190,4 +190,4 @@ ___
 
 • **type**? : *string*
 
-*Defined in [cs-map/src/interfaces/layer.ts:16](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/interfaces/layer.ts#L16)*
+*Defined in [cs-map/src/interfaces/layer.ts:16](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/interfaces/layer.ts#L16)*

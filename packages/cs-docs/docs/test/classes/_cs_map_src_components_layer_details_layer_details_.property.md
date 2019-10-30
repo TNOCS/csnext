@@ -10,7 +10,7 @@
 
 • **key**? : *string*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:20](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L20)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:20](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/layer-details/layer-details.ts#L20)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **type**? : *[PropertyType](_cs_map_src_classes_feature_type_.propertytype.md)*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L22)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:22](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/layer-details/layer-details.ts#L22)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **value**? : *any*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:21](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/layer-details/layer-details.ts#L21)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:21](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/layer-details/layer-details.ts#L21)*

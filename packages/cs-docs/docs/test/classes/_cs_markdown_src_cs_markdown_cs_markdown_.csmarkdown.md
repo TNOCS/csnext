@@ -12,15 +12,15 @@
 
 • **content**: *string* = ""
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L22)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:22](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L22)*
 
 ___
 
-###  options
+### `Private` `Optional` data
 
-• **options**: *[MdWidgetOptions](_cs_markdown_src_cs_markdown_md_widget_options_.mdwidgetoptions.md)*
+• **data**? : *string*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:23](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L23)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:24](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L24)*
 
 ## Methods
 
@@ -28,7 +28,7 @@ ___
 
 ▸ **contentUpdated**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:50](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L50)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:50](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L50)*
 
 **Returns:** *void*
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **dataUpdated**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:27](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L27)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:27](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L27)*
 
 **Returns:** *void*
 
@@ -48,6 +48,16 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:56](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L56)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:56](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L56)*
+
+**Returns:** *void*
+
+___
+
+### `Private` updateContent
+
+▸ **updateContent**(): *void*
+
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:31](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L31)*
 
 **Returns:** *void*

@@ -6,6 +6,12 @@
 
 Ƭ **MapboxStyleDefinition**: *object*
 
-*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L7)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:7](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L7)*
 
 #### Type declaration:
+
+* **id**: *string*
+
+* **title**: *string*
+
+* **uri**: *string*

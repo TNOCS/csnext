@@ -10,7 +10,7 @@
 
 • **featureTypes**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L18)*
+*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L18)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **propertyTypeData**? : *[PropertyCollection](../modules/_cs_map_src_classes_feature_type_.md#propertycollection)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L19)*
+*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L19)*
 
 ## Methods
 
@@ -26,7 +26,7 @@ ___
 
 ▸ **linkPropertyTypeData**(): *void*
 
-*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L22)*
+*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L22)*
 
 **Returns:** *void*
 
@@ -36,7 +36,7 @@ ___
 
 ▸ **loadFeatureTypesFromUrl**(`url`: string): *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:45](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L45)*
+*Defined in [cs-map/src/classes/meta-file.ts:45](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L45)*
 
 Fetches meta file describing feature types and property types
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **loadMetaUrl**(`url`: string): *Promise‹[MetaFile](_cs_map_src_classes_meta_file_.metafile.md)›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:138](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L138)*
+*Defined in [cs-map/src/classes/meta-file.ts:138](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L138)*
 
 **Parameters:**
 
@@ -70,7 +70,7 @@ ___
 
 ▸ **updateMeta**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `ft?`: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)): *Promise‹any›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:61](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/meta-file.ts#L61)*
+*Defined in [cs-map/src/classes/meta-file.ts:61](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/meta-file.ts#L61)*
 
 **Parameters:**
 

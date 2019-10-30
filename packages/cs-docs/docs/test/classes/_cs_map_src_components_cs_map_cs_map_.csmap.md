@@ -8,11 +8,51 @@
 
 ## Properties
 
+### `Private` FEATURE_SIDEBAR_ID
+
+• **FEATURE_SIDEBAR_ID**: *"feature"* = "feature"
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:62](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L62)*
+
+___
+
+### `Private` _pointerPickerActivated
+
+• **_pointerPickerActivated**: *boolean* = false
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:134](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L134)*
+
+___
+
+### `Private` `Optional` geocoderControl
+
+• **geocoderControl**? : *MapboxGeocoder*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:99](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L99)*
+
+___
+
+### `Private` `Optional` geolocatorControl
+
+• **geolocatorControl**? : *GeolocateControl*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:101](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L101)*
+
+___
+
+### `Private` `Optional` gridControl
+
+• **gridControl**? : *[GridControl](_cs_map_src_controls_grid_control_grid_control_.gridcontrol.md)*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:100](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L100)*
+
+___
+
 ###  map
 
 • **map**: *mapboxgl.Map*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:131](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L131)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:131](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L131)*
 
 ___
 
@@ -20,7 +60,39 @@ ___
 
 • **mapDraw**: *any*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:132](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L132)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:132](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L132)*
+
+___
+
+### `Private` mapOptions
+
+• **mapOptions**: *[MapOptions](_cs_map_src_classes_map_options_.mapoptions.md)*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:135](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L135)*
+
+___
+
+### `Private` `Optional` mapboxStyleSwitcherControl
+
+• **mapboxStyleSwitcherControl**? : *[MapboxStyleSwitcherControl](_cs_map_src_controls_style_switcher_style_switcher_.mapboxstyleswitchercontrol.md)*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:96](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L96)*
+
+___
+
+### `Private` `Optional` rulerControl
+
+• **rulerControl**? : *RulerControl*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:97](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L97)*
+
+___
+
+### `Private` `Optional` scaleControl
+
+• **scaleControl**? : *ScaleControl*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:102](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L102)*
 
 ___
 
@@ -28,7 +100,15 @@ ___
 
 • **styles**: *[MapboxStyleDefinition](../modules/_cs_map_src_controls_style_switcher_style_switcher_.md#mapboxstyledefinition)[]* =  MapboxStyleSwitcherControl.DEFAULT_STYLES
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:127](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L127)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:127](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L127)*
+
+___
+
+### `Private` `Optional` trafficControl
+
+• **trafficControl**? : *MapboxTraffic*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:98](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L98)*
 
 ___
 
@@ -36,7 +116,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:130](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L130)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:130](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L130)*
 
 ___
 
@@ -44,7 +124,7 @@ ___
 
 ▪ **DRAWLAYER**: *string* = "drawlayer"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:56](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L56)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:56](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L56)*
 
 ___
 
@@ -52,7 +132,7 @@ ___
 
 ▪ **DRAWLAYER_ACTIVATED**: *string* = "drawlayer.activated"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:53](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L53)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:53](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L53)*
 
 ___
 
@@ -60,7 +140,7 @@ ___
 
 ▪ **DRAWLAYER_DEACTIVATED**: *string* = "drawlayer.deactivated"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:54](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L54)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:54](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L54)*
 
 ___
 
@@ -68,7 +148,7 @@ ___
 
 ▪ **DRAWLAYER_START_DRAWING**: *string* = "drawlayer.startdrawing"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:55](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L55)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:55](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L55)*
 
 ___
 
@@ -76,7 +156,7 @@ ___
 
 ▪ **FEATURE_CREATED**: *string* = "created"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:45](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L45)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:45](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L45)*
 
 ___
 
@@ -84,7 +164,7 @@ ___
 
 ▪ **FEATURE_DELETED**: *string* = "deleted"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:46](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L46)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:46](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L46)*
 
 ___
 
@@ -92,7 +172,7 @@ ___
 
 ▪ **FEATURE_MOUSE_ENTER**: *string* = "enter"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:47](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L47)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:47](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L47)*
 
 ___
 
@@ -100,7 +180,7 @@ ___
 
 ▪ **FEATURE_MOUSE_LEAVE**: *string* = "leave"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:48](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L48)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:48](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L48)*
 
 ___
 
@@ -108,7 +188,7 @@ ___
 
 ▪ **FEATURE_SELECT**: *string* = "select"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:44](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L44)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:44](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L44)*
 
 ___
 
@@ -116,7 +196,7 @@ ___
 
 ▪ **FEATURE_UPDATED**: *string* = "updated"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:49](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L49)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:49](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L49)*
 
 ___
 
@@ -124,7 +204,7 @@ ___
 
 ▪ **LAYER_ACTIVATED**: *string* = "layer.activated"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:51](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L51)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:51](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L51)*
 
 ___
 
@@ -132,7 +212,7 @@ ___
 
 ▪ **LAYER_DISABLED**: *string* = "layer.disabled"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:52](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L52)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:52](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L52)*
 
 ___
 
@@ -140,7 +220,7 @@ ___
 
 ▪ **LAYER_UPDATED**: *string* = "layer.updated"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:50](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L50)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:50](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L50)*
 
 ___
 
@@ -148,7 +228,7 @@ ___
 
 ▪ **MAP_CLICK**: *string* = "map.click"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:58](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L58)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:58](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L58)*
 
 ___
 
@@ -156,7 +236,7 @@ ___
 
 ▪ **MAP_DOUBLE_CLICK**: *string* = "map.doubleclick"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:57](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L57)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:57](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L57)*
 
 ___
 
@@ -164,7 +244,7 @@ ___
 
 ▪ **MAP_LOADED**: *string* = "loaded"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:59](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L59)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:59](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L59)*
 
 ___
 
@@ -172,7 +252,7 @@ ___
 
 ▪ **SEARCH_RESULT_SELECT**: *string* = "search.select"
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:60](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L60)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:60](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L60)*
 
 ___
 
@@ -180,7 +260,7 @@ ___
 
 ▪ **layerExtensions**: *[ILayerExtensionType](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)[]* =  []
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:93](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L93)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:93](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L93)*
 
 ___
 
@@ -188,7 +268,7 @@ ___
 
 ▪ **layerTypes**: *[IMapLayerType](../interfaces/_cs_map_src_classes_imap_layer_.imaplayertype.md)[]* =  []
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:91](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L91)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:91](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L91)*
 
 ___
 
@@ -196,7 +276,7 @@ ___
 
 ▪ **serviceTypes**: *[IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md)[]* =  []
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:92](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L92)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:92](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L92)*
 
 ## Accessors
 
@@ -204,7 +284,7 @@ ___
 
 • **get manager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:73](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L73)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:73](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L73)*
 
 **Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
@@ -214,7 +294,7 @@ ___
 
 • **get options**(): *[MapOptions](_cs_map_src_classes_map_options_.mapoptions.md)*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:84](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L84)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:84](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L84)*
 
 **Returns:** *[MapOptions](_cs_map_src_classes_map_options_.mapoptions.md)*
 
@@ -224,13 +304,13 @@ ___
 
 • **get pointPickerActivated**(): *boolean*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:64](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L64)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:64](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L64)*
 
 **Returns:** *boolean*
 
 • **set pointPickerActivated**(`value`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:68](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L68)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:68](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L68)*
 
 **Parameters:**
 
@@ -242,11 +322,31 @@ Name | Type |
 
 ## Methods
 
+### `Private` addClickLayer
+
+▸ **addClickLayer**(): *void*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:829](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L829)*
+
+**Returns:** *void*
+
+___
+
+### `Private` addGeocoder
+
+▸ **addGeocoder**(): *void*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:735](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L735)*
+
+**Returns:** *void*
+
+___
+
 ###  addImage
 
 ▸ **addImage**(`id`: string, `url`: string): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:346](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L346)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:346](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L346)*
 
 **Parameters:**
 
@@ -263,7 +363,7 @@ ___
 
 ▸ **addSource**(`source`: [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:648](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L648)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:648](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L648)*
 
 **Parameters:**
 
@@ -279,7 +379,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:333](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L333)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:333](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L333)*
 
 **Returns:** *void*
 
@@ -289,7 +389,7 @@ ___
 
 ▸ **beforeMount**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:327](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L327)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:327](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L327)*
 
 **Returns:** *void*
 
@@ -299,7 +399,7 @@ ___
 
 ▸ **dataLoaded**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:138](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L138)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:138](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L138)*
 
 **Returns:** *void*
 
@@ -309,9 +409,35 @@ ___
 
 ▸ **destroyed**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:679](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L679)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:679](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L679)*
 
 **Returns:** *void*
+
+___
+
+### `Private` getRouteOptions
+
+▸ **getRouteOptions**(): *mapboxgl.MapboxOptions*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:692](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L692)*
+
+**Returns:** *mapboxgl.MapboxOptions*
+
+___
+
+### `Private` getStyleUri
+
+▸ **getStyleUri**(`styleId`: string): *string*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:720](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L720)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`styleId` | string |
+
+**Returns:** *string*
 
 ___
 
@@ -319,7 +445,7 @@ ___
 
 ▸ **initLayerSource**(`source`: [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)): *any*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:683](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L683)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:683](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L683)*
 
 **Parameters:**
 
@@ -335,7 +461,23 @@ ___
 
 ▸ **initMapLayers**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:373](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L373)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:373](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L373)*
+
+**Returns:** *void*
+
+___
+
+### `Private` mapLoaded
+
+▸ **mapLoaded**(`e`: any): *void*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:891](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L891)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`e` | any |
 
 **Returns:** *void*
 
@@ -345,7 +487,17 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:487](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L487)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:487](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L487)*
+
+**Returns:** *void*
+
+___
+
+### `Private` removeGeocoder
+
+▸ **removeGeocoder**(): *void*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:728](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L728)*
 
 **Returns:** *void*
 
@@ -355,7 +507,7 @@ ___
 
 ▸ **removeLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:476](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L476)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:476](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L476)*
 
 **Parameters:**
 
@@ -371,7 +523,7 @@ ___
 
 ▸ **setStyle**(`style`: [MapboxStyleDefinition](../modules/_cs_map_src_controls_style_switcher_style_switcher_.md#mapboxstyledefinition)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:357](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L357)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:357](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L357)*
 
 **Parameters:**
 
@@ -387,7 +539,7 @@ ___
 
 ▸ **showBuildings**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:259](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L259)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:259](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L259)*
 
 **Parameters:**
 
@@ -404,7 +556,7 @@ ___
 
 ▸ **showCompass**(`enabled`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:143](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L143)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:143](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L143)*
 
 **Parameters:**
 
@@ -420,7 +572,7 @@ ___
 
 ▸ **showGeocoder**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:234](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L234)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:234](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L234)*
 
 **Parameters:**
 
@@ -437,7 +589,7 @@ ___
 
 ▸ **showGeolocator**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:245](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L245)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:245](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L245)*
 
 **Parameters:**
 
@@ -454,7 +606,7 @@ ___
 
 ▸ **showGrid**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:186](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L186)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:186](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L186)*
 
 **Parameters:**
 
@@ -471,7 +623,7 @@ ___
 
 ▸ **showLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:406](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L406)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:406](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L406)*
 
 Add layer to mapbox. Load source of necessary
 
@@ -489,7 +641,7 @@ ___
 
 ▸ **showLayers**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:305](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L305)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:305](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L305)*
 
 **Parameters:**
 
@@ -506,7 +658,7 @@ ___
 
 ▸ **showRuler**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:172](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L172)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:172](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L172)*
 
 **Parameters:**
 
@@ -523,7 +675,7 @@ ___
 
 ▸ **showScale**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:203](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L203)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:203](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L203)*
 
 **Parameters:**
 
@@ -540,7 +692,7 @@ ___
 
 ▸ **showStyles**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:148](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L148)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:148](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L148)*
 
 **Parameters:**
 
@@ -557,7 +709,7 @@ ___
 
 ▸ **showTraffic**(`enabled`: boolean, `old?`: boolean): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:220](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L220)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:220](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L220)*
 
 **Parameters:**
 
@@ -574,9 +726,19 @@ ___
 
 ▸ **startServices**(): *Promise‹void›*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:363](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L363)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:363](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L363)*
 
 **Returns:** *Promise‹void›*
+
+___
+
+### `Private` updateUrlQueryParams
+
+▸ **updateUrlQueryParams**(): *void*
+
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:711](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L711)*
+
+**Returns:** *void*
 
 ___
 
@@ -584,7 +746,7 @@ ___
 
 ▸ **zoomLayer**(`mapLayer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `padding`: number): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:339](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L339)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:339](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L339)*
 
 **Parameters:**
 
@@ -601,7 +763,7 @@ ___
 
 ▸ **AddLayerExtension**(`type`: [ILayerExtensionType](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:105](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L105)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:105](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L105)*
 
 register new layertype
 
@@ -619,7 +781,7 @@ ___
 
 ▸ **AddLayerServiceType**(`type`: [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:120](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L120)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:120](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L120)*
 
 **Parameters:**
 
@@ -635,7 +797,7 @@ ___
 
 ▸ **AddLayerType**(`type`: [IMapLayerType](../interfaces/_cs_map_src_classes_imap_layer_.imaplayertype.md)): *void*
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:112](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/components/cs-map/cs-map.ts#L112)*
+*Defined in [cs-map/src/components/cs-map/cs-map.ts:112](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/components/cs-map/cs-map.ts#L112)*
 
 register new layertype
 

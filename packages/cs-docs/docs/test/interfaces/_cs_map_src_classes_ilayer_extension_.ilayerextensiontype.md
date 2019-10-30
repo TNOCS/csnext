@@ -17,7 +17,7 @@
 
 • **getInstance**? : *function*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L12)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:12](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/ilayer-extension.ts#L12)*
 
 #### Type declaration:
 
@@ -35,7 +35,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L9)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:9](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/ilayer-extension.ts#L9)*
 
 extension id
 
@@ -45,6 +45,6 @@ ___
 
 • **options**? : *[ILayerExtensionOptions](_cs_map_src_classes_ilayer_extension_.ilayerextensionoptions.md)*
 
-*Defined in [cs-map/src/classes/ilayer-extension.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-map/src/classes/ilayer-extension.ts#L11)*
+*Defined in [cs-map/src/classes/ilayer-extension.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-map/src/classes/ilayer-extension.ts#L11)*
 
 extension options

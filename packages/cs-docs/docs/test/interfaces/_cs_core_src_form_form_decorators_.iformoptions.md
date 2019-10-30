@@ -10,7 +10,7 @@
 
 • **fields**? : *[IFormFieldOptions](_cs_core_src_form_form_decorators_.iformfieldoptions.md)[]*
 
-*Defined in [cs-core/src/form/form-decorators.ts:5](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L5)*
+*Defined in [cs-core/src/form/form-decorators.ts:5](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L5)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **groups**? : *object*
 
-*Defined in [cs-core/src/form/form-decorators.ts:13](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L13)*
+*Defined in [cs-core/src/form/form-decorators.ts:13](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L13)*
 
 #### Type declaration:
 
@@ -30,7 +30,7 @@ ___
 
 • **hideTitle**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:8](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L8)*
+*Defined in [cs-core/src/form/form-decorators.ts:8](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L8)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **isPanel**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:7](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L7)*
+*Defined in [cs-core/src/form/form-decorators.ts:7](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L7)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **isPanelOpen**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:11](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L11)*
+*Defined in [cs-core/src/form/form-decorators.ts:11](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L11)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **keys**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:12](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L12)*
+*Defined in [cs-core/src/form/form-decorators.ts:12](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L12)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **saveButton**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:6](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L6)*
+*Defined in [cs-core/src/form/form-decorators.ts:6](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L6)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **showToolbar**? : *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:9](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L9)*
+*Defined in [cs-core/src/form/form-decorators.ts:9](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L9)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/form/form-decorators.ts:4](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L4)*
+*Defined in [cs-core/src/form/form-decorators.ts:4](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L4)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 • **toolbarClass**? : *string*
 
-*Defined in [cs-core/src/form/form-decorators.ts:10](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L10)*
+*Defined in [cs-core/src/form/form-decorators.ts:10](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L10)*
 
 ## Methods
 
@@ -94,7 +94,7 @@ ___
 
 ▸ **keyValuesType**(): *object*
 
-*Defined in [cs-core/src/form/form-decorators.ts:14](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L14)*
+*Defined in [cs-core/src/form/form-decorators.ts:14](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L14)*
 
 **Returns:** *object*
 
@@ -104,7 +104,7 @@ ___
 
 ▸ **triggerCallback**(`obj`: object, `field`: [IFormFieldOptions](_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *undefined*
 
-*Defined in [cs-core/src/form/form-decorators.ts:15](https://github.com/TNOCS/csnext/blob/ec6e73e4/packages/cs-core/src/form/form-decorators.ts#L15)*
+*Defined in [cs-core/src/form/form-decorators.ts:15](https://github.com/TNOCS/csnext/blob/38d1409e/packages/cs-core/src/form/form-decorators.ts#L15)*
 
 **Parameters:**
 
