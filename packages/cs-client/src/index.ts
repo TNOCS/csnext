@@ -32,7 +32,6 @@ import { CsApp } from './components/cs-app/cs-app';
 import { CsWidget } from './components/cs-widget/cs-widget';
 import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
-import { MdWidget } from './widgets/markdown/md-widget';
 import Vue, { VueConstructor } from 'vue';
 import { VegaWidget } from './widgets/vega/vega-widget';
 import { CardWidget } from './widgets/card/card-widget';
@@ -47,7 +46,6 @@ export * from './components/cs-toolbar-menus/cs-toolbar-menus';
 
 // widgets
 export * from './widgets/widget-base';
-export * from './widgets/markdown/md-widget';
 export * from './widgets/iframe/iframe-widget';
 export * from './widgets/iframe/iframe-widget-options';
 export * from './widgets/youtube-background/youtube-background-widget';
@@ -68,7 +66,6 @@ export const CsNext = {
     vue.component('cs-app', CsApp);
     vue.component('cs-sidebar', CsSidebar);
     vue.component('cs-widget', CsWidget);
-    vue.component('md-widget', MdWidget);
     vue.component('vega-widget', VegaWidget);
     vue.component('card-widget', CardWidget);
   }
