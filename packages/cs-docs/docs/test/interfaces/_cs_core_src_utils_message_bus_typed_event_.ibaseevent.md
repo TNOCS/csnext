@@ -16,7 +16,7 @@
 
 ▸ **add**(`listener`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:3](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L3)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:3](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L3)*
 
 **Parameters:**
 
@@ -32,7 +32,7 @@ ___
 
 ▸ **remove**(`listener`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:4](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L4)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:4](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L4)*
 
 **Parameters:**
 
@@ -48,7 +48,7 @@ ___
 
 ▸ **trigger**(...`a`: any[]): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:5](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L5)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:5](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L5)*
 
 **Parameters:**
 

@@ -14,7 +14,7 @@
 
 ▸ **add**(`listener`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:13](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L13)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:13](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L13)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ ___
 
 ▸ **remove**(`listener?`: function): *void*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:19](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L19)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:19](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L19)*
 
 **Parameters:**
 
@@ -48,7 +48,7 @@ ___
 
 *Implementation of [IBaseEvent](../interfaces/_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md)*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:34](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/utils/message-bus/typed-event.ts#L34)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:34](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/utils/message-bus/typed-event.ts#L34)*
 
 **Parameters:**
 

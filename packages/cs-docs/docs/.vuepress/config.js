@@ -69,11 +69,11 @@ module.exports = {
                     {
                         text: 'References',
                         link: '/test/'
-                    }                 
+                    }                
                 ],
                 sidebar: {
                     '/guide/': genSidebarConfig('Guide'),
-                    '/test/': genReferencesConfig('References')
+                    '/test/': genReferencesConfig(),
                 }
             }
         }       

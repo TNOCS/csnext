@@ -12,7 +12,7 @@
 
 • **dashboard**? : *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:28](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L28)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:28](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L28)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **selectedStepper**: *number* = 1
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:29](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L29)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:29](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L29)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **selectedTab**: *number* = 0
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:30](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L30)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L30)*
 
 ## Accessors
 
@@ -36,7 +36,7 @@ ___
 
 • **get component**(): *Vue*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:251](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L251)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:251](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L251)*
 
 **Returns:** *Vue*
 
@@ -46,7 +46,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:242](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L242)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:242](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L242)*
 
 dashboard will be closed.
 
@@ -58,7 +58,7 @@ ___
 
 ▸ **beforeMount**(): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:227](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L227)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:227](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L227)*
 
 **Returns:** *void*
 
@@ -68,7 +68,7 @@ ___
 
 ▸ **checkWidgetId**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:57](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L57)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:57](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L57)*
 
 **Parameters:**
 
@@ -84,7 +84,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:219](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L219)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:219](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L219)*
 
 **Returns:** *void*
 
@@ -94,7 +94,7 @@ ___
 
 ▸ **dashboardChanged**(`n`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:33](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L33)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:33](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L33)*
 
 **Parameters:**
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **denseToolbar**(): *boolean*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:84](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L84)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:84](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L84)*
 
 **Returns:** *boolean*
 
@@ -120,7 +120,7 @@ ___
 
 ▸ **hideTitle**(): *boolean*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:91](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L91)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:91](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L91)*
 
 **Returns:** *boolean*
 
@@ -130,7 +130,7 @@ ___
 
 ▸ **initDashboard**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:98](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L98)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:98](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L98)*
 
 init dashboard: load datasources, init widgets and init manager
 
@@ -148,7 +148,7 @@ ___
 
 ▸ **initWidget**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:63](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L63)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:63](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L63)*
 
 **Parameters:**
 
@@ -164,7 +164,7 @@ ___
 
 ▸ **menusChanged**(): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:38](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L38)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:38](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L38)*
 
 **Returns:** *void*
 
@@ -174,7 +174,7 @@ ___
 
 ▸ **selectStepperDashboard**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:51](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L51)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:51](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L51)*
 
 **Parameters:**
 
@@ -190,7 +190,7 @@ ___
 
 ▸ **showToolbar**(): *boolean*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:72](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L72)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:72](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L72)*
 
 **Returns:** *boolean*
 
@@ -200,7 +200,7 @@ ___
 
 ▸ **widgetsChanged**(`n`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)[]): *void*
 
-*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:43](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L43)*
+*Defined in [cs-client/src/components/cs-dashboard/cs-dashboard.ts:43](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/components/cs-dashboard/cs-dashboard.ts#L43)*
 
 **Parameters:**
 

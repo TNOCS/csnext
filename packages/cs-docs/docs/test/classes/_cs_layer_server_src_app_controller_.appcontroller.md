@@ -1,5 +1,0 @@
-# Class: AppController
-
-## Hierarchy
-
-* **AppController**

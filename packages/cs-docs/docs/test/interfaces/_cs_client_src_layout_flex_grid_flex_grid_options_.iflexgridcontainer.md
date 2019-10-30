@@ -10,7 +10,7 @@
 
 • **id**: *number*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L9)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L9)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **options**? : *[IFlexGridContainerOptions](_cs_client_src_layout_flex_grid_flex_grid_options_.iflexgridcontaineroptions.md)*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L10)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L10)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **widgets**: *[IWidget](_cs_core_src_widget_widget_.iwidget.md)[]*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L11)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L11)*

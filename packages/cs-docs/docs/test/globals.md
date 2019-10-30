@@ -1,3 +1,3 @@
-# @csnext/vue-cli-plugin-cs
+# @csnext/cs-billboard
 
 

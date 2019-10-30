@@ -10,7 +10,7 @@
 
 • **action**: *"update" | "delete"*
 
-*Defined in [cs-map/src/services/feature-action.ts:3](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/services/feature-action.ts#L3)*
+*Defined in [cs-map/src/services/feature-action.ts:3](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/services/feature-action.ts#L3)*
 
 ___
 
@@ -18,4 +18,4 @@ ___
 
 • **feature**: *Feature*
 
-*Defined in [cs-map/src/services/feature-action.ts:4](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/services/feature-action.ts#L4)*
+*Defined in [cs-map/src/services/feature-action.ts:4](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/services/feature-action.ts#L4)*

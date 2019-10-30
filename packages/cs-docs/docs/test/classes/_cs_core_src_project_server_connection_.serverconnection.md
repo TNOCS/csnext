@@ -10,7 +10,7 @@
 
 • **socketServerUrl**? : *string*
 
-*Defined in [cs-core/src/project/server-connection.ts:3](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/server-connection.ts#L3)*
+*Defined in [cs-core/src/project/server-connection.ts:3](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/server-connection.ts#L3)*
 
 ___
 
@@ -18,4 +18,4 @@ ___
 
 • **useSocket**? : *boolean*
 
-*Defined in [cs-core/src/project/server-connection.ts:2](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/server-connection.ts#L2)*
+*Defined in [cs-core/src/project/server-connection.ts:2](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/server-connection.ts#L2)*

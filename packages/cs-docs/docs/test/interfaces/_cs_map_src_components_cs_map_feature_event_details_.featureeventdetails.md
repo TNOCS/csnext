@@ -10,7 +10,7 @@
 
 • **context**: *any*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:6](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/cs-map/feature-event-details.ts#L6)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:6](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/cs-map/feature-event-details.ts#L6)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **feature**? : *Feature*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:8](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/cs-map/feature-event-details.ts#L8)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/cs-map/feature-event-details.ts#L8)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **features**: *Feature[]*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:7](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/cs-map/feature-event-details.ts#L7)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:7](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/cs-map/feature-event-details.ts#L7)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **lngLat**: *LngLat*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:9](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/cs-map/feature-event-details.ts#L9)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/cs-map/feature-event-details.ts#L9)*

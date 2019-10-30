@@ -14,7 +14,7 @@
 
 \+ **new GridControl**(`mapControl`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *[GridControl](_cs_map_src_components_grid_control_grid_control_.gridcontrol.md)*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:16](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L16)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L16)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ Name | Type |
 
 • **layer**: *[GridLayer](_cs_map_src_layers_grid_layer_.gridlayer.md)*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:13](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L13)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:13](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L13)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:12](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L12)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:12](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L12)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **mapControl**: *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:19](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L19)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:19](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L19)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
         { id: "LatLon", title: "Lat / Lon" }
     ]
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:9](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L9)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:9](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L9)*
 
 ## Methods
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **getDefaultPosition**(): *string*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:26](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L26)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:26](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L26)*
 
 **Returns:** *string*
 
@@ -74,7 +74,7 @@ ___
 
 ▸ **onAdd**(`map`: MapboxMap): *HTMLElement*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:31](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L31)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L31)*
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:83](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L83)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:83](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L83)*
 
 **Returns:** *void*
 
@@ -100,6 +100,6 @@ ___
 
 ▸ **toggleGrid**(): *void*
 
-*Defined in [cs-map/src/components/grid-control/grid-control.ts:89](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/grid-control/grid-control.ts#L89)*
+*Defined in [cs-map/src/components/grid-control/grid-control.ts:89](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/grid-control/grid-control.ts#L89)*
 
 **Returns:** *void*

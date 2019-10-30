@@ -12,7 +12,7 @@
 
 • **activeType**: *any*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:20](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L20)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:20](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L20)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **busHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:17](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L17)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:17](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L17)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **layer**? : *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)* =  {} as IMapLayer
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:18](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L18)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:18](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L18)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:16](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L16)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:16](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L16)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **map**? : *Map*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:22](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L22)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:22](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L22)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **mapDraw**: *any*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:19](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L19)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:19](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L19)*
 
 ___
 
@@ -60,11 +60,11 @@ ___
 
 • **types**? : *object*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:21](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L21)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:21](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L21)*
 
 #### Type declaration:
 
-* \[ **key**: *string*\]: [FeatureType](_cs_layer_server_src_shared_feature_type_.featuretype.md)
+* \[ **key**: *string*\]: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:15](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L15)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:15](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L15)*
 
 ## Methods
 
@@ -80,7 +80,7 @@ ___
 
 ▸ **addIcon**(`type`: string): *void*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:28](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L28)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:28](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L28)*
 
 **Parameters:**
 
@@ -96,7 +96,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:53](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L53)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:53](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L53)*
 
 **Returns:** *void*
 
@@ -106,6 +106,6 @@ ___
 
 ▸ **updateLayer**(): *void*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:45](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor.ts#L45)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor.ts:45](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor.ts#L45)*
 
 **Returns:** *void*

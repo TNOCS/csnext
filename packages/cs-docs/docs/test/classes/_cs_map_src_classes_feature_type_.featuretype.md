@@ -10,7 +10,7 @@
 
 • **icon**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:63](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/classes/feature-type.ts#L63)*
+*Defined in [cs-map/src/classes/feature-type.ts:63](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/feature-type.ts#L63)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **mode**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:60](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/classes/feature-type.ts#L60)*
+*Defined in [cs-map/src/classes/feature-type.ts:60](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/feature-type.ts#L60)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **notification**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:61](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/classes/feature-type.ts#L61)*
+*Defined in [cs-map/src/classes/feature-type.ts:61](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/feature-type.ts#L61)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **properties**? : *[PropertyCollection](_cs_map_src_classes_feature_type_.propertycollection.md)*
 
-*Defined in [cs-map/src/classes/feature-type.ts:74](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/classes/feature-type.ts#L74)*
+*Defined in [cs-map/src/classes/feature-type.ts:74](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/feature-type.ts#L74)*
 
 ___
 
@@ -42,4 +42,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:59](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/classes/feature-type.ts#L59)*
+*Defined in [cs-map/src/classes/feature-type.ts:59](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/classes/feature-type.ts#L59)*

@@ -14,7 +14,7 @@
 
 \+ **new LayerEditorControl**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *[LayerEditorControl](_cs_map_src_components_layer_editor_layer_editor_control_.layereditorcontrol.md)*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L8)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L8)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ Name | Type |
 
 • **container**? : *HTMLDivElement*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L8)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L8)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:10](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L10)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:10](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L10)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **map**? : *Map*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:7](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L7)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:7](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L7)*
 
 ## Methods
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **onAdd**(`map`: any): *HTMLDivElement*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:12](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L12)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:12](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L12)*
 
 **Parameters:**
 
@@ -70,6 +70,6 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:27](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L27)*
+*Defined in [cs-map/src/components/layer-editor/layer-editor-control.ts:27](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/components/layer-editor/layer-editor-control.ts#L27)*
 
 **Returns:** *void*

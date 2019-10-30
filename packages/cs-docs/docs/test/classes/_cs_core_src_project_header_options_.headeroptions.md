@@ -14,7 +14,7 @@
 
 \+ **new HeaderOptions**(`options?`: [HeaderOptions](_cs_core_src_project_header_options_.headeroptions.md)): *[HeaderOptions](_cs_core_src_project_header_options_.headeroptions.md)*
 
-*Defined in [cs-core/src/project/header-options.ts:20](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L20)*
+*Defined in [cs-core/src/project/header-options.ts:20](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L20)*
 
 **Parameters:**
 
@@ -32,7 +32,7 @@ Name | Type |
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[breadcrumbItems](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-breadcrumbitems)*
 
-*Defined in [cs-core/src/project/header-options.ts:45](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L45)*
+*Defined in [cs-core/src/project/header-options.ts:45](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L45)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[breadcrumbs](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-breadcrumbs)*
 
-*Defined in [cs-core/src/project/header-options.ts:41](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L41)*
+*Defined in [cs-core/src/project/header-options.ts:41](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L41)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[dense](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-dense)*
 
-*Defined in [cs-core/src/project/header-options.ts:37](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L37)*
+*Defined in [cs-core/src/project/header-options.ts:37](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L37)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **elevation**? : *number* = 5
 
-*Defined in [cs-core/src/project/header-options.ts:65](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L65)*
+*Defined in [cs-core/src/project/header-options.ts:65](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L65)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **flat**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:63](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L63)*
+*Defined in [cs-core/src/project/header-options.ts:63](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L63)*
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 • **floating**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:39](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L39)*
+*Defined in [cs-core/src/project/header-options.ts:39](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L39)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[hideLogo](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-hidelogo)*
 
-*Defined in [cs-core/src/project/header-options.ts:35](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L35)*
+*Defined in [cs-core/src/project/header-options.ts:35](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L35)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 • **hideMenuToggle**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:51](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L51)*
+*Defined in [cs-core/src/project/header-options.ts:51](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L51)*
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[hideTitle](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-hidetitle)*
 
-*Defined in [cs-core/src/project/header-options.ts:31](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L31)*
+*Defined in [cs-core/src/project/header-options.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L31)*
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[hideToolbar](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-hidetoolbar)*
 
-*Defined in [cs-core/src/project/header-options.ts:61](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L61)*
+*Defined in [cs-core/src/project/header-options.ts:61](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L61)*
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[infoHeader](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-infoheader)*
 
-*Defined in [cs-core/src/project/header-options.ts:48](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L48)*
+*Defined in [cs-core/src/project/header-options.ts:48](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L48)*
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[logo](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-logo)*
 
-*Defined in [cs-core/src/project/header-options.ts:33](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L33)*
+*Defined in [cs-core/src/project/header-options.ts:33](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L33)*
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[showLoadingIcon](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-showloadingicon)*
 
-*Defined in [cs-core/src/project/header-options.ts:44](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L44)*
+*Defined in [cs-core/src/project/header-options.ts:44](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L44)*
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[showNotifications](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-shownotifications)*
 
-*Defined in [cs-core/src/project/header-options.ts:42](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L42)*
+*Defined in [cs-core/src/project/header-options.ts:42](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L42)*
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 • **tabsCentered**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:53](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L53)*
+*Defined in [cs-core/src/project/header-options.ts:53](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L53)*
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 • **tabsGrow**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:57](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L57)*
+*Defined in [cs-core/src/project/header-options.ts:57](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L57)*
 
 ___
 
@@ -178,7 +178,7 @@ ___
 
 • **tabsHideSlider**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:59](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L59)*
+*Defined in [cs-core/src/project/header-options.ts:59](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L59)*
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 • **tabsRight**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:55](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L55)*
+*Defined in [cs-core/src/project/header-options.ts:55](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L55)*
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[title](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-title)*
 
-*Defined in [cs-core/src/project/header-options.ts:29](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L29)*
+*Defined in [cs-core/src/project/header-options.ts:29](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L29)*
 
 ___
 
@@ -206,4 +206,4 @@ ___
 
 *Implementation of [IHeaderOptions](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md).[titleWidget](../interfaces/_cs_core_src_project_header_options_.iheaderoptions.md#optional-titlewidget)*
 
-*Defined in [cs-core/src/project/header-options.ts:47](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-core/src/project/header-options.ts#L47)*
+*Defined in [cs-core/src/project/header-options.ts:47](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-core/src/project/header-options.ts#L47)*

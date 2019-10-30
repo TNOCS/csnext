@@ -12,7 +12,7 @@
 
 • **containers**: *[IFlexGridContainer](../interfaces/_cs_client_src_layout_flex_grid_flex_grid_options_.iflexgridcontainer.md)[]* =  []
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:25](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L25)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:25](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L25)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **dashboard**: *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:24](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L24)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:24](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L24)*
 
 ## Accessors
 
@@ -28,7 +28,7 @@ ___
 
 • **get backgroundWidgets**(): *any*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:36](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L36)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:36](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L36)*
 
 **Returns:** *any*
 
@@ -38,7 +38,7 @@ ___
 
 • **get options**(): *[FlexGridOptions](_cs_client_src_layout_flex_grid_flex_grid_options_.flexgridoptions.md)*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:26](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L26)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:26](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L26)*
 
 **Returns:** *[FlexGridOptions](_cs_client_src_layout_flex_grid_flex_grid_options_.flexgridoptions.md)*
 
@@ -48,7 +48,7 @@ ___
 
 ▸ **containerStyles**(`container`: [IFlexGridContainer](../interfaces/_cs_client_src_layout_flex_grid_flex_grid_options_.iflexgridcontainer.md)): *any*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:94](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L94)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:94](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L94)*
 
 **Parameters:**
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:129](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L129)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:129](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L129)*
 
 **Returns:** *void*
 
@@ -74,7 +74,7 @@ ___
 
 ▸ **flexClasses**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *"md2 sm4 xs6" | "md4 sm4 xs6" | "md6 sm6 xs12" | "md4 sm6 xs12" | "autowidth" | "md2 sm6 xs12"*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:103](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L103)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:103](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L103)*
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **flexStyles**(): *object*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:125](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L125)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:125](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L125)*
 
 **Returns:** *object*
 
@@ -100,7 +100,7 @@ ___
 
 ▸ **getContainer**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *[IFlexGridContainer](../interfaces/_cs_client_src_layout_flex_grid_flex_grid_options_.iflexgridcontainer.md)*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:45](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L45)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:45](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L45)*
 
 **Parameters:**
 
@@ -116,7 +116,7 @@ ___
 
 ▸ **updateContainers**(): *void*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:81](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L81)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:81](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L81)*
 
 **Returns:** *void*
 
@@ -126,7 +126,7 @@ ___
 
 ▸ **widgetsUpdated**(`n`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)[]): *void*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:31](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L31)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid.ts:31](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-client/src/layout/flex-grid/flex-grid.ts#L31)*
 
 **Parameters:**
 

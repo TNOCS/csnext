@@ -16,7 +16,7 @@
 
 \+ **new WmsTimeExtension**(`init?`: Partial‹[ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)›): *[WmsTimeExtension](_cs_map_src_extensions_wms_time_extension_.wmstimeextension.md)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:30](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L30)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:30](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L30)*
 
 **Parameters:**
 
@@ -34,7 +34,7 @@ Name | Type |
 
 *Implementation of [IWmsTimeExtensionOptions](../interfaces/_cs_map_src_extensions_wms_time_extension_.iwmstimeextensionoptions.md).[historyDelayMinutes](../interfaces/_cs_map_src_extensions_wms_time_extension_.iwmstimeextensionoptions.md#optional-historydelayminutes)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:21](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L21)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:21](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L21)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 *Implementation of [ILayerExtensionType](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md).[id](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md#id)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:18](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L18)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:18](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L18)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 *Implementation of [IWmsTimeExtensionOptions](../interfaces/_cs_map_src_extensions_wms_time_extension_.iwmstimeextensionoptions.md).[timeProperty](../interfaces/_cs_map_src_extensions_wms_time_extension_.iwmstimeextensionoptions.md#optional-timeproperty)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:20](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L20)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:20](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L20)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **title**? : *string | undefined*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:19](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L19)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:19](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L19)*
 
 ## Methods
 
@@ -70,7 +70,7 @@ ___
 
 ▸ **getInstance**(`init?`: Partial‹[ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)›): *[WmsTimeExtension](_cs_map_src_extensions_wms_time_extension_.wmstimeextension.md)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:27](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L27)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:27](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L27)*
 
 **Parameters:**
 
@@ -88,7 +88,7 @@ ___
 
 *Implementation of [ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:36](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L36)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:36](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L36)*
 
 **Parameters:**
 
@@ -106,6 +106,6 @@ ___
 
 *Implementation of [ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:44](https://github.com/RichardHovenkamp/csnext/blob/eefa977/packages/cs-map/src/extensions/wms-time-extension.ts#L44)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:44](https://github.com/RichardHovenkamp/csnext/blob/d817caa/packages/cs-map/src/extensions/wms-time-extension.ts#L44)*
 
 **Returns:** *void*
