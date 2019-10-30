@@ -432,7 +432,7 @@ export class AppState extends AppStateBase {
   public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
 
     if (!replace && widget.id && this.findWidget(widget.id)) {
-      debugger;
+      return;
     }
 
 
