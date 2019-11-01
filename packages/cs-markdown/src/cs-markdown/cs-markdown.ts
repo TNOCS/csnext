@@ -29,9 +29,9 @@ export class CsMarkdown extends WidgetBase {
     }
 
     private updateContent() {
-        if (!this.widget && !this.data) return;
-        if (typeof (this.data) === 'string') {
-            Vue.set(this, 'content', this.data);
+        if (!this.widget) return;
+        if (typeof (this.widget.data) === 'string') {
+            Vue.set(this, 'content', this.widget.data);
         } else if (typeof (this.widget.data) === 'string') {
             Vue.set(this, 'content', this.widget.data);
         } else {
