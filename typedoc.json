@@ -1,5 +1,5 @@
 {
-    "out": "./packages/cs-docs/docs/test",
+    "out": "./packages/cs-docs/docs/references",
     "theme": "vuepress",
     "include": "./",
     "exclude": [
