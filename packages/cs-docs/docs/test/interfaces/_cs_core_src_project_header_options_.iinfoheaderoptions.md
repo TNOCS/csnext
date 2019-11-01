@@ -1,5 +1,0 @@
-# Interface: IInfoHeaderOptions
-
-## Hierarchy
-
-* **IInfoHeaderOptions**

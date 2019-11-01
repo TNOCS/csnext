@@ -1,3 +1,0 @@
-# Module: "vue/types/vue"
-
-
