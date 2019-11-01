@@ -431,7 +431,7 @@ export class AppState extends AppStateBase {
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
   public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
 
-    if (!replace && widget.id && this.findWidget(widget.id)) {
+    if (!replace && widget.id && this.project.rightSidebar && this.project.rightSidebar.dashboard && this.findWidget(widget.id, this.project.rightSidebar.dashboard)) {
       return;
     }
 
