@@ -45,6 +45,7 @@ import Axios from 'axios';
 import { MetaFile } from '../classes/meta-file';
 import { uniq } from 'lodash';
 import { PropType } from 'vue';
+import { isNumber } from 'util';
 
 export type LayerFeatureTypes = { [key: string]: FeatureType };
 export class GeojsonPlusLayer extends BaseLayer
@@ -78,6 +79,7 @@ export class GeojsonPlusLayer extends BaseLayer
     public _centerSource?: LayerSource;
     public featureTypes?: FeatureTypes;
     public featureTypesUrl?: string;
+    public featureType?: FeatureType;
 
     // circle style
     public _circleLayout?: mapboxgl.CircleLayout;
@@ -134,6 +136,9 @@ export class GeojsonPlusLayer extends BaseLayer
             }
         }
         this._legends = result;
+        if (this._manager) {
+            this._manager.events.publish('legends', 'updated', this._legends);
+        }
     }
 
     public removeLegend(
@@ -146,13 +151,13 @@ export class GeojsonPlusLayer extends BaseLayer
             // });
         } else if (property.hasOwnProperty('key')) {
             if (this.style && this.style.mapbox) {
-                (property as PropertyDetails).legends!.forEach(l => {
+                for (const l of (property as PropertyDetails).legends!) {
                     if (this.style && this.style._originalMapbox) {
                         l.style[l.styleProperty] = this.style._originalMapbox[
                             l.styleKey
                         ][l.styleProperty];
                     }
-                });
+                }
             }
         }
         if (this._manager && refreshLayer) {
@@ -163,8 +168,9 @@ export class GeojsonPlusLayer extends BaseLayer
     }
 
     updateMetaProperty(ft: FeatureType, prop: PropertyType) {
+        if (prop._initialized) { return; }
         prop._values = [];
-        if (!ft.properties || !ft.propertyMap || !this._source || !this._source._geojson) { return; }
+        if (!ft || !ft.properties || !ft.propertyMap || !this._source || !this._source._geojson) { return; }
         let source = this._source!._geojson;
         if (source.features && source.features.length > 0) {
             //   let feature = source.features[0];
@@ -207,18 +213,19 @@ export class GeojsonPlusLayer extends BaseLayer
                     max(prop._values).toString()
                 );
                 prop.mean = mean(prop._values);
-                if (prop.count > 10) {
-                    prop.median = median(prop._values);
-                    prop.sd = standardDeviation(
-                        prop._values
-                    );
-                }
+                // if (prop.count > 10) {
+                //     prop.median = median(prop._values);
+                //     prop.sd = standardDeviation(
+                //         prop._values
+                //     );
+                // }
             }
 
             // let steps = ckmeans(prop._values, 5);
             // prop.legend = {};
         }
         delete prop._values;
+        prop._initialized = true;
 
     }
 
@@ -298,29 +305,38 @@ export class GeojsonPlusLayer extends BaseLayer
         }
     }
 
+    private getFeatureType(): FeatureType | undefined {
+        if (this.featureTypes) {
+            if (this.defaultFeatureType && this.featureTypes.hasOwnProperty(this.defaultFeatureType)) {
+                return plainToClass(FeatureType, this.featureTypes[this.defaultFeatureType]);
+            } else {
+                let keys = Object.keys(this.featureTypes);
+                if (keys.length > 0) {
+                    this.defaultFeatureType = keys[0];
+                    return plainToClass(FeatureType, this.featureTypes[this.defaultFeatureType]);
+                }
+            }
+        }
+    }
+
     public setLegend(
         property: PropertyDetails | PropertyType | string,
         refreshLayer = true
     ) {
+        let ft = this.getFeatureType();
         if (typeof property === 'string') {
             // find property details
-            if (
-                this.featureTypes &&
-                this.featureTypes.hasOwnProperty('main') &&
-                this.featureTypes['main'].properties
-            ) {
-                let val = property;
-                property = {
-                    type: this.featureTypes['main'].properties[property],
-                    key: val
-                } as any;
+
+            if (ft && ft.properties && ft.properties.hasOwnProperty(property)) {
+                property = { type: ft.properties[property], key: property }
             }
         }
-        if (property.hasOwnProperty('key')) {
+        if (ft && property.hasOwnProperty('key')) {
             if (this.style && this.style.mapbox) {
                 let propdetails = property as PropertyDetails;
-                this.updateMetaProperty(this.featureTypes![this.defaultFeatureType!], propdetails.type as PropertyType);
-                if (propdetails.type && propdetails.type.min && propdetails.type.max) {
+
+                this.updateMetaProperty(ft, propdetails.type as PropertyType);
+                if (propdetails.type && propdetails.type._initialized) {
                     let color = {
                         property: propdetails.key,
                         stops: [
@@ -529,7 +545,7 @@ export class GeojsonPlusLayer extends BaseLayer
     }
 
     private async initFeatureTypes() {
-        if (this.featureTypes) {
+        if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
             let keys = Object.keys(this.featureTypes);
             Object.keys(this.featureTypes).forEach(k => {
                 if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
@@ -537,21 +553,7 @@ export class GeojsonPlusLayer extends BaseLayer
                         FeatureType,
                         this.featureTypes[k]
                     );
-
-                    let type = this.featureTypes[k] as FeatureType;
-                    if (type.properties) {
-                        type.propertyMap = {};
-                        for (const prop of type.properties) {
-                            if (prop.label) {
-                                type.propertyMap[prop.label] = prop;
-                            }
-
-                        }
-                        // type.propertyMap = type.properties.reduce((map, obj) => {
-                        //     map[obj.label] = obj;
-                        //     return map;
-                        // }, {});
-                    }
+                    this.updateFeatureTypePropertyMap(this.featureTypes[k]);
                 }
             });
 
@@ -563,6 +565,53 @@ export class GeojsonPlusLayer extends BaseLayer
 
             // this.updateMeta();
 
+        } else {
+            this.featureTypes = new FeatureTypes();
+            let ft = new FeatureType();
+            ft.title = this.defaultFeatureType = 'default';
+
+            ft.properties = [];
+
+            // check first feature for missing properties
+            if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
+                let f = this._source._geojson.features[0];
+                if (f.properties) {
+                    for (const prop in f.properties) {
+                        if (f.properties.hasOwnProperty(prop)) {
+                            const value = f.properties[prop];
+                            ft.properties.push({
+                                label: prop,
+                                title: prop,
+                                description: prop,
+                                type: isNumber(value) ? 'number' : 'string'
+                            });
+
+
+                        }
+                    }
+                }
+                this.updateFeatureTypePropertyMap(ft);
+                this.featureTypes[ft.title] = ft;
+            }
+
+        }
+        if (!this.featureType) {
+            this.featureType = this.getFeatureType();
+        }
+
+        if (this.featureType && this.featureType.style) {
+            this.style = plainToClass(LayerStyle, this.featureType.style);
+        }
+    }
+
+    private updateFeatureTypePropertyMap(type: FeatureType) {
+        if (type.properties) {
+            type.propertyMap = {};
+            for (const prop of type.properties) {
+                if (prop.label) {
+                    type.propertyMap[prop.label] = prop;
+                }
+            }
         }
     }
 
@@ -573,20 +622,10 @@ export class GeojsonPlusLayer extends BaseLayer
             this.id = guidGenerator();
         }
 
-
-
         if (this.featureTypesUrl && !this.featureTypes) {
-            MetaFile.loadMetaUrl(this.featureTypesUrl).then(r => {
-                if (r.featureTypes) {
-                    this.featureTypes = r.featureTypes;
-                    this.initFeatureTypes();
-                }
-            })
-        } else {
-            this.initFeatureTypes();
+            this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
         }
-
-        console.log('Loading source');
+        this.initFeatureTypes();
 
         if (!this._source) {
             if (typeof this.source === 'string') {
@@ -607,6 +646,10 @@ export class GeojsonPlusLayer extends BaseLayer
             this.title = this._source.id;
         }
 
+        this.initFeatureTypes();
+
+        this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
+
         this.style = plainToClass(LayerStyle, {
             ...({
                 title: '{{title}}',
@@ -617,36 +660,33 @@ export class GeojsonPlusLayer extends BaseLayer
             ...this.style
         });
 
+        if (this.style.types) {
 
-        this.initFeatureTypes();
+            if (this.style.types!.includes('point')) {
+                if (!this.style.mapbox!.symbolLayout)
+                    this.style.mapbox!.symbolLayout = {};
+                if (!this.style.mapbox!.symbolPaint)
+                    this.style.mapbox!.symbolPaint = {};
+                if (!this.style.mapbox!.circleLayout)
+                    this.style.mapbox!.circleLayout = {};
+                if (!this.style.mapbox!.circlePaint)
+                    this.style.mapbox!.circlePaint = {};
+            }
 
+            if (this.style.types!.includes('line')) {
+                if (!this.style.mapbox!.lineLayout)
+                    this.style.mapbox!.lineLayout = {};
+                if (!this.style.mapbox!.linePaint)
+                    this.style.mapbox!.linePaint = {};
+            }
 
+            if (this.style.types!.includes('fill')) {
+                if (!this.style.mapbox!.fillLayout)
+                    this.style.mapbox!.fillLayout = {};
+                if (!this.style.mapbox!.fillPaint)
+                    this.style.mapbox!.fillPaint = {};
+            }
 
-        this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
-
-        if (this.style.types!.includes('point')) {
-            if (!this.style.mapbox!.symbolLayout)
-                this.style.mapbox!.symbolLayout = {};
-            if (!this.style.mapbox!.symbolPaint)
-                this.style.mapbox!.symbolPaint = {};
-            if (!this.style.mapbox!.circleLayout)
-                this.style.mapbox!.circleLayout = {};
-            if (!this.style.mapbox!.circlePaint)
-                this.style.mapbox!.circlePaint = {};
-        }
-
-        if (this.style.types!.includes('line')) {
-            if (!this.style.mapbox!.lineLayout)
-                this.style.mapbox!.lineLayout = {};
-            if (!this.style.mapbox!.linePaint)
-                this.style.mapbox!.linePaint = {};
-        }
-
-        if (this.style.types!.includes('fill')) {
-            if (!this.style.mapbox!.fillLayout)
-                this.style.mapbox!.fillLayout = {};
-            if (!this.style.mapbox!.fillPaint)
-                this.style.mapbox!.fillPaint = {};
         }
 
         if (this.style && this.style.mapbox) {
@@ -659,7 +699,7 @@ export class GeojsonPlusLayer extends BaseLayer
         }
 
         // store original layouts
-        if (!this.style._originalMapbox) {
+        if (this.style.mapbox && !this.style._originalMapbox) {
             this.style._originalMapbox = JSON.parse(
                 JSON.stringify(this.style.mapbox)
             );
@@ -801,7 +841,9 @@ export class GeojsonPlusLayer extends BaseLayer
                     'feature',
                     (a: string, data: FeatureEventDetails) => {
                         if (a === CsMap.FEATURE_SELECT) {
+                            data.layer = this;
                             this._events.publish('feature', a, data);
+                            this._manager!.openFeature(data.feature!, data.layer);
                         }
                     }
                 );

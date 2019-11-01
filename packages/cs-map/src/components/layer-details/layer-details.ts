@@ -23,7 +23,7 @@ export class property {
 }
 
 @Component({
-    name: 'feature-details',
+    name: 'layer-details',
     props: { widget: null },
     components: { simplebar },
     template: require('./layer-details.html')
@@ -97,11 +97,9 @@ export class LayerDetails extends Vue {
     }
 
     public openFeature(feature: any) {
-        this.$cs.OpenRightSidebarWidget({
-            component: FeatureDetails,
-            id: 'featuredetails',
-            data: { layer: this.layer, feature: feature, manager: this.manager }
-        }, { open: true }, 'feature');
+        if (this.manager && this.layer) {
+            this.manager.openFeature(feature, this.layer);
+        }        
     }
 
 }

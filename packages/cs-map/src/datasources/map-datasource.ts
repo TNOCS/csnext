@@ -9,7 +9,8 @@ import {
     LayerSource,
     ILayerService,
     LayerStyle,
-    LayerEditor
+    LayerEditor,
+    FeatureDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -28,6 +29,7 @@ import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import { FeatureTypes } from '../classes/feature-type';
 import { MetaFile } from '../classes/meta-file';
 import Vue from 'vue';
+import { LayerDetails } from '../components/layer-details/layer-details';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -53,6 +55,7 @@ export class MapDatasource implements IDatasource {
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
+    private readonly FEATURE_SIDEBAR_ID = 'feature';
 
     public get MapWidget(): CsMap | undefined {
         return this.map;
@@ -248,7 +251,7 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    
+
 
     public moveLayer(layer: IMapLayer, beforeId?: string) {
         layer.moveLayer(beforeId);
@@ -597,6 +600,50 @@ export class MapDatasource implements IDatasource {
         return res;
     }
 
+    public openFeature(feature: Feature, layer: IMapLayer) {
+        if (!feature || !layer) { return; }
+        AppState.Instance.AddSidebar('feature', { icon: 'map' });
+        AppState.Instance.OpenRightSidebarWidget(
+            {
+                id: 'feature-details-component',
+                component: FeatureDetails,
+                options: {
+                    showToolbar: false,
+                    toolbarOptions: {
+                        backgroundColor: 'primary',
+                        dense: true
+                    },
+                    hideSidebarButton: true
+                },
+                data: {
+                    feature: feature,
+                    layer,
+                    manager: this
+                }
+            },
+            { open: true },
+            this.FEATURE_SIDEBAR_ID,
+            true
+        );
+    }
+
+    public openLayer(layer: IMapLayer | string) {
+        if (typeof layer === 'string') {
+            if (this.layers) {
+                let l = this.layers.find(l => l.id === layer);
+                if (l) { this.openLayer(l); }
+            }
+        } else {
+            AppState.Instance.AddSidebar('layer-details', { icon: 'list' });
+            AppState.Instance.OpenRightSidebarWidget({
+                component: LayerDetails,
+                options: {
+                    closeSidebarButton: true
+                },
+                data: { layer: layer, manager: this }
+            }, undefined, 'layer-details');
+        };
+    }
 
     public editLayer(layer: IMapLayer | string) {
         if (typeof layer === 'string') {
@@ -616,7 +663,7 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    
+
 
 
     public addGeojsonLayer(title: string, url?: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {

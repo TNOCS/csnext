@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, IMenu } from '@csnext/cs-core';
 
 import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
@@ -77,8 +77,8 @@ export class FeatureDetails extends WidgetBase {
     }
 
     public get manager(): MapDatasource | undefined {
-        if (this.widget.data && this.widget.data.manager) {
-            return this.widget.data.manager as MapDatasource;
+        if (this.widget.data && this.widget.data.layer) {
+            return this.widget.data.layer._manager as MapDatasource;
         }
     }
 
@@ -147,7 +147,7 @@ export class FeatureDetails extends WidgetBase {
                     proptype = {
                         _key: key,
                         title: key,
-                        type: 'string',
+                        type: 'number',
                         description: key
                     } as PropertyType;
                 } else {
@@ -207,30 +207,17 @@ export class FeatureDetails extends WidgetBase {
         Vue.set(this, 'sections', result);
     }
 
-    public updateStyle(property: PropertyDetails) {
+    public setLegend(property: PropertyDetails) {
         if (property && property.legends && property.legends.length > 0) {
             if (this.manager && this.layer) {
                 this.layer.removeLegend(property, true);
             }
-
-            // this.$cs.TriggerNotification({ title: property.key + ' disable' });
         } else {
-            // this.layer
             if (this.manager && this.layer) {
-                // this.manager.removeLegend(this.layer, property.key);
                 this.layer.setLegend(property, true);
-                this.$forceUpdate();
-                // this.$cs.TriggerNotification({ title: property.key + ' enable'});
             }
         }
-    }
-
-    public openLayer(layer: IMapLayer) {
-        this.$cs.OpenRightSidebarWidget({
-            component: LayerDetails,
-            data: { layer: layer, manager: this.manager }
-        }, undefined, 'feature');
-    }
+    }    
 
     public get properties(): any[] {
         let result: any[] = [];
@@ -252,17 +239,44 @@ export class FeatureDetails extends WidgetBase {
         }
     }
 
+    public initMenu() {
+        this.addMenuItem({
+            id: 'open-layer',
+            type: 'icon',
+            icon: 'list',
+            toolTip: 'OPEN LAYER',
+            title: 'OPEN LAYER',
+            action: ()=> {
+                if (this.manager && this.layer) {
+                    this.manager.openLayer(this.layer);
+                }
+            }
+        } as IMenu)        
+    }
+
     public contentLoaded() {
+        this.initMenu();
         this.updateSections();
 
-        if (this.layer) {
-            this.busManager.subscribe(this.layer._events, 'feature', (
-                (a: string, f: FeatureEventDetails) => {
-                    if (a === CsMap.FEATURE_SELECT) {                        
-                        this.widget.data.feature = f.feature;
-                        this.widget.data.layer = f.layer;
-                    }
-                }));
+        // if (this.layer) {
+        //     this.busManager.subscribe(this.layer._events, 'feature', (
+        //         (a: string, f: FeatureEventDetails) => {
+        //             if (a === CsMap.FEATURE_SELECT) {
+        //                 if (this.widget.data.layer === f.layer) {
+        //                     this.widget.data = f;                            
+        //                     this.updateSections();
+        //                     this.updateFilter();
+        //                 } else {
+        //                     alert('layer switch');
+        //                 }
+        //             }
+        //         }));
+        // }
+
+        if (this.manager) {
+            this.busManager.subscribe(this.manager.events, 'legends', (a: string) => {
+                this.updateSections();
+            })
         }
     }
 }

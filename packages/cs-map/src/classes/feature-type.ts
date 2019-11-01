@@ -1,4 +1,5 @@
 import { Form, FormField } from '@csnext/cs-core';
+import { LayerStyle } from './layer-style';
 
 @Form({
     title: 'Property',
@@ -43,22 +44,13 @@ export class PropertyType {
 
     @FormField({ title: 'Default', type: 'number', group: 'number' })
     public default?: number;
-    public options?: { [key: string]: string};
+    public options?: { [key: string]: string };
     @FormField({ title: 'Section', type: 'string' })
     public section?: string;
     public _values?: any[];
-    
-}
+    public _initialized?: boolean = false;
 
-// @Form({
-//     title: 'Property Collection',
-//     keyValuesType: () => {
-//         return new PropertyType();
-//     }
-// })
-// export class PropertyCollection {
-//     [key: string]: string | PropertyType;
-// }
+}
 export type PropertyCollection = PropertyType[];
 
 @Form({
@@ -75,18 +67,19 @@ export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
     public mode?: string;
+    public style?: LayerStyle;
     public notification?: string;
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
     @FormField({
         title: 'Properties',
-        type: 'keysobject',
+        type: 'array',
         canAdd: true,
         canDelete: true,
-        canEditKey: true,
-        keyValuesType: () => {
-            return new PropertyType();
-        }
+        canEditKey: true        
+        // keyValuesType: () => {
+        //     return new PropertyType();
+        // }
     })
     public properties?: PropertyCollection;
     /**  list of properties from propertyTypeData (as key) used for this featureType, seperated by a semi column

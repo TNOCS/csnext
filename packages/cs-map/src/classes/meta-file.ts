@@ -19,7 +19,7 @@ export class MetaFile {
     public propertyTypeData?: PropertyCollection;
 
     // if property data was specified seperately, link them to the feature types
-    public linkPropertyTypeData() {
+    public linkPropertyTypeData() {        
         if (this.featureTypes && this.propertyTypeData) {
             for (const ft in this.featureTypes) {
                 if (this.featureTypes.hasOwnProperty(ft)) {
@@ -34,6 +34,8 @@ export class MetaFile {
                                 featureType.properties.push(this.propertyTypeData[key]);
                             }
                         }
+                    } else {
+                        featureType.properties = Object.values(this.propertyTypeData);
                     }
 
                 }

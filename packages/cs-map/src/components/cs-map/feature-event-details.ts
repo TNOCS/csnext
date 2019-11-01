@@ -8,5 +8,5 @@ export interface FeatureEventDetails {
     features: Feature[];
     feature?: Feature;
     lngLat: LngLat;
-    layer?: IMapLayer;
+    layer?: IMapLayer;    
 }

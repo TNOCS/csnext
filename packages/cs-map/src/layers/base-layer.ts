@@ -165,14 +165,7 @@ export class BaseLayer implements IMapLayer {
                     title: 'Show features',
                     action: () => {
                         if (this._manager) {
-                            this._manager.MapWidget!.$cs.OpenRightSidebarWidget(
-                                {
-                                    component: LayerDetails,
-                                    data: { layer: this }
-                                },
-                                undefined,
-                                'layers'
-                            );
+                            this._manager.openLayer(this);
                         }
                     }
                 });
