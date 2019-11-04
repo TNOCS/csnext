@@ -275,18 +275,18 @@ export class CsTimeline extends WidgetBase {
             } as IMenu);
         }
 
-        if (this.WidgetOptions.toggleSmallButton) {
-            // check if already exists
-            if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
-                menus.push({
-                    id: TOGGLE_MENU_ID,
-                    icon: 'line_weight',
-                    action: () => {
-                        this.toggleView();
-                    }
-                });
-            }
-        }
+        // if (this.WidgetOptions.toggleSmallButton) {
+        //     // check if already exists
+        //     if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+        //         menus.push({
+        //             id: TOGGLE_MENU_ID,
+        //             icon: 'line_weight',
+        //             action: () => {
+        //                 this.toggleView();
+        //             }
+        //         });
+        //     }
+        // }
 
         if (this.WidgetOptions.showGroupSelectionButton) {
             // check if already exists
@@ -416,10 +416,10 @@ export class CsTimeline extends WidgetBase {
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
                 // item.content = item.content;
-                if (!item.style) {
-                    item.style = 'height:' + height;
-                }
-                if (this.smallView) { item.style += ''; }
+                // if (!item.style) {
+                //     item.style = 'height:' + height;
+                // }
+                // if (this.smallView) { item.style += ''; }
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (!item.group) { item.group = NO_GROUP; }
