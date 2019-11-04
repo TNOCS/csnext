@@ -411,9 +411,9 @@ export class CsApp extends Vue {
 
   public clickNotification() {
     if (this.lastNotification.clickCallback) {
-      this.lastNotification.clickCallback();
-      this.closeNotification();
+      this.lastNotification.clickCallback();      
     }
+    this.closeNotification();
   }
 
   public closeNotification() {

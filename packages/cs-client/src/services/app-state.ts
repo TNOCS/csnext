@@ -278,11 +278,12 @@ export class AppState extends AppStateBase {
         created: new Date(),
         isRead: false,
         buttonText: 'CLOSE',
-        remember: true,
+        remember: true,        
         _visible: true
       },
       ...notification
     };
+
     this.bus.publish('notification', 'new', notification);
     if (
       this.project.notifications &&
