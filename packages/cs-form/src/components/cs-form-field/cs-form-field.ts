@@ -58,7 +58,7 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
-    public genColor(i : number) {
+    public genColor(i: number) {
         if (this.field && this.field.colors) {
             return this.field.colors[i];
         }
@@ -157,7 +157,11 @@ export class CsFormField extends Vue {
     }
 
     public fieldUpdated(field: IFormFieldOptions) {
-        this.changed(field);
+        if (!field._isError) {                        
+            field._appendIcon = '';
+            this.changed(field);
+            this.$forceUpdate();
+        }
     }
 
     public fieldOptions(field: IFormFieldOptions) {
@@ -165,6 +169,12 @@ export class CsFormField extends Vue {
             return field.options();
         } else {
             return field.options;
+        }
+    }
+
+    public fieldError(error: boolean) {
+        if (this.field) {
+            this.field._isError = error;
         }
     }
 
@@ -235,10 +245,12 @@ export class CsFormField extends Vue {
         console.log(oldValue + ' -> ' + newValue);
     }
 
-    public mounted() {
-        // if (this.field && this.field.type === 'form') {
-        // }
+    public fieldInput(field: IFormFieldOptions) {
+        if (field) {
+            field._appendIcon = 'save'
+        }
     }
+
 }
 
 Vue.component('cs-formfield', CsFormField);
