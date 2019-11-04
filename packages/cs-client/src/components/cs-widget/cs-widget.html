@@ -38,7 +38,7 @@
         }}</v-toolbar-title>
         <v-spacer></v-spacer>
 
-        <cs-toolbar-menus v-if="!options.hideMenu && options.menus" :menus.sync="options.menus" :owner="widget._component"></cs-toolbar-menus>
+        <cs-toolbar-menus v-if="!options.hideMenu" :searchProperty="options.searchProperty" :menus.sync="options.menus" :owner="widget._component"></cs-toolbar-menus>
       </v-toolbar>
     </v-flex>
 
@@ -53,6 +53,6 @@
         <!-- class="widget-default" -->
       </div>
     </v-flex>
-  </v-col>
-  <cs-toolbar-menus class="widget-buttons-container" v-if="!options.showToolbar && !options.hideMenu && options.menus" :menus="options.menus" :owner="widget._component"></cs-toolbar-menus>
+  </v-col>  
+  <cs-toolbar-menus class="widget-buttons-container" :searchProperty="options.searchProperty"  v-if="!options.showToolbar && !options.hideMenu" :menus="options.menus" :owner="widget._component"></cs-toolbar-menus>
 </v-card>

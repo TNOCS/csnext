@@ -399,9 +399,6 @@ export class AppState extends AppStateBase {
         this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
       const d = this.project.rightSidebar.sidebars[key];
-      console.log('Sidebar dashboard:');
-      console.log(d);
-
       d.hide = false;
       this.OpenRightSidebar(d);
     }
