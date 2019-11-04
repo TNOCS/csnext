@@ -121,15 +121,15 @@ export class CsMap extends WidgetBase {
             CsMap.serviceTypes.push(type);
         }
     }
-    // public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
 
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
-
-    @Prop()
-    public widget!: IWidget;
+    /** actual mapbox gl control */
     public map!: mapboxgl.Map;
+
+
     public mapDraw!: any;
     // tslint:disable-next-line: variable-name
+    
     private _pointerPickerActivated = false;
     private mapOptions!: MapOptions;
 

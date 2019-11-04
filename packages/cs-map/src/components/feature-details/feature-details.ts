@@ -10,7 +10,6 @@ import { MapDatasource, IMapLayer, LayerLegend, FeatureEventDetails, CsMap } fro
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
-import { LayerDetails } from '../layer-details/layer-details';
 import { WidgetBase } from '@csnext/cs-client';
 
 export class section {
@@ -27,22 +26,24 @@ export class PropertyDetails {
 }
 
 @Component({
-    name: 'feature-details',
-    props: { widget: null },
+    name: 'feature-details',    
     components: { simplebar },
     template: require('./feature-details.html')
 } as any)
 export class FeatureDetails extends WidgetBase {
-    public widget!: IWidget;
     public sectionsPanels: number[] = [];
     public tabs = 'feature-details';
-    public filterProperties: string = '';
-    public filterPropertiesEnabled = false;
-    public sections: section[] = [];
+    public filter: string = '';
 
-    @Watch('filterProperties')
-    filterChanged() {
-        this.updateFilter();
+    public sections: section[] = [];    
+
+    public get filterPropertiesEnabled(): boolean {
+        return (this.filter.length > 0);
+    }
+
+    @Watch('filter')
+    filterChanged(v: string) {
+        this.updateSections();
     }
 
     public updateFilter() {
@@ -155,7 +156,7 @@ export class FeatureDetails extends WidgetBase {
                 }
 
                 if (!this.filterPropertiesEnabled ||
-                    this.propertyFilter(proptype, this.filterProperties)
+                    this.propertyFilter(proptype, this.filter)
                 ) {
                     let legends: LayerLegend[] = [];
 
@@ -217,7 +218,7 @@ export class FeatureDetails extends WidgetBase {
                 this.layer.setLegend(property, true);
             }
         }
-    }    
+    }
 
     public get properties(): any[] {
         let result: any[] = [];
@@ -246,12 +247,12 @@ export class FeatureDetails extends WidgetBase {
             icon: 'list',
             toolTip: 'OPEN LAYER',
             title: 'OPEN LAYER',
-            action: ()=> {
+            action: () => {
                 if (this.manager && this.layer) {
                     this.manager.openLayer(this.layer);
                 }
             }
-        } as IMenu)        
+        } as IMenu)
     }
 
     public contentLoaded() {

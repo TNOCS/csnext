@@ -22,11 +22,14 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { Feature } from 'geojson';
 import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
-import { AppState } from '@csnext/cs-client';
-import { LayerDetails } from '../components/layer-details/layer-details';
+import HandlebarsIntl from 'handlebars-intl';
+
+HandlebarsIntl.registerWith(Handlebars);
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
+
+    private _titleTemplate?: Handlebars.TemplateDelegate;
 
     public get Visible(): boolean | undefined {
         return this.visible;
@@ -50,7 +53,7 @@ export class BaseLayer implements IMapLayer {
 
     // tslint:disable-next-line: variable-name
     public _source?: LayerSource;
-    public _initialized ? = false;
+    public _initialized?= false;
     public typeId?: string = 'geojson';
     public id!: string;
     // public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
@@ -98,7 +101,7 @@ export class BaseLayer implements IMapLayer {
     public popupContent?: string | Function | undefined;
     public extensions?: ILayerExtensionType[];
     public _extensions: ILayerExtension[] = [];
-    
+
     // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
     @FormField({
         title: 'Feature types',
@@ -127,12 +130,27 @@ export class BaseLayer implements IMapLayer {
         // this.events = new MessageBusService();
     }
     // tslint:disable-next-line: no-empty
-    public getBounds() {}
+    public getBounds() { }
 
-    public addLayer(map: CsMap) {}
+    public intlData = {
+        "locales": "en-US",
+        "formats": {
+            "number": {
+                "USD": {
+                    "style": "currency",
+                    "currency": "USD"
+                },
+                "percentage": {
+                    "style": "percent"
+                }
+            }
+        }
+    };
 
-    public initLayer(manager: MapDatasource) {}
-    public setOpacity(value: number) {}
+    public addLayer(map: CsMap) { }
+
+    public initLayer(manager: MapDatasource) { }
+    public setOpacity(value: number) { }
     public getLayerActions(): ILayerAction[] {
         const res: ILayerAction[] = [];
         if (this.Visible) {
@@ -182,19 +200,19 @@ export class BaseLayer implements IMapLayer {
         }
         return res;
     }
-    public updateLayer() {}
-    public removeLayer(map: CsMap) {}
-    public moveLayer(beforeId?: string) {}
+    public updateLayer() { }
+    public removeLayer(map: CsMap) { }
+    public moveLayer(beforeId?: string) { }
 
     public removeLegend(
         property: PropertyDetails | PropertyType | string,
         refreshLayer: boolean
-    ) {}
+    ) { }
 
     public setLegend(
         property: PropertyDetails | PropertyType | string,
         refreshLayer: boolean
-    ) {}
+    ) { }
 
     public getStyleLegendKey(styleKey: string): LayerLegend[] {
         let result: LayerLegend[] = [];
@@ -212,19 +230,19 @@ export class BaseLayer implements IMapLayer {
     public getStyleLegend(styleKey: string, style: any): LayerLegend[] {
         const result: LayerLegend[] = [];
         for (const key in style) {
-                if (style.hasOwnProperty(key)) {
-                    const prop = style[key];
-                    if (prop.hasOwnProperty('stops')) {
-                        result.push({
-                            property: prop.property,
-                            stops: prop.stops,
-                            styleProperty: key,
-                            style,
-                            styleKey
-                        });
-                    }
+            if (style.hasOwnProperty(key)) {
+                const prop = style[key];
+                if (prop.hasOwnProperty('stops')) {
+                    result.push({
+                        property: prop.property,
+                        stops: prop.stops,
+                        styleProperty: key,
+                        style,
+                        styleKey
+                    });
                 }
             }
+        }
 
         return result;
     }
@@ -248,8 +266,10 @@ export class BaseLayer implements IMapLayer {
 
     public parseTitle(f?: Feature) {
         if (this.style && this.style.title && f) {
-            const template = Handlebars.compile(this.style.title);
-            return template(f);
+            if (!this._titleTemplate) {
+                this._titleTemplate = Handlebars.compile(this.style.title);
+            }
+            return this._titleTemplate(f, { data: { intl: this.intlData } });
         } else {
             return `${this.title}`;
         }

@@ -54,41 +54,49 @@
                 append-icon="search"
             ></v-text-field> -->
 
-            <simplebar v-if="sections" style="height:100%; padding-right: 12px" >
-                <v-expansion-panels
-                    multiple 
-                    v-model="sectionsPanels"
-                    class="section-expansion-panel"
-                >
-                    <v-expansion-panel
-                        v-for="section in sections"
-                        :key="section.id"
+    <span v-html="title"></span>
+
+    <simplebar v-if="sections" style="height:100%; padding-right: 12px">
+        <v-expansion-panels
+            multiple
+            v-model="sectionsPanels"
+            class="section-expansion-panel"
+        >
+            <v-expansion-panel v-for="section in sections" :key="section.id">
+                <v-expansion-panel-header class="feature-section-title">
+                    {{ section.title }}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <div
+                        v-for="property in section.properties"
+                        class="feature-property"
                     >
-                        <v-expansion-panel-header class="feature-section-title">
-                            {{ section.title }}
-                        </v-expansion-panel-header>
-                        <v-expansion-panel-content>
-                            <div
-                                v-for="property in section.properties"
-                                class="feature-property"
-                            >
-                                <div
-                                    class="feature-property-key"
-                                    @click="setLegend(property)"
-                                    :class="{ 'feature-legend': property.legends.length>0 }"
-                                >
-                                    <!--  -->
-                                    {{ property.type.title }}
-                                </div>
-                                <div class="feature-property-value">
-                                    {{ property.display }}
-                                </div>
-                            </div>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
-            </simplebar>
-        <!-- </v-tab-item>
+                        <v-tooltip left :disabled="!property.type.description">
+                            <template v-slot:activator="{ on }">
+                                <div>
+                                    <div
+                                        v-on="on"
+                                        class="feature-property-key"
+                                        @click="setLegend(property)"
+                                        :class="{ 'feature-legend': property.legends.length>0 }"
+                                    >
+                                        <!--  -->
+                                        {{ property.type.title }}
+                                    </div>
+                                    <div class="feature-property-value">
+                                        {{ property.display }}
+                                    </div>
+                               
+                                </div>                             
+                            </template>
+                            <div>{{ property.type.description}}</div>
+                        </v-tooltip>
+                    </div>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </simplebar>
+    <!-- </v-tab-item>
         
     </v-tabs-items> -->
 </div>

@@ -46,6 +46,7 @@ import { MetaFile } from '../classes/meta-file';
 import { uniq } from 'lodash';
 import { PropType } from 'vue';
 import { isNumber } from 'util';
+import { resolve } from 'dns';
 
 export type LayerFeatureTypes = { [key: string]: FeatureType };
 export class GeojsonPlusLayer extends BaseLayer
@@ -327,8 +328,8 @@ export class GeojsonPlusLayer extends BaseLayer
         if (typeof property === 'string') {
             // find property details
 
-            if (ft && ft.properties && ft.properties.hasOwnProperty(property)) {
-                property = { type: ft.properties[property], key: property }
+            if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(property)) {
+                property = { type: ft.propertyMap[property], key: property }
             }
         }
         if (ft && property.hasOwnProperty('key')) {
@@ -544,65 +545,87 @@ export class GeojsonPlusLayer extends BaseLayer
         }
     }
 
-    private async initFeatureTypes() {
-        if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
-            let keys = Object.keys(this.featureTypes);
-            Object.keys(this.featureTypes).forEach(k => {
-                if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
-                    this.featureTypes[k] = plainToClass(
-                        FeatureType,
-                        this.featureTypes[k]
-                    );
-                    this.updateFeatureTypePropertyMap(this.featureTypes[k]);
-                }
-            });
-
-            this.featureTypes = plainToClass(
-                FeatureTypes,
-                this.featureTypes
-            ) as FeatureTypes;
 
 
-            // this.updateMeta();
+    private async initFeatureTypes(): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
 
-        } else {
-            this.featureTypes = new FeatureTypes();
-            let ft = new FeatureType();
-            ft.title = this.defaultFeatureType = 'default';
+            console.log('temp: start init feature types');
 
-            ft.properties = [];
+            if (this.featureTypesUrl && !this.featureTypes) {
+                try {
+                    this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
+                } catch (e) {
 
-            // check first feature for missing properties
-            if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
-                let f = this._source._geojson.features[0];
-                if (f.properties) {
-                    for (const prop in f.properties) {
-                        if (f.properties.hasOwnProperty(prop)) {
-                            const value = f.properties[prop];
-                            ft.properties.push({
-                                label: prop,
-                                title: prop,
-                                description: prop,
-                                type: isNumber(value) ? 'number' : 'string'
-                            });
+                }                
 
-
-                        }
-                    }
-                }
-                this.updateFeatureTypePropertyMap(ft);
-                this.featureTypes[ft.title] = ft;
             }
 
-        }
-        if (!this.featureType) {
-            this.featureType = this.getFeatureType();
-        }
+            console.log('temp: continu feature types + mapping');
 
-        if (this.featureType && this.featureType.style) {
-            this.style = plainToClass(LayerStyle, this.featureType.style);
-        }
-    }
+            if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
+                let keys = Object.keys(this.featureTypes);
+                Object.keys(this.featureTypes).forEach(k => {
+                    if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
+                        this.featureTypes[k] = plainToClass(
+                            FeatureType,
+                            this.featureTypes[k]
+                        );
+                        this.updateFeatureTypePropertyMap(this.featureTypes[k]);
+                    }
+                });
+
+                this.featureTypes = plainToClass(
+                    FeatureTypes,
+                    this.featureTypes
+                ) as FeatureTypes;
+
+
+                // this.updateMeta();
+
+            } else {
+                this.featureTypes = new FeatureTypes();
+                let ft = new FeatureType();
+                ft.title = this.defaultFeatureType = 'default';
+
+                ft.properties = [];
+
+                // check first feature for missing properties
+                if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
+                    let f = this._source._geojson.features[0];
+                    if (f.properties) {
+                        for (const prop in f.properties) {
+                            if (f.properties.hasOwnProperty(prop)) {
+                                const value = f.properties[prop];
+                                ft.properties.push({
+                                    label: prop,
+                                    title: prop,
+                                    description: prop,
+                                    type: isNumber(value) ? 'number' : 'string'
+                                });
+
+
+                            }
+                        }
+                    }
+                    this.updateFeatureTypePropertyMap(ft);
+                    this.featureTypes[ft.title] = ft;
+                }
+
+            }
+
+            console.log('temp: get single feature type');
+            if (!this.featureType) {
+                this.featureType = this.getFeatureType();
+            }
+
+            if (this.featureType && this.featureType.style) {
+                this.style = plainToClass(LayerStyle, this.featureType.style);
+            }
+            resolve(true);
+        })
+
+    };
 
     private updateFeatureTypePropertyMap(type: FeatureType) {
         if (type.properties) {
@@ -615,216 +638,222 @@ export class GeojsonPlusLayer extends BaseLayer
         }
     }
 
-    public async initLayer(manager: MapDatasource) {
-        // check if we need to create an instance first of maplayer (needed if imported from json)
 
-        if (this.id === undefined) {
-            this.id = guidGenerator();
-        }
 
-        if (this.featureTypesUrl && !this.featureTypes) {
-            this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
-        }
-        this.initFeatureTypes();
+    public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
+        return new Promise(async (resolve, reject) => {
 
-        if (!this._source) {
-            if (typeof this.source === 'string') {
-                if (
-                    manager._sources &&
-                    manager._sources.layers.hasOwnProperty(this.source)
-                ) {
-                    this._source = manager._sources.layers[this.source];
+
+
+            console.log('temp: start init layer');
+            // check if we need to create an instance first of maplayer (needed if imported from json)
+
+            if (this.id === undefined) {
+                this.id = guidGenerator();
+            }
+
+            let loaded = await this.initFeatureTypes();
+
+            if (!this._source) {
+                if (typeof this.source === 'string') {
+                    if (
+                        manager._sources &&
+                        manager._sources.layers.hasOwnProperty(this.source)
+                    ) {
+                        this._source = manager._sources.layers[this.source];
+                    }
+                } else {
+                    this._source = this.source = plainToClass(
+                        LayerSource,
+                        this.source
+                    );
                 }
-            } else {
-                this._source = this.source = plainToClass(
-                    LayerSource,
-                    this.source
+            }
+            if (this.title === undefined && this._source && this._source.id) {
+                this.title = this._source.id;
+            }
+
+            this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
+
+            this.style = plainToClass(LayerStyle, {
+                ...({
+                    title: '{{title}}',
+                    fill: false,
+                    mapbox: {},
+                    types: []
+                } as LayerStyle),
+                ...this.style
+            });
+
+            if (this.style.types) {
+
+                if (this.style.types!.includes('point')) {
+                    if (!this.style.mapbox!.symbolLayout)
+                        this.style.mapbox!.symbolLayout = {};
+                    if (!this.style.mapbox!.symbolPaint)
+                        this.style.mapbox!.symbolPaint = {};
+                    if (!this.style.mapbox!.circleLayout)
+                        this.style.mapbox!.circleLayout = {};
+                    if (!this.style.mapbox!.circlePaint)
+                        this.style.mapbox!.circlePaint = {};
+                }
+
+                if (this.style.types!.includes('line')) {
+                    if (!this.style.mapbox!.lineLayout)
+                        this.style.mapbox!.lineLayout = {};
+                    if (!this.style.mapbox!.linePaint)
+                        this.style.mapbox!.linePaint = {};
+                }
+
+                if (this.style.types!.includes('fill')) {
+                    if (!this.style.mapbox!.fillLayout)
+                        this.style.mapbox!.fillLayout = {};
+                    if (!this.style.mapbox!.fillPaint)
+                        this.style.mapbox!.fillPaint = {};
+                }
+
+            }
+
+            if (this.style && this.style.mapbox) {
+                this._symbolLayout = this.style.mapbox.symbolLayout;
+                this._symbolPaint = this.style.mapbox.symbolPaint;
+                this._circlePaint = this.style.mapbox.circlePaint;
+                this._circleLayout = this.style.mapbox.circleLayout;
+                this._fillPaint = this.style.mapbox.fillPaint;
+                this._linePaint = this.style.mapbox.linePaint;
+            }
+
+            // store original layouts
+            if (this.style.mapbox && !this.style._originalMapbox) {
+                this.style._originalMapbox = JSON.parse(
+                    JSON.stringify(this.style.mapbox)
                 );
             }
-        }
-        if (this.title === undefined && this._source && this._source.id) {
-            this.title = this._source.id;
-        }
 
-        this.initFeatureTypes();
-
-        this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
-
-        this.style = plainToClass(LayerStyle, {
-            ...({
-                title: '{{title}}',
-                fill: false,
-                mapbox: {},
-                types: []
-            } as LayerStyle),
-            ...this.style
-        });
-
-        if (this.style.types) {
-
-            if (this.style.types!.includes('point')) {
-                if (!this.style.mapbox!.symbolLayout)
-                    this.style.mapbox!.symbolLayout = {};
-                if (!this.style.mapbox!.symbolPaint)
-                    this.style.mapbox!.symbolPaint = {};
-                if (!this.style.mapbox!.circleLayout)
-                    this.style.mapbox!.circleLayout = {};
-                if (!this.style.mapbox!.circlePaint)
-                    this.style.mapbox!.circlePaint = {};
+            if (!this.popupContent) {
+                this.popupContent = (d: FeatureEventDetails) => {
+                    this.parsePopup(d.feature);
+                    return;
+                };
             }
 
-            if (this.style.types!.includes('line')) {
-                if (!this.style.mapbox!.lineLayout)
-                    this.style.mapbox!.lineLayout = {};
-                if (!this.style.mapbox!.linePaint)
-                    this.style.mapbox!.linePaint = {};
+            if (this.style.pointCircle === true) {
+                this._circleLayer = new GeojsonLayer({
+                    id: this.id + '-circles',
+                    type: 'circle',
+                    popupContent: this.popupContent,
+                    source: this.source,
+                    parentId: this.id,
+                    layout: this._circleLayout,
+                    paint: this._circlePaint,
+                    filter: ['all']
+                });
+                if (this.style.pointCircle) {
+                    this._circleLayer.filter.push([
+                        '==',
+                        ['geometry-type'],
+                        'Point'
+                    ]);
+                }
+                this._circleLayer.initLayer(manager);
             }
 
-            if (this.style.types!.includes('fill')) {
-                if (!this.style.mapbox!.fillLayout)
-                    this.style.mapbox!.fillLayout = {};
-                if (!this.style.mapbox!.fillPaint)
-                    this.style.mapbox!.fillPaint = {};
+            // make sure a text style is available
+            if (this.style.mapTitle) {
+                this.style.mapbox!.symbolLayout = {
+                    ...{
+                        'text-field': this.style.mapTitle,
+                        'text-anchor': 'center',
+                        'text-size': 12,
+                        'text-offset': [0, 1.5]
+                    },
+                    ...this.style.mapbox!.symbolLayout
+                };
             }
 
-        }
-
-        if (this.style && this.style.mapbox) {
-            this._symbolLayout = this.style.mapbox.symbolLayout;
-            this._symbolPaint = this.style.mapbox.symbolPaint;
-            this._circlePaint = this.style.mapbox.circlePaint;
-            this._circleLayout = this.style.mapbox.circleLayout;
-            this._fillPaint = this.style.mapbox.fillPaint;
-            this._linePaint = this.style.mapbox.linePaint;
-        }
-
-        // store original layouts
-        if (this.style.mapbox && !this.style._originalMapbox) {
-            this.style._originalMapbox = JSON.parse(
-                JSON.stringify(this.style.mapbox)
-            );
-        }
-
-        if (!this.popupContent) {
-            this.popupContent = (d: FeatureEventDetails) => {
-                return this.parsePopup(d.feature);
-            };
-        }
-
-        if (this.style.pointCircle === true) {
-            this._circleLayer = new GeojsonLayer({
-                id: this.id + '-circles',
-                type: 'circle',
-                popupContent: this.popupContent,
+            this._symbolLayer = new GeojsonLayer({
+                id: this.id + '-symbol',
+                type: 'symbol',
                 source: this.source,
                 parentId: this.id,
-                layout: this._circleLayout,
-                paint: this._circlePaint,
+                style: this.style,
+                popupContent: this.popupContent,
+                paint: this._symbolPaint,
+                layout: this._symbolLayout,
+                filter: ['==', ['geometry-type'], 'Point']
+            });
+
+            this._symbolLayer.initLayer(manager);
+
+            this._lineLayer = new GeojsonLayer({
+                id: this.id + '-line',
+                type: 'line',
+                source: this.source,
+                parentId: this.id,
+                popupContent: this.popupContent,
+                layout: this._lineLayout,
+                paint: this._linePaint
+                    ? this._linePaint
+                    : ({
+                        'line-color': ['get', 'stroke'],
+                        'line-opacity': ['get', 'stroke-opacity'],
+                        'line-width': ['get', 'stroke-width']
+                    } as LinePaint),
                 filter: ['all']
             });
-            if (this.style.pointCircle) {
-                this._circleLayer.filter.push([
+            if (!this.style.line) {
+                this._lineLayer.filter.push([
                     '==',
                     ['geometry-type'],
-                    'Point'
+                    'LineString'
                 ]);
             }
-            this._circleLayer.initLayer(manager);
-        }
-
-        // make sure a text style is available
-        if (this.style.mapTitle) {
-            this.style.mapbox!.symbolLayout = {
-                ...{
-                    'text-field': this.style.mapTitle,
-                    'text-anchor': 'center',
-                    'text-size': 12,
-                    'text-offset': [0, 1.5]
-                },
-                ...this.style.mapbox!.symbolLayout
-            };
-        }
-
-        this._symbolLayer = new GeojsonLayer({
-            id: this.id + '-symbol',
-            type: 'symbol',
-            source: this.source,
-            parentId: this.id,
-            style: this.style,
-            popupContent: this.popupContent,
-            paint: this._symbolPaint,
-            layout: this._symbolLayout,
-            filter: ['==', ['geometry-type'], 'Point']
-        });
-
-        this._symbolLayer.initLayer(manager);
-
-        this._lineLayer = new GeojsonLayer({
-            id: this.id + '-line',
-            type: 'line',
-            source: this.source,
-            parentId: this.id,
-            popupContent: this.popupContent,
-            layout: this._lineLayout,
-            paint: this._linePaint
-                ? this._linePaint
-                : ({
-                    'line-color': ['get', 'stroke'],
-                    'line-opacity': ['get', 'stroke-opacity'],
-                    'line-width': ['get', 'stroke-width']
-                } as LinePaint),
-            filter: ['all']
-        });
-        if (!this.style.line) {
-            this._lineLayer.filter.push([
-                '==',
-                ['geometry-type'],
-                'LineString'
-            ]);
-        }
-        if (this.iconZoomLevel !== undefined) {
-            this._lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
-        }
-        this._lineLayer.initLayer(manager);
-
-        this._fillLayer = new GeojsonLayer({
-            id: this.id + '-fill',
-            type: 'fill',
-            source: this.source,
-            parentId: this.id,
-            popupContent: this.popupContent,
-            layout: this._fillLayout,
-
-            paint: this._fillPaint
-                ? this._fillPaint
-                : ({
-                    'fill-color': ['get', 'color'],
-                    'fill-opacity': ['get', 'stroke-opacity']
-                } as FillPaint),
-            filter: ['all']
-        });
-
-        if (!this.style.fill) {
-            this._fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
-        }
-        if (this.iconZoomLevel !== undefined) {
-            this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
-        }
-        this._fillLayer.initLayer(manager);
-
-        if (this.style) {
-            // if specified, set default legend
-            if (this.style.defaultLegendProperty) {
-                this.setLegend(this.style.defaultLegendProperty, false);
+            if (this.iconZoomLevel !== undefined) {
+                this._lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
-        }
+            this._lineLayer.initLayer(manager);
 
-        this.updateLegends();
+            this._fillLayer = new GeojsonLayer({
+                id: this.id + '-fill',
+                type: 'fill',
+                source: this.source,
+                parentId: this.id,
+                popupContent: this.popupContent,
+                layout: this._fillLayout,
 
-        // add reference to this maplayers manager
-        this._manager = manager;
-        this._initialized = true;
-        return this;
+                paint: this._fillPaint
+                    ? this._fillPaint
+                    : ({
+                        'fill-color': ['get', 'color'],
+                        'fill-opacity': ['get', 'stroke-opacity']
+                    } as FillPaint),
+                filter: ['all']
+            });
+
+            if (!this.style.fill) {
+                this._fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
+            }
+            if (this.iconZoomLevel !== undefined) {
+                this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
+            }
+            this._fillLayer.initLayer(manager);           
+
+            console.log('temp: update legend');
+            this.updateLegends();
+
+            if (this.style) {
+                // if specified, set default legend
+                if (this.style.defaultLegendProperty) {
+                    this.setLegend(this.style.defaultLegendProperty, false);
+                }
+            }
+
+            // add reference to this maplayers manager
+            this._manager = manager;
+            console.log('temp: initialized true');
+            this._initialized = true;
+            resolve(this);
+        });
     }
 
     pipeEvents(
