@@ -107,7 +107,7 @@ export class CsDashboard extends Vue {
     }
 
     // init sub dashboards
-    if (this.dashboard && this.dashboard.dashboards && this.dashboard.dashboards) {
+    if (this.dashboard && this.dashboard.dashboards) {
       for (const d of this.dashboard.dashboards) {
         this.initDashboard(d);
       }

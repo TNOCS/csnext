@@ -21,7 +21,9 @@
         "unlink": "lerna run unlink",
         "build:parallel": "lerna run --parallel build",
         "dev:docs": "lerna run dev:docs",
-        "build:docs": "lerna run build --scope cs-docs",
+        "build:docs": "lerna run build:docs",
+        "build:typedoc": "npx typedoc ./packages",
+        "build:docs-all": "yarn build:typedoc && yarn build:docs",
         "build:docker": "docker build -t tnocs/csnext .",
         "publish:npm": "lerna publish --force-publish=*",
         "publish:beta": "npm build && lerna publish --force-publish=* --canary --cd-version patch",
@@ -50,6 +52,8 @@
         "style-loader": "^1.0.0",
         "thread-loader": "^2.1.3",
         "ts-loader": "^6.2.1",
+        "typedoc": "^0.15.0",
+        "typedoc-plugin-markdown": "^2.2.10",
         "typescript": "beta",
         "vue": "^2.6.10",
         "vue-class-component": "^7.1.0",
@@ -61,6 +65,8 @@
         "yargs": "^14.2.0",
         "yarn": "^1.19.1"
     },
-    "dependencies": {},
+    "dependencies": {
+        "markdown-it-link-attributes": "^3.0.0"
+    },
     "version": "0.0.120"
 }

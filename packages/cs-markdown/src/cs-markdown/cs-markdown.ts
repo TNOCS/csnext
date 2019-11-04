@@ -7,7 +7,7 @@ import MarkdownItVue from 'markdown-it-vue';
 import 'markdown-it-vue/dist/markdown-it-vue.css';
 import axios from 'axios';
 import simplebar from 'simplebar-vue';
-import { MdWidgetOptions } from '..';
+// import { MdWidgetOptions } from '..';
 
 @Component({
     name: 'cs-markdown',
@@ -20,7 +20,7 @@ import { MdWidgetOptions } from '..';
 export class CsMarkdown extends WidgetBase {
 
     public content: string = "";
-    public options: MdWidgetOptions = {};
+    // public options: MdWidgetOptions = {};
     @Prop({default: ''}) private data?: string;
 
     @Watch('widget.data', { deep: true })

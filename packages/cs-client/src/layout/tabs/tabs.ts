@@ -11,12 +11,14 @@ import './tabs.css';
     dashboard: null
   }
 } as any)
-export class Tabs extends Vue {
+export class TabsLayout extends Vue {
   public dashboard?: IDashboard;
+  public static id = 'tabs';
+  public tab = null;
+
 }
 
-LayoutManager.add({
-  id: 'tabs',
-  name: 'tabs layout',
-  component: Tabs
-} as ILayoutManagerConfig);
+
+
+
+LayoutManager.addLayoutManager(TabsLayout);

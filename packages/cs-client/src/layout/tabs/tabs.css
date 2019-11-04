@@ -5,3 +5,7 @@
   bottom: 0;
   position: absolute;  
 }
+
+.tabs-layout-manager-content {
+  height: 100%;
+}

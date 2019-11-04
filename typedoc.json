@@ -1,4 +1,14 @@
 {
-    "mode": "file",
-    "out": "docs"
+    "out": "./packages/cs-docs/docs/references",
+    "theme": "vuepress",
+    "include": "./",
+    "exclude": [
+        "**/cs-docs/**",
+        "**/cli-plugin-cs/**",
+        "**/cs-log/**",
+        "**/cs-layer-server/**"
+    ],
+    "mode": "modules",
+    "ignoreCompilerErrors": true,
+    "experimentalDecorators": true
 }
