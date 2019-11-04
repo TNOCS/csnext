@@ -338,8 +338,9 @@ export class CsTimeline extends WidgetBase {
         // this.timeline.on('click', this.handleTimelineClick);
         if (this.WidgetOptions.showFocusTime) {
             this.timeline.addCustomTime(this.currentTime, 'focustime');
-            this.timeline.on('click', this.handleTimelineClick);
+            this.timeline.on('click', this.handleTimelineClick);            
         }
+        this.timeline.on('doubleClick', this.handleDoubleClick);
         this.timeline.on('select', this.handleEventSelect);
         this.timeline.on('timechanged', this.handleTimeChanged);
         this.timeline.on('timechange', this.handleTimeChange);
@@ -361,6 +362,10 @@ export class CsTimeline extends WidgetBase {
         if (d && d.id === 'focustime' && d.time && this.Time.events) {
             this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
         }
+    }
+
+    private handleDoubleClick(data: any) {
+        this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_DOUBLE_CLICK, data);
     }
 
     private handleEventSelect(data: any) {
