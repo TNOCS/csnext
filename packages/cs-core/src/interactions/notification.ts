@@ -14,5 +14,5 @@ export interface INotification {
   _visible?: boolean;
   timeout?: number;
   icon?: string;
-  clickCallback?: () => {};
+  clickCallback?: () => void;
 }
