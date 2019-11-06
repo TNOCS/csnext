@@ -14,7 +14,7 @@
 
 • **breadcrumbItems**? : *any[]*
 
-*Defined in [cs-core/src/project/header-options.ts:13](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L13)*
+*Defined in [cs-core/src/project/header-options.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L13)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **breadcrumbs**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L10)*
+*Defined in [cs-core/src/project/header-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L10)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **dense**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L5)*
+*Defined in [cs-core/src/project/header-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L5)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **hideLogo**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L9)*
+*Defined in [cs-core/src/project/header-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L9)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **hideTitle**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L8)*
+*Defined in [cs-core/src/project/header-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L8)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **hideToolbar**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L14)*
+*Defined in [cs-core/src/project/header-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L14)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **infoHeader**? : *[IInfoHeaderOptions](_cs_core_src_project_header_options_.iinfoheaderoptions.md) | boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L16)*
+*Defined in [cs-core/src/project/header-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L16)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **logo**? : *string*
 
-*Defined in [cs-core/src/project/header-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L7)*
+*Defined in [cs-core/src/project/header-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L7)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **showLoadingIcon**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L12)*
+*Defined in [cs-core/src/project/header-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L12)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 • **showNotifications**? : *boolean*
 
-*Defined in [cs-core/src/project/header-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L11)*
+*Defined in [cs-core/src/project/header-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L11)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/project/header-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L6)*
+*Defined in [cs-core/src/project/header-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L6)*
 
 ___
 
@@ -102,4 +102,4 @@ ___
 
 • **titleWidget**? : *[IWidget](_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-core/src/project/header-options.ts:15](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/header-options.ts#L15)*
+*Defined in [cs-core/src/project/header-options.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/header-options.ts#L15)*

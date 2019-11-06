@@ -10,7 +10,7 @@
 
 • **items**: *[ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)[]* =  []
 
-*Defined in [cs-client/src/datasources/log/log-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-manager.ts#L7)*
+*Defined in [cs-client/src/datasources/log/log-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-manager.ts#L7)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **logHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [cs-client/src/datasources/log/log-manager.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-manager.ts#L10)*
+*Defined in [cs-client/src/datasources/log/log-manager.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-manager.ts#L10)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **source**: *[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md) | undefined*
 
-*Defined in [cs-client/src/datasources/log/log-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-manager.ts#L8)*
+*Defined in [cs-client/src/datasources/log/log-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-manager.ts#L8)*
 
 ## Methods
 
@@ -34,7 +34,7 @@ ___
 
 ▸ **init**(`sourceId`: string, `state`: [AppState](_cs_client_src_services_app_state_.appstate.md)): *Promise‹[ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)[]›*
 
-*Defined in [cs-client/src/datasources/log/log-manager.ts:12](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-manager.ts#L12)*
+*Defined in [cs-client/src/datasources/log/log-manager.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-manager.ts#L12)*
 
 **Parameters:**
 

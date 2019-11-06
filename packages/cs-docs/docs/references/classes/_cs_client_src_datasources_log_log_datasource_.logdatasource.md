@@ -14,7 +14,7 @@
 
 \+ **new LogDataSource**(`logurl?`: string, `logid?`: string): *[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md)*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:13](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L13)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L13)*
 
 **Parameters:**
 
@@ -31,7 +31,7 @@ Name | Type |
 
 • **bus**: *any* =  new MessageBusService()
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:9](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L9)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L9)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **id**: *string* = "logdatasource"
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L7)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L7)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 • **items**: *[ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)[]* =  []
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L8)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L8)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 • **logid**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:15](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L15)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L15)*
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 • **logurl**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:15](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L15)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L15)*
 
 ## Accessors
 
@@ -71,7 +71,7 @@ ___
 
 • **get socket**(): *Socket | undefined*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L11)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L11)*
 
 **Returns:** *Socket | undefined*
 
@@ -81,7 +81,7 @@ ___
 
 ▸ **addItem**(`item`: [ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)): *void*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:17](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L17)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:17](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L17)*
 
 **Parameters:**
 
@@ -97,7 +97,7 @@ ___
 
 ▸ **execute**(`datasources?`: object, `data?`: any): *Promise‹[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md)›*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:45](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L45)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:45](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L45)*
 
 **Parameters:**
 
@@ -114,7 +114,7 @@ ___
 
 ▸ **removeItem**(`item`: [ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)): *void*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:39](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L39)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:39](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L39)*
 
 **Parameters:**
 
@@ -130,7 +130,7 @@ ___
 
 ▸ **removeItemById**(`id`: string): *void*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:31](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L31)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:31](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L31)*
 
 **Parameters:**
 
@@ -146,7 +146,7 @@ ___
 
 ▸ **selectItemId**(`id`: string): *void*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:27](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L27)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:27](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L27)*
 
 **Parameters:**
 
@@ -162,7 +162,7 @@ ___
 
 ▸ **updateItem**(`item`: [ILogItem](../interfaces/_cs_client_src_datasources_log_log_item_.ilogitem.md)): *void*
 
-*Defined in [cs-client/src/datasources/log/log-datasource.ts:22](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/datasources/log/log-datasource.ts#L22)*
+*Defined in [cs-client/src/datasources/log/log-datasource.ts:22](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-datasource.ts#L22)*
 
 **Parameters:**
 

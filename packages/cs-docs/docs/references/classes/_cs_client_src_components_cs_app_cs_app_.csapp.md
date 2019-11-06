@@ -12,7 +12,7 @@
 
 \+ **new CsApp**(): *[CsApp](_cs_client_src_components_cs_app_cs_app_.csapp.md)*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:84](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L84)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:84](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L84)*
 
 **Returns:** *[CsApp](_cs_client_src_components_cs_app_cs_app_.csapp.md)*
 
@@ -22,7 +22,7 @@
 
 • **active**: *any* =  null
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:74](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L74)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:74](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L74)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:71](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L71)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:71](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L71)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **busManager**: *any* =  new MessageBusManager()
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:84](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L84)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:84](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L84)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **footer**: *[IFooterOptions](../interfaces/_cs_core_src_project_footer_options_.ifooteroptions.md)*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:77](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L77)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:77](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L77)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **isLoading**: *boolean* = true
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:83](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L83)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:83](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L83)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **lastNotification**: *[INotification](../interfaces/_cs_core_src_interactions_notification_.inotification.md)* =  { _visible: false } as INotification
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:80](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L80)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:80](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L80)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **leftSidebar**: *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:75](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L75)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:75](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L75)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **rightSidebar**: *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:76](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L76)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:76](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L76)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 • **settingsDialog**: *boolean* = false
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:73](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L73)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:73](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L73)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 • **showNotifications**: *boolean* = false
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:81](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L81)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:81](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L81)*
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 • **unReadNotifications**: *[INotification](../interfaces/_cs_core_src_interactions_notification_.inotification.md)[]* =  []
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:82](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L82)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:82](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L82)*
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 ▪ **LANGUAGE_SWITCH_ID**: *string* = "switch_language"
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:69](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L69)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:69](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L69)*
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 ▪ **LOADING_MENU_ID**: *string* = "loading_menu"
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:70](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L70)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:70](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L70)*
 
 ## Methods
 
@@ -126,7 +126,7 @@ ___
 
 ▸ **AddDashboardRoute**(`d`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:246](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L246)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:246](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L246)*
 
 **Parameters:**
 
@@ -142,7 +142,7 @@ ___
 
 ▸ **InitNavigation**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:282](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L282)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:282](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L282)*
 
 **Returns:** *void*
 
@@ -152,7 +152,7 @@ ___
 
 ▸ **InitNotifications**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:426](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L426)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:426](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L426)*
 
 **Returns:** *void*
 
@@ -162,7 +162,7 @@ ___
 
 ▸ **InitTheme**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:178](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L178)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:178](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L178)*
 
 **Returns:** *void*
 
@@ -172,7 +172,7 @@ ___
 
 ▸ **OpenSettings**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:304](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L304)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:304](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L304)*
 
 **Returns:** *void*
 
@@ -182,7 +182,7 @@ ___
 
 ▸ **SelectDashboard**(`d`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:297](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L297)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:297](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L297)*
 
 **Parameters:**
 
@@ -198,7 +198,7 @@ ___
 
 ▸ **SelectNotification**(`notification`: [INotification](../interfaces/_cs_core_src_interactions_notification_.inotification.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:389](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L389)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:389](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L389)*
 
 **Parameters:**
 
@@ -214,7 +214,7 @@ ___
 
 ▸ **UpdateFooter**(`d`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:339](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L339)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:339](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L339)*
 
 **Parameters:**
 
@@ -230,7 +230,7 @@ ___
 
 ▸ **UpdateNotifications**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:398](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L398)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:398](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L398)*
 
 Update list of unread notification
 
@@ -242,7 +242,7 @@ ___
 
 ▸ **UpdateSideBars**(`d`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:308](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L308)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:308](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L308)*
 
 **Parameters:**
 
@@ -258,7 +258,7 @@ ___
 
 ▸ **actionCallback**(`action`: string): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:354](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L354)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:354](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L354)*
 
 **Parameters:**
 
@@ -274,7 +274,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:126](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L126)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:126](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L126)*
 
 **Returns:** *void*
 
@@ -284,7 +284,7 @@ ___
 
 ▸ **clickNotification**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:412](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L412)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:412](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L412)*
 
 **Returns:** *void*
 
@@ -294,7 +294,7 @@ ___
 
 ▸ **closeNotification**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:419](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L419)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:419](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L419)*
 
 **Returns:** *void*
 
@@ -304,7 +304,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:361](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L361)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:361](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L361)*
 
 **Returns:** *void*
 
@@ -314,7 +314,7 @@ ___
 
 ▸ **getAdjacentDashboard**(`direction`: string, `active`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md), `dashboards?`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)[]): *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:192](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L192)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:192](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L192)*
 
 **Parameters:**
 
@@ -332,7 +332,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:241](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L241)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:241](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L241)*
 
 **Returns:** *void*
 
@@ -342,7 +342,7 @@ ___
 
 ▸ **noticationsUpdated**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:162](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L162)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:162](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L162)*
 
 **Returns:** *void*
 
@@ -352,7 +352,7 @@ ___
 
 ▸ **onResize**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:174](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L174)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:174](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L174)*
 
 **Returns:** *void*
 
@@ -362,7 +362,7 @@ ___
 
 ▸ **projectChanged**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:131](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L131)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:131](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L131)*
 
 **Returns:** *void*
 
@@ -372,7 +372,7 @@ ___
 
 ▸ **rightSidebarChanged**(`n`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:167](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L167)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:167](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L167)*
 
 **Parameters:**
 
@@ -388,7 +388,7 @@ ___
 
 ▸ **rightSidebarsChanged**(`n`: any, `o`: any): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:144](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L144)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:144](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L144)*
 
 **Parameters:**
 
@@ -405,7 +405,7 @@ ___
 
 ▸ **selectBreadCrumb**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:295](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L295)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:295](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L295)*
 
 **Returns:** *void*
 
@@ -415,7 +415,7 @@ ___
 
 ▸ **swipe**(`direction`: string): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:219](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L219)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:219](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L219)*
 
 **Parameters:**
 
@@ -431,7 +431,7 @@ ___
 
 ▸ **themeChanged**(): *void*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:138](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L138)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:138](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L138)*
 
 **Returns:** *void*
 
@@ -441,10 +441,10 @@ ___
 
 ### ▪ **dialog**: *object*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:78](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L78)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:78](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L78)*
 
 ###  visible
 
 • **visible**: *boolean* = false
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:78](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L78)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:78](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L78)*

@@ -10,7 +10,7 @@
 
 • **color**: *string*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-selection/layer-selection.ts#L11)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-selection/layer-selection.ts#L11)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **layers**: *[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)[]*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:12](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-selection/layer-selection.ts#L12)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-selection/layer-selection.ts#L12)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **state**: *"all" | "none" | "some"*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:13](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-selection/layer-selection.ts#L13)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-selection/layer-selection.ts#L13)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **title**: *string*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-selection/layer-selection.ts#L10)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-selection/layer-selection.ts#L10)*

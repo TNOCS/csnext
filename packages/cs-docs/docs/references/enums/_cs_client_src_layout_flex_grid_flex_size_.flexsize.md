@@ -6,7 +6,7 @@
 
 • **AutoWidth**: = "AutoWidth"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L8)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L8)*
 
 ___
 
@@ -14,7 +14,7 @@ ___
 
 • **Large**: = "Large"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:5](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L5)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L5)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **Medium**: = "Medium"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:4](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L4)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:4](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L4)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **Small**: = "Small"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:3](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L3)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:3](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L3)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **Tall**: = "Tall"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L7)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L7)*
 
 ___
 
@@ -46,4 +46,4 @@ ___
 
 • **Wide**: = "Wide"
 
-*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:6](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/layout/flex-grid/flex-size.ts#L6)*
+*Defined in [cs-client/src/layout/flex-grid/flex-size.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-size.ts#L6)*

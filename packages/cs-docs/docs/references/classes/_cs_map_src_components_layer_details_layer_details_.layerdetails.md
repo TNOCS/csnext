@@ -12,7 +12,7 @@
 
 • **allFeatures**? : *Feature[]*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:19](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L19)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:19](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L19)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **filter**: *string* = ""
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:18](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L18)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:18](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L18)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **filterItems**: *string* = ""
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:17](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L17)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:17](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L17)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **filteredFeatures**: *Feature[]* =  []
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:44](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L44)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:44](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L44)*
 
 ## Accessors
 
@@ -44,7 +44,7 @@ ___
 
 • **get layer**(): *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md) | undefined*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:28](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L28)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:28](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L28)*
 
 get active layer
 
@@ -56,7 +56,7 @@ ___
 
 • **get layerColor**(): *string*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:57](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L57)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:57](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L57)*
 
 get layer color
 
@@ -68,7 +68,7 @@ ___
 
 • **get manager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:65](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L65)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:65](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L65)*
 
 **Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
@@ -78,7 +78,7 @@ ___
 
 • **get title**(): *string*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:47](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L47)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:47](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L47)*
 
 get feature title
 
@@ -90,7 +90,7 @@ get feature title
 
 ▸ **contentLoaded**(): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:99](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L99)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:99](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L99)*
 
 **Returns:** *void*
 
@@ -100,7 +100,7 @@ ___
 
 ▸ **filterChanged**(`v`: string): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:23](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L23)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:23](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L23)*
 
 **Parameters:**
 
@@ -116,7 +116,7 @@ ___
 
 ▸ **filterFeature**(`f`: Feature, `s`: string): *boolean*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:38](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L38)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:38](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L38)*
 
 returns true if features is included filter
 
@@ -135,7 +135,7 @@ ___
 
 ▸ **fitLayer**(): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:71](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L71)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:71](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L71)*
 
 **Returns:** *void*
 
@@ -145,7 +145,7 @@ ___
 
 ▸ **getAllFeatures**(): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:83](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L83)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:83](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L83)*
 
 **Returns:** *void*
 
@@ -155,7 +155,7 @@ ___
 
 ▸ **openFeature**(`feature`: any): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:77](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L77)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:77](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L77)*
 
 **Parameters:**
 
@@ -171,6 +171,6 @@ ___
 
 ▸ **updateFeatures**(): *void*
 
-*Defined in [cs-map/src/components/layer-details/layer-details.ts:91](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/components/layer-details/layer-details.ts#L91)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:91](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/layer-details/layer-details.ts#L91)*
 
 **Returns:** *void*

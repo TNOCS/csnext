@@ -14,7 +14,7 @@
 
 \+ **new LayerSource**(`geojson?`: FeatureCollection): *[LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
 
-*Defined in [cs-map/src/classes/layer-source.ts:21](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L21)*
+*Defined in [cs-map/src/classes/layer-source.ts:21](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L21)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ Name | Type |
 
 • **_geojson**? : *FeatureCollection*
 
-*Defined in [cs-map/src/classes/layer-source.ts:20](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L20)*
+*Defined in [cs-map/src/classes/layer-source.ts:20](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L20)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **_loaded**? : *boolean* = false
 
-*Defined in [cs-map/src/classes/layer-source.ts:21](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L21)*
+*Defined in [cs-map/src/classes/layer-source.ts:21](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L21)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-map/src/classes/layer-source.ts:9](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L9)*
+*Defined in [cs-map/src/classes/layer-source.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L9)*
 
 id of this layer
 
@@ -56,7 +56,7 @@ ___
 
 • **tileSize**? : *number*
 
-*Defined in [cs-map/src/classes/layer-source.ts:19](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L19)*
+*Defined in [cs-map/src/classes/layer-source.ts:19](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L19)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/layer-source.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L10)*
+*Defined in [cs-map/src/classes/layer-source.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L10)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **type**? : *"vector" | "raster" | "raster-dem" | "geojson" | "image" | "video"*
 
-*Defined in [cs-map/src/classes/layer-source.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L11)*
+*Defined in [cs-map/src/classes/layer-source.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L11)*
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 • **url**? : *string*
 
-*Defined in [cs-map/src/classes/layer-source.ts:18](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L18)*
+*Defined in [cs-map/src/classes/layer-source.ts:18](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L18)*
 
 ## Methods
 
@@ -88,7 +88,7 @@ ___
 
 ▸ **InitGeoJsonFeatures**(`geojson`: FeatureCollection, `layerId?`: string): *FeatureCollection‹Point | MultiPoint | LineString | MultiLineString | Polygon | MultiPolygon | GeometryCollection, object›*
 
-*Defined in [cs-map/src/classes/layer-source.ts:34](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L34)*
+*Defined in [cs-map/src/classes/layer-source.ts:34](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L34)*
 
 make sure all features have an id and properties object
 
@@ -107,6 +107,6 @@ ___
 
 ▸ **LoadSource**(): *Promise‹FeatureCollection›*
 
-*Defined in [cs-map/src/classes/layer-source.ts:61](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-source.ts#L61)*
+*Defined in [cs-map/src/classes/layer-source.ts:61](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/layer-source.ts#L61)*
 
 **Returns:** *Promise‹FeatureCollection›*

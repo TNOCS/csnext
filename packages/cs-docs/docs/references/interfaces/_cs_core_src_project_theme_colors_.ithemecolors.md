@@ -14,7 +14,7 @@
 
 • **accent**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:6](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L6)*
+*Defined in [cs-core/src/project/theme-colors.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L6)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **error**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L7)*
+*Defined in [cs-core/src/project/theme-colors.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L7)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **headerBackground**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:12](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L12)*
+*Defined in [cs-core/src/project/theme-colors.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L12)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **headerColor**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:13](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L13)*
+*Defined in [cs-core/src/project/theme-colors.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L13)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **info**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L8)*
+*Defined in [cs-core/src/project/theme-colors.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L8)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **menu**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L11)*
+*Defined in [cs-core/src/project/theme-colors.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L11)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **primary**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:4](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L4)*
+*Defined in [cs-core/src/project/theme-colors.ts:4](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L4)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **secondary**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:5](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L5)*
+*Defined in [cs-core/src/project/theme-colors.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L5)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **success**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:9](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L9)*
+*Defined in [cs-core/src/project/theme-colors.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L9)*
 
 ___
 
@@ -86,4 +86,4 @@ ___
 
 • **warning**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/theme-colors.ts#L10)*
+*Defined in [cs-core/src/project/theme-colors.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/theme-colors.ts#L10)*

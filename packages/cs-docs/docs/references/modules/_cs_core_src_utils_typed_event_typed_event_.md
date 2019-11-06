@@ -6,7 +6,7 @@
 
 Ƭ **IListener**: *function*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:4](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/typed-event/typed-event.ts#L4)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:4](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/utils/typed-event/typed-event.ts#L4)*
 
 Listen for events of Type T
 

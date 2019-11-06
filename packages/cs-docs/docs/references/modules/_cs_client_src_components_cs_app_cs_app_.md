@@ -6,7 +6,7 @@
 
 • **en**: *any* =  require('./../../assets/translations/en.json')
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:25](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L25)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:25](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L25)*
 
 ___
 
@@ -19,7 +19,7 @@ ___
   silentTranslationWarn: true
 })
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:38](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L38)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:38](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L38)*
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
 • **nl**: *any* =  require('./../../assets/translations/nl.json')
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:27](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L27)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:27](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L27)*
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 • **router**: *any* =  new VueRouter({ routes: [] })
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:53](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L53)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:53](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L53)*
 
 ___
 
@@ -43,6 +43,6 @@ ___
 
 • **vuetifyOpts**: *object*
 
-*Defined in [cs-client/src/components/cs-app/cs-app.ts:45](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-client/src/components/cs-app/cs-app.ts#L45)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:45](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/components/cs-app/cs-app.ts#L45)*
 
 #### Type declaration:

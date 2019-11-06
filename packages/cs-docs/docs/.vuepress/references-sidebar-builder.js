@@ -12,7 +12,7 @@ class ReferencesSidebarBuilder {
     copy_readmes() {
         const folders = ['cs-billboard', 'cs-client', 'cs-core', 'cs-drag-grid', 'cs-map', 'cs-markdown', 'cs-split-panel', 'cs-timeline']
         for (let folder in folders) {
-            fs.copyFile('../' + folders[folder] + '/README.md', './docs/test/' + folders[folder] + '-README.md', (err) => {
+            fs.copyFile('../' + folders[folder] + '/README.md', './docs/references/' + folders[folder] + '-README.md', (err) => {
                 if (err) console.log(err);
                 else console.log('File was copied to destination', folders[folder]);
             });

@@ -10,6 +10,6 @@
 
 ▸ **dispose**(): *void*
 
-*Defined in [cs-core/src/utils/typed-event/typed-event.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/typed-event/typed-event.ts#L7)*
+*Defined in [cs-core/src/utils/typed-event/typed-event.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/utils/typed-event/typed-event.ts#L7)*
 
 **Returns:** *void*

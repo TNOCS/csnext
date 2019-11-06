@@ -6,7 +6,7 @@
 
 Ƭ **LayerFeatureTypes**: *object*
 
-*Defined in [cs-map/src/layers/geojson-plus-layer.ts:51](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/layers/geojson-plus-layer.ts#L51)*
+*Defined in [cs-map/src/layers/geojson-plus-layer.ts:51](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/layers/geojson-plus-layer.ts#L51)*
 
 #### Type declaration:
 
