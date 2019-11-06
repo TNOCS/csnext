@@ -32,6 +32,8 @@ export class CsMarkdown extends WidgetBase {
         if (!this.widget) return;
         if (typeof (this.widget.data) === 'string') {
             Vue.set(this, 'content', this.widget.data);
+        } else if (typeof (this.widget.data) === 'string') {
+            Vue.set(this, 'content', this.widget.data);
         } else {
             if (this.widget.data && this.widget.data.hasOwnProperty('url')) {
                 axios.get(this.widget.data.url).then(u => {

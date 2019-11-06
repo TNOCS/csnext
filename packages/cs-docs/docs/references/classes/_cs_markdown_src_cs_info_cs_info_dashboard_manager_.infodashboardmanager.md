@@ -12,23 +12,15 @@
 
 • **highlightedItemId**: *string* = ""
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:11](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L11)*
-
-___
-
-###  name
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L11)*
 
 • **name**: *string* = "info-dashboard"
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L9)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L9)*
 
 ___
 
-### `Static` id
-
-▪ **id**: *string* = "info-dashboard"
-
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L8)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L9)*
 
 ## Methods
 
@@ -36,11 +28,7 @@ ___
 
 ▸ **checkDashboard**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:73](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L73)*
-
-**Parameters:**
-
-Name | Type |
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L8)*
 ------ | ------ |
 `dashboard` | [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md) |
 
@@ -48,11 +36,7 @@ Name | Type |
 
 ___
 
-###  dashboardLoaded
-
-▸ **dashboardLoaded**(): *void*
-
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:85](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L85)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:73](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L73)*
 
 **Returns:** *void*
 
@@ -62,17 +46,13 @@ ___
 
 ▸ **initWidgets**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:29](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L29)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L29)*
 
 **Returns:** *void*
 
 ___
 
-###  start
-
-▸ **start**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
-
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:13](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L13)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:85](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L85)*
 
 **Parameters:**
 
@@ -82,13 +62,9 @@ Name | Type |
 
 **Returns:** *void*
 
-___
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L29)*
 
-###  stop
-
-▸ **stop**(): *void*
-
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:81](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L81)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:81](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L81)*
 
 **Returns:** *void*
 
@@ -96,14 +72,12 @@ ___
 
 ###  updateInfoDashboard
 
-▸ **updateInfoDashboard**(`info`: [Info](_cs_core_src_utils_info_.info.md)): *void*
-
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:37](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L37)*
-
-**Parameters:**
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:13](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L13)*
 
 Name | Type |
 ------ | ------ |
 `info` | [Info](_cs_core_src_utils_info_.info.md) |
 
 **Returns:** *void*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:81](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L81)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:37](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L37)*

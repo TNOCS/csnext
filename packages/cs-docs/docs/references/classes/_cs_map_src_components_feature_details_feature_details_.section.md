@@ -10,20 +10,13 @@
 
 • **id**? : *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:17](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L17)*
-
-___
-
-### `Optional` properties
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L16)*
 
 • **properties**? : *[PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:19](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L19)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L18)*
 
 ___
 
-### `Optional` title
-
-• **title**? : *string*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:18](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L18)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L18)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:17](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L17)*

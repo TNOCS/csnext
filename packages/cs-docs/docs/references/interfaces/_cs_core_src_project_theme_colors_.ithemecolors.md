@@ -14,23 +14,15 @@
 
 • **accent**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:6](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L6)*
-
-___
-
-### `Optional` error
+*Defined in [cs-core/src/project/theme-colors.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L6)*
 
 • **error**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:7](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L7)*
+*Defined in [cs-core/src/project/theme-colors.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L7)*
 
 ___
 
-### `Optional` headerBackground
-
-• **headerBackground**? : *string*
-
-*Defined in [cs-core/src/project/theme-colors.ts:12](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L12)*
+*Defined in [cs-core/src/project/theme-colors.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L7)*
 
 ___
 
@@ -38,23 +30,15 @@ ___
 
 • **headerColor**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:13](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L13)*
-
-___
-
-### `Optional` info
+*Defined in [cs-core/src/project/theme-colors.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L12)*
 
 • **info**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:8](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L8)*
+*Defined in [cs-core/src/project/theme-colors.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L8)*
 
 ___
 
-### `Optional` menu
-
-• **menu**? : *string*
-
-*Defined in [cs-core/src/project/theme-colors.ts:11](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L11)*
+*Defined in [cs-core/src/project/theme-colors.ts:13](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L13)*
 
 ___
 
@@ -62,23 +46,15 @@ ___
 
 • **primary**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L4)*
-
-___
-
-### `Optional` secondary
+*Defined in [cs-core/src/project/theme-colors.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L8)*
 
 • **secondary**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L5)*
+*Defined in [cs-core/src/project/theme-colors.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L5)*
 
 ___
 
-### `Optional` success
-
-• **success**? : *string*
-
-*Defined in [cs-core/src/project/theme-colors.ts:9](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L9)*
+*Defined in [cs-core/src/project/theme-colors.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L11)*
 
 ___
 
@@ -86,4 +62,7 @@ ___
 
 • **warning**? : *string*
 
-*Defined in [cs-core/src/project/theme-colors.ts:10](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/theme-colors.ts#L10)*
+*Defined in [cs-core/src/project/theme-colors.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L4)*
+*Defined in [cs-core/src/project/theme-colors.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L5)*
+*Defined in [cs-core/src/project/theme-colors.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L9)*
+*Defined in [cs-core/src/project/theme-colors.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/theme-colors.ts#L10)*

@@ -9,7 +9,8 @@ import {
     LayerSource,
     ILayerService,
     LayerStyle,
-    LayerEditor
+    LayerEditor,
+    FeatureDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -26,8 +27,8 @@ import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import { FeatureTypes } from '../classes/feature-type';
-import { MetaFile } from '../classes/meta-file';
 import Vue from 'vue';
+import { LayerDetails } from '../components/layer-details/layer-details';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -53,6 +54,8 @@ export class MapDatasource implements IDatasource {
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
+    private readonly FEATURE_SIDEBAR_ID = 'feature';
+    private readonly LAYER_DETAILS_SIDEBAR_ID = 'layerdetails';
 
     public get MapWidget(): CsMap | undefined {
         return this.map;
@@ -248,7 +251,7 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    
+
 
     public moveLayer(layer: IMapLayer, beforeId?: string) {
         layer.moveLayer(beforeId);
@@ -597,6 +600,54 @@ export class MapDatasource implements IDatasource {
         return res;
     }
 
+    public openFeature(feature: Feature, layer: IMapLayer) {
+        if (!feature || !layer) { return; }
+        AppState.Instance.AddSidebar('feature', { icon: 'folder_open' });
+        AppState.Instance.OpenRightSidebarWidget(
+            {
+                id: 'feature-details-component',
+                component: FeatureDetails,
+                options: {
+                    showToolbar: false,
+                    searchProperty: 'filter',
+                    toolbarOptions: {
+                        backgroundColor: 'primary',
+                        dense: true
+                    },
+                    hideSidebarButton: true
+                },
+                data: {
+                    feature: feature,
+                    layer,
+                    manager: this
+                }
+            },
+            { open: true },
+            this.FEATURE_SIDEBAR_ID,
+            true
+        );
+    }
+
+    public openLayer(layer: IMapLayer | string) {
+        if (typeof layer === 'string') {
+            if (this.layers) {
+                let l = this.layers.find(l => l.id === layer);
+                if (l) { this.openLayer(l); }
+            }
+        } else {
+            AppState.Instance.AddSidebar(this.LAYER_DETAILS_SIDEBAR_ID, { icon: 'list' });
+            AppState.Instance.OpenRightSidebarWidget({
+                component: LayerDetails,
+                options: {
+                    showToolbar: false,
+                    closeSidebarButton: true,
+                    searchProperty: 'filter',
+                },
+
+                data: { layer: layer, manager: this },
+            }, { open: true }, this.LAYER_DETAILS_SIDEBAR_ID, true);
+        };
+    }
 
     public editLayer(layer: IMapLayer | string) {
         if (typeof layer === 'string') {
@@ -616,8 +667,6 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    
-
 
     public addGeojsonLayer(title: string, url?: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
@@ -625,7 +674,9 @@ export class MapDatasource implements IDatasource {
             source.url = url;
             source.title = title;
             source.id = guidGenerator();
+            console.log('temp: loading datasource');
             source.LoadSource().then(s => {
+                console.log('temp: source loaded');
                 let rl = new GeojsonPlusLayer();
                 rl.id = title;
                 rl.tags = tags ? tags : ['general'];
@@ -634,22 +685,28 @@ export class MapDatasource implements IDatasource {
                 rl.defaultFeatureType = defaultFeatureType;
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
-                rl.source = source;
+                rl.source = rl._source = source;
                 if (typeof featureTypes === 'string') {
                     rl.featureTypesUrl = featureTypes;
                 } else {
                     rl.featureTypes = featureTypes;
                 }
 
-                rl.initLayer(this);
+                rl.initLayer(this).then(r => {
 
-                rl.popupContent = undefined;
-                if (this.layers) {
-                    this.layers.push(rl);
-                    this.showLayer(rl).then(l => {
-                        resolve(rl);
-                    })
-                }
+                    console.log('temp: done init layer')
+
+                    rl.popupContent = undefined;
+                    if (this.layers) {
+                        this.layers.push(rl);
+                        this.showLayer(rl).then(l => {
+                            resolve(rl);
+                        })
+                    }
+                }).catch(e => {
+                    console.log('error loading');
+                })
+
             }).catch(e => {
                 console.log(e);
                 reject();

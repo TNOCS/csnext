@@ -6,19 +6,19 @@
 
 ### ▪ **DefaultProject**: *object*
 
-*Defined in [cs-client/src/services/default-project.ts:3](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L3)*
+*Defined in [cs-client/src/services/default-project.ts:3](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L3)*
 
 ###  dashboards
 
 • **dashboards**: *undefined[]* =  []
 
-*Defined in [cs-client/src/services/default-project.ts:52](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L52)*
+*Defined in [cs-client/src/services/default-project.ts:52](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L52)*
 
 ###  datasources
 
 • **datasources**: *object*
 
-*Defined in [cs-client/src/services/default-project.ts:22](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L22)*
+*Defined in [cs-client/src/services/default-project.ts:22](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L22)*
 
 #### Type declaration:
 
@@ -26,11 +26,11 @@
 
 • **menus**: *undefined[]* =  []
 
-*Defined in [cs-client/src/services/default-project.ts:51](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L51)*
+*Defined in [cs-client/src/services/default-project.ts:51](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L51)*
 
 ▪ **header**: *object*
 
-*Defined in [cs-client/src/services/default-project.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L4)*
+*Defined in [cs-client/src/services/default-project.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L4)*
 
 * **breadcrumbs**: *boolean* = false
 
@@ -40,13 +40,13 @@
 
 ▪ **navigation**: *object*
 
-*Defined in [cs-client/src/services/default-project.ts:9](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L9)*
+*Defined in [cs-client/src/services/default-project.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L9)*
 
 * **style**: *string* = "tabs"
 
 ▪ **theme**: *object*
 
-*Defined in [cs-client/src/services/default-project.ts:23](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/default-project.ts#L23)*
+*Defined in [cs-client/src/services/default-project.ts:23](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/default-project.ts#L23)*
 
 * **dark**: *boolean* = false
 

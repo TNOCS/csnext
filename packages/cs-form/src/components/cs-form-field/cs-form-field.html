@@ -124,6 +124,9 @@
                     v-model="target[field._key]"
                     :label="$cs.Translate(field.title)"                    
                     :disabled="field.readonly"     
+                    :append-outer-icon="field._appendIcon"
+                @input="fieldInput(field)"
+                @click:append-outer="fieldUpdated(field)"
                     @change="fieldUpdated(field)"              
                 ></v-combobox>
                 
@@ -152,9 +155,13 @@
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
-                :clearable="field.clearable"
+                :clearable="field.clearable"                
                 :rules="field.required ? [rules.required] : []"
                 :disabled="field.readonly"
+                :append-outer-icon="field._appendIcon"
+                @update:error="fieldError"
+                @input="fieldInput(field)"
+                @click:append-outer="fieldUpdated(field)"
                 @change="fieldUpdated(field)"
             ></v-text-field>
             <v-text-field
@@ -175,6 +182,9 @@
                 :required="field.required"
                 :clearable="field.clearable"
                 :disabled="field.readonly"
+                :append-outer-icon="field._appendIcon"
+                @input="fieldInput(field)"
+                @click:append-outer="fieldUpdated(field)"
                 @change="fieldUpdated(field)"
                 auto-grow
                 rows="2"

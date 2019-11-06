@@ -37,10 +37,10 @@ export class MapOptions extends WidgetOptions {
     public showDraw?: boolean = false;
     public showTraffic?: boolean = false;
     public showEditor?: boolean = false;
-    public showLegend?: boolean = true;
+    public showLegend?: boolean = false;
     public showGeolocater?: boolean = false;    
     public showGrid?: boolean = false;
     public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
-    public showBuildings?: boolean = false;
+    public showBuildings?: boolean = false;    
 }

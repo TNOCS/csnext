@@ -15,7 +15,6 @@ export class LayerLegendComponent extends Vue {
     public manager!: MapDatasource;
     public busHandle?: MessageBusHandle;
     public layer!: IMapLayer | undefined;
-    public mapDraw: any;
     public activeType: any;
     public types?: { [key: string]: FeatureType } = {};
     public map?: mapboxgl.Map;
@@ -30,15 +29,21 @@ export class LayerLegendComponent extends Vue {
 
     public mounted() {
         this.map = this.manager.MapControl;
-        this.mapDraw = this.manager.MapWidget!.mapDraw;
-
+        
         this.manager.events.subscribe('layer', () => {
             this.updateLegendList();
         });
 
         this.updateLegendList();
+
+        
     }
 
+    public beforeDestroy() {
+        
+    }
+
+    
     private updateLegendList() {
 
         if (this.manager && this.manager.layers) {

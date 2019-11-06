@@ -10,20 +10,13 @@
 
 • **component**: *any*
 
-*Defined in [cs-core/src/dashboard/layout-manager-config.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/dashboard/layout-manager-config.ts#L4)*
-
-___
-
-###  id
+*Defined in [cs-core/src/dashboard/layout-manager-config.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/layout-manager-config.ts#L4)*
 
 • **id**: *string*
 
-*Defined in [cs-core/src/dashboard/layout-manager-config.ts:2](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/dashboard/layout-manager-config.ts#L2)*
+*Defined in [cs-core/src/dashboard/layout-manager-config.ts:2](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/layout-manager-config.ts#L2)*
 
 ___
 
-###  name
-
-• **name**: *string*
-
-*Defined in [cs-core/src/dashboard/layout-manager-config.ts:3](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/dashboard/layout-manager-config.ts#L3)*
+*Defined in [cs-core/src/dashboard/layout-manager-config.ts:2](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/layout-manager-config.ts#L2)*
+*Defined in [cs-core/src/dashboard/layout-manager-config.ts:3](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/layout-manager-config.ts#L3)*

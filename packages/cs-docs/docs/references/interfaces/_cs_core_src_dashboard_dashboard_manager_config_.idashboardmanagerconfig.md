@@ -10,11 +10,7 @@
 
 • **getInstance**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L5)*
-
-#### Type declaration:
-
-▸ (): *[IDashboardManager](_cs_core_src_dashboard_dashboard_manager_.idashboardmanager.md)*
+*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L5)*
 
 ___
 
@@ -22,4 +18,5 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L4)*
+*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L4)*
+*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L4)*

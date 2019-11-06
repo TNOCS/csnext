@@ -10,23 +10,15 @@
 
 • **featureTypes**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L18)*
-
-___
-
-### `Optional` propertyTypeData
+*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L18)*
 
 • **propertyTypeData**? : *[PropertyCollection](../modules/_cs_map_src_classes_feature_type_.md#propertycollection)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L19)*
+*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L19)*
 
 ## Methods
 
-###  linkPropertyTypeData
-
-▸ **linkPropertyTypeData**(): *void*
-
-*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L22)*
+*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L19)*
 
 **Returns:** *void*
 
@@ -34,11 +26,7 @@ ___
 
 ### `Static` loadFeatureTypesFromUrl
 
-▸ **loadFeatureTypesFromUrl**(`url`: string): *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
-
-*Defined in [cs-map/src/classes/meta-file.ts:45](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L45)*
-
-Fetches meta file describing feature types and property types
+*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L22)*
 
 **Parameters:**
 
@@ -48,13 +36,9 @@ Name | Type |
 
 **Returns:** *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
 
-___
+*Defined in [cs-map/src/classes/meta-file.ts:47](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L47)*
 
-### `Static` loadMetaUrl
-
-▸ **loadMetaUrl**(`url`: string): *Promise‹[MetaFile](_cs_map_src_classes_meta_file_.metafile.md)›*
-
-*Defined in [cs-map/src/classes/meta-file.ts:138](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L138)*
+*Defined in [cs-map/src/classes/meta-file.ts:142](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L142)*
 
 **Parameters:**
 
@@ -70,13 +54,10 @@ ___
 
 ▸ **updateMeta**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `ft?`: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)): *Promise‹any›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:61](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L61)*
-
-**Parameters:**
-
-Name | Type |
+*Defined in [cs-map/src/classes/meta-file.ts:142](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L142)*
 ------ | ------ |
 `layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
 `ft?` | [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) |
 
 **Returns:** *Promise‹any›*
+*Defined in [cs-map/src/classes/meta-file.ts:65](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/meta-file.ts#L65)*

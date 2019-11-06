@@ -1,5 +1,5 @@
 <div>
-    <v-toolbar tabs :color="layer.color">
+    <!-- <v-toolbar tabs :color="layer.color">
         <v-toolbar-title class="layer-details-title">{{
             layer.title
         }}</v-toolbar-title>
@@ -17,14 +17,7 @@
             </template>
             filter features
         </v-tooltip>
-        <!-- <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-                <v-btn v-on="on" icon @click="editLayer(layer)">
-                    <v-icon>edit</v-icon>
-                </v-btn>
-            </template>
-            edit layer
-        </v-tooltip> -->
+       
         <v-tooltip bottom v-if="tabs === 'layer-items'">
             <template v-slot:activator="{ on }">
                 <v-btn @click="fitLayer()" icon v-on="on">
@@ -38,7 +31,7 @@
                 <v-tab href="#layer-items" v-if="!layer.disableFeatureList"
                     >Items</v-tab
                 >
-                <!-- <v-tab href="#filters">Filter</v-tab> -->
+              
             </v-tabs>
         </template>
     </v-toolbar>
@@ -57,7 +50,7 @@
                     v-model="filterItems"
                     label="filter"
                     append-icon="search"
-                ></v-text-field>
+                ></v-text-field> -->
 
                 <simplebar
                     style="position: absolute;top:0;bottom:0;left:0;right:0"
@@ -65,16 +58,19 @@
                     <v-list>
                         <v-list-item v-for="feature in filteredFeatures">
                             <v-list-item-content @click="openFeature(feature)">
+                                <!-- <v-list-item-title
+                                    v-text="feature"
+                                ></v-list-item-title> -->
                                 <v-list-item-title
-                                    v-text="layer.parseTitle(feature)"
-                                ></v-list-item-title>
+                                v-html="layer.parseTitle(feature)"
+                            ></v-list-item-title>
                                 <!-- v-text="layer.parseTitle(feature)" -->
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
                 </simplebar>
-            </v-tab-item>
-            <!-- <v-tab-item value="filters"> <h1>items</h1> </v-tab-item> -->
+            <!-- </v-tab-item>
+           
         </v-tabs-items>
-    </div>
+    </div> -->
 </div>

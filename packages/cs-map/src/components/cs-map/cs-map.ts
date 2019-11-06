@@ -59,8 +59,6 @@ export class CsMap extends WidgetBase {
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
 
-    private readonly FEATURE_SIDEBAR_ID = 'feature';
-
     public get pointPickerActivated(): boolean {
         return this._pointerPickerActivated;
     }
@@ -99,6 +97,7 @@ export class CsMap extends WidgetBase {
     private geocoderControl?: MapboxGeocoder;
     private gridControl?: GridControl;
     private geolocatorControl?: GeolocateControl;
+    private legendControl?: LayerLegendControl;
     private scaleControl?: ScaleControl;
 
     /** register new layertype  */
@@ -122,15 +121,15 @@ export class CsMap extends WidgetBase {
             CsMap.serviceTypes.push(type);
         }
     }
-    // public busHandlers: { [key: string]: { bus: IMessageBusService, handle: MessageBusHandle } } = {};
 
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
-
-    @Prop()
-    public widget!: IWidget;
+    /** actual mapbox gl control */
     public map!: mapboxgl.Map;
+
+
     public mapDraw!: any;
     // tslint:disable-next-line: variable-name
+    
     private _pointerPickerActivated = false;
     private mapOptions!: MapOptions;
 
@@ -145,7 +144,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showStyles')
-    public showStyles(enabled: boolean = true, old?: boolean) {
+    public showStyles(enabled: boolean, old?: boolean) {
         console.log(`Show styles: ${enabled}`);
         if (!enabled && old && this.mapboxStyleSwitcherControl) {
             this.map.removeControl(this.mapboxStyleSwitcherControl);
@@ -169,7 +168,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showRuler')
-    public showRuler(enabled: boolean = true, old?: boolean) {
+    public showRuler(enabled: boolean, old?: boolean) {
         console.log(`Show ruler: ${enabled}`);
         if (!enabled && old && this.rulerControl) {
             this.map.removeControl(this.rulerControl);
@@ -183,7 +182,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showGrid')
-    public showGrid(enabled: boolean = true, old?: boolean) {
+    public showGrid(enabled: boolean, old?: boolean) {
         console.log(`Show grid: ${enabled}`);
 
         if (!enabled && old && this.showGrid && this.gridControl) {
@@ -200,7 +199,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showScale')
-    public showScale(enabled: boolean = true, old?: boolean) {
+    public showScale(enabled: boolean, old?: boolean) {
         console.log(`Show grid: ${enabled}`);
 
         if (!enabled && old && this.showScale && this.scaleControl) {
@@ -217,7 +216,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showTraffic')
-    public showTraffic(enabled: boolean = true, old?: boolean) {
+    public showTraffic(enabled: boolean, old?: boolean) {
         console.log(`Show traffic: ${enabled}`);
         if (!enabled && old && this.trafficControl) {
             this.map.removeControl(this.trafficControl);
@@ -231,13 +230,27 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showGeocoder')
-    public showGeocoder(enabled: boolean = true, old?: boolean) {
+    public showGeocoder(enabled: boolean, old?: boolean) {
         console.log(`Show geocoder: ${enabled}`);
         if (!enabled && old && this.geocoderControl) {
             this.removeGeocoder();
         }
         if (enabled) {
             this.addGeocoder();
+        }
+    }
+
+    @Watch('widget.options.showLegend')
+    public showLegend(enabled: boolean, old?: boolean) {
+        if (!enabled && old && this.legendControl) {
+            console.log('Remove legend');    
+            this.map.removeControl(this.legendControl);        
+        }
+        if (enabled) {
+            if (!this.legendControl) {
+                this.legendControl = new LayerLegendControl(this.manager!);
+            }
+            this.map.addControl(this.legendControl, 'bottom-left');
         }
     }
 
@@ -256,7 +269,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showBuildings')
-    public showBuildings(enabled: boolean = true, old?: boolean) {
+    public showBuildings(enabled: boolean, old?: boolean) {
         if (!enabled && old) {
             this.map.removeLayer('3d-buildings');
         }
@@ -435,30 +448,30 @@ export class CsMap extends WidgetBase {
                                                 layer.openFeatureDetails ===
                                                 true
                                             ) {                                                                                                
-                                                this.$cs.AddSidebar('feature', { icon: 'map' });
-                                                this.$cs.OpenRightSidebarWidget(
-                                                    {
-                                                        id: 'feature-details-component',
-                                                        component: FeatureDetails,
-                                                        options: {
-                                                            showToolbar: false,
-                                                            toolbarOptions: {
-                                                                backgroundColor: 'primary',
-                                                                dense: true
-                                                            },
-                                                            hideSidebarButton: true
-                                                        },
-                                                        data: {
-                                                            feature: f.feature,
-                                                            layer,
-                                                            manager: this
-                                                                .manager
-                                                        }
-                                                    },
-                                                    { open: true },
-                                                    this.FEATURE_SIDEBAR_ID,
-                                                    false
-                                                );
+                                                // this.$cs.AddSidebar('feature', { icon: 'map' });
+                                                // this.$cs.OpenRightSidebarWidget(
+                                                //     {
+                                                //         id: 'feature-details-component',
+                                                //         component: FeatureDetails,
+                                                //         options: {
+                                                //             showToolbar: false,
+                                                //             toolbarOptions: {
+                                                //                 backgroundColor: 'primary',
+                                                //                 dense: true
+                                                //             },
+                                                //             hideSidebarButton: true
+                                                //         },
+                                                //         data: {
+                                                //             feature: f.feature,
+                                                //             layer,
+                                                //             manager: this
+                                                //                 .manager
+                                                //         }
+                                                //     },
+                                                //     { open: true },
+                                                //     this.FEATURE_SIDEBAR_ID,
+                                                //     true
+                                                // );
                                             }
                                         }
                                     }));
@@ -602,23 +615,15 @@ export class CsMap extends WidgetBase {
                         );
                         this.map.addControl(layerEditorControl);
                     }
-
-                    // add legend control
-                    if (this.mapOptions.showLegend) {
-                        const layerLegendControl = new LayerLegendControl(
-                            this.manager
-                        );
-                        this.map.addControl(layerLegendControl, 'bottom-left');
-                    }
                 }
 
-                this.showGrid(this.mapOptions.showGrid);
+                this.showGrid(this.mapOptions.showGrid || false);
 
                 if (this.mapOptions.showClickLayer) {
                     this.addClickLayer();
                 }
 
-                this.showGeocoder(this.mapOptions.showGeocoder);
+                this.showGeocoder(this.mapOptions.showGeocoder || false);
 
                 const nav = new mapboxgl.NavigationControl({
                     showCompass: this.mapOptions.showCompass,
@@ -628,15 +633,17 @@ export class CsMap extends WidgetBase {
 
                 this.showStyles(this.mapOptions.showStyles);
 
-                this.showRuler(this.mapOptions.showRuler);
+                this.showRuler(this.mapOptions.showRuler || false);
 
-                this.showTraffic(this.mapOptions.showTraffic);
+                this.showTraffic(this.mapOptions.showTraffic || false);
 
-                this.showLayers(this.mapOptions.showLayers);
+                this.showLayers(this.mapOptions.showLayers || false);
 
-                this.showGeolocator(this.mapOptions.showGeolocater);
+                this.showGeolocator(this.mapOptions.showGeolocater || false);
 
-                this.showBuildings(this.mapOptions.showBuildings);
+                this.showBuildings(this.mapOptions.showBuildings || false);
+
+                this.showLegend(this.mapOptions.showLegend || false);
 
 
 

@@ -12,7 +12,7 @@
 
 • **dashboard**? : *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/layout/single/single.ts:16](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/layout/single/single.ts#L16)*
+*Defined in [cs-client/src/layout/single/single.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/single/single.ts#L16)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **widget**? : *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-client/src/layout/single/single.ts:19](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/layout/single/single.ts#L19)*
+*Defined in [cs-client/src/layout/single/single.ts:19](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/single/single.ts#L19)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **widgetAvailable**: *boolean* = false
 
-*Defined in [cs-client/src/layout/single/single.ts:17](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/layout/single/single.ts#L17)*
+*Defined in [cs-client/src/layout/single/single.ts:17](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/single/single.ts#L17)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 ▪ **id**: *string* = "single"
 
-*Defined in [cs-client/src/layout/single/single.ts:18](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/layout/single/single.ts#L18)*
+*Defined in [cs-client/src/layout/single/single.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/single/single.ts#L18)*
 
 ## Methods
 
@@ -44,6 +44,6 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [cs-client/src/layout/single/single.ts:21](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/layout/single/single.ts#L21)*
+*Defined in [cs-client/src/layout/single/single.ts:21](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/single/single.ts#L21)*
 
 **Returns:** *void*

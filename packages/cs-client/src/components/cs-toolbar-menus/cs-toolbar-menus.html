@@ -1,5 +1,9 @@
-<div v-if="menus" class="cs-menu-container">
-  <template v-for="menu in menus">
+<div class="cs-menu-container">
+  <template v-if="searchProperty">
+    <v-btn icon v-if="!searchFocus" @click="searchFocus = true"><v-icon>search</v-icon></v-btn>
+    <v-text-field v-if="searchFocus" ref="searchField" @click:clear="searchFocus = false;search = ''" clearable prepend-inner-icon="search" rounded solo dense v-model="search"></v-text-field>
+  </template>
+  <template v-if="menus" v-for="menu in menus">
     <v-btn-toggle v-if="menu.toggleGroup" :key="menu.id" borderless tile group>
       <v-btn
         v-for="item in menu.items"
@@ -45,7 +49,7 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-btn
-              v-on="on"              
+              v-on="on"
               :disabled="menu.disabled"
               :fab="menu.type==='fab'"
               :icon="!menu.type || menu.type==='icon'"
@@ -55,7 +59,9 @@
               :loading="menu.loading"
               @click.delegate="triggerMenuAction(menu)"
             >
-              <v-icon v-if="menu.icon && menu.type!=='text'">{{ menu.icon }}</v-icon>
+              <v-icon v-if="menu.icon && menu.type!=='text'">{{
+                menu.icon
+              }}</v-icon>
               <span v-if="menu.type!=='icon'"
                 >{{ $cs.Translate(menu.title) }}
                 <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>

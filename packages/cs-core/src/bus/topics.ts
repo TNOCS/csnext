@@ -9,5 +9,6 @@ export class Topics {
   public static readonly SET_TIME_RANGE = 'set-time-range';
   public static readonly TIMELINE_MOVED = 'moved';
   public static readonly TIMELINE_MOVING = 'moving';
+  public static readonly TIMELINE_DOUBLE_CLICK = 'doubleclick';
   public static readonly RESIZE = 'resize';
 }

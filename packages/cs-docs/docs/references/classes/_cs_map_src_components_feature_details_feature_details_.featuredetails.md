@@ -8,35 +8,11 @@
 
 ## Properties
 
-###  filterProperties
+###  filter
 
-• **filterProperties**: *string* = ""
+• **filter**: *string* = ""
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:39](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L39)*
-
-___
-
-###  filterPropertiesEnabled
-
-• **filterPropertiesEnabled**: *boolean* = false
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:40](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L40)*
-
-___
-
-###  sections
-
-• **sections**: *[section](_cs_map_src_components_feature_details_feature_details_.section.md)[]* =  []
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:41](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L41)*
-
-___
-
-###  sectionsPanels
-
-• **sectionsPanels**: *number[]* =  []
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:37](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L37)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:36](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L36)*
 
 ___
 
@@ -44,82 +20,53 @@ ___
 
 • **tabs**: *string* = "feature-details"
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:38](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L38)*
-
-___
-
-###  widget
-
-• **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:36](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L36)*
-
-## Accessors
-
-###  feature
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:38](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L38)*
 
 • **get feature**(): *Feature | undefined*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:86](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L86)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:87](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L87)*
 
 get active feature
 
-**Returns:** *Feature | undefined*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:34](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L34)*
 
-___
+• **get filterPropertiesEnabled**(): *boolean*
 
-###  layer
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:40](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L40)*
 
-• **get layer**(): *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md) | undefined*
+**Returns:** *boolean*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:53](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L53)*
-
-get active layer
-
-**Returns:** *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md) | undefined*
-
-___
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:35](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L35)*
 
 ###  layerColor
 
 • **get layerColor**(): *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:71](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L71)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:72](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L72)*
 
-get layer color
-
-**Returns:** *string*
-
-___
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:87](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L87)*
 
 ###  manager
 
 • **get manager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:79](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L79)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:80](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L80)*
 
-**Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
+###  filterPropertiesEnabled
 
-___
+• **get filterPropertiesEnabled**(): *boolean*
 
-###  properties
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:40](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L40)*
 
-• **get properties**(): *any[]*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:235](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L235)*
-
-**Returns:** *any[]*
+**Returns:** *boolean*
 
 ___
+
 
 ###  title
 
 • **get title**(): *string*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:61](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L61)*
-
-get feature title
-
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:54](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L54)*
 **Returns:** *string*
 
 ## Methods
@@ -128,17 +75,13 @@ get feature title
 
 ▸ **centerFeature**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:249](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L249)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:237](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L237)*
 
 **Returns:** *void*
-
-___
-
-###  contentLoaded
-
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:72](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L72)*
 ▸ **contentLoaded**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:255](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L255)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:258](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L258)*
 
 **Returns:** *void*
 
@@ -146,26 +89,18 @@ ___
 
 ###  filterChanged
 
-▸ **filterChanged**(): *void*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:44](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L44)*
+▸ **filterChanged**(`v`: string): *void*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:80](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L80)*
+Name | Type |
+------ | ------ |
+`v` | string |
 
 **Returns:** *void*
 
 ___
 
-###  openLayer
-
-▸ **openLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:228](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L228)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
-
+###  initMenu
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:223](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L223)*
 **Returns:** *void*
 
 ___
@@ -174,12 +109,8 @@ ___
 
 ▸ **propertyFilter**(`prop`: [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md), `filter`: string): *boolean*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:93](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L93)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:94](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L94)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:62](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L62)*
 `prop` | [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md) |
 `filter` | string |
 
@@ -187,11 +118,59 @@ Name | Type |
 
 ___
 
+###  setLegend
+
+▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)): *void*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:237](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L237)*
+------ | ------ |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) |
+
+**Returns:** *void*
+
+___
+
+###  updateFilter
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:258](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L258)*
+
+___
+
+###  updateSections
+
+▸ **updateSections**(): *any[]*
+
+▸ **filterChanged**(`v`: string): *void*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:45](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L45)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`v` | string |
+###  initMenu
+
+▸ **initMenu**(): *void*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:243](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L243)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:94](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L94)*
+###  setLegend
+
+▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)): *void*
+
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:211](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L211)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) |
 ###  updateFilter
 
 ▸ **updateFilter**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:48](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L48)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:49](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L49)*
 
 **Returns:** *void*
 
@@ -201,24 +180,8 @@ ___
 
 ▸ **updateSections**(): *any[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:107](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L107)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:108](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/feature-details/feature-details.ts#L108)*
 
 get list of available section, with their properties
 
 **Returns:** *any[]*
-
-___
-
-###  updateStyle
-
-▸ **updateStyle**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)): *void*
-
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:210](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/feature-details/feature-details.ts#L210)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) |
-
-**Returns:** *void*

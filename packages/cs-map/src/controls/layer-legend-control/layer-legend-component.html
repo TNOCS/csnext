@@ -1,8 +1,6 @@
-<div
-    class="mapboxgl-ctrl mapboxgl-ctrl-group layer-editor-component"
-    v-if="activeLayer"
->
-    <v-menu open-on-hover top offset-y>
+<div id = 'layer-legend-control' class="mapboxgl-ctrl mapboxgl-ctrl-group layer-legend-component">
+    <h1>test</h1>
+    <!-- <v-menu open-on-hover top offset-y>
         <template v-slot:activator="{ on }">
             <div v-on="on" class="map-legend-layer-title">{{ activeLayer.title }}</div>
         </template>
@@ -15,22 +13,25 @@
                 <v-list-item-title>{{ layer.title }}</v-list-item-title>
             </v-list-item>
         </v-list>
-    </v-menu>
-
+    </v-menu> -->
+<!-- 
     <template v-if="activeLegend">
         {{ activeLegend.property }}
 
-        <!-- {{ activeLayer }} -->
+    
 
         <div v-for="stop in activeLegend.stops">
-            <span class="map-legend-color-rectangle" :style="{background:stop[1]}"></span>
+            <span
+                class="map-legend-color-rectangle"
+                :style="{background:stop[1]}"
+            ></span>
             <span class="map-legend-color-text">{{ stop[0] }}</span>
-            <!-- <span>{{ stop[1] }}</span> -->
+
         </div>
-    </template>
+    </template> -->
 
     <!-- <div v-for="layer in layers">layer: {{ layer.id }}</div> -->
-    <!-- <v-layout>
+    <v-layout>
         <img
             v-for="(value,key,index) in types"
             :key="key"
@@ -38,5 +39,5 @@
             @click="addIcon(key)"
             class="layer-editor-type-image"
         />
-    </v-layout> -->
+    </v-layout>
 </div>

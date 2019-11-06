@@ -10,23 +10,15 @@
 
 • **context**: *any*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:7](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/cs-map/feature-event-details.ts#L7)*
-
-___
-
-### `Optional` feature
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L7)*
 
 • **feature**? : *Feature*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:9](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/cs-map/feature-event-details.ts#L9)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L9)*
 
 ___
 
-###  features
-
-• **features**: *Feature[]*
-
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:8](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/cs-map/feature-event-details.ts#L8)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L9)*
 
 ___
 
@@ -34,12 +26,10 @@ ___
 
 • **layer**? : *[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:11](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/cs-map/feature-event-details.ts#L11)*
-
-___
-
-###  lngLat
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L8)*
 
 • **lngLat**: *LngLat*
 
-*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:10](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/components/cs-map/feature-event-details.ts#L10)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L10)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L11)*
+*Defined in [cs-map/src/components/cs-map/feature-event-details.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/cs-map/feature-event-details.ts#L10)*

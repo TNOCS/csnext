@@ -10,20 +10,13 @@
 
 • **icon**? : *string*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:27](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/sidebar-options.ts#L27)*
-
-___
-
-### `Optional` title
+*Defined in [cs-core/src/project/sidebar-options.ts:27](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/sidebar-options.ts#L27)*
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:29](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/sidebar-options.ts#L29)*
+*Defined in [cs-core/src/project/sidebar-options.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/sidebar-options.ts#L29)*
 
 ___
 
-### `Optional` tooltip
-
-• **tooltip**? : *string*
-
-*Defined in [cs-core/src/project/sidebar-options.ts:28](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/project/sidebar-options.ts#L28)*
+*Defined in [cs-core/src/project/sidebar-options.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/sidebar-options.ts#L29)*
+*Defined in [cs-core/src/project/sidebar-options.ts:28](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/project/sidebar-options.ts#L28)*

@@ -10,7 +10,7 @@
 
 • **_callback**? : *Function*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:8](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L8)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L8)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **alt**? : *boolean*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L5)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L5)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **code**: *string*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L4)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L4)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **ctrl**? : *boolean*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:7](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L7)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L7)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:3](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L3)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:3](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L3)*
 
 ___
 
@@ -50,4 +50,4 @@ ___
 
 • **shift**? : *boolean*
 
-*Defined in [cs-core/src/utils/keyboard-shortcut.ts:6](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-core/src/utils/keyboard-shortcut.ts#L6)*
+*Defined in [cs-core/src/utils/keyboard-shortcut.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/utils/keyboard-shortcut.ts#L6)*

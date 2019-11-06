@@ -19,7 +19,7 @@ export class MetaFile {
     public propertyTypeData?: PropertyCollection;
 
     // if property data was specified seperately, link them to the feature types
-    public linkPropertyTypeData() {
+    public linkPropertyTypeData() {        
         if (this.featureTypes && this.propertyTypeData) {
             for (const ft in this.featureTypes) {
                 if (this.featureTypes.hasOwnProperty(ft)) {
@@ -34,6 +34,8 @@ export class MetaFile {
                                 featureType.properties.push(this.propertyTypeData[key]);
                             }
                         }
+                    } else {
+                        featureType.properties = Object.values(this.propertyTypeData);
                     }
 
                 }
@@ -44,8 +46,10 @@ export class MetaFile {
     /** Fetches meta file describing feature types and property types  */
     public static loadFeatureTypesFromUrl(url: string): Promise<FeatureTypes> {
         return new Promise(async (resolve, reject) => {
+            console.log('temp: start load feature types');
             this.loadMetaUrl(url).then(mf => {
                 if (mf.featureTypes) {
+                    console.log('temp: got feature types');
                     resolve(mf.featureTypes);
                 } else {
                     reject();
@@ -155,7 +159,7 @@ export class MetaFile {
                 } else {
                     reject();
                 }
-            }).then(e => {
+            }).catch(e => {
                 reject();
             })
 

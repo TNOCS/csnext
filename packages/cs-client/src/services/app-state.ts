@@ -278,11 +278,12 @@ export class AppState extends AppStateBase {
         created: new Date(),
         isRead: false,
         buttonText: 'CLOSE',
-        remember: true,
+        remember: true,        
         _visible: true
       },
       ...notification
     };
+
     this.bus.publish('notification', 'new', notification);
     if (
       this.project.notifications &&
@@ -399,9 +400,6 @@ export class AppState extends AppStateBase {
         this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
       const d = this.project.rightSidebar.sidebars[key];
-      console.log('Sidebar dashboard:');
-      console.log(d);
-
       d.hide = false;
       this.OpenRightSidebar(d);
     }
@@ -431,7 +429,7 @@ export class AppState extends AppStateBase {
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
   public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
 
-    if (!replace && widget.id && this.findWidget(widget.id)) {
+    if (!replace && widget.id && this.project.rightSidebar && this.project.rightSidebar.dashboard && this.findWidget(widget.id, this.project.rightSidebar.dashboard)) {
       return;
     }
 

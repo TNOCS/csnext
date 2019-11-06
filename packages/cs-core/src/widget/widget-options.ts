@@ -19,6 +19,8 @@ export class WidgetOptions {
   public menus?: IMenu[];
   @FormField({ title: 'Icon', type: 'string' })
   public icon?: string;
+  @FormField({ title: 'Search', type: 'string' })
+  public searchProperty?: string;
 
   public widgetBorder?: string;
   @FormField({ title: 'Hide menu', type: 'checkbox' })

@@ -14,23 +14,15 @@
 
 • **activeLayers**? : *string[]*
 
-*Defined in [cs-map/src/services/layer-server-service-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/services/layer-server-service-options.ts#L5)*
-
-___
-
-### `Optional` openFeatureDetails
+*Defined in [cs-map/src/services/layer-server-service-options.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server-service-options.ts#L5)*
 
 • **openFeatureDetails**? : *boolean*
 
-*Defined in [cs-map/src/services/layer-server-service-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/services/layer-server-service-options.ts#L6)*
+*Defined in [cs-map/src/services/layer-server-service-options.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server-service-options.ts#L6)*
 
 ___
 
-### `Optional` tags
-
-• **tags**? : *string[]*
-
-*Defined in [cs-map/src/services/layer-server-service-options.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/services/layer-server-service-options.ts#L4)*
+*Defined in [cs-map/src/services/layer-server-service-options.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server-service-options.ts#L6)*
 
 ___
 
@@ -38,4 +30,5 @@ ___
 
 • **url**? : *string*
 
-*Defined in [cs-map/src/services/layer-server-service-options.ts:3](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/services/layer-server-service-options.ts#L3)*
+*Defined in [cs-map/src/services/layer-server-service-options.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server-service-options.ts#L4)*
+*Defined in [cs-map/src/services/layer-server-service-options.ts:3](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server-service-options.ts#L3)*

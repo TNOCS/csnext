@@ -80,6 +80,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   readonly?: boolean;
   icon?: string;
   colors?: string[];
+  _appendIcon?: string;
+  _isError?: boolean;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
   triggerCallback?(obj: object, field: IFormFieldOptions);

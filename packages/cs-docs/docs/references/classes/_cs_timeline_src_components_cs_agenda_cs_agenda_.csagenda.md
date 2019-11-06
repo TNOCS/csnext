@@ -12,11 +12,7 @@
 
 • **$refs**: *object*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:30](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L30)*
-
-#### Type declaration:
-
-* **calendar**: *any*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:30](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L30)*
 
 ___
 
@@ -24,15 +20,11 @@ ___
 
 • **GROUP_VISIBILITY_ID**: *string* = "timeline-group-"
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:36](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L36)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:36](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L36)*
 
 ___
 
-### `Optional` end
-
-• **end**? : *any* =  null
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:48](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L48)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:36](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L36)*
 
 ___
 
@@ -40,35 +32,23 @@ ___
 
 • **focus**: *string* = "2019-01-01"
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:39](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L39)*
-
-___
-
-### `Optional` logSource
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:48](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L48)*
 
 • **logSource**? : *[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md)*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:28](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L28)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:28](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L28)*
 
 access the original widget from configuration
 
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:39](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L39)*
 
-###  selectedElement
-
-• **selectedElement**: *any* =  null
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:50](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L50)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:50](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L50)*
 
 ___
 
 ###  selectedEvent
 
-• **selectedEvent**: *object*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:49](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L49)*
-
-#### Type declaration:
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:28](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L28)*
 
 ___
 
@@ -76,39 +56,27 @@ ___
 
 • **selectedOpen**: *boolean* = false
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:51](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L51)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:51](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L51)*
 
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:50](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L50)*
 
-### `Optional` start
-
-• **start**? : *any* =  null
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:47](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L47)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:47](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L47)*
 
 ___
 
 ###  today
 
-• **today**: *string* = "2019-01-01"
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:38](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L38)*
-
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:49](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L49)*
 
 ###  type
 
 • **type**: *string* = "month"
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:40](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L40)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:40](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L40)*
 
 ___
 
-###  widget
-
-• **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:145](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L145)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:51](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L51)*
 
 ## Accessors
 
@@ -116,59 +84,39 @@ ___
 
 • **get TimeDatasource**(): *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:139](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L139)*
-
-**Returns:** *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
-
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:47](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L47)*
 
 ###  WidgetOptions
 
 • **get WidgetOptions**(): *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:146](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L146)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:146](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L146)*
 
-**Returns:** *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
-
-## Methods
-
-###  beforeMount
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:38](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L38)*
 
 ▸ **beforeMount**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:198](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L198)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:198](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L198)*
 
 **Returns:** *void*
 
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:40](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L40)*
 
-### `Private` getDate
-
-▸ **getDate**(`date?`: Date): *string*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:53](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L53)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:53](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L53)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`date?` | Date |
-
-**Returns:** *string*
-
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:145](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L145)*
 
 ###  getEventColor
 
 ▸ **getEventColor**(`event`: any): *string*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:158](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L158)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:158](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L158)*
 
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`event` | any |
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:139](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L139)*
 
 **Returns:** *string*
 
@@ -178,25 +126,17 @@ ___
 
 ▸ **getEvents**(): *any[]*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:96](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L96)*
-
-**Returns:** *any[]*
-
-___
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:146](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L146)*
 
 ### `Private` handleIncomingTimeEvent
 
 ▸ **handleIncomingTimeEvent**(`action`: string, `data`: any): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:246](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L246)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:246](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L246)*
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`action` | string |
-`data` | any |
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:198](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L198)*
 **Returns:** *void*
 
 ___
@@ -205,17 +145,13 @@ ___
 
 ▸ **initLogSource**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:208](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L208)*
-
-**Returns:** *void*
-
-___
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:208](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L208)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:53](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L53)*
 ###  monthFormatter
 
 ▸ **monthFormatter**(): *Function*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:90](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L90)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:90](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L90)*
 
 **Returns:** *Function*
 
@@ -225,17 +161,13 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:271](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L271)*
-
-**Returns:** *void*
-
-___
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:271](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L271)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:158](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L158)*
 ###  next
 
 ▸ **next**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:167](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L167)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:167](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L167)*
 
 **Returns:** *void*
 
@@ -245,12 +177,8 @@ ___
 
 ▸ **nth**(`d`: any): *string*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:191](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L191)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:191](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L191)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:96](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L96)*
 `d` | any |
 
 **Returns:** *string*
@@ -260,18 +188,14 @@ ___
 ###  prev
 
 ▸ **prev**(): *void*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:164](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L164)*
-
-**Returns:** *void*
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:246](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L246)*
 ___
 
 ###  setToday
 
 ▸ **setToday**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:161](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L161)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:161](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L161)*
 
 **Returns:** *void*
 
@@ -281,11 +205,7 @@ ___
 
 ▸ **showEvent**(`__namedParameters`: object): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:170](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L170)*
-
-**Parameters:**
-
-▪ **__namedParameters**: *object*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:208](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L208)*
 
 Name | Type |
 ------ | ------ |
@@ -295,12 +215,8 @@ Name | Type |
 **Returns:** *void*
 
 ___
-
-###  title
-
-▸ **title**(): *string*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:60](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L60)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:90](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L90)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:60](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L60)*
 
 **Returns:** *string*
 
@@ -309,39 +225,27 @@ ___
 ###  update
 
 ▸ **update**(): *Promise‹void›*
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:204](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L204)*
-
-**Returns:** *Promise‹void›*
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:271](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L271)*
 ___
 
 ### `Private` updateItems
 
 ▸ **updateItems**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:225](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L225)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:225](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L225)*
 
 **Returns:** *void*
-
-___
-
-###  updateRange
-
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:167](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L167)*
 ▸ **updateRange**(`__namedParameters`: object): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:186](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L186)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:186](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L186)*
 
 **Parameters:**
 
 ▪ **__namedParameters**: *object*
 
 Name | Type |
------- | ------ |
-`end` | any |
-`start` | any |
-
-**Returns:** *void*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:191](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L191)*
 
 ___
 
@@ -349,7 +253,7 @@ ___
 
 ▸ **viewDay**(`__namedParameters`: object): *void*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:154](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L154)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:154](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L154)*
 
 **Parameters:**
 
@@ -357,38 +261,36 @@ ___
 
 Name | Type |
 ------ | ------ |
-`date` | any |
-
-**Returns:** *void*
-
-## Object literals
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:164](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L164)*
 
 ###  typeToLabel
 
 ### ▪ **typeToLabel**: *object*
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:41](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L41)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:41](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L41)*
 
 ###  4day
 
-• **4day**: *string* = "4 Days"
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:45](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L45)*
-
-###  day
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:161](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L161)*
 
 • **day**: *string* = "Day"
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:44](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L44)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:44](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L44)*
 
 ###  month
 
 • **month**: *string* = "Month"
 
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:42](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L42)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:170](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L170)*
 
-###  week
-
-• **week**: *string* = "Week"
-
-*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:43](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L43)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:43](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L43)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:60](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L60)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:204](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L204)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:225](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L225)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:186](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L186)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:154](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L154)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:41](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L41)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:45](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L45)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:44](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L44)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:42](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L42)*
+*Defined in [cs-timeline/src/components/cs-agenda/cs-agenda.ts:43](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-timeline/src/components/cs-agenda/cs-agenda.ts#L43)*

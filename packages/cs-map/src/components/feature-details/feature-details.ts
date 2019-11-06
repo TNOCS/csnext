@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import { IWidget } from '@csnext/cs-core';
+import { IWidget, IMenu } from '@csnext/cs-core';
 
 import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
@@ -10,7 +10,6 @@ import { MapDatasource, IMapLayer, LayerLegend, FeatureEventDetails, CsMap } fro
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
-import { LayerDetails } from '../layer-details/layer-details';
 import { WidgetBase } from '@csnext/cs-client';
 
 export class section {
@@ -27,22 +26,24 @@ export class PropertyDetails {
 }
 
 @Component({
-    name: 'feature-details',
-    props: { widget: null },
+    name: 'feature-details',    
     components: { simplebar },
     template: require('./feature-details.html')
 } as any)
 export class FeatureDetails extends WidgetBase {
-    public widget!: IWidget;
     public sectionsPanels: number[] = [];
     public tabs = 'feature-details';
-    public filterProperties: string = '';
-    public filterPropertiesEnabled = false;
-    public sections: section[] = [];
+    public filter: string = '';
 
-    @Watch('filterProperties')
-    filterChanged() {
-        this.updateFilter();
+    public sections: section[] = [];    
+
+    public get filterPropertiesEnabled(): boolean {
+        return (this.filter.length > 0);
+    }
+
+    @Watch('filter')
+    filterChanged(v: string) {
+        this.updateSections();
     }
 
     public updateFilter() {
@@ -77,8 +78,8 @@ export class FeatureDetails extends WidgetBase {
     }
 
     public get manager(): MapDatasource | undefined {
-        if (this.widget.data && this.widget.data.manager) {
-            return this.widget.data.manager as MapDatasource;
+        if (this.widget.data && this.widget.data.layer) {
+            return this.widget.data.layer._manager as MapDatasource;
         }
     }
 
@@ -147,7 +148,7 @@ export class FeatureDetails extends WidgetBase {
                     proptype = {
                         _key: key,
                         title: key,
-                        type: 'string',
+                        type: 'number',
                         description: key
                     } as PropertyType;
                 } else {
@@ -155,7 +156,7 @@ export class FeatureDetails extends WidgetBase {
                 }
 
                 if (!this.filterPropertiesEnabled ||
-                    this.propertyFilter(proptype, this.filterProperties)
+                    this.propertyFilter(proptype, this.filter)
                 ) {
                     let legends: LayerLegend[] = [];
 
@@ -207,29 +208,16 @@ export class FeatureDetails extends WidgetBase {
         Vue.set(this, 'sections', result);
     }
 
-    public updateStyle(property: PropertyDetails) {
+    public setLegend(property: PropertyDetails) {
         if (property && property.legends && property.legends.length > 0) {
             if (this.manager && this.layer) {
                 this.layer.removeLegend(property, true);
             }
-
-            // this.$cs.TriggerNotification({ title: property.key + ' disable' });
         } else {
-            // this.layer
             if (this.manager && this.layer) {
-                // this.manager.removeLegend(this.layer, property.key);
                 this.layer.setLegend(property, true);
-                this.$forceUpdate();
-                // this.$cs.TriggerNotification({ title: property.key + ' enable'});
             }
         }
-    }
-
-    public openLayer(layer: IMapLayer) {
-        this.$cs.OpenRightSidebarWidget({
-            component: LayerDetails,
-            data: { layer: layer, manager: this.manager }
-        }, undefined, 'feature');
     }
 
     public get properties(): any[] {
@@ -252,17 +240,44 @@ export class FeatureDetails extends WidgetBase {
         }
     }
 
+    public initMenu() {
+        this.addMenuItem({
+            id: 'open-layer',
+            type: 'icon',
+            icon: 'list',
+            toolTip: 'OPEN LAYER',
+            title: 'OPEN LAYER',
+            action: () => {
+                if (this.manager && this.layer) {
+                    this.manager.openLayer(this.layer);
+                }
+            }
+        } as IMenu)
+    }
+
     public contentLoaded() {
+        this.initMenu();
         this.updateSections();
 
-        if (this.layer) {
-            this.busManager.subscribe(this.layer._events, 'feature', (
-                (a: string, f: FeatureEventDetails) => {
-                    if (a === CsMap.FEATURE_SELECT) {                        
-                        this.widget.data.feature = f.feature;
-                        this.widget.data.layer = f.layer;
-                    }
-                }));
+        // if (this.layer) {
+        //     this.busManager.subscribe(this.layer._events, 'feature', (
+        //         (a: string, f: FeatureEventDetails) => {
+        //             if (a === CsMap.FEATURE_SELECT) {
+        //                 if (this.widget.data.layer === f.layer) {
+        //                     this.widget.data = f;                            
+        //                     this.updateSections();
+        //                     this.updateFilter();
+        //                 } else {
+        //                     alert('layer switch');
+        //                 }
+        //             }
+        //         }));
+        // }
+
+        if (this.manager) {
+            this.busManager.subscribe(this.manager.events, 'legends', (a: string) => {
+                this.updateSections();
+            })
         }
     }
 }

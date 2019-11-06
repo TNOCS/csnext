@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager } from '@csnext/cs-core';
+import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager, IMenu } from '@csnext/cs-core';
 import { Logger } from '../';
 
 @Component({
@@ -32,6 +32,20 @@ export class WidgetBase extends Vue {
 
   public beforeDestroy() {
     this.busManager.stop();
+  }
+
+  public addMenuItem(menu: IMenu) {
+    if (!this.widget.options) {
+      this.widget.options = {};
+    }
+    if (!this.widget.options.menus) {
+      this.widget.options.menus = [];
+    }
+
+    if (this.widget.options.menus.findIndex(i => i.id === menu.id) === -1) {
+      this.widget.options.menus.push(menu);
+    }
+
   }
 
 

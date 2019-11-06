@@ -16,23 +16,15 @@
 
 • **id**: *string*
 
-*Defined in [cs-map/src/classes/layer-service.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-service.ts#L4)*
-
-___
-
-### `Optional` options
+*Defined in [cs-map/src/classes/layer-service.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L4)*
 
 • **options**? : *[ILayerServiceOptions](_cs_map_src_classes_layer_service_options_.ilayerserviceoptions.md)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:6](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-service.ts#L6)*
+*Defined in [cs-map/src/classes/layer-service.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L6)*
 
 ___
 
-### `Optional` title
-
-• **title**? : *string*
-
-*Defined in [cs-map/src/classes/layer-service.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-service.ts#L5)*
+*Defined in [cs-map/src/classes/layer-service.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L6)*
 
 ## Methods
 
@@ -40,11 +32,7 @@ ___
 
 ▸ **getLayerActions**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *[ILayerAction](_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [cs-map/src/classes/layer-service.ts:7](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-service.ts#L7)*
-
-**Parameters:**
-
-Name | Type |
+*Defined in [cs-map/src/classes/layer-service.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L5)*
 ------ | ------ |
 `layer` | [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md) |
 
@@ -52,11 +40,7 @@ Name | Type |
 
 ___
 
-### `Optional` updateLayer
-
-▸ **updateLayer**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *any*
-
-*Defined in [cs-map/src/classes/layer-service.ts:8](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-service.ts#L8)*
+*Defined in [cs-map/src/classes/layer-service.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L7)*
 
 **Parameters:**
 
@@ -65,3 +49,4 @@ Name | Type |
 `layer` | [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md) |
 
 **Returns:** *any*
+*Defined in [cs-map/src/classes/layer-service.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-service.ts#L8)*

@@ -10,20 +10,12 @@
 
 • **title**: *string*
 
-*Defined in [cs-map/src/classes/ilayer-action.ts:4](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/ilayer-action.ts#L4)*
-
-## Methods
-
-###  action
+*Defined in [cs-map/src/classes/ilayer-action.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/ilayer-action.ts#L4)*
 
 ▸ **action**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *any*
 
-*Defined in [cs-map/src/classes/ilayer-action.ts:5](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/ilayer-action.ts#L5)*
+*Defined in [cs-map/src/classes/ilayer-action.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/ilayer-action.ts#L5)*
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`layer` | [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md) |
-
-**Returns:** *any*
+*Defined in [cs-map/src/classes/ilayer-action.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/ilayer-action.ts#L5)*

@@ -10,7 +10,7 @@
 
 ▪ **dashboardManagers**: *object*
 
-*Defined in [cs-client/src/services/dashboard-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/dashboard-manager.ts#L7)*
+*Defined in [cs-client/src/services/dashboard-manager.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager.ts#L7)*
 
 Available dashboard managers for layouting
 
@@ -24,7 +24,7 @@ Available dashboard managers for layouting
 
 ▸ **add**(`manager`: [IDashboardManagerConfig](../interfaces/_cs_core_src_dashboard_dashboard_manager_config_.idashboardmanagerconfig.md)): *void*
 
-*Defined in [cs-client/src/services/dashboard-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/dashboard-manager.ts#L9)*
+*Defined in [cs-client/src/services/dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager.ts#L9)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ ___
 
 ▸ **addDashboardManager**(`comp`: any, `id?`: string): *void*
 
-*Defined in [cs-client/src/services/dashboard-manager.ts:18](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-client/src/services/dashboard-manager.ts#L18)*
+*Defined in [cs-client/src/services/dashboard-manager.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager.ts#L18)*
 
 Registration of a new dashboard manager
 

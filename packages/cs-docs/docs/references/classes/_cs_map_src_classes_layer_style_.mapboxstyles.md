@@ -10,11 +10,7 @@
 
 \+ **new MapboxStyles**(`styles?`: [MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)): *[MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)*
 
-*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L400)*
-
-**Parameters:**
-
-Name | Type |
+*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L400)*
 ------ | ------ |
 `styles?` | [MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md) |
 
@@ -26,15 +22,11 @@ Name | Type |
 
 • **circleLayout**? : *CircleLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L400)*
+*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L400)*
 
 ___
 
-### `Optional` circlePaint
-
-• **circlePaint**? : *CirclePaint*
-
-*Defined in [cs-map/src/classes/layer-style.ts:399](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L399)*
+*Defined in [cs-map/src/classes/layer-style.ts:400](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L400)*
 
 ___
 
@@ -42,23 +34,15 @@ ___
 
 • **fillLayout**? : *FillLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:397](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L397)*
-
-___
-
-### `Optional` fillPaint
+*Defined in [cs-map/src/classes/layer-style.ts:399](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L399)*
 
 • **fillPaint**? : *FillPaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:396](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L396)*
+*Defined in [cs-map/src/classes/layer-style.ts:396](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L396)*
 
 ___
 
-### `Optional` lineLayout
-
-• **lineLayout**? : *LineLayout*
-
-*Defined in [cs-map/src/classes/layer-style.ts:386](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L386)*
+*Defined in [cs-map/src/classes/layer-style.ts:397](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L397)*
 
 ___
 
@@ -66,20 +50,15 @@ ___
 
 • **linePaint**? : *LinePaint*
 
-*Defined in [cs-map/src/classes/layer-style.ts:384](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L384)*
-
-___
-
-### `Optional` symbolLayout
+*Defined in [cs-map/src/classes/layer-style.ts:396](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L396)*
 
 • **symbolLayout**? : *SymbolLayout*
 
-*Defined in [cs-map/src/classes/layer-style.ts:392](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L392)*
+*Defined in [cs-map/src/classes/layer-style.ts:392](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L392)*
 
 ___
 
-### `Optional` symbolPaint
-
-• **symbolPaint**? : *SymbolPaint*
-
-*Defined in [cs-map/src/classes/layer-style.ts:394](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/layer-style.ts#L394)*
+*Defined in [cs-map/src/classes/layer-style.ts:386](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L386)*
+*Defined in [cs-map/src/classes/layer-style.ts:384](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L384)*
+*Defined in [cs-map/src/classes/layer-style.ts:392](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L392)*
+*Defined in [cs-map/src/classes/layer-style.ts:394](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/classes/layer-style.ts#L394)*

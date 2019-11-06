@@ -275,18 +275,18 @@ export class CsTimeline extends WidgetBase {
             } as IMenu);
         }
 
-        if (this.WidgetOptions.toggleSmallButton) {
-            // check if already exists
-            if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
-                menus.push({
-                    id: TOGGLE_MENU_ID,
-                    icon: 'line_weight',
-                    action: () => {
-                        this.toggleView();
-                    }
-                });
-            }
-        }
+        // if (this.WidgetOptions.toggleSmallButton) {
+        //     // check if already exists
+        //     if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+        //         menus.push({
+        //             id: TOGGLE_MENU_ID,
+        //             icon: 'line_weight',
+        //             action: () => {
+        //                 this.toggleView();
+        //             }
+        //         });
+        //     }
+        // }
 
         if (this.WidgetOptions.showGroupSelectionButton) {
             // check if already exists
@@ -338,8 +338,9 @@ export class CsTimeline extends WidgetBase {
         // this.timeline.on('click', this.handleTimelineClick);
         if (this.WidgetOptions.showFocusTime) {
             this.timeline.addCustomTime(this.currentTime, 'focustime');
-            this.timeline.on('click', this.handleTimelineClick);
+            this.timeline.on('click', this.handleTimelineClick);            
         }
+        this.timeline.on('doubleClick', this.handleDoubleClick);
         this.timeline.on('select', this.handleEventSelect);
         this.timeline.on('timechanged', this.handleTimeChanged);
         this.timeline.on('timechange', this.handleTimeChange);
@@ -361,6 +362,10 @@ export class CsTimeline extends WidgetBase {
         if (d && d.id === 'focustime' && d.time && this.Time.events) {
             this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
         }
+    }
+
+    private handleDoubleClick(data: any) {
+        this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_DOUBLE_CLICK, data);
     }
 
     private handleEventSelect(data: any) {
@@ -416,10 +421,10 @@ export class CsTimeline extends WidgetBase {
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
                 // item.content = item.content;
-                if (!item.style) {
-                    item.style = 'height:' + height;
-                }
-                if (this.smallView) { item.style += ''; }
+                // if (!item.style) {
+                //     item.style = 'height:' + height;
+                // }
+                // if (this.smallView) { item.style += ''; }
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (!item.group) { item.group = NO_GROUP; }
