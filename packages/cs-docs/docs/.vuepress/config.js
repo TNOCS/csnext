@@ -68,7 +68,7 @@ module.exports = {
                     },
                     {
                         text: 'References',
-                        link: '/test/'
+                        link: '/references/'
                     }                
                 ],
                 sidebar: {
