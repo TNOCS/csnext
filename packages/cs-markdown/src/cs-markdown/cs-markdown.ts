@@ -21,7 +21,7 @@ export class CsMarkdown extends WidgetBase {
 
     public content: string = "";
     // public options: MdWidgetOptions = {};
-    @Prop({default: ''}) private data?: string;
+    @Prop({ default: '' }) private data?: string;
 
     @Watch('widget.data', { deep: true })
     public dataUpdated() {
@@ -29,10 +29,8 @@ export class CsMarkdown extends WidgetBase {
     }
 
     private updateContent() {
-        if (!this.widget && !this.data) return;
-        if (typeof (this.data) === 'string') {
-            Vue.set(this, 'content', this.data);
-        } else if (typeof (this.widget.data) === 'string') {
+        if (!this.widget) return;
+        if (typeof (this.widget.data) === 'string') {
             Vue.set(this, 'content', this.widget.data);
         } else {
             if (this.widget.data && this.widget.data.hasOwnProperty('url')) {
@@ -41,7 +39,7 @@ export class CsMarkdown extends WidgetBase {
                         Vue.set(this, 'content', u.data);
                     }
                 })
-                
+
             }
         }
     }

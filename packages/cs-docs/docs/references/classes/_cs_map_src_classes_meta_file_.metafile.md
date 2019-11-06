@@ -1,0 +1,82 @@
+# Class: MetaFile
+
+## Hierarchy
+
+* **MetaFile**
+
+## Properties
+
+### `Optional` featureTypes
+
+• **featureTypes**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
+
+*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L18)*
+
+___
+
+### `Optional` propertyTypeData
+
+• **propertyTypeData**? : *[PropertyCollection](../modules/_cs_map_src_classes_feature_type_.md#propertycollection)*
+
+*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L19)*
+
+## Methods
+
+###  linkPropertyTypeData
+
+▸ **linkPropertyTypeData**(): *void*
+
+*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L22)*
+
+**Returns:** *void*
+
+___
+
+### `Static` loadFeatureTypesFromUrl
+
+▸ **loadFeatureTypesFromUrl**(`url`: string): *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
+
+*Defined in [cs-map/src/classes/meta-file.ts:45](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L45)*
+
+Fetches meta file describing feature types and property types
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`url` | string |
+
+**Returns:** *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
+
+___
+
+### `Static` loadMetaUrl
+
+▸ **loadMetaUrl**(`url`: string): *Promise‹[MetaFile](_cs_map_src_classes_meta_file_.metafile.md)›*
+
+*Defined in [cs-map/src/classes/meta-file.ts:138](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L138)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`url` | string |
+
+**Returns:** *Promise‹[MetaFile](_cs_map_src_classes_meta_file_.metafile.md)›*
+
+___
+
+### `Static` updateMeta
+
+▸ **updateMeta**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `ft?`: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)): *Promise‹any›*
+
+*Defined in [cs-map/src/classes/meta-file.ts:61](https://github.com/RichardHovenkamp/csnext/blob/6deb7f51/packages/cs-map/src/classes/meta-file.ts#L61)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
+`ft?` | [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) |
+
+**Returns:** *Promise‹any›*
