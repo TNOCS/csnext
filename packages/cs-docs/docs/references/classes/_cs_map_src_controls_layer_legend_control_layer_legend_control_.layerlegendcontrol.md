@@ -10,7 +10,7 @@
 
 \+ **new LayerLegendControl**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *[LayerLegendControl](_cs_map_src_controls_layer_legend_control_layer_legend_control_.layerlegendcontrol.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L8)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L8)*
 
 **Parameters:**
 
@@ -26,7 +26,7 @@ Name | Type |
 
 • **container**? : *HTMLDivElement*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L7)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L7)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **editor**? : *[LayerLegendComponent](_cs_map_src_controls_layer_legend_control_layer_legend_component_.layerlegendcomponent.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L8)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L8)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L10)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L10)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **map**? : *Map*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L6)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:6](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L6)*
 
 ## Methods
 
@@ -58,7 +58,7 @@ ___
 
 ▸ **onAdd**(`map`: any): *HTMLDivElement*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:14](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L14)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:14](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L14)*
 
 **Parameters:**
 
@@ -74,6 +74,6 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L37)*
+*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-control.ts:37](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/controls/layer-legend-control/layer-legend-control.ts#L37)*
 
 **Returns:** *void*

@@ -10,7 +10,7 @@
 
 • **_initialized**? : *boolean* = false
 
-*Defined in [cs-map/src/classes/feature-type.ts:51](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L51)*
+*Defined in [cs-map/src/classes/feature-type.ts:51](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L51)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **_key**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:25](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L25)*
+*Defined in [cs-map/src/classes/feature-type.ts:25](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L25)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **_values**? : *any[]*
 
-*Defined in [cs-map/src/classes/feature-type.ts:50](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L50)*
+*Defined in [cs-map/src/classes/feature-type.ts:50](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L50)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **count**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:38](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L38)*
+*Defined in [cs-map/src/classes/feature-type.ts:38](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L38)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **default**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:46](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L46)*
+*Defined in [cs-map/src/classes/feature-type.ts:46](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L46)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **description**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:29](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L29)*
+*Defined in [cs-map/src/classes/feature-type.ts:29](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L29)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **handlebarFormat**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:33](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L33)*
+*Defined in [cs-map/src/classes/feature-type.ts:33](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L33)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **label**: *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:27](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L27)*
+*Defined in [cs-map/src/classes/feature-type.ts:27](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L27)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **max**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L37)*
+*Defined in [cs-map/src/classes/feature-type.ts:37](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L37)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **mean**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:41](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L41)*
+*Defined in [cs-map/src/classes/feature-type.ts:41](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L41)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **median**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:42](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L42)*
+*Defined in [cs-map/src/classes/feature-type.ts:42](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L42)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **min**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:35](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L35)*
+*Defined in [cs-map/src/classes/feature-type.ts:35](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L35)*
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **options**? : *object*
 
-*Defined in [cs-map/src/classes/feature-type.ts:47](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L47)*
+*Defined in [cs-map/src/classes/feature-type.ts:47](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L47)*
 
 #### Type declaration:
 
@@ -118,7 +118,7 @@ ___
 
 • **sd**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:43](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L43)*
+*Defined in [cs-map/src/classes/feature-type.ts:43](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L43)*
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 • **section**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:49](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L49)*
+*Defined in [cs-map/src/classes/feature-type.ts:49](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L49)*
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 • **stringFormat**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:31](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L31)*
+*Defined in [cs-map/src/classes/feature-type.ts:31](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L31)*
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L17)*
+*Defined in [cs-map/src/classes/feature-type.ts:17](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L17)*
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 • **type**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:28](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L28)*
+*Defined in [cs-map/src/classes/feature-type.ts:28](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L28)*
 
 ___
 
@@ -158,4 +158,4 @@ ___
 
 • **unique**? : *number*
 
-*Defined in [cs-map/src/classes/feature-type.ts:39](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/feature-type.ts#L39)*
+*Defined in [cs-map/src/classes/feature-type.ts:39](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/feature-type.ts#L39)*

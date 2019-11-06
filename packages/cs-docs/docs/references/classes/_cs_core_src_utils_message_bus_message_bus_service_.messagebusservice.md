@@ -18,7 +18,7 @@ Simple message bus service, used for subscribing and unsubsubscribing to topics.
 
 \+ **new MessageBusService**(): *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L17)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:17](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L17)*
 
 **Returns:** *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
@@ -28,7 +28,7 @@ Simple message bus service, used for subscribing and unsubsubscribing to topics.
 
 • **cache**: *object*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L15)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:15](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L15)*
 
 #### Type declaration:
 
@@ -40,7 +40,7 @@ ___
 
 • **confirms**: *any[]* =  []
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L16)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:16](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L16)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 *Implementation of [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md).[id](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md#id)*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L17)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:17](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L17)*
 
 ## Methods
 
@@ -60,7 +60,7 @@ ___
 
 *Implementation of [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md)*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:26](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L26)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:26](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L26)*
 
 Publish to a topic
 
@@ -82,7 +82,7 @@ ___
 
 *Implementation of [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md)*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:39](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L39)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:39](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L39)*
 
 Subscribe to a topic
 
@@ -103,7 +103,7 @@ ___
 
 *Implementation of [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md)*
 
-*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:53](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L53)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:53](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L53)*
 
 Unsubscribe to a topic by providing its handle
 

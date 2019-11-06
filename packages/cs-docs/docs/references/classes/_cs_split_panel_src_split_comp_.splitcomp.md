@@ -12,7 +12,7 @@
 
 • **$refs**: *object*
 
-*Defined in [cs-split-panel/src/split-comp.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-split-panel/src/split-comp.ts#L16)*
+*Defined in [cs-split-panel/src/split-comp.ts:16](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-split-panel/src/split-comp.ts#L16)*
 
 #### Type declaration:
 
@@ -24,7 +24,7 @@
 
 ▸ **getWidget**(`id`: string, `dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md) | undefined*
 
-*Defined in [cs-split-panel/src/split-comp.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-split-panel/src/split-comp.ts#L37)*
+*Defined in [cs-split-panel/src/split-comp.ts:37](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-split-panel/src/split-comp.ts#L37)*
 
 **Parameters:**
 
@@ -41,7 +41,7 @@ ___
 
 ▸ **optionsDUpdated**(`v`: any): *void*
 
-*Defined in [cs-split-panel/src/split-comp.ts:32](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-split-panel/src/split-comp.ts#L32)*
+*Defined in [cs-split-panel/src/split-comp.ts:32](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-split-panel/src/split-comp.ts#L32)*
 
 **Parameters:**
 
@@ -57,6 +57,6 @@ ___
 
 ▸ **optionsUpdated**(): *void*
 
-*Defined in [cs-split-panel/src/split-comp.ts:20](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-split-panel/src/split-comp.ts#L20)*
+*Defined in [cs-split-panel/src/split-comp.ts:20](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-split-panel/src/split-comp.ts#L20)*
 
 **Returns:** *void*

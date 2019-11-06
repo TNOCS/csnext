@@ -10,7 +10,7 @@
 
 • **defaultLanguage**? : *string*
 
-*Defined in [cs-core/src/project/language-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/project/language-options.ts#L8)*
+*Defined in [cs-core/src/project/language-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/language-options.ts#L8)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **fallbackLanguage**? : *string*
 
-*Defined in [cs-core/src/project/language-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/project/language-options.ts#L9)*
+*Defined in [cs-core/src/project/language-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/language-options.ts#L9)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **localeMessages**? : *[ILanguageObject](_cs_core_src_project_language_options_.ilanguageobject.md)*
 
-*Defined in [cs-core/src/project/language-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/project/language-options.ts#L10)*
+*Defined in [cs-core/src/project/language-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/language-options.ts#L10)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **showLanguageSwitchMenu**? : *boolean*
 
-*Defined in [cs-core/src/project/language-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/project/language-options.ts#L11)*
+*Defined in [cs-core/src/project/language-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-core/src/project/language-options.ts#L11)*

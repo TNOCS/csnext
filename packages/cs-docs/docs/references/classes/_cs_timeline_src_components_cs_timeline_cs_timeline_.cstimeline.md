@@ -12,7 +12,7 @@
 
 • **$refs**: *object*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:50](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L50)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:50](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L50)*
 
 #### Type declaration:
 
@@ -24,7 +24,7 @@ ___
 
 • **GROUP_VISIBILITY_ID**: *string* = "timeline-group-"
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:39](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L39)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:39](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L39)*
 
 access the original widget from configuration
 
@@ -34,7 +34,7 @@ ___
 
 • **currentTime**: *Date* =  new Date()
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:45](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L45)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:45](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L45)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **groups**: *DataGroup[]* =  []
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:44](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L44)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:44](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L44)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **items**: *DataItem[]* =  []
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:43](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L43)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:43](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L43)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **logSource**? : *[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md)*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:47](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L47)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:47](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L47)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **smallView**: *boolean* = false
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:48](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L48)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:48](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L48)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **timeline**? : *Timeline*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:41](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L41)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:41](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L41)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:60](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L60)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:60](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L60)*
 
 ## Accessors
 
@@ -90,7 +90,7 @@ ___
 
 • **get Time**(): *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:54](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L54)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:54](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L54)*
 
 **Returns:** *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
 
@@ -100,7 +100,7 @@ ___
 
 • **get WidgetOptions**(): *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:61](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L61)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:61](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L61)*
 
 **Returns:** *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **addGroup**(`groupName`: string): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:320](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L320)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:320](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L320)*
 
 **Parameters:**
 
@@ -126,7 +126,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:69](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L69)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:69](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L69)*
 
 **Returns:** *void*
 
@@ -136,7 +136,7 @@ ___
 
 ▸ **contentLoaded**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:306](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L306)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:306](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L306)*
 
 **Returns:** *void*
 
@@ -146,7 +146,7 @@ ___
 
 ▸ **daysInMonth**(`month`: any, `year`: any): *number*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:414](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L414)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:414](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L414)*
 
 **Parameters:**
 
@@ -163,7 +163,7 @@ ___
 
 ▸ **fitAll**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:204](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L204)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:204](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L204)*
 
 **Returns:** *void*
 
@@ -173,7 +173,7 @@ ___
 
 ▸ **groupExists**(`id`: string): *any*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:332](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L332)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:332](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L332)*
 
 **Parameters:**
 
@@ -189,7 +189,7 @@ ___
 
 ▸ **handleDoubleClick**(`data`: any): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:367](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L367)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:367](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L367)*
 
 **Parameters:**
 
@@ -205,7 +205,7 @@ ___
 
 ▸ **handleEventSelect**(`data`: any): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:371](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L371)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:371](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L371)*
 
 **Parameters:**
 
@@ -221,7 +221,7 @@ ___
 
 ▸ **handleIncomingTimeEvent**(`action`: string, `data`: any): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:438](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L438)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:438](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L438)*
 
 **Parameters:**
 
@@ -238,7 +238,7 @@ ___
 
 ▸ **handleTimeChange**(`d`: object): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:355](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L355)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:355](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L355)*
 
 **Parameters:**
 
@@ -257,7 +257,7 @@ ___
 
 ▸ **handleTimeChanged**(`d`: object): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:361](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L361)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:361](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L361)*
 
 **Parameters:**
 
@@ -276,7 +276,7 @@ ___
 
 ▸ **handleTimelineClick**(`data`: TimelineEventPropertiesResult): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:392](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L392)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:392](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L392)*
 
 **Parameters:**
 
@@ -292,7 +292,7 @@ ___
 
 ▸ **initLogSource**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:181](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L181)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:181](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L181)*
 
 **Returns:** *void*
 
@@ -302,7 +302,7 @@ ___
 
 ▸ **initTimeline**(): *Promise‹void›*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:94](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L94)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:94](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L94)*
 
 **Returns:** *Promise‹void›*
 
@@ -312,7 +312,7 @@ ___
 
 ▸ **initToolbar**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:216](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L216)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:216](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L216)*
 
 **Returns:** *void*
 
@@ -322,7 +322,7 @@ ___
 
 ▸ **setDate**(`date`: Date): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:399](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L399)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:399](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L399)*
 
 **Parameters:**
 
@@ -338,7 +338,7 @@ ___
 
 ▸ **setGroupVisibility**(`group`: DataGroup, `value`: boolean): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:89](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L89)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:89](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L89)*
 
 **Parameters:**
 
@@ -355,7 +355,7 @@ ___
 
 ▸ **setTimelineEvents**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:336](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L336)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:336](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L336)*
 
 **Returns:** *void*
 
@@ -365,7 +365,7 @@ ___
 
 ▸ **setWindow**(`start`: Date, `end`: Date): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:210](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L210)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:210](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L210)*
 
 **Parameters:**
 
@@ -382,7 +382,7 @@ ___
 
 ▸ **toggleView**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:84](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L84)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:84](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L84)*
 
 **Returns:** *void*
 
@@ -392,7 +392,7 @@ ___
 
 ▸ **update**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:77](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L77)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:77](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L77)*
 
 **Returns:** *void*
 
@@ -402,6 +402,6 @@ ___
 
 ▸ **updateItems**(): *void*
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:418](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L418)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:418](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L418)*
 
 **Returns:** *void*

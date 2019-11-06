@@ -16,7 +16,7 @@
 
 • **id**: *string*
 
-*Defined in [cs-map/src/classes/layer-service.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L4)*
+*Defined in [cs-map/src/classes/layer-service.ts:4](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L4)*
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 • **options**? : *[ILayerServiceOptions](_cs_map_src_classes_layer_service_options_.ilayerserviceoptions.md)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L6)*
+*Defined in [cs-map/src/classes/layer-service.ts:6](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L6)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/layer-service.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L5)*
+*Defined in [cs-map/src/classes/layer-service.ts:5](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L5)*
 
 ## Methods
 
@@ -40,7 +40,7 @@ ___
 
 ▸ **getLayerActions**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *[ILayerAction](_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [cs-map/src/classes/layer-service.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L7)*
+*Defined in [cs-map/src/classes/layer-service.ts:7](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L7)*
 
 **Parameters:**
 
@@ -56,7 +56,7 @@ ___
 
 ▸ **updateLayer**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *any*
 
-*Defined in [cs-map/src/classes/layer-service.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L8)*
+*Defined in [cs-map/src/classes/layer-service.ts:8](https://github.com/RichardHovenkamp/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L8)*
 
 **Parameters:**
 
