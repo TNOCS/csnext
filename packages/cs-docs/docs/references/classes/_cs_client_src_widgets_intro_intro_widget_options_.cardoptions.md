@@ -10,7 +10,7 @@
 
 • **actions**? : *[CardActionOptions](_cs_client_src_widgets_intro_intro_widget_options_.cardactionoptions.md)[]*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:14](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L14)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L14)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **backgroundImage**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L15)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L15)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **description**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:13](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L13)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:13](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L13)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **elevation**? : *number*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L18)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:18](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L18)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **flat**? : *boolean*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L16)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L16)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **outlined**? : *boolean*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:17](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L17)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L17)*
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L12)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L12)*

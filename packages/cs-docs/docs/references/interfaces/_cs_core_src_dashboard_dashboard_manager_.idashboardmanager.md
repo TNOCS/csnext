@@ -12,7 +12,11 @@ Interface for dashboard manager
 
 • **contentLoaded**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L7)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L7)*
+
+#### Type declaration:
+
+▸ (`d`: any): *void*
 
 **Parameters:**
 
@@ -26,15 +30,19 @@ ___
 
 • **dashboardLoaded**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L6)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L6)*
 
 #### Type declaration:
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L6)*
+▸ (): *void*
+
+___
+
+### `Optional` dataLoaded
 
 • **dataLoaded**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L9)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L9)*
 
 #### Type declaration:
 
@@ -42,13 +50,17 @@ ___
 
 **Parameters:**
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L9)*
+Name | Type |
+------ | ------ |
+`d` | any |
+
+___
 
 ### `Optional` editDashboard
 
 • **editDashboard**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L8)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L8)*
 
 #### Type declaration:
 
@@ -60,9 +72,13 @@ Name | Type |
 ------ | ------ |
 `dashboard` | [IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md) |
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L8)*
+___
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L10)*
+### `Optional` removeWidget
+
+• **removeWidget**? : *function*
+
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L10)*
 
 #### Type declaration:
 
@@ -78,7 +94,11 @@ ___
 
 ### `Optional` start
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L10)*
+• **start**? : *function*
+
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L4)*
+
+#### Type declaration:
 
 ▸ (`dashboard`: [IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
@@ -94,11 +114,14 @@ ___
 
 • **stop**? : *function*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L5)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/dashboard-manager.ts#L5)*
 
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L4)*
+#### Type declaration:
+
+▸ (`dashboard`: [IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
+
+**Parameters:**
 
 Name | Type |
 ------ | ------ |
 `dashboard` | [IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md) |
-*Defined in [cs-core/src/dashboard/dashboard-manager.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/dashboard-manager.ts#L5)*

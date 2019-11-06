@@ -10,9 +10,12 @@
 
 • **height**? : *string*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L4)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L4)*
+
+___
+
+### `Optional` maxHeight
 
 • **maxHeight**? : *string*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L5)*
-*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L5)*
+*Defined in [cs-client/src/layout/flex-grid/flex-grid-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/flex-grid/flex-grid-options.ts#L5)*

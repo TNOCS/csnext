@@ -14,13 +14,20 @@
 
 • **showFeatureAfterEnd**? : *boolean*
 
-*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/extensions/time-interpolation-extension.ts#L9)*
-
-• **showFeatureBeforeStart**? : *boolean*
-
-*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/extensions/time-interpolation-extension.ts#L8)*
+*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/extensions/time-interpolation-extension.ts#L9)*
 
 ___
 
-*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/extensions/time-interpolation-extension.ts#L8)*
-*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/extensions/time-interpolation-extension.ts#L7)*
+### `Optional` showFeatureBeforeStart
+
+• **showFeatureBeforeStart**? : *boolean*
+
+*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/extensions/time-interpolation-extension.ts#L8)*
+
+___
+
+### `Optional` timeProperty
+
+• **timeProperty**? : *string*
+
+*Defined in [cs-map/src/extensions/time-interpolation-extension.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/extensions/time-interpolation-extension.ts#L7)*

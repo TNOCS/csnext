@@ -14,7 +14,7 @@
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[constructor](_cs_client_src_widgets_widget_base_.widgetbase.md#constructor)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L16)*
+*Defined in [cs-client/src/widgets/widget-base.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L16)*
 
 **Returns:** *[ImageWidget](_cs_client_src_widgets_image_widget_.imagewidget.md)*
 
@@ -26,7 +26,7 @@
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[busManager](_cs_client_src_widgets_widget_base_.widgetbase.md#busmanager)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L16)*
+*Defined in [cs-client/src/widgets/widget-base.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L16)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[widget](_cs_client_src_widgets_widget_base_.widgetbase.md#widget)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L15)*
+*Defined in [cs-client/src/widgets/widget-base.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L15)*
 
 access the original widget from configuration
 
@@ -48,7 +48,7 @@ access the original widget from configuration
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[addMenuItem](_cs_client_src_widgets_widget_base_.widgetbase.md#addmenuitem)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:37](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L37)*
+*Defined in [cs-client/src/widgets/widget-base.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L37)*
 
 **Parameters:**
 
@@ -66,7 +66,7 @@ ___
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[beforeDestroy](_cs_client_src_widgets_widget_base_.widgetbase.md#beforedestroy)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:33](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L33)*
+*Defined in [cs-client/src/widgets/widget-base.ts:33](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L33)*
 
 **Returns:** *void*
 
@@ -78,7 +78,7 @@ ___
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[beforeMount](_cs_client_src_widgets_widget_base_.widgetbase.md#beforemount)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:26](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L26)*
+*Defined in [cs-client/src/widgets/widget-base.ts:26](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L26)*
 
 **Returns:** *void*
 
@@ -90,7 +90,7 @@ ___
 
 *Inherited from [WidgetBase](_cs_client_src_widgets_widget_base_.widgetbase.md).[subscribe](_cs_client_src_widgets_widget_base_.widgetbase.md#subscribe)*
 
-*Defined in [cs-client/src/widgets/widget-base.ts:22](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/widgets/widget-base.ts#L22)*
+*Defined in [cs-client/src/widgets/widget-base.ts:22](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/widget-base.ts#L22)*
 
 **Parameters:**
 

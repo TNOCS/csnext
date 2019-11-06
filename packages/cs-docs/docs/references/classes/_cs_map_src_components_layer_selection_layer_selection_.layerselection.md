@@ -12,21 +12,29 @@
 
 \+ **new LayerSelection**(): *[LayerSelection](_cs_map_src_components_layer_selection_layer_selection_.layerselection.md)*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:37](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L37)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L37)*
+
+**Returns:** *[LayerSelection](_cs_map_src_components_layer_selection_layer_selection_.layerselection.md)*
+
+## Properties
 
 ###  Groups
 
 • **Groups**: *object*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:30](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L30)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:30](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L30)*
 
 #### Type declaration:
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:30](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L30)*
+* \[ **id**: *string*\]: [ILayerGroup](../interfaces/_cs_map_src_components_layer_selection_layer_selection_.ilayergroup.md)
+
+___
+
+###  filter
 
 • **filter**: *string* = ""
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L29)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:29](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L29)*
 
 ___
 
@@ -34,15 +42,23 @@ ___
 
 • **groupsexpanded**: *number[]* =  []
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:29](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L29)*
-
-• **items**: *any[]* =  []
-
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:25](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L25)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:27](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L27)*
 
 ___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:27](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L27)*
+###  items
+
+• **items**: *any[]* =  []
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:25](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L25)*
+
+___
+
+###  open
+
+• **open**: *any[]* =  []
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:26](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L26)*
 
 ___
 
@@ -50,15 +66,23 @@ ___
 
 • **showMenu**: *boolean* = false
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:25](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L25)*
-
-• **tree**: *any[]* =  []
-
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:24](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L24)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:28](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L28)*
 
 ___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:26](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L26)*
+###  tree
+
+• **tree**: *any[]* =  []
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:24](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L24)*
+
+___
+
+###  widget
+
+• **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:23](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L23)*
 
 ## Accessors
 
@@ -66,15 +90,23 @@ ___
 
 • **get MapManager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:28](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L28)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:206](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L206)*
+
+**Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
+
+## Methods
 
 ### `Private` addLayerToGroup
 
 ▸ **addLayerToGroup**(`res`: object, `t`: string, `l`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:193](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L193)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:193](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L193)*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:24](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L24)*
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`res` | object |
 `t` | string |
 `l` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
 
@@ -82,7 +114,11 @@ ___
 
 ___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:23](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L23)*
+###  datasourceUpdated
+
+▸ **datasourceUpdated**(`n`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *void*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:250](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L250)*
 
 **Parameters:**
 
@@ -90,23 +126,31 @@ Name | Type |
 ------ | ------ |
 `n` | [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) |
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:206](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L206)*
+**Returns:** *void*
+
+___
+
+###  filterChanged
 
 ▸ **filterChanged**(`search`: string): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:44](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L44)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:44](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L44)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:193](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L193)*
+`search` | string |
+
+**Returns:** *void*
+
+___
 
 ###  groupsChanged
 
 ▸ **groupsChanged**(`v`: boolean[]): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:35](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L35)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:35](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L35)*
 
 **Parameters:**
 
@@ -118,7 +162,11 @@ Name | Type |
 
 ___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:250](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L250)*
+###  layerMenu
+
+▸ **layerMenu**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:170](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L170)*
 
 **Parameters:**
 
@@ -134,7 +182,11 @@ ___
 
 ▸ **layersChanged**(`d`: any): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:44](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L44)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:245](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L245)*
+
+**Parameters:**
+
+Name | Type |
 ------ | ------ |
 `d` | any |
 
@@ -146,13 +198,17 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:48](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L48)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:48](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L48)*
 
 **Returns:** *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:35](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L35)*
+___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:133](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L133)*
+###  setLayerOpacity
+
+▸ **setLayerOpacity**(`value`: number, `layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:133](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L133)*
 
 **Parameters:**
 
@@ -166,7 +222,11 @@ Name | Type |
 ___
 
 ###  showLayerMenu
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:170](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L170)*
+
+▸ **showLayerMenu**(`e`: MouseEvent, `layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:146](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L146)*
+
 **Parameters:**
 
 Name | Type |
@@ -182,7 +242,11 @@ ___
 
 ▸ **toggleGroup**(`group`: [ILayerGroup](../interfaces/_cs_map_src_components_layer_selection_layer_selection_.ilayergroup.md)): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:245](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L245)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:63](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L63)*
+
+**Parameters:**
+
+Name | Type |
 ------ | ------ |
 `group` | [ILayerGroup](../interfaces/_cs_map_src_components_layer_selection_layer_selection_.ilayergroup.md) |
 
@@ -194,11 +258,15 @@ ___
 
 ▸ **toggleLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:181](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L181)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:181](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L181)*
 
 **Parameters:**
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:48](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L48)*
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
+
+**Returns:** *void*
 
 ___
 
@@ -206,9 +274,13 @@ ___
 
 ▸ **toggleShowMore**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:128](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L128)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:128](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L128)*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:133](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L133)*
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
 
 **Returns:** *void*
 
@@ -218,11 +290,6 @@ ___
 
 ▸ **updateGroups**(): *void*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:82](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L82)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:82](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L82)*
 
 **Returns:** *void*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:146](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L146)*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:63](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L63)*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:181](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L181)*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:128](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L128)*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:82](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L82)*

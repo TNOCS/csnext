@@ -12,7 +12,7 @@
 
 • **absolute**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:20](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L20)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:20](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L20)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **backgroundColor**? : *string*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L5)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L5)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **collapse**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L18)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:18](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L18)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **dense**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L10)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L10)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **elevation**? : *number*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:22](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L22)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:22](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L22)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **flat**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L8)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L8)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **hide**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L6)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L6)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **hideIcon**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L12)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L12)*
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 • **hideTitle**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:14](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L14)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L14)*
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 • **prominent**? : *boolean*
 
-*Defined in [cs-core/src/dashboard/toolbar-options.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/dashboard/toolbar-options.ts#L16)*
+*Defined in [cs-core/src/dashboard/toolbar-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/dashboard/toolbar-options.ts#L16)*

@@ -10,4 +10,4 @@
 
 • **$cs**: *[AppState](../classes/_cs_client_src_services_app_state_.appstate.md)*
 
-*Defined in [cs-client/src/index.ts:84](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/index.ts#L84)*
+*Defined in [cs-client/src/index.ts:84](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/index.ts#L84)*

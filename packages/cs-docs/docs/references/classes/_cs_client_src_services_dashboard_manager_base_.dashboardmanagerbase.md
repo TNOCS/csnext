@@ -14,7 +14,7 @@
 
 • **busManager**: *[MessageBusManager](_cs_core_src_utils_message_bus_message_bus_manager_.messagebusmanager.md)*
 
-*Defined in [cs-client/src/services/dashboard-manager-base.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager-base.ts#L7)*
+*Defined in [cs-client/src/services/dashboard-manager-base.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/services/dashboard-manager-base.ts#L7)*
 
 access the original widget from configuration
 
@@ -24,7 +24,7 @@ ___
 
 • **dashboard**: *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/services/dashboard-manager-base.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager-base.ts#L8)*
+*Defined in [cs-client/src/services/dashboard-manager-base.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/services/dashboard-manager-base.ts#L8)*
 
 ## Methods
 
@@ -32,7 +32,7 @@ ___
 
 ▸ **start**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-client/src/services/dashboard-manager-base.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager-base.ts#L16)*
+*Defined in [cs-client/src/services/dashboard-manager-base.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/services/dashboard-manager-base.ts#L16)*
 
 **Parameters:**
 
@@ -48,7 +48,7 @@ ___
 
 ▸ **stop**(): *void*
 
-*Defined in [cs-client/src/services/dashboard-manager-base.ts:25](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager-base.ts#L25)*
+*Defined in [cs-client/src/services/dashboard-manager-base.ts:25](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/services/dashboard-manager-base.ts#L25)*
 
 **Returns:** *void*
 
@@ -58,7 +58,7 @@ ___
 
 ▸ **subscribe**(`bus`: [IMessageBusService](../interfaces/_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md) | undefined, `topic`: string, `callback`: [IMessageBusCallback](../interfaces/_cs_core_src_utils_message_bus_message_bus_handle_.imessagebuscallback.md), `id?`: string): *void*
 
-*Defined in [cs-client/src/services/dashboard-manager-base.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/services/dashboard-manager-base.ts#L10)*
+*Defined in [cs-client/src/services/dashboard-manager-base.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/services/dashboard-manager-base.ts#L10)*
 
 **Parameters:**
 

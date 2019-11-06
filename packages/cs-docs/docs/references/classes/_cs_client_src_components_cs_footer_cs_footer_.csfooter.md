@@ -12,7 +12,7 @@
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:13](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/components/cs-footer/cs-footer.ts#L13)*
+*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:13](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/components/cs-footer/cs-footer.ts#L13)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **footer**? : *[ISidebarOptions](../interfaces/_cs_core_src_project_sidebar_options_.isidebaroptions.md)*
 
-*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/components/cs-footer/cs-footer.ts#L15)*
+*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/components/cs-footer/cs-footer.ts#L15)*
 
 ## Methods
 
@@ -28,7 +28,7 @@ ___
 
 ▸ **footerChanged**(`n`: any, `o`: any): *void*
 
-*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:18](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-client/src/components/cs-footer/cs-footer.ts#L18)*
+*Defined in [cs-client/src/components/cs-footer/cs-footer.ts:18](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/components/cs-footer/cs-footer.ts#L18)*
 
 **Parameters:**
 

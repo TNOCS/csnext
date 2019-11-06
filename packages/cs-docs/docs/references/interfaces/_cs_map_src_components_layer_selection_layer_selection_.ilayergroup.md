@@ -10,15 +10,23 @@
 
 • **color**: *string*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L11)*
-
-• **layers**: *[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)[]*
-
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L12)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:11](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L11)*
 
 ___
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L12)*
+###  layers
+
+• **layers**: *[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)[]*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:12](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L12)*
+
+___
+
+###  state
+
+• **state**: *"all" | "none" | "some"*
+
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:13](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L13)*
 
 ___
 
@@ -26,5 +34,4 @@ ___
 
 • **title**: *string*
 
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:13](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L13)*
-*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/components/layer-selection/layer-selection.ts#L10)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/components/layer-selection/layer-selection.ts#L10)*

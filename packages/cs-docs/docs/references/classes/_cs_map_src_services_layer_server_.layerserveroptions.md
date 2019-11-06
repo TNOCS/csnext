@@ -14,9 +14,12 @@
 
 • **tags**? : *string[]*
 
-*Defined in [cs-map/src/services/layer-server.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server.ts#L16)*
+*Defined in [cs-map/src/services/layer-server.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/services/layer-server.ts#L16)*
+
+___
+
+### `Optional` url
 
 • **url**? : *string*
 
-*Defined in [cs-map/src/services/layer-server.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server.ts#L15)*
-*Defined in [cs-map/src/services/layer-server.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-map/src/services/layer-server.ts#L15)*
+*Defined in [cs-map/src/services/layer-server.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/services/layer-server.ts#L15)*

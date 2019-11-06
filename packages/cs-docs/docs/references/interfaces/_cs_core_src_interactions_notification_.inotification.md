@@ -12,15 +12,23 @@ notification object
 
 • **_visible**? : *boolean*
 
-*Defined in [cs-core/src/interactions/notification.ts:14](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L14)*
-
-• **actionTitle**? : *string*
-
-*Defined in [cs-core/src/interactions/notification.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L11)*
+*Defined in [cs-core/src/interactions/notification.ts:14](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L14)*
 
 ___
 
-*Defined in [cs-core/src/interactions/notification.ts:11](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L11)*
+### `Optional` actionTitle
+
+• **actionTitle**? : *string*
+
+*Defined in [cs-core/src/interactions/notification.ts:11](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L11)*
+
+___
+
+### `Optional` buttonText
+
+• **buttonText**? : *string*
+
+*Defined in [cs-core/src/interactions/notification.ts:12](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L12)*
 
 ___
 
@@ -28,7 +36,11 @@ ___
 
 • **clickCallback**? : *function*
 
-*Defined in [cs-core/src/interactions/notification.ts:12](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L12)*
+*Defined in [cs-core/src/interactions/notification.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L17)*
+
+#### Type declaration:
+
+▸ (): *void*
 
 ___
 
@@ -36,11 +48,15 @@ ___
 
 • **created**? : *Date*
 
-*Defined in [cs-core/src/interactions/notification.ts:17](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L17)*
+*Defined in [cs-core/src/interactions/notification.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L8)*
+
+___
+
+### `Optional` icon
 
 • **icon**? : *string*
 
-*Defined in [cs-core/src/interactions/notification.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L16)*
+*Defined in [cs-core/src/interactions/notification.ts:16](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L16)*
 
 ___
 
@@ -48,15 +64,23 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-core/src/interactions/notification.ts:8](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L8)*
-
-• **isRead**? : *boolean*
-
-*Defined in [cs-core/src/interactions/notification.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L10)*
+*Defined in [cs-core/src/interactions/notification.ts:3](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L3)*
 
 ___
 
-*Defined in [cs-core/src/interactions/notification.ts:16](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L16)*
+### `Optional` isRead
+
+• **isRead**? : *boolean*
+
+*Defined in [cs-core/src/interactions/notification.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L10)*
+
+___
+
+### `Optional` priority
+
+• **priority**? : *number*
+
+*Defined in [cs-core/src/interactions/notification.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L9)*
 
 ___
 
@@ -64,15 +88,23 @@ ___
 
 • **remember**? : *boolean*
 
-*Defined in [cs-core/src/interactions/notification.ts:3](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L3)*
-
-• **text**? : *string*
-
-*Defined in [cs-core/src/interactions/notification.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L6)*
+*Defined in [cs-core/src/interactions/notification.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L7)*
 
 ___
 
-*Defined in [cs-core/src/interactions/notification.ts:10](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L10)*
+### `Optional` text
+
+• **text**? : *string*
+
+*Defined in [cs-core/src/interactions/notification.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L6)*
+
+___
+
+### `Optional` timeout
+
+• **timeout**? : *number*
+
+*Defined in [cs-core/src/interactions/notification.ts:15](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L15)*
 
 ___
 
@@ -80,13 +112,12 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/interactions/notification.ts:9](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L9)*
+*Defined in [cs-core/src/interactions/notification.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L5)*
+
+___
+
+### `Optional` type
 
 • **type**? : *string*
 
-*Defined in [cs-core/src/interactions/notification.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L4)*
-*Defined in [cs-core/src/interactions/notification.ts:7](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L7)*
-*Defined in [cs-core/src/interactions/notification.ts:6](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L6)*
-*Defined in [cs-core/src/interactions/notification.ts:15](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L15)*
-*Defined in [cs-core/src/interactions/notification.ts:5](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L5)*
-*Defined in [cs-core/src/interactions/notification.ts:4](https://github.com/TNOCS/csnext/blob/99cbd46d/packages/cs-core/src/interactions/notification.ts#L4)*
+*Defined in [cs-core/src/interactions/notification.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/interactions/notification.ts#L4)*
