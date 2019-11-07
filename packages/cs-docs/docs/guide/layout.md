@@ -1,6 +1,7 @@
 # Layout
 
 ## Single
+The Single layout provides a single page where you van place your panels/widgets. There is no grid.
 ```
 {
     path: "/single",
@@ -9,6 +10,7 @@
 }
 ```
 ## Grid
+The Grid layout lets you place multiple panels in a grid.
 ```
 {
     path: "/grid",
