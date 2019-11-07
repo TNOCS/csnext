@@ -17,6 +17,7 @@
 }
 ```
 ## CSS Grids
+The CSS Grid Layout offers a grid-based layout system, with rows and columns
 ```ts
 {
     title: 'CSS Grids',
@@ -25,9 +26,23 @@
     options: {
         gap: '10px',
     } as CssGridDashboardOptions,
+     widgets: [
+        {
+            component: HtmlWidget,
+            data: 'widget 1',
+            options: {
+                class: 'widget-red',
+                    columnStart: 1,
+                    columnEnd: 2,
+                    rowStart: 1,
+                    rowEnd: 2
+            } as CssGridWidgetOptions
+        }
+    ]
 }
 ```
 ## CSS Grid Areas
+The CSS Grid Areas offer a grid-based layout system, with rows and columns where you can specify the area/location
 ```ts
 {
     title: 'CSS Grid Areas',
@@ -36,9 +51,27 @@
     options: {
         template: 'default'
     } as CssGridDashboardOptions,
+    widgets: [
+        {
+            component: HtmlWidget,
+            data: 'widget 1',
+            options: {
+                class: 'widget-red',
+                area: 'header'
+            } as CssGridWidgetOptions
+        }, {
+            component: HtmlWidget,
+            data: 'widget 2',
+            options: {
+                class: 'widget-yellow',
+                area: 'left'
+            } as CssGridWidgetOptions
+        }
+    ]
 }
 ```
 ## Split panel
+Using the split panel layout you can create multiple panels in the dashboard. These panels can be changed in size.
 ```ts
 {
     id: "splitpanel",
@@ -76,6 +109,7 @@
 ```
 
 ## Drag Grid
+The Drag Grid layout gives you the option to drag and drop panels inside a grid layout.
 ```ts
 {
     id: "drag",
