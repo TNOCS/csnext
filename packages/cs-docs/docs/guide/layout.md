@@ -9,6 +9,10 @@ The Single layout provides a single page where you van place your panels/widgets
     layout: Single.id
 }
 ```
+
+### References
+[References](http://localhost:8081/references/classes/_cs_client_src_layout_single_single_.single.html#hierarchy)
+
 ## Grid
 The Grid layout lets you place multiple panels in a grid.
 ```
@@ -18,6 +22,10 @@ The Grid layout lets you place multiple panels in a grid.
     layout: GridLayout.id
 }
 ```
+
+### References
+[References](http://localhost:8081/references/classes/_cs_client_src_layout_grid_layout_grid_layout_.gridlayout.html)
+
 ## CSS Grids
 The CSS Grid Layout offers a grid-based layout system, with rows and columns
 ```ts
@@ -43,6 +51,10 @@ The CSS Grid Layout offers a grid-based layout system, with rows and columns
     ]
 }
 ```
+
+### References
+[References](http://localhost:8081/references/classes/_cs_client_src_layout_css_grid_css_grid_.cssgrid.html)
+
 ## CSS Grid Areas
 The CSS Grid Areas offer a grid-based layout system, with rows and columns where you can specify the area/location
 ```ts
@@ -72,6 +84,10 @@ The CSS Grid Areas offer a grid-based layout system, with rows and columns where
     ]
 }
 ```
+
+### References
+[References](http://localhost:8081/references/classes/_cs_client_src_layout_flex_grid_flex_grid_.flexgrid.html#methods)
+
 ## Split panel
 Using the split panel layout you can create multiple panels in the dashboard. These panels can be changed in size.
 ```ts
@@ -110,6 +126,9 @@ Using the split panel layout you can create multiple panels in the dashboard. Th
 }
 ```
 
+### References
+[References](http://localhost:8081/references/cs-split-panel-README.html#sub-header-1)
+
 ## Drag Grid
 The Drag Grid layout gives you the option to drag and drop panels inside a grid layout.
 ```ts
@@ -128,3 +147,6 @@ The Drag Grid layout gives you the option to drag and drop panels inside a grid 
     } as DragLayoutOptions,
 }
 ```
+
+### References
+[References](http://localhost:8081/references/cs-drag-grid-README.html)

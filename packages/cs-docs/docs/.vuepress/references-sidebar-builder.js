@@ -10,7 +10,7 @@ class ReferencesSidebarBuilder {
     }
 
     copy_readmes() {
-        const folders = ['cs-billboard', 'cs-client', 'cs-core', 'cs-drag-grid', 'cs-map', 'cs-markdown', 'cs-split-panel', 'cs-timeline']
+        const folders = ['cs-billboard', 'cs-client', 'cs-core', 'cs-drag-grid', 'cs-form', 'cs-map', 'cs-markdown', 'cs-split-panel', 'cs-timeline']
         for (let folder in folders) {
             fs.copyFile('../' + folders[folder] + '/README.md', './docs/references/' + folders[folder] + '-README.md', (err) => {
                 if (err) console.log(err);
@@ -56,13 +56,11 @@ class ReferencesSidebarBuilder {
                 ]
             }
 
-            let file_name = key.replace(' ', '-').concat('-README.md')
+            let file_name = key.replace(/ /g, '-', -1).concat('-README.md')
             if (fs.existsSync('./docs/references/' + file_name)) {
-                console.log('exists', file_name)
                 obj.children.splice(0, 0, file_name)
             } else {
                 console.log('Not happening', file_name)
-                console.log(process.cwd())
             }
 
             children.push(obj)

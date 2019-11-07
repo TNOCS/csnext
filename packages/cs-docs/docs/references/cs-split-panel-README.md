@@ -1,4 +1,4 @@
-# CS-CORE
+# CS-SPLIT-PANEL
 
 ## sub header 1
 

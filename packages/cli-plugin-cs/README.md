@@ -1,4 +1,4 @@
-# CS-CORE
+# CLI-PLUGIN-CS
 
 ## sub header 1
 

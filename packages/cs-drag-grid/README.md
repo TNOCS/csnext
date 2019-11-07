@@ -1,4 +1,4 @@
-# CS-CORE
+# CS-DRAG-GRID
 
 ## sub header 1
 
