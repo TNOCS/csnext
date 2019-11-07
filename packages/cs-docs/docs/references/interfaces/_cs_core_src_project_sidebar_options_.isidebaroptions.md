@@ -14,7 +14,7 @@
 
 • **canMinify**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:19](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L19)*
+*Defined in [cs-core/src/project/sidebar-options.ts:19](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L19)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **canPin**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L16)*
+*Defined in [cs-core/src/project/sidebar-options.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L16)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **clipped**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L15)*
+*Defined in [cs-core/src/project/sidebar-options.ts:15](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L15)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **component**? : *any*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L8)*
+*Defined in [cs-core/src/project/sidebar-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L8)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **dashboard**? : *[IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:17](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L17)*
+*Defined in [cs-core/src/project/sidebar-options.ts:17](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L17)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **floating**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L13)*
+*Defined in [cs-core/src/project/sidebar-options.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L13)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **footer**? : *[ISidebarFooterOptions](_cs_core_src_project_sidebar_options_.isidebarfooteroptions.md)*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:22](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L22)*
+*Defined in [cs-core/src/project/sidebar-options.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L22)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 • **mini**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L14)*
+*Defined in [cs-core/src/project/sidebar-options.ts:14](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L14)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 • **open**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L5)*
+*Defined in [cs-core/src/project/sidebar-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L5)*
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 • **permanent**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L10)*
+*Defined in [cs-core/src/project/sidebar-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L10)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 • **persistent**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L11)*
+*Defined in [cs-core/src/project/sidebar-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L11)*
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 • **right**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L9)*
+*Defined in [cs-core/src/project/sidebar-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L9)*
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 • **sidebars**? : *object*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:23](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L23)*
+*Defined in [cs-core/src/project/sidebar-options.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L23)*
 
 #### Type declaration:
 
@@ -122,7 +122,7 @@ ___
 
 • **temporary**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L12)*
+*Defined in [cs-core/src/project/sidebar-options.ts:12](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L12)*
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L6)*
+*Defined in [cs-core/src/project/sidebar-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L6)*
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 • **titleClose**? : *string*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L7)*
+*Defined in [cs-core/src/project/sidebar-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L7)*
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 • **visible**? : *boolean*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:21](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L21)*
+*Defined in [cs-core/src/project/sidebar-options.ts:21](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L21)*
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 • **widget**? : *[IWidget](_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:18](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L18)*
+*Defined in [cs-core/src/project/sidebar-options.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L18)*
 
 ___
 
@@ -162,4 +162,4 @@ ___
 
 • **width**? : *number*
 
-*Defined in [cs-core/src/project/sidebar-options.ts:20](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/project/sidebar-options.ts#L20)*
+*Defined in [cs-core/src/project/sidebar-options.ts:20](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/sidebar-options.ts#L20)*

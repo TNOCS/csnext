@@ -57,7 +57,7 @@ class ReferencesSidebarBuilder {
             }
 
             let file_name = key.replace(' ', '-').concat('-README.md')
-            if (fs.existsSync('./docs/test/' + file_name)) {
+            if (fs.existsSync('./docs/references/' + file_name)) {
                 console.log('exists', file_name)
                 obj.children.splice(0, 0, file_name)
             } else {

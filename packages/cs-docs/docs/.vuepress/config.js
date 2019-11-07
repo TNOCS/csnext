@@ -73,7 +73,7 @@ module.exports = {
                 ],
                 sidebar: {
                     '/guide/': genSidebarConfig('Guide'),
-                    '/test/': genReferencesConfig(),
+                    '/references/': genReferencesConfig(),
                 }
             }
         }       

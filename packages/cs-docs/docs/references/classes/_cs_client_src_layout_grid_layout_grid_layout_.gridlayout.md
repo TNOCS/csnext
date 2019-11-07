@@ -12,7 +12,7 @@
 
 • **dashboard**? : *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/layout/grid-layout/grid-layout.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/grid-layout/grid-layout.ts#L15)*
+*Defined in [cs-client/src/layout/grid-layout/grid-layout.ts:15](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/layout/grid-layout/grid-layout.ts#L15)*
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 ▪ **id**: *string* = "grid"
 
-*Defined in [cs-client/src/layout/grid-layout/grid-layout.ts:16](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/grid-layout/grid-layout.ts#L16)*
+*Defined in [cs-client/src/layout/grid-layout/grid-layout.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/layout/grid-layout/grid-layout.ts#L16)*

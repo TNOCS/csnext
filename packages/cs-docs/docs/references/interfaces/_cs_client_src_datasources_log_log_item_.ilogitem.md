@@ -10,7 +10,7 @@
 
 • **className**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:2](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L2)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:2](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L2)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **content**? : *any*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:3](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L3)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:3](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L3)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **editable**? : *boolean*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:14](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L14)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:14](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L14)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **end**? : *Date*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:4](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L4)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L4)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **endDate**? : *number*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L8)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L8)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **group**? : *any*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L5)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L5)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L6)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L6)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **start**: *Date*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L9)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:9](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L9)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **startDate**? : *number*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L7)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:7](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L7)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **style**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L10)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:10](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L10)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **subgroup**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L11)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:11](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L11)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L12)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:12](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L12)*
 
 ___
 
@@ -106,4 +106,4 @@ ___
 
 • **type**? : *string*
 
-*Defined in [cs-client/src/datasources/log/log-item.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/datasources/log/log-item.ts#L13)*
+*Defined in [cs-client/src/datasources/log/log-item.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/datasources/log/log-item.ts#L13)*

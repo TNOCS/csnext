@@ -10,7 +10,7 @@
 
 • **route**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:23](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L23)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L23)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:22](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L22)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L22)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **url**? : *string*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:24](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L24)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:24](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L24)*

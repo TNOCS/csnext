@@ -10,7 +10,7 @@
 
 • **icon**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:73](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L73)*
+*Defined in [cs-map/src/classes/feature-type.ts:73](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L73)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **mode**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:69](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L69)*
+*Defined in [cs-map/src/classes/feature-type.ts:69](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L69)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **notification**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:71](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L71)*
+*Defined in [cs-map/src/classes/feature-type.ts:71](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L71)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **properties**? : *[PropertyCollection](../modules/_cs_map_src_classes_feature_type_.md#propertycollection)*
 
-*Defined in [cs-map/src/classes/feature-type.ts:84](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L84)*
+*Defined in [cs-map/src/classes/feature-type.ts:84](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L84)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **propertyMap**: *object*
 
-*Defined in [cs-map/src/classes/feature-type.ts:89](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L89)*
+*Defined in [cs-map/src/classes/feature-type.ts:89](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L89)*
 
 #### Type declaration:
 
@@ -54,7 +54,7 @@ ___
 
 • **propertyTypeKeys**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:88](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L88)*
+*Defined in [cs-map/src/classes/feature-type.ts:88](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L88)*
 
 list of properties from propertyTypeData (as key) used for this featureType, seperated by a semi column
 e.g: name;birthday;birthplay
@@ -65,7 +65,7 @@ ___
 
 • **style**? : *[LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md)*
 
-*Defined in [cs-map/src/classes/feature-type.ts:70](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L70)*
+*Defined in [cs-map/src/classes/feature-type.ts:70](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L70)*
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/classes/feature-type.ts:68](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/classes/feature-type.ts#L68)*
+*Defined in [cs-map/src/classes/feature-type.ts:68](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/feature-type.ts#L68)*

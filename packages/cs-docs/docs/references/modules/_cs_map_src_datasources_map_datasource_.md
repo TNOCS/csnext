@@ -21,4 +21,4 @@
     }
 } as LayerStyle
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:33](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/datasources/map-datasource.ts#L33)*
+*Defined in [cs-map/src/datasources/map-datasource.ts:33](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L33)*

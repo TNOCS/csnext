@@ -10,7 +10,7 @@
 
 • **_component**? : *any*
 
-*Defined in [cs-core/src/widget/widget.ts:22](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L22)*
+*Defined in [cs-core/src/widget/widget.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L22)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **_dashboard**? : *[IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:16](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L16)*
+*Defined in [cs-core/src/widget/widget.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L16)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **_initalized**? : *boolean*
 
-*Defined in [cs-core/src/widget/widget.ts:18](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L18)*
+*Defined in [cs-core/src/widget/widget.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L18)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **_manager**? : *[IDashboardManager](_cs_core_src_dashboard_dashboard_manager_.idashboardmanager.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:17](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L17)*
+*Defined in [cs-core/src/widget/widget.ts:17](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L17)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **_project**? : *[IProject](_cs_core_src_project_project_.iproject.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:20](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L20)*
+*Defined in [cs-core/src/widget/widget.ts:20](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L20)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **_size**? : *[IWidgetSize](_cs_core_src_widget_widget_size_.iwidgetsize.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:21](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L21)*
+*Defined in [cs-core/src/widget/widget.ts:21](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L21)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **_style**? : *any*
 
-*Defined in [cs-core/src/widget/widget.ts:19](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L19)*
+*Defined in [cs-core/src/widget/widget.ts:19](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L19)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **component**? : *any*
 
-*Defined in [cs-core/src/widget/widget.ts:9](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L9)*
+*Defined in [cs-core/src/widget/widget.ts:9](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L9)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **content**? : *any*
 
-*Defined in [cs-core/src/widget/widget.ts:10](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L10)*
+*Defined in [cs-core/src/widget/widget.ts:10](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L10)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **data**? : *any*
 
-*Defined in [cs-core/src/widget/widget.ts:12](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L12)*
+*Defined in [cs-core/src/widget/widget.ts:12](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L12)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **datasource**? : *string*
 
-*Defined in [cs-core/src/widget/widget.ts:11](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L11)*
+*Defined in [cs-core/src/widget/widget.ts:11](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L11)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **editorWidget**? : *[IWidget](_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:14](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L14)*
+*Defined in [cs-core/src/widget/widget.ts:14](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L14)*
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **events**? : *[IMessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.imessagebusservice.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:15](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L15)*
+*Defined in [cs-core/src/widget/widget.ts:15](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L15)*
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 • **id**? : *string*
 
-*Defined in [cs-core/src/widget/widget.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L5)*
+*Defined in [cs-core/src/widget/widget.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L5)*
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 • **options**? : *[WidgetOptions](../classes/_cs_core_src_widget_widget_options_.widgetoptions.md)*
 
-*Defined in [cs-core/src/widget/widget.ts:13](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L13)*
+*Defined in [cs-core/src/widget/widget.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L13)*
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 • **reference**? : *string*
 
-*Defined in [cs-core/src/widget/widget.ts:8](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L8)*
+*Defined in [cs-core/src/widget/widget.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L8)*
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-core/src/widget/widget.ts:6](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L6)*
+*Defined in [cs-core/src/widget/widget.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L6)*
 
 ___
 
@@ -146,4 +146,4 @@ ___
 
 • **widgets**? : *[IWidget](_cs_core_src_widget_widget_.iwidget.md)[]*
 
-*Defined in [cs-core/src/widget/widget.ts:7](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-core/src/widget/widget.ts#L7)*
+*Defined in [cs-core/src/widget/widget.ts:7](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/widget/widget.ts#L7)*

@@ -6,7 +6,7 @@
 
 ▸ **CsPlugin**(`vue`: any, `options?`: any): *void*
 
-*Defined in [cs-client/src/index.ts:89](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/index.ts#L89)*
+*Defined in [cs-client/src/index.ts:89](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/index.ts#L89)*
 
 **Parameters:**
 
@@ -23,13 +23,13 @@ Name | Type |
 
 ### ▪ **CsNext**: *object*
 
-*Defined in [cs-client/src/index.ts:63](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/index.ts#L63)*
+*Defined in [cs-client/src/index.ts:63](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/index.ts#L63)*
 
 ###  install
 
 ▸ **install**(`vue`: VueConstructor): *void*
 
-*Defined in [cs-client/src/index.ts:64](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/index.ts#L64)*
+*Defined in [cs-client/src/index.ts:64](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/index.ts#L64)*
 
 **Parameters:**
 

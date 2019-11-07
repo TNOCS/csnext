@@ -12,7 +12,7 @@
 
 • **filter**: *string* = ""
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:36](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L36)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:36](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L36)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **sections**: *[section](_cs_map_src_components_feature_details_feature_details_.section.md)[]* =  []
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:38](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L38)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:38](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L38)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **sectionsPanels**: *number[]* =  []
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:34](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L34)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:34](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L34)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **tabs**: *string* = "feature-details"
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:35](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L35)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:35](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L35)*
 
 ## Accessors
 
@@ -44,7 +44,7 @@ ___
 
 • **get feature**(): *Feature | undefined*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:87](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L87)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:87](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L87)*
 
 get active feature
 
@@ -56,7 +56,7 @@ ___
 
 • **get filterPropertiesEnabled**(): *boolean*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:40](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L40)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:40](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L40)*
 
 **Returns:** *boolean*
 
@@ -66,7 +66,7 @@ ___
 
 • **get layer**(): *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md) | undefined*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:54](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L54)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:54](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L54)*
 
 get active layer
 
@@ -78,7 +78,7 @@ ___
 
 • **get layerColor**(): *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:72](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L72)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:72](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L72)*
 
 get layer color
 
@@ -90,7 +90,7 @@ ___
 
 • **get manager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:80](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L80)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:80](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L80)*
 
 **Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
@@ -100,7 +100,7 @@ ___
 
 • **get properties**(): *any[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:223](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L223)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:223](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L223)*
 
 **Returns:** *any[]*
 
@@ -110,7 +110,7 @@ ___
 
 • **get title**(): *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:62](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L62)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:62](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L62)*
 
 get feature title
 
@@ -122,7 +122,7 @@ get feature title
 
 ▸ **centerFeature**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:237](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L237)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:237](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L237)*
 
 **Returns:** *void*
 
@@ -132,7 +132,7 @@ ___
 
 ▸ **contentLoaded**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:258](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L258)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:258](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L258)*
 
 **Returns:** *void*
 
@@ -142,7 +142,7 @@ ___
 
 ▸ **filterChanged**(`v`: string): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:45](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L45)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:45](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L45)*
 
 **Parameters:**
 
@@ -158,7 +158,7 @@ ___
 
 ▸ **initMenu**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:243](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L243)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:243](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L243)*
 
 **Returns:** *void*
 
@@ -168,7 +168,7 @@ ___
 
 ▸ **propertyFilter**(`prop`: [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md), `filter`: string): *boolean*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:94](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L94)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:94](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L94)*
 
 **Parameters:**
 
@@ -185,7 +185,7 @@ ___
 
 ▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:211](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L211)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:211](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L211)*
 
 **Parameters:**
 
@@ -201,7 +201,7 @@ ___
 
 ▸ **updateFilter**(): *void*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:49](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L49)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:49](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L49)*
 
 **Returns:** *void*
 
@@ -211,7 +211,7 @@ ___
 
 ▸ **updateSections**(): *any[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:108](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-map/src/components/feature-details/feature-details.ts#L108)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:108](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L108)*
 
 get list of available section, with their properties
 

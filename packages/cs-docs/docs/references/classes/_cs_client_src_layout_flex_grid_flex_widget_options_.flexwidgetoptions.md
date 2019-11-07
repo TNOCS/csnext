@@ -12,7 +12,7 @@
 
 • **container**? : *number*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-widget-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-widget-options.ts#L5)*
+*Defined in [cs-client/src/layout/flex-grid/flex-widget-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/layout/flex-grid/flex-widget-options.ts#L5)*
 
 ___
 
@@ -20,4 +20,4 @@ ___
 
 • **size**? : *[FlexSize](../enums/_cs_client_src_layout_flex_grid_flex_size_.flexsize.md)*
 
-*Defined in [cs-client/src/layout/flex-grid/flex-widget-options.ts:4](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-client/src/layout/flex-grid/flex-widget-options.ts#L4)*
+*Defined in [cs-client/src/layout/flex-grid/flex-widget-options.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/layout/flex-grid/flex-widget-options.ts#L4)*

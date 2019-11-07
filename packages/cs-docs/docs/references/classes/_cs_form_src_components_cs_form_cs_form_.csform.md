@@ -12,7 +12,7 @@
 
 • **data**? : *[IFormObject](../interfaces/_cs_core_src_form_form_decorators_.iformobject.md)*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:42](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L42)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:42](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L42)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **field**? : *string*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:48](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L48)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:48](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L48)*
 
 specify a single field to show, others are hidden
 
@@ -30,7 +30,7 @@ ___
 
 • **fieldGroups**: *[FieldGroup](_cs_form_src_components_cs_form_cs_form_.fieldgroup.md)[]* =  []
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:40](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L40)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:40](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L40)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **formdef**? : *[IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:44](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L44)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:44](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L44)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **formkey**? : *string*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:43](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L43)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:43](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L43)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **initalized**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:36](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L36)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:36](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L36)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **keys**: *object*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:46](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L46)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:46](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L46)*
 
 #### Type declaration:
 
@@ -74,7 +74,7 @@ ___
 
 • **minimize**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:37](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L37)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:37](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L37)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **panel**: *number[]* =  [0]
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:45](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L45)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:45](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L45)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **showFilterMenu**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:39](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L39)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:39](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L39)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **showMenu**: *boolean* = false
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:38](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L38)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:38](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L38)*
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **sortedFieldGroups**: *[FieldGroup](_cs_form_src_components_cs_form_cs_form_.fieldgroup.md)[]* =  []
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:41](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L41)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:41](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L41)*
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 • **timeline**: *any*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:35](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L35)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:35](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L35)*
 
 access the original widget from configuration
 
@@ -124,7 +124,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:77](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L77)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:77](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L77)*
 
 ## Accessors
 
@@ -132,7 +132,7 @@ ___
 
 • **get Form**(): *[IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:236](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L236)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:236](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L236)*
 
 **Returns:** *[IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)*
 
@@ -142,7 +142,7 @@ ___
 
 • **get Target**(): *any*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:232](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L232)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:232](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L232)*
 
 **Returns:** *any*
 
@@ -152,13 +152,13 @@ ___
 
 • **get formObject**(): *[IFormObject](../interfaces/_cs_core_src_form_form_decorators_.iformobject.md) | undefined*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:54](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L54)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:54](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L54)*
 
 **Returns:** *[IFormObject](../interfaces/_cs_core_src_form_form_decorators_.iformobject.md) | undefined*
 
 • **set formObject**(`obj`: [IFormObject](../interfaces/_cs_core_src_form_form_decorators_.iformobject.md) | undefined): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:62](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L62)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:62](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L62)*
 
 **Parameters:**
 
@@ -174,7 +174,7 @@ Name | Type |
 
 ▸ **beforeMount**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:246](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L246)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:246](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L246)*
 
 **Returns:** *void*
 
@@ -184,7 +184,7 @@ ___
 
 ▸ **closeForm**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:92](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L92)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:92](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L92)*
 
 **Returns:** *void*
 
@@ -194,7 +194,7 @@ ___
 
 ▸ **dataChanged**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:67](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L67)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:67](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L67)*
 
 **Returns:** *void*
 
@@ -204,7 +204,7 @@ ___
 
 ▸ **datasourceChanged**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:72](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L72)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:72](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L72)*
 
 **Returns:** *void*
 
@@ -214,7 +214,7 @@ ___
 
 ▸ **fieldChanged**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:193](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L193)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:193](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L193)*
 
 **Parameters:**
 
@@ -230,7 +230,7 @@ ___
 
 ▸ **fieldTriggered**(`field`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:187](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L187)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:187](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L187)*
 
 **Parameters:**
 
@@ -246,7 +246,7 @@ ___
 
 ▸ **init**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:252](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L252)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:252](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L252)*
 
 **Returns:** *void*
 
@@ -256,7 +256,7 @@ ___
 
 ▸ **initGroups**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:98](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L98)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:98](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L98)*
 
 **Returns:** *void*
 
@@ -266,7 +266,7 @@ ___
 
 ▸ **isKeyValueList**(): *boolean*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:50](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L50)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:50](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L50)*
 
 **Returns:** *boolean*
 
@@ -276,7 +276,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:257](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L257)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:257](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L257)*
 
 **Returns:** *void*
 
@@ -286,7 +286,7 @@ ___
 
 ▸ **saveForm**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:79](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L79)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:79](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L79)*
 
 **Returns:** *void*
 
@@ -296,7 +296,7 @@ ___
 
 ▸ **sortFieldGroups**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:212](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L212)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:212](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L212)*
 
 **Returns:** *void*
 
@@ -306,7 +306,7 @@ ___
 
 ▸ **updateAllGroupVisbility**(): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:224](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L224)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:224](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L224)*
 
 **Returns:** *void*
 
@@ -316,7 +316,7 @@ ___
 
 ▸ **updateGroupVisibility**(`group`: [FieldGroup](_cs_form_src_components_cs_form_cs_form_.fieldgroup.md)): *void*
 
-*Defined in [cs-form/src/components/cs-form/cs-form.ts:197](https://github.com/RichardHovenkamp/csnext/blob/0e0b9b29/packages/cs-form/src/components/cs-form/cs-form.ts#L197)*
+*Defined in [cs-form/src/components/cs-form/cs-form.ts:197](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-form/src/components/cs-form/cs-form.ts#L197)*
 
 **Parameters:**
 
