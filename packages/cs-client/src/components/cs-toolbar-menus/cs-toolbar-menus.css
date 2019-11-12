@@ -8,6 +8,10 @@
   height: 100%;
 }
 
+.menu.buttonClass {
+  margin-left: 4px;
+}
+
 .widget-buttons-container {
   position: absolute !important;
   right: 10px;
