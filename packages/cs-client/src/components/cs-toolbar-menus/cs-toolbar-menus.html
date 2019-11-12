@@ -39,7 +39,7 @@
           <v-icon v-if="menu.type!=='text'">{{ menu.icon }}</v-icon>
           <span v-if="menu.type!=='icon'"
             >{{ $cs.Translate(menu.title) }}
-            <v-icon :color="menu.color" v-if="menu.items" right
+            <v-icon :color="menu.color" class="menu-icon-down" v-if="menu.items" right
               >mdi-menu-down</v-icon
             >
           </span>

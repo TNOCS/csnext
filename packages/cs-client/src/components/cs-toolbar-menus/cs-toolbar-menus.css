@@ -12,6 +12,11 @@
   margin-left: 4px;
 }
 
+.menu-icon-down
+{
+  margin-left: -5px !important;
+}
+
 .widget-buttons-container {
   position: absolute !important;
   right: 10px;
