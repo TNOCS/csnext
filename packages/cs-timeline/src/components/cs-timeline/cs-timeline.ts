@@ -28,6 +28,7 @@ export interface ITimelineDataSource extends IDatasource {
 
 const TOGGLE_MENU_ID = 'togglesmall';
 const ZOOM_MENU_ID = 'zoom';
+const STACK_MENU_ID = 'stack';
 const GROUPS_MENU_ID = 'groups';
 const NO_GROUP = 'all';
 @Component({
@@ -262,6 +263,21 @@ export class CsTimeline extends WidgetBase {
             } as IMenu);
         }
 
+        if (this.WidgetOptions.showStackButton) {
+            menus.push({
+                id: STACK_MENU_ID,
+                toolTip: 'STACK',
+                icon: 'reorder',
+                action: () => {
+                    if (this.timeline && this.WidgetOptions.timelineOptions) {
+                        this.WidgetOptions.timelineOptions.stack = !this.WidgetOptions.timelineOptions.stack;
+                        this.timeline.setOptions({ stack: this.WidgetOptions.timelineOptions.stack });
+                    }
+
+                }
+            })
+        }
+
         // this.widget.options.menus ? this.widget.options.menus :
         if (this.WidgetOptions.showFitButton) {
             menus.push({
@@ -310,12 +326,8 @@ export class CsTimeline extends WidgetBase {
         this.busManager.subscribe(this.widget.events, Topics.RESIZE, () => {
             this.timeline!.redraw();
         });
-        
-    }
 
-    // public mounted() {
-        
-    // }
+    }
 
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
@@ -338,7 +350,7 @@ export class CsTimeline extends WidgetBase {
         // this.timeline.on('click', this.handleTimelineClick);
         if (this.WidgetOptions.showFocusTime) {
             this.timeline.addCustomTime(this.currentTime, 'focustime');
-            this.timeline.on('click', this.handleTimelineClick);            
+            this.timeline.on('click', this.handleTimelineClick);
         }
         this.timeline.on('doubleClick', this.handleDoubleClick);
         this.timeline.on('select', this.handleEventSelect);
