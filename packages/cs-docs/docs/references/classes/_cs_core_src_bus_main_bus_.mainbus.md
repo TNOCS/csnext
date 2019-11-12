@@ -10,7 +10,7 @@
 
 ▪ **pEvents**: *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
-*Defined in [cs-core/src/bus/main-bus.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/bus/main-bus.ts#L5)*
+*Defined in [cs-core/src/bus/main-bus.ts:5](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/bus/main-bus.ts#L5)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 ▪ **pInstance**: *[MainBus](_cs_core_src_bus_main_bus_.mainbus.md)*
 
-*Defined in [cs-core/src/bus/main-bus.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/bus/main-bus.ts#L4)*
+*Defined in [cs-core/src/bus/main-bus.ts:4](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/bus/main-bus.ts#L4)*
 
 used for singleton
 
@@ -28,7 +28,7 @@ used for singleton
 
 • **get Instance**(): *[MainBus](_cs_core_src_bus_main_bus_.mainbus.md)*
 
-*Defined in [cs-core/src/bus/main-bus.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/bus/main-bus.ts#L7)*
+*Defined in [cs-core/src/bus/main-bus.ts:7](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/bus/main-bus.ts#L7)*
 
 Get singleton instance of appstate
 
@@ -40,7 +40,7 @@ ___
 
 • **get events**(): *any*
 
-*Defined in [cs-core/src/bus/main-bus.ts:12](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/bus/main-bus.ts#L12)*
+*Defined in [cs-core/src/bus/main-bus.ts:12](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/bus/main-bus.ts#L12)*
 
 Event bus for publish/subscribe events in application
 

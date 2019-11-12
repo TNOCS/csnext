@@ -12,7 +12,7 @@
 
 • **dashboard**? : *[IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [cs-client/src/layout/css-grid/css-grid.ts:22](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/css-grid/css-grid.ts#L22)*
+*Defined in [cs-client/src/layout/css-grid/css-grid.ts:22](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/layout/css-grid/css-grid.ts#L22)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 ▪ **id**: *string* = "css-grid"
 
-*Defined in [cs-client/src/layout/css-grid/css-grid.ts:23](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/css-grid/css-grid.ts#L23)*
+*Defined in [cs-client/src/layout/css-grid/css-grid.ts:23](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/layout/css-grid/css-grid.ts#L23)*
 
 ## Methods
 
@@ -28,7 +28,7 @@ ___
 
 ▸ **gridStyle**(): *any*
 
-*Defined in [cs-client/src/layout/css-grid/css-grid.ts:25](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/css-grid/css-grid.ts#L25)*
+*Defined in [cs-client/src/layout/css-grid/css-grid.ts:25](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/layout/css-grid/css-grid.ts#L25)*
 
 **Returns:** *any*
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **gridWidgetStyle**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *any*
 
-*Defined in [cs-client/src/layout/css-grid/css-grid.ts:42](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/layout/css-grid/css-grid.ts#L42)*
+*Defined in [cs-client/src/layout/css-grid/css-grid.ts:42](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/layout/css-grid/css-grid.ts#L42)*
 
 **Parameters:**
 

@@ -12,7 +12,7 @@
 
 • **logSource**? : *string*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L6)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:6](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L6)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **showFitButton**? : *boolean*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L9)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:9](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L9)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **showFocusTime**? : *boolean*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:8](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L8)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:8](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L8)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **showGroupSelectionButton**? : *boolean*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:11](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L11)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:11](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L11)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **smallView**? : *boolean*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L7)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:7](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L7)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **timelineOptions**? : *TimelineOptions*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L5)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:5](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L5)*
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 • **toggleSmallButton**? : *boolean*
 
-*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:10](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-timeline/src/classes/timeline-widget-options.ts#L10)*
+*Defined in [cs-timeline/src/classes/timeline-widget-options.ts:10](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-timeline/src/classes/timeline-widget-options.ts#L10)*

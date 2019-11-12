@@ -14,7 +14,7 @@
 
 • **end**? : *number*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:5](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L5)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:5](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L5)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **events**: *any* =  new MessageBusService()
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L9)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:9](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L9)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **focusTime**? : *number*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:6](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L6)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:6](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L6)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **id**: *string* = "timedatasource"
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L7)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:7](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L7)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **start**? : *number*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:4](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L4)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:4](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L4)*
 
 ## Methods
 
@@ -54,7 +54,7 @@ ___
 
 ▸ **execute**(`datasources?`: object, `data?`: any): *Promise‹[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)›*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:22](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L22)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:22](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L22)*
 
 **Parameters:**
 
@@ -71,7 +71,7 @@ ___
 
 ▸ **setFocusTime**(`time`: number): *void*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L17)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:17](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L17)*
 
 **Parameters:**
 
@@ -87,7 +87,7 @@ ___
 
 ▸ **setTimeRange**(`start`: number, `end`: number): *void*
 
-*Defined in [cs-core/src/datasources/time-datasource.ts:11](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-core/src/datasources/time-datasource.ts#L11)*
+*Defined in [cs-core/src/datasources/time-datasource.ts:11](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/datasources/time-datasource.ts#L11)*
 
 **Parameters:**
 

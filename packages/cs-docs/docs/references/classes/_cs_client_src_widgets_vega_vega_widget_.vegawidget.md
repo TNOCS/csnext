@@ -12,7 +12,7 @@
 
 • **_id**? : *string*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:23](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L23)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:23](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L23)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **data**? : *any*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:18](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L18)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:18](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L18)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **view**: *any*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L17)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:17](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L17)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:21](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L21)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:21](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L21)*
 
 access the original widget from configuration
 
@@ -46,7 +46,7 @@ access the original widget from configuration
 
 • **get id**(): *string*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:25](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L25)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:25](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L25)*
 
 **Returns:** *string*
 
@@ -56,7 +56,7 @@ access the original widget from configuration
 
 ▸ **contentChanged**(): *void*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:41](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L41)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:41](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L41)*
 
 **Returns:** *void*
 
@@ -66,7 +66,7 @@ ___
 
 ▸ **dataChanged**(): *void*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:36](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L36)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:36](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L36)*
 
 **Returns:** *void*
 
@@ -76,7 +76,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:45](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L45)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:45](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L45)*
 
 **Returns:** *void*
 
@@ -86,7 +86,7 @@ ___
 
 ▸ **updateChart**(): *void*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:49](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L49)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:49](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L49)*
 
 **Returns:** *void*
 
@@ -96,7 +96,7 @@ ___
 
 ▸ **viewRender**(`spec`: any): *void*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:72](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-client/src/widgets/vega/vega-widget.ts#L72)*
+*Defined in [cs-client/src/widgets/vega/vega-widget.ts:72](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/vega/vega-widget.ts#L72)*
 
 **Parameters:**
 

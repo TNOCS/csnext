@@ -17,7 +17,7 @@
 
 *Implementation of [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md).[id](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md#id)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:19](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L19)*
+*Defined in [cs-map/src/classes/layer-service.ts:19](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L19)*
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
 *Implementation of [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md).[options](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md#optional-options)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:22](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L22)*
+*Defined in [cs-map/src/classes/layer-service.ts:22](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L22)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 *Implementation of [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md).[title](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md#optional-title)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:20](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L20)*
+*Defined in [cs-map/src/classes/layer-service.ts:20](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L20)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 *Implementation of [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md).[type](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md#type)*
 
-*Defined in [cs-map/src/classes/layer-service.ts:21](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L21)*
+*Defined in [cs-map/src/classes/layer-service.ts:21](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L21)*
 
 ## Methods
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **Start**(): *Promise‹void›*
 
-*Defined in [cs-map/src/classes/layer-service.ts:24](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L24)*
+*Defined in [cs-map/src/classes/layer-service.ts:24](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L24)*
 
 **Returns:** *Promise‹void›*
 
@@ -65,6 +65,6 @@ ___
 
 ▸ **Stop**(): *Promise‹void›*
 
-*Defined in [cs-map/src/classes/layer-service.ts:28](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-service.ts#L28)*
+*Defined in [cs-map/src/classes/layer-service.ts:28](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-service.ts#L28)*
 
 **Returns:** *Promise‹void›*

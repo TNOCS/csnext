@@ -14,7 +14,7 @@
 
 \+ **new LayerSources**(`layers`: object, `images?`: object): *[LayerSources](_cs_map_src_classes_layer_sources_.layersources.md)*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:19](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L19)*
+*Defined in [cs-map/src/classes/layer-sources.ts:19](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L19)*
 
 **Parameters:**
 
@@ -31,7 +31,7 @@ Name | Type |
 
 • **id**: *string* = "layersources"
 
-*Defined in [cs-map/src/classes/layer-sources.ts:7](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L7)*
+*Defined in [cs-map/src/classes/layer-sources.ts:7](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L7)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **images**: *object*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:17](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L17)*
+*Defined in [cs-map/src/classes/layer-sources.ts:17](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L17)*
 
 #### Type declaration:
 
@@ -51,7 +51,7 @@ ___
 
 • **layers**: *object*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:19](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L19)*
+*Defined in [cs-map/src/classes/layer-sources.ts:19](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L19)*
 
 #### Type declaration:
 
@@ -63,7 +63,7 @@ ___
 
 ▸ **execute**(): *Promise‹any›*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:37](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L37)*
+*Defined in [cs-map/src/classes/layer-sources.ts:37](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L37)*
 
 **Returns:** *Promise‹any›*
 
@@ -73,7 +73,7 @@ ___
 
 ▸ **initSource**(`id`: string, `source`: [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)): *[LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:31](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L31)*
+*Defined in [cs-map/src/classes/layer-sources.ts:31](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L31)*
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **updateLayerSource**(`id`: string, `geojson`: FeatureCollection): *void*
 
-*Defined in [cs-map/src/classes/layer-sources.ts:9](https://github.com/RichardHovenkamp/csnext/blob/872f0bfe/packages/cs-map/src/classes/layer-sources.ts#L9)*
+*Defined in [cs-map/src/classes/layer-sources.ts:9](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/classes/layer-sources.ts#L9)*
 
 **Parameters:**
 
