@@ -1,4 +1,7 @@
 <div v-if="field">
+        <template v-if="field.type === 'component'">
+            <component :is="getComponent(field)" :field="field" @updated="fieldUpdated(field)"></component>
+        </template>
         <template v-if="field.type === 'button-trigger'">
             <v-btn icon @click="triggerClick(field)"><v-icon>{{field.icon}}</v-icon></v-btn>  
         </template>

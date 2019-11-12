@@ -58,6 +58,12 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
+    private getComponent(field: IFormFieldOptions) {
+        if (field && field.component) {
+            return field.component;
+        }
+    }
+
     public genColor(i: number) {
         if (this.field && this.field.colors) {
             return this.field.colors[i];
@@ -157,7 +163,7 @@ export class CsFormField extends Vue {
     }
 
     public fieldUpdated(field: IFormFieldOptions) {
-        if (!field._isError) {                        
+        if (!field._isError) {
             field._appendIcon = '';
             this.changed(field);
             this.$forceUpdate();
