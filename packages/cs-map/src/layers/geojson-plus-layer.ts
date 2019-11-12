@@ -557,7 +557,7 @@ export class GeojsonPlusLayer extends BaseLayer
                     this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
                 } catch (e) {
 
-                }                
+                }
 
             }
 
@@ -567,10 +567,37 @@ export class GeojsonPlusLayer extends BaseLayer
                 let keys = Object.keys(this.featureTypes);
                 Object.keys(this.featureTypes).forEach(k => {
                     if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
+
+                        // not array, check for map
+                        let ft = this.featureTypes[k];
+                        if (ft.properties && !Array.isArray(ft.properties)) {
+                            let props: any[] = [];
+                            let obj = ft.properties as any;
+                            for (const key in obj) {
+                                if (obj.hasOwnProperty(key)) {
+                                    const element = obj[key];
+                                    if (typeof element !== 'string') {
+                                        if (!element.label) {
+                                            element.label = key;
+                                        }
+                                    }
+                                    props.push(element);
+                                }
+                            }
+                            if (props.length > 0) {
+                                ft.properties = props;
+                            }
+                        }
+
                         this.featureTypes[k] = plainToClass(
                             FeatureType,
                             this.featureTypes[k]
                         );
+
+
+
+
+
                         this.updateFeatureTypePropertyMap(this.featureTypes[k]);
                     }
                 });
@@ -686,6 +713,10 @@ export class GeojsonPlusLayer extends BaseLayer
             });
 
             if (this.style.types) {
+
+                if (!this.style.mapbox) {
+                    this.style.mapbox = {};
+                }
 
                 if (this.style.types!.includes('point')) {
                     if (!this.style.mapbox!.symbolLayout)
@@ -836,7 +867,7 @@ export class GeojsonPlusLayer extends BaseLayer
             if (this.iconZoomLevel !== undefined) {
                 this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
-            this._fillLayer.initLayer(manager);           
+            this._fillLayer.initLayer(manager);
 
             console.log('temp: update legend');
             this.updateLegends();

@@ -487,33 +487,6 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    //    public updateLayerSource(ml: IMapLayer, geojson?: FeatureCollection | string) {
-    //        if (!geojson && ml._source && ml._source._geojson) {
-    //            geojson = ml._source._geojson;
-    //        }
-    //        let g = typeof geojson === 'string' ? (JSON.parse(geojson) as FeatureCollection) : geojson;
-    //        if (g && ml._source && ml._source.id && this.MapControl) {
-    //            let sourceId = ml._source.id;
-    //            (this.MapControl.getSource(sourceId) as GeoJSONSource).setData(g);
-    //        }
-    //        if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
-    //            const wasVisible = ml.Visible;
-    //            if (wasVisible && ml._manager!.map!.map!.getLayer(ml.id!)) ml._manager!.map!.map!.removeLayer(ml.id!);
-    //            const newSource = {
-    //                type: ml._source.type,
-    //                tiles: [ml._source.url],
-    //                tileSize: ml._source.tileSize
-    //            }
-    //            if (this.MapControl.getSource(ml._source.id)) this.MapControl.removeSource(ml._source.id);
-    //            this.MapControl.addSource(ml._source.id, newSource as RasterSource);
-    //            if (wasVisible) ml._manager!.map!.map!.addLayer({id: ml.id!,type: 'raster', source: ml._source.id!});
-    //        }
-    //        console.log(ml);
-    //        // if (ml._source) {
-    //        //     this.MapControl.getSource(ml.source)
-    //        // }
-    //    }
-
     public updateLayerSource(
         ml: IMapLayer,
         geojson?: FeatureCollection | string,
@@ -668,10 +641,16 @@ export class MapDatasource implements IDatasource {
     }
 
 
-    public addGeojsonLayer(title: string, url?: string, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
+    public addGeojsonLayer(title: string, geojson?: string | FeatureCollection, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             let source = new LayerSource();
-            source.url = url;
+            if (typeof geojson === 'string') {
+                source.url = geojson;
+            } else {
+                source._geojson = geojson;
+                source._loaded = true;
+            }
+            
             source.title = title;
             source.id = guidGenerator();
             console.log('temp: loading datasource');
