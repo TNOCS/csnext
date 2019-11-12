@@ -14,7 +14,7 @@
 
 • **historyDelayMinutes**? : *number*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:12](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/extensions/wms-time-extension.ts#L12)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:12](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/extensions/wms-time-extension.ts#L12)*
 
 ___
 
@@ -22,4 +22,4 @@ ___
 
 • **timeProperty**? : *string*
 
-*Defined in [cs-map/src/extensions/wms-time-extension.ts:8](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/extensions/wms-time-extension.ts#L8)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/extensions/wms-time-extension.ts#L8)*

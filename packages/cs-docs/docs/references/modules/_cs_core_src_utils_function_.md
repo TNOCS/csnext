@@ -6,7 +6,7 @@
 
 ▸ **isFunction**(`functionToCheck`: any): *boolean*
 
-*Defined in [cs-core/src/utils/function.ts:1](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/utils/function.ts#L1)*
+*Defined in [cs-core/src/utils/function.ts:1](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/utils/function.ts#L1)*
 
 **Parameters:**
 

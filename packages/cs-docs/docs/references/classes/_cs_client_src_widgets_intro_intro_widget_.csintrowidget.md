@@ -12,7 +12,7 @@
 
 \+ **new CsIntroWidget**(): *[CsIntroWidget](_cs_client_src_widgets_intro_intro_widget_.csintrowidget.md)*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget.ts:25](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/intro/intro-widget.ts#L25)*
+*Defined in [cs-client/src/widgets/intro/intro-widget.ts:25](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget.ts#L25)*
 
 **Returns:** *[CsIntroWidget](_cs_client_src_widgets_intro_intro_widget_.csintrowidget.md)*
 
@@ -22,7 +22,7 @@
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [cs-client/src/widgets/intro/intro-widget.ts:18](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/intro/intro-widget.ts#L18)*
+*Defined in [cs-client/src/widgets/intro/intro-widget.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget.ts#L18)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **widget**? : *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget.ts:16](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/intro/intro-widget.ts#L16)*
+*Defined in [cs-client/src/widgets/intro/intro-widget.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget.ts#L16)*
 
 ## Accessors
 
@@ -38,6 +38,6 @@ ___
 
 • **get options**(): *[IntroWidgetOptions](_cs_client_src_widgets_intro_intro_widget_options_.introwidgetoptions.md) | undefined*
 
-*Defined in [cs-client/src/widgets/intro/intro-widget.ts:20](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-client/src/widgets/intro/intro-widget.ts#L20)*
+*Defined in [cs-client/src/widgets/intro/intro-widget.ts:20](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/intro/intro-widget.ts#L20)*
 
 **Returns:** *[IntroWidgetOptions](_cs_client_src_widgets_intro_intro_widget_options_.introwidgetoptions.md) | undefined*

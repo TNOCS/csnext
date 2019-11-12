@@ -14,7 +14,7 @@
 
 *Overrides [IBaseEvent](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md).[add](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md#add)*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:48](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/typed-event.ts#L48)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:48](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/utils/message-bus/typed-event.ts#L48)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ ___
 
 *Overrides [IBaseEvent](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md).[remove](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md#remove)*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:49](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/typed-event.ts#L49)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:49](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/utils/message-bus/typed-event.ts#L49)*
 
 **Parameters:**
 
@@ -62,7 +62,7 @@ ___
 
 *Overrides [IBaseEvent](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md).[trigger](_cs_core_src_utils_message_bus_typed_event_.ibaseevent.md#trigger)*
 
-*Defined in [cs-core/src/utils/message-bus/typed-event.ts:50](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-core/src/utils/message-bus/typed-event.ts#L50)*
+*Defined in [cs-core/src/utils/message-bus/typed-event.ts:50](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/utils/message-bus/typed-event.ts#L50)*
 
 **Parameters:**
 

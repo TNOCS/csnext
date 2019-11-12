@@ -10,7 +10,7 @@
 
 • **id**? : *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:16](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/components/feature-details/feature-details.ts#L16)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L16)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **properties**? : *[PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:18](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/components/feature-details/feature-details.ts#L18)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L18)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:17](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-map/src/components/feature-details/feature-details.ts#L17)*
+*Defined in [cs-map/src/components/feature-details/feature-details.ts:17](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L17)*

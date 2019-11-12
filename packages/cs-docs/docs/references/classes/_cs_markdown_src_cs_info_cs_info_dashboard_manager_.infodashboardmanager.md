@@ -12,7 +12,7 @@
 
 • **highlightedItemId**: *string* = ""
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:11](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L11)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:11](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L11)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **name**: *string* = "info-dashboard"
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L9)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:9](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L9)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 ▪ **id**: *string* = "info-dashboard"
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L8)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L8)*
 
 ## Methods
 
@@ -36,7 +36,7 @@ ___
 
 ▸ **checkDashboard**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:73](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L73)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:73](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L73)*
 
 **Parameters:**
 
@@ -52,7 +52,7 @@ ___
 
 ▸ **dashboardLoaded**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:85](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L85)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:85](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L85)*
 
 **Returns:** *void*
 
@@ -62,7 +62,7 @@ ___
 
 ▸ **initWidgets**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:29](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L29)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:29](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L29)*
 
 **Returns:** *void*
 
@@ -72,7 +72,7 @@ ___
 
 ▸ **start**(`dashboard`: [IDashboard](../interfaces/_cs_core_src_dashboard_dashboard_.idashboard.md)): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:13](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L13)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L13)*
 
 **Parameters:**
 
@@ -88,7 +88,7 @@ ___
 
 ▸ **stop**(): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:81](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L81)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:81](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L81)*
 
 **Returns:** *void*
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **updateInfoDashboard**(`info`: [Info](_cs_core_src_utils_info_.info.md)): *void*
 
-*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:37](https://github.com/TNOCS/csnext/blob/40018c3a/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L37)*
+*Defined in [cs-markdown/src/cs-info/cs-info-dashboard-manager.ts:37](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-info/cs-info-dashboard-manager.ts#L37)*
 
 **Parameters:**
 
