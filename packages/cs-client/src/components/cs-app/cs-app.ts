@@ -368,6 +368,10 @@ export class CsApp extends Vue {
           Vue.set(this, 'dialog', dialog);
           this.dialog.visible = true;
           break;
+        case AppState.DIALOG_CLOSED:
+          this.dialog.visible = false;
+          break;
+
       }
     });
 
@@ -411,7 +415,7 @@ export class CsApp extends Vue {
 
   public clickNotification() {
     if (this.lastNotification.clickCallback) {
-      this.lastNotification.clickCallback();      
+      this.lastNotification.clickCallback();
     }
     this.closeNotification();
   }

@@ -26,6 +26,7 @@ export class AppState extends AppStateBase {
 
   public static DIALOG = 'dialog';
   public static DIALOG_ADDED = 'dialog-added';
+  public static DIALOG_CLOSED = 'dialog-closed';
   public static RIGHTSIDEBAR = 'rightsidebar';
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
@@ -191,14 +192,14 @@ export class AppState extends AppStateBase {
   public RemoveMenu(menuId: string) {
     if (!this.project.menus) { return; }
     const menuItemIndex = this.project.menus.findIndex(m => m.id === menuId);
-    if (menuItemIndex>=0) {
+    if (menuItemIndex >= 0) {
       this.project.menus.splice(menuItemIndex, 1);
     }
   }
 
   public AddSidebar(id: string, sidebar: IDashboard) {
     if (!sidebar) { return; }
-    sidebar = { ...{id: id, widgets: []}, ...sidebar};
+    sidebar = { ...{ id: id, widgets: [] }, ...sidebar };
     if (!this.project.rightSidebar) {
       this.project.rightSidebar = {};
     }
@@ -278,7 +279,7 @@ export class AppState extends AppStateBase {
         created: new Date(),
         isRead: false,
         buttonText: 'CLOSE',
-        remember: true,        
+        remember: true,
         _visible: true
       },
       ...notification
@@ -299,6 +300,10 @@ export class AppState extends AppStateBase {
     if (this.project.notifications && this.project.notifications.items) {
       this.project.notifications.items.length = 0;
     }
+  }
+
+  public CloseDialog() {
+    this.bus.publish(AppState.DIALOG, AppState.DIALOG_CLOSED);
   }
 
   public TriggerDialog(dialog: IDialog): Promise<string> {
