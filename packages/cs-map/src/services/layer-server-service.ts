@@ -14,7 +14,6 @@ import {
     LayerEditor
 } from '..';
 import axios from 'axios';
-import { AppState } from '@csnext/cs-client';
 
 export class LayerServerService implements ILayerService, IStartStopService {
 
@@ -184,7 +183,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
         if (this.socket && this.socket !== undefined) {
 
-            if (gl.Visible && gl.socketEmitters) {
+            if (gl.Visible) {
                 // listen to complete layer updates
 
                 this.socket.on('layer/' + gl.id, (data: any) => {

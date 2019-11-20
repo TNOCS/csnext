@@ -29,21 +29,25 @@ export class LayerLegendComponent extends Vue {
 
     public mounted() {
         this.map = this.manager.MapControl;
-        
+
         this.manager.events.subscribe('layer', () => {
             this.updateLegendList();
         });
 
         this.updateLegendList();
 
-        
+
     }
 
     public beforeDestroy() {
-        
+
     }
 
-    
+    private getStopColor(stop: any[], legend: any) {
+        return { 'background': stop[1], 'width': '20px', 'height': '20px' };
+    }
+
+
     private updateLegendList() {
 
         if (this.manager && this.manager.layers) {
@@ -58,6 +62,7 @@ export class LayerLegendComponent extends Vue {
                     Vue.set(this, 'activeLegend', this.activeLayer._legends[0]);
                 }
             }
+
         }
     }
 }

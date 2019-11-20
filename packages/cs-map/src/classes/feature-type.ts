@@ -1,5 +1,5 @@
 import { Form, FormField } from '@csnext/cs-core';
-import { LayerStyle } from './layer-style';
+import { LayerStyle, MapboxStyles } from './layer-style';
 
 @Form({
     title: 'Property',
@@ -41,6 +41,7 @@ export class PropertyType {
     public mean?: number;
     public median?: number;
     public sd?: number;
+    public legendStyle?: MapboxStyles;    
 
     @FormField({ title: 'Default', type: 'number', group: 'number' })
     public default?: number;

@@ -34,24 +34,10 @@ export class LayerLegendControl {
 
 
 
-    onRemove() {   
-        //  let d = document.getElementById('layer-legend-control');
-        // if (d) {
-            
-
-            
-        //     d.remove();
-        //     d = null;
-
-            
-
-        // }     
-        if (this.editor) {
-            debugger;
+    onRemove() {         
+        if (this.editor) {            
             this.editor.$destroy();
-            this.editor.$el.remove();
-            
-            
+            this.editor.$el.remove();                    
         }
        
         if (this.container && this.container.parentNode) {

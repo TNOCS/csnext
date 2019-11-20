@@ -318,7 +318,7 @@ export class MapDatasource implements IDatasource {
             if (layer) this.hideLayer(layer);
         } else {
             Vue.set(ml, 'Visible', false);
-            // ml.Visible = false;
+            ml.Visible = false;
 
             // unsubscribe from feature events
             if (ml._events && ml._featureEventHandle !== undefined) {

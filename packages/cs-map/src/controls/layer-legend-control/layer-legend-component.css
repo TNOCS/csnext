@@ -9,13 +9,12 @@
 .map-legend-color-rectangle {
     width: 15px;
     height: 15px;
-    background: gray;
-    position: absolute;
+    background: gray;    
 }
 
 .map-legend-color-text {
     position: relative;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .layer-editor-type-image {

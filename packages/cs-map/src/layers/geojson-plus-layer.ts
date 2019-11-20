@@ -28,7 +28,9 @@ import {
     CirclePaint,
     SymbolLayout,
     LinePaint,
-    FillPaint
+    FillPaint,
+    Expression,
+    StyleFunction
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
@@ -132,7 +134,15 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this.style && this.style.mapbox) {
             for (const styleKey of Object.keys(this.style.mapbox)) {
                 if (styleKey) {
-                    result = result.concat(this.getStyleLegendKey(styleKey));
+                    // get property key from style
+                    let legends = this.getStyleLegendKey(styleKey);
+
+                    for (const legend of legends) {
+                        if (legend.property && this.featureType && this.featureType.propertyMap && this.featureType.propertyMap.hasOwnProperty(legend.property)) {
+                            legend.propertyInfo = this.featureType.propertyMap[legend.property];
+                        }
+                        result.push(legend);
+                    }
                 }
             }
         }
@@ -164,8 +174,7 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager && refreshLayer) {
             this._manager.refreshLayer(this);
         }
-        this.updateLegends();
-        // console.log(this._legends);
+        this.updateLegends();        
     }
 
     updateMetaProperty(ft: FeatureType, prop: PropertyType) {
@@ -242,8 +251,7 @@ export class GeojsonPlusLayer extends BaseLayer
         for (const prop of ft.properties) {
             if (!prop._values) {
                 prop._values = [];
-            }
-            console.log(prop.type);
+            }            
         }
 
         // for (const feature of source.features) {
@@ -337,24 +345,52 @@ export class GeojsonPlusLayer extends BaseLayer
                 let propdetails = property as PropertyDetails;
 
                 this.updateMetaProperty(ft, propdetails.type as PropertyType);
+
                 if (propdetails.type && propdetails.type._initialized) {
-                    let color = {
-                        property: propdetails.key,
-                        stops: [
-                            // "temperature" is 0   -> circle color will be blue
-                            [propdetails.type!.min, 'blue'],
-                            // "temperature" is 100 -> circle color will be red
-                            [propdetails.type!.max, 'red']
-                        ]
-                    };
-                    if (this.style.mapbox.fillPaint) {
-                        this.style.mapbox.fillPaint['fill-color'] = color;
-                    }
-                    if (this.style.mapbox.circlePaint) {
-                        this.style.mapbox.circlePaint['circle-color'] = color;
-                    }
-                    if (this.style.mapbox.linePaint) {
-                        this.style.mapbox.linePaint['line-color'] = color;
+
+                    if (propdetails.type.legendStyle !== undefined) {                        
+                        for (const style in propdetails.type.legendStyle) {
+                            if (propdetails.type.legendStyle.hasOwnProperty(style)) {
+                                const st = propdetails.type.legendStyle[style];
+                                if (!this.style.mapbox.hasOwnProperty(style)) {
+                                    this.style.mapbox[style] = {};
+                                }
+
+                                for (const key in st) {
+                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
+                                        const element = propdetails.type.legendStyle[style][key];
+                                        this.style.mapbox[style][key] = element;
+                                        
+                                    }
+                                }
+                                
+                            }
+                        }
+                        
+                      
+                        // let color = propdetails.type.legendStyle.fillPaint['fill-color'];
+                        // this.style.mapbox.fillPaint['fill-color']  = color;
+                        // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
+                    } else {
+                        let color = {
+                            property: propdetails.key,
+                            // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
+                            stops: [
+                                // "temperature" is 0   -> circle color will be blue
+                                [propdetails.type!.min, 'blue'],
+                                // "temperature" is 100 -> circle color will be red
+                                [propdetails.type!.max, 'red']
+                            ]
+                        } as StyleFunction;
+                        if (this.style.mapbox.fillPaint) {
+                            this.style.mapbox.fillPaint['fill-color'] = color;
+                        }
+                        if (this.style.mapbox.circlePaint) {
+                            this.style.mapbox.circlePaint['circle-color'] = color;
+                        }
+                        if (this.style.mapbox.linePaint) {
+                            this.style.mapbox.linePaint['line-color'] = color;
+                        }
                     }
                 }
             }
@@ -362,13 +398,10 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager && refreshLayer) {
             this._manager.refreshLayer(this);
         }
-        this.updateLegends();
-        console.log(this._legends);
+        this.updateLegends();        
     }
 
-    public updateLayer() {
-        console.log('Updating geojson plus layer');
-        console.log(this);
+    public updateLayer() {        
         if (this._manager) {
             this.initLayer(this._manager);
             this._manager.refreshLayer(this);
@@ -549,9 +582,6 @@ export class GeojsonPlusLayer extends BaseLayer
 
     private async initFeatureTypes(): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-
-            console.log('temp: start init feature types');
-
             if (this.featureTypesUrl && !this.featureTypes) {
                 try {
                     this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
@@ -560,8 +590,6 @@ export class GeojsonPlusLayer extends BaseLayer
                 }
 
             }
-
-            console.log('temp: continu feature types + mapping');
 
             if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
                 let keys = Object.keys(this.featureTypes);
@@ -639,9 +667,7 @@ export class GeojsonPlusLayer extends BaseLayer
                     this.featureTypes[ft.title] = ft;
                 }
 
-            }
-
-            console.log('temp: get single feature type');
+            }            
             if (!this.featureType) {
                 this.featureType = this.getFeatureType();
             }
@@ -669,10 +695,6 @@ export class GeojsonPlusLayer extends BaseLayer
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
         return new Promise(async (resolve, reject) => {
-
-
-
-            console.log('temp: start init layer');
             // check if we need to create an instance first of maplayer (needed if imported from json)
 
             if (this.id === undefined) {
@@ -868,8 +890,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
             this._fillLayer.initLayer(manager);
-
-            console.log('temp: update legend');
+            
             this.updateLegends();
 
             if (this.style) {
@@ -881,7 +902,6 @@ export class GeojsonPlusLayer extends BaseLayer
 
             // add reference to this maplayers manager
             this._manager = manager;
-            console.log('temp: initialized true');
             this._initialized = true;
             resolve(this);
         });
