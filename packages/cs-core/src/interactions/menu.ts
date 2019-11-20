@@ -20,5 +20,6 @@ export interface IMenu {
   items?: IMenu[];
   action?: (menu: IMenu) => void;
   component?: any;
+  closeOnContentClick?: boolean;
   data?: any;
 }
