@@ -3,7 +3,6 @@ import { AppState, DashboardManagerBase, DashboardManager, TabsLayout } from '@c
 import Vue from 'vue';
 import { CsMarkdown } from '../cs-markdown/cs-markdown';
 
-
 export class InfoDashboardManager extends DashboardManagerBase {
     public static id = 'info-dashboard';
     public name: string = 'info-dashboard';
@@ -12,7 +11,6 @@ export class InfoDashboardManager extends DashboardManagerBase {
 
     public start(dashboard: IDashboard) {
         super.start(dashboard);
-
         console.log('start info');
         if (AppState.Instance.activeDashboard) {
             this.checkDashboard(AppState.Instance.activeDashboard);
@@ -66,7 +64,6 @@ export class InfoDashboardManager extends DashboardManagerBase {
                     }
                 } as any
             });
-
         }
     }
 

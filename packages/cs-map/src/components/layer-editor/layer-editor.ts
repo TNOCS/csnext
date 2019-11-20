@@ -28,7 +28,6 @@ export class LayerEditor extends Vue {
     /** get layer color */
     public get layerColor(): string {
         const layer = this.layer;
-        
         if (layer && layer.color) {            
             return layer.color;
         }
@@ -39,7 +38,6 @@ export class LayerEditor extends Vue {
         this.$cs.TriggerNotification({title: 'Updating layer'});
         console.log('layer saved');
         console.log(this.layer);
-        
         if (this.layer && this.layer._service && this.layer._service.updateLayer) {
             this.layer.updateLayer();
             this.layer._service.updateLayer(this.layer);

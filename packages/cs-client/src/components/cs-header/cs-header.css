@@ -10,6 +10,14 @@
   margin-left: 0 !important;
 }
 
+.v-application .theme--light a.breadcrumb-text {
+  color: black;
+}
+
+.v-application .theme--dark a.breadcrumb-text {
+  color: white;
+}
+
 .sidebar-dashboard-selected {
   background: red;
 }
