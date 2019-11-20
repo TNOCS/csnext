@@ -1,0 +1,4 @@
+<div v-if="activeLayers && activeLayers.length>0" id='layers-widget-control' class="mapboxgl-ctrl mapboxgl-ctrl-group map-component-widget">
+    <div class="map-component-title">{{$cs.Translate('SELECTED_LAYERS')}}</div>
+    <div class="layers-layer-title" v-for="layer in activeLayers">{{ layer.id }}</div>   
+</div>

@@ -43,4 +43,5 @@ export class MapOptions extends WidgetOptions {
     public storePositionInUrl?: boolean = true;
     public doubleClickZoom?: boolean = true;
     public showBuildings?: boolean = false;    
+    public showLayersWidget?: boolean = false;
 }
