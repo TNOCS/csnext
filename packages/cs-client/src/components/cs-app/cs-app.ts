@@ -423,8 +423,8 @@ export class CsApp extends Vue {
   public closeNotification() {
     if (this.lastNotification) {
       this.lastNotification = { _visible: false } as INotification;
-      this.UpdateNotifications();
     }
+    this.UpdateNotifications();
   }
 
   public InitNotifications() {

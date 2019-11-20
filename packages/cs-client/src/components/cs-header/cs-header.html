@@ -39,7 +39,7 @@
               <v-icon>forward</v-icon>
             </template>
             <template v-slot:item="props">
-              <a style="color:black !important" :href="props.item.href">{{
+              <a class="breadcrumb-text" :href="props.item.href">{{
                 $cs.Translate(props.item)
               }}</a>
             </template>
