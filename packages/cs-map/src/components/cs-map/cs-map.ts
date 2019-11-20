@@ -4,6 +4,8 @@ import { IWidget, guidGenerator, MessageBusHandle, IMessageBusService } from '@c
 import Component from 'vue-class-component';
 import './cs-map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import * as cs from '@csnext/cs-client';
+const locales = require('../../assets/locales.json');
 
 const MapboxDraw = require('@mapbox/mapbox-gl-draw');
 import mapboxgl, { CirclePaint, MapboxOptions, GeolocateControl, ScaleControl } from 'mapbox-gl';
@@ -33,7 +35,7 @@ import {
 } from '../../.';
 
 import { WidgetBase } from '@csnext/cs-client';
-import { MapboxStyleSwitcherControl, MapboxStyleDefinition, GridControl, LayerDraw, LayerLegendControl } from '../../controls';
+import { MapboxStyleSwitcherControl, MapboxStyleDefinition, GridControl, LayerDraw, LayerLegendControl, LayersWidgetControl } from '../../controls';
 
 @Component({
     template: require('./cs-map.html')
@@ -96,6 +98,7 @@ export class CsMap extends WidgetBase {
     private trafficControl?: MapboxTraffic;
     private geocoderControl?: MapboxGeocoder;
     private gridControl?: GridControl;
+    private layersWidgetControl?: LayersWidgetControl;
     private geolocatorControl?: GeolocateControl;
     private legendControl?: LayerLegendControl;
     private scaleControl?: ScaleControl;
@@ -129,7 +132,7 @@ export class CsMap extends WidgetBase {
 
     public mapDraw!: any;
     // tslint:disable-next-line: variable-name
-    
+
     private _pointerPickerActivated = false;
     private mapOptions!: MapOptions;
 
@@ -198,6 +201,23 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    @Watch('widget.options.showLayersWidget')
+    public showLayersWidget(enabled: boolean, old?: boolean) {
+        console.log(`Show layers widget: ${enabled}`);
+
+        if (!enabled && old && this.showLayersWidget && this.layersWidgetControl) {
+            this.map.removeControl(this.layersWidgetControl);
+        }
+        if (enabled) {
+            if (!this.layersWidgetControl && this.manager) {
+                this.layersWidgetControl = new LayersWidgetControl(this.manager);
+            }
+            if (this.layersWidgetControl) {
+                this.map.addControl(this.layersWidgetControl, 'bottom-left');
+            }
+        }
+    }
+
     @Watch('widget.options.showScale')
     public showScale(enabled: boolean, old?: boolean) {
         console.log(`Show grid: ${enabled}`);
@@ -243,8 +263,8 @@ export class CsMap extends WidgetBase {
     @Watch('widget.options.showLegend')
     public showLegend(enabled: boolean, old?: boolean) {
         if (!enabled && old && this.legendControl) {
-            console.log('Remove legend');    
-            this.map.removeControl(this.legendControl);        
+            console.log('Remove legend');
+            this.map.removeControl(this.legendControl);
         }
         if (enabled) {
             if (!this.legendControl) {
@@ -440,14 +460,14 @@ export class CsMap extends WidgetBase {
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
                                 this.busManager.subscribe(layer._events, 'feature', (
-                                    (a: string, f: FeatureEventDetails) => {                                       
+                                    (a: string, f: FeatureEventDetails) => {
                                         if (a === CsMap.FEATURE_SELECT) {
                                             if (
                                                 this.$cs &&
                                                 layer.openFeatureDetails &&
                                                 layer.openFeatureDetails ===
                                                 true
-                                            ) {                                                                                                
+                                            ) {
                                                 // this.$cs.AddSidebar('feature', { icon: 'map' });
                                                 // this.$cs.OpenRightSidebarWidget(
                                                 //     {
@@ -497,7 +517,18 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    private loadTranslations() {        
+        for (const lang in locales) {
+            if (locales.hasOwnProperty(lang)) {
+                const messages = locales[lang];
+                this.$i18n.mergeLocaleMessage(lang, messages);
+            }
+        }
+    }
+
     public mounted() {
+
+        this.loadTranslations();
 
         Vue.nextTick(() => {
             if (this.options.token) {
@@ -572,7 +603,7 @@ export class CsMap extends WidgetBase {
                     Vue.nextTick(() => {
                         this.map.resize();
                     });
-                });                
+                });
             }
 
             if (this.mapOptions.showDraw) {
@@ -643,9 +674,9 @@ export class CsMap extends WidgetBase {
 
                 this.showBuildings(this.mapOptions.showBuildings || false);
 
-                this.showLegend(this.mapOptions.showLegend || false);
+                this.showLayersWidget(this.mapOptions.showLayersWidget || false);
 
-
+                this.showLegend(this.mapOptions.showLegend || false);                
 
             });
         });
@@ -795,11 +826,11 @@ export class CsMap extends WidgetBase {
                 });
                 this.manager.addLayer(rl).then(l => {
                     if (l._events) {
-                        this.busManager.subscribe(l._events, 'feature', (a:string) =>{
+                        this.busManager.subscribe(l._events, 'feature', (a: string) => {
                             if (a === CsMap.FEATURE_SELECT) {
                                 // select feature
                             }
-                        });                        
+                        });
                     }
                 });
             }
@@ -871,7 +902,7 @@ export class CsMap extends WidgetBase {
                                 // select feature
                             }
                         })
-                        
+
                     }
                 });
 
