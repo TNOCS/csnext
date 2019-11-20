@@ -648,8 +648,6 @@ export class GeojsonPlusLayer extends BaseLayer
                     this.featureTypes[ft.title] = ft;
                 }
             }
-
-            console.log('temp: get single feature type');
             if (!this.featureType) {
                 this.featureType = this.getFeatureType();
             }
@@ -674,8 +672,7 @@ export class GeojsonPlusLayer extends BaseLayer
     }
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
-        return new Promise(async (resolve, reject) => {
-            console.log('temp: start init layer');
+        return new Promise(async (resolve, reject) => {            
             // check if we need to create an instance first of maplayer (needed if imported from json)
 
             if (this.id === undefined) {

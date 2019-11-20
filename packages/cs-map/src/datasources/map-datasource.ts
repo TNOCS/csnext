@@ -652,10 +652,8 @@ export class MapDatasource implements IDatasource {
             }
             
             source.title = title;
-            source.id = guidGenerator();
-            console.log('temp: loading datasource');
-            source.LoadSource().then(s => {
-                console.log('temp: source loaded');
+            source.id = guidGenerator();            
+            source.LoadSource().then(s => {                
                 let rl = new GeojsonPlusLayer();
                 rl.id = title;
                 rl.tags = tags ? tags : ['general'];
@@ -672,9 +670,6 @@ export class MapDatasource implements IDatasource {
                 }
 
                 rl.initLayer(this).then(r => {
-
-                    console.log('temp: done init layer')
-
                     rl.popupContent = undefined;
                     if (this.layers) {
                         this.layers.push(rl);

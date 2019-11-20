@@ -45,11 +45,9 @@ export class MetaFile {
 
     /** Fetches meta file describing feature types and property types  */
     public static loadFeatureTypesFromUrl(url: string): Promise<FeatureTypes> {
-        return new Promise(async (resolve, reject) => {
-            console.log('temp: start load feature types');
+        return new Promise(async (resolve, reject) => {            
             this.loadMetaUrl(url).then(mf => {
-                if (mf.featureTypes) {
-                    console.log('temp: got feature types');
+                if (mf.featureTypes) {                    
                     resolve(mf.featureTypes);
                 } else {
                     reject();
