@@ -10,6 +10,7 @@ import { WsAdapter } from '@nestjs/platform-ws';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
 export { LayerService } from './layers/layers.service';
+export { EnvController } from './env/env.controller';
 
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
@@ -28,11 +29,12 @@ export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import express = require('express');
-import { join } from 'path';
 
 export class ServerConfig {
     public staticFolder?: string;
     public staticPath?: string;
+    public hbsViewFolder?: string;
+    public assetsPath?: string;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -88,20 +90,39 @@ export class NestServer {
 
             SwaggerModule.setup('api', this.app, document);
             this.app.enableCors({ origin: true });
-            if (this.config && this.config.staticFolder && this.config.staticPath) {
-                const publicDirectory: string = this.config.staticFolder;
-                this.app.use(this.config.staticPath, express.static(publicDirectory));
+            if (this.config && this.config.staticFolder) {
+
+                if (this.config.staticPath) {
+                    const publicDirectory: string = this.config.staticFolder;
+                    this.app.use(this.config.staticPath, express.static(publicDirectory));
+                    Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
+                }
+
+                if (this.config.assetsPath) {
+                    const publicDirectory: string = path.join(this.config.staticFolder, this.config.assetsPath);
+                    this.app.use(this.config.assetsPath, express.static(publicDirectory));
+                }
+
+                if (this.config.hbsViewFolder) {
+                    const indexDirectory: string = path.join(this.config.staticFolder, this.config.hbsViewFolder);                                        
+                    this.app.setBaseViewsDir(indexDirectory);
+                    this.app.setViewEngine('html');
+                    this.app.engine('html', require('hbs').__express);
+                }
+
                 Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
             }
 
-            await this.app.listen(port, host, () => {
-                this.app.useWebSocketAdapter(new WsAdapter());
+        
 
-                // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
-                Logger.log(`Server is listening on port ${port}.`);
-                Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
-                resolve(true);
-            });
+            await this.app.listen(port, host, () => {
+            this.app.useWebSocketAdapter(new WsAdapter());
+
+            // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
+            Logger.log(`Server is listening on port ${port}.`);
+            Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
+            resolve(true);
         });
-    }
+    });
+}
 }
