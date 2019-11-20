@@ -227,9 +227,7 @@ export class GeojsonPlusLayer extends BaseLayer
         }
         delete prop._values;
         prop._initialized = true;
-
     }
-
 
     public updateMeta() {
         if (!this.defaultFeatureType || !this.featureTypes || !this.featureTypes.hasOwnProperty(this.defaultFeatureType)) {
@@ -264,9 +262,7 @@ export class GeojsonPlusLayer extends BaseLayer
                                 }
                                 prop._values!.push(value);
                             }
-
                         }
-
                     }
                 }
             }
@@ -335,7 +331,6 @@ export class GeojsonPlusLayer extends BaseLayer
         if (ft && property.hasOwnProperty('key')) {
             if (this.style && this.style.mapbox) {
                 let propdetails = property as PropertyDetails;
-
                 this.updateMetaProperty(ft, propdetails.type as PropertyType);
                 if (propdetails.type && propdetails.type._initialized) {
                     let color = {
@@ -545,24 +540,15 @@ export class GeojsonPlusLayer extends BaseLayer
         }
     }
 
-
-
     private async initFeatureTypes(): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
-
             console.log('temp: start init feature types');
-
             if (this.featureTypesUrl && !this.featureTypes) {
                 try {
                     this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
-                } catch (e) {
-
-                }
-
+                } catch (e) { }                
             }
-
             console.log('temp: continu feature types + mapping');
-
             if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
                 let keys = Object.keys(this.featureTypes);
                 Object.keys(this.featureTypes).forEach(k => {
@@ -601,22 +587,16 @@ export class GeojsonPlusLayer extends BaseLayer
                         this.updateFeatureTypePropertyMap(this.featureTypes[k]);
                     }
                 });
-
                 this.featureTypes = plainToClass(
                     FeatureTypes,
                     this.featureTypes
                 ) as FeatureTypes;
-
-
                 // this.updateMeta();
-
             } else {
                 this.featureTypes = new FeatureTypes();
                 let ft = new FeatureType();
                 ft.title = this.defaultFeatureType = 'default';
-
                 ft.properties = [];
-
                 // check first feature for missing properties
                 if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
                     let f = this._source._geojson.features[0];
@@ -630,15 +610,12 @@ export class GeojsonPlusLayer extends BaseLayer
                                     description: prop,
                                     type: isNumber(value) ? 'number' : 'string'
                                 });
-
-
                             }
                         }
                     }
                     this.updateFeatureTypePropertyMap(ft);
                     this.featureTypes[ft.title] = ft;
                 }
-
             }
 
             console.log('temp: get single feature type');
@@ -669,9 +646,6 @@ export class GeojsonPlusLayer extends BaseLayer
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
         return new Promise(async (resolve, reject) => {
-
-
-
             console.log('temp: start init layer');
             // check if we need to create an instance first of maplayer (needed if imported from json)
 
