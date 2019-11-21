@@ -307,9 +307,6 @@ export class CsWidget extends Vue {
         }
       });
     }
-
-    console.log('cs-widget');
-    console.log(this.widget);
   }
 
   public beforeDestroy() {

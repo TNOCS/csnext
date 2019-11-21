@@ -23,10 +23,7 @@ export class LogManager {
                     resolve(this.items);
                 })
                 .catch(e => {
-                    reject();
-                    // console.log(
-                    //     `Error loading logsource ${sourceId}`
-                    // );
+                    reject();                   
                 });
         });
     }

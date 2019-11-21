@@ -48,8 +48,4 @@ export class CsToolbarMenus extends Vue {
     }
   }
 
-  public mounted() {
-    console.log('owner');
-    console.log(this.owner);
-  }
 }

@@ -235,7 +235,6 @@ export class CsApp extends Vue {
     if (adjacent) {
       this.SelectDashboard(adjacent);
     }
-    // console.log(adjacent);
   }
 
   public mounted() {
@@ -269,7 +268,7 @@ export class CsApp extends Vue {
         if (!sc.id) { sc.id = 'dashboard-' + d.id; }
         sc._callback = () => {
           router.push(d.pathLink as any).catch((e) => {
-            console.log(e);
+            // console.log(e);
           });
         };
         this.app.keyboard.register(sc);
