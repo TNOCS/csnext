@@ -27,8 +27,7 @@ export * from './log-items/log-items-controller';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
-import express = require('express');
+import express from 'express';
 
 export class ServerConfig {
     public staticFolder?: string;
