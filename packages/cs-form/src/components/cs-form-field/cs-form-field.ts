@@ -70,13 +70,13 @@ export class CsFormField extends Vue {
         }
     };
 
-    public gettanggal(str: number) {
-        if (str != null) {
-            const s = new Date(str).toISOString();
-            return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
-        }
-        return '';
-    }
+    // public gettanggal(str: number) {
+    //     if (str != null) {
+    //         const s = new Date(str).toISOString();
+    //         return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
+    //     }
+    //     return '';
+    // }
 
     public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
@@ -130,7 +130,7 @@ export class CsFormField extends Vue {
         }
     }
 
-    public formatDate(date): string | undefined {
+    public formatDate(date: string): string | undefined {
         if (!date) { return undefined }
         const [year, month, day] = date.split('-');
         return `${month}/${day}/${year}`;

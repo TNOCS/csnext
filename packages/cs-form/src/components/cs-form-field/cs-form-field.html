@@ -48,7 +48,7 @@
                   ></v-text-field>
                 </v-layout>
                 </template>
-                <v-date-picker v-model="DateValue" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary"></v-date-picker>                                
+                <v-date-picker v-model="DateValue" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
               </v-menu>              
             </v-layout>
             <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
@@ -70,12 +70,12 @@
                     <v-text-field
                     v-model="DateValue"
                     :label="$cs.Translate(field.title)"    
-                    @blur="fieldUpdated(field)"                                    
+                    @blur="fieldUpdated(field)"                                 
                     type="date"                    
                   ></v-text-field>
                 </v-layout>
                 </template>
-                <v-date-picker v-model="DateValue" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary"></v-date-picker>                                
+                <v-date-picker v-model="DateValue" :value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
               </v-menu>
               <v-menu
               v-model="timeMenu"
@@ -93,11 +93,10 @@
                   :label="$cs.Translate(field.subTitle)"                                      
                   type="time"
                   @blur="fieldUpdated(field);"                                    
-                  
                 ></v-text-field>
               </v-layout>
               </template>
-              <v-time-picker v-model="TimeValue" format="24hr" @input="timeMenu = false;fieldUpdated(field)" color="primary" header-color="primary"></v-time-picker>                                
+              <v-time-picker v-model="TimeValue" format="24hr" @click:minute="timeMenu = false;fieldUpdated(field)" color="primary" header-color="primary" scrollable></v-time-picker>
             </v-menu>
             </v-layout>
             <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
