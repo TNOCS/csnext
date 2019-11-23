@@ -52,7 +52,11 @@ export class CsMarkdown extends WidgetBase {
                 axios.get(data.url).then(u => {
                     if (u && u.data) {
                         Vue.set(this, 'content', u.data);
+                    } else {
+                        Vue.set(this, 'content', `Could not load ${data.url}`);
                     }
+                }).catch((e) => {
+                    Vue.set(this, 'content', `Could not load ${data.url}`);
                 })
             }
         }

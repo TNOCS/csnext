@@ -61,6 +61,7 @@ export class CsForm extends Vue {
 
     public set formObject(obj: IFormObject | undefined) {
         this.data = obj;
+        this.init();
     }
 
     @Watch('data')
@@ -82,7 +83,11 @@ export class CsForm extends Vue {
             this.formObject.save &&
             typeof this.formObject.save === 'function'
         ) {
-            this.formObject.save(this.formObject).then(() => {                
+            this.data = this.formObject;
+            this.formObject.save(this.formObject).then((updated: any) => {
+                if (updated) {           
+                    this.formObject = Object.assign(this.formObject, updated);
+                }
                 console.log('Save confirmed');
             });
         }
