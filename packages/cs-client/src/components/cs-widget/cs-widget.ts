@@ -268,6 +268,7 @@ export class CsWidget extends Vue {
         id: 'edit',
         icon: 'mode_edit',
         title: 'edit',
+        type: 'icon',
         action: () => {
           if (
             this.widget &&
@@ -294,6 +295,7 @@ export class CsWidget extends Vue {
       this.addMenuItem({
         id: 'remove',
         icon: 'delete',
+        type: 'icon',
         title: 'remove',
         action: () => {
           if (this.widget && this.widget._dashboard) {
