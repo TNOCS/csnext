@@ -79,6 +79,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   canEditKey?: boolean;
   addUsingDialog?: boolean;
   readonly?: boolean;
+  keyText?: string;
+  keyValue?: string;
   icon?: string;
   colors?: string[];
   component?: any;
