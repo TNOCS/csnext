@@ -783,8 +783,7 @@ export class GeojsonPlusLayer extends BaseLayer
 
             if (!this.popupContent) {
                 this.popupContent = (d: FeatureEventDetails) => {
-                    this.parsePopup(d.feature);
-                    return;
+                    return this.parsePopup(d.feature);                    
                 };
             }
 
