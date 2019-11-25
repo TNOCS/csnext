@@ -129,6 +129,25 @@ export class GeojsonPlusLayer extends BaseLayer
         this.visible = value;
     }
 
+    public setPopupContent(popup: string | ((f: FeatureEventDetails)=> { })) {
+        this.popupContent = popup;
+        if (this._circleLayer) {
+            this._circleLayer.setPopupContent(popup);
+        }
+        if (this._centerLayer) {
+            this._centerLayer.setPopupContent(popup);
+        }
+        if (this._symbolLayer) {
+            this._symbolLayer.setPopupContent(popup);
+        }
+        if (this._fillLayer) {
+            this._fillLayer.setPopupContent(popup);
+        }
+        if (this._lineLayer) {
+            this._lineLayer.setPopupContent(popup);
+        }        
+    }
+
     public updateLegends() {
         let result: LayerLegend[] = [];
         if (this.style && this.style.mapbox) {
@@ -174,7 +193,7 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager && refreshLayer) {
             this._manager.refreshLayer(this);
         }
-        this.updateLegends();        
+        this.updateLegends();
     }
 
     updateMetaProperty(ft: FeatureType, prop: PropertyType) {
@@ -249,7 +268,7 @@ export class GeojsonPlusLayer extends BaseLayer
         for (const prop of ft.properties) {
             if (!prop._values) {
                 prop._values = [];
-            }            
+            }
         }
 
         // for (const feature of source.features) {
@@ -343,7 +362,7 @@ export class GeojsonPlusLayer extends BaseLayer
 
                 if (propdetails.type && propdetails.type._initialized) {
 
-                    if (propdetails.type.legendStyle !== undefined) {                        
+                    if (propdetails.type.legendStyle !== undefined) {
                         for (const style in propdetails.type.legendStyle) {
                             if (propdetails.type.legendStyle.hasOwnProperty(style)) {
                                 const st = propdetails.type.legendStyle[style];
@@ -355,14 +374,14 @@ export class GeojsonPlusLayer extends BaseLayer
                                     if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
                                         const element = propdetails.type.legendStyle[style][key];
                                         this.style.mapbox[style][key] = element;
-                                        
+
                                     }
                                 }
-                                
+
                             }
                         }
-                        
-                      
+
+
                         // let color = propdetails.type.legendStyle.fillPaint['fill-color'];
                         // this.style.mapbox.fillPaint['fill-color']  = color;
                         // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
@@ -393,10 +412,10 @@ export class GeojsonPlusLayer extends BaseLayer
         if (this._manager && refreshLayer) {
             this._manager.refreshLayer(this);
         }
-        this.updateLegends();        
+        this.updateLegends();
     }
 
-    public updateLayer() {        
+    public updateLayer() {
         if (this._manager) {
             this.initLayer(this._manager);
             this._manager.refreshLayer(this);
@@ -578,7 +597,7 @@ export class GeojsonPlusLayer extends BaseLayer
             if (this.featureTypesUrl && !this.featureTypes) {
                 try {
                     this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
-                } catch (e) { }                
+                } catch (e) { }
             }
             if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
                 let keys = Object.keys(this.featureTypes);
@@ -672,7 +691,8 @@ export class GeojsonPlusLayer extends BaseLayer
     }
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
-        return new Promise(async (resolve, reject) => {            
+        return new Promise(async (resolve, reject) => {
+            console.log(`init layer ${this.title}`);
             // check if we need to create an instance first of maplayer (needed if imported from json)
 
             if (this.id === undefined) {
@@ -868,7 +888,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
             this._fillLayer.initLayer(manager);
-            
+
             this.updateLegends();
 
             if (this.style) {
@@ -898,11 +918,18 @@ export class GeojsonPlusLayer extends BaseLayer
                 return layer._events.subscribe(
                     'feature',
                     (a: string, data: FeatureEventDetails) => {
-                        if (a === CsMap.FEATURE_SELECT) {
-                            data.layer = this;
-                            this._events.publish('feature', a, data);
-                            this._manager!.openFeature(data.feature!, data.layer);
-                        }
+                        switch (a) {
+                            case CsMap.FEATURE_SELECT:
+                                data.layer = this;
+                                this._events.publish('feature', a, data);
+                                this._manager!.openFeature(data.feature!, data.layer);
+                                break;
+                            case CsMap.FEATURE_MOUSE_ENTER:
+                                if (this.popupContent && data.feature) {
+                                    this.parsePopup(data.feature);
+                                }                                
+                                break;
+                        }                        
                     }
                 );
             }

@@ -387,7 +387,7 @@ export class GeojsonLayer extends BaseLayer {
     private onMove(e) {
         if (this.Map) {
             if (this.popupContent && e && e.features) {
-                this.createPopup(this.Map, this, e);
+                // this.createPopup(this.Map, this, e);
             }
         }
 
@@ -418,7 +418,6 @@ export class GeojsonLayer extends BaseLayer {
     }
 
     private onEnter(e) {
-        // this.mouseEnter(this._manager!.MapWidget!)            
         if (this.Map && this._events) {
             this.Map.map.getCanvas().style.cursor = 'pointer';
             this.createPopup(this.Map, this, e);
@@ -453,7 +452,6 @@ export class GeojsonLayer extends BaseLayer {
             } else if (this.isFunction(layer.popupContent)) {
                 popup = layer.popupContent(e);
             }
-
         }
         if (popup) {
             this.popup

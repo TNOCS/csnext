@@ -670,7 +670,7 @@ export class MapDatasource implements IDatasource {
                 }
 
                 rl.initLayer(this).then(r => {
-                    rl.popupContent = undefined;
+                    // rl.popupContent = undefined;
                     if (this.layers) {
                         this.layers.push(rl);
                         this.showLayer(rl).then(l => {

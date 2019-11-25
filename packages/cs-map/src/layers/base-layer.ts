@@ -42,6 +42,10 @@ export class BaseLayer implements IMapLayer {
         this.visible = value;
     }
 
+    public setPopupContent(value: string | ((f: FeatureEventDetails)=> { })) {
+        this.popupContent = value;
+    }
+
     public static getFeatureFromEventDetails(
         e: FeatureEventDetails
     ): Feature | undefined {

@@ -1,5 +1,5 @@
-import {LayerSource, MapDatasource, CsMap, ILayerAction, ILayerService, ILayer, PropertyType, PropertyDetails} from '..';
-import {MessageBusService, MessageBusHandle} from '@csnext/cs-core';
+import { LayerSource, MapDatasource, CsMap, ILayerAction, ILayerService, ILayer, PropertyType, PropertyDetails, FeatureEventDetails } from '..';
+import { MessageBusService, MessageBusHandle } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
 
 export interface IMapLayerType {
@@ -9,22 +9,23 @@ export interface IMapLayerType {
 }
 
 export interface IMapLayer extends ILayer {
-    getBounds(): any;    
+    getBounds(): any;
     _source?: LayerSource;
-    _manager?: MapDatasource;    
+    _manager?: MapDatasource;
     addLayer(map: CsMap);
     initLayer(manager: MapDatasource);
     setOpacity(value: number);
     getLayerActions?(): ILayerAction[];
     removeLayer(map: CsMap);
-    moveLayer(beforeId?: string);    
+    moveLayer(beforeId?: string);
     updateLayer();
     updateLegends();
+    setPopupContent(value: string | ((f: FeatureEventDetails)=> { }));
     setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean);
     _events?: MessageBusService;
     _legends?: LayerLegend[];
     hideInLayerList?: boolean;
-    
+
     /** associated service */
     _service?: ILayerService;
     _showMenu?: boolean;
