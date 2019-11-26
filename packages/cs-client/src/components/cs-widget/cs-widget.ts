@@ -51,8 +51,8 @@ export class CsWidget extends Vue {
   public app = AppState.Instance;
 
   public $refs!: {
-    widget: HTMLElement;
-    component: HTMLElement;
+    widget: Vue;
+    component: Vue;
   };
   // tslint:disable-next-line:variable-name
   private _options?: WidgetOptions = {};
@@ -79,10 +79,10 @@ export class CsWidget extends Vue {
     }
     if (this.$refs.widget && this.$refs.component) {
       this.widget._size = {
-        width: this.$refs.widget.clientWidth,
-        height: this.$refs.widget.clientHeight,
-        componentWidth: this.$refs.component.clientWidth,
-        componentHeight: this.$refs.component.clientHeight
+        width: this.$refs.widget.$el.clientWidth,
+        height: this.$refs.widget.$el.clientHeight,
+        componentWidth: this.$refs.component.$el.clientWidth,
+        componentHeight: this.$refs.component.$el.clientHeight
       };
     }
     if (trigger) {
