@@ -118,39 +118,20 @@ export class DragLayout extends WidgetBase {
 
     public beforeMount() {        
 
-
-
         this.options = {
             itemHeight: 5,
-            itemWidth: 5,
+            itemWidth: 5,            
             DragEnabled: true,
             ResizeEnabled: true,
+            VerticalCompact: true,
             IsMirrored: false,
-            RowHeight: 50,
+            RowHeight: 150,
             ColNum: 12,
-            Margin: 10,
+            Margin: [10, 10],
             ...this.dashboard.options
         } as DragLayoutOptions;
 
-       
-
         this.initLayout();
-
-        // if (!this.editSubscription && this.dashboard && this.dashboard.events) {
-        //     this.dashboard.events.subscribe('settings', () => {
-        //         if (
-        //             this.options &&
-        //             this.dashboard.options &&
-        //             this.options.DragEnabled
-        //         ) {
-        //             this.options.DragEnabled = this.options.DragEnabled;
-        //         }
-        //     });
-        // }
-
-        // this.dashboard.widgets.forEach(widget => {
-        //   this.initWidget(widget);
-        // });
     }
 
     public checkPosition(options: WidgetOptions) {

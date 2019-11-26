@@ -11,7 +11,7 @@ export class DragLayoutOptions extends BaseDashboardOptions {
     private rowHeight?: number;
     private colNum?: number;
     private verticalCompact?: boolean;
-    private margin?: number;
+    private margin?: number[];
     private animations?: boolean;
 
     public Title?: string;
@@ -82,15 +82,15 @@ export class DragLayoutOptions extends BaseDashboardOptions {
     }
 
     @FormField({ title: 'Margin', type: 'number', group: 'size' })
-    public get Margin(): number | undefined {
+    public get Margin(): number[] | undefined {
         return this.margin;
     }
 
-    public set Margin(value: number | undefined) {
+    public set Margin(value: number[] | undefined) {
         this.margin = value;
     }
 
-    public getAnimations(): boolean | undefined {
+    public get Animations(): boolean | undefined {
         return this.animations;
     }
 

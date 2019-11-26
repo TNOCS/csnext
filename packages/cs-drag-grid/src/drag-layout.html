@@ -1,6 +1,6 @@
 <div style="position:absolute;left:0;top:0;right:0;bottom:0; overflow-y: visible">
     <div data-simplebar>
-        <grid-layout :layout="layout">
+        <grid-layout @layout-updated="layoutUpdatedEvent" :layout="layout" :vertical-compact="options.VerticalCompact" :col-num="options.ColNum" :row-height="options.RowHeight" :is-draggable="options.DragEnabled" :is-resizable="options.ResizeEnabled" :is-mirrored="options.IsMirrored">
             <grid-item
                 v-for="widget in layout"
                 :class="{'grid-item-moving': isMoving}"
@@ -21,8 +21,3 @@
         </grid-layout>
     </div>
 </div>
-<!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">
-        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
-        </div>
-    </div> -->
