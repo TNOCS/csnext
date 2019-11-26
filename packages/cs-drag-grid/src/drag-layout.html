@@ -1,6 +1,16 @@
-<div style="position:absolute;left:0;top:0;right:0;bottom:0; overflow-y: visible">
-    <div data-simplebar>
-        <grid-layout @layout-updated="layoutUpdatedEvent" :layout="layout" :vertical-compact="options.VerticalCompact" :col-num="options.ColNum" :row-height="options.RowHeight" :is-draggable="options.DragEnabled" :is-resizable="options.ResizeEnabled" :is-mirrored="options.IsMirrored">
+<div style="position: relative; height: 100%">
+    <simplebar style="position: absolute;left:0;right:0;top:0;bottom:0;">
+        <grid-layout
+            
+            @layout-updated="layoutUpdatedEvent"
+            :layout="layout"
+            :vertical-compact="options.VerticalCompact"
+            :col-num="options.ColNum"
+            :row-height="options.RowHeight"
+            :is-draggable="options.DragEnabled"
+            :is-resizable="options.ResizeEnabled"
+            :is-mirrored="options.IsMirrored"
+        >
             <grid-item
                 v-for="widget in layout"
                 :class="{'grid-item-moving': isMoving}"
@@ -19,5 +29,5 @@
                 ></cs-widget>
             </grid-item>
         </grid-layout>
-    </div>
+    </simplebar>
 </div>
