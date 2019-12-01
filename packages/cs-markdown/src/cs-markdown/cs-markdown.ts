@@ -3,23 +3,22 @@ import Component from 'vue-class-component';
 import './cs-markdown.css';
 import { WidgetBase } from '@csnext/cs-client';
 import Vue from 'vue';
-import MarkdownItVue from 'markdown-it-vue';
-import 'markdown-it-vue/dist/markdown-it-vue.css';
 import axios from 'axios';
 import simplebar from 'simplebar-vue';
+import VueShowdown from 'vue-showdown';
 // import { MdWidgetOptions } from '..';
 
 @Component({
     name: 'cs-markdown',
     template: require('./cs-markdown.html'),
-    components: { MarkdownItVue, simplebar },
+    components: { simplebar },
     props: {
         widget: null
     }
 } as any)
 export class CsMarkdown extends WidgetBase {
 
-    public content: string = "";
+    public content: string = '';
     // public options: MdWidgetOptions = {};
     @Prop({ default: undefined }) private data?: string | {url: string};
 
@@ -33,8 +32,19 @@ export class CsMarkdown extends WidgetBase {
         this.updateContent();
     }
 
+    // @Watch('widget.content', { deep: true })
+    // public contentUpdated() {
+    //     // if (this.chart) {
+    //     //     this.chart.load(this.widget.content);
+    //     // }
+    // }
+
+    public mounted() {
+        this.updateContent();
+    }
+
     private updateContent() {
-        if (!this.widget && !this.data) return;
+        if (!this.widget && !this.data) { return; }
         if (this.data) {
             this.setContent(this.data);
         } else if (this.widget) {
@@ -57,20 +67,9 @@ export class CsMarkdown extends WidgetBase {
                     }
                 }).catch((e) => {
                     Vue.set(this, 'content', `Could not load ${data.url}`);
-                })
+                });
             }
         }
-    }
-
-    // @Watch('widget.content', { deep: true })
-    // public contentUpdated() {
-    //     // if (this.chart) {
-    //     //     this.chart.load(this.widget.content);
-    //     // }
-    // }
-
-    public mounted() {
-        this.updateContent();
     }
 
 }

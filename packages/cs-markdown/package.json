@@ -21,7 +21,6 @@
   "dependencies": {
     "@csnext/cs-client": "^0.0.126",
     "axios": "^0.19.0",
-    "markdown-it-github-toc": "3.2.4",
-    "markdown-it-vue": "1.0.10"
-  }
+    "vue-showdown": "2.4.1"
+  }  
 }
