@@ -1,7 +1,6 @@
-
-import {  IProject,  IMenu, INotification} from '@csnext/cs-core';
-import { HtmlWidget, AppState } from '@csnext/cs-client';
-import './assets/example.css'
+import {  IProject } from '@csnext/cs-core';
+import { HtmlWidget, AppState, GridLayout } from '@csnext/cs-client';
+import './assets/example.css';
 
 export const project: IProject = {
   header: {
@@ -49,14 +48,11 @@ export const project: IProject = {
       id: 'addmenu',
       icon: 'add',
       title: 'add chart',
-      enabled: true,
       items: [
         {
           id: 'adddashboard',
           icon: 'note_add',
           title: 'add dashboard',
-          enabled: true,
-          visible: true,
           action: () => {
             AppState.Instance.TriggerNotification({
               title: 'Add new dashboard',
@@ -67,8 +63,6 @@ export const project: IProject = {
           id: 'addchart',
           icon: 'note_add',
           title: 'add chart',
-          enabled: true,
-          visible: true,
           action: () => {
             AppState.Instance.TriggerNotification({
               title: 'Add new chart',
@@ -76,7 +70,6 @@ export const project: IProject = {
           },
         },
       ],
-      visible: true
     },
   ],
     dashboards: [
@@ -84,19 +77,8 @@ export const project: IProject = {
         title: 'Grid',
         icon: 'assignment',
         path: '/',
-        layout: 'grid',
-        widgets: [ { component: HtmlWidget, options: { class: 'widget-1'}, data: 'welcome'}]
+        layout: GridLayout.id,
+        widgets: [ { component: HtmlWidget, options: { class: 'widget-1'}, data: 'welcome'}],
       },
-    ]
-    //   <%_ if (options.csPlugins.indexOf('drag-grid')!==-1) { _%>
-    //     ,{
-    //       title: 'Drag Grid',
-    //       icon: 'assignment',
-    //       path: '/dragGrid',
-    //       layout: 'drag-grid',          
-    //       options: <IMuuriOptions>{ DragEnabled: true, gap: 5},
-    //       widgets: [{ component: HtmlWidget, data: 'widget 1', options: <WidgetOptions>{ width: 3, height: 3}}]
-    //     }        
-    //     <%_ } _%>        
-    
+    ],
   };
