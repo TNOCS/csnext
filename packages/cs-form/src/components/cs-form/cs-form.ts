@@ -69,7 +69,7 @@ export class CsForm extends Vue {
         this.init();
     }
 
-    @Watch('widget.content') 
+    @Watch('widget.content')
     private datasourceChanged() {
         this.init();
     }
@@ -84,13 +84,16 @@ export class CsForm extends Vue {
             typeof this.formObject.save === 'function'
         ) {
             this.data = this.formObject;
-            this.formObject.save(this.formObject).then((updated: any) => {
-                if (updated) {           
+
+            let save = this.formObject.save(this.formObject);
+            Promise.resolve(save).then((updated: any) => {
+                if (updated) {
                     this.formObject = Object.assign(this.formObject, updated);
                 }
                 console.log('Save confirmed');
             });
         }
+
         console.log('Saving form');
     }
 
@@ -192,7 +195,7 @@ export class CsForm extends Vue {
     public fieldTriggered(field: IFormFieldOptions) {
         if (this.Form.triggerCallback && this.Target) {
             this.Form.triggerCallback(this.Target, field);
-        }   
+        }
     }
 
     public fieldChanged(field: IFormFieldOptions) {
