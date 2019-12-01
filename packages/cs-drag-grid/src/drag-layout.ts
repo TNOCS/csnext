@@ -4,7 +4,8 @@ import {
     IWidget,
     IDashboard,
     guidGenerator,
-    WidgetOptions} from '@csnext/cs-core';
+    WidgetOptions
+} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './drag-layout.css';
 import { WidgetBase } from '@csnext/cs-client';
@@ -18,12 +19,37 @@ Vue.component('grid-item', GridItem);
 // @Form({ title: 'Drag Layout'})
 @Component({
     template: require('./drag-layout.html'),
-    components: { simplebar},
+    components: { simplebar },
     props: {
         dashboard: null
     } as any
 })
 export class DragLayout extends WidgetBase {
+
+    public static id = 'drag-grid';
+
+    get Margin() {
+        if (this.options) {
+            return [this.options.HorizontalMargin, this.options.VerticalMargin];
+        }
+    }
+
+    get widgets() {
+        if (this.dashboard.widgets) {
+            return this.dashboard.widgets.filter(
+                w => !w.options || !w.options.background
+            );
+        }
+    }
+
+    get backgroundWidgets() {
+        if (this.dashboard.widgets) {
+            return this.dashboard.widgets.filter(
+                w => w.options && w.options.background
+            );
+        }
+    }
+
     public mode: any;
     public dashboard!: IDashboard;
 
@@ -38,99 +64,24 @@ export class DragLayout extends WidgetBase {
     // public options?: DragLayoutOptions;
     public grid: any;
     public items: string[] = [];
-    private editSubscription: any;
     public dragEnabled = false;
     public isMoving = false;
-    public static id = 'drag-grid';
+
 
     public layout: any[] = [];
 
-    private initLayout() {
-
-        console.log('Init layout');
-
-        // this.options = new DragLayoutOptions();
-        let options = new DragLayoutOptions();
-        Object.assign(options, this.dashboard.options);
-        this.dashboard.options = options;
-
-  
-        // Object.assign(this.options, this.dashboard.options);
-
-        let res: any[] = [];
-        Vue.nextTick(() => {
-            if (this.dashboard.widgets) {
-                this.dashboard.widgets
-                    .filter(w => !w.options || !w.options.background)
-                    .forEach(w => {
-                        if (w.id === undefined) { w.id = guidGenerator(); }
-                        if (!w.options) w.options = {};
-                        w.options = {
-                            width: 2,
-                            height: 4,                            
-                            ...w.options
-                        };
-
-                        this.checkPosition(w.options);
-                        res.push({
-                            x: w.options.x,
-                            y: w.options.y,
-                            w: w.options.width,
-                            h: w.options.height,
-                            i: w.id,
-                            widget: w
-                        });
-                    });
-                this.layout = res;
-            }
-        });
-    }
-
-    get Margin() {
-        if (this.options && this.options.Margin)
-            return [this.options.Margin, this.options.Margin];
-        return [10, 10];
-    }
-
-    get widgets() {
-        if (this.dashboard.widgets)
-            return this.dashboard.widgets.filter(
-                w => !w.options || !w.options.background
-            );
-    }
-
-    get backgroundWidgets() {
-        if (this.dashboard.widgets)
-            return this.dashboard.widgets.filter(
-                w => w.options && w.options.background
-            );
-    }
-
-    @Watch('dashboard.options', { deep: true })
-    public optionsChanged() {
-        console.log('options changed');
+    @Watch('dashboard.options.HorizontalMargin')
+    @Watch('dashboard.options.VerticalMargin')
+    public marginChanged() {
+        this.$forceUpdate();
     }
 
     @Watch('dashboard.widgets', { immediate: false })
-    public widgetsChanged() {        
+    public widgetsChanged() {
         this.initLayout();
     }
 
-    public beforeMount() {        
-
-        this.options = {
-            itemHeight: 5,
-            itemWidth: 5,            
-            DragEnabled: true,
-            ResizeEnabled: true,
-            VerticalCompact: true,
-            IsMirrored: false,
-            RowHeight: 150,
-            ColNum: 12,
-            Margin: [10, 10],
-            ...this.dashboard.options
-        } as DragLayoutOptions;
-
+    public beforeMount() {
         this.initLayout();
     }
 
@@ -233,14 +184,52 @@ export class DragLayout extends WidgetBase {
         this.isMoving = true;
     }
 
-    public resizeEvent() {}
+    public resizeEvent() { }
 
     public initGrid() {}
 
-    public created() {        
+    public created() {
         if (this.dashboard && !this.dashboard.id) {
             this.dashboard.id = guidGenerator();
         }
         this.initGrid();
+    }
+
+    private initLayout() {
+
+        console.log('Init layout');
+
+        // this.options = new DragLayoutOptions();
+        const options = new DragLayoutOptions();
+        Object.assign(options, this.dashboard.options);
+        this.dashboard.options = options;
+
+        // Object.assign(this.options, this.dashboard.options);
+
+        const res: any[] = [];
+        if (this.dashboard.widgets) {
+            this.dashboard.widgets
+                .filter(w => !w.options || !w.options.background)
+                .forEach(w => {
+                    if (w.id === undefined) { w.id = guidGenerator(); }
+                    if (!w.options) { w.options = {}; }
+                    w.options = {
+                        width: 2,
+                        height: 4,
+                        ...w.options
+                    };
+
+                    this.checkPosition(w.options);
+                    res.push({
+                        x: w.options.x,
+                        y: w.options.y,
+                        w: w.options.width,
+                        h: w.options.height,
+                        i: w.id,
+                        widget: w
+                    });
+                });
+            this.layout = res;
+        }
     }
 }

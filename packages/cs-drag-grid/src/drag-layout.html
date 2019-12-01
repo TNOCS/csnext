@@ -10,6 +10,8 @@
             :is-draggable="options.DragEnabled"
             :is-resizable="options.ResizeEnabled"
             :is-mirrored="options.IsMirrored"
+            :prevent-collision="options.PreventCollision"
+            :margin="Margin"
         >
             <grid-item
                 v-for="widget in layout"
