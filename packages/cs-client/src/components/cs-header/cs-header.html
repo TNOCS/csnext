@@ -180,7 +180,7 @@
       <v-btn
         class="sidebar-header-button"
         :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}"
-        v-for="(item, key, index) in rightSidebar.sidebars"
+        v-for="(item, key, index) in visibleSidebars"
         v-if="item.widgets.length>0 && !item.hide"
         :key="index"
         text

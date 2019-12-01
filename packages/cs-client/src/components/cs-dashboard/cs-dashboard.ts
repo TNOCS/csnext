@@ -5,12 +5,10 @@ import {
   IDashboard,
   IWidget,
   guidGenerator,
-  MessageBusService,
-  isFunction
+  MessageBusService
 } from '@csnext/cs-core';
 import './cs-dashboard.css';
 import {
-  CsApp,
   AppState,
   Logger,
   LayoutManager,

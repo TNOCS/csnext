@@ -197,17 +197,41 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public AddSidebar(id: string, sidebar: IDashboard) {
+  public get VisibleSidebars() : {[key: string] : IDashboard} | undefined {
+    if (!this.project.rightSidebar) return undefined;    
+    let res = this.project.rightSidebar.sidebars;
+    if (this.activeDashboard && this.activeDashboard.sidebars) {
+      for (const sb in this.activeDashboard.sidebars) {
+        if (this.activeDashboard.sidebars.hasOwnProperty(sb)) {
+          const element = this.activeDashboard.sidebars[sb];
+          if (!element.id) { element.id = sb}
+        }
+      }
+      res = { ...res, ...this.activeDashboard.sidebars}
+    }
+    return res;
+  }
+
+  public AddSidebar(id: string, sidebar: IDashboard, dashboard?: IDashboard) {
     if (!sidebar) { return; }
     sidebar = { ...{ id: id, widgets: [] }, ...sidebar };
-    if (!this.project.rightSidebar) {
-      this.project.rightSidebar = {};
-    }
-    if (!this.project.rightSidebar.sidebars) {
-      this.project.rightSidebar.sidebars = {};
-    }
-    if (!this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
-      this.project.rightSidebar.sidebars[id] = sidebar;
+    if (dashboard) {
+      if (!dashboard.sidebars) {
+        dashboard.sidebars = {};
+      }      
+      if (!dashboard.sidebars.hasOwnProperty(id)) {
+        dashboard.sidebars[id] = sidebar;
+      }
+    } else {
+      if (!this.project.rightSidebar) {
+        this.project.rightSidebar = {};
+      }
+      if (!this.project.rightSidebar.sidebars) {
+        this.project.rightSidebar.sidebars = {};
+      }
+      if (!this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+        this.project.rightSidebar.sidebars[id] = sidebar;
+      }
     }
   }
 
@@ -418,9 +442,11 @@ export class AppState extends AppStateBase {
   }
 
   public ToggleRightSidebar(key?: string) {
-    if (!this.project.rightSidebar) { return; }
-    if (key && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
-      const d = this.project.rightSidebar.sidebars[key];
+    let visible = this.VisibleSidebars;
+    if (!visible || !this.project.rightSidebar) { return; }
+    
+    if (key && visible.hasOwnProperty(key)) {
+      const d = visible[key];
       if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
         this.project.rightSidebar.open = !this.project.rightSidebar.open;
       } else {

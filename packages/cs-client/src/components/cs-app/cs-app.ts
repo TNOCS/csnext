@@ -310,11 +310,9 @@ export class CsApp extends Vue {
       if (d.leftSidebar) {
         this.leftSidebar = d.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', d.leftSidebar);
       } else if (this.$cs.project.leftSidebar) {
         this.leftSidebar = this.$cs.project.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', this.$cs.project.leftSidebar);
       } else {
         this.leftSidebar = {};
       }
@@ -323,12 +321,11 @@ export class CsApp extends Vue {
         this.rightSidebar = d.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', d.rightSidebar);
-      } else if (this.$cs.project.rightSidebar) {
+      } 
+      else if (this.$cs.project.rightSidebar) {
         this.rightSidebar = this.$cs.project.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', this.$cs.project.rightSidebar);
       } else {
         this.rightSidebar = {};
       }

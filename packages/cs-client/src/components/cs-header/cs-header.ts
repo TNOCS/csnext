@@ -7,7 +7,7 @@ import {
   IDashboard,
   MessageBusManager
 } from '@csnext/cs-core';
-import { Prop } from 'vue-property-decorator';
+import { Prop, Watch } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
 import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
 import './cs-header.css';
@@ -28,6 +28,13 @@ export class CsHeader extends Vue {
   private busManager: MessageBusManager = new MessageBusManager();
   private loadingMenuIcon?: IMenu;
   private languageSwitchMenu?: IMenu;
+  private visibleSidebars: { [key: string] : IDashboard} | undefined = {};
+  
+  
+  @Watch('rightSidebar.sidebars')
+  public updateVisibleSidebars() {        
+    Vue.set(this, 'visibleSidebars', this.$cs.VisibleSidebars);    
+  }
 
   public InitMenus() {
     if (!this.$cs.project.menus) {
@@ -110,11 +117,13 @@ export class CsHeader extends Vue {
     this.busManager.stop();
   }
 
-  public created() {
+  public mounted() {
+    this.updateVisibleSidebars();
     // listen to dashboard init events
     this.busManager.subscribe(this.$cs.bus, AppState.DASHBOARD_MAIN,
       () => {
         this.InitMenus();
+        this.updateVisibleSidebars();
         // this.InitTitleWidget();
       }
     );

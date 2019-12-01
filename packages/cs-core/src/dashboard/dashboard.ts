@@ -62,6 +62,9 @@ export interface IDashboard {
 
   footer?: IFooterOptions;
 
+  /** dashboard specific sidebars */
+  sidebars?: { [key: string]: IDashboard };
+
   // optional list of sub dashboards
   dashboards?: IDashboard[];
 
