@@ -14,15 +14,7 @@ import {
     PropertyDetails
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import {
-    min,
-    max,
-    mean,
-    median,
-    standardDeviation,
-    ckmeans,
-    uniqueCountSorted
-} from 'simple-statistics';
+
 import {
     LngLatBounds,
     CirclePaint,
@@ -42,449 +34,98 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { LayerStyle, MapboxStyles } from '../classes/layer-style';
 import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
-import { PropertyCollection } from '../classes/feature-type';
 import Axios from 'axios';
 import { MetaFile } from '../classes/meta-file';
-import { uniq } from 'lodash';
-import { PropType } from 'vue';
-import { isNumber } from 'util';
-import { resolve } from 'dns';
+// import { isNumber } from 'util';
 
-export type LayerFeatureTypes = { [key: string]: FeatureType };
 export class GeojsonPlusLayer extends BaseLayer
     implements IMapLayer, IMapLayerType {
-    types?= ['poi', 'geojson'];
+    // #region Properties (32)
 
-    public getInstance(init?: Partial<GeojsonPlusLayer>) {
-        let result = new GeojsonPlusLayer(init);
-        return result;
-    }
-    public typeId?: string = 'poi';
-    public type?: 'poi';
-    public source?: string | LayerSource;
-    public visible?: boolean;
-    public tags: string[] = [];
-
-    public parentId?: string;
-    public filter?: any;
-    public iconZoomLevel?: number;
-    public _parent?: GeojsonPlusLayer;
-    public _symbolLayer!: GeojsonLayer;
-    public _centerLayer!: GeojsonLayer;
-    public _lineLayer!: GeojsonLayer;
-    public _fillLayer!: GeojsonLayer;
-    public _circleLayer!: GeojsonLayer;
-    public style!: LayerStyle;
-    public _centerHandle?: MessageBusHandle;
-    public isEditable?: boolean;
-    public isLive?: boolean;
     public _centerGeoJson?: FeatureCollection;
+    public _centerHandle?: MessageBusHandle;
+    public _centerLayer!: GeojsonLayer;
     public _centerSource?: LayerSource;
-    public featureTypes?: FeatureTypes;
-    public featureTypesUrl?: string;
-    public featureType?: FeatureType;
-
+    public _circleHandle?: MessageBusHandle;
+    public _circleLayer!: GeojsonLayer;
     // circle style
     public _circleLayout?: mapboxgl.CircleLayout;
     public _circlePaint?: mapboxgl.CirclePaint;
-    public _circleHandle?: MessageBusHandle;
-
-    // symbol style
-    public _symbolLayout?: mapboxgl.SymbolLayout;
-    public _symbolPaint?: mapboxgl.SymbolPaint;
-    public _symbolHandle?: MessageBusHandle;
-
-    // line style
-    public _lineLayout?: mapboxgl.LineLayout;
-    public _linePaint?: mapboxgl.LinePaint;
-    public _lineHandle?: MessageBusHandle;
-
+    public _fillHandle?: MessageBusHandle;
+    public _fillLayer!: GeojsonLayer;
     // fill style
     public _fillLayout?: mapboxgl.FillLayout;
     public _fillPaint?: mapboxgl.FillPaint;
-    public _fillHandle?: MessageBusHandle;
-
-    public _manager?: MapDatasource;
-    public _events: MessageBusService;
-    public popupContent?: string | Function | undefined;
-    public extensions?: ILayerExtensionType[];
-    public _extensions: ILayerExtension[] = [];
-
+    public _initialized ?= false;
+    public _lineHandle?: MessageBusHandle;
+    public _lineLayer!: GeojsonLayer;
+    // line style
+    public _lineLayout?: mapboxgl.LineLayout;
+    public _linePaint?: mapboxgl.LinePaint;
+    public _source?: LayerSource;
+    public _symbolHandle?: MessageBusHandle;
+    public _symbolLayer!: GeojsonLayer;
+    // symbol style
+    public _symbolLayout?: mapboxgl.SymbolLayout;
+    public _symbolPaint?: mapboxgl.SymbolPaint;
+    public featureType?: FeatureType;
+    public featureTypesUrl?: string;
+    public iconZoomLevel?: number;
+    public isEditable?: boolean;
+    public isLive?: boolean;
     public socketEmitters: { [key: string]: SocketIOClient.Emitter } = {};
+    public type?: 'poi';
+    public typeId?: string = 'poi';
+    public types ?= ['poi', 'geojson'];
+
+    // #endregion Properties (32)
+
+    // #region Constructors (1)
 
     constructor(init?: Partial<IMapLayer>) {
         super();
-        Object.assign(this, init);
         this._events = new MessageBusService();
     }
 
-    public get Visible(): boolean | undefined {
-        return this.visible;
-    }
+    // #endregion Constructors (1)
 
-    public set Visible(value: boolean | undefined) {
-        if (this.visible === value) {
+    // #region Public Methods (17)
+
+    public addLayer(map: CsMap) {
+        if (!this._symbolLayer || !this._lineLayer || !this._manager) {
             return;
         }
-        this.visible = value;
-    }
+        this.createCenterSource();
+        this.registerLayerExtensions();
 
-    public setPopupContent(popup: string | ((f: FeatureEventDetails)=> { })) {
-        this.popupContent = popup;
-        if (this._circleLayer) {
-            this._circleLayer.setPopupContent(popup);
-        }
-        if (this._centerLayer) {
-            this._centerLayer.setPopupContent(popup);
-        }
-        if (this._symbolLayer) {
-            this._symbolLayer.setPopupContent(popup);
-        }
-        if (this._fillLayer) {
-            this._fillLayer.setPopupContent(popup);
-        }
-        if (this._lineLayer) {
-            this._lineLayer.setPopupContent(popup);
-        }        
-    }
+        // subscribe to events
+        this._circleHandle = this.pipeEvents(
+            map,
+            this._circleLayer,
+            this._circleHandle
+        );
+        this._centerHandle = this.pipeEvents(
+            map,
+            this._centerLayer,
+            this._centerHandle
+        );
+        this._symbolHandle = this.pipeEvents(
+            map,
+            this._symbolLayer,
+            this._symbolHandle
+        );
+        this._lineHandle = this.pipeEvents(
+            map,
+            this._lineLayer,
+            this._lineHandle
+        );
+        this._fillHandle = this.pipeEvents(
+            map,
+            this._fillLayer,
+            this._fillHandle
+        );
 
-    public updateLegends() {
-        let result: LayerLegend[] = [];
-        if (this.style && this.style.mapbox) {
-            for (const styleKey of Object.keys(this.style.mapbox)) {
-                if (styleKey) {
-                    // get property key from style
-                    let legends = this.getStyleLegendKey(styleKey);
-
-                    for (const legend of legends) {
-                        if (legend.property && this.featureType && this.featureType.propertyMap && this.featureType.propertyMap.hasOwnProperty(legend.property)) {
-                            legend.propertyInfo = this.featureType.propertyMap[legend.property];
-                        }
-                        result.push(legend);
-                    }
-                }
-            }
-        }
-        this._legends = result;
-        if (this._manager) {
-            this._manager.events.publish('legends', 'updated', this._legends);
-        }
-    }
-
-    public removeLegend(
-        property: PropertyDetails | PropertyType | string,
-        refreshLayer = true
-    ) {
-        if (typeof property === 'string') {
-            // AppState.Instance.TriggerNotification({
-            //     title: 'set property ' + property
-            // });
-        } else if (property.hasOwnProperty('key')) {
-            if (this.style && this.style.mapbox) {
-                for (const l of (property as PropertyDetails).legends!) {
-                    if (this.style && this.style._originalMapbox) {
-                        l.style[l.styleProperty] = this.style._originalMapbox[
-                            l.styleKey
-                        ][l.styleProperty];
-                    }
-                }
-            }
-        }
-        if (this._manager && refreshLayer) {
-            this._manager.refreshLayer(this);
-        }
-        this.updateLegends();
-    }
-
-    updateMetaProperty(ft: FeatureType, prop: PropertyType) {
-        if (prop._initialized) { return; }
-        prop._values = [];
-        if (!ft || !ft.properties || !ft.propertyMap || !this._source || !this._source._geojson) { return; }
-        let source = this._source!._geojson;
-        if (source.features && source.features.length > 0) {
-            //   let feature = source.features[0];
-            for (const feature of source.features) {
-                if (feature.properties) {
-                    if (prop.label && feature.properties.hasOwnProperty(prop.label)) {
-                        if (prop.type !== undefined) {
-                            let value = feature.properties[prop.label];
-                            if (
-                                prop.type === 'number' &&
-                                typeof value === 'string'
-                            ) {
-                                value = parseFloat(value);
-                                feature.properties[prop.label] = value;
-                            }
-                            prop._values!.push(value);
-                        }
-
-                    }
-
-
-                }
-            }
-        }
-
-
-        prop.count = prop._values.length;
-        let unique: any[] = uniq(prop._values);
-        prop.unique = unique.length;
-        if (prop.unique < 7) {
-            // prop.options =  unique.reduce(i => ) new Map(unique, (i) => [i,i] as [string, string]);
-        }
-
-        if (prop.type === 'number' && prop._values) {
-            if (unique.length > 1) {
-                prop.min = parseFloat(
-                    min(prop._values).toString()
-                );
-                prop.max = parseFloat(
-                    max(prop._values).toString()
-                );
-                prop.mean = mean(prop._values);
-                // if (prop.count > 10) {
-                //     prop.median = median(prop._values);
-                //     prop.sd = standardDeviation(
-                //         prop._values
-                //     );
-                // }
-            }
-
-            // let steps = ckmeans(prop._values, 5);
-            // prop.legend = {};
-        }
-        delete prop._values;
-        prop._initialized = true;
-    }
-
-    public updateMeta() {
-        if (!this.defaultFeatureType || !this.featureTypes || !this.featureTypes.hasOwnProperty(this.defaultFeatureType)) {
-            return;
-        };
-        const ft = this.featureTypes[this.defaultFeatureType];
-        if (!ft.properties || !ft.propertyMap || !this._source || !this._source._geojson) { return; }
-        let source = this._source!._geojson;
-
-        for (const prop of ft.properties) {
-            if (!prop._values) {
-                prop._values = [];
-            }
-        }
-
-        // for (const feature of source.features) {
-        if (source.features && source.features.length > 0) {
-            //   let feature = source.features[0];
-            for (const feature of source.features) {
-                if (feature.properties) {
-                    for (const prop of ft.properties) {
-                        if (prop.label && feature.properties.hasOwnProperty(prop.label)) {
-                            if (prop.type !== undefined) {
-                                let value = feature.properties[prop.label];
-                                if (
-                                    prop.type === 'number' &&
-                                    typeof value === 'string'
-                                ) {
-                                    value = parseFloat(value);
-                                    feature.properties[prop.label] = value;
-                                }
-                                prop._values!.push(value);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        for (const proptype of ft.properties) {
-            if (proptype._values) {
-                proptype.count = proptype._values.length;
-                let unique: any[] = uniq(proptype._values);
-                proptype.unique = unique.length;
-                if (proptype.unique < 7) {
-                    // proptype.options =  unique.reduce(i => ) new Map(unique, (i) => [i,i] as [string, string]);
-                }
-
-                if (proptype.type === 'number' && proptype._values) {
-                    if (unique.length > 1) {
-                        proptype.min = parseFloat(
-                            min(proptype._values).toString()
-                        );
-                        proptype.max = parseFloat(
-                            max(proptype._values).toString()
-                        );
-                        proptype.mean = mean(proptype._values);
-                        if (proptype.count > 10) {
-                            proptype.median = median(proptype._values);
-                            proptype.sd = standardDeviation(
-                                proptype._values
-                            );
-                        }
-                    }
-
-                    // let steps = ckmeans(proptype._values, 5);
-                    // proptype.legend = {};
-                }
-                delete proptype._values;
-            }
-        }
-    }
-
-    private getFeatureType(): FeatureType | undefined {
-        if (this.featureTypes) {
-            if (this.defaultFeatureType && this.featureTypes.hasOwnProperty(this.defaultFeatureType)) {
-                return plainToClass(FeatureType, this.featureTypes[this.defaultFeatureType]);
-            } else {
-                let keys = Object.keys(this.featureTypes);
-                if (keys.length > 0) {
-                    this.defaultFeatureType = keys[0];
-                    return plainToClass(FeatureType, this.featureTypes[this.defaultFeatureType]);
-                }
-            }
-        }
-    }
-
-    public setLegend(
-        property: PropertyDetails | PropertyType | string,
-        refreshLayer = true
-    ) {
-        let ft = this.getFeatureType();
-        if (typeof property === 'string') {
-            // find property details
-
-            if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(property)) {
-                property = { type: ft.propertyMap[property], key: property }
-            }
-        }
-        if (ft && property.hasOwnProperty('key')) {
-            if (this.style && this.style.mapbox) {
-                let propdetails = property as PropertyDetails;
-                this.updateMetaProperty(ft, propdetails.type as PropertyType);
-
-                if (propdetails.type && propdetails.type._initialized) {
-
-                    if (propdetails.type.legendStyle !== undefined) {
-                        for (const style in propdetails.type.legendStyle) {
-                            if (propdetails.type.legendStyle.hasOwnProperty(style)) {
-                                const st = propdetails.type.legendStyle[style];
-                                if (!this.style.mapbox.hasOwnProperty(style)) {
-                                    this.style.mapbox[style] = {};
-                                }
-
-                                for (const key in st) {
-                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
-                                        const element = propdetails.type.legendStyle[style][key];
-                                        this.style.mapbox[style][key] = element;
-
-                                    }
-                                }
-
-                            }
-                        }
-
-
-                        // let color = propdetails.type.legendStyle.fillPaint['fill-color'];
-                        // this.style.mapbox.fillPaint['fill-color']  = color;
-                        // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
-                    } else {
-                        let color = {
-                            property: propdetails.key,
-                            // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
-                            stops: [
-                                // "temperature" is 0   -> circle color will be blue
-                                [propdetails.type!.min, 'blue'],
-                                // "temperature" is 100 -> circle color will be red
-                                [propdetails.type!.max, 'red']
-                            ]
-                        } as StyleFunction;
-                        if (this.style.mapbox.fillPaint) {
-                            this.style.mapbox.fillPaint['fill-color'] = color;
-                        }
-                        if (this.style.mapbox.circlePaint) {
-                            this.style.mapbox.circlePaint['circle-color'] = color;
-                        }
-                        if (this.style.mapbox.linePaint) {
-                            this.style.mapbox.linePaint['line-color'] = color;
-                        }
-                    }
-                }
-            }
-        }
-        if (this._manager && refreshLayer) {
-            this._manager.refreshLayer(this);
-        }
-        this.updateLegends();
-    }
-
-    public updateLayer() {
-        if (this._manager) {
-            this.initLayer(this._manager);
-            this._manager.refreshLayer(this);
-        }
-    }
-
-    public setOpacity(value: number) {
-        this.style.opacity = value;
-        if (this._circleLayer) {
-            this._circleLayer.setOpacity(value);
-        }
-        if (this._centerLayer) {
-            this._centerLayer.setOpacity(value);
-        }
-        if (this._symbolLayer) {
-            this._symbolLayer.setOpacity(value);
-        }
-        if (this._fillLayer) {
-            this._fillLayer.setOpacity(value);
-        }
-        if (this._lineLayer) {
-            this._lineLayer.setOpacity(value);
-        }
-    }
-
-    public getBounds(): LngLatBounds | undefined {
-        if (this._source) {
-            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
-            let geo = { ...this._source._geojson };
-            try {
-                let bounds = extent(geo);
-                return bounds;
-            } catch {
-                return undefined;
-            }
-        } else {
-            return undefined;
-        }
-    }
-
-    public moveLayer(beforeId?: string) {
-        if (this._manager && this._manager.MapControl && this.id) {
-            const map = this._manager.MapControl;
-            if (this._fillLayer) map.moveLayer(this._fillLayer.id!, beforeId);
-            if (this._centerLayer)
-                map.moveLayer(this._centerLayer.id!, beforeId);
-            if (this._circleLayer)
-                map.moveLayer(this._circleLayer.id!, beforeId);
-            if (this._symbolLayer)
-                map.moveLayer(this._symbolLayer.id!, beforeId);
-            if (this._lineLayer) map.moveLayer(this._lineLayer.id!, beforeId);
-        }
-    }
-
-    private registerLayerExtensions() {
-        if (this.extensions) {
-            this.extensions.forEach(ext => {
-                const extensionType = CsMap.layerExtensions.find(
-                    le => le.id === ext.id
-                );
-                if (extensionType && extensionType.getInstance) {
-                    const extension = extensionType.getInstance(ext.options);
-                    this._extensions.push(extension);
-                    extension.start(this);
-                } else {
-                    console.warn(`Could not find extension ${ext.id}`);
-                }
-            });
-        }
+        this.Visible = true;
     }
 
     public createCenterSource() {
@@ -505,7 +146,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 features: []
             } as FeatureCollection;
             for (const f of this._source._geojson.features) {
-                let nf = {
+                const nf = {
                     type: 'Feature',
                     properties: f.properties,
                     id: f.id
@@ -515,7 +156,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 try {
                     switch (f.geometry.type) {
                         case 'LineString':
-                            nf.geometry = centroid(f).geometry; //.coordinates[0];
+                            nf.geometry = centroid(f).geometry;
                             break;
                         case 'Polygon':
                             nf.geometry = centroid(f).geometry;
@@ -575,7 +216,7 @@ export class GeojsonPlusLayer extends BaseLayer
                     ? this._symbolLayout
                     : ({
                         'icon-size': 0.45,
-                        'text-field': this.style.mapTitle,
+                        'text-field': this.style!.mapTitle,
                         'text-anchor': 'center',
                         'text-size': 12,
                         'text-offset': [0, 1.5],
@@ -592,102 +233,33 @@ export class GeojsonPlusLayer extends BaseLayer
         }
     }
 
-    private async initFeatureTypes(): Promise<boolean> {
-        return new Promise(async (resolve, reject) => {
-            if (this.featureTypesUrl && !this.featureTypes) {
-                try {
-                    this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
-                } catch (e) { }
+    public setFilter(filter: any[]) {
+        this.filter = filter;
+        this._fillLayer?.setFilter(filter);
+        this._symbolLayer?.setFilter(filter);
+        this._lineLayer?.setFilter(filter);
+        this._circleLayer?.setFilter(filter);
+        this.updateFilters();
+    }
+
+    public getBounds(): LngLatBounds | undefined {
+        if (this._source) {
+            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
+            const geo = { ...this._source._geojson };
+            try {
+                const bounds = extent(geo);
+                return bounds;
+            } catch {
+                return undefined;
             }
-            if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
-                let keys = Object.keys(this.featureTypes);
-                Object.keys(this.featureTypes).forEach(k => {
-                    if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
-
-                        // not array, check for map
-                        let ft = this.featureTypes[k];
-                        if (ft.properties && !Array.isArray(ft.properties)) {
-                            let props: any[] = [];
-                            let obj = ft.properties as any;
-                            for (const key in obj) {
-                                if (obj.hasOwnProperty(key)) {
-                                    const element = obj[key];
-                                    if (typeof element !== 'string') {
-                                        if (!element.label) {
-                                            element.label = key;
-                                        }
-                                    }
-                                    props.push(element);
-                                }
-                            }
-                            if (props.length > 0) {
-                                ft.properties = props;
-                            }
-                        }
-
-                        this.featureTypes[k] = plainToClass(
-                            FeatureType,
-                            this.featureTypes[k]
-                        );
-
-
-
-
-
-                        this.updateFeatureTypePropertyMap(this.featureTypes[k]);
-                    }
-                });
-                this.featureTypes = plainToClass(
-                    FeatureTypes,
-                    this.featureTypes
-                ) as FeatureTypes;
-                // this.updateMeta();
-            } else {
-                this.featureTypes = new FeatureTypes();
-                let ft = new FeatureType();
-                ft.title = this.defaultFeatureType = 'default';
-                ft.properties = [];
-                // check first feature for missing properties
-                if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
-                    let f = this._source._geojson.features[0];
-                    if (f.properties) {
-                        for (const prop in f.properties) {
-                            if (f.properties.hasOwnProperty(prop)) {
-                                const value = f.properties[prop];
-                                ft.properties.push({
-                                    label: prop,
-                                    title: prop,
-                                    description: prop,
-                                    type: isNumber(value) ? 'number' : 'string'
-                                });
-                            }
-                        }
-                    }
-                    this.updateFeatureTypePropertyMap(ft);
-                    this.featureTypes[ft.title] = ft;
-                }
-            }
-            if (!this.featureType) {
-                this.featureType = this.getFeatureType();
-            }
-
-            if (this.featureType && this.featureType.style) {
-                this.style = plainToClass(LayerStyle, this.featureType.style);
-            }
-            resolve(true);
-        })
-
-    };
-
-    private updateFeatureTypePropertyMap(type: FeatureType) {
-        if (type.properties) {
-            type.propertyMap = {};
-            for (const prop of type.properties) {
-                if (prop.label) {
-                    type.propertyMap[prop.label] = prop;
-                }
-            }
+        } else {
+            return undefined;
         }
+    }
+
+    public getInstance(init?: Partial<GeojsonPlusLayer>) {
+        const result = new GeojsonPlusLayer(init);
+        return result;
     }
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
@@ -699,7 +271,7 @@ export class GeojsonPlusLayer extends BaseLayer
                 this.id = guidGenerator();
             }
 
-            let loaded = await this.initFeatureTypes();
+            const loaded = await this.initFeatureTypes();
 
             if (!this._source) {
                 if (typeof this.source === 'string') {
@@ -720,8 +292,6 @@ export class GeojsonPlusLayer extends BaseLayer
                 this.title = this._source.id;
             }
 
-            this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
-
             this.style = plainToClass(LayerStyle, {
                 ...({
                     title: '{{title}}',
@@ -732,40 +302,50 @@ export class GeojsonPlusLayer extends BaseLayer
                 ...this.style
             });
 
-            if (this.style.types) {
+            if (!this.style) { reject(); return; }
 
+            this.style.mapbox = plainToClass(MapboxStyles, this.style.mapbox);
+
+            if (this.style.types) {
                 if (!this.style.mapbox) {
                     this.style.mapbox = {};
                 }
 
                 if (this.style.types!.includes('point')) {
-                    if (!this.style.mapbox!.symbolLayout)
+                    if (!this.style.mapbox!.symbolLayout) {
                         this.style.mapbox!.symbolLayout = {};
-                    if (!this.style.mapbox!.symbolPaint)
+                    }
+                    if (!this.style.mapbox!.symbolPaint) {
                         this.style.mapbox!.symbolPaint = {};
-                    if (!this.style.mapbox!.circleLayout)
+                    }
+                    if (!this.style.mapbox!.circleLayout) {
                         this.style.mapbox!.circleLayout = {};
-                    if (!this.style.mapbox!.circlePaint)
+                    }
+                    if (!this.style.mapbox!.circlePaint) {
                         this.style.mapbox!.circlePaint = {};
+                    }
                 }
 
                 if (this.style.types!.includes('line')) {
-                    if (!this.style.mapbox!.lineLayout)
+                    if (!this.style.mapbox!.lineLayout) {
                         this.style.mapbox!.lineLayout = {};
-                    if (!this.style.mapbox!.linePaint)
+                    }
+                    if (!this.style.mapbox!.linePaint) {
                         this.style.mapbox!.linePaint = {};
+                    }
                 }
 
                 if (this.style.types!.includes('fill')) {
-                    if (!this.style.mapbox!.fillLayout)
+                    if (!this.style.mapbox!.fillLayout) {
                         this.style.mapbox!.fillLayout = {};
-                    if (!this.style.mapbox!.fillPaint)
+                    }
+                    if (!this.style.mapbox!.fillPaint) {
                         this.style.mapbox!.fillPaint = {};
+                    }
                 }
-
             }
 
-            if (this.style && this.style.mapbox) {
+            if (this.style.mapbox) {
                 this._symbolLayout = this.style.mapbox.symbolLayout;
                 this._symbolPaint = this.style.mapbox.symbolPaint;
                 this._circlePaint = this.style.mapbox.circlePaint;
@@ -783,7 +363,7 @@ export class GeojsonPlusLayer extends BaseLayer
 
             if (!this.popupContent) {
                 this.popupContent = (d: FeatureEventDetails) => {
-                    return this.parsePopup(d.feature);                    
+                    return this.parsePopup(d.feature);
                 };
             }
 
@@ -798,7 +378,8 @@ export class GeojsonPlusLayer extends BaseLayer
                     paint: this._circlePaint,
                     filter: ['all']
                 });
-                if (this.style.pointCircle) {
+                if (this.style.pointCircle && this._circleLayer) {
+                    if (!this._circleLayer.filter) { this._circleLayer.filter = []}
                     this._circleLayer.filter.push([
                         '==',
                         ['geometry-type'],
@@ -851,14 +432,16 @@ export class GeojsonPlusLayer extends BaseLayer
                     } as LinePaint),
                 filter: ['all']
             });
-            if (!this.style.line) {
+            if (!this.style.line && this._lineLayer) {
+                if (!this._lineLayer.filter) { this._lineLayer.filter = []; }
                 this._lineLayer.filter.push([
                     '==',
                     ['geometry-type'],
                     'LineString'
                 ]);
             }
-            if (this.iconZoomLevel !== undefined) {
+            if (this.iconZoomLevel !== undefined && this._lineLayer) {
+                if (!this._lineLayer.filter) { this._lineLayer.filter = []; }
                 this._lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
             this._lineLayer.initLayer(manager);
@@ -880,15 +463,18 @@ export class GeojsonPlusLayer extends BaseLayer
                 filter: ['all']
             });
 
-            if (!this.style.fill) {
+            if (!this.style.fill && this._fillLayer) {
+                if (!this._fillLayer.filter) { this._fillLayer.filter = []; }
                 this._fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
             }
-            if (this.iconZoomLevel !== undefined) {
+            if (this.iconZoomLevel !== undefined && this._fillLayer) {
+                if (!this._fillLayer.filter) { this._fillLayer.filter = []; }
                 this._fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
             }
             this._fillLayer.initLayer(manager);
 
             this.updateLegends();
+            this.updateFilters();
 
             if (this.style) {
                 // if specified, set default legend
@@ -904,7 +490,24 @@ export class GeojsonPlusLayer extends BaseLayer
         });
     }
 
-    pipeEvents(
+    public moveLayer(beforeId?: string) {
+        if (this._manager && this._manager.MapControl && this.id) {
+            const map = this._manager.MapControl;
+            if (this._fillLayer) { map.moveLayer(this._fillLayer.id!, beforeId); }
+            if (this._centerLayer) {
+                map.moveLayer(this._centerLayer.id!, beforeId);
+            }
+            if (this._circleLayer) {
+                map.moveLayer(this._circleLayer.id!, beforeId);
+            }
+            if (this._symbolLayer) {
+                map.moveLayer(this._symbolLayer.id!, beforeId);
+            }
+            if (this._lineLayer) { map.moveLayer(this._lineLayer.id!, beforeId); }
+        }
+    }
+
+    public pipeEvents(
         map: CsMap,
         layer?: GeojsonLayer,
         handle?: MessageBusHandle
@@ -920,85 +523,25 @@ export class GeojsonPlusLayer extends BaseLayer
                         switch (a) {
                             case CsMap.FEATURE_SELECT:
                                 data.layer = this;
-                                this._events.publish('feature', a, data);
+                                if (this._events) {
+                                    this._events.publish('feature', a, data);
+                                }
                                 this._manager!.openFeature(data.feature!, data.layer);
                                 break;
                             case CsMap.FEATURE_MOUSE_ENTER:
                                 if (this.popupContent && data.feature) {
                                     this.parsePopup(data.feature);
-                                }                                
+                                }
                                 break;
-                        }                        
+                        }
                     }
                 );
             }
         }
     }
 
-    removeSubLayer(
-        map: CsMap,
-        layer?: GeojsonLayer,
-        handle?: MessageBusHandle
-    ): MessageBusHandle | undefined {
-        if (!layer) {
-            return;
-        }
-        if (layer._events && handle) {
-            layer._events.unsubscribe(handle);
-            handle = undefined;
-        }
-        layer.removeLayer(map);
-        return handle;
-    }
-
-    public addLayer(map: CsMap) {
-        if (!this._symbolLayer || !this._lineLayer || !this._manager) {
-            return;
-        }
-        this.createCenterSource();
-        this.registerLayerExtensions();
-
-        // subscribe to events
-        this._circleHandle = this.pipeEvents(
-            map,
-            this._circleLayer,
-            this._circleHandle
-        );
-        this._centerHandle = this.pipeEvents(
-            map,
-            this._centerLayer,
-            this._centerHandle
-        );
-        this._symbolHandle = this.pipeEvents(
-            map,
-            this._symbolLayer,
-            this._symbolHandle
-        );
-        this._lineHandle = this.pipeEvents(
-            map,
-            this._lineLayer,
-            this._lineHandle
-        );
-        this._fillHandle = this.pipeEvents(
-            map,
-            this._fillLayer,
-            this._fillHandle
-        );
-
-        this.Visible = true;
-    }
-
-    private removeExtensions() {
-        if (this._extensions && this._extensions.length) {
-            this._extensions.forEach(extension => {
-                extension.stop();
-            });
-            this._extensions.length = 0;
-        }
-    }
-
     public removeLayer(map: CsMap) {
-        console.log('Removing layer');
+        super.removeLayer(map);
         this.removeExtensions();
 
         if (!this._symbolLayer || !this._lineLayer) {
@@ -1035,6 +578,310 @@ export class GeojsonPlusLayer extends BaseLayer
         this.Visible = false;
     }
 
-    public _source?: LayerSource;
-    public _initialized?= false;
+    public removeLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
+        if (typeof property === 'string') {
+            // AppState.Instance.TriggerNotification({
+            //     title: 'set property ' + property
+            // });
+        } else if (property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox) {
+                for (const l of (property as PropertyDetails).legends!) {
+                    if (this.style && this.style._originalMapbox) {
+                        l.style[l.styleProperty] = this.style._originalMapbox[
+                            l.styleKey
+                        ][l.styleProperty];
+                    }
+                }
+            }
+        }
+        this.updateLegends();
+        if (this._manager && refreshLayer) {
+            this._manager.refreshLayer(this);
+        }
+    }
+
+    public removeSubLayer(
+        map: CsMap,
+        layer?: GeojsonLayer,
+        handle?: MessageBusHandle
+    ): MessageBusHandle | undefined {
+        if (!layer) {
+            return;
+        }
+        if (layer._events && handle) {
+            layer._events.unsubscribe(handle);
+            handle = undefined;
+        }
+        layer.removeLayer(map);
+        return handle;
+    }
+
+    public setLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
+        const ft = this.getFeatureType();
+        if (typeof property === 'string') {
+            // find property details
+
+            if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(property)) {
+                property = { type: ft.propertyMap[property], key: property };
+            }
+        }
+        if (ft && property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox && this._source) {
+                const propdetails = property as PropertyDetails;
+                MetaFile.updateMetaProperty(this._source, ft, propdetails.type as PropertyType);
+
+                if (propdetails.type && propdetails.type._initialized) {
+                    if (propdetails.type.legendStyle !== undefined) {
+                        for (const style in propdetails.type.legendStyle) {
+                            if (propdetails.type.legendStyle.hasOwnProperty(style)) {
+                                const st = propdetails.type.legendStyle[style];
+                                if (!this.style.mapbox.hasOwnProperty(style)) {
+                                    this.style.mapbox[style] = {};
+                                }
+
+                                for (const key in st) {
+                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
+                                        const element = propdetails.type.legendStyle[style][key];
+                                        this.style.mapbox[style][key] = element;
+                                    }
+                                }
+                            }
+                        }
+
+                        // let color = propdetails.type.legendStyle.fillPaint['fill-color'];
+                        // this.style.mapbox.fillPaint['fill-color']  = color;
+                        // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
+                    } else {
+                        const color = {
+                            property: propdetails.key,
+                            // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
+                            stops: [
+                                // "temperature" is 0   -> circle color will be blue
+                                [propdetails.type!.min, 'blue'],
+                                // "temperature" is 100 -> circle color will be red
+                                [propdetails.type!.max, 'red']
+                            ]
+                        } as StyleFunction;
+
+                        if (this.style.mapbox.fillPaint) {
+                            this.style.mapbox.fillPaint['fill-color'] = color;
+                        }
+                        if (this.style.mapbox.circlePaint) {
+                            this.style.mapbox.circlePaint['circle-color'] = color;
+                        }
+                        if (this.style.mapbox.linePaint) {
+                            this.style.mapbox.linePaint['line-color'] = color;
+                        }
+                    }
+                }
+            }
+        }
+        this.updateLegends();
+        if (this._manager && refreshLayer) {
+            this._manager.refreshLayer(this);
+        }
+    }
+
+    public setOpacity(value: number) {
+        if (!this.style) {return; }
+        this.style.opacity = value;
+        if (this._circleLayer) {
+            this._circleLayer.setOpacity(value);
+        }
+        if (this._centerLayer) {
+            this._centerLayer.setOpacity(value);
+        }
+        if (this._symbolLayer) {
+            this._symbolLayer.setOpacity(value);
+        }
+        if (this._fillLayer) {
+            this._fillLayer.setOpacity(value);
+        }
+        if (this._lineLayer) {
+            this._lineLayer.setOpacity(value);
+        }
+    }
+
+    public setPopupContent(popup: string | ((f: FeatureEventDetails) => {})) {
+        this.popupContent = popup;
+        if (this._circleLayer) {
+            this._circleLayer.setPopupContent(popup);
+        }
+        if (this._centerLayer) {
+            this._centerLayer.setPopupContent(popup);
+        }
+        if (this._symbolLayer) {
+            this._symbolLayer.setPopupContent(popup);
+        }
+        if (this._fillLayer) {
+            this._fillLayer.setPopupContent(popup);
+        }
+        if (this._lineLayer) {
+            this._lineLayer.setPopupContent(popup);
+        }
+    }
+
+    public updateLayer() {
+        if (this._manager) {
+            this.initLayer(this._manager);
+            this._manager.refreshLayer(this);
+        }
+    }
+    
+    public updateLegends() {
+        const result: LayerLegend[] = [];
+        if (this.style && this.style.mapbox) {
+            for (const styleKey of Object.keys(this.style.mapbox)) {
+                if (styleKey) {
+                    // get property key from style
+                    const legends = this.getStyleLegendKey(styleKey);
+
+                    for (const legend of legends) {
+                        if (legend.property && this.featureType && this.featureType.propertyMap && this.featureType.propertyMap.hasOwnProperty(legend.property)) {
+                            legend.propertyInfo = this.featureType.propertyMap[legend.property];
+                        }
+                        result.push(legend);
+                    }
+                }
+            }
+        }
+        this._legends = result;
+        console.log('Legends');
+        console.log(this._legends);
+        if (this._manager) {
+            this._manager.events.publish('legends', 'updated', this._legends);
+        }
+    }
+
+
+
+    private updateFeatureTypePropertyMap(type: FeatureType) {
+        if (type.properties) {
+            type.propertyMap = {};
+            for (const prop of type.properties) {
+                if (prop.label) {
+                    type.propertyMap[prop.label] = prop;
+                }
+            }
+        }
+    }
+
+    // #endregion Public Methods (17)
+
+    // #region Private Methods (5)
+
+    private async initFeatureTypes(): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            if (this.featureTypesUrl && !this.featureTypes) {
+                try {
+                    this.featureTypes = await MetaFile.loadFeatureTypesFromUrl(this.featureTypesUrl);
+                } catch (e) { }
+            }
+            if (this.featureTypes && Object.keys(this.featureTypes).length > 0) {
+                const keys = Object.keys(this.featureTypes);
+                Object.keys(this.featureTypes).forEach(k => {
+                    if (this.featureTypes && this.featureTypes.hasOwnProperty(k)) {
+                        // not array, check for map
+                        const ft = this.featureTypes[k];
+                        if (ft.properties && !Array.isArray(ft.properties)) {
+                            const props: any[] = [];
+                            const obj = ft.properties as any;
+                            for (const key in obj) {
+                                if (obj.hasOwnProperty(key)) {
+                                    const element = obj[key];
+                                    if (typeof element !== 'string') {
+                                        if (!element.label) {
+                                            element.label = key;
+                                        }
+                                    }
+                                    props.push(element);
+                                }
+                            }
+                            if (props.length > 0) {
+                                ft.properties = props;
+                            }
+                        }
+
+                        this.featureTypes[k] = plainToClass(
+                            FeatureType,
+                            this.featureTypes[k]
+                        );
+
+                        this.updateFeatureTypePropertyMap(this.featureTypes[k]);
+                    }
+                });
+                this.featureTypes = plainToClass(
+                    FeatureTypes,
+                    this.featureTypes
+                ) as FeatureTypes;
+                // this.updateMeta();
+            } else {
+                this.featureTypes = new FeatureTypes();
+                const ft = new FeatureType();
+                ft.title = this.defaultFeatureType = 'default';
+                ft.properties = [];
+                // check first feature for missing properties
+                if (this._source && this._source._geojson && this._source._geojson.features && this._source._geojson.features.length > 0) {
+                    const f = this._source._geojson.features[0];
+                    if (f.properties) {
+                        for (const prop in f.properties) {
+                            if (f.properties.hasOwnProperty(prop)) {
+                                const value = f.properties[prop];
+                                ft.properties.push({
+                                    label: prop,
+                                    title: prop,
+                                    description: prop,
+                                    type: Number.isFinite(value) ? 'number' : 'string'
+                                });
+                            }
+                        }
+                    }
+                    this.updateFeatureTypePropertyMap(ft);
+                    this.featureTypes[ft.title] = ft;
+                }
+            }
+            if (!this.featureType) {
+                this.featureType = this.getFeatureType();
+            }
+
+            if (this.featureType && this.featureType.style) {
+                this.style = plainToClass(LayerStyle, this.featureType.style);
+            }
+            resolve(true);
+        });
+    }
+
+    private registerLayerExtensions() {
+        if (this.extensions) {
+            this.extensions.forEach(ext => {
+                const extensionType = CsMap.layerExtensions.find(
+                    le => le.id === ext.id
+                );
+                if (extensionType && extensionType.getInstance) {
+                    const extension = extensionType.getInstance(ext.options);
+                    this._extensions.push(extension);
+                    extension.start(this);
+                } else {
+                    console.warn(`Could not find extension ${ext.id}`);
+                }
+            });
+        }
+    }
+
+    private removeExtensions() {
+        if (this._extensions && this._extensions.length) {
+            this._extensions.forEach(extension => {
+                extension.stop();
+            });
+            this._extensions.length = 0;
+        }
+    }
+
+    // #endregion Private Methods (5)
 }

@@ -9,6 +9,7 @@
 .map-legend-color-rectangle {
     width: 15px;
     height: 15px;
+    margin: 3px;
     background: gray;    
 }
 

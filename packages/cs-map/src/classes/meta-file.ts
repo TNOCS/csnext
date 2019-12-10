@@ -1,70 +1,66 @@
-import { FeatureTypes, PropertyCollection, FeatureType, PropertyType } from './feature-type';
+import { FeatureTypes, PropertyCollection, FeatureType, PropertyType, LayerSource } from './..';
 import Axios from 'axios';
-import { PropertyDetails } from '../components/feature-details/feature-details';
-import uniq from 'lodash.uniq';
 import {
     min,
     max,
     mean,
     median,
     standardDeviation,
-    ckmeans,
     uniqueCountSorted
 } from 'simple-statistics';
-import { LayerSource } from '..';
 import { IMapLayer } from './imap-layer';
 
 export class MetaFile {
-    public featureTypes?: FeatureTypes;
-    public propertyTypeData?: PropertyCollection;
 
-    // if property data was specified seperately, link them to the feature types
-    public linkPropertyTypeData() {        
-        if (this.featureTypes && this.propertyTypeData) {
-            for (const ft in this.featureTypes) {
-                if (this.featureTypes.hasOwnProperty(ft)) {
-                    const featureType = this.featureTypes[ft];
-                    if (!featureType.properties) {
-                        featureType.properties = [];
-                    }
-                    if (featureType.propertyTypeKeys) {
-                        const keys = featureType.propertyTypeKeys.split(';');
-                        for (const key of keys) {
-                            if (this.propertyTypeData.hasOwnProperty(key)) {
-                                featureType.properties.push(this.propertyTypeData[key]);
-                            }
-                        }
-                    } else {
-                        featureType.properties = Object.values(this.propertyTypeData);
-                    }
-
-                }
-            }
-        }
-    }
+    // #region Public Static Methods (3)
 
     /** Fetches meta file describing feature types and property types  */
     public static loadFeatureTypesFromUrl(url: string): Promise<FeatureTypes> {
-        return new Promise(async (resolve, reject) => {            
+        return new Promise(async (resolve, reject) => {
             this.loadMetaUrl(url).then(mf => {
-                if (mf.featureTypes) {                    
+                if (mf.featureTypes) {
                     resolve(mf.featureTypes);
                 } else {
                     reject();
                 }
-            }).catch(e => {
+            }).catch(() => {
                 reject();
-            })
+            });
         });
     }
 
+    public static loadMetaUrl(url: string): Promise<MetaFile> {
+        return new Promise(async (resolve, reject) => {
+            const res: MetaFile = new MetaFile();
 
+            Axios.get(url).then(response => {
+                if (response.data) {
+                    // load feature types from file
+                    if (response.data.hasOwnProperty('featureTypes')) {
+                        res.featureTypes = response.data.featureTypes;
+                    }
+
+                    // check if property type data was specified
+                    if (response.data.hasOwnProperty('propertyTypeData')) {
+                        res.propertyTypeData = response.data.propertyTypeData;
+                        res.linkPropertyTypeData();
+                    }
+                    resolve(res);
+                } else {
+                    reject();
+                }
+            }).catch(() => {
+                reject();
+            });
+
+        });
+    }
 
     public static updateMeta(layer: IMapLayer, ft?: FeatureType): Promise<any> {
         return new Promise((resolve, reject) => {
-            let result = {};
+            const result = {};
             if (!ft || !ft.properties || !ft.propertyMap || !layer._source || !layer._source._geojson) { reject(); return; }
-            let source = layer._source!._geojson;
+            const source = layer._source!._geojson;
 
             for (const prop of ft.properties) {
                 if (!prop._values) {
@@ -91,9 +87,7 @@ export class MetaFile {
                                     }
                                     prop._values!.push(value);
                                 }
-
                             }
-
                         }
                     }
                 }
@@ -102,14 +96,13 @@ export class MetaFile {
             for (const proptype of ft.properties) {
                 if (proptype._values) {
                     proptype.count = proptype._values.length;
-                    let unique: any[] = uniq(proptype._values);
-                    proptype.unique = unique.length;
+                    proptype.unique = uniqueCountSorted(proptype._values);
                     if (proptype.unique < 7) {
                         // proptype.options =  unique.reduce(i => ) new Map(unique, (i) => [i,i] as [string, string]);
                     }
 
                     if (proptype.type === 'number' && proptype._values) {
-                        if (unique.length > 1) {
+                        if (proptype.unique > 1) {
                             proptype.min = parseFloat(
                                 min(proptype._values).toString()
                             );
@@ -132,36 +125,118 @@ export class MetaFile {
                 }
             }
 
-
             resolve(result);
         });
     }
 
-    public static loadMetaUrl(url: string): Promise<MetaFile> {
-        return new Promise(async (resolve, reject) => {
-            let res: MetaFile = new MetaFile();
-
-            Axios.get(url).then(response => {
-                if (response.data) {
-                    // load feature types from file
-                    if (response.data.hasOwnProperty('featureTypes')) {
-                        res.featureTypes = response.data.featureTypes;
+    public static updateMetaProperty(layerSource: LayerSource, ft: FeatureType, prop: PropertyType) {
+        if (prop._initialized) { return; }
+        prop._values = [];
+        if (!ft || !ft.properties || !ft.propertyMap || !layerSource._geojson) { return; }
+        const source = layerSource._geojson;
+        if (source.features && source.features.length > 0) {
+            //   let feature = source.features[0];
+            for (const feature of source.features) {
+                if (feature.properties) {
+                    if (prop.label && feature.properties.hasOwnProperty(prop.label)) {
+                        if (prop.type !== undefined) {
+                            let value = feature.properties[prop.label];
+                            if (
+                                prop.type === 'number' &&
+                                typeof value === 'string'
+                            ) {
+                                value = parseFloat(value);
+                                feature.properties[prop.label] = value;
+                            }
+                            prop._values!.push(value);
+                        }
                     }
-
-                    // check if property type data was specified
-                    if (response.data.hasOwnProperty('propertyTypeData')) {
-                        res.propertyTypeData = response.data.propertyTypeData;
-                        res.linkPropertyTypeData();
-                    }
-                    resolve(res);
-                } else {
-                    reject();
                 }
-            }).catch(e => {
-                reject();
-            })
+            }
+        }
 
-        })
+        prop.count = prop._values.length;
+        prop.unique = uniqueCountSorted(prop._values);
+        if (prop.unique < 7) {
+            // prop.options =  unique.reduce(i => ) new Map(unique, (i) => [i,i] as [string, string]);
+        }
+
+        if (prop.type === 'number' && prop._values) {
+            if (prop.unique > 1) {
+                prop.min = parseFloat(
+                    min(prop._values).toString()
+                );
+                prop.max = parseFloat(
+                    max(prop._values).toString()
+                );
+                prop.mean = mean(prop._values);
+                // if (prop.count > 10) {
+                //     prop.median = median(prop._values);
+                //     prop.sd = standardDeviation(
+                //         prop._values
+                //     );
+                // }
+            }
+
+            // let steps = ckmeans(prop._values, 5);
+            // prop.legend = {};
+        }
+        delete prop._values;
+        prop._initialized = true;
     }
 
+    // #endregion Public Static Methods (3)
+
+    // #region Properties (2)
+
+    public featureTypes?: FeatureTypes;
+    public propertyTypeData?: PropertyCollection;
+
+    // #endregion Properties (2)
+
+    // #region Public Methods (1)
+
+
+
+    // if property data was specified seperately, link them to the feature types
+    public linkPropertyTypeData() {
+        if (this.featureTypes && this.propertyTypeData) {
+            this.checkPropertyLabels(this.propertyTypeData as any);
+            for (const ft in this.featureTypes) {
+                if (this.featureTypes.hasOwnProperty(ft)) {
+                    const featureType = this.featureTypes[ft];
+                    if (!featureType.properties) {
+                        featureType.properties = [];
+                    }
+                    if (featureType.propertyTypeKeys) {
+                        const keys = featureType.propertyTypeKeys.split(';');
+                        for (const key of keys) {
+                            if (this.propertyTypeData.hasOwnProperty(key)) {
+                                featureType.properties.push(this.propertyTypeData[key]);
+                            }
+                        }
+                    } else {
+                        featureType.properties = Object.values(this.propertyTypeData);
+                    }
+                }
+            }
+        }
+    }
+
+    private checkPropertyLabels(properties: { [key: string]: PropertyType}) {
+        for (const key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                const value = properties[key];
+                if (!value.label) {
+                    value.label = key;
+                }
+                if (!value.title) {
+                    value.title = key;
+                }
+            }
+        }
+
+    }
+
+    // #endregion Public Methods (1)
 }

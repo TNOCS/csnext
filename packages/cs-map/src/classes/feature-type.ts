@@ -1,58 +1,6 @@
 import { Form, FormField } from '@csnext/cs-core';
 import { LayerStyle, MapboxStyles } from './layer-style';
-
-@Form({
-    title: 'Property',
-    hideTitle: true,
-    groups: {
-        number: {
-            visible(f) {
-                return f.hasOwnProperty('type') && f['type'] === 'number';
-            }
-        }
-    }
-})
-export class PropertyType {
-    @FormField({ title: 'Title', type: 'string' })
-    public title?: string;
-    @FormField({
-        title: 'Type',
-        type: 'selection',
-        defaultValue: 'text',
-        required: true,
-        options: ['text', 'number']
-    })
-    public _key?: string;
-    @FormField({ title: 'Label', type: 'string' })
-    public label!: string;
-    public type?: string;
-    public description?: string;
-    @FormField({ title: 'String format', type: 'string' })
-    public stringFormat?: string;
-    @FormField({ title: 'Handlebar format', type: 'string' })
-    public handlebarFormat?: string;
-    @FormField({ title: 'Min', type: 'number', group: 'number' })
-    public min?: number;
-    @FormField({ title: 'Max', type: 'number', group: 'number' })
-    public max?: number;
-    public count?: number;
-    public unique?: number;
-    // public options?: any[];
-    public mean?: number;
-    public median?: number;
-    public sd?: number;
-    public legendStyle?: MapboxStyles;    
-
-    @FormField({ title: 'Default', type: 'number', group: 'number' })
-    public default?: number;
-    public options?: { [key: string]: string };
-    @FormField({ title: 'Section', type: 'string' })
-    public section?: string;
-    public _values?: any[];
-    public _initialized?: boolean = false;
-
-}
-export type PropertyCollection = PropertyType[];
+import { PropertyCollection, PropertyType } from './property-type';
 
 @Form({
     title: 'Feature Types',
@@ -63,15 +11,15 @@ export type PropertyCollection = PropertyType[];
 export class FeatureTypes {
     [key: string]: FeatureType;
 }
+
 @Form({ title: 'Feature', hideTitle: true })
 export class FeatureType {
-    @FormField({ title: 'Title', type: 'string' })
-    public title?: string;
-    public mode?: string;
-    public style?: LayerStyle;
-    public notification?: string;
+    // #region Properties (8)
+
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
+    public mode?: string;
+    public notification?: string;
     @FormField({
         title: 'Properties',
         type: 'array',
@@ -83,11 +31,16 @@ export class FeatureType {
         // }
     })
     public properties?: PropertyCollection;
+    public propertyMap!: { [label: string]: PropertyType };
     /**  list of properties from propertyTypeData (as key) used for this featureType, seperated by a semi column
      * e.g: name;birthday;birthplay
     */
     public propertyTypeKeys?: string;
-    public propertyMap!: { [label: string]: PropertyType };
+    public style?: LayerStyle;
+    @FormField({ title: 'Title', type: 'string' })
+    public title?: string;
+
+    // #endregion Properties (8)
 }
 
 // "circle": {

@@ -1,5 +1,4 @@
 import Component from 'vue-class-component';
-
 import './layer-details.css';
 import { Watch } from 'vue-property-decorator';
 import { BaseLayer, MapDatasource } from '../..';
@@ -13,16 +12,16 @@ import { WidgetBase } from '@csnext/cs-client';
     template: require('./layer-details.html')
 } as any)
 export class LayerDetails extends WidgetBase {
+    // #region Properties (4)
 
-    public filterItems = '';
-    public filter: string = '';
     public allFeatures?: Feature[];
+    public listFilter: string = '';
+    public filterItems = '';
+    public filteredFeatures: Feature[] = [];
 
+    // #endregion Properties (4)
 
-    @Watch('filter')
-    filterChanged(v: string) {
-        this.updateFeatures();
-    }
+    // #region Public Accessors (4)
 
     /** get active layer */
     public get layer(): BaseLayer | undefined {
@@ -30,27 +29,6 @@ export class LayerDetails extends WidgetBase {
             return this.widget.data.layer as BaseLayer;
         }
         return undefined;
-    }
-
-
-
-    /** returns true if features is included filter */
-    private filterFeature(f: Feature, s: string): boolean {
-        if (!this.layer) { return false; }
-        if (!s || s.length === 0) { return true; }
-        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
-    }
-
-    public filteredFeatures: Feature[] = [];
-
-    /** get feature title */
-    public get title(): string {
-        const layer = this.layer;
-        if (layer && layer.title) {
-            return layer.title;
-        } else {
-            return '';
-        }
     }
 
     /** get layer color */
@@ -68,6 +46,29 @@ export class LayerDetails extends WidgetBase {
         }
     }
 
+    /** get feature title */
+    public get title(): string {
+        const layer = this.layer;
+        if (layer && layer.title) {
+            return layer.title;
+        } else {
+            return '';
+        }
+    }
+
+    // #endregion Public Accessors (4)
+
+    // #region Public Methods (4)
+
+    public contentLoaded() {
+        this.updateFeatures();
+    }
+
+    @Watch('listFilter')
+    public filterChanged(v: string) {
+        this.updateFeatures();
+    }
+
     public fitLayer() {
         if (this.manager && this.layer) {
             this.manager.zoomLayer(this.layer);
@@ -80,24 +81,29 @@ export class LayerDetails extends WidgetBase {
         }
     }
 
-    private getAllFeatures() {
+    // #endregion Public Methods (4)
 
+    // #region Private Methods (3)
+
+    /** returns true if features is included filter */
+    private filterFeature(f: Feature, s: string): boolean {
+        if (!this.layer) { return false; }
+        if (!s || s.length === 0) { return true; }
+        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
+    }
+
+    private getAllFeatures() {
         if (this.layer && this.layer._source && this.layer._source._geojson) {
             this.allFeatures = this.layer._source._geojson.features;
         }
-
     }
 
     private updateFeatures() {
         if (!this.allFeatures) {
             this.getAllFeatures();
         }
-        this.$set(this, 'filteredFeatures', this.allFeatures!.filter(f => this.filterFeature(f, this.filter)));
-
+        this.$set(this, 'filteredFeatures', this.allFeatures!.filter(f => this.filterFeature(f, this.listFilter)));
     }
 
-    public contentLoaded() {
-        this.updateFeatures();
-    }
-
+    // #endregion Private Methods (3)
 }

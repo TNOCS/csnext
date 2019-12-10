@@ -11,7 +11,7 @@ export class LayerSources implements IDatasource {
         s._geojson = geojson;
         s.id = id;
         s._loaded = true;
-        this.layers[id] = s;        
+        this.layers[id] = s;
     }
 
     public images: { [id: string]: string} = {};

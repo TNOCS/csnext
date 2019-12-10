@@ -11,7 +11,7 @@ export interface ILayerService {
 export interface IStartStopService extends ILayerService {
     type: string;
     Start?: (manager: MapDatasource) => void;
-    Stop?: (manager: MapDatasource) => void;    
+    Stop?: (manager: MapDatasource) => void;
     getInstance?: (init?: Partial<any>) => IStartStopService;
 }
 
@@ -20,12 +20,12 @@ export abstract class LayerServiceBase implements ILayerService, IStartStopServi
     public title?: string;
     public type!: string;
     public options?: ILayerServiceOptions;
-    
+
     public async Start() {
-        
+
     }
 
     public async Stop() {
-        
+
     }
 }

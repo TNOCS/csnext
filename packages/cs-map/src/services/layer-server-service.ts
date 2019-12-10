@@ -5,7 +5,6 @@ import {
     LayerStyle,
     CsMap,
     ILayerAction,
-    ILayer,
     LayerServerServiceOptions,
     IFeatureAction,
     MapDatasource,
@@ -64,7 +63,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         this.options &&
                         manager.layers
                     ) {
-                        for (const layer of response.data as ILayer[]) {
+                        for (const layer of response.data as IMapLayer[]) {
                             const style = layer.style as LayerStyle;
                             // style.mapbox = new MapboxStyles({
 

@@ -7,7 +7,7 @@
     font-size: 18px;
     padding-bottom: 8px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
   }
 
   .map-component-widget {
@@ -17,4 +17,38 @@
 
   .mapboxgl-ctrl-group {
     border-radius: 0 !important;
+  }
+
+  .default-popup {
+    margin: 8px;
+  }
+
+  .default-popup-layer {
+    font-size: 12px
+
+  }
+
+  .default-popup-feature {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .default-popup-split {
+    min-width: 200px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-top-width: 1px;
+    border-top-color: black;
+    border-top-style: solid;
+  }
+
+  .default-popup-property-title {
+    font-size: 10px;
+    max-width: 150px;
+  }
+
+  .default-popup-property-value {
+    font-size: 12px;
+    float:right;
+    
   }

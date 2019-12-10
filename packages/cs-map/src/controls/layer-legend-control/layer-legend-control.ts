@@ -5,13 +5,13 @@ import { MapDatasource } from '../..';
 export class LayerLegendControl {
     public map?: mapboxgl.Map;
     public container?: HTMLDivElement;
-    private editor? :  LayerLegendComponent;
+    private editor?: LayerLegendComponent;
 
     constructor(public manager: MapDatasource) {
 
     }
 
-    onAdd(map) {
+    public onAdd(map: mapboxgl.Map) {
         this.map = map;
         this.container = document.createElement('div');
         this.container.id = 'layer-legend-' + this.manager.id;
@@ -32,14 +32,12 @@ export class LayerLegendControl {
         return this.container;
     }
 
-
-
-    onRemove() {         
-        if (this.editor) {            
+    public onRemove() {
+        if (this.editor) {
             this.editor.$destroy();
-            this.editor.$el.remove();                    
+            this.editor.$el.remove();
         }
-       
+
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
             this.map = undefined;

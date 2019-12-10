@@ -2,11 +2,12 @@
   "extends": "tslint:recommended",
   "rules": {
     "no-console": false,
+    "no-empty": false,
     "quotemark": [
       true,
       "single",
       "double"
-    ],
+    ],    
     "max-line-length": false,
     "whitespace": [
       true,
