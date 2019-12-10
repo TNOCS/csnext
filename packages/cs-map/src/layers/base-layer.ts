@@ -380,8 +380,8 @@ export class BaseLayer implements IMapLayer {
     }
 
     public removeLayer(map: CsMap) {
-        this._legends = [];
-        this._filters = {};
+        // this._legends = [];
+        // this._filters = {};
     }
 
     public removeLegend(
