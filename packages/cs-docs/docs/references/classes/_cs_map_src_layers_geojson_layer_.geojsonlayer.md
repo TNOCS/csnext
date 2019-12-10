@@ -20,7 +20,7 @@
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[constructor](_cs_map_src_layers_base_layer_.baselayer.md#constructor)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:59](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L59)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:86](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L86)*
 
 **Parameters:**
 
@@ -32,13 +32,23 @@ Name | Type |
 
 ## Properties
 
+###  _busManager
+
+• **_busManager**: *[MessageBusManager](_cs_core_src_utils_message_bus_message_bus_manager_.messagebusmanager.md)* =  new MessageBusManager()
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_busManager](_cs_map_src_layers_base_layer_.baselayer.md#_busmanager)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:58](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L58)*
+
+___
+
 ### `Optional` _events
 
 • **_events**? : *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_events](_cs_map_src_layers_base_layer_.baselayer.md#optional-_events)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_events](_cs_map_src_layers_base_layer_.baselayer.md#optional-_events)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:47](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L47)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L59)*
 
 ___
 
@@ -46,19 +56,33 @@ ___
 
 • **_extensions**: *[ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)[]* =  []
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_extensions](_cs_map_src_layers_base_layer_.baselayer.md#_extensions)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_extensions](_cs_map_src_layers_base_layer_.baselayer.md#_extensions)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:50](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L50)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:60](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L60)*
 
 ___
 
-### `Optional` _featureEventHandle
+###  _featureType
 
-• **_featureEventHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
+• **_featureType**: *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) | undefined*
 
-*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_featureEventHandle](_cs_map_src_layers_base_layer_.baselayer.md#optional-_featureeventhandle)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_featureType](_cs_map_src_layers_base_layer_.baselayer.md#_featuretype)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:123](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L123)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:61](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L61)*
+
+___
+
+### `Optional` _filters
+
+• **_filters**? : *object*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_filters](_cs_map_src_layers_base_layer_.baselayer.md#optional-_filters)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:62](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L62)*
+
+#### Type declaration:
+
+* \[ **key**: *string*\]: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)
 
 ___
 
@@ -66,9 +90,9 @@ ___
 
 • **_initialized**? : *boolean* = false
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_initialized](_cs_map_src_layers_base_layer_.baselayer.md#optional-_initialized)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_initialized](_cs_map_src_layers_base_layer_.baselayer.md#optional-_initialized)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:52](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L52)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L64)*
 
 ___
 
@@ -78,7 +102,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_legends](_cs_map_src_layers_base_layer_.baselayer.md#optional-_legends)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:119](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L119)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:66](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L66)*
 
 list of active layers
 
@@ -88,19 +112,19 @@ ___
 
 • **_manager**? : *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_manager](_cs_map_src_layers_base_layer_.baselayer.md#optional-_manager)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_manager](_cs_map_src_layers_base_layer_.baselayer.md#optional-_manager)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:46](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L46)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:67](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L67)*
 
 ___
 
 ### `Optional` _parent
 
-• **_parent**? : *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)*
+• **_parent**? : *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_parent](_cs_map_src_layers_base_layer_.baselayer.md#optional-_parent)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_parent](_cs_map_src_layers_base_layer_.baselayer.md#optional-_parent)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:34](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L34)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L68)*
 
 ___
 
@@ -110,7 +134,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_service](_cs_map_src_layers_base_layer_.baselayer.md#optional-_service)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:88](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L88)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:69](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L69)*
 
 ___
 
@@ -120,7 +144,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_showMenu](_cs_map_src_layers_base_layer_.baselayer.md#optional-_showmenu)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:121](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L121)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:70](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L70)*
 
 ___
 
@@ -130,7 +154,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_showMore](_cs_map_src_layers_base_layer_.baselayer.md#optional-_showmore)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:122](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L122)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:71](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L71)*
 
 ___
 
@@ -138,9 +162,9 @@ ___
 
 • **_source**? : *[LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_source](_cs_map_src_layers_base_layer_.baselayer.md#optional-_source)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[_source](_cs_map_src_layers_base_layer_.baselayer.md#optional-_source)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:51](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L51)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L73)*
 
 ___
 
@@ -148,7 +172,7 @@ ___
 
 • **clickEvent**: *any* =  this.onClick.bind(this)
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:361](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L361)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:85](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L85)*
 
 ___
 
@@ -158,7 +182,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[color](_cs_map_src_layers_base_layer_.baselayer.md#color)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:72](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L72)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:75](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L75)*
 
 ___
 
@@ -168,7 +192,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[defaultFeatureType](_cs_map_src_layers_base_layer_.baselayer.md#optional-defaultfeaturetype)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:78](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L78)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:77](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L77)*
 
 if multiple feature types are avaible, this is the default feature type key
 
@@ -180,7 +204,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[description](_cs_map_src_layers_base_layer_.baselayer.md#description)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:65](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L65)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:79](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L79)*
 
 ___
 
@@ -190,7 +214,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[disableFeatureList](_cs_map_src_layers_base_layer_.baselayer.md#optional-disablefeaturelist)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:86](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L86)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:81](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L81)*
 
 ___
 
@@ -198,7 +222,7 @@ ___
 
 • **enterEvent**: *any* =  this.onEnter.bind(this)
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:359](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L359)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:83](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L83)*
 
 ___
 
@@ -206,9 +230,9 @@ ___
 
 • **extensions**? : *[ILayerExtensionType](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)[]*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[extensions](_cs_map_src_layers_base_layer_.baselayer.md#optional-extensions)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[extensions](_cs_map_src_layers_base_layer_.baselayer.md#optional-extensions)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:49](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L49)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L82)*
 
 ___
 
@@ -218,17 +242,17 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[featureTypes](_cs_map_src_layers_base_layer_.baselayer.md#optional-featuretypes)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:117](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L117)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L95)*
 
 ___
 
 ### `Optional` filter
 
-• **filter**? : *any*
+• **filter**? : *any[]*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[filter](_cs_map_src_layers_base_layer_.baselayer.md#optional-filter)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[filter](_cs_map_src_layers_base_layer_.baselayer.md#optional-filter)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:35](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L35)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:96](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L96)*
 
 ___
 
@@ -238,7 +262,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[hideInLayerList](_cs_map_src_layers_base_layer_.baselayer.md#optional-hideinlayerlist)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:81](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L81)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:98](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L98)*
 
 ___
 
@@ -248,7 +272,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[id](_cs_map_src_layers_base_layer_.baselayer.md#id)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:58](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L58)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:99](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L99)*
 
 ___
 
@@ -256,7 +280,7 @@ ___
 
 • **isEditable**? : *boolean*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:33](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L33)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:74](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L74)*
 
 ___
 
@@ -264,9 +288,9 @@ ___
 
 • **layout**? : *mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[layout](_cs_map_src_layers_base_layer_.baselayer.md#optional-layout)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[layout](_cs_map_src_layers_base_layer_.baselayer.md#optional-layout)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:36](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L36)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:114](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L114)*
 
 ___
 
@@ -274,7 +298,7 @@ ___
 
 • **leaveEvent**: *any* =  this.onLeave.bind(this)
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:360](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L360)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:84](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L84)*
 
 ___
 
@@ -282,15 +306,7 @@ ___
 
 • **mapEventsRegistered**: *boolean* = false
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:54](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L54)*
-
-___
-
-### `Optional` mask
-
-• **mask**? : *boolean*
-
-*Defined in [cs-map/src/layers/geojson-layer.ts:30](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L30)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:76](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L76)*
 
 ___
 
@@ -298,7 +314,7 @@ ___
 
 • **moveEvent**: *any* =  this.onMove.bind(this)
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:362](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L362)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:86](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L86)*
 
 ___
 
@@ -308,7 +324,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[openFeatureDetails](_cs_map_src_layers_base_layer_.baselayer.md#optional-openfeaturedetails)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:84](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L84)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:120](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L120)*
 
 ___
 
@@ -316,9 +332,9 @@ ___
 
 • **paint**? : *mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[paint](_cs_map_src_layers_base_layer_.baselayer.md#optional-paint)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[paint](_cs_map_src_layers_base_layer_.baselayer.md#optional-paint)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:41](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L41)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:121](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L121)*
 
 ___
 
@@ -326,9 +342,9 @@ ___
 
 • **parentId**? : *string*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[parentId](_cs_map_src_layers_base_layer_.baselayer.md#optional-parentid)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[parentId](_cs_map_src_layers_base_layer_.baselayer.md#optional-parentid)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:32](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L32)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:126](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L126)*
 
 ___
 
@@ -338,7 +354,7 @@ ___
         closeButton: false
     })
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:57](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L57)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:79](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L79)*
 
 ___
 
@@ -346,9 +362,9 @@ ___
 
 • **popupContent**? : *string | Function | undefined*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[popupContent](_cs_map_src_layers_base_layer_.baselayer.md#optional-popupcontent)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[popupContent](_cs_map_src_layers_base_layer_.baselayer.md#optional-popupcontent)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:48](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L48)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:127](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L127)*
 
 ___
 
@@ -356,9 +372,9 @@ ___
 
 • **source**? : *string | [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[source](_cs_map_src_layers_base_layer_.baselayer.md#optional-source)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[source](_cs_map_src_layers_base_layer_.baselayer.md#optional-source)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:28](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L28)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:128](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L128)*
 
 ___
 
@@ -366,9 +382,9 @@ ___
 
 • **style**? : *[LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md)*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[style](_cs_map_src_layers_base_layer_.baselayer.md#optional-style)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[style](_cs_map_src_layers_base_layer_.baselayer.md#optional-style)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:31](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L31)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:129](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L129)*
 
 ___
 
@@ -378,7 +394,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[tags](_cs_map_src_layers_base_layer_.baselayer.md#tags)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:70](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L70)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:131](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L131)*
 
 ___
 
@@ -388,7 +404,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[title](_cs_map_src_layers_base_layer_.baselayer.md#title)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:62](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L62)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:134](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L134)*
 
 ___
 
@@ -396,7 +412,7 @@ ___
 
 • **type**? : *"symbol" | "raster" | "line" | "fill" | "circle"*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:26](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L26)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:71](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L71)*
 
 ___
 
@@ -404,9 +420,9 @@ ___
 
 • **typeId**? : *string* = "geojson"
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[typeId](_cs_map_src_layers_base_layer_.baselayer.md#optional-typeid)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[typeId](_cs_map_src_layers_base_layer_.baselayer.md#optional-typeid)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:25](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L25)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:135](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L135)*
 
 ___
 
@@ -414,7 +430,7 @@ ___
 
 • **types**: *string[]* =  ['symbol', 'raster', 'line', 'fill', 'circle']
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L23)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:69](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L69)*
 
 ___
 
@@ -422,9 +438,9 @@ ___
 
 • **visible**? : *boolean*
 
-*Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[visible](_cs_map_src_layers_base_layer_.baselayer.md#optional-visible)*
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[visible](_cs_map_src_layers_base_layer_.baselayer.md#optional-visible)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:29](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L29)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:136](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L136)*
 
 ## Accessors
 
@@ -432,9 +448,21 @@ ___
 
 • **get Map**(): *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:73](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L73)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L18)*
 
 **Returns:** *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
+
+___
+
+###  MapControl
+
+• **get MapControl**(): *mapboxgl.Map | undefined*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[MapControl](_cs_map_src_layers_base_layer_.baselayer.md#mapcontrol)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:156](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L156)*
+
+**Returns:** *mapboxgl.Map | undefined*
 
 ___
 
@@ -444,7 +472,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[Visible](_cs_map_src_layers_base_layer_.baselayer.md#visible)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:79](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L79)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:24](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L24)*
 
 **Returns:** *boolean | undefined*
 
@@ -452,7 +480,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[Visible](_cs_map_src_layers_base_layer_.baselayer.md#visible)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:83](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L83)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L28)*
 
 **Parameters:**
 
@@ -468,13 +496,13 @@ ___
 
 • **get opacity**(): *number | undefined*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:99](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L99)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:44](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L44)*
 
 **Returns:** *number | undefined*
 
 • **set opacity**(`value`: number | undefined): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:90](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L90)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:35](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L35)*
 
 **Parameters:**
 
@@ -490,7 +518,7 @@ Name | Type |
 
 ▸ **addImage**(`id`: string, `url`: string): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:254](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L254)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:220](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L220)*
 
 **Parameters:**
 
@@ -509,7 +537,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[addLayer](_cs_map_src_layers_base_layer_.baselayer.md#addlayer)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:283](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L283)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:249](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L249)*
 
 **Parameters:**
 
@@ -521,11 +549,29 @@ Name | Type |
 
 ___
 
+###  applyFilter
+
+▸ **applyFilter**(`filter`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *void*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[applyFilter](_cs_map_src_layers_base_layer_.baselayer.md#applyfilter)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:186](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L186)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`filter` | [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md) |
+
+**Returns:** *void*
+
+___
+
 ### `Private` createPopup
 
 ▸ **createPopup**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md), `layer`: [GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md), `e`: [FeatureEventDetails](../interfaces/_cs_map_src_components_cs_map_feature_event_details_.featureeventdetails.md)): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:444](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L444)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:377](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L377)*
 
 **Parameters:**
 
@@ -545,17 +591,29 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getBounds](_cs_map_src_layers_base_layer_.baselayer.md#getbounds)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:163](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L163)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:129](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L129)*
 
 **Returns:** *LngLatBounds | undefined*
 
 ___
 
+###  getFeatureType
+
+▸ **getFeatureType**(): *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getFeatureType](_cs_map_src_layers_base_layer_.baselayer.md#getfeaturetype)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:229](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L229)*
+
+**Returns:** *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)*
+
+___
+
 ###  getInstance
 
-▸ **getInstance**(`init?`: Partial‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›): *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)*
+▸ **getInstance**(`init?`: Partial‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›): *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)‹›*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:68](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L68)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:94](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L94)*
 
 **Parameters:**
 
@@ -563,7 +621,7 @@ Name | Type |
 ------ | ------ |
 `init?` | Partial‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)› |
 
-**Returns:** *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)*
+**Returns:** *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)‹›*
 
 ___
 
@@ -573,9 +631,27 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getLayerActions](_cs_map_src_layers_base_layer_.baselayer.md#getlayeractions)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:154](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L154)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:248](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L248)*
 
 **Returns:** *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
+
+___
+
+###  getPropertType
+
+▸ **getPropertType**(`prop`: string): *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | undefined*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getPropertType](_cs_map_src_layers_base_layer_.baselayer.md#getproperttype)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:298](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L298)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`prop` | string |
+
+**Returns:** *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | undefined*
 
 ___
 
@@ -585,7 +661,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getStyleLegend](_cs_map_src_layers_base_layer_.baselayer.md#getstylelegend)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:230](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L230)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:309](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L309)*
 
 **Parameters:**
 
@@ -604,7 +680,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getStyleLegendKey](_cs_map_src_layers_base_layer_.baselayer.md#getstylelegendkey)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:217](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L217)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:330](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L330)*
 
 **Parameters:**
 
@@ -616,13 +692,31 @@ Name | Type |
 
 ___
 
+###  initFilter
+
+▸ **initFilter**(`property`: string): *void*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[initFilter](_cs_map_src_layers_base_layer_.baselayer.md#initfilter)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:343](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L343)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | string |
+
+**Returns:** *void*
+
+___
+
 ###  initLayer
 
 ▸ **initLayer**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *any*
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[initLayer](_cs_map_src_layers_base_layer_.baselayer.md#initlayer)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:178](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L178)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:144](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L144)*
 
 **Parameters:**
 
@@ -638,7 +732,7 @@ ___
 
 ▸ **isFunction**(`functionToCheck`: any): *boolean*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:466](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L466)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:398](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L398)*
 
 **Parameters:**
 
@@ -654,7 +748,7 @@ ___
 
 ▸ **layerTypeProps**(): *string[]*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:130](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L130)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:99](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L99)*
 
 **Returns:** *string[]*
 
@@ -666,7 +760,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[moveLayer](_cs_map_src_layers_base_layer_.baselayer.md#movelayer)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:266](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L266)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:232](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L232)*
 
 **Parameters:**
 
@@ -682,7 +776,7 @@ ___
 
 ▸ **onClick**(`e`: any): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:396](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L396)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:333](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L333)*
 
 **Parameters:**
 
@@ -698,7 +792,7 @@ ___
 
 ▸ **onEnter**(`e`: any): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:420](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L420)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:357](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L357)*
 
 **Parameters:**
 
@@ -714,7 +808,7 @@ ___
 
 ▸ **onLeave**(`e`: any): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:408](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L408)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:345](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L345)*
 
 **Parameters:**
 
@@ -730,7 +824,7 @@ ___
 
 ▸ **onMove**(`e`: any): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:387](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L387)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:324](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L324)*
 
 **Parameters:**
 
@@ -744,11 +838,11 @@ ___
 
 ###  parsePopup
 
-▸ **parsePopup**(`f?`: Feature): *any*
+▸ **parsePopup**(`f?`: Feature): *string*
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[parsePopup](_cs_map_src_layers_base_layer_.baselayer.md#parsepopup)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:257](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L257)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:358](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L358)*
 
 **Parameters:**
 
@@ -756,7 +850,7 @@ Name | Type |
 ------ | ------ |
 `f?` | Feature |
 
-**Returns:** *any*
+**Returns:** *string*
 
 ___
 
@@ -766,7 +860,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[parseTitle](_cs_map_src_layers_base_layer_.baselayer.md#parsetitle)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:267](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L267)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:371](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L371)*
 
 **Parameters:**
 
@@ -782,7 +876,7 @@ ___
 
 ▸ **registerLayerExtensions**(): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:342](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L342)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:284](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L284)*
 
 **Returns:** *void*
 
@@ -792,7 +886,7 @@ ___
 
 ▸ **registerMapEvents**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:364](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L364)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:301](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L301)*
 
 **Parameters:**
 
@@ -808,7 +902,7 @@ ___
 
 ▸ **removeExtensions**(): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:435](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L435)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:368](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L368)*
 
 **Returns:** *void*
 
@@ -820,7 +914,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[removeLayer](_cs_map_src_layers_base_layer_.baselayer.md#removelayer)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:272](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L272)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:238](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L238)*
 
 **Parameters:**
 
@@ -834,18 +928,36 @@ ___
 
 ###  removeLegend
 
-▸ **removeLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
+▸ **removeLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[removeLegend](_cs_map_src_layers_base_layer_.baselayer.md#removelegend)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:207](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L207)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:387](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L387)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md) &#124; string |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) &#124; string |
 `refreshLayer` | boolean |
+
+**Returns:** *void*
+
+___
+
+###  setFilter
+
+▸ **setFilter**(`filter`: any[]): *void*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[setFilter](_cs_map_src_layers_base_layer_.baselayer.md#setfilter)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:392](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L392)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`filter` | any[] |
 
 **Returns:** *void*
 
@@ -853,17 +965,17 @@ ___
 
 ###  setLegend
 
-▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
+▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[setLegend](_cs_map_src_layers_base_layer_.baselayer.md#setlegend)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:212](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L212)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:399](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L399)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_feature_type_.propertytype.md) &#124; string |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) &#124; string |
 `refreshLayer` | boolean |
 
 **Returns:** *void*
@@ -876,7 +988,7 @@ ___
 
 *Overrides [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[setOpacity](_cs_map_src_layers_base_layer_.baselayer.md#setopacity)*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:141](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L141)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:110](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L110)*
 
 **Parameters:**
 
@@ -888,11 +1000,29 @@ Name | Type |
 
 ___
 
+###  setPopupContent
+
+▸ **setPopupContent**(`value`: string | function): *void*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[setPopupContent](_cs_map_src_layers_base_layer_.baselayer.md#setpopupcontent)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:406](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L406)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | string &#124; function |
+
+**Returns:** *void*
+
+___
+
 ### `Private` unregisterMapEvents
 
 ▸ **unregisterMapEvents**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *void*
 
-*Defined in [cs-map/src/layers/geojson-layer.ts:376](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/geojson-layer.ts#L376)*
+*Defined in [packages/cs-map/src/layers/geojson-layer.ts:313](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/geojson-layer.ts#L313)*
 
 **Parameters:**
 
@@ -904,13 +1034,25 @@ Name | Type |
 
 ___
 
+###  updateFilters
+
+▸ **updateFilters**(): *void*
+
+*Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[updateFilters](_cs_map_src_layers_base_layer_.baselayer.md#updatefilters)*
+
+*Defined in [packages/cs-map/src/layers/base-layer.ts:410](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L410)*
+
+**Returns:** *void*
+
+___
+
 ###  updateLayer
 
 ▸ **updateLayer**(): *void*
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[updateLayer](_cs_map_src_layers_base_layer_.baselayer.md#updatelayer)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:203](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L203)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:418](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L418)*
 
 **Returns:** *void*
 
@@ -922,7 +1064,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[updateLegends](_cs_map_src_layers_base_layer_.baselayer.md#updatelegends)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:250](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L250)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:420](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L420)*
 
 **Returns:** *void*
 
@@ -934,7 +1076,7 @@ ___
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[getFeatureFromEventDetails](_cs_map_src_layers_base_layer_.baselayer.md#static-getfeaturefromeventdetails)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:45](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L45)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L46)*
 
 **Parameters:**
 
@@ -952,17 +1094,17 @@ Name | Type |
 
 *Inherited from [BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md).[intlData](_cs_map_src_layers_base_layer_.baselayer.md#intldata)*
 
-*Defined in [cs-map/src/layers/base-layer.ts:135](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L135)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:100](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L100)*
 
 ###  locales
 
 • **locales**: *string* = "en-US"
 
-*Defined in [cs-map/src/layers/base-layer.ts:136](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L136)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:101](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L101)*
 
 ▪ **formats**: *object*
 
-*Defined in [cs-map/src/layers/base-layer.ts:137](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/layers/base-layer.ts#L137)*
+*Defined in [packages/cs-map/src/layers/base-layer.ts:102](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L102)*
 
 * **number**: *object*
 

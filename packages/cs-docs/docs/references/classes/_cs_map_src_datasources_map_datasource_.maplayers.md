@@ -18,7 +18,7 @@
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[constructor](_cs_map_src_datasources_map_datasource_.mapdatasource.md#constructor)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:74](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L74)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L82)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ Name | Type |
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[_sources](_cs_map_src_datasources_map_datasource_.mapdatasource.md#optional-_sources)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:51](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L51)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:72](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L72)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[activeDrawLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#optional-activedrawlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:55](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L55)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L73)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[events](_cs_map_src_datasources_map_datasource_.mapdatasource.md#events)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:54](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L54)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:74](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L74)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[id](_cs_map_src_datasources_map_datasource_.mapdatasource.md#id)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:52](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L52)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:75](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L75)*
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[layers](_cs_map_src_datasources_map_datasource_.mapdatasource.md#optional-layers)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:77](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L77)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:89](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L89)*
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[services](_cs_map_src_datasources_map_datasource_.mapdatasource.md#optional-services)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:79](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L79)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:91](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L91)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[sources](_cs_map_src_datasources_map_datasource_.mapdatasource.md#optional-sources)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:78](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L78)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:90](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L90)*
 
 ## Accessors
 
@@ -108,7 +108,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[MapControl](_cs_map_src_datasources_map_datasource_.mapdatasource.md#mapcontrol)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:68](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L68)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:56](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L56)*
 
 **Returns:** *Map | undefined*
 
@@ -120,7 +120,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[MapWidget](_cs_map_src_datasources_map_datasource_.mapdatasource.md#mapwidget)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:60](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L60)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L64)*
 
 **Returns:** *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
 
@@ -128,7 +128,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[MapWidget](_cs_map_src_datasources_map_datasource_.mapdatasource.md#mapwidget)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:64](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L64)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L68)*
 
 **Parameters:**
 
@@ -142,18 +142,18 @@ Name | Type |
 
 ###  addGeojsonLayer
 
-▸ **addGeojsonLayer**(`title`: string, `url?`: string, `style?`: [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md), `tags?`: string[], `featureTypes?`: string | [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md), `defaultFeatureType?`: string): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
+▸ **addGeojsonLayer**(`title`: string, `geojson?`: string | FeatureCollection, `style?`: [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md), `tags?`: string[], `featureTypes?`: string | [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md), `defaultFeatureType?`: string): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[addGeojsonLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#addgeojsonlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:671](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L671)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:100](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L100)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `title` | string |
-`url?` | string |
+`geojson?` | string &#124; FeatureCollection |
 `style?` | [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md) |
 `tags?` | string[] |
 `featureTypes?` | string &#124; [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md) |
@@ -169,7 +169,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[addLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#addlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:717](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L717)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:147](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L147)*
 
 **Parameters:**
 
@@ -187,7 +187,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[clearLayers](_cs_map_src_datasources_map_datasource_.mapdatasource.md#clearlayers)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:84](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L84)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:174](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L174)*
 
 **Returns:** *void*
 
@@ -199,7 +199,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[deleteLayerFeature](_cs_map_src_datasources_map_datasource_.mapdatasource.md#deletelayerfeature)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:351](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L351)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:184](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L184)*
 
 delete feature from a feature
 
@@ -221,7 +221,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[editLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#editlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:652](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L652)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:211](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L211)*
 
 **Parameters:**
 
@@ -239,7 +239,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[execute](_cs_map_src_datasources_map_datasource_.mapdatasource.md#execute)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:744](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L744)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:229](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L229)*
 
 **Parameters:**
 
@@ -257,7 +257,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[fromGeoJSON](_cs_map_src_datasources_map_datasource_.mapdatasource.md#fromgeojson)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:93](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L93)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:247](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L247)*
 
 **Parameters:**
 
@@ -276,7 +276,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[hideLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#hidelayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:314](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L314)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:262](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L262)*
 
 **Parameters:**
 
@@ -294,7 +294,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[loadLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#loadlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:202](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L202)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:290](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L290)*
 
 **Parameters:**
 
@@ -312,7 +312,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[moveLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#movelayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:256](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L256)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:312](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L312)*
 
 **Parameters:**
 
@@ -331,7 +331,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[openFeature](_cs_map_src_datasources_map_datasource_.mapdatasource.md#openfeature)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:603](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L603)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:316](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L316)*
 
 **Parameters:**
 
@@ -350,7 +350,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[openLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#openlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:631](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L631)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:344](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L344)*
 
 **Parameters:**
 
@@ -368,7 +368,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[refreshLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#refreshlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:241](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L241)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:365](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L365)*
 
 **Parameters:**
 
@@ -386,7 +386,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[refreshLayerSource](_cs_map_src_datasources_map_datasource_.mapdatasource.md#refreshlayersource)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:145](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L145)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:372](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L372)*
 
 **Parameters:**
 
@@ -404,7 +404,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[refreshLayers](_cs_map_src_datasources_map_datasource_.mapdatasource.md#refreshlayers)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:224](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L224)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:391](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L391)*
 
 **Returns:** *void*
 
@@ -416,7 +416,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[removeLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#removelayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:344](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L344)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:399](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L399)*
 
 **Parameters:**
 
@@ -434,7 +434,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[removeLegend](_cs_map_src_datasources_map_datasource_.mapdatasource.md#removelegend)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:108](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L108)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:405](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L405)*
 
 **Parameters:**
 
@@ -453,7 +453,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[showLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#showlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:164](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L164)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:407](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L407)*
 
 **Parameters:**
 
@@ -471,7 +471,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[startPointPicker](_cs_map_src_datasources_map_datasource_.mapdatasource.md#startpointpicker)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:110](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L110)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:441](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L441)*
 
 **Parameters:**
 
@@ -489,7 +489,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[toggleLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#togglelayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:232](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L232)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:476](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L476)*
 
 **Parameters:**
 
@@ -507,7 +507,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[updateFeatureProperty](_cs_map_src_datasources_map_datasource_.mapdatasource.md#updatefeatureproperty)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:463](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L463)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:485](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L485)*
 
 **Parameters:**
 
@@ -527,7 +527,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[updateLayerFeature](_cs_map_src_datasources_map_datasource_.mapdatasource.md#updatelayerfeature)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:379](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L379)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:499](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L499)*
 
 Replace/update a feature for a given layer
 
@@ -549,7 +549,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[updateLayerFeatures](_cs_map_src_datasources_map_datasource_.mapdatasource.md#updatelayerfeatures)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:420](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L420)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:539](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L539)*
 
 Replace/update a collection of features for a given layer
 
@@ -571,7 +571,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[updateLayerSource](_cs_map_src_datasources_map_datasource_.mapdatasource.md#updatelayersource)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:517](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L517)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:581](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L581)*
 
 **Parameters:**
 
@@ -591,7 +591,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[updateSource](_cs_map_src_datasources_map_datasource_.mapdatasource.md#updatesource)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:476](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L476)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:642](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L642)*
 
 **Parameters:**
 
@@ -609,7 +609,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[zoomFeature](_cs_map_src_datasources_map_datasource_.mapdatasource.md#zoomfeature)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:260](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L260)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:656](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L656)*
 
 **Parameters:**
 
@@ -628,7 +628,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[zoomFeatureId](_cs_map_src_datasources_map_datasource_.mapdatasource.md#zoomfeatureid)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:288](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L288)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:685](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L685)*
 
 **Parameters:**
 
@@ -647,7 +647,7 @@ ___
 
 *Inherited from [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md).[zoomLayer](_cs_map_src_datasources_map_datasource_.mapdatasource.md#zoomlayer)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:248](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L248)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:711](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L711)*
 
 **Parameters:**
 

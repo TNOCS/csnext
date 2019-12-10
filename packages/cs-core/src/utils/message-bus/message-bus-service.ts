@@ -28,7 +28,10 @@ export class MessageBusService implements IMessageBusService {
     if (!this.cache[topic]) {
       return;
     }
-    this.cache[topic].forEach(cb => cb(title, data));
+    for (const cb of this.cache[topic]) {
+      cb(title, data);
+    }
+
   }
 
   /**

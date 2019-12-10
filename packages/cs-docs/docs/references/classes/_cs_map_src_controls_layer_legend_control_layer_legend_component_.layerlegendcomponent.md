@@ -12,7 +12,7 @@
 
 • **activeLayer**: *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | any*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L22)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:24](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L24)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **activeLegend**: *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md) | any*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L23)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L25)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **activeType**: *any*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L18)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:20](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L20)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **busHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L16)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L18)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **layer**: *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | undefined*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:17](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L17)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L19)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **layers**: *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)[]* =  []
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:21](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L21)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L23)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:15](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L15)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L17)*
 
 ___
 
@@ -68,19 +68,23 @@ ___
 
 • **map**? : *Map*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:20](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L20)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:22](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L22)*
 
 ___
 
 ### `Optional` types
 
-• **types**? : *object*
+• **types**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:19](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L19)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L21)*
 
-#### Type declaration:
+___
 
-* \[ **key**: *string*\]: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)
+###  value2
+
+• **value2**: *number[]* =  [30, 60]
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L26)*
 
 ___
 
@@ -88,15 +92,72 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:14](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L14)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L16)*
 
 ## Methods
+
+### `Private` applyFilter
+
+▸ **applyFilter**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `filter`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *void*
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:81](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L81)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
+`filter` | [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md) |
+
+**Returns:** *void*
+
+___
 
 ###  beforeDestroy
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:42](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L42)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:51](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L51)*
+
+**Returns:** *void*
+
+___
+
+### `Private` getStopColor
+
+▸ **getStopColor**(`stop`: any[], `legend`: any): *object*
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L55)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`stop` | any[] |
+`legend` | any |
+
+**Returns:** *object*
+
+* **background**: *any* =  stop[1]
+
+* **height**: *string* = "20px"
+
+* **width**: *string* = "20px"
+
+___
+
+###  initFilter
+
+▸ **initFilter**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `legend`: [LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)): *void*
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:43](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L43)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
+`legend` | [LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md) |
 
 **Returns:** *void*
 
@@ -106,17 +167,17 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:30](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L30)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:33](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L33)*
 
 **Returns:** *void*
 
 ___
 
-###  selectLayer
+###  resetFilter
 
-▸ **selectLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
+▸ **resetFilter**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:25](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L25)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:47](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L47)*
 
 **Parameters:**
 
@@ -128,10 +189,36 @@ Name | Type |
 
 ___
 
+###  selectLayer
+
+▸ **selectLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L28)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) |
+
+**Returns:** *void*
+
+___
+
+### `Private` updateFilterList
+
+▸ **updateFilterList**(): *void*
+
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L59)*
+
+**Returns:** *void*
+
+___
+
 ### `Private` updateLegendList
 
 ▸ **updateLegendList**(): *void*
 
-*Defined in [cs-map/src/controls/layer-legend-control/layer-legend-component.ts:47](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L47)*
+*Defined in [packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layer-legend-control/layer-legend-component.ts#L64)*
 
 **Returns:** *void*

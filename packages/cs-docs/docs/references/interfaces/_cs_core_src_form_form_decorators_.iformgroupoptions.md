@@ -10,7 +10,7 @@
 
 ▸ **visible**(`object`: [IFormObject](_cs_core_src_form_form_decorators_.iformobject.md), `form`: [IFormOptions](_cs_core_src_form_form_decorators_.iformoptions.md)): *boolean*
 
-*Defined in [cs-core/src/form/form-decorators.ts:39](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/form/form-decorators.ts#L39)*
+*Defined in [packages/cs-core/src/form/form-decorators.ts:39](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/form/form-decorators.ts#L39)*
 
 **Parameters:**
 

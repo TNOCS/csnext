@@ -10,7 +10,15 @@
 
 • **property**: *string*
 
-*Defined in [cs-map/src/classes/layer-legend.ts:2](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/layer-legend.ts#L2)*
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L4)*
+
+___
+
+### `Optional` propertyInfo
+
+• **propertyInfo**? : *[PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md)*
+
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:10](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L10)*
 
 ___
 
@@ -18,7 +26,7 @@ ___
 
 • **stops**: *any[][]*
 
-*Defined in [cs-map/src/classes/layer-legend.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/layer-legend.ts#L4)*
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L6)*
 
 ___
 
@@ -26,7 +34,7 @@ ___
 
 • **style**: *any*
 
-*Defined in [cs-map/src/classes/layer-legend.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/layer-legend.ts#L5)*
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L8)*
 
 ___
 
@@ -34,7 +42,7 @@ ___
 
 • **styleKey**: *string*
 
-*Defined in [cs-map/src/classes/layer-legend.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/layer-legend.ts#L6)*
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L9)*
 
 ___
 
@@ -42,4 +50,12 @@ ___
 
 • **styleProperty**: *string*
 
-*Defined in [cs-map/src/classes/layer-legend.ts:3](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/layer-legend.ts#L3)*
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L5)*
+
+___
+
+### `Optional` type
+
+• **type**? : *"interval" | "exponential" | "identity" | "categorical"*
+
+*Defined in [packages/cs-map/src/classes/layer-legend.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-legend.ts#L7)*

@@ -12,7 +12,7 @@
 
 • **menus**? : *[IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)[]*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L23)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L23)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **owner**? : *any*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:26](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L26)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L26)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **searchFocus**: *boolean* = false
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L13)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L13)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **searchProperty**? : *string*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:16](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L16)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L16)*
 
 ## Accessors
 
@@ -44,13 +44,13 @@ ___
 
 • **get search**(): *string*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:28](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L28)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L28)*
 
 **Returns:** *string*
 
 • **set search**(`v`: string): *void*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:35](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L35)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:35](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L35)*
 
 **Parameters:**
 
@@ -66,27 +66,17 @@ ___
 
 • **get searchEnabled**(): *boolean*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L18)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L18)*
 
 **Returns:** *boolean*
 
 ## Methods
 
-###  mounted
-
-▸ **mounted**(): *void*
-
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:51](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L51)*
-
-**Returns:** *void*
-
-___
-
 ###  triggerMenuAction
 
 ▸ **triggerMenuAction**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:42](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L42)*
+*Defined in [packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-toolbar-menus/cs-toolbar-menus.ts#L42)*
 
 **Parameters:**
 

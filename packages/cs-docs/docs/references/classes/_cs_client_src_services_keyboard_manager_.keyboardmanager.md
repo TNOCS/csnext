@@ -10,7 +10,7 @@
 
 • **shortcuts**: *[KeyboardShortcut](_cs_core_src_utils_keyboard_shortcut_.keyboardshortcut.md)[]* =  []
 
-*Defined in [cs-client/src/services/keyboard-manager.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/services/keyboard-manager.ts#L5)*
+*Defined in [packages/cs-client/src/services/keyboard-manager.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/keyboard-manager.ts#L5)*
 
 ## Methods
 
@@ -18,7 +18,7 @@
 
 ▸ **init**(): *void*
 
-*Defined in [cs-client/src/services/keyboard-manager.ts:7](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/services/keyboard-manager.ts#L7)*
+*Defined in [packages/cs-client/src/services/keyboard-manager.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/keyboard-manager.ts#L7)*
 
 **Returns:** *void*
 
@@ -28,7 +28,7 @@ ___
 
 ▸ **register**(`shortcut`: [KeyboardShortcut](_cs_core_src_utils_keyboard_shortcut_.keyboardshortcut.md)): *void*
 
-*Defined in [cs-client/src/services/keyboard-manager.ts:17](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/services/keyboard-manager.ts#L17)*
+*Defined in [packages/cs-client/src/services/keyboard-manager.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/keyboard-manager.ts#L17)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ ___
 
 ▸ **registerShortcut**(`id`: string, `code`: string, `callback`: Function, `alt?`: boolean, `shift?`: boolean, `ctrl?`: boolean): *void*
 
-*Defined in [cs-client/src/services/keyboard-manager.ts:21](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/services/keyboard-manager.ts#L21)*
+*Defined in [packages/cs-client/src/services/keyboard-manager.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/keyboard-manager.ts#L21)*
 
 **Parameters:**
 

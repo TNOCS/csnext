@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="https://unpkg.com/vuetify@1.0.5/dist/vuetify.css" />
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
+    <script src="https://unpkg.com/vuetify@1.0.17/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>
+    <!-- <script src="./../../packages/cs-muuri/lib/csmuuri.cs.js"></script> -->
+</head>
+
+<body>
+    <style>
+        .maintitle {
+            text-align: center;
+        }
+    </style>
+    <div id="main" />
+
+    <script>
+        let intro = Vue.component('introduction', {
+            template: '<h1 class="maintitle">this is an introduction widget</h1>'
+        });
+
+        Vue.use(Vuetify);
+        new Vue({
+            el: '#main',
+            render: h => h(csclient.CsApp)
+        });
+        const app = csclient.AppState.Instance;
+        app.project = {
+            header: {
+                title: "csnext demo",
+                logo: "../images/logo.png"
+            },
+            theme: {
+                colors: {
+                    primary: "#DFDFDF"
+                }
+            },
+            dashboards: [{
+                    path: "/",
+                    title: "Intro",
+                    layout: "single",
+                    widgets: [{
+                        component: intro
+                    }]
+                },
+                {
+                    path: "/about",
+                    title: "About",
+                    widgets: [{
+                        component: csclient.HtmlWidget,
+                        data: '# Intro'
+                    }]
+                }
+            ]
+        };
+        app.init(app.project);
+    </script>
+</body>
+
+</html>

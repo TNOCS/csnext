@@ -12,33 +12,23 @@
 
 • **content**: *string* = ""
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L22)*
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L21)*
 
 ___
 
 ### `Private` `Optional` data
 
-• **data**? : *string*
+• **data**? : *string | object*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:24](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L24)*
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L23)*
 
 ## Methods
-
-###  contentUpdated
-
-▸ **contentUpdated**(): *void*
-
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:50](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L50)*
-
-**Returns:** *void*
-
-___
 
 ###  dataUpdated
 
 ▸ **dataUpdated**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:27](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L27)*
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L31)*
 
 **Returns:** *void*
 
@@ -48,7 +38,23 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:56](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L56)*
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L42)*
+
+**Returns:** *void*
+
+___
+
+### `Private` setContent
+
+▸ **setContent**(`data`: string | object): *void*
+
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L55)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`data` | string &#124; object |
 
 **Returns:** *void*
 
@@ -58,6 +64,16 @@ ___
 
 ▸ **updateContent**(): *void*
 
-*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:31](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L31)*
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L46)*
+
+**Returns:** *void*
+
+___
+
+###  widgetDataUpdated
+
+▸ **widgetDataUpdated**(): *void*
+
+*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L26)*
 
 **Returns:** *void*

@@ -6,4 +6,12 @@
 
 • **MapboxDraw**: *any* =  require('@mapbox/mapbox-gl-draw')
 
-*Defined in [cs-map/src/components/cs-map/cs-map.ts:8](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/cs-map/cs-map.ts#L8)*
+*Defined in [packages/cs-map/src/components/cs-map/cs-map.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/cs-map/cs-map.ts#L9)*
+
+___
+
+### `Const` locales
+
+• **locales**: *any* =  require('../../assets/locales.json')
+
+*Defined in [packages/cs-map/src/components/cs-map/cs-map.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/cs-map/cs-map.ts#L7)*

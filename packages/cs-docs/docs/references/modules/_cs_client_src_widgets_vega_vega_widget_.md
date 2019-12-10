@@ -6,4 +6,4 @@
 
 • **vega**: *any*
 
-*Defined in [cs-client/src/widgets/vega/vega-widget.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-client/src/widgets/vega/vega-widget.ts#L6)*
+*Defined in [packages/cs-client/src/widgets/vega/vega-widget.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/widgets/vega/vega-widget.ts#L6)*

@@ -186,7 +186,7 @@ export class CsDashboard extends Vue {
 
           // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
           if (this.dashboard.widgets) {
-            this.dashboard.widgets.forEach(w => {
+            for (const w of this.dashboard.widgets) {
               if (!w.datasource && this.dashboard && this.dashboard.content) {
                 Vue.set(w, 'content', this.dashboard.content);
               }
@@ -199,7 +199,7 @@ export class CsDashboard extends Vue {
               if (w._component && w._component.contentLoaded) {
                 w._component.contentLoaded(d);
               }
-            });
+            }
           }
         })
         .catch(() => {

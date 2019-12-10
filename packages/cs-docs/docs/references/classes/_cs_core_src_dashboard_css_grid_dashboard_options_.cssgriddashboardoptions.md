@@ -20,7 +20,7 @@
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[_dashboard](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-_dashboard)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:36](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L36)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:36](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L36)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[background](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-background)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:30](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L30)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:30](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L30)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[class](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-class)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:29](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L29)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L29)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **columnGap**? : *string*
 
-*Defined in [cs-core/src/dashboard/css-grid-dashboard-options.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L5)*
+*Defined in [packages/cs-core/src/dashboard/css-grid-dashboard-options.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L5)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[editButton](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-editbutton)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:31](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L31)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L31)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **gap**? : *string*
 
-*Defined in [cs-core/src/dashboard/css-grid-dashboard-options.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L4)*
+*Defined in [packages/cs-core/src/dashboard/css-grid-dashboard-options.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L4)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[icon](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-icon)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:38](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L38)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:38](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L38)*
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[info](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-info)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:39](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L39)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:39](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L39)*
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 • **rowGap**? : *string*
 
-*Defined in [cs-core/src/dashboard/css-grid-dashboard-options.ts:6](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L6)*
+*Defined in [packages/cs-core/src/dashboard/css-grid-dashboard-options.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L6)*
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 • **template**? : *string*
 
-*Defined in [cs-core/src/dashboard/css-grid-dashboard-options.ts:7](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L7)*
+*Defined in [packages/cs-core/src/dashboard/css-grid-dashboard-options.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/css-grid-dashboard-options.ts#L7)*
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[toolbar](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-toolbar)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:37](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L37)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:37](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L37)*
 
 ___
 
@@ -132,4 +132,4 @@ ___
 
 *Inherited from [BaseDashboardOptions](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md).[touchGesturesEnabled](_cs_core_src_dashboard_dashboard_options_.basedashboardoptions.md#optional-touchgesturesenabled)*
 
-*Defined in [cs-core/src/dashboard/dashboard-options.ts:33](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/dashboard/dashboard-options.ts#L33)*
+*Defined in [packages/cs-core/src/dashboard/dashboard-options.ts:33](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-options.ts#L33)*

@@ -10,4 +10,4 @@
 
 • **enabled**? : *boolean*
 
-*Defined in [cs-core/src/interactions/search-options.ts:2](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/interactions/search-options.ts#L2)*
+*Defined in [packages/cs-core/src/interactions/search-options.ts:2](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/search-options.ts#L2)*

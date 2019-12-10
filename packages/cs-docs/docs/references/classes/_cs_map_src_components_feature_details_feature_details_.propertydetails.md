@@ -10,7 +10,7 @@
 
 • **key**? : *string*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L22)*
+*Defined in [packages/cs-map/src/components/feature-details/feature-details.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/feature-details/feature-details.ts#L28)*
 
 ___
 
@@ -18,15 +18,15 @@ ___
 
 • **legends**? : *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:25](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L25)*
+*Defined in [packages/cs-map/src/components/feature-details/feature-details.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/feature-details/feature-details.ts#L29)*
 
 ___
 
 ### `Optional` type
 
-• **type**? : *[PropertyType](_cs_map_src_classes_feature_type_.propertytype.md)*
+• **type**? : *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md)*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:24](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L24)*
+*Defined in [packages/cs-map/src/components/feature-details/feature-details.ts:30](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/feature-details/feature-details.ts#L30)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **value**? : *any*
 
-*Defined in [cs-map/src/components/feature-details/feature-details.ts:23](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/components/feature-details/feature-details.ts#L23)*
+*Defined in [packages/cs-map/src/components/feature-details/feature-details.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/feature-details/feature-details.ts#L31)*

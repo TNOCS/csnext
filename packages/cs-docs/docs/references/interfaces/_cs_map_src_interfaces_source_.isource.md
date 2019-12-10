@@ -10,7 +10,7 @@
 
 • **id**? : *string*
 
-*Defined in [cs-map/src/interfaces/source.ts:3](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/interfaces/source.ts#L3)*
+*Defined in [packages/cs-map/src/interfaces/source.ts:3](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/interfaces/source.ts#L3)*
 
 id of this layer
 
@@ -20,7 +20,7 @@ ___
 
 • **tileSize**? : *number*
 
-*Defined in [cs-map/src/interfaces/source.ts:13](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/interfaces/source.ts#L13)*
+*Defined in [packages/cs-map/src/interfaces/source.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/interfaces/source.ts#L13)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [cs-map/src/interfaces/source.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/interfaces/source.ts#L4)*
+*Defined in [packages/cs-map/src/interfaces/source.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/interfaces/source.ts#L4)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **type**? : *"vector" | "raster" | "raster-dem" | "geojson" | "image" | "video"*
 
-*Defined in [cs-map/src/interfaces/source.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/interfaces/source.ts#L5)*
+*Defined in [packages/cs-map/src/interfaces/source.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/interfaces/source.ts#L5)*
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 • **url**? : *string*
 
-*Defined in [cs-map/src/interfaces/source.ts:12](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/interfaces/source.ts#L12)*
+*Defined in [packages/cs-map/src/interfaces/source.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/interfaces/source.ts#L12)*

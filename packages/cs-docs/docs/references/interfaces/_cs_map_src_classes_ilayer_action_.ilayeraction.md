@@ -10,7 +10,7 @@
 
 • **title**: *string*
 
-*Defined in [cs-map/src/classes/ilayer-action.ts:4](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/ilayer-action.ts#L4)*
+*Defined in [packages/cs-map/src/classes/ilayer-action.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/ilayer-action.ts#L4)*
 
 ## Methods
 
@@ -18,7 +18,7 @@
 
 ▸ **action**(`layer`: [IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)): *any*
 
-*Defined in [cs-map/src/classes/ilayer-action.ts:5](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/ilayer-action.ts#L5)*
+*Defined in [packages/cs-map/src/classes/ilayer-action.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/ilayer-action.ts#L5)*
 
 **Parameters:**
 

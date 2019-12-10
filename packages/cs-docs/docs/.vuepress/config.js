@@ -1,6 +1,6 @@
 module.exports = {
     title: 'Common Sense',
-    description: '',
+    description: 'This is a test',    
     base: '/',
     dest: '../../docs/',
     head: [
@@ -85,7 +85,7 @@ function genSidebarConfig(title) {
         {
             title,
             collapsable: false,
-            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources', '']
+            children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources']
         }
     ];
 }

@@ -6,4 +6,4 @@
 
 Ƭ **ILanguageString**: *string | [ILanguageObject](../interfaces/_cs_core_src_project_language_options_.ilanguageobject.md)*
 
-*Defined in [cs-core/src/project/language-options.ts:1](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-core/src/project/language-options.ts#L1)*
+*Defined in [packages/cs-core/src/project/language-options.ts:1](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/language-options.ts#L1)*

@@ -10,23 +10,39 @@
 
 • **featureTypes**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:18](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L18)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:192](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L192)*
 
 ___
 
 ### `Optional` propertyTypeData
 
-• **propertyTypeData**? : *[PropertyCollection](../modules/_cs_map_src_classes_feature_type_.md#propertycollection)*
+• **propertyTypeData**? : *[PropertyCollection](../modules/_cs_map_src_classes_property_type_.md#propertycollection)*
 
-*Defined in [cs-map/src/classes/meta-file.ts:19](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L19)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:193](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L193)*
 
 ## Methods
+
+### `Private` checkPropertyLabels
+
+▸ **checkPropertyLabels**(`properties`: object): *void*
+
+*Defined in [packages/cs-map/src/classes/meta-file.ts:226](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L226)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`properties` | object |
+
+**Returns:** *void*
+
+___
 
 ###  linkPropertyTypeData
 
 ▸ **linkPropertyTypeData**(): *void*
 
-*Defined in [cs-map/src/classes/meta-file.ts:22](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L22)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:202](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L202)*
 
 **Returns:** *void*
 
@@ -36,7 +52,7 @@ ___
 
 ▸ **loadFeatureTypesFromUrl**(`url`: string): *Promise‹[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:47](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L47)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L18)*
 
 Fetches meta file describing feature types and property types
 
@@ -54,7 +70,7 @@ ___
 
 ▸ **loadMetaUrl**(`url`: string): *Promise‹[MetaFile](_cs_map_src_classes_meta_file_.metafile.md)›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:142](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L142)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L32)*
 
 **Parameters:**
 
@@ -70,7 +86,7 @@ ___
 
 ▸ **updateMeta**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `ft?`: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)): *Promise‹any›*
 
-*Defined in [cs-map/src/classes/meta-file.ts:65](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/classes/meta-file.ts#L65)*
+*Defined in [packages/cs-map/src/classes/meta-file.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L59)*
 
 **Parameters:**
 
@@ -80,3 +96,21 @@ Name | Type |
 `ft?` | [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) |
 
 **Returns:** *Promise‹any›*
+
+___
+
+### `Static` updateMetaProperty
+
+▸ **updateMetaProperty**(`layerSource`: [LayerSource](_cs_map_src_classes_layer_source_.layersource.md), `ft`: [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md), `prop`: [PropertyType](_cs_map_src_classes_property_type_.propertytype.md)): *void*
+
+*Defined in [packages/cs-map/src/classes/meta-file.ts:132](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/meta-file.ts#L132)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layerSource` | [LayerSource](_cs_map_src_classes_layer_source_.layersource.md) |
+`ft` | [FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) |
+`prop` | [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) |
+
+**Returns:** *void*

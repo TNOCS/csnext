@@ -6,7 +6,7 @@
 
 • **GROUPS_MENU_ID**: *"groups"* = "groups"
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:31](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L31)*
+*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L32)*
 
 ___
 
@@ -14,7 +14,15 @@ ___
 
 • **NO_GROUP**: *"all"* = "all"
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:32](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L32)*
+*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:33](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L33)*
+
+___
+
+### `Const` STACK_MENU_ID
+
+• **STACK_MENU_ID**: *"stack"* = "stack"
+
+*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L31)*
 
 ___
 
@@ -22,7 +30,7 @@ ___
 
 • **TOGGLE_MENU_ID**: *"togglesmall"* = "togglesmall"
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:29](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L29)*
+*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L29)*
 
 ___
 
@@ -30,4 +38,4 @@ ___
 
 • **ZOOM_MENU_ID**: *"zoom"* = "zoom"
 
-*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:30](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L30)*
+*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:30](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L30)*

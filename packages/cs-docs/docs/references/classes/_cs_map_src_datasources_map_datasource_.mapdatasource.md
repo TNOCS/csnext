@@ -16,7 +16,7 @@
 
 \+ **new MapDatasource**(`layers?`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)[], `sources?`: string | [LayerSources](_cs_map_src_classes_layer_sources_.layersources.md), `services?`: [IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md)[]): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:74](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L74)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L82)*
 
 **Parameters:**
 
@@ -34,7 +34,7 @@ Name | Type |
 
 • **FEATURE_SIDEBAR_ID**: *"feature"* = "feature"
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:57](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L57)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:78](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L78)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **LAYER_DETAILS_SIDEBAR_ID**: *"layerdetails"* = "layerdetails"
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:58](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L58)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:79](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L79)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **_sources**? : *[LayerSources](_cs_map_src_classes_layer_sources_.layersources.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:51](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L51)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:72](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L72)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **activeDrawLayer**? : *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:55](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L55)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L73)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **events**: *any* =  new MessageBusService()
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:54](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L54)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:74](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L74)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **id**: *string* = "map-datasource"
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:52](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L52)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:75](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L75)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **layers**? : *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)[]*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:77](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L77)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:89](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L89)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **map**? : *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:56](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L56)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:81](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L81)*
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 • **pointPickerHandler**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:53](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L53)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L82)*
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 • **services**? : *[IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md)[]*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:79](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L79)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:91](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L91)*
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 • **sources**? : *string | [LayerSources](_cs_map_src_classes_layer_sources_.layersources.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:78](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L78)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:90](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L90)*
 
 ## Accessors
 
@@ -122,7 +122,7 @@ ___
 
 • **get MapControl**(): *Map | undefined*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:68](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L68)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:56](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L56)*
 
 **Returns:** *Map | undefined*
 
@@ -132,13 +132,13 @@ ___
 
 • **get MapWidget**(): *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:60](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L60)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L64)*
 
 **Returns:** *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
 
 • **set MapWidget**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:64](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L64)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L68)*
 
 **Parameters:**
 
@@ -152,16 +152,16 @@ Name | Type |
 
 ###  addGeojsonLayer
 
-▸ **addGeojsonLayer**(`title`: string, `url?`: string, `style?`: [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md), `tags?`: string[], `featureTypes?`: string | [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md), `defaultFeatureType?`: string): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
+▸ **addGeojsonLayer**(`title`: string, `geojson?`: string | FeatureCollection, `style?`: [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md), `tags?`: string[], `featureTypes?`: string | [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md), `defaultFeatureType?`: string): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:671](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L671)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:100](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L100)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `title` | string |
-`url?` | string |
+`geojson?` | string &#124; FeatureCollection |
 `style?` | [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md) |
 `tags?` | string[] |
 `featureTypes?` | string &#124; [FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md) |
@@ -175,7 +175,7 @@ ___
 
 ▸ **addLayer**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:717](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L717)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:147](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L147)*
 
 **Parameters:**
 
@@ -191,7 +191,7 @@ ___
 
 ▸ **clearLayers**(): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:84](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L84)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:174](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L174)*
 
 **Returns:** *void*
 
@@ -201,7 +201,7 @@ ___
 
 ▸ **deleteLayerFeature**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | string, `id`: string, `updateSource`: boolean): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:351](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L351)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:184](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L184)*
 
 delete feature from a feature
 
@@ -221,7 +221,7 @@ ___
 
 ▸ **editLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | string): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:652](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L652)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:211](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L211)*
 
 **Parameters:**
 
@@ -237,7 +237,7 @@ ___
 
 ▸ **execute**(`datasources`: object): *Promise‹any›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:744](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L744)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:229](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L229)*
 
 **Parameters:**
 
@@ -253,7 +253,7 @@ ___
 
 ▸ **fromGeoJSON**(`geojson`: FeatureCollection, `title?`: string): *[GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:93](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L93)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:247](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L247)*
 
 **Parameters:**
 
@@ -270,7 +270,7 @@ ___
 
 ▸ **getLayerInstance**(`type`: string, `init?`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | undefined*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:588](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L588)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:722](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L722)*
 
 Create a IMapLayer instance based on layer type, optionally provide maplayer config
 
@@ -289,7 +289,7 @@ ___
 
 ▸ **getServiceInstance**(`type`: string, `init?`: [ILayerService](../interfaces/_cs_map_src_classes_layer_service_.ilayerservice.md)): *[IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md) | undefined*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:575](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L575)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:737](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L737)*
 
 **Parameters:**
 
@@ -306,7 +306,7 @@ ___
 
 ▸ **hideLayer**(`ml`: string | [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:314](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L314)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:262](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L262)*
 
 **Parameters:**
 
@@ -322,7 +322,7 @@ ___
 
 ▸ **initLayers**(): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:763](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L763)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:750](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L750)*
 
 create an instance and initialize all layers
 
@@ -334,7 +334,7 @@ ___
 
 ▸ **initServices**(): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:782](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L782)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:769](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L769)*
 
 create an instance and initialize all services
 
@@ -346,7 +346,7 @@ ___
 
 ▸ **loadLayer**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:202](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L202)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:290](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L290)*
 
 **Parameters:**
 
@@ -362,7 +362,7 @@ ___
 
 ▸ **moveLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `beforeId?`: string): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:256](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L256)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:312](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L312)*
 
 **Parameters:**
 
@@ -379,7 +379,7 @@ ___
 
 ▸ **openFeature**(`feature`: Feature, `layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:603](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L603)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:316](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L316)*
 
 **Parameters:**
 
@@ -396,7 +396,7 @@ ___
 
 ▸ **openLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | string): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:631](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L631)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:344](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L344)*
 
 **Parameters:**
 
@@ -412,7 +412,7 @@ ___
 
 ▸ **refreshLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:241](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L241)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:365](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L365)*
 
 **Parameters:**
 
@@ -428,7 +428,7 @@ ___
 
 ▸ **refreshLayerSource**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:145](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L145)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:372](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L372)*
 
 **Parameters:**
 
@@ -444,7 +444,7 @@ ___
 
 ▸ **refreshLayers**(): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:224](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L224)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:391](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L391)*
 
 **Returns:** *void*
 
@@ -454,7 +454,7 @@ ___
 
 ▸ **removeLayer**(`layerId`: string): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:344](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L344)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:399](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L399)*
 
 **Parameters:**
 
@@ -470,7 +470,7 @@ ___
 
 ▸ **removeLegend**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `pd`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:108](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L108)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:405](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L405)*
 
 **Parameters:**
 
@@ -487,7 +487,7 @@ ___
 
 ▸ **showLayer**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:164](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L164)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:407](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L407)*
 
 **Parameters:**
 
@@ -503,7 +503,7 @@ ___
 
 ▸ **startPointPicker**(`title?`: string): *Promise‹LngLat | undefined›*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:110](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L110)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:441](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L441)*
 
 **Parameters:**
 
@@ -519,7 +519,7 @@ ___
 
 ▸ **toggleLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:232](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L232)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:476](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L476)*
 
 **Parameters:**
 
@@ -535,7 +535,7 @@ ___
 
 ▸ **updateFeatureProperty**(`source`: string, `featureId`: number, `props`: any): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:463](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L463)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:485](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L485)*
 
 **Parameters:**
 
@@ -553,7 +553,7 @@ ___
 
 ▸ **updateLayerFeature**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | string, `feature`: Feature, `updateSource`: boolean): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:379](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L379)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:499](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L499)*
 
 Replace/update a feature for a given layer
 
@@ -573,7 +573,7 @@ ___
 
 ▸ **updateLayerFeatures**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md) | string, `features`: object, `updateSource`: boolean): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:420](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L420)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:539](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L539)*
 
 Replace/update a collection of features for a given layer
 
@@ -593,7 +593,7 @@ ___
 
 ▸ **updateLayerSource**(`ml`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `geojson?`: FeatureCollection | string, `triggerEvent`: boolean): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:517](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L517)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:581](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L581)*
 
 **Parameters:**
 
@@ -611,7 +611,7 @@ ___
 
 ▸ **updateSource**(`source`: [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:476](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L476)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:642](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L642)*
 
 **Parameters:**
 
@@ -627,7 +627,7 @@ ___
 
 ▸ **zoomFeature**(`feature`: Feature, `zoomLevel?`: number): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:260](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L260)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:656](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L656)*
 
 **Parameters:**
 
@@ -644,7 +644,7 @@ ___
 
 ▸ **zoomFeatureId**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `featureId`: string): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:288](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L288)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:685](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L685)*
 
 **Parameters:**
 
@@ -661,7 +661,7 @@ ___
 
 ▸ **zoomLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md), `padding?`: number): *void*
 
-*Defined in [cs-map/src/datasources/map-datasource.ts:248](https://github.com/RichardHovenkamp/csnext/blob/c891e154/packages/cs-map/src/datasources/map-datasource.ts#L248)*
+*Defined in [packages/cs-map/src/datasources/map-datasource.ts:711](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/datasources/map-datasource.ts#L711)*
 
 **Parameters:**
 
