@@ -412,12 +412,13 @@ export class LayerService {
             if (source._socketQueue) {
                 this.lock.acquire(source.id, () => {
                     if (this.socket && this.socket.server) {
+                        const address = 'layer/' + source.id + '/features';
                         this.socket.server.emit(
-                            'layer/' + source.id + '/features',
+                            address,
                             source._socketQueue
                         );
+                        console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
                     }
-                    console.log(`Sending queue ${Object.keys(source._socketQueue).length}`);
                     source._socketQueue = {};
                 });
             }
@@ -436,6 +437,9 @@ export class LayerService {
                 // find source
                 let source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+
                     // if featureid was given, update feature
                     if (featureId !== undefined) {
                         feature.id = featureId;
