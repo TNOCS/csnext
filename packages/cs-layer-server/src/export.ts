@@ -79,7 +79,6 @@ export class NestServer {
             }
 
             // this.server.use('/dashboard', express.static(path.join(__dirname, '/dashboard')));
-
             // this.server.get('/swagger.json', (_req, res) => res.json(document));
 
             const document = SwaggerModule.createDocument(
@@ -103,25 +102,22 @@ export class NestServer {
                 }
 
                 if (this.config.hbsViewFolder) {
-                    const indexDirectory: string = path.join(this.config.staticFolder, this.config.hbsViewFolder);                                        
+                    const indexDirectory: string = path.join(this.config.staticFolder, this.config.hbsViewFolder);
                     this.app.setBaseViewsDir(indexDirectory);
                     this.app.setViewEngine('html');
                     this.app.engine('html', require('hbs').__express);
                 }
-
                 Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
             }
 
-        
-
             await this.app.listen(port, host, () => {
-            this.app.useWebSocketAdapter(new WsAdapter());
+                this.app.useWebSocketAdapter(new WsAdapter());
 
-            // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
-            Logger.log(`Server is listening on port ${port}.`);
-            Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
-            resolve(true);
+                // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
+                Logger.log(`Server is listening on port ${port}.`);
+                Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
+                resolve(true);
+            });
         });
-    });
-}
+    }
 }
