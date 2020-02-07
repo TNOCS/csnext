@@ -11,10 +11,7 @@ import {
   ISidebarOptions,
   IFooterOptions,
   IDialog,
-  MessageBusHandle,
-  MessageBusManager,
-  IMenu
-} from '@csnext/cs-core';
+  MessageBusManager} from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 
@@ -125,6 +122,7 @@ export class CsApp extends Vue {
 
   public beforeDestroy() {
     this.busManager.stop();
+    document.removeEventListener('backbutton', this.backButtonPressed);
   }
 
   @Watch('app.project.dashboards')
@@ -141,7 +139,7 @@ export class CsApp extends Vue {
 
   @Watch('app.project.rightSidebar.sidebars')
   /** register keyboard shortcuts for sidebars */
-  public rightSidebarsChanged(n: any, o: any) {
+  public rightSidebarsChanged(n: any) {
     for (const key in n) {
       if (n.hasOwnProperty(key)) {
         const sidebar = n[key] as IDashboard;
@@ -149,7 +147,7 @@ export class CsApp extends Vue {
           const sc = sidebar.options.shortcut;
           if (!sc.id) { sc.id = 'sidebar-' + key; }
           sc._callback = () => {
-            AppState.Instance.OpenRightSidebarKey(key);
+            AppState.Instance.openRightSidebarKey(key);
           };
           AppState.Instance.keyboard.register(sc);
         }
@@ -176,7 +174,6 @@ export class CsApp extends Vue {
   }
 
   public InitTheme() {
-    // debugger
     if (this.$cs.project && this.$cs.project.theme) {
       if (this.$cs.project.theme.lightColors) {
         this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
@@ -237,8 +234,23 @@ export class CsApp extends Vue {
     }
   }
 
+  public backButtonPressed() {
+    alert('back button');
+    if ($cs.isMobile && $cs.project.rightSidebar && $cs.project.rightSidebar.open) {
+      $cs.closeRightSidebar();
+    }
+  }
+
+  public onDeviceReady() {
+    alert('device ready');
+  }
+
   public mounted() {
     this.isLoading = false;
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+    setTimeout(()=>{
+      document.addEventListener('backbutton', this.backButtonPressed, false);
+    }, 1000);
   }
 
   // Add a dashboard as a route
@@ -267,7 +279,7 @@ export class CsApp extends Vue {
         const sc = d.options.shortcut;
         if (!sc.id) { sc.id = 'dashboard-' + d.id; }
         sc._callback = () => {
-          router.push(d.pathLink as any).catch((e) => {
+          router.push(d.pathLink as any).catch(() => {
             // console.log(e);
           });
         };

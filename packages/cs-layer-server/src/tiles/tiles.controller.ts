@@ -2,15 +2,15 @@
 // import { LayerSource } from "../classes";
 
 // import {
-//   ApiUseTags,
+//   ApiTags,
 //   ApiOperation,
-//   ApiImplicitParam,
+//   ApiParam,
 //   ApiResponse
 // } from "@nestjs/swagger";
 
 // import { LayerService } from "../layers/layers.service";
 
-// @ApiUseTags()
+// @ApiTags()
 // @Controller("tiles")
 // export class TilesController {
 //   constructor(private readonly layerService: LayerService) {}
@@ -19,19 +19,19 @@
 //     title: "Get vector tiles",
 //     description: "Returns vector tiles single for layer source by id"
 //   })
-//   @ApiImplicitParam({
+//   @ApiParam({
 //     name: "id",
 //     description: "Specify the layer id for the layer you want to get"
 //   })
-//   @ApiImplicitParam({
+//   @ApiParam({
 //     name: "z",
 //     description: "z"
 //   })
-//   @ApiImplicitParam({
+//   @ApiParam({
 //     name: "x",
 //     description: "x"
 //   })
-//   @ApiImplicitParam({
+//   @ApiParam({
 //     name: "y",
 //     description: "y"
 //   })

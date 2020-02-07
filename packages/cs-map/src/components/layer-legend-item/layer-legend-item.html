@@ -1,0 +1,88 @@
+<div v-if="legend">
+    <v-layout
+        >{{ legend.propertyInfo.title }}<v-spacer />
+        <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+                <v-btn right @click="initFilter(layer, legend)" small icon
+                    ><v-icon>filter_list</v-icon></v-btn
+                >
+            </template>
+            {{ $cs.Translate('CREATE_FILTER')}}
+        </v-tooltip>
+    </v-layout>
+    <div v-if="legend.stops" v-for="stop in legend.stops">
+        <v-layout>
+            <span
+                class="map-legend-color-rectangle"
+                :style="getStopColor(stop, legend)"
+            ></span>
+
+
+            <span
+                v-if="['interval', 'exponential'].includes(legend.type)"
+                class="map-legend-color-text"
+                >to {{ stop[0] }} {{ legend.propertyInfo.unit }}</span
+            >      
+           
+            <span v-else class="map-legend-color-text">
+                <prop-value :value="stop[0]" :proptype="legend.propertyInfo"></prop-value>
+            </span>
+        </v-layout>
+    </div>
+    <div v-if="filter">
+        <template v-if="filter.type === 'range'">
+            <v-row dense style="flex-wrap: nowrap;">
+                <v-col cols="1" class="layer-filter-input-value">
+                    <v-text-field
+                        outlined
+                        dense
+                        v-model="filter.min"
+                        editable 
+                        :rules="rules" 
+                        :step="step"
+                        type="number"
+                        :placeholder="legend.propertyInfo.unit"
+                        @change="applyFilter(layer, filter)"
+                    ></v-text-field>
+                </v-col>
+                <v-col grow class="align-self-center">
+                    <v-range-slider
+                        grow
+                        thumb-label
+                        :step="step"
+                        v-model="filter.rangeArray"
+                        :min="filter.propertyType.min"
+                        :max="filter.propertyType.max"
+                        @change="applyFilter(layer, filter)"
+                    ></v-range-slider>
+                </v-col>
+                <v-col cols="1" class="layer-filter-input-value">
+                    <v-text-field
+                        outlined
+                        dense
+                        :step="step"
+                        type="number"
+                        editable 
+                        v-model="filter.max"
+                        :rules="rules" 
+                        :placeholder="legend.propertyInfo.unit"
+                        @change="applyFilter(layer, filter)"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="1">
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-btn
+                                v-on="on"
+                                @click="removeFilter(layer, filter)"
+                                icon
+                                ><v-icon>close</v-icon></v-btn
+                            >
+                        </template>
+                        {{ $cs.Translate('REMOVE_FILTER')}}
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+        </template>
+    </div>
+</div>

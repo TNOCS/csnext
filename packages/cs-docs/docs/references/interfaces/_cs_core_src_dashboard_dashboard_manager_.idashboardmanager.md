@@ -12,7 +12,7 @@ Interface for dashboard manager
 
 • **contentLoaded**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L7)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L7)*
 
 #### Type declaration:
 
@@ -30,7 +30,7 @@ ___
 
 • **dashboardLoaded**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L6)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L6)*
 
 #### Type declaration:
 
@@ -42,7 +42,7 @@ ___
 
 • **dataLoaded**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L9)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L9)*
 
 #### Type declaration:
 
@@ -60,7 +60,7 @@ ___
 
 • **editDashboard**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L8)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L8)*
 
 #### Type declaration:
 
@@ -78,7 +78,7 @@ ___
 
 • **removeWidget**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:10](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L10)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:10](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L10)*
 
 #### Type declaration:
 
@@ -96,7 +96,7 @@ ___
 
 • **start**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L4)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L4)*
 
 #### Type declaration:
 
@@ -114,7 +114,7 @@ ___
 
 • **stop**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager.ts#L5)*
+*Defined in [cs-core/src/dashboard/dashboard-manager.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager.ts#L5)*
 
 #### Type declaration:
 

@@ -5,33 +5,14 @@ import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 
-import { FeatureType, PropertyType, BaseLayer, MapDatasource, LayerLegend } from '../../';
+import { BaseLayer, MapDatasource, LayerLegend } from '../../';
+import { PropertyType } from '@csnext/cs-data';
 import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';
 import { WidgetBase } from '@csnext/cs-client';
-
-export class PropertySection {
-    // #region Properties (3)
-
-    public id?: string;
-    public properties?: PropertyDetails[];
-    public title?: string;
-
-    // #endregion Properties (3)
-}
-
-// tslint:disable-next-line: max-classes-per-file
-export class PropertyDetails {
-    // #region Properties (4)
-
-    public key?: string;
-    public legends?: LayerLegend[];
-    public type?: PropertyType;
-    public value?: any;
-
-    // #endregion Properties (4)
-}
+import { PropertySection } from './property-section';
+import { PropertyDetails } from './property-details';
 
 // tslint:disable-next-line: max-classes-per-file
 @Component({
@@ -47,12 +28,14 @@ export class FeatureDetails extends WidgetBase {
     public sectionsPanels: number[] = [];
     public tabs = 'feature-details';
 
+    private featureSectionsExpanded!: { [key: string]: string[] };
+
     // #endregion Properties (4)
 
     // #region Public Accessors (7)
 
     /** get active feature */
-    public get feature(): Feature | undefined {
+    public get feature(): mapboxgl.MapboxGeoJSONFeature | undefined {
         if (this.widget.data && this.widget.data.feature) {
             return this.widget.data.feature;
         }
@@ -95,8 +78,7 @@ export class FeatureDetails extends WidgetBase {
                     result.push(element);
                 }
             }
-        } else {
-        }
+        } else { }
         return result;
     }
 
@@ -167,7 +149,8 @@ export class FeatureDetails extends WidgetBase {
     }
 
     public setLegend(property: PropertyDetails) {
-        if (property && property.legends && property.legends.length > 0) {
+        if (!property || !property.allowLegend) { return; }
+        if (property.legends && property.legends.length > 0) {
             if (this.manager && this.layer) {
                 this.layer.removeLegend(property, true);
             }
@@ -182,24 +165,53 @@ export class FeatureDetails extends WidgetBase {
         this.$forceUpdate();
     }
 
+    public sectionChanged() {
+        this.saveSectionsState();
+    }
+
+    @Watch('sectionsPanels')
+    public saveSectionsState() {
+        const res: string[] = [];
+        if (!this.featureSectionsExpanded || !this.sectionsPanels || !this.sections || !this.layer) { return; }
+        for (const panel of this.sectionsPanels) {
+            if (this.sections.hasOwnProperty(panel)) {
+                res.push(this.sections[panel].id!);
+            }
+        }
+        this.featureSectionsExpanded[this.layer.id] = res;
+        localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
+    }
+
     /** get list of available section, with their properties */
     public updateSections() {
-        const layer = this.layer;
-        if (!layer || !this.feature || !this.feature.properties) {
+
+        if (!this.layer || !this.feature || !this.feature.properties || !this.layer._source) {
             return [];
         }
 
         // create default section
         const defaultSection = {
             id: 'default',
-            title: 'PROPERTIES',
+            title: $cs.Translate('PROPERTIES'),
             properties: []
         } as PropertySection;
         const result: PropertySection[] = [defaultSection];
-        this.sectionsPanels = [0];
+        this.sectionsPanels = [];
 
         /** find feature type */
-        const ft = layer.getFeatureType();
+        const ft = this.layer._source.getFeatureType();
+
+        if (!localStorage.featureSectionsExpanded) {
+            localStorage.featureSectionsExpanded = '{}';
+        }
+        this.featureSectionsExpanded = JSON.parse(localStorage.featureSectionsExpanded);
+        if (!this.featureSectionsExpanded.hasOwnProperty(this.layer.id)) {
+            this.featureSectionsExpanded[this.layer.id] = [defaultSection.id!];
+        }
+
+        if (this.featureSectionsExpanded[this.layer.id].includes(defaultSection.id!)) {
+            this.sectionsPanels.push(0);
+        }
 
         /** lookup all properties */
         for (const key in this.feature.properties) {
@@ -209,7 +221,7 @@ export class FeatureDetails extends WidgetBase {
                 if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(key)) {
                     pt = ft.propertyMap[key];
                 } else {
-                    // debugger;
+                    
                 }
                 let proptype: PropertyType;
                 if (typeof pt === 'string') {
@@ -229,18 +241,19 @@ export class FeatureDetails extends WidgetBase {
                     let legends: LayerLegend[] = [];
 
                     // find legend
-                    if (layer._legends) {
-                        legends = layer._legends.filter(
+                    if (this.layer._legends) {
+                        legends = this.layer._legends.filter(
                             l => l.property === key
                         );
-                        if (legends.length > 0) {
-                        }
+                        // if (legends.length > 0) {
+                        // }
                     }
 
                     const element = this.feature.properties[key];
                     const prop = {
                         key,
                         value: element,
+                        allowLegend: proptype.type === 'number',
                         type: proptype,
                         legends,
                         display: element
@@ -260,23 +273,17 @@ export class FeatureDetails extends WidgetBase {
                         if (!section) {
                             section = { id: proptype.section, title: proptype.section, properties: [] };
                             result.push(section);
-                            this.sectionsPanels.push(result.length - 1);
+                            if (this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.layer.id) && this.featureSectionsExpanded[this.layer.id].includes(section.id!)) {
+                                this.sectionsPanels.push(result.length - 1);
+                            }
                         }
-                    } else {
-                    }
-
-                    // section.properties!.push(prop as any);
-
+                    } else { }
                     section.properties!.push(prop);
                 }
             }
         }
         Vue.set(this, 'sections', result);
     }
-
-    // #endregion Public Methods (7)
-
-    // #region Private Methods (1)
 
     private propertyFilter(prop: PropertyType, filter: string): boolean {
         if (!filter || filter.length === 0) { return true; }

@@ -12,7 +12,7 @@
 
 \+ **new CsWidget**(): *[CsWidget](_cs_client_src_components_cs_widget_cs_widget_.cswidget.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:61](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L61)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L42)*
 
 **Returns:** *[CsWidget](_cs_client_src_components_cs_widget_cs_widget_.cswidget.md)*
 
@@ -22,7 +22,7 @@
 
 • **$refs**: *object*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:53](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L53)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:31](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L31)*
 
 #### Type declaration:
 
@@ -36,7 +36,7 @@ ___
 
 • **_options**? : *[WidgetOptions](_cs_core_src_widget_widget_options_.widgetoptions.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:58](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L58)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:39](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L39)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **activeWidget**? : *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L59)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:40](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L40)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:51](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L51)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:35](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L35)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **dsHandle**? : *[MessageBusHandle](_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:61](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L61)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:41](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L41)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **loadingDataSource**: *boolean* = false
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:48](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L48)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L42)*
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 • **mouseOver**: *boolean* = false
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:50](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L50)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:36](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L36)*
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 • **widget**? : *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:49](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L49)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:37](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L37)*
 
 ## Accessors
 
@@ -92,7 +92,7 @@ ___
 
 • **get options**(): *[WidgetOptions](_cs_core_src_widget_widget_options_.widgetoptions.md)*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L29)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:57](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L57)*
 
 **Returns:** *[WidgetOptions](_cs_core_src_widget_widget_options_.widgetoptions.md)*
 
@@ -102,7 +102,7 @@ ___
 
 • **get widgetBorder**(): *string | undefined*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L42)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:71](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L71)*
 
 **Returns:** *string | undefined*
 
@@ -112,7 +112,7 @@ ___
 
 ▸ **addMenuItem**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:109](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L109)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:82](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L82)*
 
 **Parameters:**
 
@@ -128,7 +128,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:314](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L314)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:97](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L97)*
 
 **Returns:** *void*
 
@@ -138,7 +138,7 @@ ___
 
 ▸ **checkWidgetContent**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:216](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L216)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:346](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L346)*
 
 **Returns:** *void*
 
@@ -148,7 +148,7 @@ ___
 
 ▸ **checkWidgetId**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:124](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L124)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:103](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L103)*
 
 **Parameters:**
 
@@ -164,7 +164,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:244](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L244)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:109](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L109)*
 
 **Returns:** *void*
 
@@ -174,7 +174,7 @@ ___
 
 ▸ **getComponent**(): *any*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L68)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:178](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L178)*
 
 **Returns:** *any*
 
@@ -184,7 +184,7 @@ ___
 
 ▸ **initWidget**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:134](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L134)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:186](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L186)*
 
 **Returns:** *void*
 
@@ -194,7 +194,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:320](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L320)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:268](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L268)*
 
 **Returns:** *void*
 
@@ -204,7 +204,7 @@ ___
 
 ▸ **mouseEnter**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:340](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L340)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:282](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L282)*
 
 **Returns:** *void*
 
@@ -214,7 +214,7 @@ ___
 
 ▸ **mouseLeave**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:344](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L344)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:286](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L286)*
 
 **Returns:** *void*
 
@@ -224,7 +224,7 @@ ___
 
 ▸ **onResize**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:93](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L93)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:290](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L290)*
 
 **Returns:** *void*
 
@@ -234,7 +234,7 @@ ___
 
 ▸ **setActiveWidget**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:130](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L130)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:294](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L294)*
 
 **Parameters:**
 
@@ -250,7 +250,7 @@ ___
 
 ▸ **setWidgetContent**(`widget`: [IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md), `content`: any): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:235](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L235)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:298](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L298)*
 
 **Parameters:**
 
@@ -267,7 +267,7 @@ ___
 
 ▸ **triggerMenuAction**(`menu`: [IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:334](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L334)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:307](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L307)*
 
 **Parameters:**
 
@@ -283,7 +283,7 @@ ___
 
 ▸ **updateSize**(`trigger`: boolean): *void*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:76](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L76)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:313](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L313)*
 
 **Parameters:**
 
@@ -299,6 +299,6 @@ ___
 
 ▸ **widgetStyles**(): *any*
 
-*Defined in [packages/cs-client/src/components/cs-widget/cs-widget.ts:97](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-widget/cs-widget.ts#L97)*
+*Defined in [cs-client/src/components/cs-widget/cs-widget.ts:330](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-widget/cs-widget.ts#L330)*
 
 **Returns:** *any*

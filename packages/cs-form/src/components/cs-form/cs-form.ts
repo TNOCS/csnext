@@ -99,7 +99,7 @@ export class CsForm extends Vue {
 
     public closeForm() {
         this.saveForm();
-        this.$cs.ClearRightSidebar();
+        this.$cs.clearRightSidebar();
         console.log('Closing form');
     }
 

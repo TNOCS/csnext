@@ -125,9 +125,9 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.options.info) {
-      this.$cs.OpenInfo(dashboard.options.info);
+      this.$cs.openInfo(dashboard.options.info);
     } else {
-      this.$cs.CloseInfo();
+      this.$cs.closeInfo();
     }
 
     // if this is a main dashboard, set it as active dashboard on appstate
@@ -137,7 +137,7 @@ export class CsDashboard extends Vue {
       if (dashboard.options && dashboard.options.closeRightSidebar && this.$cs.project.rightSidebar) {
         this.$cs.project.rightSidebar.open = false;
       }
-      this.$cs.UpdateBreadCrumbs();
+      this.$cs.updateBreadCrumbs();
       this.$forceUpdate();
     }
 

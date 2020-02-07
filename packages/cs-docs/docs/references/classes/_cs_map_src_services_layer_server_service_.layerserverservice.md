@@ -15,7 +15,7 @@
 
 \+ **new LayerServerService**(`init?`: Partial‹[LayerServerService](_cs_map_src_services_layer_server_service_.layerserverservice.md)›): *[LayerServerService](_cs_map_src_services_layer_server_service_.layerserverservice.md)*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L42)*
+*Defined in [cs-map/src/services/layer-server-service.ts:43](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L43)*
 
 **Parameters:**
 
@@ -31,7 +31,7 @@ Name | Type |
 
 • **id**: *string*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:35](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L35)*
+*Defined in [cs-map/src/services/layer-server-service.ts:36](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L36)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **layers**: *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)[]* =  []
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:41](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L41)*
+*Defined in [cs-map/src/services/layer-server-service.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L42)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 • **manager**? : *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L42)*
+*Defined in [cs-map/src/services/layer-server-service.ts:43](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L43)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 • **options**? : *[LayerServerServiceOptions](_cs_map_src_services_layer_server_service_options_.layerserverserviceoptions.md)*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:39](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L39)*
+*Defined in [cs-map/src/services/layer-server-service.ts:40](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L40)*
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 • **title**? : *string | undefined*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:36](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L36)*
+*Defined in [cs-map/src/services/layer-server-service.ts:37](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L37)*
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 • **type**: *string* = "layer-server-service"
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:40](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L40)*
+*Defined in [cs-map/src/services/layer-server-service.ts:41](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L41)*
 
 ## Accessors
 
@@ -79,7 +79,7 @@ ___
 
 • **get mapDraw**(): *any*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L25)*
+*Defined in [cs-map/src/services/layer-server-service.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L26)*
 
 **Returns:** *any*
 
@@ -89,7 +89,7 @@ ___
 
 • **get socket**(): *Socket | undefined*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L19)*
+*Defined in [cs-map/src/services/layer-server-service.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L20)*
 
 **Returns:** *Socket | undefined*
 
@@ -99,7 +99,7 @@ ___
 
 ▸ **Start**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *Promise‹void›*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:53](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L53)*
+*Defined in [cs-map/src/services/layer-server-service.ts:54](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L54)*
 
 **Parameters:**
 
@@ -115,7 +115,7 @@ ___
 
 ▸ **Stop**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:251](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L251)*
+*Defined in [cs-map/src/services/layer-server-service.ts:250](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L250)*
 
 **Parameters:**
 
@@ -131,7 +131,7 @@ ___
 
 ▸ **disableLayerSocket**(`gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:174](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L174)*
+*Defined in [cs-map/src/services/layer-server-service.ts:176](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L176)*
 
 **Parameters:**
 
@@ -147,7 +147,7 @@ ___
 
 ▸ **getInstance**(`init?`: Partial‹[ILayerService](../interfaces/_cs_map_src_classes_layer_service_.ilayerservice.md)›): *[IStartStopService](../interfaces/_cs_map_src_classes_layer_service_.istartstopservice.md)*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:48](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L48)*
+*Defined in [cs-map/src/services/layer-server-service.ts:49](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L49)*
 
 **Parameters:**
 
@@ -163,7 +163,7 @@ ___
 
 ▸ **getLayerActions**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:232](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L232)*
+*Defined in [cs-map/src/services/layer-server-service.ts:231](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L231)*
 
 **Parameters:**
 
@@ -179,7 +179,7 @@ ___
 
 ▸ **initEditableLayer**(`gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md), `layer`: any): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:318](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L318)*
+*Defined in [cs-map/src/services/layer-server-service.ts:316](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L316)*
 
 **Parameters:**
 
@@ -196,7 +196,7 @@ ___
 
 ▸ **initLayerSocket**(`gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:181](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L181)*
+*Defined in [cs-map/src/services/layer-server-service.ts:183](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L183)*
 
 **Parameters:**
 
@@ -212,7 +212,7 @@ ___
 
 ▸ **initLiveLayer**(`gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md), `layer`: any): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:256](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L256)*
+*Defined in [cs-map/src/services/layer-server-service.ts:254](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L254)*
 
 **Parameters:**
 
@@ -229,7 +229,7 @@ ___
 
 ▸ **removeExistingLayers**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:379](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L379)*
+*Defined in [cs-map/src/services/layer-server-service.ts:374](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L374)*
 
 remove previously added layers
 
@@ -247,7 +247,7 @@ ___
 
 ▸ **updateLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:202](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L202)*
+*Defined in [cs-map/src/services/layer-server-service.ts:204](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L204)*
 
 **Parameters:**
 
@@ -263,7 +263,7 @@ ___
 
 ▸ **updateLiveLayer**(`data`: any, `gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md)): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:272](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L272)*
+*Defined in [cs-map/src/services/layer-server-service.ts:270](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L270)*
 
 update live layer, after complete update
 
@@ -282,7 +282,7 @@ ___
 
 ▸ **updateLiveLayerFeature**(`data`: [IFeatureAction](../interfaces/_cs_map_src_services_feature_action_.ifeatureaction.md), `gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md), `forceUpdate`: boolean): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:288](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L288)*
+*Defined in [cs-map/src/services/layer-server-service.ts:286](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L286)*
 
 update live layer, after feature update
 
@@ -302,7 +302,7 @@ ___
 
 ▸ **updateLiveLayerFeatures**(`data`: object, `gl`: [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md), `forceUpdate`: boolean): *void*
 
-*Defined in [packages/cs-map/src/services/layer-server-service.ts:304](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/services/layer-server-service.ts#L304)*
+*Defined in [cs-map/src/services/layer-server-service.ts:302](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/services/layer-server-service.ts#L302)*
 
 update live layer, after feature update
 

@@ -10,7 +10,7 @@
 
 • **getInstance**? : *function*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager-config.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L5)*
+*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L5)*
 
 #### Type declaration:
 
@@ -22,4 +22,4 @@ ___
 
 • **id**? : *string*
 
-*Defined in [packages/cs-core/src/dashboard/dashboard-manager-config.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L4)*
+*Defined in [cs-core/src/dashboard/dashboard-manager-config.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/dashboard/dashboard-manager-config.ts#L4)*

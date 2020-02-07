@@ -11,14 +11,14 @@ import { Logger } from '@nestjs/common';
 import uuidv1 from 'uuid/v1';
 
 export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
-  id = 'arangodb';
-  source = 'arangodb';
+  public id = 'arangodb';
+  public source = 'arangodb';
 
-  getInstance() {
+  public getInstance() {
     return new ArangoDBSource();
   }
 
-  query(connection: Connection, query: string | any): Promise<ILoadResult> {
+  public query(connection: Connection, query: string | any): Promise<ILoadResult> {
     return new Promise(async (resolve, reject) => {
       const dbConfig = {
         host: connection.host || 'localhost',
@@ -36,13 +36,13 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
 
         db.useBasicAuth(dbConfig.username, dbConfig.password);
         db.useDatabase(dbConfig.database);
-        console.log(query);
+        Logger.log(query);
         const res = await db.query(query);
-        let geojson = new LayerSource();
+        const geojson = new LayerSource();
         geojson.features = [];
         while (res.hasNext()) {
           const result = await res.next();
-          let f = {
+          const f = {
             id: result.props.hasOwnProperty('_id')
               ? result.props._id
               : uuidv1(),
@@ -79,17 +79,18 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
   }
 
   /** make sure geojson has been prepared, e.g. add ids to all features */
-  initSource(source: LayerSource): boolean {
-    let updated = false;
+  public initSource(source: LayerSource): boolean {
+    const updated = false;
 
     if (source.features) {
+      // tslint:disable-next-line: no-empty
       for (const {} of source.features) {
       }
     }
     return updated;
   }
 
-  save(file: string, source: LayerSource) {
+  public save(file: string, source: LayerSource) {
     Logger.log(`Saving: ${file}`);
     fs.writeFileSync(
       file,

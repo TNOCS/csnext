@@ -10,31 +10,13 @@ The DatasourceManager maintains a list of all datasource processors and all data
 
 ###  constructor
 
-\+ **new DatasourceManager**(`datasources`: object): *[DatasourceManager](_cs_client_src_services_datasource_manager_.datasourcemanager.md)*
+\+ **new DatasourceManager**(): *[DatasourceManager](_cs_client_src_services_datasource_manager_.datasourcemanager.md)*
 
-*Defined in [packages/cs-client/src/services/datasource-manager.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/datasource-manager.ts#L7)*
+*Defined in [cs-client/src/services/datasource-manager.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/datasource-manager.ts#L7)*
 
 Available datasource handlers
 
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`datasources` | object |
-
 **Returns:** *[DatasourceManager](_cs_client_src_services_datasource_manager_.datasourcemanager.md)*
-
-## Properties
-
-### `Private` datasources
-
-• **datasources**: *object*
-
-*Defined in [packages/cs-client/src/services/datasource-manager.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/datasource-manager.ts#L16)*
-
-#### Type declaration:
-
-* \[ **id**: *string*\]: [IDatasource](../interfaces/_cs_core_src_datasources_datasource_.idatasource.md)
 
 ## Methods
 
@@ -42,7 +24,7 @@ Name | Type |
 
 ▸ **load**<**T**>(`source`: [IDatasource](../interfaces/_cs_core_src_datasources_datasource_.idatasource.md) | string): *Promise‹T›*
 
-*Defined in [packages/cs-client/src/services/datasource-manager.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/datasource-manager.ts#L19)*
+*Defined in [cs-client/src/services/datasource-manager.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/datasource-manager.ts#L19)*
 
 Load a data source using the assigned data summary handler(s)
 
@@ -64,8 +46,25 @@ ___
 
 ▸ **loadAll**(): *void*
 
-*Defined in [packages/cs-client/src/services/datasource-manager.ts:96](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/datasource-manager.ts#L96)*
+*Defined in [cs-client/src/services/datasource-manager.ts:89](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/datasource-manager.ts#L89)*
 
 load all data sources
+
+**Returns:** *void*
+
+___
+
+###  update
+
+▸ **update**(`id`: string, `value`: any): *void*
+
+*Defined in [cs-client/src/services/datasource-manager.ts:80](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/datasource-manager.ts#L80)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`id` | string |
+`value` | any |
 
 **Returns:** *void*

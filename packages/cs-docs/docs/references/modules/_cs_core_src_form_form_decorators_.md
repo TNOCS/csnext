@@ -6,7 +6,7 @@
 
 ▸ **Form**(`options`: [IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)): *decorator*
 
-*Defined in [packages/cs-core/src/form/form-decorators.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/form/form-decorators.ts#L95)*
+*Defined in [cs-core/src/form/form-decorators.ts:95](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/form/form-decorators.ts#L95)*
 
 **Parameters:**
 
@@ -22,7 +22,7 @@ ___
 
 ▸ **FormField**(`options`: [IFormFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformfieldoptions.md)): *any*
 
-*Defined in [packages/cs-core/src/form/form-decorators.ts:113](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/form/form-decorators.ts#L113)*
+*Defined in [cs-core/src/form/form-decorators.ts:113](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/form/form-decorators.ts#L113)*
 
 **Parameters:**
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **FormUnionFields**(`options`: [IFormUnionFieldOptions](../interfaces/_cs_core_src_form_form_decorators_.iformunionfieldoptions.md)): *decorator*
 
-*Defined in [packages/cs-core/src/form/form-decorators.ts:130](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/form/form-decorators.ts#L130)*
+*Defined in [cs-core/src/form/form-decorators.ts:130](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/form/form-decorators.ts#L130)*
 
 **Parameters:**
 

@@ -13,6 +13,7 @@ import {
     LayerEditor
 } from '..';
 import axios from 'axios';
+import { DataSource } from '@csnext/cs-data';
 
 export class LayerServerService implements ILayerService, IStartStopService {
 
@@ -56,7 +57,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.options && this.options.url) {
             axios
                 .get(this.options.url + 'layers/')
-                .then(response => {
+                .then(async response => {
                     if (
                         response &&
                         response.data &&
@@ -82,12 +83,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.openFeatureDetails = true;
                             gl.isEditable = layer.isEditable;
                             gl.isLive = layer.isLive;
+                            gl.featureTypes = layer.featureTypes;
                             gl.iconZoomLevel = style.iconZoomLevel;
                             gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
                             gl.id = layer.id;
                             gl.extensions = layer.extensions;
-
                             gl.style = style;
                             if (gl.style && gl.style.popup) {
                                 console.log(gl.style.popup);
@@ -112,9 +113,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             if (layer.tags) {
                                 gl.tags = [...gl.tags, ...layer.tags];
                             }
-                            if (layer.featureTypes) {
-                                gl.featureTypes = layer.featureTypes;
-                            }
+                            // TODO: fix remove feature types
+                            // if (layer._source.featureTypes) {
+                            //     gl._source.featureTypes = layer._source.featureTypes;
+                            // }
 
                             if (gl.isEditable) {
                                 this.initEditableLayer(gl, layer);
@@ -129,7 +131,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             //     'line-opacity': ['get', 'stroke-opacity'],
                             //     'line-width': ['get', 'stroke-width']
                             // } as LinePaint;
-                            gl.initLayer(manager);
+                            await gl.initLayer(manager);
                             manager.layers.push(gl);
                             gl._events.subscribe('feature', (a: string) => {
                                 if (
@@ -182,7 +184,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
         if (this.socket && this.socket !== undefined) {
 
-            if (gl.Visible) {
+            if (gl.enabled) {
                 // listen to complete layer updates
 
                 this.socket.on('layer/' + gl.id, (data: any) => {
@@ -210,10 +212,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 })
             );
             delete def.source;
-
-            console.log(def);
             const url = this.options.url + 'layers/' + layer.id;
-            console.log(this.options);
             axios
                 .put(url, def, {
                     headers: {
@@ -235,11 +234,11 @@ export class LayerServerService implements ILayerService, IStartStopService {
             title: 'Edit',
             action: () => {
                 this.manager!.editLayer(layer);
-                // AppState.Instance.OpenRightSidebarWidget({
+                // AppState.Instance.openRightSidebarWidget({
                 //     component: LayerEditor,
                 //     data: { layer, service: this }
                 // }, undefined, 'layers');
-                // this.manager!.MapWidget!.$cs.OpenRightSidebarWidget({
+                // this.manager!.MapWidget!.$cs.openRightSidebarWidget({
                 //     component: LayerServiceEditor,
                 //     data: { layer: layer, service: this }
                 // });
@@ -250,7 +249,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     public Stop(manager: MapDatasource) {
         this.removeExistingLayers(manager);
-        console.log('Stop service');
     }
 
     private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
@@ -328,7 +326,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                     feature.id = feature.properties._fId;
                 }
                 const all = md.getAll();
-                console.log(all);
                 const featureIds = md.add(feature);
                 //
                 md.changeMode('simple_select', {
@@ -344,8 +341,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 // if (f.context.type !== 'touchend') {
 
                 // }
-
-                console.log(featureIds);
             }
         });
 
@@ -353,13 +348,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
         gl._events.subscribe('source', (a: string) => {
             if (a === 'updated' && this.options) {
                 const url = this.options.url + 'sources/' + layer.id;
-                const body = gl._source!._geojson;
+                const body = gl._source!._data;
                 if (body && this.socket) {
                     // tslint:disable-next-line:no-string-literal
                     body['lastUpdatedBy'] = this.socket.id;
-                    console.log(gl._source!._geojson);
+                    console.log(gl._source!._data);
                     axios
-                        .put(url, gl._source!._geojson, {
+                        .put(url, gl._source!._data, {
                             headers: {
                                 'Content-Type': 'application/json'
                             }

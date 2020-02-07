@@ -12,7 +12,7 @@
 
 • **Groups**: *object*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L23)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L23)*
 
 #### Type declaration:
 
@@ -24,7 +24,7 @@ ___
 
 • **filter**: *string* = ""
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:22](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L22)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:22](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L22)*
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 • **groupsexpanded**: *number[]* =  []
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:20](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L20)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L20)*
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 • **items**: *any[]* =  []
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L18)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:18](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L18)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **open**: *any[]* =  []
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L19)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L19)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 • **showMenu**: *boolean* = false
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L21)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L21)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 • **tree**: *any[]* =  []
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L17)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:17](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L17)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L16)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:16](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L16)*
 
 ## Accessors
 
@@ -80,7 +80,7 @@ ___
 
 • **get MapManager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:175](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L175)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:175](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L175)*
 
 **Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **addLayerToGroup**(`res`: object, `t`: string, `l`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:162](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L162)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:162](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L162)*
 
 **Parameters:**
 
@@ -108,7 +108,7 @@ ___
 
 ▸ **datasourceUpdated**(`n`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:198](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L198)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:198](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L198)*
 
 **Parameters:**
 
@@ -124,7 +124,7 @@ ___
 
 ▸ **filterChanged**(`search`: string): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:188](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L188)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:188](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L188)*
 
 **Parameters:**
 
@@ -140,7 +140,7 @@ ___
 
 ▸ **groupsChanged**(`v`: boolean[]): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:183](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L183)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:183](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L183)*
 
 **Parameters:**
 
@@ -156,7 +156,7 @@ ___
 
 ▸ **layerMenu**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:139](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L139)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:139](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L139)*
 
 **Parameters:**
 
@@ -172,7 +172,7 @@ ___
 
 ▸ **layersChanged**(`d`: any): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:193](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L193)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:193](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L193)*
 
 **Parameters:**
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L25)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:25](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L25)*
 
 **Returns:** *void*
 
@@ -198,7 +198,7 @@ ___
 
 ▸ **setLayerOpacity**(`value`: number, `layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:109](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L109)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:109](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L109)*
 
 **Parameters:**
 
@@ -215,7 +215,7 @@ ___
 
 ▸ **showLayerMenu**(`e`: MouseEvent, `layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:115](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L115)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:115](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L115)*
 
 **Parameters:**
 
@@ -232,7 +232,7 @@ ___
 
 ▸ **toggleGroup**(`group`: [ILayerGroup](../interfaces/_cs_map_src_components_layer_selection_layer_group_.ilayergroup.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:40](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L40)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:40](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L40)*
 
 **Parameters:**
 
@@ -248,7 +248,7 @@ ___
 
 ▸ **toggleLayer**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:150](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L150)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:150](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L150)*
 
 **Parameters:**
 
@@ -264,7 +264,7 @@ ___
 
 ▸ **toggleShowMore**(`layer`: [IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:104](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L104)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:104](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L104)*
 
 **Parameters:**
 
@@ -280,6 +280,6 @@ ___
 
 ▸ **updateGroups**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-selection/layer-selection.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-selection/layer-selection.ts#L59)*
+*Defined in [cs-map/src/components/layer-selection/layer-selection.ts:59](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-selection.ts#L59)*
 
 **Returns:** *void*

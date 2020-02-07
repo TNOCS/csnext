@@ -1,10 +1,18 @@
 <div class="tabs-manager">
-  <v-tabs right v-model="tab" grow>
-    <v-tab v-for="widget in dashboard.widgets" :key="widget.id">
+  <v-tabs 
+    :right="options.right" 
+    v-model="tab" 
+    :grow="options.grow"
+    :centered="options.centered"
+    :vertical="options.vertical"
+    :icons-and-text="options.icons"
+     >
+    <v-tab v-for="widget in dashboard.widgets" :key="widget.title">      
       {{ widget.title }}
+      <v-icon v-if="options.icons && widget.options.icon">{{widget.options.icon}}</v-icon>
     </v-tab>
   </v-tabs>
-  <v-tabs-items v-model="tab" class="tabs-layout-manager-content">
+  <v-tabs-items v-model="tab">
     <v-tab-item v-for="widget in dashboard.widgets" :key="widget.id">
       <cs-widget :widget="widget"></cs-widget>
     </v-tab-item>

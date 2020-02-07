@@ -4,7 +4,7 @@ export class Topics {
   public static readonly LOG_ITEM_ADDED = 'log-item-added';
   public static readonly LOG_ITEM_UPDATED = 'log-item-updated';
   public static readonly LOG_ITEM_SELECTED = 'log-item-selected';
-  public static readonly SELECT_LOG_ITEM = "select-log-item";
+  public static readonly SELECT_LOG_ITEM = 'select-log-item';
   public static readonly SET_FOCUS_TIME = 'set-time';
   public static readonly SET_TIME_RANGE = 'set-time-range';
   public static readonly TIMELINE_MOVED = 'moved';

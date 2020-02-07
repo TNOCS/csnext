@@ -10,7 +10,7 @@
 
 ▪ **layoutManagers**: *object*
 
-*Defined in [packages/cs-client/src/services/layout-manager.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/layout-manager.ts#L5)*
+*Defined in [cs-client/src/services/layout-manager.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/layout-manager.ts#L5)*
 
 Available dashboard managers for layouting
 
@@ -24,7 +24,7 @@ Available dashboard managers for layouting
 
 ▸ **add**(`manager`: [ILayoutManagerConfig](../interfaces/_cs_core_src_dashboard_layout_manager_config_.ilayoutmanagerconfig.md)): *void*
 
-*Defined in [packages/cs-client/src/services/layout-manager.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/layout-manager.ts#L8)*
+*Defined in [cs-client/src/services/layout-manager.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/layout-manager.ts#L8)*
 
 Registration of a new dashboard manager
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **addLayoutManager**(`comp`: any): *void*
 
-*Defined in [packages/cs-client/src/services/layout-manager.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/services/layout-manager.ts#L12)*
+*Defined in [cs-client/src/services/layout-manager.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/services/layout-manager.ts#L12)*
 
 **Parameters:**
 

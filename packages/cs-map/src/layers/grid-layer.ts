@@ -18,7 +18,7 @@ export class GridLayer extends GeojsonLayer {
 
     public addLayer(map: CsMap) {
         super.addLayer(map);
-        this.Visible = true;
+        this.enabled = true;
     }
 
 }

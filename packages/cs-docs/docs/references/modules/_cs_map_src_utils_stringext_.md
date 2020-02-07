@@ -4,9 +4,9 @@
 
 ###  convertPropertyInfo
 
-▸ **convertPropertyInfo**(`pt`: [PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md), `text`: any): *string*
+▸ **convertPropertyInfo**(`pt`: [PropertyType](../classes/_cs_data_src_classes_property_type_.propertytype.md), `text`: any): *string*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:63](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L63)*
+*Defined in [cs-map/src/utils/StringExt.ts:63](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L63)*
 
 Convert a property value to a display value using the property info.
 
@@ -14,7 +14,7 @@ Convert a property value to a display value using the property info.
 
 Name | Type |
 ------ | ------ |
-`pt` | [PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md) |
+`pt` | [PropertyType](../classes/_cs_data_src_classes_property_type_.propertytype.md) |
 `text` | any |
 
 **Returns:** *string*
@@ -25,7 +25,7 @@ ___
 
 ▸ **format**(`s`: string, ...`args`: string[]): *string*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L12)*
+*Defined in [cs-map/src/utils/StringExt.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L12)*
 
 String formatting
 'Added {0} by {1} to your collection'.f(title, artist)
@@ -46,7 +46,7 @@ ___
 
 ▸ **isArray**(`s`: any): *boolean*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:47](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L47)*
+*Defined in [cs-map/src/utils/StringExt.ts:47](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L47)*
 
 **Parameters:**
 
@@ -62,7 +62,7 @@ ___
 
 ▸ **isBbcode**(`s`: any): *boolean*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:54](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L54)*
+*Defined in [cs-map/src/utils/StringExt.ts:54](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L54)*
 
 **Parameters:**
 
@@ -78,7 +78,7 @@ ___
 
 ▸ **isBoolean**(`s`: any): *boolean*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:39](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L39)*
+*Defined in [cs-map/src/utils/StringExt.ts:39](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L39)*
 
 **Parameters:**
 
@@ -94,7 +94,7 @@ ___
 
 ▸ **isNullOrEmpty**(`s`: string): *boolean*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:3](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L3)*
+*Defined in [cs-map/src/utils/StringExt.ts:3](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L3)*
 
 **Parameters:**
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **isNumber**(`n`: any): *boolean*
 
-*Defined in [packages/cs-map/src/utils/StringExt.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/utils/StringExt.ts#L32)*
+*Defined in [cs-map/src/utils/StringExt.ts:32](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/utils/StringExt.ts#L32)*
 
 **Parameters:**
 

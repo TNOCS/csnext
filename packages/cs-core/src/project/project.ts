@@ -35,6 +35,5 @@ export interface IProject {
   languages?: ILanguageOptions;
   data?: any;
   server?: ServerConnection;
-  _appState?: AppStateBase;
   init?();
 }

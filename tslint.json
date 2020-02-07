@@ -1,38 +1,27 @@
 {
-  "extends": "tslint:recommended",
-  "rules": {
-    "no-console": false,
-    "no-empty": false,
-    "quotemark": [
-      true,
-      "single",
-      "double"
-    ],    
-    "max-line-length": false,
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-separator",
-      "check-type"
-    ],
-    "variable-name": false,
-    "allow-leading-underscore": true,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": "never",
-        "singleline": "never"
-      }
-    ],
-    "object-literal-sort-keys": false,
-    "ordered-imports": [
-      false
-    ],
-    "arrow-parens": false,
-    "object-literal-key-quotes": [
-      false
-    ]
-  }
+	"extends": "tslint:recommended",
+	"rules": {
+		"quotemark": [true, "single", "double"],
+		"max-line-length": false,
+		"whitespace": [true,
+			"check-branch",
+			"check-decl",
+			"check-operator",
+			"check-separator",
+			"check-type"
+		],
+		"trailing-comma": [true, {
+			"multiline": "never",
+			"singleline": "never"
+		}],
+		"object-literal-sort-keys": false,
+		"variable-name": false,
+		"ordered-imports": [
+			false
+		],
+		"arrow-parens": false,
+		"object-literal-key-quotes": [
+			false
+		]
+	}
 }

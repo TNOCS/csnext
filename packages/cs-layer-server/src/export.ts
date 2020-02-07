@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import {
     DocumentBuilder,
     SwaggerModule,
-    SwaggerBaseConfig
+    SwaggerDocumentOptions
 } from '@nestjs/swagger';
 import { INestApplication, Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
@@ -17,6 +17,7 @@ export { FeatureController } from './features/features.controller';
 export { LogService } from './logs/log-service';
 export { LogController } from './logs/log-controller';
 export * from './classes/layer-definition';
+export * from './classes/mapbox-style';
 export * from './classes/layer-source';
 export * from './classes/layer-meta';
 export * from './classes/layer-style';
@@ -40,7 +41,7 @@ export class ServerConfig {
 export class NestServer {
     // public server: express.Express = express();
     public app!: NestExpressApplication;
-    public swaggerConfig!: SwaggerBaseConfig;
+    public swaggerConfig!: any;
     public config?: ServerConfig;
 
     public bootstrap(
@@ -49,7 +50,7 @@ export class NestServer {
         host?: string,
         port?: number,
         external?: string,
-        swaggerConfig?: SwaggerBaseConfig
+        swaggerConfig?: any
     ): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             // this.app = await NestFactory.create(moduleType);
@@ -72,7 +73,7 @@ export class NestServer {
                 this.swaggerConfig = new DocumentBuilder()
                     .setTitle(title)
                     .setDescription(title)
-                    .setHost(`${external}`)
+                    .setBasePath(`${external}`)
                     .setVersion('0.0.1')
                     .addTag('layer')
                     .build();
@@ -103,7 +104,7 @@ export class NestServer {
                 }
 
                 if (this.config.hbsViewFolder) {
-                    const indexDirectory: string = path.join(this.config.staticFolder, this.config.hbsViewFolder);                                        
+                    const indexDirectory: string = path.join(this.config.staticFolder, this.config.hbsViewFolder);
                     this.app.setBaseViewsDir(indexDirectory);
                     this.app.setViewEngine('html');
                     this.app.engine('html', require('hbs').__express);
@@ -112,16 +113,14 @@ export class NestServer {
                 Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
             }
 
-        
-
             await this.app.listen(port, host, () => {
-            this.app.useWebSocketAdapter(new WsAdapter());
+                this.app.useWebSocketAdapter(new WsAdapter());
 
-            // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
-            Logger.log(`Server is listening on port ${port}.`);
-            Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
-            resolve(true);
+                // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
+                Logger.log(`Server is listening on port ${port}.`);
+                Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
+                resolve(true);
+            });
         });
-    });
-}
+    }
 }

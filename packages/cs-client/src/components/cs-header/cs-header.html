@@ -8,7 +8,7 @@
   :flat="$cs.project.header.flat"
   app
   :dense="$cs.project.header.dense"
-  :elevation="$cs.project.header.elevation"
+  :elevation="$cs.project.header.elevation"  
 >
   <!-- header -->
   <v-app-bar-nav-icon
@@ -26,7 +26,7 @@
   <div>
     <v-menu open-on-hover bottom class="header-title-menu">
       <template v-slot:activator="{ on }">
-        <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}" class="header-title-menu-activator">
+        <div v-on="on"  class="header-title-menu-activator">
           <div class="header-title" v-if="!$cs.project.header.hideTitle">
             {{ $cs.Translate($cs.project.header.title) }}
           </div>
@@ -181,7 +181,7 @@
         class="sidebar-header-button"
         :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}"
         v-for="(item, key, index) in visibleSidebars"
-        v-if="item.widgets.length>0 && !item.hide"
+        v-if="item && item.widgets && item.widgets.length>0 && !item.hide"
         :key="index"
         text
         small
@@ -209,7 +209,7 @@
     </template>
     <template v-else>
       <v-btn
-        v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0"
+        v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashbard && rightSidebar.dashboard.widgets.length>0"
         @click="rightSidebar.open=!rightSidebar.open"
         class="header-icon"
         text

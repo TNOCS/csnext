@@ -18,13 +18,12 @@ export class LayersWidgetComponent extends Vue {
 
     public get activeLayers(): IMapLayer[] | undefined {
         if (this.manager && this.manager.layers) {
-            return this.manager.layers.filter(i => i.Visible);
+            return this.manager.layers.filter(i => i.enabled && !i.hideInLayerList && i._source && i._source._loaded);
         }
     }
 
     public mounted() {
         this.map = this.manager.MapControl;
-        console.log(this.manager);
 
         // if (this.manager.events) {
         //     this.manager.events.subscribe(

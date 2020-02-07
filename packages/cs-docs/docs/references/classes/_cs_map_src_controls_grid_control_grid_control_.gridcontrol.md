@@ -14,7 +14,7 @@
 
 \+ **new GridControl**(`mapControl`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *[GridControl](_cs_map_src_controls_grid_control_grid_control_.gridcontrol.md)*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L16)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L20)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ Name | Type |
 
 • **controlContainer**: *HTMLElement | undefined*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L16)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L19)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **gridEnabled**: *boolean* = true
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:14](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L14)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L20)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **layer**: *[GridLayer](_cs_map_src_layers_grid_layer_.gridlayer.md)*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L13)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:16](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L16)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L12)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:17](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L17)*
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 • **mapControl**: *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L19)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L26)*
 
 ___
 
@@ -70,17 +70,17 @@ ___
 
 ▪ **DEFAULT_STYLE**: *"LatLon"* = "LatLon"
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L8)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:14](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L14)*
 
 ___
 
 ### `Static` DEFAULT_STYLES
 
 ▪ **DEFAULT_STYLES**: *object[]* =  [
-        { id: "LatLon", title: "Lat / Lon" }
+        { id: 'LatLon', title: 'Lat / Lon' }
     ]
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L9)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L9)*
 
 ## Methods
 
@@ -88,7 +88,7 @@ ___
 
 ▸ **getDefaultPosition**(): *string*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L26)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:36](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L36)*
 
 **Returns:** *string*
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **onAdd**(`map`: MapboxMap): *HTMLElement*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L31)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:41](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L41)*
 
 **Parameters:**
 
@@ -114,7 +114,7 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:83](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L83)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:92](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L92)*
 
 **Returns:** *void*
 
@@ -124,6 +124,6 @@ ___
 
 ▸ **toggleGrid**(): *void*
 
-*Defined in [packages/cs-map/src/controls/grid-control/grid-control.ts:89](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/grid-control/grid-control.ts#L89)*
+*Defined in [cs-map/src/controls/grid-control/grid-control.ts:98](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/grid-control/grid-control.ts#L98)*
 
 **Returns:** *void*

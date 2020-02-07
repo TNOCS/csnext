@@ -6,4 +6,4 @@
 
 • **MINUTES_TO_MS**: *number* =  60 * 1000
 
-*Defined in [packages/cs-map/src/extensions/wms-time-extension.ts:15](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/extensions/wms-time-extension.ts#L15)*
+*Defined in [cs-map/src/extensions/wms-time-extension.ts:15](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/extensions/wms-time-extension.ts#L15)*

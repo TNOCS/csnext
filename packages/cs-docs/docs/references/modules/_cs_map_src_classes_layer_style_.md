@@ -6,14 +6,14 @@
 
 ### ▪ **CirclePaintForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L68)*
+*Defined in [cs-map/src/classes/layer-style.ts:68](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L68)*
 
 ###  fields
 
 • **fields**: *object | object | object | object | object[]* =  [
         {
             _key: 'circle-color',
-            type: 'string',            
+            type: 'string',
             title: 'color',
             group: 'circle-color'
         },
@@ -44,7 +44,7 @@
         {
             _key: 'circle-stroke-color',
             type: 'string',
-            defaultValue: "#000000",
+            defaultValue: '#000000',
             title: 'stroke color',
             group: 'circle-stroke'
         },
@@ -60,19 +60,19 @@
 
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:71](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L71)*
+*Defined in [cs-map/src/classes/layer-style.ts:71](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L71)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:70](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L70)*
+*Defined in [cs-map/src/classes/layer-style.ts:70](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L70)*
 
 ###  title
 
 • **title**: *string* = "Circle Layout"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:69](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L69)*
+*Defined in [cs-map/src/classes/layer-style.ts:69](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L69)*
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 ### ▪ **FillPaintForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:187](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L187)*
+*Defined in [cs-map/src/classes/layer-style.ts:185](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L185)*
 
 ###  fields
 
@@ -120,22 +120,22 @@ ___
             type: 'number',
             title: 'width',
             group: 'line-color'
-        }        
+        }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:190](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L190)*
+*Defined in [cs-map/src/classes/layer-style.ts:188](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L188)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:189](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L189)*
+*Defined in [cs-map/src/classes/layer-style.ts:187](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L187)*
 
 ###  title
 
 • **title**: *string* = "Fill Paint"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:188](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L188)*
+*Defined in [cs-map/src/classes/layer-style.ts:186](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L186)*
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 ### ▪ **LineLayoutForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:122](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L122)*
+*Defined in [cs-map/src/classes/layer-style.ts:122](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L122)*
 
 ###  fields
 
@@ -171,19 +171,19 @@ ___
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:125](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L125)*
+*Defined in [cs-map/src/classes/layer-style.ts:125](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L125)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:124](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L124)*
+*Defined in [cs-map/src/classes/layer-style.ts:124](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L124)*
 
 ###  title
 
 • **title**: *string* = "Line Layout"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:123](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L123)*
+*Defined in [cs-map/src/classes/layer-style.ts:123](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L123)*
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 ### ▪ **LinePaintForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:151](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L151)*
+*Defined in [cs-map/src/classes/layer-style.ts:150](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L150)*
 
 ###  fields
 
@@ -226,19 +226,19 @@ ___
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:154](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L154)*
+*Defined in [cs-map/src/classes/layer-style.ts:153](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L153)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:153](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L153)*
+*Defined in [cs-map/src/classes/layer-style.ts:152](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L152)*
 
 ###  title
 
 • **title**: *string* = "Line Paint"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:152](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L152)*
+*Defined in [cs-map/src/classes/layer-style.ts:151](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L151)*
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 ### ▪ **MapboxColorForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:50](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L50)*
+*Defined in [cs-map/src/classes/layer-style.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L50)*
 
 ###  fields
 
@@ -264,19 +264,19 @@ ___
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:53](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L53)*
+*Defined in [cs-map/src/classes/layer-style.ts:53](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L53)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = false
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:52](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L52)*
+*Defined in [cs-map/src/classes/layer-style.ts:52](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L52)*
 
 ###  title
 
 • **title**: *string* = "Color"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:51](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L51)*
+*Defined in [cs-map/src/classes/layer-style.ts:51](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L51)*
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 ### ▪ **MapboxStopForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L32)*
+*Defined in [cs-map/src/classes/layer-style.ts:32](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L32)*
 
 ###  fields
 
@@ -293,23 +293,23 @@ ___
             _index: 0,
             type: 'number',
             title: 'value',
-            group: 'stop' 
+            group: 'stop'
         },
         {
             _index: 1,
             type: 'string',
             title: 'color',
-            group: 'stop'           
+            group: 'stop'
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:34](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L34)*
+*Defined in [cs-map/src/classes/layer-style.ts:34](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L34)*
 
 ###  title
 
 • **title**: *string* = "Stop"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:33](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L33)*
+*Defined in [cs-map/src/classes/layer-style.ts:33](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L33)*
 
 ___
 
@@ -317,7 +317,7 @@ ___
 
 ### ▪ **SymbolLayoutForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:230](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L230)*
+*Defined in [cs-map/src/classes/layer-style.ts:228](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L228)*
 
 ###  fields
 
@@ -424,19 +424,19 @@ ___
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:233](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L233)*
+*Defined in [cs-map/src/classes/layer-style.ts:231](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L231)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:232](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L232)*
+*Defined in [cs-map/src/classes/layer-style.ts:230](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L230)*
 
 ###  title
 
 • **title**: *string* = "Symbol Layout"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:231](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L231)*
+*Defined in [cs-map/src/classes/layer-style.ts:229](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L229)*
 
 ___
 
@@ -444,7 +444,7 @@ ___
 
 ### ▪ **SymbolPaintForm**: *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:337](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L337)*
+*Defined in [cs-map/src/classes/layer-style.ts:335](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L335)*
 
 ###  fields
 
@@ -489,16 +489,16 @@ ___
         }
     ]
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:340](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L340)*
+*Defined in [cs-map/src/classes/layer-style.ts:338](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L338)*
 
 ###  isPanel
 
 • **isPanel**: *boolean* = true
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:339](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L339)*
+*Defined in [cs-map/src/classes/layer-style.ts:337](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L337)*
 
 ###  title
 
 • **title**: *string* = "Symbol Paint"
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:338](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L338)*
+*Defined in [cs-map/src/classes/layer-style.ts:336](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L336)*

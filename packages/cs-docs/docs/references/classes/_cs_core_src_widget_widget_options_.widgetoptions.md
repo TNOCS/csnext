@@ -8,11 +8,21 @@
 
 ## Properties
 
+### `Optional` area
+
+• **area**? : *string*
+
+*Defined in [cs-core/src/widget/widget-options.ts:52](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L52)*
+
+if using a cssgrid dashboard with area defintions, you can define the area defintition here
+
+___
+
 ### `Optional` background
 
 • **background**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L16)*
+*Defined in [cs-core/src/widget/widget-options.ts:16](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L16)*
 
 set as dashboard background widget
 
@@ -22,7 +32,7 @@ ___
 
 • **backgroundColor**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L12)*
+*Defined in [cs-core/src/widget/widget-options.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L12)*
 
 ___
 
@@ -30,7 +40,7 @@ ___
 
 • **canEdit**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L18)*
+*Defined in [cs-core/src/widget/widget-options.ts:18](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L18)*
 
 ___
 
@@ -38,7 +48,7 @@ ___
 
 • **canRemove**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L17)*
+*Defined in [cs-core/src/widget/widget-options.ts:17](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L17)*
 
 ___
 
@@ -46,7 +56,7 @@ ___
 
 • **class**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L7)*
+*Defined in [cs-core/src/widget/widget-options.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L7)*
 
 ___
 
@@ -54,7 +64,7 @@ ___
 
 • **closeSidebarButton**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:43](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L43)*
+*Defined in [cs-core/src/widget/widget-options.ts:48](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L48)*
 
 adds a close button that will remove widget and close rightsidebar
 
@@ -64,7 +74,15 @@ ___
 
 • **datasource**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L6)*
+*Defined in [cs-core/src/widget/widget-options.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L6)*
+
+___
+
+### `Optional` disabled
+
+• **disabled**? : *string*
+
+*Defined in [cs-core/src/widget/widget-options.ts:36](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L36)*
 
 ___
 
@@ -72,7 +90,7 @@ ___
 
 • **elevation**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:36](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L36)*
+*Defined in [cs-core/src/widget/widget-options.ts:40](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L40)*
 
 ___
 
@@ -80,7 +98,7 @@ ___
 
 • **flat**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:38](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L38)*
+*Defined in [cs-core/src/widget/widget-options.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L42)*
 
 ___
 
@@ -88,7 +106,7 @@ ___
 
 • **height**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L9)*
+*Defined in [cs-core/src/widget/widget-options.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L9)*
 
 ___
 
@@ -96,7 +114,7 @@ ___
 
 • **hide**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L28)*
+*Defined in [cs-core/src/widget/widget-options.ts:28](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L28)*
 
 ___
 
@@ -104,7 +122,7 @@ ___
 
 • **hideMenu**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L27)*
+*Defined in [cs-core/src/widget/widget-options.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L27)*
 
 ___
 
@@ -112,7 +130,7 @@ ___
 
 • **hideSidebarButton**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L46)*
+*Defined in [cs-core/src/widget/widget-options.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L50)*
 
 adds a hide button that will close rightsidebar, but not remove widget/menu item
 
@@ -122,7 +140,7 @@ ___
 
 • **icon**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L21)*
+*Defined in [cs-core/src/widget/widget-options.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L21)*
 
 ___
 
@@ -130,7 +148,7 @@ ___
 
 • **margin**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:10](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L10)*
+*Defined in [cs-core/src/widget/widget-options.ts:10](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L10)*
 
 ___
 
@@ -138,7 +156,7 @@ ___
 
 • **menus**? : *[IMenu](../interfaces/_cs_core_src_interactions_menu_.imenu.md)[]*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L19)*
+*Defined in [cs-core/src/widget/widget-options.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L19)*
 
 ___
 
@@ -146,7 +164,15 @@ ___
 
 • **outlined**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:40](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L40)*
+*Defined in [cs-core/src/widget/widget-options.ts:44](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L44)*
+
+___
+
+### `Optional` raised
+
+• **raised**? : *boolean*
+
+*Defined in [cs-core/src/widget/widget-options.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L46)*
 
 ___
 
@@ -154,7 +180,7 @@ ___
 
 • **searchProperty**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L23)*
+*Defined in [cs-core/src/widget/widget-options.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L23)*
 
 ___
 
@@ -162,7 +188,15 @@ ___
 
 • **showToolbar**? : *boolean*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:30](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L30)*
+*Defined in [cs-core/src/widget/widget-options.ts:30](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L30)*
+
+___
+
+### `Optional` tile
+
+• **tile**? : *boolean*
+
+*Defined in [cs-core/src/widget/widget-options.ts:38](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L38)*
 
 ___
 
@@ -170,7 +204,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:34](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L34)*
+*Defined in [cs-core/src/widget/widget-options.ts:34](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L34)*
 
 ___
 
@@ -178,7 +212,7 @@ ___
 
 • **toolbarOptions**? : *[ToolbarOptions](_cs_core_src_dashboard_toolbar_options_.toolbaroptions.md)*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L32)*
+*Defined in [cs-core/src/widget/widget-options.ts:32](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L32)*
 
 ___
 
@@ -186,7 +220,7 @@ ___
 
 • **widgetBorder**? : *string*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L25)*
+*Defined in [cs-core/src/widget/widget-options.ts:25](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L25)*
 
 ___
 
@@ -194,7 +228,7 @@ ___
 
 • **width**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L8)*
+*Defined in [cs-core/src/widget/widget-options.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L8)*
 
 ___
 
@@ -202,7 +236,7 @@ ___
 
 • **x**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L13)*
+*Defined in [cs-core/src/widget/widget-options.ts:13](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L13)*
 
 ___
 
@@ -210,4 +244,4 @@ ___
 
 • **y**? : *number*
 
-*Defined in [packages/cs-core/src/widget/widget-options.ts:14](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/widget/widget-options.ts#L14)*
+*Defined in [cs-core/src/widget/widget-options.ts:14](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/widget/widget-options.ts#L14)*

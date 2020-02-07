@@ -1,4 +1,14 @@
-<div v-if="activeLayers && activeLayers.length>0" id='layers-widget-control' class="mapboxgl-ctrl mapboxgl-ctrl-group map-component-widget">
+<div
+    v-if="activeLayers && activeLayers.length>0"
+    id="layers-widget-control"
+    class="mapboxgl-ctrl mapboxgl-ctrl-group map-component-widget"
+>
     <div class="map-component-title">{{$cs.Translate('SELECTED_LAYERS')}}</div>
-    <div class="layers-layer-title" v-for="layer in activeLayers">{{ layer.id }}</div>   
+
+    <div v-for="layer in activeLayers">
+        <v-layout>
+            <span v-if="layer.style.icon"><img class="layers-layer-icon" :src="layer.style.icon"/></span>
+            <span class="layers-layer-title">{{ layer.id }}</span>
+        </v-layout>
+    </div>
 </div>

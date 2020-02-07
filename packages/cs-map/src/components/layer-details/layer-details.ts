@@ -14,10 +14,10 @@ import { WidgetBase } from '@csnext/cs-client';
 export class LayerDetails extends WidgetBase {
     // #region Properties (4)
 
-    public allFeatures?: Feature[];
+    public allFeatures?: mapboxgl.MapboxGeoJSONFeature[];
     public listFilter: string = '';
     public filterItems = '';
-    public filteredFeatures: Feature[] = [];
+    public filteredFeatures: mapboxgl.MapboxGeoJSONFeature[] = [];
 
     // #endregion Properties (4)
 
@@ -86,19 +86,20 @@ export class LayerDetails extends WidgetBase {
     // #region Private Methods (3)
 
     /** returns true if features is included filter */
-    private filterFeature(f: Feature, s: string): boolean {
+    private filterFeature(f: mapboxgl.MapboxGeoJSONFeature, s: string): boolean {
         if (!this.layer) { return false; }
         if (!s || s.length === 0) { return true; }
         return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
     }
 
     private getAllFeatures() {
-        if (this.layer && this.layer._source && this.layer._source._geojson) {
-            this.allFeatures = this.layer._source._geojson.features;
+        if (this.layer && this.layer._source && this.layer._source._data) {
+            this.allFeatures = this.layer._source._data.features as mapboxgl.MapboxGeoJSONFeature[];
         }
     }
 
     private updateFeatures() {
+
         if (!this.allFeatures) {
             this.getAllFeatures();
         }

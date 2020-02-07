@@ -14,7 +14,7 @@ Markdown widget options, from vue-markdown (https://github.com/miaolz123/vue-mar
 
 • **backgroundImage**? : *string*
 
-*Defined in [packages/cs-client/src/widgets/intro/intro-widget-options.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L7)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L7)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **cards**? : *[CardOptions](_cs_client_src_widgets_intro_intro_widget_options_.cardoptions.md)[]*
 
-*Defined in [packages/cs-client/src/widgets/intro/intro-widget-options.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L8)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L8)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **subHeader**? : *string*
 
-*Defined in [packages/cs-client/src/widgets/intro/intro-widget-options.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L6)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L6)*
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 • **title**? : *string*
 
-*Defined in [packages/cs-client/src/widgets/intro/intro-widget-options.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L5)*
+*Defined in [cs-client/src/widgets/intro/intro-widget-options.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/widgets/intro/intro-widget-options.ts#L5)*

@@ -14,7 +14,7 @@
 
 \+ **new MapboxStyleSwitcherControl**(`styles`: [MapboxStyleDefinition](../modules/_cs_map_src_classes_map_style_definition_.md#mapboxstyledefinition)[], `mapControl`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *[MapboxStyleSwitcherControl](_cs_map_src_controls_style_switcher_style_switcher_.mapboxstyleswitchercontrol.md)*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L21)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L21)*
 
 **Parameters:**
 
@@ -31,7 +31,7 @@ Name | Type |
 
 • **controlContainer**: *HTMLElement | undefined*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L21)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L21)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 • **mapControl**: *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L27)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L27)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 • **styles**: *[MapboxStyleDefinition](../modules/_cs_map_src_classes_map_style_definition_.md#mapboxstyledefinition)[]*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L27)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L27)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 ▪ **DEFAULT_STYLE**: *"Streets"* = "Streets"
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L19)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L19)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
         { id: 'streets', title: 'Streets', uri:'mapbox://styles/mapbox/streets-v10'}
     ]
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L9)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L9)*
 
 ## Methods
 
@@ -78,7 +78,7 @@ ___
 
 ▸ **getDefaultPosition**(): *string*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:34](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L34)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:34](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L34)*
 
 **Returns:** *string*
 
@@ -88,7 +88,7 @@ ___
 
 ▸ **onAdd**(`map`: MapboxMap): *HTMLElement*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:39](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L39)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:39](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L39)*
 
 **Parameters:**
 
@@ -104,6 +104,6 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [packages/cs-map/src/controls/style-switcher/style-switcher.ts:86](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L86)*
+*Defined in [cs-map/src/controls/style-switcher/style-switcher.ts:86](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/style-switcher/style-switcher.ts#L86)*
 
 **Returns:** *void*

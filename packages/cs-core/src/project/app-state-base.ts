@@ -29,5 +29,5 @@ export abstract class AppStateBase {
 
   public windowSize = { x: 0, y: 0 };
 
-  public abstract OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions);
+  public abstract openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions);
 }

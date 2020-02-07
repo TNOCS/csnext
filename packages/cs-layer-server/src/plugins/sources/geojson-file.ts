@@ -26,15 +26,15 @@ import { FeatureType, PropertyType } from '../../shared';
 import _ from 'lodash';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
-    id = 'json';
-    fileExtensions = ['.json', '.geojson'];
-    source = 'geojson';
+    public id = 'json';
+    public fileExtensions = ['.json', '.geojson'];
+    public source = 'geojson';
 
-    getInstance() {
+    public getInstance() {
         return new GeojsonSource();
     }
 
-    load(file: string, meta?: string): Promise<ILoadResult> {
+    public load(file: string, meta?: string): Promise<ILoadResult> {
         return new Promise(async (resolve, reject) => {
             if (fs.existsSync(file)) {
                 // console.log(file);
@@ -43,7 +43,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     const sourceContent = fs.readFileSync(file, 'utf8');
                     const source = JSON.parse(sourceContent);
                     const updated = this.initSource(source);
-                    
+
                     // source._tiles = await createTileIndex(source, { extent: 4096 });
                     // source was updated, save again
                     if (updated) {
@@ -53,19 +53,19 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     if (meta && fs.existsSync(meta)) {
                         const metaContent = fs.readFileSync(meta, 'utf8');
                         resolve({
-                            source: source,
-                            updated: updated,
+                            source,
+                            updated,
                             meta: JSON.parse(metaContent)
                         });
                         return;
                     } else {
                         // create meta
-                        const meta = await this.createMeta(source);
+                        const newMeta = await this.createMeta(source);
                         // console.log(JSON.stringify(meta));
                         resolve({
-                            source: source,
-                            updated: updated,
-                            meta: meta
+                            source,
+                            updated,
+                            meta: newMeta
                         });
                         return;
                     }
@@ -77,9 +77,9 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         });
     }
 
-    determinePropertyType(val: any): string {
+    public determinePropertyType(val: any): string {
         try {
-            if (val === undefined || val === null) return 'text';
+            if (val === undefined || val === null) { return 'text'; }
             if (val.toString().match(/^€\d*(.|,)\d*$/g)) {
                 return 'currency';
             } else if (moment(val.toString(), 'DD-MM-YYYY', true).isValid()) {
@@ -100,7 +100,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                 return 'text';
             }
         } catch (e) {
-            console.log(e);
+            Logger.log(e);
             return 'text';
         }
     }
@@ -121,15 +121,13 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     fs.mkdirSync(sourceFolder);
                 }
 
-                console.log('Creating source');
-
-                let source = new LayerSource();
+                const source = new LayerSource();
                 source.id = def.id;
                 source.type = 'FeatureCollection';
                 source.features = [];
                 // console.log('Saving source');
                 this.saveSource(sourceFile, source);
-                resolve({ def: def, source: source });
+                resolve({ def, source });
                 return;
             }
             reject();
@@ -138,8 +136,8 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
 
     public createMeta(source: LayerSource): Promise<LayerMeta> {
         return new Promise((resolve, reject) => {
-            let result = new LayerMeta();
-            let ft = new FeatureType();
+            const result = new LayerMeta();
+            const ft = new FeatureType();
             ft.properties = {};
 
             // for (const feature of source.features) {
@@ -154,7 +152,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                                 if (element !== null && element !== undefined) {
                                     // create property type if it doesn't exists
                                     if (!ft.properties.hasOwnProperty(prop)) {
-                                        let proptype = {
+                                        const proptype = {
                                             title: prop,
                                             description: prop,
                                             type: this.determinePropertyType(
@@ -165,7 +163,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                                         ft.properties[prop] = proptype;
                                     }
 
-                                    let pt = ft.properties[prop];
+                                    const pt = ft.properties[prop];
                                     if (pt && pt.type !== undefined) {
                                         if (
                                             pt.type === 'number' &&
@@ -208,7 +206,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     if (ft.properties.hasOwnProperty(pt)) {
                         const proptype = ft.properties[pt];
                         proptype.count = proptype._values.length;
-                        let unique: any[] = _.uniq(proptype._values);
+                        const unique: any[] = _.uniq(proptype._values);
                         proptype.unique = unique.length;
                         if (proptype.unique < 7) {
                             proptype.options = unique;
@@ -263,8 +261,8 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     }
 
     /** make sure geojson has been prepared, e.g. add ids to all features */
-    initSource(source: LayerSource): boolean {
-        let types = [];
+    public initSource(source: LayerSource): boolean {
+        const types = [];
         let updated = false;
         if (source.features) {
             for (const feature of source.features) {
@@ -276,7 +274,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         return updated;
     }
 
-    initFeature(feature: Feature): boolean {
+    public initFeature(feature: Feature): boolean {
         let updated = false;
         // make sure feature has properties
         if (!feature.properties) {
@@ -293,10 +291,10 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         return updated;
     }
 
-    import(file: string): Promise<LayerSource | undefined> {
+    public import(file: string): Promise<LayerSource | undefined> {
         return new Promise((resolve, reject) => {
             if (fs.existsSync(file)) {
-                let source = fs.readFileSync(file, 'utf8');
+                const source = fs.readFileSync(file, 'utf8');
                 if (source) {
                     Logger.log(`Importing: ${file}`);
                     resolve(JSON.parse(source) as any);
@@ -306,7 +304,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         });
     }
 
-    saveSource(file: string, source: LayerSource) {
+    public saveSource(file: string, source: LayerSource) {
         // Logger.log(`Saving: ${file}`);
         fs.writeFileSync(
             file,

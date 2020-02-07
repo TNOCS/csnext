@@ -6,21 +6,11 @@
 
 ## Properties
 
-### `Optional` Visible
-
-• **Visible**? : *boolean*
-
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:40](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L40)*
-
-toggle visibility of layer
-
-___
-
 ###  _busManager
 
 • **_busManager**: *[MessageBusManager](../classes/_cs_core_src_utils_message_bus_message_bus_manager_.messagebusmanager.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:47](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L47)*
+*Defined in [cs-map/src/classes/imap-layer.ts:45](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L45)*
 
 ___
 
@@ -28,7 +18,7 @@ ___
 
 • **_events**? : *[MessageBusService](../classes/_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:49](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L49)*
+*Defined in [cs-map/src/classes/imap-layer.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L46)*
 
 ___
 
@@ -36,7 +26,7 @@ ___
 
 • **_filters**? : *object*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:51](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L51)*
+*Defined in [cs-map/src/classes/imap-layer.ts:48](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L48)*
 
 #### Type declaration:
 
@@ -48,7 +38,7 @@ ___
 
 • **_legends**? : *[LayerLegend](_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:50](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L50)*
+*Defined in [cs-map/src/classes/imap-layer.ts:47](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L47)*
 
 ___
 
@@ -56,7 +46,7 @@ ___
 
 • **_manager**? : *[MapDatasource](../classes/_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:52](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L52)*
+*Defined in [cs-map/src/classes/imap-layer.ts:49](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L49)*
 
 ___
 
@@ -64,7 +54,7 @@ ___
 
 • **_service**? : *[ILayerService](_cs_map_src_classes_layer_service_.ilayerservice.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:54](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L54)*
+*Defined in [cs-map/src/classes/imap-layer.ts:51](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L51)*
 
 associated service
 
@@ -74,7 +64,7 @@ ___
 
 • **_showMenu**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L55)*
+*Defined in [cs-map/src/classes/imap-layer.ts:52](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L52)*
 
 ___
 
@@ -82,15 +72,15 @@ ___
 
 • **_showMore**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:56](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L56)*
+*Defined in [cs-map/src/classes/imap-layer.ts:53](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L53)*
 
 ___
 
 ### `Optional` _source
 
-• **_source**? : *[LayerSource](../classes/_cs_map_src_classes_layer_source_.layersource.md)*
+• **_source**? : *[DataSource](../classes/_cs_data_src_classes_data_source_.datasource.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:57](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L57)*
+*Defined in [cs-map/src/classes/imap-layer.ts:54](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L54)*
 
 ___
 
@@ -98,7 +88,7 @@ ___
 
 • **color**: *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L25)*
+*Defined in [cs-map/src/classes/imap-layer.ts:24](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L24)*
 
 ___
 
@@ -106,7 +96,15 @@ ___
 
 • **description**: *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L26)*
+*Defined in [cs-map/src/classes/imap-layer.ts:25](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L25)*
+
+___
+
+### `Optional` enabled
+
+• **enabled**? : *boolean*
+
+*Defined in [cs-map/src/classes/imap-layer.ts:22](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L22)*
 
 ___
 
@@ -114,7 +112,7 @@ ___
 
 • **extensions**? : *[ILayerExtensionType](_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)[]*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:33](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L33)*
+*Defined in [cs-map/src/classes/imap-layer.ts:32](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L32)*
 
 ___
 
@@ -122,15 +120,15 @@ ___
 
 • **externalUrl**? : *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:36](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L36)*
+*Defined in [cs-map/src/classes/imap-layer.ts:35](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L35)*
 
 ___
 
 ### `Optional` featureTypes
 
-• **featureTypes**? : *[FeatureTypes](../classes/_cs_map_src_classes_feature_type_.featuretypes.md)*
+• **featureTypes**? : *[FeatureTypes](../classes/_cs_data_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:58](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L58)*
+*Defined in [cs-map/src/classes/imap-layer.ts:56](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L56)*
 
 ___
 
@@ -138,7 +136,7 @@ ___
 
 • **filter**? : *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:34](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L34)*
+*Defined in [cs-map/src/classes/imap-layer.ts:33](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L33)*
 
 ___
 
@@ -146,7 +144,7 @@ ___
 
 • **hideInLayerList**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L59)*
+*Defined in [cs-map/src/classes/imap-layer.ts:55](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L55)*
 
 ___
 
@@ -154,7 +152,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L19)*
+*Defined in [cs-map/src/classes/imap-layer.ts:16](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L16)*
 
 layer id
 
@@ -164,7 +162,7 @@ ___
 
 • **isEditable**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:37](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L37)*
+*Defined in [cs-map/src/classes/imap-layer.ts:36](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L36)*
 
 ___
 
@@ -172,15 +170,7 @@ ___
 
 • **isLive**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:38](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L38)*
-
-___
-
-### `Optional` layout
-
-• **layout**? : *SymbolLayout | FillLayout | LineLayout | CircleLayout*
-
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:41](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L41)*
+*Defined in [cs-map/src/classes/imap-layer.ts:37](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L37)*
 
 ___
 
@@ -188,7 +178,7 @@ ___
 
 • **opacity**? : *number*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L28)*
+*Defined in [cs-map/src/classes/imap-layer.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L27)*
 
 ___
 
@@ -196,15 +186,9 @@ ___
 
 • **openFeatureDetails**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:43](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L43)*
+*Defined in [cs-map/src/classes/imap-layer.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L42)*
 
-___
-
-### `Optional` paint
-
-• **paint**? : *SymbolPaint | LinePaint | FillPaint | CirclePaint*
-
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L42)*
+toggle visibility of layer
 
 ___
 
@@ -212,7 +196,7 @@ ___
 
 • **parentId**? : *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L31)*
+*Defined in [cs-map/src/classes/imap-layer.ts:30](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L30)*
 
 ___
 
@@ -220,15 +204,15 @@ ___
 
 • **popupContent**? : *string | Function | undefined*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L27)*
+*Defined in [cs-map/src/classes/imap-layer.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L26)*
 
 ___
 
 ### `Optional` source
 
-• **source**? : *string | [LayerSource](../classes/_cs_map_src_classes_layer_source_.layersource.md)*
+• **source**? : *string | [DataSource](../classes/_cs_data_src_classes_data_source_.datasource.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L29)*
+*Defined in [cs-map/src/classes/imap-layer.ts:28](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L28)*
 
 ___
 
@@ -236,7 +220,15 @@ ___
 
 • **sourceType**? : *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:24](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L24)*
+*Defined in [cs-map/src/classes/imap-layer.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L23)*
+
+___
+
+### `Optional` state
+
+• **state**? : *"hidden" | "loading" | "visible"*
+
+*Defined in [cs-map/src/classes/imap-layer.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L21)*
 
 ___
 
@@ -244,7 +236,7 @@ ___
 
 • **style**? : *[LayerStyle](../classes/_cs_map_src_classes_layer_style_.layerstyle.md)*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:32](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L32)*
+*Defined in [cs-map/src/classes/imap-layer.ts:31](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L31)*
 
 ___
 
@@ -252,7 +244,7 @@ ___
 
 • **tags**: *string[]*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L23)*
+*Defined in [cs-map/src/classes/imap-layer.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L20)*
 
 list of tags, used for clustering in layer selection
 
@@ -262,7 +254,7 @@ ___
 
 • **title**: *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L21)*
+*Defined in [cs-map/src/classes/imap-layer.ts:18](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L18)*
 
 layer as shown in interface
 
@@ -272,21 +264,21 @@ ___
 
 • **type**? : *string*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:30](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L30)*
+*Defined in [cs-map/src/classes/imap-layer.ts:29](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L29)*
 
 ## Methods
 
 ###  addLayer
 
-▸ **addLayer**(`map`: [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md)): *any*
+▸ **addLayer**(`widget`: [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md)): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:65](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L65)*
+*Defined in [cs-map/src/classes/imap-layer.ts:62](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L62)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`map` | [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md) |
+`widget` | [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md) |
 
 **Returns:** *any*
 
@@ -296,7 +288,7 @@ ___
 
 ▸ **applyFilter**(`filter`: [LayerFilter](../classes/_cs_map_src_classes_layer_filter_.layerfilter.md)): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L73)*
+*Defined in [cs-map/src/classes/imap-layer.ts:70](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L70)*
 
 **Parameters:**
 
@@ -312,7 +304,7 @@ ___
 
 ▸ **getBounds**(): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:66](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L66)*
+*Defined in [cs-map/src/classes/imap-layer.ts:63](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L63)*
 
 **Returns:** *any*
 
@@ -320,11 +312,11 @@ ___
 
 ###  getFeatureType
 
-▸ **getFeatureType**(): *[FeatureType](../classes/_cs_map_src_classes_feature_type_.featuretype.md) | undefined*
+▸ **getFeatureType**(): *[FeatureType](../classes/_cs_data_src_classes_feature_type_.featuretype.md) | undefined*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:80](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L80)*
+*Defined in [cs-map/src/classes/imap-layer.ts:78](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L78)*
 
-**Returns:** *[FeatureType](../classes/_cs_map_src_classes_feature_type_.featuretype.md) | undefined*
+**Returns:** *[FeatureType](../classes/_cs_data_src_classes_feature_type_.featuretype.md) | undefined*
 
 ___
 
@@ -332,25 +324,9 @@ ___
 
 ▸ **getLayerActions**(): *[ILayerAction](_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:67](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L67)*
+*Defined in [cs-map/src/classes/imap-layer.ts:64](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L64)*
 
 **Returns:** *[ILayerAction](_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
-
-___
-
-###  getPropertType
-
-▸ **getPropertType**(`prop`: string): *[PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md) | undefined*
-
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:81](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L81)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`prop` | string |
-
-**Returns:** *[PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md) | undefined*
 
 ___
 
@@ -358,7 +334,7 @@ ___
 
 ▸ **initFilter**(`property`: string): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:72](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L72)*
+*Defined in [cs-map/src/classes/imap-layer.ts:69](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L69)*
 
 **Parameters:**
 
@@ -372,9 +348,9 @@ ___
 
 ###  initLayer
 
-▸ **initLayer**(`manager`: [MapDatasource](../classes/_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *any*
+▸ **initLayer**(`manager`: [MapDatasource](../classes/_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *Promise‹[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L68)*
+*Defined in [cs-map/src/classes/imap-layer.ts:65](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L65)*
 
 **Parameters:**
 
@@ -382,7 +358,7 @@ Name | Type |
 ------ | ------ |
 `manager` | [MapDatasource](../classes/_cs_map_src_datasources_map_datasource_.mapdatasource.md) |
 
-**Returns:** *any*
+**Returns:** *Promise‹[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
 ___
 
@@ -390,7 +366,7 @@ ___
 
 ▸ **moveLayer**(`beforeId?`: string): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:69](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L69)*
+*Defined in [cs-map/src/classes/imap-layer.ts:66](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L66)*
 
 **Parameters:**
 
@@ -402,17 +378,33 @@ Name | Type |
 
 ___
 
-###  removeLayer
+###  removeFilter
 
-▸ **removeLayer**(`map`: [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md)): *any*
+▸ **removeFilter**(`filter`: [LayerFilter](../classes/_cs_map_src_classes_layer_filter_.layerfilter.md)): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:70](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L70)*
+*Defined in [cs-map/src/classes/imap-layer.ts:71](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L71)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`map` | [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md) |
+`filter` | [LayerFilter](../classes/_cs_map_src_classes_layer_filter_.layerfilter.md) |
+
+**Returns:** *any*
+
+___
+
+###  removeLayer
+
+▸ **removeLayer**(`widget`: [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md)): *any*
+
+*Defined in [cs-map/src/classes/imap-layer.ts:67](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L67)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`widget` | [CsMap](../classes/_cs_map_src_components_cs_map_cs_map_.csmap.md) |
 
 **Returns:** *any*
 
@@ -422,7 +414,7 @@ ___
 
 ▸ **setFilter**(`filter`: any[]): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:71](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L71)*
+*Defined in [cs-map/src/classes/imap-layer.ts:68](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L68)*
 
 **Parameters:**
 
@@ -436,15 +428,15 @@ ___
 
 ###  setLegend
 
-▸ **setLegend**(`property`: [PropertyDetails](../classes/_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *any*
+▸ **setLegend**(`property`: [PropertyDetails](../classes/_cs_map_src_components_feature_details_property_details_.propertydetails.md) | [PropertyType](../classes/_cs_data_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:74](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L74)*
+*Defined in [cs-map/src/classes/imap-layer.ts:72](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L72)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`property` | [PropertyDetails](../classes/_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](../classes/_cs_map_src_classes_property_type_.propertytype.md) &#124; string |
+`property` | [PropertyDetails](../classes/_cs_map_src_components_feature_details_property_details_.propertydetails.md) &#124; [PropertyType](../classes/_cs_data_src_classes_property_type_.propertytype.md) &#124; string |
 `refreshLayer` | boolean |
 
 **Returns:** *any*
@@ -455,7 +447,7 @@ ___
 
 ▸ **setOpacity**(`value`: number): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:75](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L75)*
+*Defined in [cs-map/src/classes/imap-layer.ts:73](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L73)*
 
 **Parameters:**
 
@@ -471,7 +463,7 @@ ___
 
 ▸ **setPopupContent**(`value`: string | function): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:76](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L76)*
+*Defined in [cs-map/src/classes/imap-layer.ts:74](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L74)*
 
 **Parameters:**
 
@@ -487,7 +479,7 @@ ___
 
 ▸ **updateFilters**(): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:79](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L79)*
+*Defined in [cs-map/src/classes/imap-layer.ts:77](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L77)*
 
 **Returns:** *any*
 
@@ -497,7 +489,7 @@ ___
 
 ▸ **updateLayer**(): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:77](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L77)*
+*Defined in [cs-map/src/classes/imap-layer.ts:75](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L75)*
 
 **Returns:** *any*
 
@@ -507,6 +499,6 @@ ___
 
 ▸ **updateLegends**(): *any*
 
-*Defined in [packages/cs-map/src/classes/imap-layer.ts:78](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/imap-layer.ts#L78)*
+*Defined in [cs-map/src/classes/imap-layer.ts:76](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/imap-layer.ts#L76)*
 
 **Returns:** *any*

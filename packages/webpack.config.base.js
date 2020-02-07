@@ -73,8 +73,9 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
         path: path,
         filename: outputFile,
         library: libraryName,
-        libraryTarget: "umd"
-        // umdNamedDefine: true
+        libraryTarget: "umd",
+        globalObject: 'this',
+        umdNamedDefine: true
     };
 
     let pl = []; //new HardSourceWebpackPlugin()

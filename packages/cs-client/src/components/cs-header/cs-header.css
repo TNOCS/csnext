@@ -10,6 +10,14 @@
   margin-left: 0 !important;
 }
 
+
+.floating-toolbar {
+  margin-top: 15px !important;
+  margin-left: 15px;
+  max-width: 400px;
+  
+}
+
 .v-application .theme--light a.breadcrumb-text {
   color: black;
 }

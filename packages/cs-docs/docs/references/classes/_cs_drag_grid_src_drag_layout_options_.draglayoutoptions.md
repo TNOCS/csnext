@@ -12,7 +12,7 @@
 
 \+ **new DragLayoutOptions**(`options?`: [DragLayoutOptions](_cs_drag_grid_src_drag_layout_options_.draglayoutoptions.md)): *[DragLayoutOptions](_cs_drag_grid_src_drag_layout_options_.draglayoutoptions.md)*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L21)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L21)*
 
 **Parameters:**
 
@@ -28,7 +28,7 @@ Name | Type |
 
 • **Description**? : *string*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:20](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L20)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L20)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **Responsive**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L21)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L21)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **Title**? : *string*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L19)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L19)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **animations**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:16](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L16)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:16](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L16)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **colNum**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L12)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L12)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **dragEnabled**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L8)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L8)*
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 • **horizontalMargin**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:14](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L14)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:14](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L14)*
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 • **isMirrored**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:10](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L10)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:10](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L10)*
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 • **itemHeight**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L6)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L6)*
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 • **itemWidth**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L5)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L5)*
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 • **preventCollision**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L17)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:17](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L17)*
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 • **resizeEnabled**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L9)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L9)*
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 • **rowHeight**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:11](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L11)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:11](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L11)*
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 • **verticalCompact**? : *boolean*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L13)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:13](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L13)*
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 • **verticalMargin**? : *number*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:15](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L15)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:15](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L15)*
 
 ## Accessors
 
@@ -148,13 +148,13 @@ ___
 
 • **get ColNum**(): *number | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L82)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:82](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L82)*
 
 **Returns:** *number | undefined*
 
 • **set ColNum**(`value`: number | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:86](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L86)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:86](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L86)*
 
 **Parameters:**
 
@@ -170,13 +170,13 @@ ___
 
 • **get DragEnabled**(): *boolean | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:37](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L37)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:37](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L37)*
 
 **Returns:** *boolean | undefined*
 
 • **set DragEnabled**(`value`: boolean | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:41](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L41)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:41](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L41)*
 
 **Parameters:**
 
@@ -192,13 +192,13 @@ ___
 
 • **get HorizontalMargin**(): *number | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:104](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L104)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:104](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L104)*
 
 **Returns:** *number | undefined*
 
 • **set HorizontalMargin**(`value`: number | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:108](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L108)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:108](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L108)*
 
 **Parameters:**
 
@@ -214,13 +214,13 @@ ___
 
 • **get IsMirrored**(): *boolean | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L64)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:64](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L64)*
 
 **Returns:** *boolean | undefined*
 
 • **set IsMirrored**(`value`: boolean | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L68)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:68](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L68)*
 
 **Parameters:**
 
@@ -236,13 +236,13 @@ ___
 
 • **get PreventCollision**(): *boolean | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L55)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:55](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L55)*
 
 **Returns:** *boolean | undefined*
 
 • **set PreventCollision**(`value`: boolean | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L59)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:59](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L59)*
 
 **Parameters:**
 
@@ -258,13 +258,13 @@ ___
 
 • **get ResizeEnabled**(): *boolean | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L46)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L46)*
 
 **Returns:** *boolean | undefined*
 
 • **set ResizeEnabled**(`value`: boolean | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:50](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L50)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L50)*
 
 **Parameters:**
 
@@ -280,13 +280,13 @@ ___
 
 • **get RowHeight**(): *number | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L73)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:73](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L73)*
 
 **Returns:** *number | undefined*
 
 • **set RowHeight**(`value`: number | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:77](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L77)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:77](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L77)*
 
 **Parameters:**
 
@@ -302,13 +302,13 @@ ___
 
 • **get VerticalCompact**(): *boolean | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L95)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:95](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L95)*
 
 **Returns:** *boolean | undefined*
 
 • **set VerticalCompact**(`value`: boolean | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:99](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L99)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:99](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L99)*
 
 **Parameters:**
 
@@ -324,13 +324,13 @@ ___
 
 • **get VerticalMargin**(): *number | undefined*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:113](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L113)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:113](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L113)*
 
 **Returns:** *number | undefined*
 
 • **set VerticalMargin**(`value`: number | undefined): *void*
 
-*Defined in [packages/cs-drag-grid/src/drag-layout-options.ts:117](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-drag-grid/src/drag-layout-options.ts#L117)*
+*Defined in [cs-drag-grid/src/drag-layout-options.ts:117](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-drag-grid/src/drag-layout-options.ts#L117)*
 
 **Parameters:**
 

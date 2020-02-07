@@ -10,7 +10,15 @@
 
 • **data**? : *any*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L4)*
+*Defined in [cs-core/src/datasources/datasource.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L6)*
+
+___
+
+### `Optional` events
+
+• **events**? : *[MessageBusService](../classes/_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
+
+*Defined in [cs-core/src/datasources/datasource.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L12)*
 
 ___
 
@@ -18,7 +26,7 @@ ___
 
 • **id**? : *string*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:2](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L2)*
+*Defined in [cs-core/src/datasources/datasource.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L4)*
 
 ___
 
@@ -26,7 +34,7 @@ ___
 
 • **instant**? : *boolean*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L7)*
+*Defined in [cs-core/src/datasources/datasource.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L9)*
 
 ___
 
@@ -34,7 +42,7 @@ ___
 
 • **isLoading**? : *boolean*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L8)*
+*Defined in [cs-core/src/datasources/datasource.ts:10](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L10)*
 
 ___
 
@@ -42,7 +50,7 @@ ___
 
 • **loaded**? : *boolean*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L9)*
+*Defined in [cs-core/src/datasources/datasource.ts:11](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L11)*
 
 ___
 
@@ -50,7 +58,7 @@ ___
 
 • **options**? : *any*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L5)*
+*Defined in [cs-core/src/datasources/datasource.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L7)*
 
 ___
 
@@ -58,7 +66,7 @@ ___
 
 • **requestQueue**? : *Array‹object›*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:11](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L11)*
+*Defined in [cs-core/src/datasources/datasource.ts:14](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L14)*
 
 ___
 
@@ -66,7 +74,7 @@ ___
 
 • **source**? : *string*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:3](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L3)*
+*Defined in [cs-core/src/datasources/datasource.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L5)*
 
 ## Methods
 
@@ -74,7 +82,7 @@ ___
 
 ▸ **execute**(`datasources?`: object, `data?`: any): *Promise‹any›*
 
-*Defined in [packages/cs-core/src/datasources/datasource.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/datasources/datasource.ts#L12)*
+*Defined in [cs-core/src/datasources/datasource.ts:15](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/datasources/datasource.ts#L15)*
 
 **Parameters:**
 

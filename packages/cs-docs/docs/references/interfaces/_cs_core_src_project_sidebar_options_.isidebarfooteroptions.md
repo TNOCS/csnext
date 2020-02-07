@@ -10,7 +10,7 @@
 
 • **icon**? : *string*
 
-*Defined in [packages/cs-core/src/project/sidebar-options.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/sidebar-options.ts#L27)*
+*Defined in [cs-core/src/project/sidebar-options.ts:28](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/sidebar-options.ts#L28)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [packages/cs-core/src/project/sidebar-options.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/sidebar-options.ts#L29)*
+*Defined in [cs-core/src/project/sidebar-options.ts:30](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/sidebar-options.ts#L30)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **tooltip**? : *string*
 
-*Defined in [packages/cs-core/src/project/sidebar-options.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/sidebar-options.ts#L28)*
+*Defined in [cs-core/src/project/sidebar-options.ts:29](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/sidebar-options.ts#L29)*

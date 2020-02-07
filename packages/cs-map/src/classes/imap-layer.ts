@@ -1,32 +1,31 @@
-import { LayerSource, MapDatasource, CsMap, ILayerAction, ILayerService, PropertyType, PropertyDetails, FeatureEventDetails, FeatureTypes, ILayerExtensionType, LayerStyle, LayerFilter } from '..';
-import { MessageBusService, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
+import { MapDatasource, CsMap, ILayerAction, ILayerService, PropertyDetails, FeatureEventDetails, ILayerExtensionType, LayerFilter, LayerStyle } from '..';
+import { MessageBusService, MessageBusManager } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
-import { FeatureType } from './feature-type';
+import { PropertyType, DataSource, FeatureTypes, FeatureType } from '@csnext/cs-data';
 
 export interface IMapLayerType {
     // #region Properties (3)
-
     getInstance?: (init?: Partial<any>) => IMapLayer;
     typeId?: string;
     types?: string[];
-
     // #endregion Properties (3)
 }
 
 export interface IMapLayer {
-
     /** layer id */
     id: string;
     /** layer as shown in interface */
     title: string;
     /** list of tags, used for clustering in layer selection */
     tags: string[];
+    state?: 'hidden' | 'loading' | 'visible';
+    enabled?: boolean;
     sourceType?: string;
     color: string;
     description: string;
     popupContent?: string | Function | undefined;
     opacity?: number;
-    source?: string | LayerSource;
+    source?: string | DataSource;
     type?: string;
     parentId?: string;
     style?: LayerStyle;
@@ -37,15 +36,13 @@ export interface IMapLayer {
     isEditable?: boolean;
     isLive?: boolean;
     /** toggle visibility of layer */
-    Visible?: boolean;
-    layout?: mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
-    paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
+    // visible?: boolean;
+    // layout?: mapboxgl.Layout; // | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
+    // paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
     openFeatureDetails?: boolean;
 
     // #region Properties (10)
-
     _busManager: MessageBusManager;
-
     _events?: MessageBusService;
     _legends?: LayerLegend[];
     _filters?: { [key: string]: LayerFilter };
@@ -54,23 +51,24 @@ export interface IMapLayer {
     _service?: ILayerService;
     _showMenu?: boolean;
     _showMore?: boolean;
-    _source?: LayerSource;
-    featureTypes?: FeatureTypes;
+    _source?: DataSource;
     hideInLayerList?: boolean;
+    featureTypes?: FeatureTypes;
 
     // #endregion Properties (10)
 
     // #region Methods (12)
 
-    addLayer(map: CsMap);
+    addLayer(widget: CsMap);
     getBounds(): any;
     getLayerActions?(): ILayerAction[];
-    initLayer(manager: MapDatasource);
+    initLayer(manager: MapDatasource): Promise<IMapLayer>;
     moveLayer(beforeId?: string);
-    removeLayer(map: CsMap);
+    removeLayer(widget: CsMap);
     setFilter(filter: any[]);
     initFilter(property: string);
     applyFilter(filter: LayerFilter);
+    removeFilter(filter: LayerFilter);
     setLegend(property: PropertyDetails | PropertyType | string, refreshLayer: boolean);
     setOpacity(value: number);
     setPopupContent(value: string | ((f: FeatureEventDetails) => {}));
@@ -78,8 +76,5 @@ export interface IMapLayer {
     updateLegends();
     updateFilters();
     getFeatureType(): FeatureType | undefined;
-    getPropertType(prop: string): PropertyType | undefined;
-
-
     // #endregion Methods (12)
 }

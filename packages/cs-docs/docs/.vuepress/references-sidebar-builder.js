@@ -85,11 +85,15 @@ class ReferencesSidebarBuilder {
             { name: "cs_timeline", screen_name: "cs timeline" },
         ]
 
-        let name = names.find(function get_item(i) {
+        let i = names.find(function get_item(i) {
             return item.includes(i.name);
-        }).screen_name
-
-        return name
+        });
+        
+        if (i && i.hasOwnProperty('screen_name')) {
+            return i.screen_name;
+        } else {
+            return '';
+        }
     }
 }
 

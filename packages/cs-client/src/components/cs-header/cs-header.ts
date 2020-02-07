@@ -5,7 +5,8 @@ import {
   IHeaderOptions,
   IMenu,
   IDashboard,
-  MessageBusManager
+  MessageBusManager,
+  Loader
 } from '@csnext/cs-core';
 import { Prop, Watch } from 'vue-property-decorator';
 import { AppState, CsApp, CsLanguageSwitch, CsSettings } from '../../';
@@ -28,28 +29,27 @@ export class CsHeader extends Vue {
   private busManager: MessageBusManager = new MessageBusManager();
   private loadingMenuIcon?: IMenu;
   private languageSwitchMenu?: IMenu;
-  private visibleSidebars: { [key: string] : IDashboard} | undefined = {};
-  
-  
+  private visibleSidebars: { [key: string]: IDashboard} | undefined = {};
+
   @Watch('rightSidebar.sidebars')
-  public updateVisibleSidebars() {        
-    Vue.set(this, 'visibleSidebars', this.$cs.VisibleSidebars);    
+  public updateVisibleSidebars() {
+    Vue.set(this, 'visibleSidebars', this.$cs.visibleSidebars);
   }
 
+  @Watch('$cs.project.menus')
   public InitMenus() {
     if (!this.$cs.project.menus) {
       this.$cs.project.menus = [];
     }
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
-      
       this.loadingMenuIcon = {
         id: CsApp.LOADING_MENU_ID,
         icon: 'autorenew',
         title: 'LOADING',
-        toolTip: 'LOADING',        
+        toolTip: 'LOADING',
         hide: true
       };
-      this.$cs.AddMenu(this.loadingMenuIcon);      
+      this.$cs.addMenu(this.loadingMenuIcon);
     }
     if (
       this.$cs.project.languages &&
@@ -65,12 +65,12 @@ export class CsHeader extends Vue {
           icon: 'translate',
           title: 'LANGUAGE',
           type: 'icon',
-          toolTip: 'LANGUAGE_SETTINGS',          
+          toolTip: 'LANGUAGE_SETTINGS',
           color: 'red',
           component: CsLanguageSwitch,
           buttonClass: 'sidebar-header-button'
         };
-        this.$cs.AddMenu(this.languageSwitchMenu);
+        this.$cs.addMenu(this.languageSwitchMenu);
       }
     }
 
@@ -84,7 +84,7 @@ export class CsHeader extends Vue {
   }
 
   public openRightSidebar(key: string) {
-    this.$cs.ToggleRightSidebar(key);
+    this.$cs.toggleRightSidebar(key);
   }
 
   public openDashboard(dashboard: IDashboard) {
@@ -133,9 +133,9 @@ export class CsHeader extends Vue {
     });
 
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
-      this.busManager.subscribe(this.$cs.bus, AppState.LOADERS, () => {
+      this.busManager.subscribe(this.$cs.bus, Loader.LOADERS, () => {
         if (this.loadingMenuIcon) {
-          this.loadingMenuIcon.hide = Object.keys(this.$cs.GetLoaders()).length === 0;
+          this.loadingMenuIcon.hide = Object.keys(this.$cs.loader.getLoaders()).length === 0;
         }
       });
     }

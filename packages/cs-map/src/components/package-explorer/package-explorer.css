@@ -1,0 +1,87 @@
+.package-explorer-card {
+    /* pointer-events: none; */
+    width: 500px;    
+    margin: 10px;
+}
+
+.package-explorer-card.theme--light.v-card {
+    background-color: #F0F0F0;
+}
+
+.pe-info-card {
+    margin-top:5px;
+}
+
+.active-dashboard-card {
+
+}
+
+.pe-source-image {
+    height: auto !important;
+}
+
+.pe-insight-navigation-buttons {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+}
+
+.pe-source-open {
+    position: absolute;
+    right: 5px;
+    top: 0;
+}
+
+.pe-insights-detail-button {
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+}
+
+.selected-insight-title {
+    font-weight: 700;
+}
+
+.active-insight-card {
+    
+}
+
+.active-legends-card {
+
+}
+
+.v-slide-group__prev--disabled  {
+    display: none !important;
+}
+
+.package-explorer-open {
+    height: calc(100% - 20px);
+}
+
+.map-mobile-toolbar {
+    width: 100% !important;
+    margin: 0px;
+    border-radius: 0 !important;    
+}
+
+.map-mobile-toolbar-open {
+    height: 100% !important;
+}
+
+.package-explorer-toolbar {
+    pointer-events: all;
+}
+
+.package-explorer-toolbar .v-toolbar__content {
+    padding: 0;
+}
+
+.package-explorer-layers {
+    pointer-events: all;
+}
+
+.package-explorer-details {
+    pointer-events: all;
+    height: 100%;
+}
+

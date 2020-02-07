@@ -10,11 +10,12 @@ import {
   IDialog,
   guidGenerator,
   InfoOptions,
-  IMenu
+  Loader,
+  IMenu,
+  INotificationOptions
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
-import { ProjectManager } from './project-manager';
-import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget } from '../';
+import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, LayoutManager, DashboardManager } from '../';
 import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 import io from 'socket.io-client';
@@ -32,7 +33,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
   public static DASHBOARD_MAIN = 'dashboard.main';
   public static DASHBOARD_CHANGED = 'dashboard-changed';
-  public static LOADERS = 'loaders';
+  public static APP_STATE = 'app-state';
   public static YES = 'YES';
   public static NO = 'NO';
 
@@ -44,9 +45,14 @@ export class AppState extends AppStateBase {
     return this.pInstance || (this.pInstance = new this());
   }
 
+  public datasourceManager: DatasourceManager;
+  public layoutManager: LayoutManager;
+  public dashboardManager: DashboardManager;
+  public loader: Loader;
+
   public socket?: SocketIOClient.Socket;
   /** Manages active project */
-  public projectManager?: ProjectManager;
+  // public projectManager?: ProjectManager;
   /** Logger */
   public logger = Logger.Instance;
   /** Vue router instance */
@@ -56,10 +62,16 @@ export class AppState extends AppStateBase {
   /** manages keyboard shortcuts */
   public keyboard: KeyboardManager = new KeyboardManager();
 
-  protected loaders: { [key: string]: any } = {};
-
   private constructor() {
     super();
+    if (!this.project.datasources) { this.project.datasources = {}; }
+    if (!this.project.header) { this.project.header = {}; }
+    if (!this.project.notifications) { this.project.notifications = {}; }
+    Object.assign(this.project.notifications, { enabled: false, items: [], listStyle: 'popup' } as INotificationOptions);
+    this.datasourceManager = new DatasourceManager();
+    this.dashboardManager = new DashboardManager();
+    this.layoutManager = new LayoutManager();
+    this.loader = new Loader(this.bus);
   }
 
   public initSocket() {
@@ -82,9 +94,22 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public get isMobile(): boolean {
+    return window.innerWidth < 800;
+  }
+
+  public initApp(element: string = '#app', project?: IProject) {
+    new Vue({
+      render: h => h(CsApp)
+    }).$mount(element);
+    this.init(project);
+  }
+
   /** Initialize the project state, dashboard managers and data summaries handlers */
-  public init(project: IProject) {
+  public init(project: IProject = {}) {
     Logger.info('app-state', 'Init AppState');
+
+    Vue.config.productionTip = false;
 
     // init basic common sense components
     Vue.component('cs-dashboard', CsDashboard);
@@ -95,18 +120,11 @@ export class AppState extends AppStateBase {
 
     // merge new project details, with default project to make sure all required properties are available
     // this.project = merge(DefaultProject, project);
-    this.project = project;
-    this.project.header = Object.assign(DefaultProject.header, project.header);
-    this.project.theme = Object.assign(DefaultProject.theme, project.theme);
-    this.project.menus = Object.assign(DefaultProject.menus, project.menus);
-    this.project.dashboards = Object.assign(
-      DefaultProject.dashboards,
-      project.dashboards
-    );
-    this.project.navigation = Object.assign(
-      DefaultProject.navigation,
-      project.navigation
-    );
+    this.project = { ...DefaultProject, ...project };
+
+    if (this.isMobile && this.project.navigation && this.project.navigation.autoMobileBottom) {
+      this.project.navigation.style = 'bottom';
+    }
 
     if (project.init) {
       this.project.init = project.init;
@@ -140,56 +158,48 @@ export class AppState extends AppStateBase {
       };
     }
 
+
     // make sure all dashboards are marked as main
     if (this.project.dashboards) {
       this.initializeDashboards(this.project.dashboards);
     }
 
-    // setup project manager
-    this.projectManager = new ProjectManager(project);
-
     // mark app as initialized
     this.isInitialized = true;
-    this.bus.publish('app-state', 'init', null);
-    this.project._appState = this;
+    this.bus.publish(AppState.APP_STATE, 'init', null);
     if (typeof this.project.init === 'function') {
       this.project.init();
     }
     this.initSocket();
   }
 
-  // add a new loader, if enabled it can enable the loading icon in the header
-  public AddLoader(id?: string, title?: string): string {
-    if (id === undefined) {
-      id = guidGenerator();
-    }
-    this.loaders[id] = title || id;
-    this.bus.publish(AppState.LOADERS, 'updated');
-    return id;
+  public addDashboard(dashboard: IDashboard): IDashboard {
+    if (!this.project.dashboards) { this.project.dashboards = []; }
+    this.initializeDashboards([dashboard]);
+    this.project.dashboards.push(dashboard);
+    return dashboard;
   }
 
-  // remove a loader, if this is the last loader it disables the loading icon in the header
-  public RemoveLoader(id: string) {
-    if (this.loaders.hasOwnProperty(id)) {
-      delete this.loaders[id];
-      this.bus.publish(AppState.LOADERS, 'updated');
-    }
+  public addDatasource<T>(datasource: IDatasource): T {
+    if (!this.project.datasources) { this.project.datasources = {}; }
+    if (!datasource.id) { datasource.id = guidGenerator(); }
+    this.project.datasources[datasource.id] = datasource;
+    return datasource as T;
   }
 
-  // returns the list of existing loaders
-  public GetLoaders(): { [key: string]: string } {
-    return this.loaders;
-  }
-
-  public AddMenu(menu: IMenu) {
+  public addMenu(menu: IMenu) {
     if (!this.project.menus) { this.project.menus = []; }
     if (!menu.type) { menu.type = 'icon'; }
     if (this.project.menus.findIndex(m => m.id === menu.id) === -1) {
-      this.project.menus.push(menu);
+      Vue.nextTick(() => {
+        if (this.project.menus) {
+          this.project.menus.push(menu);
+        }
+      });
     }
   }
 
-  public RemoveMenu(menuId: string) {
+  public removeMenu(menuId: string) {
     if (!this.project.menus) { return; }
     const menuItemIndex = this.project.menus.findIndex(m => m.id === menuId);
     if (menuItemIndex >= 0) {
@@ -197,28 +207,28 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public get VisibleSidebars() : {[key: string] : IDashboard} | undefined {
-    if (!this.project.rightSidebar) return undefined;    
+  public get visibleSidebars(): { [key: string]: IDashboard } | undefined {
+    if (!this.project.rightSidebar) { return undefined; }
     let res = this.project.rightSidebar.sidebars;
     if (this.activeDashboard && this.activeDashboard.sidebars) {
       for (const sb in this.activeDashboard.sidebars) {
         if (this.activeDashboard.sidebars.hasOwnProperty(sb)) {
           const element = this.activeDashboard.sidebars[sb];
-          if (!element.id) { element.id = sb}
+          if (!element.id) { element.id = sb; }
         }
       }
-      res = { ...res, ...this.activeDashboard.sidebars}
+      res = { ...res, ...this.activeDashboard.sidebars };
     }
     return res;
   }
 
-  public AddSidebar(id: string, sidebar: IDashboard, dashboard?: IDashboard) {
+  public addSidebar(id: string, sidebar: IDashboard, dashboard?: IDashboard) {
     if (!sidebar) { return; }
-    sidebar = { ...{ id: id, widgets: [] }, ...sidebar };
+    sidebar = { ...{ id, widgets: [] }, ...sidebar };
     if (dashboard) {
       if (!dashboard.sidebars) {
         dashboard.sidebars = {};
-      }      
+      }
       if (!dashboard.sidebars.hasOwnProperty(id)) {
         dashboard.sidebars[id] = sidebar;
       }
@@ -235,14 +245,14 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public RemoveSidebar(id: string) {
+  public removeSidebar(id: string) {
     if (!this.project.rightSidebar || !this.project.rightSidebar.sidebars || !this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
       return;
     }
     delete this.project.rightSidebar.sidebars[id];
   }
 
-  public UpdateBreadCrumbs(d?: IDashboard, main = true) {
+  public updateBreadCrumbs(d?: IDashboard, main = true) {
     if (!d) { d = this.activeDashboard; }
     if (
       d &&
@@ -258,44 +268,40 @@ export class AppState extends AppStateBase {
         this.project.header.breadcrumbItems.unshift(d.title);
       }
       if (d.parent) {
-        this.UpdateBreadCrumbs(d.parent, false);
+        this.updateBreadCrumbs(d.parent, false);
       }
     }
   }
 
   public updateDatasource(id: string, value: any) {
-    if (!this.project) {
-      return;
+    if (!this.datasourceManager) {
+      return Promise.reject('Datasource Manager not initialized');
     }
-    if (!this.project.datasources) {
-      this.project.datasources = {};
-    }
-    this.project.datasources[id] = value;
-    this.bus.publish('ds-' + id, 'updated', value);
+    this.datasourceManager.update(id, value);
   }
 
   /** loads specific datasource in memory. Returns selected datasource as a promise  */
   public loadDatasource<T>(source: IDatasource | string): Promise<T> {
-    if (!this.projectManager) {
-      return Promise.reject('Project Manager not initialized');
+    if (!this.datasourceManager) {
+      return Promise.reject('Datasource Manager not initialized');
     }
-    return this.projectManager.datasourceManager.load<T>(source);
+    return this.datasourceManager.load<T>(source);
   }
 
-  public OpenInfo(options: InfoOptions | string) {
+  public openInfo(options: InfoOptions | string) {
     if (typeof options === 'string') {
       options = { type: 'string', data: options };
     }
     if (options && !options.type) { options.type = 'string'; }
     switch (options.type) {
       case 'string':
-        this.OpenRightSidebarWidget({ component: HtmlWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
+        this.openRightSidebarWidget({ component: HtmlWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
         break;
     }
   }
 
   /** Triggers notification */
-  public TriggerNotification(notification: INotification) {
+  public triggerNotification(notification: INotification) {
     notification = {
       ...{
         id: guidGenerator(),
@@ -319,18 +325,18 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public ClearNotifications() {
+  public clearNotifications() {
     this.bus.publish('notification', 'clear-all');
     if (this.project.notifications && this.project.notifications.items) {
       this.project.notifications.items.length = 0;
     }
   }
 
-  public CloseDialog() {
+  public closeDialog() {
     this.bus.publish(AppState.DIALOG, AppState.DIALOG_CLOSED);
   }
 
-  public TriggerDialog(dialog: IDialog): Promise<string> {
+  public triggerDialog(dialog: IDialog): Promise<string> {
     return new Promise((resolve) => {
       if (!dialog.actionCallback) {
         dialog.actionCallback = (action: string) => {
@@ -341,7 +347,7 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public TriggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
+  public triggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
     return new Promise((resolve) => {
       const cb = (action: string) => {
         resolve(action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO);
@@ -349,19 +355,19 @@ export class AppState extends AppStateBase {
       const d = {
         fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: [this.Translate(AppState.YES), this.Translate(AppState.NO)], actionCallback: cb
       } as IDialog;
-      this.TriggerDialog(d);
+      this.triggerDialog(d);
     });
   }
 
-  public TriggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string> {
+  public triggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string> {
     const d = {
       fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: actions.map(a => this.Translate(a))
     } as IDialog;
-    return this.TriggerDialog(d);
+    return this.triggerDialog(d);
   }
 
   /** if rightsidebar exists, clear component and close */
-  public ClearRightSidebar() {
+  public clearRightSidebar() {
     if (
       this.project.rightSidebar &&
       this.project.rightSidebar.dashboard &&
@@ -369,7 +375,7 @@ export class AppState extends AppStateBase {
     ) {
       while (this.project.rightSidebar.dashboard.widgets.length > 0) {
         if (this.project.rightSidebar.dashboard.widgets[0].id) {
-          this.CloseRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
+          this.closeRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
         }
         this.project.rightSidebar.dashboard.widgets.shift();
       }
@@ -377,7 +383,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public CloseRightSidebar(): boolean {
+  public closeRightSidebar(): boolean {
     if (this.project.rightSidebar) {
       this.project.rightSidebar.open = false;
       return true;
@@ -386,7 +392,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public CloseRightSidebarKey(id: string): boolean {
+  public closeRightSidebarKey(id: string): boolean {
     if (this.project.rightSidebar && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
       this.project.rightSidebar.sidebars[id].hide = true;
       return true;
@@ -395,13 +401,13 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public CloseInfo() {
+  public closeInfo() {
 
-    this.CloseRightSidebarKey('info');
+    this.closeRightSidebarKey('info');
   }
 
   /** If a rightsidebar exists, it will remove a specific widget */
-  public CloseRightSidebarWidget(id: string): boolean {
+  public closeRightSidebarWidget(id: string): boolean {
     if (
       this.project.rightSidebar &&
       this.project.rightSidebar.dashboard &&
@@ -422,7 +428,7 @@ export class AppState extends AppStateBase {
     return false;
   }
 
-  public OpenRightSidebarKey(key: string) {
+  public openRightSidebarKey(key: string) {
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
       if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
@@ -430,27 +436,27 @@ export class AppState extends AppStateBase {
       }
       const d = this.project.rightSidebar.sidebars[key];
       d.hide = false;
-      this.OpenRightSidebar(d);
+      this.openRightSidebar(d);
     }
   }
 
-  public OpenRightSidebar(dashboard?: IDashboard) {
+  public openRightSidebar(dashboard?: IDashboard) {
     if (this.project.rightSidebar) {
       Vue.set(this.project.rightSidebar, 'dashboard', dashboard);
       this.project.rightSidebar.open = true;
     }
   }
 
-  public ToggleRightSidebar(key?: string) {
-    let visible = this.VisibleSidebars;
+  public toggleRightSidebar(key?: string) {
+    const visible = this.visibleSidebars;
     if (!visible || !this.project.rightSidebar) { return; }
-    
+
     if (key && visible.hasOwnProperty(key)) {
       const d = visible[key];
       if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
         this.project.rightSidebar.open = !this.project.rightSidebar.open;
       } else {
-        this.OpenRightSidebar(d);
+        this.openRightSidebar(d);
       }
     } else {
       this.project.rightSidebar.open = !this.project.rightSidebar.open;
@@ -458,17 +464,17 @@ export class AppState extends AppStateBase {
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public OpenRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
+  public openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
 
     if (!replace && widget.id && this.project.rightSidebar && this.project.rightSidebar.dashboard && this.findWidget(widget.id, this.project.rightSidebar.dashboard)) {
       return;
     }
 
-
-    this.OpenRightSidebarKey(key);
-    this.ClearRightSidebar();
+    
 
     Vue.nextTick(() => {
+      this.openRightSidebarKey(key);
+    this.clearRightSidebar();
       if (
         this.project.rightSidebar &&
         this.project.rightSidebar.dashboard &&
@@ -491,9 +497,9 @@ export class AppState extends AppStateBase {
     this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
   }
 
-  public ToggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
-    if (!widget.id || !this.CloseRightSidebarWidget(widget.id)) {
-      this.OpenRightSidebarWidget(widget, options);
+  public toggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {
+    if (!widget.id || !this.closeRightSidebarWidget(widget.id)) {
+      this.openRightSidebarWidget(widget, options);
     }
   }
 

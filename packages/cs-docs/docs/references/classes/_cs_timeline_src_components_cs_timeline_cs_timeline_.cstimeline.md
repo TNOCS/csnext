@@ -12,7 +12,7 @@
 
 • **$refs**: *object*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:51](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L51)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:51](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L51)*
 
 #### Type declaration:
 
@@ -24,7 +24,7 @@ ___
 
 • **GROUP_VISIBILITY_ID**: *string* = "timeline-group-"
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:40](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L40)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:40](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L40)*
 
 access the original widget from configuration
 
@@ -34,7 +34,7 @@ ___
 
 • **currentTime**: *Date* =  new Date()
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L46)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L46)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **groups**: *DataGroup[]* =  []
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:45](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L45)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:45](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L45)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **items**: *DataItem[]* =  []
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:44](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L44)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:44](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L44)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **logSource**? : *[LogDataSource](_cs_client_src_datasources_log_log_datasource_.logdatasource.md)*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:48](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L48)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:48](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L48)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **smallView**: *boolean* = false
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:49](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L49)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:49](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L49)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **timeline**? : *Timeline*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L42)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L42)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **widget**: *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:61](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L61)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:61](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L61)*
 
 ## Accessors
 
@@ -90,7 +90,7 @@ ___
 
 • **get Time**(): *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L55)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:55](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L55)*
 
 **Returns:** *[TimeDataSource](_cs_core_src_datasources_time_datasource_.timedatasource.md)*
 
@@ -100,7 +100,7 @@ ___
 
 • **get WidgetOptions**(): *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:62](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L62)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:62](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L62)*
 
 **Returns:** *[TimelineWidgetOptions](../interfaces/_cs_timeline_src_classes_timeline_widget_options_.timelinewidgetoptions.md)*
 
@@ -110,7 +110,7 @@ ___
 
 ▸ **addGroup**(`groupName`: string): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:332](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L332)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:332](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L332)*
 
 **Parameters:**
 
@@ -126,7 +126,7 @@ ___
 
 ▸ **beforeDestroy**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:70](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L70)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:70](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L70)*
 
 **Returns:** *void*
 
@@ -136,7 +136,7 @@ ___
 
 ▸ **contentLoaded**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:322](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L322)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:322](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L322)*
 
 **Returns:** *void*
 
@@ -146,7 +146,7 @@ ___
 
 ▸ **daysInMonth**(`month`: any, `year`: any): *number*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:426](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L426)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:426](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L426)*
 
 **Parameters:**
 
@@ -163,7 +163,7 @@ ___
 
 ▸ **fitAll**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:205](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L205)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:205](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L205)*
 
 **Returns:** *void*
 
@@ -173,7 +173,7 @@ ___
 
 ▸ **groupExists**(`id`: string): *any*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:344](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L344)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:344](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L344)*
 
 **Parameters:**
 
@@ -189,7 +189,7 @@ ___
 
 ▸ **handleDoubleClick**(`data`: any): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:379](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L379)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:379](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L379)*
 
 **Parameters:**
 
@@ -205,7 +205,7 @@ ___
 
 ▸ **handleEventSelect**(`data`: any): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:383](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L383)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:383](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L383)*
 
 **Parameters:**
 
@@ -221,7 +221,7 @@ ___
 
 ▸ **handleIncomingTimeEvent**(`action`: string, `data`: any): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:450](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L450)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:450](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L450)*
 
 **Parameters:**
 
@@ -238,7 +238,7 @@ ___
 
 ▸ **handleTimeChange**(`d`: object): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:367](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L367)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:367](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L367)*
 
 **Parameters:**
 
@@ -257,7 +257,7 @@ ___
 
 ▸ **handleTimeChanged**(`d`: object): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:373](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L373)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:373](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L373)*
 
 **Parameters:**
 
@@ -276,7 +276,7 @@ ___
 
 ▸ **handleTimelineClick**(`data`: TimelineEventPropertiesResult): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:404](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L404)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:404](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L404)*
 
 **Parameters:**
 
@@ -292,7 +292,7 @@ ___
 
 ▸ **initLogSource**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:182](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L182)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:182](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L182)*
 
 **Returns:** *void*
 
@@ -302,7 +302,7 @@ ___
 
 ▸ **initTimeline**(): *Promise‹void›*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L95)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:95](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L95)*
 
 **Returns:** *Promise‹void›*
 
@@ -312,7 +312,7 @@ ___
 
 ▸ **initToolbar**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:217](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L217)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:217](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L217)*
 
 **Returns:** *void*
 
@@ -322,7 +322,7 @@ ___
 
 ▸ **setDate**(`date`: Date): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:411](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L411)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:411](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L411)*
 
 **Parameters:**
 
@@ -338,7 +338,7 @@ ___
 
 ▸ **setGroupVisibility**(`group`: DataGroup, `value`: boolean): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:90](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L90)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:90](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L90)*
 
 **Parameters:**
 
@@ -355,7 +355,7 @@ ___
 
 ▸ **setTimelineEvents**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:348](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L348)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:348](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L348)*
 
 **Returns:** *void*
 
@@ -365,7 +365,7 @@ ___
 
 ▸ **setWindow**(`start`: Date, `end`: Date): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:211](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L211)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:211](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L211)*
 
 **Parameters:**
 
@@ -382,7 +382,7 @@ ___
 
 ▸ **toggleView**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:85](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L85)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:85](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L85)*
 
 **Returns:** *void*
 
@@ -392,7 +392,7 @@ ___
 
 ▸ **update**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:78](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L78)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:78](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L78)*
 
 **Returns:** *void*
 
@@ -402,6 +402,6 @@ ___
 
 ▸ **updateItems**(): *void*
 
-*Defined in [packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts:430](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L430)*
+*Defined in [cs-timeline/src/components/cs-timeline/cs-timeline.ts:430](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-timeline/src/components/cs-timeline/cs-timeline.ts#L430)*
 
 **Returns:** *void*

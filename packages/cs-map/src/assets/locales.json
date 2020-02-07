@@ -1,10 +1,30 @@
 {
     "en": {
       "SELECTED_LAYERS": "Selected layers",
-      "LEGEND": "Legend"
+      "LEGEND": "Legend",
+      "PROPERTIES": "Properties",
+      "BOOKMARK_ADDED": "Bookmark added",
+      "ADD_BOOKMARK": "Add bookmark",
+      "REMOVE_BOOKMARK": "Remove bookmark",
+      "REMOVE_FILTER": "Remove filter",
+      "COUNT": "Count",
+      "DOWNLOAD": "Download",
+      "ALL": "All",
+      "OPEN_SOURCE": "Go to source",
+      "MORE": "More"
     },
     "nl": {      
       "SELECTED_LAYERS": "Geselecteerde kaartlagen",
-      "LEGEND": "Legenda"
+      "LEGEND": "Legenda",
+      "PROPERTIES": "Gegevens",
+      "BOOKMARK_ADDED": "Bookmark toegevoegd",
+      "ADD_BOOKMARK": "Bookmark toevoegen",
+      "REMOVE_BOOKMARK": "Bookmark verwijderen",
+      "REMOVE_FILTER": "Filter verwijderen",
+      "COUNT": "Aantal",
+      "DOWNLOAD": "Download",
+      "ALL": "Allemaal",
+      "OPEN_SOURCE": "Bron bekijken",
+      "MORE": "Meer"
     }
   }

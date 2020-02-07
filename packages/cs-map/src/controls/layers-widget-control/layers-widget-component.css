@@ -1,3 +1,9 @@
 .layers-layer-title {
-    font-size: 14px;
+    font-size: 16px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.layers-layer-icon {
+    max-height: 32px;
 }

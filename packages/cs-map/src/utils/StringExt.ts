@@ -1,4 +1,4 @@
-import { PropertyType } from '..';
+import { PropertyType } from '@csnext/cs-data';
 
 export function isNullOrEmpty(s: string): boolean {
     return !isNumber(s) && !s;

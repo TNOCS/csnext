@@ -2,21 +2,21 @@ import { Get, Controller, Param, Post, Body, Query, Put } from '@nestjs/common';
 import { LayerDefinition } from '../classes';
 import { LayerService } from './layers.service';
 import {
-  ApiUseTags,
+  ApiTags,
   ApiOperation,
-  ApiImplicitQuery,
-  ApiImplicitParam,
+  ApiQuery,
+  ApiParam,
   ApiResponse
 } from '@nestjs/swagger';
 import { Feature } from 'geojson';
 
-@ApiUseTags()
+@ApiTags()
 @Controller('layers')
 export class LayerController {
   constructor(private readonly layerService: LayerService) {}
 
   @ApiOperation({
-    title: 'Get available layers definitions',
+    summary: 'Get available layers definitions',
     description: 'Returns all available layer definitions'
   })
   @ApiResponse({
@@ -25,29 +25,29 @@ export class LayerController {
     type: LayerDefinition
   })
   @Get()
-  layers(): LayerDefinition[] {
-    let la = this.layerService.getLayers().map(l => {
+  public layers(): LayerDefinition[] {
+    const la = this.layerService.getLayers().map(l => {
       return { ...l, ...({ _layerSource: undefined } as LayerDefinition) };
     });
     return la;
   }
 
   @ApiOperation({
-    title: 'Get layer definition',
+    summary: 'Get layer definition',
     description: 'Returns single layer definition by id'
   })
-  @ApiImplicitParam({
+  @ApiParam({
     name: 'id',
     description: 'Specify the layer id for the layer you want to get.'
   })
-  @ApiImplicitQuery({
+  @ApiQuery({
     name: 'source',
     description: 'Set true to include actual source',
     required: false,
     type: Boolean
   })
   @Get(':id')
-  async getLayer(
+  public async getLayer(
     @Param('id') id: string,
     @Query('source') source?: boolean
   ): Promise<LayerDefinition | undefined> {
@@ -62,10 +62,10 @@ export class LayerController {
   }
 
   @ApiOperation({
-    title: 'Add or update layer definition',
+    summary: 'Add or update layer definition',
     description: 'Add or update layer definition'
   })
-  @ApiImplicitParam({
+  @ApiParam({
     name: 'id',
     description: 'Specify the layer id for the layer you want to get.'
   })
@@ -75,15 +75,15 @@ export class LayerController {
     type: LayerDefinition
   })
   @Put(':id')
-  async triggerLayer(@Param('id') id: string, @Body() body: LayerDefinition): Promise<LayerDefinition | undefined> {
-    return this.layerService.putLayerDefinitionById(id, body);    
+  public async triggerLayer(@Param('id') id: string, @Body() body: LayerDefinition): Promise<LayerDefinition | undefined> {
+    return this.layerService.putLayerDefinitionById(id, body);
   }
 
   @ApiOperation({
-    title: 'Trigger external layer refresh',
+    summary: 'Trigger external layer refresh',
     description: 'Trigger layer refresh'
   })
-  @ApiImplicitParam({
+  @ApiParam({
     name: 'id',
     description: 'Specify the layer you want to refresh'
   })
@@ -92,9 +92,9 @@ export class LayerController {
     description: 'Returns true if succeeded.',
     type: Boolean
   })
-  
+
   @Get('/triggerRefresh/:id')
-  async triggerRefresh(@Param('id') id: string): Promise<Boolean> {
+  public async triggerRefresh(@Param('id') id: string): Promise<Boolean> {
     return this.layerService.triggerLayerRefresh(id);
   }
 }

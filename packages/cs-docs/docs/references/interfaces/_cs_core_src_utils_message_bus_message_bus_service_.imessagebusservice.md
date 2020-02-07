@@ -14,7 +14,7 @@
 
 • **id**: *string*
 
-*Defined in [packages/cs-core/src/utils/message-bus/message-bus-service.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L5)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L5)*
 
 ## Methods
 
@@ -22,7 +22,7 @@
 
 ▸ **publish**(`topic`: string, `title`: string, `data?`: any): *void*
 
-*Defined in [packages/cs-core/src/utils/message-bus/message-bus-service.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L6)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L6)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ ___
 
 ▸ **subscribe**(`topic`: string, `callback`: [IMessageBusCallback](_cs_core_src_utils_message_bus_message_bus_handle_.imessagebuscallback.md)): *[MessageBusHandle](../classes/_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)*
 
-*Defined in [packages/cs-core/src/utils/message-bus/message-bus-service.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L7)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L7)*
 
 **Parameters:**
 
@@ -57,7 +57,7 @@ ___
 
 ▸ **unsubscribe**(`handle`: [MessageBusHandle](../classes/_cs_core_src_utils_message_bus_message_bus_handle_.messagebushandle.md)): *any*
 
-*Defined in [packages/cs-core/src/utils/message-bus/message-bus-service.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L8)*
+*Defined in [cs-core/src/utils/message-bus/message-bus-service.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/utils/message-bus/message-bus-service.ts#L8)*
 
 **Parameters:**
 

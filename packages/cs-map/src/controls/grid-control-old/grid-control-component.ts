@@ -27,7 +27,7 @@ export class GridControlComponent extends Vue {
 
     public toggleGrid() {
         if (!this.layer || !this.manager) { return; }
-        if (this.layer.Visible) {
+        if (this.layer.enabled) {
             this.manager.hideLayer(this.layer);
         } else {
             this.manager.showLayer(this.layer);
@@ -39,11 +39,10 @@ export class GridControlComponent extends Vue {
         // add layer
         this.layer = new GridLayer();
         this.layer.title = 'grid';
-        this.layer.style = { line: true, mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
+        this.layer.style = { type: 'line', mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
         this.layer.filter = ['>=', ['zoom'], ['number', ['get', 'level']]];
         this.layer.id = 'map-grid';
         this.layer.tags = ['map'];
-        this.layer.type = 'line';
         this.layer.source = new LayerSource({ type: 'FeatureCollection', features: [] });
         this.layer.source._loaded = true;
         this.layer.source.id = guidGenerator();

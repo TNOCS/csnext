@@ -1,20 +1,15 @@
 import {
-    ILayerServiceOptions,
     ILayerService,
     IStartStopService,
     GeojsonPlusLayer,
     MapDatasource,
     LayerSource,
-    IMapLayer
+    IMapLayer,
+    LayerServerOptions
 
 } from '..';
 import axios from 'axios';
 import { LinePaint } from 'mapbox-gl';
-
-export class LayerServerOptions implements ILayerServiceOptions {
-    public url?: string;
-    public tags?: string[];
-}
 
 export class LayerServer implements ILayerService, IStartStopService {
     id!: string;
@@ -38,7 +33,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         if (this.options && this.options.url) {
             axios
                 .get(this.options.url)
-                .then(response => {
+                .then(async response => {
                     if (
                         response &&
                         response.data &&
@@ -69,7 +64,7 @@ export class LayerServer implements ILayerService, IStartStopService {
                                 'line-opacity': ['get', 'stroke-opacity'],
                                 'line-width': ['get', 'stroke-width']
                             } as LinePaint;
-                            gl.initLayer(manager);
+                            await gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);
                         }

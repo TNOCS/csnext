@@ -10,7 +10,7 @@
 
 • **dashboard**? : *[IDashboard](_cs_core_src_dashboard_dashboard_.idashboard.md)*
 
-*Defined in [packages/cs-core/src/project/footer-options.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/footer-options.ts#L6)*
+*Defined in [cs-core/src/project/footer-options.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/footer-options.ts#L6)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **text**? : *string*
 
-*Defined in [packages/cs-core/src/project/footer-options.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/footer-options.ts#L5)*
+*Defined in [cs-core/src/project/footer-options.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/footer-options.ts#L5)*
 
 ___
 
@@ -26,4 +26,4 @@ ___
 
 • **visible**? : *boolean*
 
-*Defined in [packages/cs-core/src/project/footer-options.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/project/footer-options.ts#L4)*
+*Defined in [cs-core/src/project/footer-options.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/project/footer-options.ts#L4)*

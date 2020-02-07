@@ -10,7 +10,7 @@
 
 • **color**: *string*
 
-Defined in packages/cs-map/src/components/layer-selection/layer-group.ts:5
+*Defined in [cs-map/src/components/layer-selection/layer-group.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-group.ts#L5)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **layers**: *[IMapLayer](_cs_map_src_classes_imap_layer_.imaplayer.md)[]*
 
-Defined in packages/cs-map/src/components/layer-selection/layer-group.ts:6
+*Defined in [cs-map/src/components/layer-selection/layer-group.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-group.ts#L6)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **state**: *"all" | "none" | "some"*
 
-Defined in packages/cs-map/src/components/layer-selection/layer-group.ts:7
+*Defined in [cs-map/src/components/layer-selection/layer-group.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-group.ts#L7)*
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **title**: *string*
 
-Defined in packages/cs-map/src/components/layer-selection/layer-group.ts:4
+*Defined in [cs-map/src/components/layer-selection/layer-group.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-selection/layer-group.ts#L4)*

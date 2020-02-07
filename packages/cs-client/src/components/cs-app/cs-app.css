@@ -79,10 +79,6 @@ html {
   height: 100%;
 }
 
-.floating-toolbar {
-  margin-top: 10px !important;
-}
-
 .app-project-logo {
   height: 40px;
   margin: 4px;
@@ -91,4 +87,10 @@ html {
 .content {
   height: 100%;
   padding: 0;
+}
+
+.rightsidebar-toggle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
 }

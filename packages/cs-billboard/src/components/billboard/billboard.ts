@@ -20,18 +20,18 @@ export class Billboard extends WidgetBase {
     public chart?: any;
 
     @Watch('widget.data', { deep: true })
-    dataUpdated() {
+    public dataUpdated() {
         if (this.chart) {
             this.chart.load(this.widget.data);
         }
     }
 
     @Watch('widget.content', { deep: true })
-    contentUpdated() {
+    public contentUpdated() {
         Vue.nextTick(() => {
             if (this.chart) {
                 if (this.widget.options && this.widget.options.hasOwnProperty('property')) {
-                    const prop = this.widget.options['property'];
+                    const prop = (this.widget.options as any).property;
                     if (this.widget.content.hasOwnProperty(prop)) {
                         this.chart.load(this.widget.content[prop]);
                     }
@@ -42,30 +42,12 @@ export class Billboard extends WidgetBase {
         });
     }
 
-    private getData(): any {
-        if (this.widget.content) {
-            if (this.widget.options && this.widget.options.hasOwnProperty('property')) {
-                const prop = this.widget.options['property'];
-                if (this.widget.content.hasOwnProperty(prop)) {
-                    return this.widget.content[prop];
-                }
-            } else {
-                return this.widget.content;
-            }
-        }
-
-        if (this.widget.data) return this.widget.data;
-
-        return undefined;
-    }
-
     public createChart() {
 
-        if (!this.widget || !this.widget._size) { return;}
-        let w = this.widget._size!.componentWidth | 0;
-        let h = this.widget._size!.componentHeight | 0;
-        let config =
-        {
+        if (!this.widget || !this.widget._size) { return; }
+        const w = this.widget._size!.componentWidth || 0 ;
+        const h = this.widget._size!.componentHeight || 0 ;
+        const config = {
             bindto: '#' + this.widget.id,
             size: {
                 width: w,
@@ -89,6 +71,23 @@ export class Billboard extends WidgetBase {
 
     public contentLoaded() {
         this.createChart();
+    }
+
+    private getData(): any {
+        if (this.widget.content) {
+            if (this.widget.options && this.widget.options.hasOwnProperty('property')) {
+                const prop = (this.widget.options as any).property;
+                if (this.widget.content.hasOwnProperty(prop)) {
+                    return this.widget.content[prop];
+                }
+            } else {
+                return this.widget.content;
+            }
+        }
+
+        if (this.widget.data) { return this.widget.data; }
+
+        return undefined;
     }
 
 }

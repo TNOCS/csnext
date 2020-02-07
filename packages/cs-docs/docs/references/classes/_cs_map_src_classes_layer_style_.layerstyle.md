@@ -14,7 +14,7 @@
 
 • **_opacity**? : *number*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:440](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L440)*
+*Defined in [cs-map/src/classes/layer-style.ts:436](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L436)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **_originalMapbox**? : *[MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:441](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L441)*
+*Defined in [cs-map/src/classes/layer-style.ts:437](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L437)*
 
 ___
 
@@ -32,17 +32,7 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[defaultLegendProperty](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-defaultlegendproperty)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:435](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L435)*
-
-___
-
-### `Optional` fill
-
-• **fill**? : *boolean*
-
-*Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[fill](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-fill)*
-
-*Defined in [packages/cs-map/src/classes/layer-style.ts:426](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L426)*
+*Defined in [cs-map/src/classes/layer-style.ts:430](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L430)*
 
 ___
 
@@ -52,7 +42,7 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[icon](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-icon)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:432](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L432)*
+*Defined in [cs-map/src/classes/layer-style.ts:427](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L427)*
 
 ___
 
@@ -62,7 +52,7 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[iconZoomLevel](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-iconzoomlevel)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:418](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L418)*
+*Defined in [cs-map/src/classes/layer-style.ts:413](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L413)*
 
 ___
 
@@ -72,21 +62,11 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[icons](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-icons)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:433](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L433)*
+*Defined in [cs-map/src/classes/layer-style.ts:428](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L428)*
 
 #### Type declaration:
 
 * \[ **id**: *string*\]: string
-
-___
-
-### `Optional` line
-
-• **line**? : *boolean*
-
-*Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[line](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-line)*
-
-*Defined in [packages/cs-map/src/classes/layer-style.ts:428](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L428)*
 
 ___
 
@@ -96,7 +76,7 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[mapTitle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-maptitle)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:422](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L422)*
+*Defined in [cs-map/src/classes/layer-style.ts:417](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L417)*
 
 ___
 
@@ -104,7 +84,7 @@ ___
 
 • **mapbox**? : *[MapboxStyles](_cs_map_src_classes_layer_style_.mapboxstyles.md)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:437](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L437)*
+*Defined in [cs-map/src/classes/layer-style.ts:432](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L432)*
 
 ___
 
@@ -112,7 +92,7 @@ ___
 
 • **opacity**? : *number* = 100
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:439](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L439)*
+*Defined in [cs-map/src/classes/layer-style.ts:434](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L434)*
 
 ___
 
@@ -122,7 +102,7 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[pointCircle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-pointcircle)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:430](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L430)*
+*Defined in [cs-map/src/classes/layer-style.ts:425](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L425)*
 
 ___
 
@@ -132,7 +112,15 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[popup](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-popup)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:424](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L424)*
+*Defined in [cs-map/src/classes/layer-style.ts:419](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L419)*
+
+___
+
+### `Optional` showSymbol
+
+• **showSymbol**? : *boolean*
+
+*Defined in [cs-map/src/classes/layer-style.ts:435](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L435)*
 
 ___
 
@@ -142,16 +130,14 @@ ___
 
 *Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[title](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-title)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:420](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L420)*
+*Defined in [cs-map/src/classes/layer-style.ts:415](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L415)*
 
 ___
 
-### `Optional` types
+### `Optional` type
 
-• **types**? : *string[]*
+• **type**? : *"fill" | "line" | "symbol" | "circle" | "fill-extrusion" | "raster" | "background" | "heatmap" | "hillshade"*
 
-*Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[types](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-types)*
+*Implementation of [ILayerStyle](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md).[type](../interfaces/_cs_map_src_classes_layer_style_.ilayerstyle.md#optional-type)*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:417](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L417)*
-
-feature types available in layer (fill, line, point, .etc)
+*Defined in [cs-map/src/classes/layer-style.ts:411](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L411)*

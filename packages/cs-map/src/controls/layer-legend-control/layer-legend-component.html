@@ -22,10 +22,13 @@
         </v-list>
     </v-menu> -->
 
-    <div v-for="layer in layers">              
+    <div v-for="layer in layers">     
         <div v-if="layer._legends && layer._legends.length>0" v-for="legend in layer._legends" >
             <template v-if="legend.propertyInfo">
-                <v-layout>{{ legend.propertyInfo.title }}<v-spacer/><v-btn right @click="initFilter(layer, legend)" icon><v-icon>filter_list</v-icon></v-btn right></v-layout>                        
+                <v-layout>{{ legend.propertyInfo.title }}<v-spacer/>
+                    <v-btn right @click="removeLegend(layer, legend)" small icon><v-icon>close</v-icon></v-btn>
+                    <v-btn right @click="initFilter(layer, legend)" small icon><v-icon>filter_list</v-icon></v-btn>
+                </v-layout>                        
                 <div v-if="legend.stops" v-for="stop in legend.stops">
                     <v-layout
                         ><span
@@ -45,9 +48,9 @@
             </template>
         </div>        
         <div v-if="layer._filters" v-for="(filter, prop, index) in layer._filters" >
-            <v-layout>{{ filter.propertyType.title }}<v-spacer/>{{ filter.min }} - {{ filter.max }}</v-layout>                                        
+            <v-layout>{{ filter.propertyType.title }}<v-spacer/>{{ filter.min }} - {{ filter.max }}</v-layout>            
             <template v-if="filter.type === 'range'">
-                <v-range-slider v-model="filter.rangeArray" :min="filter.propertyType.min" :max="filter.propertyType.max" @change="applyFilter(layer, filter)"></v-range-slider>
+                <v-layout><v-range-slider thumb-label v-model="filter.rangeArray" :min="filter.propertyType.min" :max="filter.propertyType.max" @change="applyFilter(layer, filter)"></v-range-slider><v-btn @click="removeFilter(layer, filter)" icon><v-icon>close</v-icon></v-btn></v-layout>
             </template>
                 
         </div>

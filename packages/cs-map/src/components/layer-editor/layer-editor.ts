@@ -16,7 +16,7 @@ import simplebar from 'simplebar-vue';
 export class LayerEditor extends Vue {
     public widget!: IWidget;
     public tabs = null;
-    
+
     /** get active layer */
     public get layer(): BaseLayer | undefined {
         if (this.widget.data && this.widget.data.layer) {
@@ -28,16 +28,14 @@ export class LayerEditor extends Vue {
     /** get layer color */
     public get layerColor(): string {
         const layer = this.layer;
-        if (layer && layer.color) {            
+        if (layer && layer.color) {
             return layer.color;
         }
         return 'blue';
     }
 
     public updateLayer() {
-        this.$cs.TriggerNotification({title: 'Updating layer'});
-        console.log('layer saved');
-        console.log(this.layer);
+        this.$cs.triggerNotification({title: 'Updating layer'});
         if (this.layer && this.layer._service && this.layer._service.updateLayer) {
             this.layer.updateLayer();
             this.layer._service.updateLayer(this.layer);

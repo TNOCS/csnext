@@ -40,7 +40,7 @@ export class LayerSelection extends Vue {
     public toggleGroup(group: ILayerGroup) {
         if (
             group.layers &&
-            group.layers.findIndex(l => l.Visible === true) !== -1
+            group.layers.findIndex(l => l.enabled === true) !== -1
         ) {
             for (const layer of group.layers) {
                 if (layer._manager) {
@@ -89,7 +89,7 @@ export class LayerSelection extends Vue {
                     const element = res[group];
                     if (
                         element.layers &&
-                        element.layers.findIndex(l => l.Visible === true) !== -1
+                        element.layers.findIndex(l => l.enabled === true) !== -1
                     ) {
                         element.state = 'some';
                     } else {
@@ -151,12 +151,12 @@ export class LayerSelection extends Vue {
         if (!layer._manager) {
             return;
         }
-        if (layer.Visible) {
+        if (layer.enabled) {
             layer._manager.showLayer(layer);
         } else {
             layer._manager.hideLayer(layer);
         }
-        console.log(layer.title, layer.Visible);
+        console.log(layer.title, layer.enabled);
     }
 
     private addLayerToGroup(

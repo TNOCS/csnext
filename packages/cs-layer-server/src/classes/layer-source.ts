@@ -1,17 +1,17 @@
-import { ApiModelProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 /** actual layer source (content) for a layer */
 export class LayerSource implements GeoJSON.FeatureCollection {
-    @ApiModelProperty({ required: true})
-    public type : 'FeatureCollection' = 'FeatureCollection';
-    @ApiModelProperty()
+    @ApiProperty({ required: true})
+    public type: 'FeatureCollection' = 'FeatureCollection';
+    @ApiProperty()
     public features!: any;
-    @ApiModelProperty()
-    bbox?: [number, number, number, number] | [number, number, number, number, number, number] | undefined;
-    @ApiModelProperty({ required: true})
+    @ApiProperty()
+    public bbox?: [number, number, number, number] | [number, number, number, number, number, number] | undefined;
+    @ApiProperty({ required: true})
     public id!: string;
 
     public _localFile?: string;
     public _tiles: any;
-    public _socketQueue: {[key:string]:any} = {};
+    public _socketQueue: {[key: string]: any} = {};
 }

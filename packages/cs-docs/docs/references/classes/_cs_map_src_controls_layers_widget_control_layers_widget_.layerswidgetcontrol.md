@@ -14,7 +14,7 @@
 
 \+ **new LayersWidgetControl**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *[LayersWidgetControl](_cs_map_src_controls_layers_widget_control_layers_widget_.layerswidgetcontrol.md)*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L9)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L9)*
 
 **Parameters:**
 
@@ -30,7 +30,7 @@ Name | Type |
 
 • **container**? : *HTMLDivElement*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L8)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L8)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **layersWidget**? : *[LayersWidgetComponent](_cs_map_src_controls_layers_widget_control_layers_widget_component_.layerswidgetcomponent.md)*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L9)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L9)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **manager**: *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:11](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L11)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:11](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L11)*
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 • **map**? : *Map*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L7)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L7)*
 
 ## Methods
 
@@ -62,7 +62,7 @@ ___
 
 ▸ **onAdd**(`map`: any): *HTMLDivElement*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L13)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:13](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L13)*
 
 **Parameters:**
 
@@ -78,6 +78,6 @@ ___
 
 ▸ **onRemove**(): *void*
 
-*Defined in [packages/cs-map/src/controls/layers-widget-control/layers-widget.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L26)*
+*Defined in [cs-map/src/controls/layers-widget-control/layers-widget.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/controls/layers-widget-control/layers-widget.ts#L26)*
 
 **Returns:** *void*

@@ -14,7 +14,7 @@
 
 • **openFeatureDetails**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/layer-service-options.ts:3](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-service-options.ts#L3)*
+*Defined in [cs-map/src/classes/layer-service-options.ts:3](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-service-options.ts#L3)*
 
 ___
 
@@ -22,4 +22,4 @@ ___
 
 • **tags**? : *string[]*
 
-*Defined in [packages/cs-map/src/classes/layer-service-options.ts:2](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-service-options.ts#L2)*
+*Defined in [cs-map/src/classes/layer-service-options.ts:2](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-service-options.ts#L2)*

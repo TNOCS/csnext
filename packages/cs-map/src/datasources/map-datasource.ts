@@ -1,6 +1,5 @@
-import { IDatasource, MessageBusService, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
+import { IDatasource, MessageBusService, MessageBusHandle } from '@csnext/cs-core';
 import {
-    LayerSources,
     CsMap,
     IMapLayer,
     GeojsonLayer,
@@ -9,8 +8,7 @@ import {
     LayerSource,
     ILayerService,
     LayerStyle,
-    LayerEditor,
-    FeatureDetails
+    LayerEditor
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -26,9 +24,10 @@ import {
 import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
-import { FeatureTypes } from '../classes/feature-type';
 import Vue from 'vue';
 import { LayerDetails } from '../components/layer-details/layer-details';
+import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet, DataResource, Insight, InsightView } from '@csnext/cs-data';
+import { FeatureComponent } from '../components/feature-details/feature-component';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -41,15 +40,19 @@ const DEFAULT_LAYER_STYLE = {
             'line-color': 'red'
         },
         fillPaint: {
-            'fill-color': 'blue',
+            'fill-color': 'gray',
             'fill-opacity': 0.2
         }
     }
 } as LayerStyle;
 
-export class MapDatasource implements IDatasource {
+export const SidebarKeys = {
+    FEATURE_DETAILS: 'feature_details',
+    FEATURE_LIST: 'feature_list',
+    LAYERS_SELECTION: 'layers_selection'
+};
 
-    // #endregion Constructors (1)
+export class MapDatasource extends DataSources {
 
     // #region Public Accessors (3)
 
@@ -69,14 +72,13 @@ export class MapDatasource implements IDatasource {
         this.map = map;
     }
 
-    public _sources?: LayerSources;
-    public activeDrawLayer?: IMapLayer;
-    public events = new MessageBusService();
-    public id = 'map-datasource';
-    // #region Properties (8)
+    // #endregion Constructors (1)
 
-    private readonly FEATURE_SIDEBAR_ID = 'feature';
-    private readonly LAYER_DETAILS_SIDEBAR_ID = 'layerdetails';
+    public id = 'map-datasource';
+
+    // public _sources?: DataSources;
+    public activeDrawLayer?: IMapLayer;
+    // #region Properties (8)
 
     private map?: CsMap;
     private pointPickerHandler?: MessageBusHandle;
@@ -87,9 +89,12 @@ export class MapDatasource implements IDatasource {
 
     constructor(
         public layers?: IMapLayer[],
-        public sources?: string | LayerSources,
+        sources?: {
+            [name: string]: DataSource;
+        },
         public services?: IStartStopService[]
     ) {
+        super(sources);
         this.layers = layers;
     }
 
@@ -97,46 +102,37 @@ export class MapDatasource implements IDatasource {
 
     // #region Public Methods (28)
 
-    public addGeojsonLayer(title: string, geojson?: string | FeatureCollection, style?: LayerStyle, tags?: string[], featureTypes?: string | FeatureTypes, defaultFeatureType?: string): Promise<IMapLayer> {
-        return new Promise((resolve, reject) => {
-            const source = new LayerSource();
-            if (typeof geojson === 'string') {
-                source.url = geojson;
-            } else {
-                source._geojson = geojson;
-                source._loaded = true;
-            }
+    public addGeojsonLayerFromSource(
+        title: string,
+        source: DataSource,
+        style?: LayerStyle,
+        args?: IMapLayer
+    ): Promise<GeojsonPlusLayer | undefined> {
 
-            source.title = title;
-            source.id = guidGenerator();
-            source.LoadSource().then(s => {
-                const rl = new GeojsonPlusLayer();
+        return new Promise((resolve, reject) => {
+            // load data
+            source.loadSource().then(() => {
+                const rl = new GeojsonPlusLayer(args);
                 rl.id = title;
-                rl.tags = tags ? tags : ['general'];
-                rl.type = 'poi';
                 rl.title = title;
-                rl.defaultFeatureType = defaultFeatureType;
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = rl._source = source;
-                if (typeof featureTypes === 'string') {
-                    rl.featureTypesUrl = featureTypes;
-                } else {
-                    rl.featureTypes = featureTypes;
-                }
+                rl.enabled = true;
 
-                rl.initLayer(this).then(r => {
+                rl.initLayer(this).then(() => {
                     // rl.popupContent = undefined;
                     if (this.layers) {
                         this.layers.push(rl);
-                        this.showLayer(rl).then(l => {
+                        this.showLayer(rl).then(() => {
                             resolve(rl);
+                        }).catch(() => {
+                            reject();
                         });
                     }
-                }).catch(e => {
+                }).catch(() => {
                     console.log('error loading');
                 });
-
             }).catch(e => {
                 console.log(e);
                 reject();
@@ -144,8 +140,34 @@ export class MapDatasource implements IDatasource {
         });
     }
 
+    public addGeojsonLayer(
+        title: string,
+        geojson?: string | DataSet,
+        style?: LayerStyle,
+        meta?: string | FeatureTypes,
+        args?: IMapLayer
+    ): Promise<IMapLayer> {
+        return new Promise(() => {
+            const source = new DataSource(geojson);
+            source.title = title;
+            source.id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
+
+            // if meta is provided as a string, it is considered an URL
+            if (typeof meta === 'string') {
+                source.metaUrl = meta;
+            } else {
+                source._meta = meta;
+            }
+
+            this.updateSource(source);
+
+            return this.addGeojsonLayerFromSource(title, source, style, args);
+
+        });
+    }
+
     public addLayer(ml: IMapLayer): Promise<IMapLayer> {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (!ml.type || !this.layers) {
                 reject();
                 return;
@@ -155,7 +177,7 @@ export class MapDatasource implements IDatasource {
                 if (!layer._events) {
                     layer._events = new MessageBusService();
                 }
-                layer.initLayer(this);
+                await layer.initLayer(this);
                 this.layers.push(layer);
                 if (layer.style) {
                     // if specified, set default legend
@@ -194,15 +216,15 @@ export class MapDatasource implements IDatasource {
         } else {
             layer = ml;
         }
-        if (layer && layer._source && layer._source._geojson) {
-            const index = layer._source._geojson.features.findIndex(
+        if (layer && layer._source && layer._source._data) {
+            const index = layer._source._data.features.findIndex(
                 f => f.id === id
             );
 
             if (index >= 0) {
-                layer._source._geojson.features.splice(index, 1);
-                if (updateSource) {
-                    this.updateLayerSource(layer, layer._source._geojson);
+                layer._source._data.features.splice(index, 1);
+                if (updateSource && layer._source._data.type === 'FeatureCollection') {
+                    this.updateLayerSource(layer, layer._source._data);
                 }
             }
         }
@@ -215,7 +237,7 @@ export class MapDatasource implements IDatasource {
                 if (l) { this.editLayer(l); }
             }
         } else {
-            AppState.Instance.OpenRightSidebarWidget(
+            AppState.Instance.openRightSidebarWidget(
                 {
                     component: LayerEditor,
                     data: { layer }
@@ -226,17 +248,21 @@ export class MapDatasource implements IDatasource {
         }
     }
 
-    public execute(datasources: { [id: string]: IDatasource }): Promise<any> {
+    public async execute(datasources: { [id: string]: IDatasource }): Promise<any> {
+        await super.execute(datasources);
         return new Promise(resolve => {
             // if datasource is a string, find actual datasource;
-            if (typeof this.sources === 'string') {
-                if (datasources.hasOwnProperty(this.sources)) {
-                    this._sources = datasources[this.sources] as LayerSources;
-                }
-            } else {
-                this._sources = this.sources;
-            }
-
+            // if (typeof this.sources === 'string') {
+            //     if (datasources.hasOwnProperty(this.sources)) {
+            //         this._sources = datasources[this.sources] as DataSources;
+            //     }
+            // } else {
+            //     if (this.sources) {
+            //         this._sources = this.sources;
+            //     } else {
+            //         this._sources = this.sources = new DataSources();
+            //     }
+            // }
             // initialize services and layers
             this.initServices();
             this.initLayers();
@@ -244,18 +270,18 @@ export class MapDatasource implements IDatasource {
         });
     }
 
-    public fromGeoJSON(
+    public async fromGeoJSON(
         geojson: FeatureCollection,
         title?: string
-    ): GeojsonLayer {
+    ): Promise<GeojsonLayer> {
         const result = new GeojsonLayer();
         result.title = title ? title : 'new layer';
         result.source = new LayerSource();
         result.source.id = guidGenerator();
         result.source.type = 'geojson';
-        result.source._geojson = geojson;
+        result.source._data = geojson;
         result.source._loaded = true;
-        result.initLayer(this);
+        await result.initLayer(this);
         return result;
     }
 
@@ -265,8 +291,8 @@ export class MapDatasource implements IDatasource {
             const layer = this.layers.find(l => l.id === ml);
             if (layer) { this.hideLayer(layer); }
         } else {
-            Vue.set(ml, 'Visible', false);
-            ml.Visible = false;
+            Vue.set(ml, 'visible', false);
+            ml.enabled = false;
 
             // unsubscribe all subscriptions
             ml._busManager.stop();
@@ -297,7 +323,7 @@ export class MapDatasource implements IDatasource {
                 if (ml.source) {
                     ml._source = plainToClass(LayerSource, ml.source);
                     ml._source
-                        .LoadSource()
+                        .loadSource(ml.featureTypes)
                         .then(() => {
                             resolve(ml);
                         })
@@ -313,13 +339,35 @@ export class MapDatasource implements IDatasource {
         layer.moveLayer(beforeId);
     }
 
-    public openFeature(feature: Feature, layer: IMapLayer) {
-        if (!feature || !layer) { return; }
-        AppState.Instance.AddSidebar('feature', { icon: 'folder_open' });
-        AppState.Instance.OpenRightSidebarWidget(
+    //TODO: implement
+    public selectFeature(feature: number | Feature | undefined, layer: IMapLayer, open: boolean) {
+        if (!feature) { return; }
+        if (typeof (feature) === 'number') {
+            // if (layer.source && typeof(layer.source) === 'string') {
+            //     const source = this.MapControl.getSource(layer.source);
+
+            // }
+
+            if (layer._source && layer._source._loaded && layer._source._data) {
+                feature = layer._source._data.features.find(f => f.id === feature);
+                if (open) {
+                    this.openFeature(feature, layer);
+                }
+            }
+            // this.MapControl.getBounds()
+        } else if (open) {
+            this.openFeature(feature, layer);
+        }
+
+    }
+
+    public openFeature(feature?: Feature, layer?: IMapLayer) {
+        // if (!feature || !layer) { return; }
+        AppState.Instance.addSidebar(SidebarKeys.FEATURE_DETAILS, { icon: 'folder_open' });
+        AppState.Instance.openRightSidebarWidget(
             {
                 id: 'feature-details-component',
-                component: FeatureDetails,
+                component: FeatureComponent,
                 options: {
                     showToolbar: false,
                     searchProperty: 'filter',
@@ -327,7 +375,7 @@ export class MapDatasource implements IDatasource {
                         backgroundColor: 'primary',
                         dense: true
                     },
-                    hideSidebarButton: true
+                    hideSidebarButton: false
                 },
                 data: {
                     feature,
@@ -336,7 +384,7 @@ export class MapDatasource implements IDatasource {
                 }
             },
             { open: true },
-            this.FEATURE_SIDEBAR_ID,
+            SidebarKeys.FEATURE_DETAILS,
             true
         );
     }
@@ -348,8 +396,8 @@ export class MapDatasource implements IDatasource {
                 if (l) { this.openLayer(l); }
             }
         } else {
-            AppState.Instance.AddSidebar(this.LAYER_DETAILS_SIDEBAR_ID, { icon: 'list' });
-            AppState.Instance.OpenRightSidebarWidget({
+            AppState.Instance.addSidebar(SidebarKeys.FEATURE_LIST, { icon: 'list' });
+            AppState.Instance.openRightSidebarWidget({
                 component: LayerDetails,
                 options: {
                     showToolbar: false,
@@ -358,12 +406,12 @@ export class MapDatasource implements IDatasource {
                 },
 
                 data: { layer, manager: this }
-            }, { open: true }, this.LAYER_DETAILS_SIDEBAR_ID, true);
+            }, { open: true }, SidebarKeys.FEATURE_LIST, true);
         }
     }
 
     public refreshLayer(layer: IMapLayer) {
-        if (layer.Visible) {
+        if (layer.enabled) {
             this.hideLayer(layer);
             this.showLayer(layer);
         }
@@ -374,7 +422,7 @@ export class MapDatasource implements IDatasource {
             if (ml._source) {
                 ml._source._loaded = false;
                 ml._source
-                    .LoadSource()
+                    .loadSource(ml.featureTypes)
                     .then(() => {
                         this.updateLayerSource(ml, undefined, false);
                         resolve(ml);
@@ -402,11 +450,11 @@ export class MapDatasource implements IDatasource {
         this.layers = this.layers.filter(l => l.id !== layerId);
     }
 
-    public removeLegend(layer: IMapLayer, pd: PropertyDetails) { }
+    public removeLegend(layer: IMapLayer, legend: PropertyDetails) { }
 
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            ml.Visible = true;
+            ml.enabled = true;
             if (this.map) {
                 this.map
                     .showLayer(ml)
@@ -434,6 +482,8 @@ export class MapDatasource implements IDatasource {
                     }
                     );
                 }
+            } else {
+                reject();
             }
         });
     }
@@ -445,7 +495,7 @@ export class MapDatasource implements IDatasource {
                 reject();
                 return;
             }
-            AppState.Instance.TriggerNotification({
+            AppState.Instance.triggerNotification({
                 title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: () => {
                     reject();
                     this.map!.pointPickerActivated = false;
@@ -466,7 +516,7 @@ export class MapDatasource implements IDatasource {
                     if (e.lngLat) {
                         resolve(e.lngLat);
                     }
-                    AppState.Instance.ClearNotifications();
+                    AppState.Instance.clearNotifications();
                     return;
                 }
             });
@@ -474,12 +524,11 @@ export class MapDatasource implements IDatasource {
     }
 
     public toggleLayer(layer: IMapLayer) {
-        if (!layer.Visible) {
+        if (!layer.enabled) {
             this.showLayer(layer);
         } else {
             this.hideLayer(layer);
         }
-        console.log(layer.title, layer.Visible);
     }
 
     public updateFeatureProperty(
@@ -512,22 +561,22 @@ export class MapDatasource implements IDatasource {
         if (
             layer &&
             layer._source &&
-            layer._source._geojson &&
+            layer._source._data &&
             feature.id !== undefined
         ) {
             // find existing feature
-            const index = layer._source._geojson.features.findIndex(
+            const index = layer._source._data.features.findIndex(
                 f => f.id === feature.id
             );
             // if found, replace it
             if (index >= 0) {
-                layer._source._geojson.features[index] = feature;
+                layer._source._data.features[index] = feature;
                 if (updateSource) {
                     this.updateLayerSource(layer);
                 }
             } else {
                 // add new feature
-                layer._source._geojson.features.push(feature);
+                layer._source._data.features.push(feature);
                 if (updateSource) {
                     this.updateLayerSource(layer);
                 }
@@ -552,22 +601,22 @@ export class MapDatasource implements IDatasource {
         if (
             layer &&
             layer._source &&
-            layer._source._geojson
+            layer._source._data
         ) {
             for (const key in features) {
                 if (features.hasOwnProperty(key)) {
                     const feature = features[key];
                     // find existing feature
-                    const index = layer._source._geojson.features.findIndex(
+                    const index = layer._source._data.features.findIndex(
                         f => f.id === key
                     );
 
                     // if found, replace it
                     if (index >= 0) {
-                        layer._source._geojson.features[index] = feature;
+                        layer._source._data.features[index] = feature;
                     } else {
                         // add new feature
-                        layer._source._geojson.features.push(feature);
+                        layer._source._data.features.push(feature);
                     }
                 }
             }
@@ -580,11 +629,11 @@ export class MapDatasource implements IDatasource {
 
     public updateLayerSource(
         ml: IMapLayer,
-        geojson?: FeatureCollection | string,
+        geojson?: DataCollection | string,
         triggerEvent = true
     ) {
-        if (!geojson && ml._source && ml._source._geojson) {
-            geojson = ml._source._geojson;
+        if (!geojson && ml._source && ml._source._data) {
+            geojson = ml._source._data;
         }
         const g =
             typeof geojson === 'string'
@@ -594,12 +643,12 @@ export class MapDatasource implements IDatasource {
             ml._source = ml.source as LayerSource;
         }
 
-        if (g && ml._source && ml._source.id && this.MapControl) {
-            ml._source._geojson = g;
+        if (g && g.type === 'FeatureCollection' && ml._source && ml._source.id && this.MapControl) {
+            ml._source._data = g;
             const sourceId = ml._source.id;
             const source = this.MapControl.getSource(sourceId) as GeoJSONSource;
             if (source && ml._events) {
-                source.setData(g);
+                source.setData(g as FeatureCollection);
                 if (triggerEvent) {
                     ml._events.publish('source', 'updated', source);
                 }
@@ -613,20 +662,20 @@ export class MapDatasource implements IDatasource {
             ml._source.type === 'raster' &&
             this.MapControl
         ) {
-            const wasVisible = ml.Visible;
-            if (wasVisible && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) {
+            const wasEnabled = ml.enabled;
+            if (wasEnabled && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) {
                 ml._manager!.map!.map!.removeLayer(ml.id!);
             }
             const newSource = {
                 type: ml._source.type,
                 tiles: [ml._source.url],
-                tileSize: ml._source.tileSize
+                tileSize: 256
             };
             if (this.MapControl.getSource(ml._source.id)) {
                 this.MapControl.removeSource(ml._source.id);
             }
             this.MapControl.addSource(ml._source.id, newSource as RasterSource);
-            if (wasVisible) {
+            if (wasEnabled) {
                 ml._manager!.map!.map!.addLayer({
                     id: ml.id!,
                     type: 'raster',
@@ -639,18 +688,32 @@ export class MapDatasource implements IDatasource {
         // }
     }
 
-    public updateSource(source: LayerSource) {
-        if (source && source.id && source._geojson && this.MapControl) {
+    public updateDataSet(sourceId: string, data: DataSet): DataSource {
+        const s = super.updateDataSet(sourceId, data);
+        if (this.MapControl) {
+            // update mapbox source
+            const source = this.MapControl.getSource(sourceId) as GeoJSONSource;
+            if (source && data.type === 'FeatureCollection') {
+                source.setData(data as FeatureCollection);
+            }
+        }
+        return s;
+    }
+
+    public updateSource(source: LayerSource): DataSource {
+        const s = super.updateSource(source);
+        if (source && source.id && source._data && this.MapControl) {
             const mapsource = this.MapControl.getSource(
                 source.id
             ) as GeoJSONSource;
             if (mapsource) {
-                mapsource.setData(source._geojson);
+                this.updateDataSet(source.id, source._data);
             } else if (this.map) {
                 this.map.addSource(source);
                 // this.map.initLayerSource(source);
             }
         }
+        return s;
     }
 
     public zoomFeature(feature: Feature, zoomLevel?: number) {
@@ -683,8 +746,8 @@ export class MapDatasource implements IDatasource {
     }
 
     public zoomFeatureId(layer: IMapLayer, featureId: string) {
-        if (!layer._source || !layer._source._geojson || !this.map) { return; }
-        const feature = layer._source._geojson.features.find(
+        if (!layer._source || !layer._source._data || !this.map) { return; }
+        const feature = layer._source._data.features.find(
             f => f.id === featureId || f.properties!._fId === featureId
         );
         if (!feature) { return; }
@@ -747,7 +810,7 @@ export class MapDatasource implements IDatasource {
     }
 
     /** create an instance and initialize all layers */
-    private initLayers() {
+    private async initLayers() {
         const layers: IMapLayer[] = [];
         if (this.layers) {
             for (const l of this.layers) {
@@ -755,7 +818,7 @@ export class MapDatasource implements IDatasource {
                     // create layer instance based on type
                     const li = this.getLayerInstance(l.type, l);
                     if (li) {
-                        li.initLayer(this);
+                        await li.initLayer(this);
                         layers.push(li);
                     }
                 }

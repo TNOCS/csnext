@@ -10,7 +10,7 @@
 
 \+ **new LayerFilter**(`input?`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *[LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:23
+*Defined in [cs-map/src/classes/layer-filter.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L23)*
 
 **Parameters:**
 
@@ -26,7 +26,7 @@ Name | Type |
 
 • **max**? : *number*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:7
+*Defined in [cs-map/src/classes/layer-filter.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L7)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **min**? : *number*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:6
+*Defined in [cs-map/src/classes/layer-filter.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L6)*
 
 ___
 
@@ -42,15 +42,15 @@ ___
 
 • **property**? : *string*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:9
+*Defined in [cs-map/src/classes/layer-filter.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L9)*
 
 ___
 
 ### `Optional` propertyType
 
-• **propertyType**? : *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md)*
+• **propertyType**? : *[PropertyType](_cs_data_src_classes_property_type_.propertytype.md)*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:10
+*Defined in [cs-map/src/classes/layer-filter.ts:10](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L10)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **type**: *"range" | "value"* = "range"
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:5
+*Defined in [cs-map/src/classes/layer-filter.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L5)*
 
 ___
 
@@ -66,15 +66,15 @@ ___
 
 • **value**? : *any*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:8
+*Defined in [cs-map/src/classes/layer-filter.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L8)*
 
 ___
 
 ### `Static` operators
 
-▪ **operators**: *string[]* =  ['>', '<', '=']
+▪ **operators**: *string[]* =  ['>=', '<=', '=']
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:4
+*Defined in [cs-map/src/classes/layer-filter.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L4)*
 
 ## Accessors
 
@@ -82,13 +82,13 @@ Defined in packages/cs-map/src/classes/layer-filter.ts:4
 
 • **get rangeArray**(): *number[] | undefined*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:12
+*Defined in [cs-map/src/classes/layer-filter.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L12)*
 
 **Returns:** *number[] | undefined*
 
 • **set rangeArray**(`values`: number[] | undefined): *void*
 
-Defined in packages/cs-map/src/classes/layer-filter.ts:18
+*Defined in [cs-map/src/classes/layer-filter.ts:18](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-filter.ts#L18)*
 
 **Parameters:**
 

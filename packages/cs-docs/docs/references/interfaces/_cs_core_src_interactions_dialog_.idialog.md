@@ -10,7 +10,7 @@
 
 • **actions**? : *string[]*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:13](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L13)*
+*Defined in [cs-core/src/interactions/dialog.ts:13](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L13)*
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 • **component**? : *any*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:6](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L6)*
+*Defined in [cs-core/src/interactions/dialog.ts:6](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L6)*
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **data**? : *any*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:11](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L11)*
+*Defined in [cs-core/src/interactions/dialog.ts:11](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L11)*
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 • **fullscreen**? : *boolean*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:8](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L8)*
+*Defined in [cs-core/src/interactions/dialog.ts:8](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L8)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **hide**? : *boolean*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:3](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L3)*
+*Defined in [cs-core/src/interactions/dialog.ts:3](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L3)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **persistent**? : *boolean*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:7](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L7)*
+*Defined in [cs-core/src/interactions/dialog.ts:7](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L7)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **scrollable**? : *boolean*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:9](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L9)*
+*Defined in [cs-core/src/interactions/dialog.ts:9](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L9)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **text**? : *string*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:5](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L5)*
+*Defined in [cs-core/src/interactions/dialog.ts:5](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L5)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **title**? : *string*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:4](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L4)*
+*Defined in [cs-core/src/interactions/dialog.ts:4](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L4)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **visible**? : *boolean*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:2](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L2)*
+*Defined in [cs-core/src/interactions/dialog.ts:2](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L2)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 • **width**? : *number*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:12](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L12)*
+*Defined in [cs-core/src/interactions/dialog.ts:12](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L12)*
 
 ## Methods
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **actionCallback**(`action`: string): *any*
 
-*Defined in [packages/cs-core/src/interactions/dialog.ts:14](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-core/src/interactions/dialog.ts#L14)*
+*Defined in [cs-core/src/interactions/dialog.ts:14](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-core/src/interactions/dialog.ts#L14)*
 
 **Parameters:**
 

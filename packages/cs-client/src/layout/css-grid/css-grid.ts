@@ -5,7 +5,8 @@ import {
   ILayoutManagerConfig,
   CssGridDashboardOptions,
   CssGridWidgetOptions,
-  IWidget
+  IWidget,
+  guidGenerator
 } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
@@ -19,30 +20,32 @@ import './css-grid-templates.css';
   }
 } as any)
 export class CssGrid extends Vue {
-  public dashboard?: IDashboard;
   public static id = 'css-grid';
+  public dashboard?: IDashboard;
+
+  public get options(): CssGridDashboardOptions {
+    if (this.dashboard && this.dashboard.options) { return this.dashboard.options as CssGridDashboardOptions; }
+    return {};
+  }
+
+  constructor() {
+    super();
+    if (this.options.template && !this.options.class) {
+      this.options.class = this.options.template;
+    }
+  }
 
   public gridStyle() {
-    if (!this.dashboard) {
-      return;
-    }
-    if (!this.dashboard.options) {
-      this.dashboard.options = {};
-    }
-    const options = this.dashboard.options as CssGridDashboardOptions;
-    
-    const style = { 'grid-gap': options.gap, 'column-gap': options.columnGap, 'row-gap': options.rowGap } as any;
-    if (!options.template) {
-      // style['grid-template-columns'] = 'repeat(auto-fill, minmax(150px,1fr))';
-      // style['grid-template-rows'] = 'repeat(auto-fill, minmax(150px,1fr))';
-    }
+    const style = { 'grid-gap': this.options.gap, 'column-gap': this.options.columnGap, 'row-gap': this.options.rowGap } as any;
+    // style['grid-template-columns'] = 'repeat(auto-fill, minmax(150px,1fr))';
+    // style['grid-template-rows'] = 'repeat(auto-fill, minmax(150px,1fr))';
     return style;
   }
 
   public gridWidgetStyle(widget: IWidget) {
     const style: any = {};
     const options = widget.options as CssGridWidgetOptions;
-    if (!options) return style;
+    if (!options) { return style; }
     if (options.area) {
       style['grid-area'] = options.area;
     }
@@ -67,3 +70,11 @@ LayoutManager.add({
   name: 'css-grid page',
   component: CssGrid
 } as ILayoutManagerConfig);
+
+export function CssGridDashboard(definition?: IDashboard, options?: CssGridDashboardOptions): IDashboard {
+  if (definition) {
+    return { ...{ id: guidGenerator(), layout: CssGrid.id, options }, ...definition };
+  } else {
+    return {};
+  }
+}

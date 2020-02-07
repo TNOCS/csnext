@@ -6,7 +6,7 @@
 
 • **en**: *any* =  require('./../../assets/translations/en.json')
 
-*Defined in [packages/cs-client/src/components/cs-app/cs-app.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-app/cs-app.ts#L25)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:22](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-app/cs-app.ts#L22)*
 
 ___
 
@@ -19,7 +19,7 @@ ___
   silentTranslationWarn: true
 })
 
-*Defined in [packages/cs-client/src/components/cs-app/cs-app.ts:38](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-app/cs-app.ts#L38)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:35](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-app/cs-app.ts#L35)*
 
 ___
 
@@ -27,7 +27,7 @@ ___
 
 • **nl**: *any* =  require('./../../assets/translations/nl.json')
 
-*Defined in [packages/cs-client/src/components/cs-app/cs-app.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-app/cs-app.ts#L27)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:24](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-app/cs-app.ts#L24)*
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 • **router**: *any* =  new VueRouter({ routes: [] })
 
-*Defined in [packages/cs-client/src/components/cs-app/cs-app.ts:53](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-app/cs-app.ts#L53)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-app/cs-app.ts#L50)*
 
 ___
 
@@ -43,6 +43,6 @@ ___
 
 • **vuetifyOpts**: *object*
 
-*Defined in [packages/cs-client/src/components/cs-app/cs-app.ts:45](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-app/cs-app.ts#L45)*
+*Defined in [cs-client/src/components/cs-app/cs-app.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-app/cs-app.ts#L42)*
 
 #### Type declaration:

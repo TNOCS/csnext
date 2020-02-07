@@ -4,7 +4,6 @@ import { AppState } from './services/app-state';
 // services
 export * from './services/app-state';
 export * from './services/logger';
-export * from './services/project-manager';
 export * from './services/datasource-manager';
 export * from './services/dashboard-manager';
 export * from './services/layout-manager';
@@ -19,10 +18,12 @@ export * from './datasources/log/log-manager';
 export * from './layout/single/single';
 export * from './layout/grid-layout/grid-layout';
 export * from './layout/css-grid/css-grid';
+export * from './layout/css-grid/css-grid-templates';
 export * from './layout/flex-grid/flex-grid';
 export * from './layout/flex-grid/flex-size';
 export * from './layout/flex-grid/flex-grid-options';
 export * from './layout/tabs/tabs';
+export * from './layout/mobile-flow/mobile-flow';
 // export * from './layout/drag-grid/drag-layout';
 // export * from './layout/drag-grid/drag-layout-options';
 export * from './layout/flex-grid/flex-widget-options';
@@ -85,9 +86,14 @@ declare module 'vue/types/vue' {
   }
 }
 
+declare global {
+  const $cs: AppState;
+}
+
 // export type PluginFunction<T> = (Vue: typeof _Vue, options?: T) => void;
 export function CsPlugin(vue: typeof Vue, options?: any): void {
   vue.prototype.$cs = AppState.Instance;
+  (Window.prototype as any).$cs = AppState.Instance;
 }
 
 if (typeof window !== 'undefined' && window.Vue) {

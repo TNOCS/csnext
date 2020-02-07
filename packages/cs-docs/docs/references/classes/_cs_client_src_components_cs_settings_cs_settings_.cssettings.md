@@ -12,7 +12,7 @@
 
 • **L**: *any* =  Logger.Instance
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:22](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L22)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:22](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L22)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **app**: *any* =  AppState.Instance
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L21)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L21)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **fieldGroups**: *[FieldGroup](_cs_client_src_components_cs_settings_cs_settings_.fieldgroup.md)[]* =  []
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L23)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L23)*
 
 ## Accessors
 
@@ -36,7 +36,7 @@ ___
 
 • **get Form**(): *[IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)*
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:60](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L60)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:60](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L60)*
 
 **Returns:** *[IFormOptions](../interfaces/_cs_core_src_form_form_decorators_.iformoptions.md)*
 
@@ -46,7 +46,7 @@ ___
 
 • **get Target**(): *any*
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:56](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L56)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:56](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L56)*
 
 **Returns:** *any*
 
@@ -56,7 +56,7 @@ ___
 
 • **get Widget**(): *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L64)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:64](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L64)*
 
 **Returns:** *[IWidget](../interfaces/_cs_core_src_widget_widget_.iwidget.md)*
 
@@ -66,7 +66,7 @@ ___
 
 ▸ **created**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L68)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:68](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L68)*
 
 **Returns:** *void*
 
@@ -76,6 +76,6 @@ ___
 
 ▸ **initGroups**(): *void*
 
-*Defined in [packages/cs-client/src/components/cs-settings/cs-settings.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-client/src/components/cs-settings/cs-settings.ts#L25)*
+*Defined in [cs-client/src/components/cs-settings/cs-settings.ts:25](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-client/src/components/cs-settings/cs-settings.ts#L25)*
 
 **Returns:** *void*

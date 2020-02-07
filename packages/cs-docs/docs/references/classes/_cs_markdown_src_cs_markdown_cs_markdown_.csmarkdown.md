@@ -12,7 +12,7 @@
 
 • **content**: *string* = ""
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L21)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L21)*
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 • **data**? : *string | object*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L23)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L23)*
 
 ## Methods
 
@@ -28,7 +28,7 @@ ___
 
 ▸ **dataUpdated**(): *void*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:31](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L31)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:31](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L31)*
 
 **Returns:** *void*
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **mounted**(): *void*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:42](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L42)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:42](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L42)*
 
 **Returns:** *void*
 
@@ -48,7 +48,7 @@ ___
 
 ▸ **setContent**(`data`: string | object): *void*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:55](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L55)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:55](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L55)*
 
 **Parameters:**
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **updateContent**(): *void*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L46)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L46)*
 
 **Returns:** *void*
 
@@ -74,6 +74,6 @@ ___
 
 ▸ **widgetDataUpdated**(): *void*
 
-*Defined in [packages/cs-markdown/src/cs-markdown/cs-markdown.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L26)*
+*Defined in [cs-markdown/src/cs-markdown/cs-markdown.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-markdown/src/cs-markdown/cs-markdown.ts#L26)*
 
 **Returns:** *void*

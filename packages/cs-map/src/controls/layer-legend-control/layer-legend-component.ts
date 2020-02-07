@@ -3,9 +3,10 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 
 import './layer-legend-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapDatasource, IMapLayer, FeatureType, LayerLegend, LayerFilter } from '../..';
+import { MapDatasource, IMapLayer, LayerLegend, LayerFilter } from '../..';
 import '../slider-control';
-import { FeatureTypes } from '../../classes/feature-type';
+import { FeatureTypes } from '@csnext/cs-data';
+import { PropertyDetails } from '../../components/feature-details/property-details';
 
 @Component({
     name: 'layer-legend-component',
@@ -17,7 +18,7 @@ export class LayerLegendComponent extends Vue {
     public manager!: MapDatasource;
     public busHandle?: MessageBusHandle;
     public layer!: IMapLayer | undefined;
-    public activeType: any;
+    public activeType?: any;
     public types?: FeatureTypes = {};
     public map?: mapboxgl.Map;
     public layers: IMapLayer[] = [];
@@ -32,10 +33,11 @@ export class LayerLegendComponent extends Vue {
 
     public mounted() {
         this.map = this.manager.MapControl;
-
-        this.manager.events.subscribe('layer', () => {
-            this.updateLegendList();
-        });
+        if (this.manager && this.manager.events) {
+            this.manager.events.subscribe('layer', () => {
+                this.updateLegendList();
+            });
+        }
 
         this.updateLegendList();
     }
@@ -48,8 +50,12 @@ export class LayerLegendComponent extends Vue {
         layer.setFilter([]);
     }
 
-    public beforeDestroy() {
+    public beforeDestroy() {}
 
+    private removeLegend(layer: IMapLayer, legend: PropertyDetails) {
+        if (this.manager) {
+            this.manager.removeLegend(layer, legend);
+        }
     }
 
     private getStopColor(stop: any[], legend: any) {
@@ -61,10 +67,14 @@ export class LayerLegendComponent extends Vue {
         }
     }
 
+    private removeFilter(layer: IMapLayer, filter: LayerFilter) {
+        layer.removeFilter(filter);
+    }
+
     private updateLegendList() {
         if (this.manager && this.manager.layers) {
             this.layers = this.manager.layers.filter(
-                l => l.Visible && (l._legends && l._legends.length > 0) || (l._filters)
+                l => l.enabled && ((l._legends && l._legends.length > 0) || (l._filters))
             );
             if (this.layers.length > 0) {
                 if (this.activeLayer === undefined || !this.activeLayer.hasOwnProperty('id')) {

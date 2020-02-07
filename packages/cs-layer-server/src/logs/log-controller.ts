@@ -1,21 +1,21 @@
 import { Get, Controller, Param, Post, Body, Query, Put } from '@nestjs/common';
 import {
-    ApiUseTags,
+    ApiTags,
     ApiOperation,
-    ApiImplicitQuery,
-    ApiImplicitParam,
+    ApiQuery,
+    ApiParam,
     ApiResponse
 } from '@nestjs/swagger';
 import { LogService } from './log-service';
 import { LogDefintion } from '../classes/log-definition';
 
-@ApiUseTags()
+@ApiTags()
 @Controller('logs')
 export class LogController {
     constructor(private readonly logService: LogService) {}
 
     @ApiOperation({
-        title: 'Get available log definitions',
+        summary: 'Get available log definitions',
         description: 'Returns all available log definitions'
     })
     @ApiResponse({
@@ -24,8 +24,8 @@ export class LogController {
         type: LogDefintion
     })
     @Get()
-    logs(): { [id: string]: LogDefintion } {
-        let result: { [id: string]: LogDefintion } = {};
+    public logs(): { [id: string]: LogDefintion } {
+        const result: { [id: string]: LogDefintion } = {};
         const logs = this.logService.getLogs();
         for (const lid in logs) {
             if (logs.hasOwnProperty(lid)) {
@@ -40,21 +40,21 @@ export class LogController {
     }
 
     @ApiOperation({
-        title: 'Get log definition',
+        summary: 'Get log definition',
         description: 'Returns single log definition by id'
     })
-    @ApiImplicitParam({
+    @ApiParam({
         name: 'id',
         description: 'Specify the log id for the log you want to get.'
     })
-    @ApiImplicitQuery({
+    @ApiQuery({
         name: 'source',
-        description: 'Set true to include actual source',        
+        description: 'Set true to include actual source',
         required: false,
         type: Boolean
     })
     @Get(':id')
-    async getLog(
+    public async getLog(
         @Param('id') id: string,
         @Query('source') source = true
     ): Promise<LogDefintion | undefined> {
@@ -62,20 +62,21 @@ export class LogController {
             return this.logService.getLogAndSourceById(id);
         } else {
             if (source && source.toString() === 'true') {
-              return await this.logService.getLogById(id) 
-            } else 
+              return await this.logService.getLogById(id)
+            } else { 
             return {
                 ...(await this.logService.getLogById(id)),
                 ...({ _logSource: undefined } as LogDefintion)
             };
+            }
         }
     }
 
     @ApiOperation({
-        title: 'Add or update log definition',
+        summary: 'Add or update log definition',
         description: 'Add or update log definition'
     })
-    @ApiImplicitParam({
+    @ApiParam({
         name: 'id',
         description: 'Specify the log id for the log you want to get.'
     })
@@ -85,7 +86,7 @@ export class LogController {
         type: LogDefintion
     })
     @Put(':id')
-    async triggerLog(
+    public async triggerLog(
         @Param('id') id: string,
         @Body() body: LogDefintion
     ): Promise<LogDefintion | undefined> {
@@ -93,10 +94,10 @@ export class LogController {
     }
 
     @ApiOperation({
-        title: 'Trigger external log refresh',
+        summary: 'Trigger external log refresh',
         description: 'Trigger log refresh'
     })
-    @ApiImplicitParam({
+    @ApiParam({
         name: 'id',
         description: 'Specify the log you want to refresh'
     })
@@ -106,7 +107,7 @@ export class LogController {
         type: Boolean
     })
     @Get('/triggerRefresh/:id')
-    async triggerRefresh(@Param('id') id: string): Promise<Boolean> {
+    public async triggerRefresh(@Param('id') id: string): Promise<Boolean> {
         return this.logService.triggerLogRefresh(id);
     }
 }

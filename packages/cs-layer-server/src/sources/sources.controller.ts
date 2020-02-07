@@ -1,45 +1,45 @@
-import { Get, Controller, Param, Post, Body, Put } from "@nestjs/common";
-import { LayerSource } from "../classes";
+import { Get, Controller, Param, Post, Body, Put } from '@nestjs/common';
+import { LayerSource } from '../classes';
 
 import {
-  ApiUseTags,
+  ApiTags,
   ApiOperation,
-  ApiImplicitParam,
+  ApiParam,
   ApiResponse
-} from "@nestjs/swagger";
+} from '@nestjs/swagger';
 
-import { LayerService } from "../layers/layers.service";
+import { LayerService } from '../layers/layers.service';
 
-@ApiUseTags()
-@Controller("sources")
+@ApiTags()
+@Controller('sources')
 export class SourceController {
   constructor(private readonly layerService: LayerService) {}
 
   @ApiOperation({
-    title: "Get layer source",
-    description: "Returns single layer source by id"
+    summary: 'Get layer source',
+    description: 'Returns single layer source by id'
   })
-  @ApiImplicitParam({
-    name: "id",
-    description: "Specify the layer id for the layer you want to get"
+  @ApiParam({
+    name: 'id',
+    description: 'Specify the layer id for the layer you want to get'
   })
   @ApiResponse({
     status: 200,
-    description: "Returns layer source",
+    description: 'Returns layer source',
     type: LayerSource
   })
-  @Get(":id")
-  async getLayerSource(
-    @Param("id") id: string
+  @Get(':id')
+  public async getLayerSource(
+    @Param('id') id: string
   ): Promise<LayerSource | undefined> {
     return await this.layerService.getLayerSourceById(id);
   }
 
-  @Put(":id")
-  async putLayerSource(
-    @Param("id") id: string,
+  @Put(':id')
+  public async putLayerSource(
+    @Param('id') id: string,
     @Body() body: LayerSource
-  ): Promise<boolean> {    
+  ): Promise<boolean> {
     return await this.layerService.putLayerSourceById(id, body);
   }
 }

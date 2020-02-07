@@ -1,11 +1,12 @@
 <v-col class="cs-dashboard-col pa-0">
+
   <v-flex shrink class="dashboard-toolbar-flex">
     <v-toolbar
       :dense="denseToolbar()"
       text
       secondary
       class="dashboard-toolbar"
-      v-if="showToolbar()"
+      v-if="showToolbar()" 
     >
       <v-toolbar-title v-if="!hideTitle()">{{
         $cs.Translate(dashboard.title)
@@ -88,7 +89,5 @@
       :class="dashboard.options.class"
     ></component>
   </v-flex>
-  <div v-if="dashboard.showLoadAnimation && dashboard._loading">
-    {{ $t('IS_LOADING') }}
-  </div>
+  
 </v-col>

@@ -9,6 +9,7 @@
   <cs-header
     :leftSidebar="leftSidebar"
     :rightSidebar="rightSidebar"
+    v-if="$cs.project.navigation.style !== 'bottom'"
   ></cs-header>
 
   <!-- side bars -->
@@ -85,7 +86,7 @@
   </v-content>
 
   <!-- mobile navigation -->
-  <v-bottom-nav
+  <v-bottom-navigation
     app
     router
     v-if="$cs.project.navigation.style==='bottom'"
@@ -101,7 +102,7 @@
       <span>{{ dashboard.title }}</span>
       <v-icon>{{ dashboard.icon }}</v-icon>
     </v-btn>
-  </v-bottom-nav>
+  </v-bottom-navigation>
   <!-- footer -->
   <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
 

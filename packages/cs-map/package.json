@@ -18,30 +18,35 @@
     "publishConfig": {
         "access": "public"
     },
-    "dependencies": {        
-        "@csnext/cs-client": "^0.0.127",        
+    "dependencies": {
+        "@csnext/cs-client": "^0.0.127",
         "@csnext/cs-form": "^0.0.127",
+        "@csnext/cs-data": "^0.0.127",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.2",
-        "@mapbox/mapbox-gl-geocoder": "^4.5.0",
+        "@mapbox/mapbox-gl-geocoder": "^4.5.1",
         "@mapbox/mapbox-gl-traffic": "1.0.2",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.3.2",
         "@turf/centroid": "^6.0.2",
-        "@turf/length": "^6.0.2",        
-        "handlebars": "^4.5.3",
+        "@turf/length": "^6.0.2",
+        "handlebars": "^4.7.3",
         "handlebars-intl": "1.1.2",
-        "mapbox-gl": "1.6.0",
-        "mapbox-gl-controls": "^1.5.9",        
-        "numeral": "^2.0.6",        
-        "sffjs": "1.16.1",
-        "simple-statistics": "7.0.7"        
+        "mapbox-gl": "1.7.0",
+        "mapbox-gl-controls": "^1.6.0",
+        "numeral": "^2.0.6"
     },
-    "devDependencies": {        
+    "devDependencies": {
         "@types/geojson": "^7946.0.7",
-        "@types/mapbox-gl": "^1.6.0",
+        "@types/mapbox-gl": "^1.7.0",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
+        
+    },
+    "peerDependencies": {
+        "vega": "^5.9.1",
+        "vega-embed": "^6.2.2",
+        "vega-lite": "^4.1.1"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

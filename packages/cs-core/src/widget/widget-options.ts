@@ -32,16 +32,22 @@ export class WidgetOptions {
   public toolbarOptions?: ToolbarOptions;
   @FormField({ title: 'Title', type: 'string' })
   public title?: string;
+  @FormField({ title: 'Disabled', type: 'checkbox' })
+  public disabled?: string;
+  @FormField({ title: 'Tile', type: 'checkbox' })
+  public tile?: boolean;
   @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 10 })
   public elevation?: number;
   @FormField({ title: 'Flat', type: 'checkbox' })
   public flat?: boolean;
   @FormField({ title: 'Outlined', type: 'checkbox' })
   public outlined?: boolean;
-  
+  @FormField({ title: 'Raised', type: 'checkbox' })
+  public raised?: boolean;
   /** adds a close button that will remove widget and close rightsidebar */
   public closeSidebarButton?: boolean;
-  
   /** adds a hide button that will close rightsidebar, but not remove widget/menu item */
   public hideSidebarButton?: boolean;
+  /** if using a cssgrid dashboard with area defintions, you can define the area defintition here */
+  public area?: string;
 }

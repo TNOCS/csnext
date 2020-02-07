@@ -8,6 +8,7 @@ const config = buildConfig(
         '@csnext/cs-core': '@csnext/cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
         '@csnext/cs-form': '@csnext/cs-form',        
+        '@csnext/cs-data': '@csnext/cs-data',    
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
         '@mapbox/mapbox-gl-geocoder' : '@mapbox/mapbox-gl-geocoder',

@@ -1,8 +1,4 @@
 .css-grid-manager {
   position: relative;
   display: grid;
-  grid-template-areas:
-    'header header header'
-    'left middle right'
-    'footer footer footer';
 }

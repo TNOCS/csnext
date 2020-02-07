@@ -14,7 +14,7 @@
 
 • **defaultLegendProperty**? : *string*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:29](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L29)*
+*Defined in [cs-map/src/classes/layer-style.ts:29](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L29)*
 
 ___
 
@@ -22,7 +22,7 @@ ___
 
 • **fill**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:24](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L24)*
+*Defined in [cs-map/src/classes/layer-style.ts:24](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L24)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 • **icon**? : *string*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L27)*
+*Defined in [cs-map/src/classes/layer-style.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L27)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **iconZoomLevel**? : *number*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:20](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L20)*
+*Defined in [cs-map/src/classes/layer-style.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L20)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **icons**? : *object*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:28](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L28)*
+*Defined in [cs-map/src/classes/layer-style.ts:28](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L28)*
 
 #### Type declaration:
 
@@ -58,7 +58,7 @@ ___
 
 • **line**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:25](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L25)*
+*Defined in [cs-map/src/classes/layer-style.ts:25](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L25)*
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 • **mapTitle**? : *string*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:22](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L22)*
+*Defined in [cs-map/src/classes/layer-style.ts:22](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L22)*
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **pointCircle**? : *boolean*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:26](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L26)*
+*Defined in [cs-map/src/classes/layer-style.ts:26](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L26)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **popup**? : *string*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:23](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L23)*
+*Defined in [cs-map/src/classes/layer-style.ts:23](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L23)*
 
 ___
 
@@ -90,12 +90,12 @@ ___
 
 • **title**? : *string*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:21](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L21)*
+*Defined in [cs-map/src/classes/layer-style.ts:21](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L21)*
 
 ___
 
-### `Optional` types
+### `Optional` type
 
-• **types**? : *string[]*
+• **type**? : *"fill" | "line" | "symbol" | "circle" | "fill-extrusion" | "raster" | "background" | "heatmap" | "hillshade"*
 
-*Defined in [packages/cs-map/src/classes/layer-style.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/classes/layer-style.ts#L19)*
+*Defined in [cs-map/src/classes/layer-style.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/classes/layer-style.ts#L19)*

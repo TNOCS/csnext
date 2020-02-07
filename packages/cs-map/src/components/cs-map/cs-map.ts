@@ -1,14 +1,15 @@
-import { Watch, Prop } from 'vue-property-decorator';
+import { Watch } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator, MessageBusHandle, IMessageBusService } from '@csnext/cs-core';
+import { guidGenerator } from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 const locales = require('../../assets/locales.json');
+import { PackageExplorer } from './../package-explorer/package-explorer';
 
-const MapboxDraw = require('@mapbox/mapbox-gl-draw');
-import mapboxgl, { CirclePaint, MapboxOptions, GeolocateControl, ScaleControl } from 'mapbox-gl';
-import { Feature, FeatureCollection } from 'geojson';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import mapboxgl, { GeolocateControl, MapboxOptions, NavigationControl, ScaleControl } from 'mapbox-gl';
+import { FeatureCollection, Feature } from 'geojson';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -22,26 +23,24 @@ import {
     MapOptions,
     LayerSource,
     IMapLayer,
-    IMapLayerType,
     IStartStopService,
     ILayerExtensionType,
     GeojsonPlusLayer,
-    FeatureDetails,
     LayerSelection,
     LayerSelectionOptions,
-    FeatureEventDetails,
     MapboxStyleDefinition,
-    LayerEditor
+    IMapLayerType
 } from '../../.';
 
 import { WidgetBase } from '@csnext/cs-client';
 import { MapboxStyleSwitcherControl, GridControl, LayerDraw, LayerLegendControl, LayersWidgetControl } from '../../controls';
+import { SidebarKeys } from '../../datasources/map-datasource';
 
 @Component({
+    components: { PackageExplorer },
     template: require('./cs-map.html')
 })
 export class CsMap extends WidgetBase {
-
     // #endregion Properties (34)
 
     // #region Public Accessors (4)
@@ -62,6 +61,12 @@ export class CsMap extends WidgetBase {
             return this.widget.options as MapOptions;
         }
         return new MapOptions();
+    }
+
+    public set options(options: MapOptions) {
+        if (this.widget) {
+            this.widget.options = options;
+        }
     }
 
     public get pointPickerActivated(): boolean {
@@ -95,6 +100,7 @@ export class CsMap extends WidgetBase {
     public static layerExtensions: ILayerExtensionType[] = [];
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
+
 
     // #endregion Public Accessors (4)
 
@@ -140,6 +146,8 @@ export class CsMap extends WidgetBase {
     private rulerControl?: RulerControl;
     private scaleControl?: ScaleControl;
     private trafficControl?: MapboxTraffic;
+    private navigationControl?: NavigationControl;
+    private searchLayer?: GeojsonPlusLayer;
 
     // #endregion Public Static Methods (3)
 
@@ -160,8 +168,8 @@ export class CsMap extends WidgetBase {
         if (source.id) {
             const original = this.map.getSource(source.id);
             if (original !== undefined) {
-                if (original.type === 'geojson' && source._geojson) {
-                    original.setData(source._geojson);
+                if (original.type === 'geojson' && source._data && source._data.type === 'FeatureCollection') {
+                    original.setData(source._data as FeatureCollection);
                 }
             } else {
                 switch (source.type) {
@@ -170,7 +178,7 @@ export class CsMap extends WidgetBase {
                             this.map.addSource(source.id, {
                                 type: source.type,
                                 tiles: [source.url],
-                                tileSize: source.tileSize
+                                tileSize: 256
                             });
                         }
                         break;
@@ -178,7 +186,7 @@ export class CsMap extends WidgetBase {
                         source.type = 'geojson';
                         this.map.addSource(source.id, {
                             type: source.type,
-                            data: source._geojson
+                            data: source._data as FeatureCollection
                         });
                         break;
                 }
@@ -188,8 +196,9 @@ export class CsMap extends WidgetBase {
     }
 
     public beforeDestroy() {
-        this.$cs.CloseRightSidebarKey('feature');
-        this.$cs.CloseRightSidebarKey('layers');
+        this.$cs.closeRightSidebarKey(SidebarKeys.FEATURE_DETAILS);
+        this.$cs.closeRightSidebarKey(SidebarKeys.FEATURE_LIST);
+        this.$cs.closeRightSidebarKey(SidebarKeys.LAYERS_SELECTION);
     }
 
     public beforeMount() {
@@ -199,7 +208,8 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.content')
-    public dataLoaded() {
+    public contentLoaded(d: MapDatasource) {
+        console.log(d);
         this.initMapLayers();
     }
 
@@ -209,7 +219,7 @@ export class CsMap extends WidgetBase {
 
     public initLayerSource(source: LayerSource): any {
         // load datasource
-        if (source.id && source._geojson) {
+        if (source.id && source._data) {
             if (!this.map.isSourceLoaded(source.id)) {
                 this.addSource(source);
             }
@@ -217,7 +227,6 @@ export class CsMap extends WidgetBase {
     }
 
     public initMapLayers() {
-        console.log('init map layers');
         if (
             this.manager &&
             this.map &&
@@ -227,10 +236,10 @@ export class CsMap extends WidgetBase {
             if (this.manager.MapWidget === undefined) {
                 this.manager.MapWidget = this;
             }
-            if (this.manager._sources && this.manager._sources.images) {
-                for (const id in this.manager._sources.images) {
-                    if (this.manager._sources.images.hasOwnProperty(id)) {
-                        this.addImage(id, this.manager._sources.images[id]);
+            if (this.manager.images) {
+                for (const id in this.manager.images) {
+                    if (this.manager.images.hasOwnProperty(id)) {
+                        this.addImage(id, this.manager.images[id]);
                     }
                 }
             }
@@ -238,11 +247,11 @@ export class CsMap extends WidgetBase {
 
             // show layers that are initialially set to visible
             if (this.manager.layers) {
-                this.manager.layers.forEach(l => {
-                    if (this.manager && l.Visible) {
+                for (const l of this.manager.layers) {
+                    if (l.enabled) {
                         this.showLayer(l);
                     }
-                });
+                }
             }
         }
     }
@@ -275,7 +284,7 @@ export class CsMap extends WidgetBase {
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
             this.map.on('dblclick', (ev) => {
-                if (this.manager) {
+                if (this.manager && this.manager.events) {
                     this.manager.events.publish('map', CsMap.MAP_DOUBLE_CLICK, ev);
                 }
             });
@@ -303,18 +312,12 @@ export class CsMap extends WidgetBase {
                     showScale: false,
                     showGeolocater: false,
                     showLayer: true,
-                    showEditor: true,
-                    showTraffic: true,
+                    showEditor: false,
+                    showTraffic: false,
                     doubleClickZoom: true
                 },
                 ...(this.widget.options as MapOptions)
             };
-
-            if (this.mapOptions.doubleClickZoom) {
-                this.map.doubleClickZoom.enable();
-            } else {
-                this.map.doubleClickZoom.disable();
-            }
 
             // subscribe to widget events
             if (this.widget.events) {
@@ -370,25 +373,25 @@ export class CsMap extends WidgetBase {
 
                 this.showGrid(this.mapOptions.showGrid || false);
 
-                if (this.mapOptions.showClickLayer) {
-                    this.addClickLayer();
-                }
+                // if (this.mapOptions.showClickLayer) {
+                //     this.addClickLayer();
+                // }
 
                 this.showGeocoder(this.mapOptions.showGeocoder || false);
 
-                const nav = new mapboxgl.NavigationControl({
-                    showCompass: this.mapOptions.showCompass,
-                    showZoom: this.mapOptions.showZoom
-                });
-                this.map.addControl(nav, 'top-left');
+                this.updateNavigationControl();
 
-                this.showStyles(this.mapOptions.showStyles);
+                this.showStyles(this.mapOptions.showStyles || false);
 
                 this.showRuler(this.mapOptions.showRuler || false);
 
                 this.showTraffic(this.mapOptions.showTraffic || false);
 
                 this.showLayers(this.mapOptions.showLayers || false);
+
+                this.showFeatureDetails(this.mapOptions.showFeatureDetails || false);
+
+                this.showFeatureList(this.mapOptions.showFeatureDetails || false);
 
                 this.showGeolocator(this.mapOptions.showGeolocater || false);
 
@@ -397,6 +400,21 @@ export class CsMap extends WidgetBase {
                 this.showLayersWidget(this.mapOptions.showLayersWidget || false);
 
                 this.showLegend(this.mapOptions.showLegend || false);
+
+                this.setDoubleClickZoom(this.mapOptions.doubleClickZoom || false);
+
+                this.setBoxZoom(this.mapOptions.boxZoom || true);
+
+                this.setScrollZoom(this.mapOptions.scrollZoom || true);
+
+                this.setDragPan(this.mapOptions.dragPan || true);
+
+                // setTimeout(() => {
+                //     if (this.mapOptions.showDetailsOnLoad) {
+                //         this.manager!.openFeature();
+                //     }
+                // }, 500);
+
 
             });
         });
@@ -419,6 +437,43 @@ export class CsMap extends WidgetBase {
         this.updateUrlQueryParams();
     }
 
+    @Watch('widget.options.doubleClickZoom')
+    public setDoubleClickZoom(enabled: boolean) {
+        if (enabled) {
+            this.map.doubleClickZoom.enable();
+        } else {
+            this.map.doubleClickZoom.disable();
+        }
+    }
+
+
+    @Watch('widget.options.boxZoom')
+    public setBoxZoom(enabled: boolean) {
+        if (enabled) {
+            this.map.boxZoom.enable();
+        } else {
+            this.map.boxZoom.disable();
+        }
+    }
+
+    @Watch('widget.options.scrollZoom')
+    public setScrollZoom(enabled: boolean) {
+        if (enabled) {
+            this.map.scrollZoom.enable();
+        } else {
+            this.map.scrollZoom.disable();
+        }
+    }
+
+    @Watch('widget.options.dragPan')
+    public setDragPan(enabled: boolean) {
+        if (enabled) {
+            this.map.dragPan.enable();
+        } else {
+            this.map.dragPan.disable();
+        }
+    }
+
     @Watch('widget.options.showBuildings')
     public showBuildings(enabled: boolean, old?: boolean) {
         if (!enabled && old) {
@@ -429,9 +484,9 @@ export class CsMap extends WidgetBase {
             if (!layers) { return; }
 
             let labelLayerId;
-            for (let i = 0; i < layers.length; i++) {
-                if (layers[i].type === 'symbol' && layers[i].layout!['text-field']) {
-                    labelLayerId = layers[i].id;
+            for (const layer of layers) {
+                if (layer.type === 'symbol' && layer.layout!['text-field']) {
+                    labelLayerId = layer.id;
                     break;
                 }
             }
@@ -464,13 +519,23 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showCompass')
-    public showCompass(enabled: boolean) {
-        console.log(`Show compass: ${enabled}`);
+    @Watch('widget.options.showZoom')
+    public updateNavigationControl() {
+        if (this.navigationControl) {
+            this.map.removeControl(this.navigationControl);
+        }
+        if (this.mapOptions.showCompass || this.mapOptions.showZoom) {
+            this.navigationControl = new mapboxgl.NavigationControl({
+                showCompass: this.options.showCompass,
+                showZoom: this.options.showZoom,
+                visualizePitch: true
+            });
+            this.map.addControl(this.navigationControl, 'top-left');
+        }
     }
 
     @Watch('widget.options.showGeocoder')
     public showGeocoder(enabled: boolean, old?: boolean) {
-        console.log(`Show geocoder: ${enabled}`);
         if (!enabled && old && this.geocoderControl) {
             this.removeGeocoder();
         }
@@ -481,7 +546,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showGeolocater')
     public showGeolocator(enabled: boolean = true, old?: boolean) {
-        console.log(`Show geolocator: ${enabled}`);
         if (!enabled && old && this.geolocatorControl) {
             this.map.removeControl(this.geolocatorControl);
         }
@@ -495,8 +559,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showGrid')
     public showGrid(enabled: boolean, old?: boolean) {
-        console.log(`Show grid: ${enabled}`);
-
         if (!enabled && old && this.showGrid && this.gridControl) {
             this.map.removeControl(this.gridControl);
         }
@@ -515,7 +577,7 @@ export class CsMap extends WidgetBase {
         return new Promise<IMapLayer>(resolve => {
             if (layer.id && layer._source && layer._source.id) {
                 // make sure source is loaded
-                layer._source.LoadSource().then(() => {
+                layer._source.loadSource(layer.featureTypes).then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
                         this.addSource(layer._source);
@@ -535,7 +597,7 @@ export class CsMap extends WidgetBase {
                             if (layer._events) {
                                 layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
                                 this.busManager.subscribe(layer._events, 'feature', (
-                                    (a: string, f: FeatureEventDetails) => {
+                                    (a: string) => {
                                         if (a === CsMap.FEATURE_SELECT) {
                                             if (
                                                 this.$cs &&
@@ -543,8 +605,8 @@ export class CsMap extends WidgetBase {
                                                 layer.openFeatureDetails ===
                                                 true
                                             ) {
-                                                // this.$cs.AddSidebar('feature', { icon: 'map' });
-                                                // this.$cs.OpenRightSidebarWidget(
+                                                // this.$cs.addSidebar('feature', { icon: 'map' });
+                                                // this.$cs.openRightSidebarWidget(
                                                 //     {
                                                 //         id: 'feature-details-component',
                                                 //         component: FeatureDetails,
@@ -581,14 +643,13 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showLayers')
     public showLayers(enabled: boolean = true, old?: boolean) {
-        console.log(`Show layers: ${enabled}`);
         if (!enabled && old) {
-            this.$cs.CloseRightSidebarKey('layers');
+            this.$cs.closeRightSidebarKey(SidebarKeys.LAYERS_SELECTION);
         }
         if (enabled) {
-            this.$cs.AddSidebar('layers', { icon: 'layers' });
+            this.$cs.addSidebar(SidebarKeys.LAYERS_SELECTION, { icon: 'layers' });
 
-            this.$cs.OpenRightSidebarWidget(
+            this.$cs.openRightSidebarWidget(
                 {
                     component: LayerSelection,
                     options: {
@@ -597,15 +658,33 @@ export class CsMap extends WidgetBase {
                     datasource: this.widget.datasource
                 },
                 { open: false },
-                'layers'
+                SidebarKeys.LAYERS_SELECTION
             );
+        }
+    }
+
+    @Watch('widget.options.showFeatureDetails')
+    public showFeatureDetails(enabled: boolean = true, old?: boolean) {
+        if (!enabled && old) {
+            this.$cs.closeRightSidebarKey(SidebarKeys.FEATURE_DETAILS);
+        }
+        if (enabled && this.manager) {
+            this.manager.openFeature();
+        }
+    }
+
+    @Watch('widget.options.showFeatureList')
+    public showFeatureList(enabled: boolean = true, old?: boolean) {
+        if (!enabled && old) {
+            this.$cs.closeRightSidebarKey(SidebarKeys.FEATURE_LIST);
+        }
+        if (enabled && this.manager) {
+            this.manager.openFeature();
         }
     }
 
     @Watch('widget.options.showLayersWidget')
     public showLayersWidget(enabled: boolean, old?: boolean) {
-        console.log(`Show layers widget: ${enabled}`);
-
         if (!enabled && old && this.showLayersWidget && this.layersWidgetControl) {
             this.map.removeControl(this.layersWidgetControl);
         }
@@ -622,7 +701,6 @@ export class CsMap extends WidgetBase {
     @Watch('widget.options.showLegend')
     public showLegend(enabled: boolean, old?: boolean) {
         if (!enabled && old && this.legendControl) {
-            console.log('Remove legend');
             this.map.removeControl(this.legendControl);
         }
         if (enabled) {
@@ -635,7 +713,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showRuler')
     public showRuler(enabled: boolean, old?: boolean) {
-        console.log(`Show ruler: ${enabled}`);
         if (!enabled && old && this.rulerControl) {
             this.map.removeControl(this.rulerControl);
         }
@@ -649,8 +726,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showScale')
     public showScale(enabled: boolean, old?: boolean) {
-        console.log(`Show grid: ${enabled}`);
-
         if (!enabled && old && this.showScale && this.scaleControl) {
             this.map.removeControl(this.scaleControl);
         }
@@ -666,7 +741,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showStyles')
     public showStyles(enabled: boolean, old?: boolean) {
-        console.log(`Show styles: ${enabled}`);
         if (!enabled && old && this.mapboxStyleSwitcherControl) {
             this.map.removeControl(this.mapboxStyleSwitcherControl);
         }
@@ -690,7 +764,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.options.showTraffic')
     public showTraffic(enabled: boolean, old?: boolean) {
-        console.log(`Show traffic: ${enabled}`);
         if (!enabled && old && this.trafficControl) {
             this.map.removeControl(this.trafficControl);
         }
@@ -723,68 +796,69 @@ export class CsMap extends WidgetBase {
 
     // #region Private Methods (8)
 
-    private addClickLayer() {
-        if (this.manager && this.manager.layers) {
-            let rl = this.manager.layers!.find(
-                l => l.id === 'clicklayer'
-            ) as GeojsonPlusLayer;
-            if (!rl) {
-                rl = new GeojsonPlusLayer();
-                rl.id = 'clicklayer';
-                // rl.visible = false,
-                rl.title = 'Click layer';
-                (rl._circlePaint = {
-                    'circle-radius': 20,
-                    'circle-color': 'red'
-                } as CirclePaint),
-                    (rl.tags = ['Click']);
-                rl.type = 'poi';
-                rl.style = {
-                    pointCircle: true,
-                    icon:
-                        'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
-                };
-                // rl.popupContent = f => {
-                //     if (f.features) {
-                //         return f.features[0].properties['place_name'];
-                //     }
-                // };
+    //TODO: fix click layer
+    // private addClickLayer() {
+    //     if (this.manager && this.manager.layers) {
+    //         let rl = this.manager.layers!.find(
+    //             l => l.id === 'clicklayer'
+    //         ) as GeojsonPlusLayer;
+    //         if (!rl) {
+    //             rl = new GeojsonPlusLayer();
+    //             rl.id = 'clicklayer';
+    //             // rl.visible = false,
+    //             rl.title = 'Click layer';
+    //             (rl.style.mapbox.circlePaint = {
+    //                 'circle-radius': 20,
+    //                 'circle-color': 'red'
+    //             } as CirclePaint),
+    //                 (rl.tags = ['Click']);
+    //             rl.type = 'poi';
+    //             rl.style = {
+    //                 pointCircle: true,
+    //                 icon:
+    //                     'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+    //             };
+    //             // rl.popupContent = f => {
+    //             //     if (f.features) {
+    //             //         return f.features[0].properties['place_name'];
+    //             //     }
+    //             // };
 
-                rl.source = new LayerSource({
-                    type: 'FeatureCollection',
-                    features: []
-                });
-                this.manager.addLayer(rl).then(l => {
-                    if (l._events) {
-                        this.busManager.subscribe(l._events, 'feature', (a: string) => {
-                            if (a === CsMap.FEATURE_SELECT) {
-                                // select feature
-                            }
-                        });
-                    }
-                });
+    //             rl.source = new LayerSource({
+    //                 type: 'FeatureCollection',
+    //                 features: []
+    //             });
+    //             this.manager.addLayer(rl).then(l => {
+    //                 if (l._events) {
+    //                     this.busManager.subscribe(l._events, 'feature', (a: string) => {
+    //                         if (a === CsMap.FEATURE_SELECT) {
+    //                             // select feature
+    //                         }
+    //                     });
+    //                 }
+    //             });
 
-                this.map.on('click', (ev) => {
-                    if (this.manager) {
-                        const features = {
-                            type: 'FeatureCollection',
-                            features: [{
-                                id: 'click-feature', type: 'Feature', properties: {
-                                    'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
-                                }, geometry: {
-                                    type: 'Point',
-                                    coordinates: [ev.lngLat.lng, ev.lngLat.lat]
-                                }
-                            } as Feature]
-                        };
-                        this.manager.updateLayerSource(rl, features as any);
-                    }
-                });
-            }
-        }
-    }
+    //             this.map.on('click', (ev) => {
+    //                 if (this.manager) {
+    //                     const features = {
+    //                         type: 'FeatureCollection',
+    //                         features: [{
+    //                             id: 'click-feature', type: 'Feature', properties: {
+    //                                 'title': ev.lngLat.lng + ', ' + ev.lngLat.lat
+    //                             }, geometry: {
+    //                                 type: 'Point',
+    //                                 coordinates: [ev.lngLat.lng, ev.lngLat.lat]
+    //                             }
+    //                         } as Feature]
+    //                     };
+    //                     this.manager.updateLayerSource(rl, features as any);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
 
-    private addGeocoder() {
+    private async addGeocoder() {
         this.map.on('moveend', () => {
             if (this.map.getZoom() > 9) {
                 const center = this.map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
@@ -808,74 +882,91 @@ export class CsMap extends WidgetBase {
 
         this.map.addControl(this.geocoderControl);
 
-        if (this.manager && this.manager.layers) {
-            let rl = this.manager.layers!.find(
-                l => l.id === 'searchlayer'
-            ) as GeojsonPlusLayer;
-            if (!rl) {
-                rl = new GeojsonPlusLayer();
-                rl.id = 'searchlayer';
-                rl.title = 'Search result';
-                (rl._circlePaint = {
-                    'circle-radius': 10,
-                    'circle-color': 'grey'
-                } as CirclePaint),
-                    (rl.tags = ['Search']);
-                rl.type = 'poi';
-                rl.style = {
-                    pointCircle: true,
-                    icon:
-                        'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
-                };
-                rl.popupContent = f => {
-                    if (f.features) {
-                        return f.features[0].properties.place_name;
-                    }
-                };
-
-                rl.source = new LayerSource({
-                    type: 'FeatureCollection',
-                    features: []
-                });
-                this.manager.addLayer(rl).then(l => {
-                    if (l._events) {
-                        this.busManager.subscribe(l._events, 'feature', (a: string) => {
-                            if (a === CsMap.FEATURE_SELECT) {
-                                // select feature
-                            }
-                        });
-                    }
-                });
+        this.searchLayer = await this.manager!.addGeojsonLayer('Search Layer', undefined, {
+            title: '{{properties.place_name}}',
+            popup: '{{properties.place_name}}',
+            mapbox: {
+                circlePaint: {
+                    'circle-color': 'blue',
+                    'circle-radius': 15
+                }
             }
+        }, undefined, { hideInLayerList: true } as IMapLayer) as GeojsonPlusLayer;
+        // .then(sl => {
+        //     this.searchLayer = sl as GeojsonPlusLayer;
+        //     debugger;
+        // });
 
-            this.geocoderControl.on('results', ev => {
-                if (this.manager) {
-                    for (const feature of ev.features) {
-                        feature.properties.place_name = feature.place_name;
-                        // set layer/feature ids
-                        feature.id = feature.properties._fId = guidGenerator();
-                        feature.properties._lId = rl.id;
-                    }
-                    this.manager.updateLayerSource(rl, { type: 'FeatureCollection', features: ev.features } as FeatureCollection);
-                }
-            });
 
-            this.geocoderControl.on('result', (d: any) => {
-                if (this.manager) {
-                    this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
-                }
-            });
 
-            this.geocoderControl.on('clear', () => {
-                if (this.manager) {
-                    this.manager.updateLayerSource(rl, {
-                        type: 'FeatureCollection',
-                        features: []
-                    });
+        // if (this.manager && this.manager.layers) {
+        //     let rl = this.manager.layers!.find(
+        //         l => l.id === 'searchlayer'
+        //     ) as GeojsonPlusLayer;
+        //     if (!rl) {
+        //         rl = new GeojsonPlusLayer();
+        //         rl.id = 'searchlayer';
+        //         rl.title = 'Search result';
+        //         rl.tags = ['Search'],
+        //             rl.hideInLayerList = true;
+        //         rl.style = {
+        //             type: 'circle',
+        //             mapbox: {
+        //                 circlePaint: {
+        //                     'circle-radius': 10,
+        //                     'circle-color': 'grey'
+        //                 } as CirclePaint
+        //             },
+        //             icon:
+        //                 'https://cdn4.iconfinder.com/data/icons/momenticons-basic/32x32/search.png'
+        //         };
+        //         rl.popupContent = f => {
+        //             if (f.features) {
+        //                 return f.features[0].properties.place_name;
+        //             }
+        //         };
+
+        //         rl.source = new LayerSource({
+        //             type: 'FeatureCollection',
+        //             features: []
+        //         });
+        //         this.manager.addLayer(rl).then(l => {
+        //             if (l._events) {
+        //                 this.busManager.subscribe(l._events, 'feature', (a: string) => {
+        //                     if (a === CsMap.FEATURE_SELECT) {
+        //                         // select feature
+        //                     }
+        //                 });
+        //             }
+        //         });
+        //     }
+
+        this.geocoderControl.on('results', ev => {
+            if (this.manager && ev && ev.features && this.searchLayer) {
+                for (const feature of ev.features) {
+                    feature.properties.place_name = feature.place_name;
+                    // set layer/feature ids
+                    feature.id = feature.properties._fId = guidGenerator();
+                    // feature.properties._lId = this.searchLayer.id;
                 }
-            });
-        }
+                this.searchLayer.updateGeojson({ type: 'FeatureCollection', features: ev.features } as FeatureCollection);
+                // this.manager.updateLayerSource(rl, { type: 'FeatureCollection', features: ev.features } as FeatureCollection);
+            }
+        });
+
+        this.geocoderControl.on('result', (d: any) => {
+            if (this.manager && this.manager.events) {
+                this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
+            }
+        });
+
+        this.geocoderControl.on('clear', () => {
+            if (this.manager && this.searchLayer) {
+                this.searchLayer.updateGeojson({ type: 'FeatureCollection', features: [] } as FeatureCollection);
+            }
+        });
     }
+
 
     private getRouteOptions(): mapboxgl.MapboxOptions {
         const options = {} as MapboxOptions;

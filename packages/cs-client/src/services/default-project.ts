@@ -2,23 +2,20 @@ import { IProject } from '@csnext/cs-core';
 
 export const DefaultProject: IProject = {
   header: {
-    title: 'Test project',
+    title: 'Project Name',
     breadcrumbs: false,
     dense: false
   },
   navigation: {
     style: 'tabs'
   },
-  // leftSidebar: {
-  //   open: false,
-  //   mini: false,
-  //   clipped: true,
-  //   permanent: false,
-  //   temporary: true
-  //   // dashboard: {
-  //   //   widgets: []
-  //   // }
-  // },
+  leftSidebar: {
+    open: false,
+    mini: false,
+    clipped: true,
+    permanent: false,
+    temporary: false
+  },
   datasources: {},
   theme: {
     dark: false,
@@ -39,15 +36,14 @@ export const DefaultProject: IProject = {
   //     widgets: []
   //   }
   // },
-  // rightSidebar: {
-  //   open: false,
-  //   right: true,
-  //   clipped: false,
-  //   temporary: false,
-  //   dashboard: {
-  //     widgets: []
-  //   }
-  // },
+  rightSidebar: {
+    open: false,
+    right: true,
+    clipped: true,
+    temporary: false,
+    width: 350,
+    sidebars: {}
+  },
   menus: [],
   dashboards: []
 };

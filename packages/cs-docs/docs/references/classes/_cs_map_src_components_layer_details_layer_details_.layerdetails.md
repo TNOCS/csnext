@@ -10,9 +10,9 @@
 
 ### `Optional` allFeatures
 
-• **allFeatures**? : *Feature[]*
+• **allFeatures**? : *mapboxgl.MapboxGeoJSONFeature[]*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:17](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L17)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:17](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L17)*
 
 ___
 
@@ -20,15 +20,15 @@ ___
 
 • **filterItems**: *string* = ""
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:19](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L19)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:19](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L19)*
 
 ___
 
 ###  filteredFeatures
 
-• **filteredFeatures**: *Feature[]* =  []
+• **filteredFeatures**: *mapboxgl.MapboxGeoJSONFeature[]* =  []
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:20](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L20)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:20](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L20)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **listFilter**: *string* = ""
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:18](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L18)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:18](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L18)*
 
 ## Accessors
 
@@ -44,7 +44,7 @@ ___
 
 • **get layer**(): *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md) | undefined*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:27](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L27)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:27](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L27)*
 
 get active layer
 
@@ -56,7 +56,7 @@ ___
 
 • **get layerColor**(): *string*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:35](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L35)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:35](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L35)*
 
 get layer color
 
@@ -68,7 +68,7 @@ ___
 
 • **get manager**(): *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:43](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L43)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:43](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L43)*
 
 **Returns:** *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) | undefined*
 
@@ -78,7 +78,7 @@ ___
 
 • **get title**(): *string*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:50](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L50)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L50)*
 
 get feature title
 
@@ -90,7 +90,7 @@ get feature title
 
 ▸ **contentLoaded**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:63](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L63)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:63](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L63)*
 
 **Returns:** *void*
 
@@ -100,7 +100,7 @@ ___
 
 ▸ **filterChanged**(`v`: string): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L68)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:68](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L68)*
 
 **Parameters:**
 
@@ -114,9 +114,9 @@ ___
 
 ### `Private` filterFeature
 
-▸ **filterFeature**(`f`: Feature, `s`: string): *boolean*
+▸ **filterFeature**(`f`: mapboxgl.MapboxGeoJSONFeature, `s`: string): *boolean*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:89](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L89)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:89](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L89)*
 
 returns true if features is included filter
 
@@ -124,7 +124,7 @@ returns true if features is included filter
 
 Name | Type |
 ------ | ------ |
-`f` | Feature |
+`f` | mapboxgl.MapboxGeoJSONFeature |
 `s` | string |
 
 **Returns:** *boolean*
@@ -135,7 +135,7 @@ ___
 
 ▸ **fitLayer**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:72](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L72)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:72](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L72)*
 
 **Returns:** *void*
 
@@ -145,7 +145,7 @@ ___
 
 ▸ **getAllFeatures**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L95)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:95](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L95)*
 
 **Returns:** *void*
 
@@ -155,7 +155,7 @@ ___
 
 ▸ **openFeature**(`feature`: any): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:78](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L78)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:78](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L78)*
 
 **Parameters:**
 
@@ -171,6 +171,6 @@ ___
 
 ▸ **updateFeatures**(): *void*
 
-*Defined in [packages/cs-map/src/components/layer-details/layer-details.ts:101](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/components/layer-details/layer-details.ts#L101)*
+*Defined in [cs-map/src/components/layer-details/layer-details.ts:101](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/components/layer-details/layer-details.ts#L101)*
 
 **Returns:** *void*

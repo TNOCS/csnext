@@ -6,8 +6,6 @@
 
   ↳ [GeojsonLayer](_cs_map_src_layers_geojson_layer_.geojsonlayer.md)
 
-  ↳ [GeojsonPlusLayer](_cs_map_src_layers_geojson_plus_layer_.geojsonpluslayer.md)
-
 ## Implements
 
 * any
@@ -18,7 +16,7 @@
 
 \+ **new BaseLayer**(`init?`: Partial‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›): *[BaseLayer](_cs_map_src_layers_base_layer_.baselayer.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:138](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L138)*
+*Defined in [cs-map/src/layers/base-layer.ts:121](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L121)*
 
 **Parameters:**
 
@@ -34,15 +32,15 @@ Name | Type |
 
 • **_busManager**: *[MessageBusManager](_cs_core_src_utils_message_bus_message_bus_manager_.messagebusmanager.md)* =  new MessageBusManager()
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:58](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L58)*
+*Defined in [cs-map/src/layers/base-layer.ts:46](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L46)*
 
 ___
 
-### `Optional` _events
+###  _events
 
-• **_events**? : *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
+• **_events**: *[MessageBusService](_cs_core_src_utils_message_bus_message_bus_service_.messagebusservice.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:59](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L59)*
+*Defined in [cs-map/src/layers/base-layer.ts:47](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L47)*
 
 ___
 
@@ -50,15 +48,15 @@ ___
 
 • **_extensions**: *[ILayerExtension](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextension.md)[]* =  []
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:60](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L60)*
+*Defined in [cs-map/src/layers/base-layer.ts:48](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L48)*
 
 ___
 
 ###  _featureType
 
-• **_featureType**: *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md) | undefined*
+• **_featureType**: *[FeatureType](_cs_data_src_classes_feature_type_.featuretype.md) | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:61](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L61)*
+*Defined in [cs-map/src/layers/base-layer.ts:49](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L49)*
 
 ___
 
@@ -66,7 +64,7 @@ ___
 
 • **_filters**? : *object*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:62](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L62)*
+*Defined in [cs-map/src/layers/base-layer.ts:50](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L50)*
 
 #### Type declaration:
 
@@ -78,7 +76,7 @@ ___
 
 • **_initialized**? : *boolean* = false
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:64](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L64)*
+*Defined in [cs-map/src/layers/base-layer.ts:52](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L52)*
 
 ___
 
@@ -86,7 +84,7 @@ ___
 
 • **_legends**? : *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:66](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L66)*
+*Defined in [cs-map/src/layers/base-layer.ts:54](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L54)*
 
 list of active layers
 
@@ -96,7 +94,7 @@ ___
 
 • **_manager**? : *[MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:67](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L67)*
+*Defined in [cs-map/src/layers/base-layer.ts:55](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L55)*
 
 ___
 
@@ -104,7 +102,15 @@ ___
 
 • **_parent**? : *[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:68](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L68)*
+*Defined in [cs-map/src/layers/base-layer.ts:56](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L56)*
+
+___
+
+### `Private` `Optional` _popupTemplate
+
+• **_popupTemplate**? : *Handlebars.TemplateDelegate*
+
+*Defined in [cs-map/src/layers/base-layer.ts:121](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L121)*
 
 ___
 
@@ -112,7 +118,7 @@ ___
 
 • **_service**? : *[ILayerService](../interfaces/_cs_map_src_classes_layer_service_.ilayerservice.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:69](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L69)*
+*Defined in [cs-map/src/layers/base-layer.ts:57](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L57)*
 
 ___
 
@@ -120,7 +126,7 @@ ___
 
 • **_showMenu**? : *boolean | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:70](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L70)*
+*Defined in [cs-map/src/layers/base-layer.ts:58](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L58)*
 
 ___
 
@@ -128,15 +134,15 @@ ___
 
 • **_showMore**? : *boolean | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:71](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L71)*
+*Defined in [cs-map/src/layers/base-layer.ts:59](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L59)*
 
 ___
 
 ### `Optional` _source
 
-• **_source**? : *[LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
+• **_source**? : *[DataSource](_cs_data_src_classes_data_source_.datasource.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:73](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L73)*
+*Defined in [cs-map/src/layers/base-layer.ts:61](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L61)*
 
 ___
 
@@ -144,7 +150,7 @@ ___
 
 • **_titleTemplate**? : *Handlebars.TemplateDelegate*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:138](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L138)*
+*Defined in [cs-map/src/layers/base-layer.ts:120](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L120)*
 
 ___
 
@@ -152,7 +158,7 @@ ___
 
 • **color**: *string* = "blue"
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:75](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L75)*
+*Defined in [cs-map/src/layers/base-layer.ts:63](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L63)*
 
 ___
 
@@ -160,7 +166,7 @@ ___
 
 • **defaultFeatureType**? : *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:77](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L77)*
+*Defined in [cs-map/src/layers/base-layer.ts:65](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L65)*
 
 if multiple feature types are avaible, this is the default feature type key
 
@@ -170,7 +176,7 @@ ___
 
 • **description**: *string* = ""
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:79](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L79)*
+*Defined in [cs-map/src/layers/base-layer.ts:67](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L67)*
 
 ___
 
@@ -178,7 +184,15 @@ ___
 
 • **disableFeatureList**? : *boolean*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:81](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L81)*
+*Defined in [cs-map/src/layers/base-layer.ts:69](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L69)*
+
+___
+
+### `Optional` enabled
+
+• **enabled**? : *boolean*
+
+*Defined in [cs-map/src/layers/base-layer.ts:109](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L109)*
 
 ___
 
@@ -186,15 +200,15 @@ ___
 
 • **extensions**? : *[ILayerExtensionType](../interfaces/_cs_map_src_classes_ilayer_extension_.ilayerextensiontype.md)[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:82](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L82)*
+*Defined in [cs-map/src/layers/base-layer.ts:70](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L70)*
 
 ___
 
 ### `Optional` featureTypes
 
-• **featureTypes**? : *[FeatureTypes](_cs_map_src_classes_feature_type_.featuretypes.md)*
+• **featureTypes**? : *[FeatureTypes](_cs_data_src_classes_feature_type_.featuretypes.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:95](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L95)*
+*Defined in [cs-map/src/layers/base-layer.ts:117](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L117)*
 
 ___
 
@@ -202,7 +216,7 @@ ___
 
 • **filter**? : *any[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:96](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L96)*
+*Defined in [cs-map/src/layers/base-layer.ts:85](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L85)*
 
 ___
 
@@ -210,7 +224,7 @@ ___
 
 • **hideInLayerList**? : *boolean*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:98](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L98)*
+*Defined in [cs-map/src/layers/base-layer.ts:87](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L87)*
 
 ___
 
@@ -218,15 +232,7 @@ ___
 
 • **id**: *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:99](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L99)*
-
-___
-
-### `Optional` layout
-
-• **layout**? : *mapboxgl.SymbolLayout | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:114](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L114)*
+*Defined in [cs-map/src/layers/base-layer.ts:88](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L88)*
 
 ___
 
@@ -234,15 +240,7 @@ ___
 
 • **openFeatureDetails**? : *boolean*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:120](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L120)*
-
-___
-
-### `Optional` paint
-
-• **paint**? : *mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:121](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L121)*
+*Defined in [cs-map/src/layers/base-layer.ts:104](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L104)*
 
 ___
 
@@ -250,7 +248,7 @@ ___
 
 • **parentId**? : *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:126](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L126)*
+*Defined in [cs-map/src/layers/base-layer.ts:105](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L105)*
 
 ___
 
@@ -258,15 +256,23 @@ ___
 
 • **popupContent**? : *string | Function | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:127](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L127)*
+*Defined in [cs-map/src/layers/base-layer.ts:106](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L106)*
 
 ___
 
 ### `Optional` source
 
-• **source**? : *string | [LayerSource](_cs_map_src_classes_layer_source_.layersource.md)*
+• **source**? : *string | [DataSource](_cs_data_src_classes_data_source_.datasource.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:128](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L128)*
+*Defined in [cs-map/src/layers/base-layer.ts:107](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L107)*
+
+___
+
+### `Optional` state
+
+• **state**? : *"hidden" | "loading" | "visible"*
+
+*Defined in [cs-map/src/layers/base-layer.ts:108](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L108)*
 
 ___
 
@@ -274,7 +280,15 @@ ___
 
 • **style**? : *[LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md)*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:129](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L129)*
+*Defined in [cs-map/src/layers/base-layer.ts:110](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L110)*
+
+___
+
+###  supportLayers
+
+• **supportLayers**: *string[]* =  []
+
+*Defined in [cs-map/src/layers/base-layer.ts:71](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L71)*
 
 ___
 
@@ -282,7 +296,7 @@ ___
 
 • **tags**: *string[]* =  []
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:131](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L131)*
+*Defined in [cs-map/src/layers/base-layer.ts:112](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L112)*
 
 ___
 
@@ -290,7 +304,7 @@ ___
 
 • **title**: *string* = ""
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:134](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L134)*
+*Defined in [cs-map/src/layers/base-layer.ts:115](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L115)*
 
 ___
 
@@ -298,47 +312,27 @@ ___
 
 • **typeId**? : *string* = "geojson"
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:135](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L135)*
-
-___
-
-### `Optional` visible
-
-• **visible**? : *boolean*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:136](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L136)*
+*Defined in [cs-map/src/layers/base-layer.ts:116](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L116)*
 
 ## Accessors
+
+###  Map
+
+• **get Map**(): *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
+
+*Defined in [cs-map/src/layers/base-layer.ts:137](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L137)*
+
+**Returns:** *[CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md) | undefined*
+
+___
 
 ###  MapControl
 
 • **get MapControl**(): *mapboxgl.Map | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:156](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L156)*
+*Defined in [cs-map/src/layers/base-layer.ts:147](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L147)*
 
 **Returns:** *mapboxgl.Map | undefined*
-
-___
-
-###  Visible
-
-• **get Visible**(): *boolean | undefined*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:167](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L167)*
-
-**Returns:** *boolean | undefined*
-
-• **set Visible**(`value`: boolean | undefined): *void*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:171](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L171)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | boolean &#124; undefined |
-
-**Returns:** *void*
 
 ## Methods
 
@@ -346,7 +340,7 @@ Name | Type |
 
 ▸ **addLayer**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:184](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L184)*
+*Defined in [cs-map/src/layers/base-layer.ts:175](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L175)*
 
 **Parameters:**
 
@@ -358,11 +352,27 @@ Name | Type |
 
 ___
 
+###  addSupportLayer
+
+▸ **addSupportLayer**(`layer`: mapboxgl.Layer): *void*
+
+*Defined in [cs-map/src/layers/base-layer.ts:388](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L388)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`layer` | mapboxgl.Layer |
+
+**Returns:** *void*
+
+___
+
 ###  applyFilter
 
 ▸ **applyFilter**(`filter`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:186](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L186)*
+*Defined in [cs-map/src/layers/base-layer.ts:182](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L182)*
 
 **Parameters:**
 
@@ -374,34 +384,19 @@ Name | Type |
 
 ___
 
-### `Private` applyFilterArray
-
-▸ **applyFilterArray**(`filter`: any[], `newFilter`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *void*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:431](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L431)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`filter` | any[] |
-`newFilter` | [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md) |
-
-**Returns:** *void*
-
-___
-
 ### `Private` createDefaultPopup
 
-▸ **createDefaultPopup**(`f`: Feature): *string*
+▸ **createDefaultPopup**(`f`: Feature, `style`: [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md), `ft`: [FeatureType](_cs_data_src_classes_feature_type_.featuretype.md)): *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:469](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L469)*
+*Defined in [cs-map/src/layers/base-layer.ts:464](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L464)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `f` | Feature |
+`style` | [LayerStyle](_cs_map_src_classes_layer_style_.layerstyle.md) |
+`ft` | [FeatureType](_cs_data_src_classes_feature_type_.featuretype.md) |
 
 **Returns:** *string*
 
@@ -411,7 +406,7 @@ ___
 
 ▸ **getBounds**(): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:227](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L227)*
+*Defined in [cs-map/src/layers/base-layer.ts:222](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L222)*
 
 **Returns:** *void*
 
@@ -419,11 +414,11 @@ ___
 
 ###  getFeatureType
 
-▸ **getFeatureType**(): *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)*
+▸ **getFeatureType**(): *[FeatureType](_cs_data_src_classes_feature_type_.featuretype.md) | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:229](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L229)*
+*Defined in [cs-map/src/layers/base-layer.ts:177](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L177)*
 
-**Returns:** *[FeatureType](_cs_map_src_classes_feature_type_.featuretype.md)*
+**Returns:** *[FeatureType](_cs_data_src_classes_feature_type_.featuretype.md) | undefined*
 
 ___
 
@@ -431,40 +426,24 @@ ___
 
 ▸ **getLayerActions**(): *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:248](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L248)*
+*Defined in [cs-map/src/layers/base-layer.ts:224](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L224)*
 
 **Returns:** *[ILayerAction](../interfaces/_cs_map_src_classes_ilayer_action_.ilayeraction.md)[]*
 
 ___
 
-###  getPropertType
-
-▸ **getPropertType**(`prop`: string): *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | undefined*
-
-*Defined in [packages/cs-map/src/layers/base-layer.ts:298](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L298)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`prop` | string |
-
-**Returns:** *[PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | undefined*
-
-___
-
 ###  getStyleLegend
 
-▸ **getStyleLegend**(`styleKey`: string, `style`: any): *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
+▸ **getStyleLegend**(`styleKey`: string, `style?`: any): *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:309](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L309)*
+*Defined in [cs-map/src/layers/base-layer.ts:274](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L274)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `styleKey` | string |
-`style` | any |
+`style?` | any |
 
 **Returns:** *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
@@ -474,7 +453,7 @@ ___
 
 ▸ **getStyleLegendKey**(`styleKey`: string): *[LayerLegend](../interfaces/_cs_map_src_classes_layer_legend_.layerlegend.md)[]*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:330](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L330)*
+*Defined in [cs-map/src/layers/base-layer.ts:296](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L296)*
 
 **Parameters:**
 
@@ -490,7 +469,7 @@ ___
 
 ▸ **initFilter**(`property`: string): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:343](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L343)*
+*Defined in [cs-map/src/layers/base-layer.ts:309](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L309)*
 
 **Parameters:**
 
@@ -504,9 +483,9 @@ ___
 
 ###  initLayer
 
-▸ **initLayer**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *void*
+▸ **initLayer**(`manager`: [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md)): *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:354](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L354)*
+*Defined in [cs-map/src/layers/base-layer.ts:321](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L321)*
 
 **Parameters:**
 
@@ -514,7 +493,7 @@ Name | Type |
 ------ | ------ |
 `manager` | [MapDatasource](_cs_map_src_datasources_map_datasource_.mapdatasource.md) |
 
-**Returns:** *void*
+**Returns:** *Promise‹[IMapLayer](../interfaces/_cs_map_src_classes_imap_layer_.imaplayer.md)›*
 
 ___
 
@@ -522,7 +501,7 @@ ___
 
 ▸ **moveLayer**(`beforeId?`: string): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:356](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L356)*
+*Defined in [cs-map/src/layers/base-layer.ts:330](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L330)*
 
 **Parameters:**
 
@@ -536,15 +515,15 @@ ___
 
 ###  parsePopup
 
-▸ **parsePopup**(`f?`: Feature): *string*
+▸ **parsePopup**(`f?`: mapboxgl.MapboxGeoJSONFeature): *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:358](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L358)*
+*Defined in [cs-map/src/layers/base-layer.ts:332](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L332)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`f?` | Feature |
+`f?` | mapboxgl.MapboxGeoJSONFeature |
 
 **Returns:** *string*
 
@@ -552,17 +531,33 @@ ___
 
 ###  parseTitle
 
-▸ **parseTitle**(`f?`: Feature): *any*
+▸ **parseTitle**(`f?`: mapboxgl.MapboxGeoJSONFeature): *string*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:371](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L371)*
+*Defined in [cs-map/src/layers/base-layer.ts:355](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L355)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`f?` | Feature |
+`f?` | mapboxgl.MapboxGeoJSONFeature |
 
-**Returns:** *any*
+**Returns:** *string*
+
+___
+
+###  removeFilter
+
+▸ **removeFilter**(`filter`: [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md)): *void*
+
+*Defined in [cs-map/src/layers/base-layer.ts:413](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L413)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`filter` | [LayerFilter](_cs_map_src_classes_layer_filter_.layerfilter.md) |
+
+**Returns:** *void*
 
 ___
 
@@ -570,7 +565,7 @@ ___
 
 ▸ **removeLayer**(`map`: [CsMap](_cs_map_src_components_cs_map_cs_map_.csmap.md)): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:382](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L382)*
+*Defined in [cs-map/src/layers/base-layer.ts:376](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L376)*
 
 **Parameters:**
 
@@ -584,15 +579,15 @@ ___
 
 ###  removeLegend
 
-▸ **removeLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
+▸ **removeLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_property_details_.propertydetails.md) | [PropertyType](_cs_data_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:387](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L387)*
+*Defined in [cs-map/src/layers/base-layer.ts:395](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L395)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) &#124; string |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_property_details_.propertydetails.md) &#124; [PropertyType](_cs_data_src_classes_property_type_.propertytype.md) &#124; string |
 `refreshLayer` | boolean |
 
 **Returns:** *void*
@@ -603,7 +598,7 @@ ___
 
 ▸ **setFilter**(`filter`: any[]): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:392](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L392)*
+*Defined in [cs-map/src/layers/base-layer.ts:400](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L400)*
 
 **Parameters:**
 
@@ -617,15 +612,15 @@ ___
 
 ###  setLegend
 
-▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) | [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
+▸ **setLegend**(`property`: [PropertyDetails](_cs_map_src_components_feature_details_property_details_.propertydetails.md) | [PropertyType](_cs_data_src_classes_property_type_.propertytype.md) | string, `refreshLayer`: boolean): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:399](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L399)*
+*Defined in [cs-map/src/layers/base-layer.ts:428](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L428)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`property` | [PropertyDetails](_cs_map_src_components_feature_details_feature_details_.propertydetails.md) &#124; [PropertyType](_cs_map_src_classes_property_type_.propertytype.md) &#124; string |
+`property` | [PropertyDetails](_cs_map_src_components_feature_details_property_details_.propertydetails.md) &#124; [PropertyType](_cs_data_src_classes_property_type_.propertytype.md) &#124; string |
 `refreshLayer` | boolean |
 
 **Returns:** *void*
@@ -636,7 +631,7 @@ ___
 
 ▸ **setOpacity**(`value`: number): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:404](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L404)*
+*Defined in [cs-map/src/layers/base-layer.ts:433](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L433)*
 
 **Parameters:**
 
@@ -652,7 +647,7 @@ ___
 
 ▸ **setPopupContent**(`value`: string | function): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:406](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L406)*
+*Defined in [cs-map/src/layers/base-layer.ts:435](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L435)*
 
 **Parameters:**
 
@@ -668,7 +663,7 @@ ___
 
 ▸ **updateFilterArray**(`filter`: any[]): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:484](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L484)*
+*Defined in [cs-map/src/layers/base-layer.ts:479](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L479)*
 
 **Parameters:**
 
@@ -684,7 +679,23 @@ ___
 
 ▸ **updateFilters**(): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:410](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L410)*
+*Defined in [cs-map/src/layers/base-layer.ts:439](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L439)*
+
+**Returns:** *void*
+
+___
+
+###  updateGeojson
+
+▸ **updateGeojson**(`data`: [DataSet](_cs_data_src_classes_data_set_.dataset.md)): *void*
+
+*Defined in [cs-map/src/layers/base-layer.ts:446](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L446)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`data` | [DataSet](_cs_data_src_classes_data_set_.dataset.md) |
 
 **Returns:** *void*
 
@@ -694,7 +705,7 @@ ___
 
 ▸ **updateLayer**(): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:418](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L418)*
+*Defined in [cs-map/src/layers/base-layer.ts:452](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L452)*
 
 **Returns:** *void*
 
@@ -704,7 +715,7 @@ ___
 
 ▸ **updateLegends**(): *void*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:420](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L420)*
+*Defined in [cs-map/src/layers/base-layer.ts:454](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L454)*
 
 **Returns:** *void*
 
@@ -712,9 +723,9 @@ ___
 
 ### `Static` getFeatureFromEventDetails
 
-▸ **getFeatureFromEventDetails**(`e`: [FeatureEventDetails](../interfaces/_cs_map_src_components_cs_map_feature_event_details_.featureeventdetails.md)): *Feature | undefined*
+▸ **getFeatureFromEventDetails**(`e`: [FeatureEventDetails](../interfaces/_cs_map_src_components_cs_map_feature_event_details_.featureeventdetails.md)): *MapboxGeoJSONFeature | undefined*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:46](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L46)*
+*Defined in [cs-map/src/layers/base-layer.ts:34](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L34)*
 
 **Parameters:**
 
@@ -722,7 +733,7 @@ Name | Type |
 ------ | ------ |
 `e` | [FeatureEventDetails](../interfaces/_cs_map_src_components_cs_map_feature_event_details_.featureeventdetails.md) |
 
-**Returns:** *Feature | undefined*
+**Returns:** *MapboxGeoJSONFeature | undefined*
 
 ## Object literals
 
@@ -730,17 +741,17 @@ Name | Type |
 
 ### ▪ **intlData**: *object*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:100](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L100)*
+*Defined in [cs-map/src/layers/base-layer.ts:89](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L89)*
 
 ###  locales
 
 • **locales**: *string* = "en-US"
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:101](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L101)*
+*Defined in [cs-map/src/layers/base-layer.ts:90](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L90)*
 
 ▪ **formats**: *object*
 
-*Defined in [packages/cs-map/src/layers/base-layer.ts:102](https://github.com/TNOCS/csnext/blob/34474da7/packages/cs-map/src/layers/base-layer.ts#L102)*
+*Defined in [cs-map/src/layers/base-layer.ts:91](https://github.com/TNOCS/csnext/blob/dad76c19/packages/cs-map/src/layers/base-layer.ts#L91)*
 
 * **number**: *object*
 
