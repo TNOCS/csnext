@@ -8,7 +8,7 @@ import {
     OnGatewayInit
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
-import { Client } from 'socket.io';
+import { Client, Server } from 'socket.io';
 
 @WebSocketGateway()
 export class DefaultWebSocketGateway
@@ -17,11 +17,11 @@ export class DefaultWebSocketGateway
         console.log('---------- init default web socket gateway -------------');
     }
 
-    @WebSocketServer() public server: any;
+    @WebSocketServer() public server: Server;
     wsClients: Client[] = [];
     afterInit() {
         console.log('------ init -------');
-        this.server.emit('testing', { do: 'stuff' });
+        // this.server.emit('testing', { do: 'stuff' });
     }
 
     handleConnection(client: Client) {
@@ -38,6 +38,7 @@ export class DefaultWebSocketGateway
         }
         this.broadcast('disconnect', {});
     }
+
     private broadcast(event, message: any) {
         const broadCastMessage = JSON.stringify(message);
         for (let c of this.wsClients) {
