@@ -10,7 +10,8 @@ import {
     ILayerService,
     LayerStyle,
     LayerEditor,
-    FeatureDetails
+    FeatureDetails,
+    FeatureEventDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -51,6 +52,7 @@ export class MapDatasource implements IDatasource {
     public _sources?: LayerSources;
     public id = 'map-datasource';
     private pointPickerHandler?: MessageBusHandle;
+    private featurePickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
@@ -142,6 +144,40 @@ export class MapDatasource implements IDatasource {
         });
     }
 
+    public startFeaturePicker(title?: string): Promise<FeatureEventDetails | undefined> {
+        return new Promise((resolve, reject) => {
+            if (!this.map) { return; }
+            if (this.map.featurePickerActivated) {
+                reject();
+                return;
+            }
+            AppState.Instance.TriggerNotification({
+                title: title ? title : 'SELECT_FEATURE', timeout: 0, clickCallback: () => {
+                    reject();
+                    this.map!.featurePickerActivated = false;
+                    if (this.featurePickerHandler) {
+                        this.events.unsubscribe(this.featurePickerHandler);
+                    }
+                    return {};
+                }
+            });
+            this.map.featurePickerActivated = true;
+            this.featurePickerHandler = this.events.subscribe('feature', (a: string, e: any) => {
+                if (a === CsMap.FEATURE_SELECT) {
+                    this.map!.featurePickerActivated = false;
+                    if (this.featurePickerHandler) {
+                        this.events.unsubscribe(this.featurePickerHandler);
+                    }
+                    if (e && (e as FeatureEventDetails).features) {
+                        resolve(e);
+                    }
+                    AppState.Instance.ClearNotifications();
+                    return;
+                }
+            });
+        });
+    }
+
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (ml._source) {
@@ -158,6 +194,15 @@ export class MapDatasource implements IDatasource {
             } else {
                 reject();
             }
+        });
+    }
+
+    public showLayerById(id: string): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
+            if (!this.layers) return reject();
+            const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l);
+            if (!layer) return reject();
+            return this.showLayer(layer);
         });
     }
 
@@ -182,16 +227,18 @@ export class MapDatasource implements IDatasource {
                         reject();
                     });
 
-                this.events.publish('layer', 'enabled', ml);
+                this.events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED, ml);
+                if (ml._events) {
+                    ml._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED, ml);
+                }
                 // check if not already subscribed to features events
                 if (ml._events && !ml._featureEventHandle) {
-                    // if not subscribe
-
+                    // if not, subscribe
                     ml._featureEventHandle = ml._events.subscribe(
-                        'feature',
+                        CsMap.FEATURE,
                         (a: string, f: Feature) => {
                             // also publish this event to manager
-                            this.events.publish('feature', a, f);
+                            this.events.publish(CsMap.FEATURE, a, f);
                         }
                     );
                 }
@@ -650,10 +697,10 @@ export class MapDatasource implements IDatasource {
                 source._geojson = geojson;
                 source._loaded = true;
             }
-            
+
             source.title = title;
-            source.id = guidGenerator();            
-            source.LoadSource().then(s => {                
+            source.id = guidGenerator();
+            source.LoadSource().then(s => {
                 let rl = new GeojsonPlusLayer();
                 rl.id = title;
                 rl.tags = tags ? tags : ['general'];

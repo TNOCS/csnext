@@ -10,5 +10,7 @@
   "SEARCH": "Zoeken",
   "FIELD_REQUIRED": "Dit veld is vereist",
   "ABOUT": "Over",
-  "GROUP_VISIBILITY": "Groepen"
+  "GROUP_VISIBILITY": "Groepen",
+  "SELECT_FEATURE": "Selecteer een object",
+  "SELECT_POINT": "Selecteer een punt op de kaart"
 }

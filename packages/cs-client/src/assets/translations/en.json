@@ -10,5 +10,7 @@
   "SEARCH": "Search",
   "FIELD_REQUIRED": "This field is required",
   "ABOUT": "About",
-  "GROUP_VISIBILITY": "Group visibility"
+  "GROUP_VISIBILITY": "Group visibility",
+  "SELECT_FEATURE": "Select a feature",
+  "SELECT_POINT": "Select a point on the map"
 }

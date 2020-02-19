@@ -49,9 +49,11 @@ export class CsMap extends WidgetBase {
     public static FEATURE_MOUSE_ENTER = 'enter';
     public static FEATURE_MOUSE_LEAVE = 'leave';
     public static FEATURE_UPDATED = 'updated';
+    public static FEATURE = 'feature';
     public static LAYER_UPDATED = 'layer.updated';
     public static LAYER_ACTIVATED = 'layer.activated';
     public static LAYER_DISABLED = 'layer.disabled';
+    public static LAYER = 'layer';
     public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
     public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
     public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
@@ -68,6 +70,14 @@ export class CsMap extends WidgetBase {
     public set pointPickerActivated(value: boolean) {
         this._pointerPickerActivated = value;
         this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
+    }
+
+    public get featurePickerActivated(): boolean {
+        return this._featurePickerActivated;
+    }
+
+    public set featurePickerActivated(value: boolean) {
+        this._featurePickerActivated = value;
     }
 
     public get manager(): MapDatasource | undefined {
@@ -133,6 +143,7 @@ export class CsMap extends WidgetBase {
     public mapDraw!: any;
     // tslint:disable-next-line: variable-name
 
+    private _featurePickerActivated = false;
     private _pointerPickerActivated = false;
     private mapOptions!: MapOptions;
 
@@ -947,6 +958,5 @@ export class CsMap extends WidgetBase {
         if (this.manager && this.manager.events) {
             this.manager.events.publish('map', CsMap.MAP_LOADED, e);
         }
-
     }
 }

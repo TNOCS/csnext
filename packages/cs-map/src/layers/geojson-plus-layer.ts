@@ -921,7 +921,11 @@ export class GeojsonPlusLayer extends BaseLayer
                             case CsMap.FEATURE_SELECT:
                                 data.layer = this;
                                 this._events.publish('feature', a, data);
-                                this._manager!.openFeature(data.feature!, data.layer);
+                                if ((this._manager!.MapWidget as CsMap).featurePickerActivated) {
+                                    break;
+                                } else {
+                                    this._manager!.openFeature(data.feature!, data.layer);
+                                }
                                 break;
                             case CsMap.FEATURE_MOUSE_ENTER:
                                 if (this.popupContent && data.feature) {
