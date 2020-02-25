@@ -1,4 +1,4 @@
-import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator } from '@csnext/cs-core';
+import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator, MessageBusHandle } from '@csnext/cs-core';
 import {
     MapDatasource,
     IMapLayer,
@@ -48,7 +48,7 @@ export class BaseLayer implements IMapLayer {
     public _extensions: ILayerExtension[] = [];
     public _featureType: FeatureType | undefined;
     public _filters?: { [key: string]: LayerFilter };
-    // public _featureEventHandle?: MessageBusHandle;
+    public _featureEventHandle?: MessageBusHandle;
     public _initialized?= false;
     /** list of active layers */
     public _legends?: LayerLegend[];

@@ -8,7 +8,10 @@ import {
     LayerSource,
     ILayerService,
     LayerStyle,
-    LayerEditor
+    LayerEditor,
+    FeatureDetails,
+    FeatureEventDetails,
+    LayerSources
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -52,8 +55,16 @@ export const SidebarKeys = {
     FEATURE_LIST: 'feature_list',
     LAYERS_SELECTION: 'layers_selection'
 };
-
 export class MapDatasource extends DataSources {
+    public _sources?: LayerSources;
+    public id = 'map-datasource';
+    private pointPickerHandler?: MessageBusHandle;
+    private featurePickerHandler?: MessageBusHandle;
+    public events = new MessageBusService();
+    public activeDrawLayer?: IMapLayer;
+    private map?: CsMap;
+    private readonly FEATURE_SIDEBAR_ID = 'feature';
+    private readonly LAYER_DETAILS_SIDEBAR_ID = 'layerdetails';
 
     // #region Public Accessors (3)
 
@@ -75,15 +86,9 @@ export class MapDatasource extends DataSources {
 
     // #endregion Constructors (1)
 
-    public id = 'map-datasource';
-
-    // public _sources?: DataSources;
-    public activeDrawLayer?: IMapLayer;
     // #region Properties (8)
 
-    private map?: CsMap;
-    private pointPickerHandler?: MessageBusHandle;
-
+  
     // #endregion Properties (8)
 
     // #region Constructors (1)
@@ -419,6 +424,41 @@ export class MapDatasource extends DataSources {
             this.hideLayer(layer);
             this.showLayer(layer);
         }
+
+    }
+    
+    public startFeaturePicker(title?: string): Promise<FeatureEventDetails | undefined> {
+        return new Promise((resolve, reject) => {
+            if (!this.map) { return; }
+            if (this.map.featurePickerActivated) {
+                reject();
+                return;
+            }
+            AppState.Instance.triggerNotification({
+                title: title ? title : 'SELECT_FEATURE', timeout: 0, clickCallback: () => {
+                    reject();
+                    this.map!.featurePickerActivated = false;
+                    if (this.featurePickerHandler) {
+                        this.events.unsubscribe(this.featurePickerHandler);
+                    }
+                    return {};
+                }
+            });
+            this.map.featurePickerActivated = true;
+            this.featurePickerHandler = this.events.subscribe('feature', (a: string, e: any) => {
+                if (a === CsMap.FEATURE_SELECT) {
+                    this.map!.featurePickerActivated = false;
+                    if (this.featurePickerHandler) {
+                        this.events.unsubscribe(this.featurePickerHandler);
+                    }
+                    if (e && (e as FeatureEventDetails).features) {
+                        resolve(e);
+                    }
+                    AppState.Instance.clearNotifications();
+                    return;
+                }
+            });
+        });
     }
 
     public refreshLayerSource(ml: IMapLayer): Promise<IMapLayer> {
@@ -456,6 +496,15 @@ export class MapDatasource extends DataSources {
 
     public removeLegend(layer: IMapLayer, legend: PropertyDetails) { }
 
+    public showLayerById(id: string): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
+            if (!this.layers) return reject();
+            const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l);
+            if (!layer) return reject();
+            return this.showLayer(layer);
+        });
+    }
+
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             ml.enabled = true;
@@ -477,20 +526,33 @@ export class MapDatasource extends DataSources {
                         reject();
                     });
 
-                this.events.publish('layer', 'enabled', ml);
+                this.events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED, ml);
+                if (ml._events) {
+                    ml._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED, ml);
+                }
                 // check if not already subscribed to features events
                 if (ml._events) {
                     ml._busManager.subscribe(ml._events, 'feature', (a: string, f: Feature) => {
                         // also publish this event to manager
                         this.events.publish('feature', a, f);
-                    }
-                    );
+                    })
+                if (ml._events && !ml._featureEventHandle) {
+                    // if not, subscribe
+                    ml._featureEventHandle = ml._events.subscribe(
+                        CsMap.FEATURE,
+                        (a: string, f: Feature) => {
+                            // also publish this event to manager
+                            this.events.publish(CsMap.FEATURE, a, f);
+                        }
+                    )
                 }
+                
             } else {
                 reject();
             }
-        });
-    }
+        }
+    })
+}
 
     public startPointPicker(title?: string): Promise<LngLat | undefined> {
         return new Promise((resolve, reject) => {
@@ -810,8 +872,8 @@ export class MapDatasource extends DataSources {
             const res = serviceType.getInstance(init);
             return res;
         }
-        return;
     }
+
 
     /** create an instance and initialize all layers */
     private async initLayers() {

@@ -613,6 +613,10 @@ export class GeojsonPlusLayer extends GeojsonLayer
         if (this.Map && this._events) {
             const feature = (e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
+                if ((this._manager!.MapWidget as CsMap).featurePickerActivated) {
+                    
+                } else {
+                                 
                 this._events.publish('feature', CsMap.FEATURE_SELECT, {
                     feature,
                     features: e.features,
@@ -623,6 +627,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
                 this._manager!.selectFeature(feature, this, true);
                 // this._manager!.openFeature(feature, this);
             }
+        }
         }
     }
 

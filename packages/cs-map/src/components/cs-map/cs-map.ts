@@ -43,7 +43,35 @@ import { SidebarKeys } from '../../datasources/map-datasource';
 export class CsMap extends WidgetBase {
     // #endregion Properties (34)
 
-    // #region Public Accessors (4)
+    // topics used for events
+    public static FEATURE_SELECT = 'select';
+    public static FEATURE_CREATED = 'created';
+    public static FEATURE_DELETED = 'deleted';
+    public static FEATURE_MOUSE_ENTER = 'enter';
+    public static FEATURE_MOUSE_LEAVE = 'leave';
+    public static FEATURE_UPDATED = 'updated';
+    public static FEATURE = 'feature';
+    public static LAYER_UPDATED = 'layer.updated';
+    public static LAYER_ACTIVATED = 'layer.activated';
+    public static LAYER_DISABLED = 'layer.disabled';
+    public static LAYER = 'layer';
+    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
+    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
+    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
+    public static DRAWLAYER = 'drawlayer';
+    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
+    public static MAP_CLICK = 'map.click';
+    public static MAP_LOADED = 'loaded';
+    public static SEARCH_RESULT_SELECT = 'search.select';
+
+
+    public get featurePickerActivated(): boolean {
+        return this._featurePickerActivated;
+    }
+
+    public set featurePickerActivated(value: boolean) {
+        this._featurePickerActivated = value;
+    }
 
     public get manager(): MapDatasource | undefined {
         if (this.widget) {
@@ -69,35 +97,14 @@ export class CsMap extends WidgetBase {
         }
     }
 
-    public get pointPickerActivated(): boolean {
-        return this._pointerPickerActivated;
-    }
-
     public set pointPickerActivated(value: boolean) {
         this._pointerPickerActivated = value;
         this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
     }
     // #region Properties (34)
 
-    public static DRAWLAYER = 'drawlayer';
-    public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
-    public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
-    public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
-    public static FEATURE_CREATED = 'created';
-    public static FEATURE_DELETED = 'deleted';
-    public static FEATURE_MOUSE_ENTER = 'enter';
-    public static FEATURE_MOUSE_LEAVE = 'leave';
-    // topics used for events
-    public static FEATURE_SELECT = 'select';
-    public static FEATURE_UPDATED = 'updated';
-    public static LAYER_ACTIVATED = 'layer.activated';
     public static LAYER_CREATED = 'layer.created';
-    public static LAYER_DISABLED = 'layer.disabled';
-    public static LAYER_UPDATED = 'layer.updated';
-    public static MAP_CLICK = 'map.click';
-    public static MAP_DOUBLE_CLICK = 'map.doubleclick';
-    public static MAP_LOADED = 'loaded';
-    public static SEARCH_RESULT_SELECT = 'search.select';
+    
     public static layerExtensions: ILayerExtensionType[] = [];
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -134,7 +141,7 @@ export class CsMap extends WidgetBase {
     public mapDraw!: any;
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
-    // tslint:disable-next-line: variable-name
+    private _featurePickerActivated = false;
     private _pointerPickerActivated = false;
     private geocoderControl?: MapboxGeocoder;
     private geolocatorControl?: GeolocateControl;

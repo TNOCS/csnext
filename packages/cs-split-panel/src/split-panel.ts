@@ -57,15 +57,7 @@ export class SplitPanel extends Vue {
             // this.$forceUpdate();
             // this.$refs.splitcomp.optionsUpdated();
             // this.dashboard.component.initDashboard(this.dashboard);
-            
-
-
-
-
         };
-
-
-
     }
 
     public get options(): SplitPanelDashboardOptions | undefined {
@@ -143,5 +135,3 @@ export class SplitPanel extends Vue {
 }
 
 Vue.use(VueSplit);
-
-

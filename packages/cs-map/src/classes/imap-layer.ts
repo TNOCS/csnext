@@ -1,5 +1,5 @@
 import { MapDatasource, CsMap, ILayerAction, ILayerService, PropertyDetails, FeatureEventDetails, ILayerExtensionType, LayerFilter, LayerStyle } from '..';
-import { MessageBusService, MessageBusManager } from '@csnext/cs-core';
+import { MessageBusService, MessageBusManager, MessageBusHandle } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
 import { PropertyType, DataSource, FeatureTypes, FeatureType } from '@csnext/cs-data';
 
@@ -55,6 +55,7 @@ export interface IMapLayer {
     _showMenu?: boolean;
     _showMore?: boolean;
     _source?: DataSource;
+    _featureEventHandle?: MessageBusHandle;
 
     // #endregion Properties (10)
 

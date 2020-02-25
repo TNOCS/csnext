@@ -80,7 +80,6 @@ export class NestServer {
             }
 
             // this.server.use('/dashboard', express.static(path.join(__dirname, '/dashboard')));
-
             // this.server.get('/swagger.json', (_req, res) => res.json(document));
 
             const document = SwaggerModule.createDocument(
@@ -109,7 +108,6 @@ export class NestServer {
                     this.app.setViewEngine('html');
                     this.app.engine('html', require('hbs').__express);
                 }
-
                 Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
             }
 

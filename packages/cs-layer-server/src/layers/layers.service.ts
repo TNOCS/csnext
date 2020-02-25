@@ -13,8 +13,8 @@ import {
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
-import { debounce } from 'lodash';
-import { Debounce, Throttle } from 'lodash-decorators';
+import { throttle } from 'lodash';
+import { Debounce } from 'lodash-decorators';
 
 import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
@@ -24,8 +24,7 @@ import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 import AsyncLock from 'async-lock';
-// var AsyncLock = require('async-lock');
-import { Server } from 'tls';
+import { timingSafeEqual } from 'crypto';
 
 @Injectable()
 export class LayerService {
@@ -92,6 +91,9 @@ export class LayerService {
                         `Error opening config file: ${this.absoluteConfigPath}`
                     );
                     // no config found, start fresh
+                }
+                if (this.config && this.config.socketFlushInterval) {
+                    this.flushSocketQueue = this.getThrottleFnc();
                 }
                 await this.importLayers();
                 await this.initLayers();
@@ -203,10 +205,9 @@ export class LayerService {
         }
     }
 
-    public saveServerConfigDelay = () => {
-        debounce(() => {
-            this.saveServerConfig();
-        }, 5000);
+    @Debounce(5000)
+    saveServerConfigDelay() {
+        this.saveServerConfig();
     }
 
     public addLayer(def: LayerDefinition): Promise<LayerDefinition> {
@@ -352,22 +353,31 @@ export class LayerService {
                     feature
                 };
             });
-
         }
     }
 
-    @Throttle(5000)
-    public flushSocketQueue(source: LayerSource) {
+    private getThrottleFnc() {
+        const interval = (this.config && this.config.socketFlushInterval) || 5000;
+        Logger.log(`Flush socket queue every ${interval} ms`)
+        return throttle((source: LayerSource) => {
+            this._flushSocketQueue(source);
+        }, interval);
+    }
+
+    public flushSocketQueue = this.getThrottleFnc();
+
+    private _flushSocketQueue(source: LayerSource) {
         if (source) {
             if (source._socketQueue) {
                 this.lock.acquire(source.id, () => {
                     if (this.socket && this.socket.server) {
+                        const address = 'layer/' + source.id + '/features';
                         this.socket.server.emit(
-                            'layer/' + source.id + '/features',
+                            address,
                             source._socketQueue
                         );
+                        console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
                     }
-                    Logger.log(`Sending queue ${Object.keys(source._socketQueue).length}`);
                     source._socketQueue = {};
                 });
             }
@@ -386,6 +396,9 @@ export class LayerService {
                 // find source
                 const source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+
                     // if featureid was given, update feature
                     if (featureId !== undefined) {
                         feature.id = featureId;

@@ -170,7 +170,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 );
                                 if (layer && this.manager) {
                                     console.log('Active layer ' + layer.id);
-                                    this.manager.showLayer(layer);
+                                    this.manager!.loadLayer(layer).then(l => {
+                                        this.manager!.showLayer(l);
+                                    }).catch(e => console.warn(e));
                                 }
                             }
                         }
@@ -319,8 +321,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
 
     private initLiveLayer(gl: GeojsonPlusLayer) {
         this.initLayerSocket(gl);
-
-        gl._events.subscribe('layer', (a: string, d: any) => {
+        gl._events.subscribe(CsMap.LAYER, (a: string, d: any) => {
             switch (a) {
                 case CsMap.LAYER_ACTIVATED:
                     this.initLayerSocket(gl);

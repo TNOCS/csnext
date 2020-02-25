@@ -8,13 +8,13 @@ import {
     OnGatewayInit
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
-import { Client } from 'socket.io';
+import { Client, Server } from 'socket.io';
 
 @WebSocketGateway()
 export class DefaultWebSocketGateway
     implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
 
-    @WebSocketServer() public server: any;
+    @WebSocketServer() public server: Server;
     public wsClients: Client[] = [];
 
     constructor() {
@@ -23,7 +23,6 @@ export class DefaultWebSocketGateway
 
     public afterInit() {
         Logger.log('------ init -------');
-        this.server.emit('testing', { do: 'stuff' });
     }
 
     public handleConnection(client: Client) {
@@ -39,11 +38,6 @@ export class DefaultWebSocketGateway
             }
         }
         this.broadcast('disconnect', {});
-    }
-
-    @SubscribeMessage('my-event')
-    public onChgEvent(client: any, payload: any) {
-        this.broadcast('my-event', payload);
     }
 
     private broadcast(event, message: any) {
