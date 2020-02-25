@@ -16,6 +16,7 @@ export interface InsightDashboard {
 export interface InsightDashboardPanel {
     title: string;
     sections: InsightSection[];
+    id?: string;
 }
 
 export interface InsightSection {
@@ -23,6 +24,7 @@ export interface InsightSection {
     type: string;
     style: string;
     groups: string[];
+    id?: string;
 }
 
 export interface InsightView {

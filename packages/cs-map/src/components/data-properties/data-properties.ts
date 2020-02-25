@@ -7,6 +7,7 @@ import { PropertyDetails, LayerLegend, GeojsonPlusLayer, PropertySection } from 
 import { InsightDashboardPanel, InsightSection, PropertyType } from '@csnext/cs-data';
 import { StatsDatasource } from '../../datasources/stats-datasource';
 import { Watch } from 'vue-property-decorator';
+import { CsMap } from '../cs-map/cs-map';
 
 @Component({
     name: 'data-properties',
@@ -49,7 +50,10 @@ export class DataProperties extends WidgetBase {
     }
 
     public updateSections() {
-        if (!this.layer) { return; }
+        if (!this.layer || !this.layer.id || !this.panel) { return; }
+        if (this.section && !this.section.id) {
+            this.section.id = this.layer.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
+        }
         const defaultSection = {
             id: 'default',
             title: $cs.Translate('PROPERTIES'),
@@ -62,11 +66,11 @@ export class DataProperties extends WidgetBase {
             localStorage.featureSectionsExpanded = '{}';
         }
         this.featureSectionsExpanded = JSON.parse(localStorage.featureSectionsExpanded);
-        if (!this.featureSectionsExpanded.hasOwnProperty(this.layer.id)) {
-            this.featureSectionsExpanded[this.layer.id] = [defaultSection.id!];
+        if (this.section && this.section.id && !this.featureSectionsExpanded.hasOwnProperty(this.section.id)) {
+            this.featureSectionsExpanded[this.section.id] = [defaultSection.id!];
         }
 
-        if (this.featureSectionsExpanded[this.layer.id].includes(defaultSection.id!)) {
+        if (this.section && this.section.id && defaultSection.id && this.featureSectionsExpanded[this.section.id].includes(defaultSection.id)) {
             this.sectionsPanels.push(0);
         }
 
@@ -82,21 +86,21 @@ export class DataProperties extends WidgetBase {
                     /** find property type */
                     if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(key)) {
                         pt = ft.propertyMap[key];
-                    // tslint:disable-next-line: no-empty
+
                     }
                     let proptype: PropertyType;
                     if (typeof pt === 'string') {
                         proptype = {
                             _key: key,
                             title: key,
-                            type: 'number',
+                            type: 'string',
                             description: key
                         } as PropertyType;
                     } else {
                         proptype = pt;
                     }
 
-                    if (this.section && this.section.groups.length > 0 && (!proptype.section || (proptype.section && this.section && this.section.groups && !this.section.groups.includes(proptype.section)))) {
+                    if (this.section && this.section.groups && this.section.groups.length > 0 && (!proptype.section || (proptype.section && this.section && this.section.groups && !this.section.groups.includes(proptype.section)))) {
                         continue;
                     }
 
@@ -138,8 +142,10 @@ export class DataProperties extends WidgetBase {
                         if (!section) {
                             section = { id: proptype.section, title: proptype.section, properties: [] };
                             result.push(section);
-                            if (this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.layer.id) && this.featureSectionsExpanded[this.layer.id].includes(section.id!)) {
-                                this.sectionsPanels.push(result.length - 1);
+                            if (this.section && section.id && this.section.id && this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.section.id) && this.featureSectionsExpanded[this.section.id].includes(section.id)) {
+                                if (this.sectionsPanels.indexOf(result.length - 1) === -1) {
+                                    this.sectionsPanels.push(result.length - 1);
+                                }
                             }
                         }
                     }
@@ -158,20 +164,29 @@ export class DataProperties extends WidgetBase {
         this.busManager.subscribe(this.data.events, 'legends', (a, e) => {
             this.updateSections();
         });
+        this.busManager.subscribe(this.data.events, 'feature', (a, e) => {
+            if (a === CsMap.FEATURE_SELECT) {
+                this.updateSections();
+            }
+        });
         // this.busManager.subscribe(this.data.events, '')
         this.updateSections();
     }
 
     @Watch('sectionsPanels')
     public saveSectionsState() {
+        if (!this.section || !this.section.id) { return; }
         const res: string[] = [];
         if (!this.featureSectionsExpanded || !this.sectionsPanels || !this.sections || !this.layer) { return; }
         for (const panel of this.sectionsPanels) {
             if (this.sections.hasOwnProperty(panel)) {
-                res.push(this.sections[panel].id!);
+                const id = this.sections[panel].id!;
+                if (res.indexOf(id) === -1) {
+                    res.push(id);
+                }
             }
         }
-        this.featureSectionsExpanded[this.layer.id] = res;
+        this.featureSectionsExpanded[this.section.id] = res;
         localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
     }
 

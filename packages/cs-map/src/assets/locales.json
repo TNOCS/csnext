@@ -11,9 +11,25 @@
       "DOWNLOAD": "Download",
       "ALL": "All",
       "OPEN_SOURCE": "Go to source",
-      "MORE": "More"
+      "MORE": "More",
+      "FORMAT": "Format",
+      "ORGANISATION": "Organisation",
+      "INSIGHTS": "Insights",
+      "SOURCES": "Sources",
+      "BOOKMARKS": "Bookmarks",
+      "DESCRIPTION": "Description",
+      "UNIT": "Unit",
+      "SHARE": "Share",
+      "TABLE": "Table",
+      "SHARELINKCOPIED": "A link for you to share, has been copied to the clipboard",
+      "INSIGHTVIEW": "More insights",
+      "MOREINFO": "More info",
+      "ZOOMIN": "Zoom in"
     },
     "nl": {      
+      "INSIGHTS": "Inzichten",
+      "SOURCES": "Bronnen",
+      "BOOKMARKS": "Bookmarks",
       "SELECTED_LAYERS": "Geselecteerde kaartlagen",
       "LEGEND": "Legenda",
       "PROPERTIES": "Gegevens",
@@ -25,6 +41,16 @@
       "DOWNLOAD": "Download",
       "ALL": "Allemaal",
       "OPEN_SOURCE": "Bron bekijken",
-      "MORE": "Meer"
+      "MORE": "Meer",
+      "FORMAT": "Formaat",
+      "ORGANISATION": "Organisatie",
+      "DESCRIPTION": "Omschrijving",
+      "UNIT": "Unit",
+      "SHARE": "Deel",
+      "TABLE": "Gegevens tabel",
+      "SHARELINKCOPIED": "Een link om te delen is gekopieerd naar het klemboard",
+      "MOREINFO": "Uitleg",
+      "INSIGHTVIEW": "Meer inzichten",      
+      "ZOOMIN": "Toon op kaart"
     }
   }

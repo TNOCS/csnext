@@ -277,6 +277,12 @@ export class FeatureComponent extends WidgetBase {
         this.saveSectionsState();
     }
 
+    public zoomIn() {
+        if (!this.manager || !this.feature) { return; }
+        this.manager.zoomFeature(this.feature);
+        
+    }
+
     @Watch('sectionsPanels')
     public saveSectionsState() {
         const res: string[] = [];
@@ -287,7 +293,7 @@ export class FeatureComponent extends WidgetBase {
             }
         }
         this.featureSectionsExpanded[this.layer.id] = res;
-        localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
+        // localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
     }
 
     /** get list of available section, with their properties */
@@ -380,7 +386,9 @@ export class FeatureComponent extends WidgetBase {
                             section = { id: proptype.section, title: proptype.section, properties: [] };
                             result.push(section);
                             if (this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.layer.id) && this.featureSectionsExpanded[this.layer.id].includes(section.id!)) {
-                                this.sectionsPanels.push(result.length - 1);
+                                if (this.sectionsPanels.indexOf(result.length - 1) === -1) {
+                                    this.sectionsPanels.push(result.length - 1);
+                                }
                             }
                         }
                     } else { }

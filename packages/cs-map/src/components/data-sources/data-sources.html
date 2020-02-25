@@ -23,9 +23,10 @@
               outlined
             ></v-select> -->
     </v-layout>
+    
     <v-list three-line>
         <template v-for="source in filteredSources">
-            <v-list-item :key="source.path">
+            <v-list-item :key="source.path" @click="openSourceDetails(source)">
                 <v-list-item-avatar tile>
                     <v-img :src="source.image" class="pe-source-image"></v-img>
                 </v-list-item-avatar>
@@ -41,7 +42,11 @@
                         <v-chip
                             v-for="fk in source.schema.foreignKeys"
                             :key="fk.fields"
+                            @click.stop="data.openSourceDetails(fk.reference.resource)"
                         >
+                            <v-avatar left>
+                                <v-icon>folder</v-icon>
+                            </v-avatar>
                             {{fk.reference.resource}}
                         </v-chip>
                     </div>
@@ -61,13 +66,20 @@
                         </v-tooltip>
                     </template>
                     <v-list>
-                        <v-list-item v-if="source.source" :href="source.source" target="_blank">
-                            <v-list-item-title>{{$cs.Translate('OPEN_SOURCE')}}</v-list-item-title>
+                        <v-list-item
+                            v-if="source.source"
+                            :href="source.source"
+                            target="_blank"
+                        >
+                            <v-list-item-title
+                                >{{$cs.Translate('OPEN_SOURCE')}}</v-list-item-title
+                            >
                         </v-list-item>
                         <v-list-item @click="downloadSource(source)">
-                            <v-list-item-title>{{$cs.Translate('DOWNLOAD')}}</v-list-item-title>
+                            <v-list-item-title
+                                >{{$cs.Translate('DOWNLOAD')}}</v-list-item-title
+                            >
                         </v-list-item>
-
                     </v-list>
                 </v-menu>
 

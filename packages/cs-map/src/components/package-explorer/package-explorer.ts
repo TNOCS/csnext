@@ -7,18 +7,20 @@ import { DataResource, Insight, InsightView, DataSourceEvents } from '@csnext/cs
 import { LayerLegend } from '../../classes/layer-legend';
 import { LayerLegendItem } from '../layer-legend-item/layer-legend-item';
 import { StatsDatasource } from '../../datasources/stats-datasource';
+import { FeaturePreview } from './../feature-preview/feature-preview';
 import { Watch } from 'vue-property-decorator';
 import { MessageBusManager } from '@csnext/cs-core';
 
 @Component({
     name: 'package-explorer',
-    components: { simplebar, LayerLegendItem },
+    components: { simplebar, LayerLegendItem, FeaturePreview },
     props: ['data'],
     template: require('./package-explorer.html')
 } as any)
 export class PackageExplorer extends Vue {
     public data!: StatsDatasource;
     public collapsed: boolean = true;
+    public fullscreen: boolean = false;
     public tab: string = 'insights';
     public value: any[] = [];
     public showInsightDetails = false;
@@ -26,6 +28,9 @@ export class PackageExplorer extends Vue {
     public search: string = '';
     public searchSelection: any = null;
     public searchResult: any[] = [];
+    public tableHeaders: any[] = [];
+    public tableProperties: string[] = [];
+
     private busManager = new MessageBusManager();
     // public search(s: string): any[] | undefined {
     //     debugger;
@@ -49,6 +54,27 @@ export class PackageExplorer extends Vue {
         }
     }
 
+    public shareState() {
+        this.data.storeState();
+        $cs.copyToClipboard(window.location.href);
+        $cs.triggerNotification({ title: $cs.Translate('SHARELINKCOPIED')});
+    }
+
+    public showTable() {
+        $cs.closeRightSidebar();
+        this.collapsed = false;
+        this.tab = 'table';
+    }
+
+    @Watch('tab')
+    @Watch('collapsed')
+    public changedTab(v: string) {
+        if (v !== 'table') {
+            this.fullscreen = false;
+        }
+
+    }
+
     public get activeBookmarks(): mapboxgl.MapboxGeoJSONFeature[] {
         if (this.data.mainLayer && this.data.mainLayer.bookmarks) {
             return this.data.mainLayer.bookmarks;
@@ -66,9 +92,82 @@ export class PackageExplorer extends Vue {
         return [];
     }
 
-    public downloadFile() {
+    public downloadGeojson() {
         if (this.data && this.data.mainLayer) {
             this.data.downloadFile(this.data.mainLayer);
+        }
+    }
+
+    public async downloadCsv() {
+        if (this.data && this.data.mainLayer) {
+            this.data.downloadCsv(this.data.mainLayer);
+        }
+    }
+
+    public downloadPackage() {
+        if (this.data && this.data.mainLayer) {
+            this.data.downloadFile(this.data.mainLayer);
+        }
+    }
+
+    public tableOpenFeature(f: any) {
+        if (this.data && this.data.mainLayer) {
+            this.data.selectFeature(f, this.data.mainLayer, true);
+        }
+    }
+
+    public toggleTableSize() {
+        this.fullscreen = !this.fullscreen;
+        $cs.closeRightSidebar();
+        this.updateTableHeaders();
+    }
+
+    @Watch('tableProperties')
+    public updateTableHeaders() {
+        if (this.data && this.data.mainLayer && this.data.mainLayer.style) {
+            const headers: any[] = [
+                {
+                    text: 'Title',
+                    align: 'left',
+                    filterable: false,
+                    value: 'properties.' + this.data.mainLayer.style.title
+                }];
+            if (this.fullscreen) {
+                if (this.data.mainLayer._source && this.data.mainLayer._source._featureType && this.data.mainLayer._source._featureType.properties) {
+                    if (this.tableProperties.length === 0) {
+                        let p = 0;
+                        for (const prop of this.data.mainLayer._source._featureType.properties) {
+                        if (p < 10 && prop.type === 'number' && prop._key) {
+                            this.tableProperties.push(prop._key);
+                            p += 1;
+                        }
+                    }
+                    }
+                    for (const prop of this.tableProperties) {
+                        if (this.data.mainLayer._source._featureType.propertyMap.hasOwnProperty(prop)) {
+                            const p = this.data.mainLayer._source._featureType.propertyMap[prop];
+                            headers.push({
+                                text: p.title,
+                                align: 'right',
+                                value: 'properties.' + p._key
+                            });
+                        }
+                    }
+                }
+            } else {
+                if (this.data.mainLayer._legends) {
+                    for (const legend of this.data.mainLayer._legends) {
+                        if (legend.propertyInfo) {
+                            headers.push({
+                                text: legend.propertyInfo.title,
+                                align: 'right',
+                                value: 'properties.' + legend.property
+                            });
+                        }
+                    }
+                }
+            }
+            this.$set(this, 'tableHeaders', headers);
         }
     }
 
@@ -82,8 +181,8 @@ export class PackageExplorer extends Vue {
     @Watch('search')
     public doSearch(val: string) {
         if (this.data && this.data.mainLayer && this.data.mainLayer._source && this.data.mainLayer._source._data) {
-                    this.searchResult = this.data.mainLayer._source._data.features;
-                }
+            this.searchResult = this.data.mainLayer._source._data.features;
+        }
     }
 
     public openInsights() {
@@ -115,14 +214,17 @@ export class PackageExplorer extends Vue {
     @Watch('data')
     public dataChanged() {
         this.busManager.subscribe(this.data.events, DataSourceEvents.INSIGHT_VIEW, (a, e) => {
+            this.updateTableHeaders();
             this.$forceUpdate();
         });
         this.busManager.subscribe(this.data.events, 'legends', (a, e) => {
+            this.updateTableHeaders();
             this.$forceUpdate();
         });
         this.busManager.subscribe(this.data.events, 'bookmarks', (a, e) => {
             this.$forceUpdate();
         });
+        this.updateTableHeaders();
         this.$forceUpdate();
     }
 

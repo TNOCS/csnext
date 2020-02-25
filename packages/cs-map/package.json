@@ -32,8 +32,8 @@
         "@turf/length": "^6.0.2",
         "handlebars": "^4.7.3",
         "handlebars-intl": "1.1.2",
-        "mapbox-gl": "1.7.0",
-        "mapbox-gl-controls": "^1.6.0",
+        "mapbox-gl": "1.8.0",
+        "mapbox-gl-controls": "^1.6.1",
         "numeral": "^2.0.6"
     },
     "devDependencies": {
@@ -45,8 +45,8 @@
     },
     "peerDependencies": {
         "vega": "^5.9.1",
-        "vega-embed": "^6.2.2",
-        "vega-lite": "^4.1.1"
+        "vega-embed": "^6.3.2",
+        "vega-lite": "^4.4.0"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

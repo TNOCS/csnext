@@ -408,7 +408,7 @@ export class MapboxStyles {
 @Form({ title: 'Layer Style' })
 export class LayerStyle implements ILayerStyle {
 
-    public type?:  'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
+    public type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
     // public types?: string[];
     public iconZoomLevel?: number;
     @FormField({ title: 'Feature title', type: 'string' })

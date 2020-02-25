@@ -12,16 +12,34 @@
             >
                 <v-btn
                     fab
-                    v-if="$cs.isMobile"
                     depressed
                     small
                     @click="closeSidebar()"
-                    class="sidebar-back-button"
-                    ><v-icon>arrow_back</v-icon></v-btn
+                    class="primary sidebar-back-button"
+                    ><v-icon>arrow_forward</v-icon></v-btn
                 >
                 <v-card-title class="feature-component-title" v-html="title">
                 </v-card-title>
             </v-img>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn
+                        v-on="on"
+                        style="margin-right:50px"
+                        absolute
+                        dark
+                        fab
+                        bottom
+                        right
+                        small                        
+                        @click="zoomIn()"
+                    >
+                        <v-icon>zoom_in</v-icon>
+                    </v-btn>
+                </template>
+                
+                <span>{{ $cs.Translate('ZOOMIN')}}</span>
+            </v-tooltip>
             <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn

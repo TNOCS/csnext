@@ -28,7 +28,6 @@ export class GeojsonPlusLayer extends GeojsonLayer
     public isLive?: boolean;
     public socketEmitters: { [key: string]: SocketIOClient.Emitter } = {};
     public type?: 'poi';
-    public selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
     public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
     public featureTypes?: FeatureTypes;
 
@@ -621,7 +620,8 @@ export class GeojsonPlusLayer extends GeojsonLayer
                     lngLat: e.lngLat,
                     layer: this
                 } as FeatureEventDetails);
-                this._manager!.openFeature(feature, this);
+                this._manager!.selectFeature(feature, this, true);
+                // this._manager!.openFeature(feature, this);
             }
         }
     }

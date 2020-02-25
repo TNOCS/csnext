@@ -1,14 +1,19 @@
 <div>
-    <v-text-field
-        solo
-        v-if="widget.options.searchEnabled"
-        class="layer-filter-field"
-        v-model="filter"
-        label="filter"
-        append-icon="search"
-    ></v-text-field>
+    <v-layout>
+        <v-text-field
+            solo
+            v-if="widget.options.searchEnabled"
+            class="layer-filter-field"
+            v-model="filter"
+            label="filter"
+            append-icon="search"
+        ></v-text-field>
+        <v-btn icon @click="createLayer()">
+            <v-icon>add</v-icon>
+        </v-btn>
+    </v-layout>
     <simplebar data-simplebar-auto-hide="false">
-        <v-expansion-panels v-model="groupsexpanded" multiple accordion>
+        <v-expansion-panels v-model="groupsexpanded" multiple accordion style="height:100%">
             <v-expansion-panel
                 v-if="widget.content"
                 v-for="(group, key) in Groups"

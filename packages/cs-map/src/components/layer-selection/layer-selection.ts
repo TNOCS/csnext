@@ -6,6 +6,7 @@ import { MapDatasource, IMapLayer, ILayerAction } from '../../.';
 
 import simplebar from 'simplebar-vue';
 import { ILayerGroup } from './layer-group';
+import { GeojsonPlusLayer } from '../../layers/geojson-plus-layer';
 @Component({
     name: 'layer-selection',
     props: { widget: null },
@@ -157,6 +158,11 @@ export class LayerSelection extends Vue {
             layer._manager.hideLayer(layer);
         }
         console.log(layer.title, layer.enabled);
+    }
+
+    public async createLayer() {
+        if (!this.MapManager) { return; }
+        this.MapManager.addGeojsonLayer('newlayer');
     }
 
     private addLayerToGroup(

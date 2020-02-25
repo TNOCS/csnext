@@ -5,7 +5,7 @@ import simplebar from 'simplebar-vue';
 import { WidgetBase, VegaWidget } from '@csnext/cs-client';
 import { DataChartOptions } from '../..';
 import { DataSourceEvents, DataSources, DataSource, InsightDashboardPanel, InsightSection } from '@csnext/cs-data';
-import { IWidgetSize } from '@csnext/cs-core';
+import { IWidgetSize, guidGenerator } from '@csnext/cs-core';
 import { StatsDatasource } from '../../datasources/stats-datasource';
 import { GeojsonPlusLayer } from '../../layers/geojson-plus-layer';
 import { Watch } from 'vue-property-decorator';
@@ -26,10 +26,6 @@ export class DataChart extends WidgetBase {
     public layer!: GeojsonPlusLayer;
     public features!: mapboxgl.MapboxGeoJSONFeature[];
 
-    public $refs!: {
-        vegachart: HTMLElement;
-      };
-
     public vegadata: any = {};
 
     public get options(): DataChartOptions {
@@ -47,7 +43,10 @@ export class DataChart extends WidgetBase {
     }
 
     public get vegaid() {
-        return 'vega-chart-' + this.panel.title;
+        if (!this.panel.id) {
+            this.panel.id = guidGenerator();
+        }
+        return 'vega-chart-' + this.panel.id;
     }
 
     public mounted() {
@@ -145,7 +144,12 @@ export class DataChart extends WidgetBase {
                                 description: 'A scatterplot showing horsepower and miles per gallons for various cars.',
                                 data: { values: source._data?.features},
                                 width: 300,
-                                mark: 'point',
+                                mark: 'circle',
+                                selection: {
+                                    grid: {
+                                      type: 'interval', 'bind': 'scales'
+                                    }
+                                  },
                                 encoding: {
                                   x: {field: this.options.key, title: this.getTitle(this.options.key), type: 'quantitative'},
                                   y: {field: this.options.secondKey, title: this.getTitle(this.options.secondKey), type: 'quantitative'},
@@ -215,7 +219,7 @@ export class DataChart extends WidgetBase {
         if (!key) { return ''; }
         const k = key.replace('properties.', '');
         const ft = this.layer?._source?.getFeatureType();
-        if (ft && ft.propertyMap.hasOwnProperty(k)) {
+        if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(k)) {
             const pt = ft.propertyMap[k];
             if (pt) {
                 return pt.title + '(' + pt.unit + ')';

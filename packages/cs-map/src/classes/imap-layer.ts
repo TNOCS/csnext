@@ -40,6 +40,9 @@ export interface IMapLayer {
     // layout?: mapboxgl.Layout; // | mapboxgl.FillLayout | mapboxgl.LineLayout | mapboxgl.CircleLayout;
     // paint?: mapboxgl.SymbolPaint | mapboxgl.LinePaint | mapboxgl.FillPaint | mapboxgl.CirclePaint;
     openFeatureDetails?: boolean;
+    hideInLayerList?: boolean;
+    featureTypes?: FeatureTypes;
+    selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
 
     // #region Properties (10)
     _busManager: MessageBusManager;
@@ -52,8 +55,6 @@ export interface IMapLayer {
     _showMenu?: boolean;
     _showMore?: boolean;
     _source?: DataSource;
-    hideInLayerList?: boolean;
-    featureTypes?: FeatureTypes;
 
     // #endregion Properties (10)
 

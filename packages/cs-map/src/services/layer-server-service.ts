@@ -84,15 +84,22 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             gl.isEditable = layer.isEditable;
                             gl.isLive = layer.isLive;
                             gl.featureTypes = layer.featureTypes;
-                            gl.iconZoomLevel = style.iconZoomLevel;
+                            if (style)
+                            {
+                                if (style.iconZoomLevel) {
+                                   gl.iconZoomLevel = style.iconZoomLevel;
+                                }
+                                gl.style = style;
+                                if (gl.style && gl.style.popup) {
+                                    console.log(gl.style.popup);
+                                }
+                            }
+                            
                             gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
                             gl.id = layer.id;
                             gl.extensions = layer.extensions;
-                            gl.style = style;
-                            if (gl.style && gl.style.popup) {
-                                console.log(gl.style.popup);
-                            }
+                            
                             if (layer.sourceType) {
                                 // gl.type = layer.sourceType;
                             } else {
@@ -119,10 +126,10 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             // }
 
                             if (gl.isEditable) {
-                                this.initEditableLayer(gl, layer);
+                                this.initEditableLayer(gl);
                             } else {
                                 if (gl.isLive) {
-                                    this.initLiveLayer(gl, layer);
+                                    this.initLiveLayer(gl);
                                 }
                             }
 
@@ -171,6 +178,12 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 })
                 .catch((e) => { console.log(e); });
         }
+
+        this.manager.events.subscribe('layer', (a: string, l: GeojsonPlusLayer) => {
+            if (a === CsMap.LAYER_CREATED) {
+                this.createLiveLayer(l);
+            }
+        })
     }
 
     public disableLayerSocket(gl: GeojsonPlusLayer) {
@@ -251,7 +264,60 @@ export class LayerServerService implements ILayerService, IStartStopService {
         this.removeExistingLayers(manager);
     }
 
-    private initLiveLayer(gl: GeojsonPlusLayer, layer: any) {
+    private createLiveLayer(gl: GeojsonPlusLayer) {
+        if (!this.options) { return; }
+        const url = this.options.url + 'layers/' + gl.id;
+        const body = {
+            id: gl.id,
+            title: gl.title,
+            source: 'people.json',
+            sourceType: 'geojson',
+            types: ['point'],
+            version: '0.0.1',
+            description: gl.description,
+            tags: gl.tags,
+            isEditable: gl.isEditable,
+            isLive: gl.isLive
+        };
+        // {
+        //     "id": "string",
+        //     "title": "string",
+        //     "description": "string",
+        //     "tags": [
+        //       "string"
+        //     ],
+        //     "sourceType": "string",
+        //     "version": "string",
+        //     "source": "string",
+        //     "sourceUrl": "string",
+        //     "isEditable": true,
+        //     "isLive": true,
+        //     "connectionId": "string",
+        //     "query": "string",
+        //     "tileSupport": "string",
+        //     "color": "string",
+        //     "externalUrl": "string",
+        //     "externalCacheDuration": 0,
+        //     "disableFeatureList": true,
+        //     "meta": "string"
+        //   }
+        // const body = gl;
+        axios.put(url, body, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => {
+            console.log(r);
+            this.initLiveLayer(gl);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+
+    }
+
+    private initLiveLayer(gl: GeojsonPlusLayer) {
         this.initLayerSocket(gl);
 
         gl._events.subscribe('layer', (a: string, d: any) => {
@@ -313,9 +379,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
         }
     }
 
-    private initEditableLayer(gl: GeojsonPlusLayer, layer: any) {
+    private initEditableLayer(gl: GeojsonPlusLayer) {
         // listen to server
-        this.initLiveLayer(gl, layer);
+        this.initLiveLayer(gl);
 
         gl._events.subscribe('feature', (a: string, f: any) => {
             const md = this.mapDraw;
@@ -347,7 +413,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         // listen to source change events
         gl._events.subscribe('source', (a: string) => {
             if (a === 'updated' && this.options) {
-                const url = this.options.url + 'sources/' + layer.id;
+                const url = this.options.url + 'sources/' + gl.id;
                 const body = gl._source!._data;
                 if (body && this.socket) {
                     // tslint:disable-next-line:no-string-literal

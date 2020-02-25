@@ -69,6 +69,7 @@ export class BaseLayer implements IMapLayer {
     public disableFeatureList?: boolean;
     public extensions?: ILayerExtensionType[];
     public supportLayers: string[] = [];
+    public selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
     // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
     // @FormField({
     //     title: 'Feature types',
@@ -173,6 +174,15 @@ export class BaseLayer implements IMapLayer {
     // #region Public Methods (24)
 
     public addLayer(map: CsMap) { }
+
+    public getFeature(id: string | number): Feature | undefined {
+        if (this._source && this._source._data && this._source._data.features) {
+            const result = this._source._data.features.find(f => f.id && f.id.toString() === id.toString());
+            if (result) {
+                return result;
+            }
+        }
+    }
 
     public getFeatureType(): FeatureType | undefined {
         return undefined;
@@ -344,8 +354,8 @@ export class BaseLayer implements IMapLayer {
             }
             return state.popup;
         } else {
-            if (this.style && this._source && this._source.featureType) {
-                return this.createDefaultPopup(f, this.style, this._source.featureType);
+            if (this.style && this._source && this._source._featureType) {
+                return this.createDefaultPopup(f, this.style, this._source._featureType);
             } else {
                 return '';
             }
@@ -468,7 +478,7 @@ export class BaseLayer implements IMapLayer {
             res += `<div class="default-popup-split"></div>`;
             for (const legend of this._legends) {
                 if (legend.propertyInfo) {
-                    res += `<span class="default-popup-property-title">${legend.propertyInfo.title}</span><span class="default-popup-property-value">${f.properties[legend.property]}</span>`;
+                    res += `<span class="default-popup-property-title">${legend.propertyInfo.title}</span><span class="default-popup-property-value">${f.properties[legend.property]} ${legend.propertyInfo.unit}</span>`;
                 }
             }
         }

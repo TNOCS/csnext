@@ -91,6 +91,7 @@ export class CsMap extends WidgetBase {
     public static FEATURE_SELECT = 'select';
     public static FEATURE_UPDATED = 'updated';
     public static LAYER_ACTIVATED = 'layer.activated';
+    public static LAYER_CREATED = 'layer.created';
     public static LAYER_DISABLED = 'layer.disabled';
     public static LAYER_UPDATED = 'layer.updated';
     public static MAP_CLICK = 'map.click';
@@ -360,6 +361,42 @@ export class CsMap extends WidgetBase {
                 this.initMapLayers();
                 this.startServices();
                 this.mapLoaded(e);
+
+                this.map.addLayer({
+                    id: 'dirt-mvt',
+                    source: {
+                      type: 'vector',
+                      tiles: ['http://localhost:3000/v1/mvt/bagactueel.pand/{z}/{x}/{y}'],
+                      maxzoom: 10,
+                      minzoom: 15
+                    },
+                    'source-layer': 'pand',
+                    type: 'fill',
+                    minzoom: 5,
+                    paint: {
+                      'fill-color': '#088',
+                      'fill-outline-color': '#333'
+                    }
+                  });
+                
+
+                // this.map.addSource('bag', {
+                //     type: 'vector',
+                //     // tiles: ['http://192.168.2.61:8080/geoserver/bag/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=bag:gemeente&STYLE=polygon&TILEMATRIX=EPSG:900913:{z}&TILEMATRIXSET=EPSG:900913&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}']
+                //     // tiles: ['http://192.168.2.61:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=bag:gemeente&STYLE=&TILEMATRIX=EPSG:4326:{z}&TILEMATRIXSET=EPSG:4326&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}']
+                //     // tiles: ['http://192.168.2.61:8080/geoserver/gwc/service/tms/1.0.0/bag:gemeente@EPSG:4326@pbf/{z}/{x}/{y}.pbf']
+                //     tiles: ['http://192.168.2.61:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=bag:gemeente&STYLE=&TILEMATRIX=EPSG:4326:17&TILEMATRIXSET=EPSG:4326&FORMAT=application/vnd.mapbox-vector-tile&TILECOL=133405&TILEROW=42673']
+                //     // http://192.168.2.61:8080/geoserver/gwc/service/tms/1.0.0/bag:gemeente@EPSG%3A900913@pbf/{z}/{x}/{y}.pbf"
+
+                //   });
+                // this.map.addLayer({
+                //     id: 'clusters',
+                //     type: 'circle',
+                //     source: 'bag',
+                //     'source-layer': 'bag',
+                //     interactive: true
+                //     // filter: ['>', ['get', 'count'], 1]
+                //   });
 
                 if (this.manager) {
                     // add layer editor control (adding features, lines, etc.)

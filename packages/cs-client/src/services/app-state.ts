@@ -98,6 +98,18 @@ export class AppState extends AppStateBase {
     return window.innerWidth < 800;
   }
 
+  public copyToClipboard(str: string) {
+    const el = document.createElement('textarea');
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+
   public initApp(element: string = '#app', project?: IProject) {
     new Vue({
       render: h => h(CsApp)
@@ -470,11 +482,11 @@ export class AppState extends AppStateBase {
       return;
     }
 
-    
+
 
     Vue.nextTick(() => {
       this.openRightSidebarKey(key);
-    this.clearRightSidebar();
+      this.clearRightSidebar();
       if (
         this.project.rightSidebar &&
         this.project.rightSidebar.dashboard &&

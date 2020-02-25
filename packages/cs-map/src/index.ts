@@ -12,6 +12,7 @@ import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { MapOptions } from './classes/map-options';
 import { MapboxOptions } from 'mapbox-gl';
 import { DataChart } from './components/data-chart/data-chart';
+import { CreateElement } from 'vue/types/umd';
 
 // classes
 export * from './classes/map-options';
@@ -49,6 +50,7 @@ export * from './components/data-list/data-list';
 export * from './components/data-sources/data-sources';
 export * from './components/data-properties/data-properties';
 export * from './components/data-big-text/data-big-text';
+export * from './components/feature-preview/feature-preview';
 
 // layers
 export * from './layers/base-layer';

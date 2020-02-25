@@ -169,6 +169,11 @@ export class FeatureDetails extends WidgetBase {
         this.saveSectionsState();
     }
 
+    public zoomIn() {
+        alert('Zoom in');
+    }
+
+
     @Watch('sectionsPanels')
     public saveSectionsState() {
         const res: string[] = [];
@@ -179,7 +184,7 @@ export class FeatureDetails extends WidgetBase {
             }
         }
         this.featureSectionsExpanded[this.layer.id] = res;
-        localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
+        // localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
     }
 
     /** get list of available section, with their properties */

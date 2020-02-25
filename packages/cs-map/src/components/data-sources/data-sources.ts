@@ -4,6 +4,7 @@ import './data-sources.css';
 import simplebar from 'simplebar-vue';
 import { StatsDatasource } from '../../datasources/stats-datasource';
 import { DataResource, DataSource } from '@csnext/cs-data';
+import { PropertySection } from '../..';
 
 @Component({
     name: 'data-sources',
@@ -23,6 +24,11 @@ export class DataSources extends vue {
     public downloadSource(source: DataResource) {
         this.data.downloadSource(source);
     }
+
+    public openSourceDetails(source: DataResource) {
+        this.data.openSourceDetails(source);
+    }
+
 
     private uniques(prop: string) {
         let result = [this.allTitle];
@@ -55,6 +61,7 @@ export class DataSources extends vue {
             return this.data.dataPackage.resources;
         }
     }
+
 
 }
 

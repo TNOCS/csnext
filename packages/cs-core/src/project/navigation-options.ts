@@ -6,8 +6,8 @@ export class NavigationOptions {
   // #region Properties (2)
 
   public search?: ISearchOptions;
-  @FormField({ title: 'style', type: 'combobox', options: ['left-hierarchy', 'tabs', 'bottom'] })
-  public style?: 'left-hierarchy' | 'tabs' | 'bottom';
+  @FormField({ title: 'style', type: 'combobox', options: ['left-hierarchy', 'tabs', 'bottom', 'mobile'] })
+  public style?: 'left-hierarchy' | 'tabs' | 'bottom' | 'mobile-compact';
   @FormField({ title: 'auto mobile bottom', type: 'checkbox' })
   public autoMobileBottom?: boolean;
 

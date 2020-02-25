@@ -21,7 +21,7 @@
     "dependencies": {
         "@csnext/cs-client": "^0.0.127",
         "@csnext/cs-core": "^0.0.127",
-        "vis-timeline": "6.2.7"
+        "vis-timeline": "7.1.3"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

@@ -48,6 +48,7 @@ const DEFAULT_LAYER_STYLE = {
 
 export const SidebarKeys = {
     FEATURE_DETAILS: 'feature_details',
+    SOURCE_DETAILS: 'source_details',
     FEATURE_LIST: 'feature_list',
     LAYERS_SELECTION: 'layers_selection'
 };
@@ -123,8 +124,9 @@ export class MapDatasource extends DataSources {
                 rl.initLayer(this).then(() => {
                     // rl.popupContent = undefined;
                     if (this.layers) {
-                        this.layers.push(rl);
+                        this.layers.push(rl);                        
                         this.showLayer(rl).then(() => {
+                            this.events.publish('layer', CsMap.LAYER_CREATED, rl);
                             resolve(rl);
                         }).catch(() => {
                             reject();
@@ -340,7 +342,7 @@ export class MapDatasource extends DataSources {
     }
 
     //TODO: implement
-    public selectFeature(feature: number | Feature | undefined, layer: IMapLayer, open: boolean) {
+    public selectFeature(feature: number | mapboxgl.MapboxGeoJSONFeature | undefined, layer: IMapLayer, open: boolean) {
         if (!feature) { return; }
         if (typeof (feature) === 'number') {
             // if (layer.source && typeof(layer.source) === 'string') {
@@ -349,14 +351,17 @@ export class MapDatasource extends DataSources {
             // }
 
             if (layer._source && layer._source._loaded && layer._source._data) {
-                feature = layer._source._data.features.find(f => f.id === feature);
+                feature = layer._source._data.features.find(f => f.id === feature) as mapboxgl.MapboxGeoJSONFeature;
                 if (open) {
                     this.openFeature(feature, layer);
                 }
             }
             // this.MapControl.getBounds()
-        } else if (open) {
-            this.openFeature(feature, layer);
+        } else {
+            layer.selectedFeature = feature;
+            if (open) {
+                this.openFeature(feature, layer);
+            }
         }
 
     }
@@ -370,7 +375,6 @@ export class MapDatasource extends DataSources {
                 component: FeatureComponent,
                 options: {
                     showToolbar: false,
-                    searchProperty: 'filter',
                     toolbarOptions: {
                         backgroundColor: 'primary',
                         dense: true
@@ -716,7 +720,7 @@ export class MapDatasource extends DataSources {
         return s;
     }
 
-    public zoomFeature(feature: Feature, zoomLevel?: number) {
+    public zoomFeature(feature: Feature | mapboxgl.MapboxGeoJSONFeature, zoomLevel?: number) {
         if (!this.map) {
             return;
         }

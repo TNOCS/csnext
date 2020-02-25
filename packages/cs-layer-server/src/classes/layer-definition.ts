@@ -61,6 +61,7 @@ export class LayerDefinition implements ILayer {
     public color: string;
 
     @ApiProperty()
+    /** link to external layer location */
     public externalUrl: string;
 
     @ApiProperty()

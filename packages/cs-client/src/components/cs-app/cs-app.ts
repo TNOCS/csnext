@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify from 'vuetify';
+import Vuetify, { VuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -32,6 +32,7 @@ import 'simplebar/dist/simplebar.css';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
+
 const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'nl',
@@ -40,10 +41,13 @@ const i18n = new VueI18n({
 });
 
 const vuetifyOpts = {
+  icons: {
+    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  }
   // lang: {
   //   t: (key, ...params) => i18n.t(key, params)
   // }
-};
+} as VuetifyPreset;
 
 Vue.use(Vuetify);
 

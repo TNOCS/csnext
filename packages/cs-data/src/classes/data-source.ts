@@ -36,9 +36,8 @@ export class DataSource {
         | 'table'
         ;
 
+    public _featureType?: FeatureType;
     private _flat?: any[];
-
-    private _featureType?: FeatureType;
 
     constructor(data?: string | DataSet) {
         this.state = DataSourceState.unloaded;
@@ -121,10 +120,20 @@ export class DataSource {
         return new Promise((resolve, reject) => {
             let res = '';
             if (this._data && this.state === DataSourceState.loaded) {
-                for (const feature of this._data.features) {
-                    res += feature.id + '\n';
-                }
+                const flat = this.getFlatProperties();
+                resolve(JSON.stringify(flat));
+
+                // for (const feature of this._data.features) {
+                //     res += feature.id;
+                //     this.getFlatProperties
+                //     for (const prop in Object.keys(feature.properties))
+                //     {
+                //         res+=feature.properties[prop]
+                //     }
+                //      + '\n';
+                // }
             }
+            resolve(res);
         });
     }
 
