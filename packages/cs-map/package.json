@@ -32,13 +32,13 @@
         "@turf/length": "^6.0.2",
         "handlebars": "^4.7.3",
         "handlebars-intl": "1.1.2",
-        "mapbox-gl": "1.8.0",
+        "mapbox-gl": "1.8.1",
         "mapbox-gl-controls": "^1.6.1",
         "numeral": "^2.0.6"
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
-        "@types/mapbox-gl": "^1.7.0",
+        "@types/mapbox-gl": "^1.8.0",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
         
