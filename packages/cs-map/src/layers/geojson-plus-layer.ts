@@ -623,8 +623,8 @@ export class GeojsonPlusLayer extends GeojsonLayer
                     context: e,
                     lngLat: e.lngLat,
                     layer: this
-                } as FeatureEventDetails);
-                this._manager!.selectFeature(feature, this, true);
+                } as FeatureEventDetails);                
+                this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails || true);
                 // this._manager!.openFeature(feature, this);
             }
         }
