@@ -98,6 +98,10 @@ export class AppState extends AppStateBase {
     return window.innerWidth < 800;
   }
 
+  public get isFloatingHeader(): boolean {    
+      return this.project?.header?.floating === true && !this.isMobile;    
+  }
+
   public copyToClipboard(str: string) {
     const el = document.createElement('textarea');
     el.setAttribute('readonly', '');

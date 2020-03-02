@@ -79,7 +79,7 @@
   <!-- content -->
   <v-content
     fluid
-    v-bind:class="{ 'floating': $cs.project.header.floating }"
+    v-bind:class="{ 'floating': $cs.isFloatingHeader }"
     v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
   >
     <router-view :key="$route.path"> </router-view>
