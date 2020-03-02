@@ -165,10 +165,10 @@ export class MapDatasource extends DataSources {
             } else {
                 source._meta = meta;
             }
-
-            this.updateSource(source);
-
-            return this.addGeojsonLayerFromSource(title, source, style, args);
+            // this.updateSource(source);            
+            const layer = this.addGeojsonLayerFromSource(title, source, style, args);
+            console.log(layer);
+            return layer;
 
         });
     }
@@ -373,6 +373,8 @@ export class MapDatasource extends DataSources {
 
     public openFeature(feature?: Feature, layer?: IMapLayer) {
         // if (!feature || !layer) { return; }
+        debugger;
+        
         AppState.Instance.addSidebar(SidebarKeys.FEATURE_DETAILS, { icon: 'folder_open' });
         AppState.Instance.openRightSidebarWidget(
             {
