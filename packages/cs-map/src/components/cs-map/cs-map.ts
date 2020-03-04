@@ -72,14 +72,6 @@ export class CsMap extends WidgetBase {
         this.map.getCanvas().style.cursor = value ? 'crosshair' : '';
     }
 
-    public get featurePickerActivated(): boolean {
-        return this._featurePickerActivated;
-    }
-
-    public set featurePickerActivated(value: boolean) {
-        this._featurePickerActivated = value;
-    }
-
     public get manager(): MapDatasource | undefined {
         if (this.widget) {
             if (this.widget.content) {
@@ -143,7 +135,7 @@ export class CsMap extends WidgetBase {
     public mapDraw!: any;
     // tslint:disable-next-line: variable-name
 
-    private _featurePickerActivated = false;
+    public featurePickerActivated = false;
     private _pointerPickerActivated = false;
     private mapOptions!: MapOptions;
 
