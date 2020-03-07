@@ -437,7 +437,9 @@ export class MapDatasource extends DataSources {
             AppState.Instance.triggerNotification({
                 title: title ? title : 'SELECT_FEATURE', timeout: 0, clickCallback: () => {
                     reject();
-                    this.map!.featurePickerActivated = false;
+                    setTimeout(() => {
+                        this.map!.featurePickerActivated = false;
+                    }, 100);
                     if (this.featurePickerHandler) {
                         this.events.unsubscribe(this.featurePickerHandler);
                     }
@@ -447,7 +449,6 @@ export class MapDatasource extends DataSources {
             this.map.featurePickerActivated = true;
             this.featurePickerHandler = this.events.subscribe('feature', (a: string, e: any) => {
                 if (a === CsMap.FEATURE_SELECT) {
-                    this.map!.featurePickerActivated = false;
                     if (this.featurePickerHandler) {
                         this.events.unsubscribe(this.featurePickerHandler);
                     }
@@ -455,6 +456,10 @@ export class MapDatasource extends DataSources {
                         resolve(e);
                     }
                     AppState.Instance.clearNotifications();
+                    // Wait a moment in order to prevent right menu from opening because of the feature click.
+                    setTimeout(() => {
+                        this.map!.featurePickerActivated = false;
+                    }, 100);
                     return;
                 }
             });

@@ -65,14 +65,6 @@ export class CsMap extends WidgetBase {
     public static SEARCH_RESULT_SELECT = 'search.select';
 
 
-    public get featurePickerActivated(): boolean {
-        return this._featurePickerActivated;
-    }
-
-    public set featurePickerActivated(value: boolean) {
-        this._featurePickerActivated = value;
-    }
-
     public get manager(): MapDatasource | undefined {
         if (this.widget) {
             if (this.widget.content) {
@@ -141,7 +133,7 @@ export class CsMap extends WidgetBase {
     public mapDraw!: any;
     public styles: MapboxStyleDefinition[] = MapboxStyleSwitcherControl.DEFAULT_STYLES;
 
-    private _featurePickerActivated = false;
+    public featurePickerActivated = false;
     private _pointerPickerActivated = false;
     private geocoderControl?: MapboxGeocoder;
     private geolocatorControl?: GeolocateControl;

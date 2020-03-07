@@ -346,11 +346,22 @@ export class LayerService {
     public queueSocketUpdate(source: LayerSource, feature: Feature) {
         if (source) {
             if (!source._socketQueue) { source._socketQueue = {}; }
-
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
                     feature
+                };
+            });
+        }
+    }
+
+    queueSocketDelete(source: LayerSource, feature: Feature) {
+        if (source) {
+            if (!source._socketQueue) { source._socketQueue = {}; }
+            this.lock.acquire(source.id, () => {
+                source._socketQueue[feature.id] = {
+                    action: 'delete',
+                    feature: feature
                 };
             });
         }
@@ -425,16 +436,6 @@ export class LayerService {
                     this.queueSocketUpdate(source, feature);
                     this.flushSocketQueue(source);
 
-                    // // send update over socket
-                    // if (this.socket && this.socket.server) {
-                    //     this.socket.server.emit(
-                    //         'layer/' + sourceid + '/features',
-                    //         JSON.stringify({
-                    //             action: 'update',
-                    //             feature: feature
-                    //         })
-                    //     );
-                    // }
                     this.saveSource(source);
                 }
                 resolve(feature);
@@ -468,21 +469,18 @@ export class LayerService {
                 // find source
                 const source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
-                    // actually remove feature
-                    source.features = source.features.filter(
-                        f => !f.id || f.id !== featureId
-                    );
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+                    const deletedFeatures = source.features.filter(f => f.id && f.id === featureId);
 
-                    // send update over socket
-                    if (this.socket && this.socket.server) {
-                        this.socket.server.emit(
-                            'layer/' + sourceid + '/features',
-                            JSON.stringify({
-                                action: 'delete',
-                                feature: { id: featureId }
-                            })
-                        );
-                    }
+                    // actually remove feature
+                    source.features = source.features.filter(f => !f.id || f.id !== featureId);
+
+                    // send socket updates
+                    deletedFeatures.forEach(f => {
+                        this.queueSocketDelete(source, f);
+                        this.flushSocketQueue(source)
+                    });
 
                     this.saveSource(source);
                     resolve(true);
