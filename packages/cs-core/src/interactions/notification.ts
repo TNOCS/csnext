@@ -10,6 +10,7 @@ export interface INotification {
   isRead?: boolean;
   actionTitle?: string;
   buttonText?: string;
+  color?: string;
   // tslint:disable-next-line:variable-name
   _visible?: boolean;
   timeout?: number;

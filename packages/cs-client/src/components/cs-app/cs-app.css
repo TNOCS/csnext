@@ -1,4 +1,3 @@
-
 .cstabs {
   margin-top: 0px;
 }
@@ -11,36 +10,37 @@ html {
   z-index: 4 !important;
 }
 
-.cs-navigation-tabbar
-{
+.cs-navigation-tabbar {
   margin-left: 20px;
 }
 
 .cs-navigation-tabbar .v-tabs__div {
-  font-size:20px;
+  font-size: 20px;
   font-weight: 800;
 }
 
-.cs-navigation-tabbar .tabs__bar
-{
+.cs-navigation-tabbar .tabs__bar {
   /* background-color: transparent !important; */
-  
 }
 
 .menu {
   background-color: red;
 }
 
-.app-menu{
-  color: red !important
+.app-menu {
+  color: red !important;
   /** margin-left:5px; */
 }
-
 
 @media only screen and (max-width: 480px) {
   .header-breadcrumbs {
     display: none !important;
   }
+}
+
+.notification-title {
+  align-self: center;
+  margin-left: 10px;
 }
 
 .sidebar {
@@ -55,10 +55,9 @@ html {
   padding: 0 !important;
 }
 
-.header-breadcrumbs>li {
+.header-breadcrumbs > li {
   padding: 0 !important;
 }
-
 
 .floating {
   margin-top: -64px !important;
