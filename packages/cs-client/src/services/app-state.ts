@@ -102,6 +102,10 @@ export class AppState extends AppStateBase {
       return this.project?.header?.floating === true && !this.isMobile;    
   }
 
+  public get isBottomNavigation(): boolean {    
+    return this.project?.navigation?.style==='bottom' || (this.project?.navigation?.style ===  'mobile-compact' && this.isMobile);
+  }
+
   public copyToClipboard(str: string) {
     const el = document.createElement('textarea');
     el.setAttribute('readonly', '');

@@ -373,8 +373,6 @@ export class MapDatasource extends DataSources {
 
     public openFeature(feature?: Feature, layer?: IMapLayer) {
         // if (!feature || !layer) { return; }
-        debugger;
-        
         AppState.Instance.addSidebar(SidebarKeys.FEATURE_DETAILS, { icon: 'folder_open' });
         AppState.Instance.openRightSidebarWidget(
             {
