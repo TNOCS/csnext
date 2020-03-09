@@ -153,8 +153,8 @@ export class MapDatasource extends DataSources {
         style?: LayerStyle,
         meta?: string | FeatureTypes,
         args?: IMapLayer
-    ): Promise<IMapLayer> {
-        return new Promise((resolve, reject) => {
+    ): Promise<GeojsonPlusLayer> {
+        return new Promise(async (resolve, reject) => {
             const source = new DataSource(geojson);
             source.title = title;
             source.id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
@@ -166,7 +166,7 @@ export class MapDatasource extends DataSources {
                 source._meta = meta;
             }
             // this.updateSource(source);            
-            const layer = this.addGeojsonLayerFromSource(title, source, style, args);
+            const layer = await this.addGeojsonLayerFromSource(title, source, style, args);
             resolve(layer);
         });
     }
