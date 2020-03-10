@@ -74,9 +74,6 @@ export class FeatureComponent extends WidgetBase {
     /** get active feature */
     public get feature(): mapboxgl.MapboxGeoJSONFeature | undefined {
         if (this.widget.data && this.widget.data.feature) {
-            if (!this.widget.data.feature.properties.hasOwnProperty('image')) {
-                this.widget.data.feature.properties.image = 'images/location.png';
-            }
             return this.widget.data.feature;
         }
         return undefined;
