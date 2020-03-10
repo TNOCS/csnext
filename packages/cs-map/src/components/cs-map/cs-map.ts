@@ -89,6 +89,10 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    public get pointPickerActivated(): boolean {
+        return this._pointerPickerActivated;
+    }
+
     public set pointPickerActivated(value: boolean) {
         this._pointerPickerActivated = value;
         this.map.getCanvas().style.cursor = value ? 'crosshair' : '';

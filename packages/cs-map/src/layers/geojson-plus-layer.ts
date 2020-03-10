@@ -58,22 +58,19 @@ export class GeojsonPlusLayer extends GeojsonLayer
 
     public addCircleSymbol(widget) {
         if (!this.style || !this._source) { return; }
-        if (this.style.showSymbol) {
-            const imageId = this.id + '-symbol';
-            if (this.style.icon) {
-                const symbolLayout = { ...{ 'icon-image': imageId }, ...this.style.mapbox?.symbolLayout };
-                this.addImage(imageId, this.style.icon);
-                this.symbolLayer = {
-                    id: this.id + '-circle',
-                    type: 'symbol',
-                    source: this._source.id,
-                    interactive: true,
-                    layout: symbolLayout
-                } as mapboxgl.Layer;
-                this.addSupportLayer(this.symbolLayer);
-
-            }
+        const imageId = this.id + '-symbol';
+        const symbolLayout = { ...{ 'icon-image': imageId }, ...this.style.mapbox?.symbolLayout };
+        if (this.style.icon) {
+            this.addImage(imageId, this.style.icon);
         }
+        this.symbolLayer = {
+                id: this.id + '-circle',
+                type: 'symbol',
+                source: this._source.id,
+                interactive: true,
+                layout: symbolLayout
+            } as mapboxgl.Layer;
+        this.addSupportLayer(this.symbolLayer);
     }
 
     public toggleBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
@@ -613,21 +610,17 @@ export class GeojsonPlusLayer extends GeojsonLayer
         if (this.Map && this._events) {
             const feature = (e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
-                if ((this._manager!.MapWidget as CsMap).featurePickerActivated) {
-                    
-                } else {
-                                 
                 this._events.publish('feature', CsMap.FEATURE_SELECT, {
                     feature,
                     features: e.features,
                     context: e,
                     lngLat: e.lngLat,
                     layer: this
-                } as FeatureEventDetails);                
-                this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails || true);
-                // this._manager!.openFeature(feature, this);
+                } as FeatureEventDetails);
+                if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
+                    this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails || true);
+                }
             }
-        }
         }
     }
 

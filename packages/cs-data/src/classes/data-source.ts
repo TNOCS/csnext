@@ -26,6 +26,10 @@ export class DataSource {
     public _loaded = false;
     public _bookmarks?: any[] = [];
 
+    public get _geojson() : DataSet | undefined {
+        return this._data;
+    }
+
     public type?:
         | 'vector'
         | 'raster'

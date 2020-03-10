@@ -320,6 +320,9 @@ export class AppState extends AppStateBase {
     }
   }
 
+  
+  public TriggerNotification = this.triggerNotification;
+
   /** Triggers notification */
   public triggerNotification(notification: INotification) {
     notification = {
