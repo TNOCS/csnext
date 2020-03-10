@@ -103,6 +103,14 @@ export class CsForm extends Vue {
         console.log('Closing form');
     }
 
+    public fieldVisible(field: IFormFieldOptions) : boolean {
+        if (!field.requirements) { return true; }
+        for (const req of field.requirements) {
+            if (!this.formObject || !req(this.formObject)) { return false; }            
+        }
+        return true;
+    }
+
     public initGroups() {
         this.fieldGroups = [];
 

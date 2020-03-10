@@ -37,6 +37,7 @@
                             :key="field.id"
                             style="padding-right:2px"
                             dense
+                            v-if="fieldVisible(field)"
                         >
                             <cs-formfield
                                 :target="Target"

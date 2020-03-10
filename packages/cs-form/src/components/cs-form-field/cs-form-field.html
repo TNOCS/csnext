@@ -165,6 +165,7 @@
                 :clearable="field.clearable"                
                 :rules="field.required ? [rules.required] : []"
                 :disabled="field.readonly"
+                :placeholder="field.placeholder"
                 :append-outer-icon="field._appendIcon"
                 @update:error="fieldError"
                 @input="fieldInput(field)"

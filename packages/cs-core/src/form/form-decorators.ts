@@ -77,6 +77,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   clearable?: boolean;
   canAdd?: boolean;
   canEditKey?: boolean;
+  placeholder?: string;
   addUsingDialog?: boolean;
   readonly?: boolean;
   keyText?: string;
@@ -85,6 +86,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   colors?: string[];
   component?: any;
   locale?: string;
+  requirements?: ((value: object) => boolean)[];
   _appendIcon?: string;
   _isError?: boolean;
   keyValuesType?(): object;
