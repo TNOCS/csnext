@@ -119,7 +119,7 @@ export class MapDatasource extends DataSources {
             // load data
             source.loadSource().then(() => {
                 const rl = new GeojsonPlusLayer(args);
-                rl.id = title;
+                rl.id = source.id ? source.id : title;
                 rl.title = title;
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
@@ -152,12 +152,13 @@ export class MapDatasource extends DataSources {
         geojson?: string | DataSet,
         style?: LayerStyle,
         meta?: string | FeatureTypes,
-        args?: IMapLayer
+        args?: IMapLayer,
+        id?: string
     ): Promise<GeojsonPlusLayer> {
         return new Promise(async (resolve, reject) => {
             const source = new DataSource(geojson);
-            source.title = title;
-            source.id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
+            source.title = title;            
+            source.id = (id) ? id : this.sources.hasOwnProperty(title) ? guidGenerator() : title;
 
             // if meta is provided as a string, it is considered an URL
             if (typeof meta === 'string') {
