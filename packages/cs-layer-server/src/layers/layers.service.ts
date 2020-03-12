@@ -491,6 +491,35 @@ export class LayerService {
         });
     }
 
+    /** delete all features */
+    deleteAllFeatures(sourceid: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // find source
+                let source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+                    const deletedFeatures = [...source.features];
+
+                    // actually remove feature
+                    source.features.length = 0;
+
+                    // send socket updates
+                    deletedFeatures.forEach(f => {
+                        this.queueSocketDelete(source, f);
+                        this.flushSocketQueue(source)
+                    });
+
+                    this.saveSource(source);
+                    resolve(true);
+                }
+            } catch (e) {
+                reject('Source not found');
+            }
+        });
+    }
+
     /** update defintion for layer */
     public putLayerDefinitionById(
         id: string,
