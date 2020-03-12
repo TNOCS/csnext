@@ -45,6 +45,7 @@ export class CsMap extends WidgetBase {
 
     // topics used for events
     public static FEATURE_SELECT = 'select';
+    public static FEATURE_CONTEXT = 'context';
     public static FEATURE_CREATED = 'created';
     public static FEATURE_DELETED = 'deleted';
     public static FEATURE_MOUSE_ENTER = 'enter';

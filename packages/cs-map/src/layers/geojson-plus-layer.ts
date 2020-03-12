@@ -33,6 +33,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
 
 
     private clickEvent = this.onClick.bind(this);
+    private contextMenuEvent = this.onContextMenu.bind(this);
     private enterEvent = this.onEnter.bind(this);
     private leaveEvent = this.onLeave.bind(this);
     private moveEvent = this.onMove.bind(this);
@@ -588,6 +589,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
         if (this.id && !this.mapEventsRegistered) {
             // map.on('touchend', this.id, this.clickEvent);
             map.on('click', this.id, this.clickEvent);
+            map.on('contextmenu', this.id, this.contextMenuEvent);
             map.on('mousemove', this.id, this.moveEvent);
             map.on('mouseenter', this.id, this.enterEvent);
             map.on('mouseleave', this.id, this.leaveEvent);
@@ -599,6 +601,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
         if (this.id) {
             // map.off('touchend', this.id, this.clickEvent);
             map.off('click', this.id, this.clickEvent);
+            map.off('contextmenu', this.id, this.contextMenuEvent);
             map.off('mouseenter', this.id, this.enterEvent);
             map.off('mouseleave', this.id, this.leaveEvent);
             map.off('mousemove', this.id, this.moveEvent);
@@ -606,11 +609,26 @@ export class GeojsonPlusLayer extends GeojsonLayer
         this.mapEventsRegistered = false;
     }
 
-    private onClick(e) {
+    private onContextMenu(e: mapboxgl.MapLayerMouseEvent) {
         if (this.Map && this._events) {
-            const feature = (e.features.length > 0) ? e.features[0] : undefined;
+            const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
-                this._events.publish('feature', CsMap.FEATURE_SELECT, {
+                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_CONTEXT, {
+                    feature,
+                    features: e.features,
+                    context: e,
+                    lngLat: e.lngLat,
+                    layer: this
+                } as FeatureEventDetails);
+            }
+        }
+    }
+
+    private onClick(e: mapboxgl.MapLayerMouseEvent) {
+        if (this.Map && this._events) {
+            const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
+            if (feature) {
+                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_SELECT, {
                     feature,
                     features: e.features,
                     context: e,
@@ -624,11 +642,11 @@ export class GeojsonPlusLayer extends GeojsonLayer
         }
     }
 
-    private onEnter(e) {
+    private onEnter(e: mapboxgl.MapLayerMouseEvent) {
         if (this.Map && this._events) {
             this.Map.map.getCanvas().style.cursor = 'pointer';
-            this.createPopup(this.Map, this, e);
-            this._events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
+            this.createPopup(this.Map, this, e as any as FeatureEventDetails);
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_MOUSE_ENTER, {
                 features: e.features,
                 context: e
             });
@@ -639,7 +657,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
         if (this.Map && this._events) {
             this.Map.map.getCanvas().style.cursor = '';
             if (this.popupContent) { this.popup.remove(); }
-            this._events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_MOUSE_LEAVE, {
                 features: e.features,
                 context: e
             });
