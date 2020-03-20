@@ -56,12 +56,15 @@ export class CsMap extends WidgetBase {
     public static LAYER_ACTIVATED = 'layer.activated';
     public static LAYER_DISABLED = 'layer.disabled';
     public static LAYER = 'layer';
+    public static SOURCE = 'source';
+    public static SOURCE_UPDATED = 'updated';
     public static DRAWLAYER_ACTIVATED = 'drawlayer.activated';
     public static DRAWLAYER_DEACTIVATED = 'drawlayer.deactivated';
     public static DRAWLAYER_START_DRAWING = 'drawlayer.startdrawing';
     public static DRAWLAYER = 'drawlayer';
     public static MAP_DOUBLE_CLICK = 'map.doubleclick';
     public static MAP_CLICK = 'map.click';
+    public static MAP = 'map';
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
 
@@ -290,13 +293,13 @@ export class CsMap extends WidgetBase {
 
             this.map.on('dblclick', (ev) => {
                 if (this.manager && this.manager.events) {
-                    this.manager.events.publish('map', CsMap.MAP_DOUBLE_CLICK, ev);
+                    this.manager.events.publish(CsMap.MAP, CsMap.MAP_DOUBLE_CLICK, ev);
                 }
             });
 
             this.map.on('click', (ev) => {
                 if (this.manager && this.manager.events) {
-                    this.manager.events.publish('map', CsMap.MAP_CLICK, ev);
+                    this.manager.events.publish(CsMap.MAP, CsMap.MAP_CLICK, ev);
                 }
             });
 
@@ -997,7 +1000,7 @@ export class CsMap extends WidgetBase {
 
         this.geocoderControl.on('result', (d: any) => {
             if (this.manager && this.manager.events) {
-                this.manager.events.publish('map', CsMap.SEARCH_RESULT_SELECT, d);
+                this.manager.events.publish(CsMap.MAP, CsMap.SEARCH_RESULT_SELECT, d);
             }
         });
 
@@ -1062,9 +1065,9 @@ export class CsMap extends WidgetBase {
                 }
             }
         }
-        if (this.widget.events) { this.widget.events.publish('map', 'loaded', e); }
+        if (this.widget.events) { this.widget.events.publish(CsMap.MAP, CsMap.MAP_LOADED, e); }
         if (this.manager && this.manager.events) {
-            this.manager.events.publish('map', CsMap.MAP_LOADED, e);
+            this.manager.events.publish(CsMap.MAP, CsMap.MAP_LOADED, e);
         }
     }
 
