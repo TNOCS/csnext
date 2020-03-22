@@ -636,7 +636,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
                     layer: this
                 } as FeatureEventDetails);
                 if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
-                    this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails || true);
+                    this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails ?? true);
                 }
             }
         }
