@@ -72,8 +72,7 @@ export class NestServer {
             } else {
                 this.swaggerConfig = new DocumentBuilder()
                     .setTitle(title)
-                    .setDescription(title)
-                    .setBasePath(`${external}`)
+                    .setDescription(title)                
                     .setVersion('0.0.1')
                     .addTag('layer')
                     .build();
@@ -92,7 +91,7 @@ export class NestServer {
             if (this.config && this.config.staticFolder) {
 
                 if (this.config.staticPath) {
-                    const publicDirectory: string = this.config.staticFolder;
+                    const publicDirectory: string = this.config.staticFolder;                    
                     this.app.use(this.config.staticPath, express.static(publicDirectory));
                     Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
                 }
