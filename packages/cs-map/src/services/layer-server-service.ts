@@ -181,7 +181,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 .catch((e) => { console.log(e); });
         }
 
-        this.manager.events.subscribe('layer', (a: string, l: GeojsonPlusLayer) => {
+        this.manager.events.subscribe(CsMap.LAYER, (a: string, l: GeojsonPlusLayer) => {
             if (a === CsMap.LAYER_CREATED) {
                 this.createLiveLayer(l);
             }
@@ -196,21 +196,16 @@ export class LayerServerService implements ILayerService, IStartStopService {
     }
 
     public initLayerSocket(gl: GeojsonPlusLayer) {
-
         if (this.socket && this.socket !== undefined) {
-
             if (gl.enabled) {
                 // listen to complete layer updates
-
                 this.socket.on('layer/' + gl.id, (data: any) => {
                     this.updateLiveLayer(data, gl);
                 });
-
                 this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
                     console.log('Got features');
                     this.updateLiveLayerFeatures(data, gl, true);
                 });
-
             }
         }
     }
@@ -371,7 +366,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
             if (data.hasOwnProperty(id)) {
                 const featureAction = data[id];
                 this.updateLiveLayerFeature(featureAction, gl, false);
-
             }
         }
         if (forceUpdate && this.manager) {

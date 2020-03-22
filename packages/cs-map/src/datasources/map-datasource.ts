@@ -131,7 +131,7 @@ export class MapDatasource extends DataSources {
                     if (this.layers) {
                         this.layers.push(rl);                        
                         this.showLayer(rl).then(() => {
-                            this.events.publish('layer', CsMap.LAYER_CREATED, rl);
+                            this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
                             resolve(rl);
                         }).catch(() => {
                             reject();
@@ -577,7 +577,7 @@ export class MapDatasource extends DataSources {
             });
 
             this.map.pointPickerActivated = true;
-            this.pointPickerHandler = this.events.subscribe('map', (a: string, e: any) => {
+            this.pointPickerHandler = this.events.subscribe(CsMap.MAP, (a: string, e: any) => {
                 if (a === CsMap.MAP_CLICK) {
                     this.map!.pointPickerActivated = false;
                     if (this.pointPickerHandler) {
@@ -615,11 +615,7 @@ export class MapDatasource extends DataSources {
     }
 
     /** Replace/update a feature for a given layer */
-    public updateLayerFeature(
-        ml: IMapLayer | string,
-        feature: Feature,
-        updateSource = true
-    ) {
+    public updateLayerFeature(ml: IMapLayer | string, feature: Feature, updateSource = true) {
         let layer: IMapLayer | undefined;
         if (typeof ml === 'string') {
             if (this.layers) {
@@ -628,12 +624,7 @@ export class MapDatasource extends DataSources {
         } else {
             layer = ml;
         }
-        if (
-            layer &&
-            layer._source &&
-            layer._source._data &&
-            feature.id !== undefined
-        ) {
+        if (layer && layer._source && layer._source._data && feature.id !== undefined) {
             // find existing feature
             const index = layer._source._data.features.findIndex(
                 f => f.id === feature.id
@@ -655,11 +646,7 @@ export class MapDatasource extends DataSources {
     }
 
     /** Replace/update a collection of features for a given layer */
-    public updateLayerFeatures(
-        ml: IMapLayer | string,
-        features: { [key: string]: Feature },
-        updateSource = true
-    ) {
+    public updateLayerFeatures(ml: IMapLayer | string, features: { [key: string]: Feature }, updateSource = true) {
         let layer: IMapLayer | undefined;
         if (typeof ml === 'string') {
             if (this.layers) {
@@ -668,11 +655,7 @@ export class MapDatasource extends DataSources {
         } else {
             layer = ml;
         }
-        if (
-            layer &&
-            layer._source &&
-            layer._source._data
-        ) {
+        if ( layer && layer._source && layer._source._data) {
             for (const key in features) {
                 if (features.hasOwnProperty(key)) {
                     const feature = features[key];
@@ -690,18 +673,13 @@ export class MapDatasource extends DataSources {
                     }
                 }
             }
-
             if (updateSource) {
                 this.updateLayerSource(layer);
             }
         }
     }
 
-    public updateLayerSource(
-        ml: IMapLayer,
-        geojson?: DataCollection | string,
-        triggerEvent = true
-    ) {
+    public updateLayerSource(ml: IMapLayer, geojson?: DataCollection | string, triggerEvent = true) {
         if (!geojson && ml._source && ml._source._data) {
             geojson = ml._source._data;
         }
@@ -720,18 +698,12 @@ export class MapDatasource extends DataSources {
             if (source && ml._events) {
                 source.setData(g as FeatureCollection);
                 if (triggerEvent) {
-                    ml._events.publish('source', 'updated', source);
+                    ml._events.publish(CsMap.SOURCE, CsMap.SOURCE_UPDATED, source);
                 }
-                ml._events.publish('layer', CsMap.LAYER_UPDATED, ml);
+                ml._events.publish(CsMap.LAYER, CsMap.LAYER_UPDATED, ml);
             }
         }
-        if (
-            ml._source &&
-            ml._source.id &&
-            ml._source.url &&
-            ml._source.type === 'raster' &&
-            this.MapControl
-        ) {
+        if ( ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
             const wasEnabled = ml.enabled;
             if (wasEnabled && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) {
                 ml._manager!.map!.map!.removeLayer(ml.id!);
