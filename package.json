@@ -39,7 +39,6 @@
         "@types/yargs": "^15.0.4",
         "cache-loader": "^4.1.0",
         "core-js": "3.6.4",
-        "class-transformer": "0.2.3",
         "css-loader": "^3.4.2",
         "deepmerge": "4.2.2",
         "del-cli": "^3.0.0",
