@@ -19,13 +19,13 @@
   "dependencies": {
     "@macrostrat/dbgeo-stream": "^1.0.0",
     "@mapbox/togeojson": "^0.16.0",
-    "@nestjs/common": "^7.0.5",
-    "@nestjs/core": "^7.0.5",
-    "@nestjs/platform-express": "^7.0.5",
-    "@nestjs/platform-socket.io": "^7.0.5",
-    "@nestjs/platform-ws": "^7.0.5",
-    "@nestjs/swagger": "^4.4.0",
-    "@nestjs/websockets": "^7.0.5",
+    "@nestjs/common": "^7.0.6",
+    "@nestjs/core": "^7.0.6",
+    "@nestjs/platform-express": "^7.0.6",
+    "@nestjs/platform-socket.io": "^7.0.6",
+    "@nestjs/platform-ws": "^7.0.6",
+    "@nestjs/swagger": "^4.5.1",
+    "@nestjs/websockets": "^7.0.6",
     "arangojs": "^6.14.0",
     "async-lock": "^1.2.2",
     "axios": "^0.19.2",
@@ -45,7 +45,7 @@
     "socket.io": "^2.3.0",
     "swagger-ui-express": "^4.1.4",
     "uuid": "^7.0.2",
-    "wkx": "^0.4.8"
+    "wkx": "^0.5.0"
   },
   "devDependencies": {
     "@types/async-lock": "^1.1.1",
