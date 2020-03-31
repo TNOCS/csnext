@@ -320,6 +320,7 @@ export class LayerService {
                     }
                 } catch (e) {
                     Logger.error(`Error getting layer source ${layer.id}`);
+                    Logger.error(`${e.msg}: ${e.stack}`);
                  }
             }
             resolve(layer);
