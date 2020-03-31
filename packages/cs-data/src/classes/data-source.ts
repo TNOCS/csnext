@@ -252,7 +252,7 @@ export class DataSource {
     }
 
     public updateFeatureTypePropertyMap(type: FeatureType) {
-        if (type.properties) {
+        if (type.properties && Object.keys(type.properties).length > 0) {
             type.propertyMap = {};
             for (const prop of type.properties) {
                 if (prop._key) {
