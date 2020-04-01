@@ -58,7 +58,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
     // #region Public Methods (17)
 
     public addCircleSymbol(widget) {
-        if (!this.style || !this._source) { return; }
+        if (!this.style || !this._source || !this.style.showSymbol) { return; }
         const imageId = this.id + '-symbol';
         const symbolLayout = { ...{ 'icon-image': imageId }, ...this.style.mapbox?.symbolLayout };
         if (this.style.icon) {
@@ -625,6 +625,7 @@ export class GeojsonPlusLayer extends GeojsonLayer
     }
 
     private onClick(e: mapboxgl.MapLayerMouseEvent) {
+        debugger;
         if (this.Map && this._events) {
             const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
