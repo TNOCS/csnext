@@ -5,7 +5,7 @@ import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 
-import { BaseLayer, MapDatasource, LayerLegend } from '../../';
+import { BaseLayer, MapDatasource, LayerLegend, CsMap } from '../../';
 import { PropertyType } from '@csnext/cs-data';
 import Handlebars from 'handlebars';
 
@@ -122,7 +122,7 @@ export class FeatureDetails extends WidgetBase {
         // }
 
         if (this.manager) {
-            this.busManager.subscribe(this.manager.events, 'legends', () => {
+            this.busManager.subscribe(this.manager.events, CsMap.LEGENDS, () => {
                 this.updateSections();
             });
         }

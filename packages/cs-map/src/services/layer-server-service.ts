@@ -140,7 +140,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             // } as LinePaint;
                             await gl.initLayer(manager);
                             manager.layers.push(gl);
-                            gl._events.subscribe('feature', (a: string) => {
+                            gl._events.subscribe(CsMap.FEATURE, (a: string) => {
                                 if (
                                     a === CsMap.FEATURE_SELECT &&
                                     this.options!.openFeatureDetails
@@ -378,7 +378,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         // listen to server
         this.initLiveLayer(gl);
 
-        gl._events.subscribe('feature', (a: string, f: any) => {
+        gl._events.subscribe(CsMap.FEATURE, (a: string, f: any) => {
             const md = this.mapDraw;
 
             if (md && f.features && a === CsMap.FEATURE_SELECT) {

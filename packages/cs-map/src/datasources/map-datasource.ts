@@ -446,7 +446,7 @@ export class MapDatasource extends DataSources {
                 }
             });
             this.map.featurePickerActivated = true;
-            this.featurePickerHandler = this.events.subscribe('feature', (a: string, e: any) => {
+            this.featurePickerHandler = this.events.subscribe(CsMap.FEATURE, (a: string, e: any) => {
                 if (a === CsMap.FEATURE_SELECT) {
                     if (this.featurePickerHandler) {
                         this.events.unsubscribe(this.featurePickerHandler);
@@ -536,9 +536,9 @@ export class MapDatasource extends DataSources {
                 }
                 // check if not already subscribed to features events
                 if (ml._events) {
-                    ml._busManager.subscribe(ml._events, 'feature', (a: string, f: Feature) => {
+                    ml._busManager.subscribe(ml._events, CsMap.FEATURE, (a: string, f: Feature) => {
                         // also publish this event to manager
-                        this.events.publish('feature', a, f);
+                        this.events.publish(CsMap.FEATURE, a, f);
                     })
                 if (ml._events && !ml._featureEventHandle) {
                     // if not, subscribe

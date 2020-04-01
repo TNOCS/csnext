@@ -52,6 +52,7 @@ export class CsMap extends WidgetBase {
     public static FEATURE_MOUSE_LEAVE = 'leave';
     public static FEATURE_UPDATED = 'updated';
     public static FEATURE = 'feature';
+    public static LEGENDS = 'legends';
     public static LAYER_UPDATED = 'layer.updated';
     public static LAYER_ACTIVATED = 'layer.activated';
     public static LAYER_DISABLED = 'layer.disabled';
@@ -639,8 +640,8 @@ export class CsMap extends WidgetBase {
                             );
 
                             if (layer._events) {
-                                layer._events.publish('layer', CsMap.LAYER_ACTIVATED);
-                                this.busManager.subscribe(layer._events, 'feature', (
+                                layer._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED);
+                                this.busManager.subscribe(layer._events, CsMap.FEATURE, (
                                     (a: string) => {
                                         if (a === CsMap.FEATURE_SELECT) {
                                             if (
