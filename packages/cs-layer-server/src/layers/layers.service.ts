@@ -308,7 +308,6 @@ export class LayerService {
             // if no default style has been selected, inspect source
             if (layer.sourceType === 'geojson') {
                 // get source
-
                 try {
                     const s = await this.getLayerSourceById(layer.id);
                     if (s !== undefined) {
@@ -320,7 +319,7 @@ export class LayerService {
                     }
                 } catch (e) {
                     Logger.error(`Error getting layer source ${layer.id}`);
-                    Logger.error(`${e.msg}: ${e.stack}`);
+                    Logger.error(`${e}`);
                  }
             }
             resolve(layer);
@@ -798,12 +797,14 @@ export class LayerService {
     }
 
     private findColor(content: GeoJSON.FeatureCollection): string {
-        if (content.features) {
+        if (content.features && content.features.length) {
             for (const f of content.features) {
-                if (f.properties) {
+                if (f.properties && Object.keys(f.properties).length > 0) {
                     for (const p in f.properties) {
-                        if (f.properties[p].match(/\#(.*)/)) {
-                            return f.properties[p];
+                        if (f.properties[p] && f.properties[p].match) {
+                            if (f.properties[p].match(/\#(.*)/)) {
+                                return f.properties[p];
+                            }
                         }
                     }
                 }
@@ -814,11 +815,13 @@ export class LayerService {
 
     private findType(content: GeoJSON.FeatureCollection): string[] {
         const types: string[] = [];
-        for (const f of content.features) {
-            if (f.geometry && f.geometry.type) {
-                const type = this.getFeatureType(f);
-                if (type && types.indexOf(type) === -1) {
-                    types.push(type);
+        if (content.features && content.features.length) {
+            for (const f of content.features) {
+                if (f.geometry && f.geometry.type) {
+                    const type = this.getFeatureType(f);
+                    if (type && types.indexOf(type) === -1) {
+                        types.push(type);
+                    }
                 }
             }
         }
