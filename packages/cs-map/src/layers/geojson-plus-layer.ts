@@ -625,7 +625,6 @@ export class GeojsonPlusLayer extends GeojsonLayer
     }
 
     private onClick(e: mapboxgl.MapLayerMouseEvent) {
-        debugger;
         if (this.Map && this._events) {
             const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
