@@ -18,10 +18,15 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
+
 // import { isNumber } from 'util';
 
-export class GeojsonPlusLayer extends GeojsonLayer
-    implements IMapLayer {
+export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
+
+    public colorSchemes =
+    {BuGn: [['#e5f5f9', '#2ca25f'], ['#e5f5f9','#99d8c9','#2ca25f'], ['#edf8fb','#b2e2e2','#66c2a4','#238b45'], ['#edf8fb','#b2e2e2','#66c2a4','#2ca25f','#006d2c'], ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']],
+    BuPu: [['#e0ecf4','#8856a7'],['#e0ecf4','#9ebcda','#8856a7'],['#edf8fb','#b3cde3','#8c96c6','#88419d'],['#edf8fb','#b3cde3','#8c96c6','#8856a7','#810f7c'], ['#edf8fb','#bfd3e6','#9ebcda','#8c96c6','#8856a7','#810f7c']]
+    }
     // #region Properties (32)
     public iconZoomLevel?: number;
     public isEditable?: boolean;
@@ -30,6 +35,8 @@ export class GeojsonPlusLayer extends GeojsonLayer
     public type?: 'poi';
     public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
     public featureTypes?: FeatureTypes;
+
+
 
 
     private clickEvent = this.onClick.bind(this);
@@ -413,26 +420,38 @@ export class GeojsonPlusLayer extends GeojsonLayer
                         // this.style.mapbox.fillPaint['fill-color']  = color;
                         // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
                     } else {
-                        const color = {
-                            property: propdetails.key,
-                            // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
-                            stops: [
-                                // "temperature" is 0   -> circle color will be blue
-                                [propdetails.type!.min, '#adcdff'],
-                                // "temperature" is 100 -> circle color will be red
-                                [propdetails.type!.max, '#116cfa']
-                            ],
-                            default: 'grey'
-                        } as StyleFunction;
+                        if (propdetails.type) {
+                            const bins = propdetails.type.bins || [propdetails.type.min, propdetails.type.max];
+                            const colors = this.colorSchemes['BuPu'][bins.length-2];
+                            let stops = [];
+                            for(let i = 0; i< bins.length; i++) {
+                                stops.push([bins[i], colors[i]]);                               ;
+                            }                            
 
-                        if (this.style.mapbox.fillPaint) {
-                            this.style.mapbox.fillPaint['fill-color'] = color;
-                        }
-                        if (this.style.mapbox.circlePaint) {
-                            this.style.mapbox.circlePaint['circle-color'] = color;
-                        }
-                        if (this.style.mapbox.linePaint) {
-                            this.style.mapbox.linePaint['line-color'] = color;
+                            // [
+                            //     // "temperature" is 0   -> circle color will be blue
+                            //     ,
+                            //     // "temperature" is 100 -> circle color will be red
+                            //     [propdetails.type.max, '#116cfa'],
+                            //     [propdetails.type.max + 100, '#000000']
+                            // ],
+                            
+                            const color = {
+                                property: propdetails.key,
+                                // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
+                                stops: stops,
+                                default: 'grey'
+                            } as StyleFunction;
+
+                            if (this.style.mapbox.fillPaint) {
+                                this.style.mapbox.fillPaint['fill-color'] = color;
+                            }
+                            if (this.style.mapbox.circlePaint) {
+                                this.style.mapbox.circlePaint['circle-color'] = color;
+                            }
+                            if (this.style.mapbox.linePaint) {
+                                this.style.mapbox.linePaint['line-color'] = color;
+                            }
                         }
                     }
                 }
