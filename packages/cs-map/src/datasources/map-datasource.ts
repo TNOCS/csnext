@@ -88,7 +88,7 @@ export class MapDatasource extends DataSources {
 
     // #region Properties (8)
 
-  
+
     // #endregion Properties (8)
 
     // #region Constructors (1)
@@ -119,7 +119,9 @@ export class MapDatasource extends DataSources {
             // load data
             source.loadSource().then(() => {
                 const rl = new GeojsonPlusLayer(args);
-                rl.id = source.id ? source.id : title;
+                if (!rl.id) {
+                    rl.id = source.id ? source.id : title;
+                }
                 rl.title = title;
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
@@ -129,7 +131,7 @@ export class MapDatasource extends DataSources {
                 rl.initLayer(this).then(() => {
                     // rl.popupContent = undefined;
                     if (this.layers) {
-                        this.layers.push(rl);                        
+                        this.layers.push(rl);
                         this.showLayer(rl).then(() => {
                             this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
                             resolve(rl);
@@ -157,7 +159,7 @@ export class MapDatasource extends DataSources {
     ): Promise<GeojsonPlusLayer> {
         return new Promise(async (resolve, reject) => {
             const source = new DataSource(geojson);
-            source.title = title;            
+            source.title = title;
             source.id = (id) ? id : this.sources.hasOwnProperty(title) ? guidGenerator() : title;
 
             // if meta is provided as a string, it is considered an URL
@@ -425,7 +427,7 @@ export class MapDatasource extends DataSources {
         }
 
     }
-    
+
     public startFeaturePicker(title?: string): Promise<FeatureEventDetails | undefined> {
         return new Promise((resolve, reject) => {
             if (!this.map) { return; }
@@ -540,23 +542,23 @@ export class MapDatasource extends DataSources {
                         // also publish this event to manager
                         this.events.publish(CsMap.FEATURE, a, f);
                     })
-                if (ml._events && !ml._featureEventHandle) {
-                    // if not, subscribe
-                    ml._featureEventHandle = ml._events.subscribe(
-                        CsMap.FEATURE,
-                        (a: string, f: Feature) => {
-                            // also publish this event to manager
-                            this.events.publish(CsMap.FEATURE, a, f);
-                        }
-                    )
+                    if (ml._events && !ml._featureEventHandle) {
+                        // if not, subscribe
+                        ml._featureEventHandle = ml._events.subscribe(
+                            CsMap.FEATURE,
+                            (a: string, f: Feature) => {
+                                // also publish this event to manager
+                                this.events.publish(CsMap.FEATURE, a, f);
+                            }
+                        )
+                    }
+
+                } else {
+                    reject();
                 }
-                
-            } else {
-                reject();
             }
-        }
-    })
-}
+        })
+    }
 
     public startPointPicker(title?: string): Promise<LngLat | undefined> {
         return new Promise((resolve, reject) => {
@@ -655,7 +657,7 @@ export class MapDatasource extends DataSources {
         } else {
             layer = ml;
         }
-        if ( layer && layer._source && layer._source._data) {
+        if (layer && layer._source && layer._source._data) {
             for (const key in features) {
                 if (features.hasOwnProperty(key)) {
                     const feature = features[key];
@@ -703,7 +705,7 @@ export class MapDatasource extends DataSources {
                 ml._events.publish(CsMap.LAYER, CsMap.LAYER_UPDATED, ml);
             }
         }
-        if ( ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
+        if (ml._source && ml._source.id && ml._source.url && ml._source.type === 'raster' && this.MapControl) {
             const wasEnabled = ml.enabled;
             if (wasEnabled && ml.id && ml._manager!.map!.map!.getLayer(ml.id)) {
                 ml._manager!.map!.map!.removeLayer(ml.id!);
