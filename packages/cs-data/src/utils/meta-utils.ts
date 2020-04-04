@@ -6,7 +6,8 @@ import {
     mean,
     median,
     standardDeviation,
-    uniqueCountSorted
+    uniqueCountSorted,
+    equalIntervalBreaks
 } from 'simple-statistics';
 import { PropertyCollection, PropertyType, FeatureTypes, FeatureType } from './..';
 
@@ -109,8 +110,11 @@ export class MetaUtils {
                                 max(proptype._values).toString()
                             );
                             proptype.mean = mean(proptype._values);
-                            if (proptype.count > 10) {
+                            if (proptype.count > 10) {                                
                                 proptype.median = median(proptype._values);
+                                if (!proptype.bins) {
+                                    proptype.bins = equalIntervalBreaks(proptype._values, 4);
+                                }
                                 proptype.sd = standardDeviation(
                                     proptype._values
                                 );
@@ -168,12 +172,13 @@ export class MetaUtils {
                         min(prop._values).toString()
                     );
                 } catch (e) {
-                    
+
                 }
                 prop.max = parseFloat(
                     max(prop._values).toString()
                 );
                 prop.mean = mean(prop._values);
+                prop.bins = equalIntervalBreaks(prop._values, 5);
                 // if (prop.count > 10) {
                 //     prop.median = median(prop._values);
                 //     prop.sd = standardDeviation(

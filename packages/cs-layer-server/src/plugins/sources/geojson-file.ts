@@ -213,7 +213,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                         }
 
                         if (proptype.type === 'number' && proptype._values) {
-                            if (unique.length > 1) {
+                            if (unique.length > 1) {                                
                                 proptype.min = parseFloat(
                                     min(proptype._values).toString()
                                 );

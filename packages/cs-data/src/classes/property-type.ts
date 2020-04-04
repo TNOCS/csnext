@@ -38,6 +38,7 @@ export class PropertyType {
     public max?: number;
     // public options?: any[];
     public mean?: number;
+    public bins?: number[];
     public median?: number;
     @FormField({ title: 'Min', type: 'number', group: 'number' })
     public min?: number;
