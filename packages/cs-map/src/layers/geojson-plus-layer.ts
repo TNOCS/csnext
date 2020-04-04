@@ -428,14 +428,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                                 stops.push([bins[i], colors[i]]);                               ;
                             }                            
 
-                            // [
-                            //     // "temperature" is 0   -> circle color will be blue
-                            //     ,
-                            //     // "temperature" is 100 -> circle color will be red
-                            //     [propdetails.type.max, '#116cfa'],
-                            //     [propdetails.type.max + 100, '#000000']
-                            // ],
-                            
                             const color = {
                                 property: propdetails.key,
                                 // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]

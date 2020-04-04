@@ -194,8 +194,14 @@ export class StatsDatasource extends MapDatasource {
             await this.activateResources(resources);
             if (this.mainLayer && this.MapWidget) {
                 this.mainLayer.filter = undefined;
-                if (view.map) {
+                if (view.map) {                    
                     this.MapWidget.options = { ...this.MapWidget.options, ...view.map };
+                    // this.MapControl.triggerRepaint();                    
+                    const options = this.MapWidget.options.mbOptions;
+                    if (options && this.MapControl) {
+                        if (options.center) { this.MapControl.setCenter(options.center); }
+                        if (options.zoom) { this.MapControl.setZoom(options.zoom); }
+                    }                    
                 }
                 if (view.style) {
                     await this.mainLayer.setStyle(view.style as LayerStyle);
@@ -219,7 +225,7 @@ export class StatsDatasource extends MapDatasource {
                     if (resource.format === 'geojson') {
                         this.removeLayer(resource.name);
                     }
-                    this.unloadResource(key);
+                    await this.unloadResource(key);
                 }
             }
             for (const resourceName of resources) {
@@ -251,7 +257,7 @@ export class StatsDatasource extends MapDatasource {
             const style = this.activeResource.style;
             this.mainLayer = await this.addGeojsonLayerFromSource(
                 resourceName,
-                this.activeResource.data, style
+                this.activeResource.data, style, { id: resourceName} as IMapLayer
             );
             resolve(this.activeResource);
         });
