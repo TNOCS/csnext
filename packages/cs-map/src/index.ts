@@ -82,7 +82,7 @@ CsMap.AddLayerServiceType(new LayerServerService());
 
 Vue.component('prop-value', {
     props: ['value', 'proptype'],
-    template: '<span>{{ value }} {{ proptype.unit }}</span>'
+    template: '<span>{{ value.toFixed(proptype.decimals || 0) }} {{ proptype.unit }}</span>'
 });
 
 Vue.component('feature-title', {
