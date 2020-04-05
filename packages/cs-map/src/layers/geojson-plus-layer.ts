@@ -18,14 +18,22 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
-
 // import { isNumber } from 'util';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
     public colorSchemes =
     {BuGn: [['#e5f5f9', '#2ca25f'], ['#e5f5f9','#99d8c9','#2ca25f'], ['#edf8fb','#b2e2e2','#66c2a4','#238b45'], ['#edf8fb','#b2e2e2','#66c2a4','#2ca25f','#006d2c'], ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']],
-    BuPu: [['#e0ecf4','#8856a7'],['#e0ecf4','#9ebcda','#8856a7'],['#edf8fb','#b3cde3','#8c96c6','#88419d'],['#edf8fb','#b3cde3','#8c96c6','#8856a7','#810f7c'], ['#edf8fb','#bfd3e6','#9ebcda','#8c96c6','#8856a7','#810f7c']]
+    BuPu: [['#e0ecf4','#8856a7'],['#e0ecf4','#9ebcda','#8856a7'],['#edf8fb','#b3cde3','#8c96c6','#88419d'],['#edf8fb','#b3cde3','#8c96c6','#8856a7','#810f7c'], ['#edf8fb','#bfd3e6','#9ebcda','#8c96c6','#8856a7','#810f7c']],
+    GnBu: [['#e0f3db','#43a2ca'],['#e0f3db','#a8ddb5','#43a2ca'],['#f0f9e8','#bae4bc','#7bccc4','#2b8cbe'],['#f0f9e8','#bae4bc','#7bccc4','#43a2ca','#0868ac'],['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac']],
+    OrRd: [['#fee8c8','#e34a33'],['#fee8c8','#fdbb84','#e34a33'],['#fef0d9','#fdcc8a','#fc8d59','#d7301f'],['#fef0d9','#fdcc8a','#fc8d59','#e34a33','#b30000'],['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000']],
+    PuBu: [['#ece7f2','#2b8cbe'], ['#ece7f2','#a6bddb','#2b8cbe'], ['#f1eef6','#bdc9e1','#74a9cf','#0570b0'], ['#f1eef6','#bdc9e1','#74a9cf','#2b8cbe','#045a8d'], ['#f1eef6','#d0d1e6','#a6bddb','#74a9cf','#2b8cbe','#045a8d']],
+    Greys: [['#f0f0f0','#636363'], ['#f0f0f0','#bdbdbd','#636363'], ['#f7f7f7','#cccccc','#969696','#525252'], ['#f7f7f7','#cccccc','#969696','#636363','#252525'], ['#f7f7f7','#d9d9d9','#bdbdbd','#969696','#636363','#252525'] ],
+    Blues: [['#deebf7','#3182bd'], ['#deebf7','#9ecae1','#3182bd'], ['#eff3ff','#bdd7e7','#6baed6','#2171b5'], ['#eff3ff','#bdd7e7','#6baed6','#3182bd','#08519c'], ['#eff3ff','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c']],
+    BrBg: [['#d8b365','#5ab4ac'], ['#d8b365','#f5f5f5','#5ab4ac'], ['#a6611a','#dfc27d','#80cdc1','#018571'], ['#a6611a','#dfc27d','#f5f5f5','#80cdc1','#018571'], ['#8c510a','#d8b365','#f6e8c3','#c7eae5','#5ab4ac','#01665e'] ],
+    PuOr: [['#f1a340','#998ec3'], ['#f1a340','#f7f7f7','#998ec3'], ['#e66101','#fdb863','#b2abd2','#5e3c99'], ['#e66101','#fdb863','#f7f7f7','#b2abd2','#5e3c99'], ['#b35806','#f1a340','#fee0b6','#d8daeb','#998ec3','#542788']],
+    Spectral: [['#fc8d59','#99d594'], ['#fc8d59','#ffffbf','#99d594'], ['#d7191c','#fdae61','#abdda4','#2b83ba'], ['#d7191c','#fdae61','#ffffbf','#abdda4','#2b83ba'], ['#d53e4f','#fc8d59','#fee08b','#e6f598','#99d594','#3288bd']]
+
     }
     // #region Properties (32)
     public iconZoomLevel?: number;
@@ -422,7 +430,15 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                     } else {
                         if (propdetails.type) {
                             const bins = propdetails.type.bins || [propdetails.type.min, propdetails.type.max];
-                            const colors = this.colorSchemes['BuPu'][bins.length-2];
+                            let colors = ['#e5f5f9','#99d8c9','#2ca25f'];
+                            if (Array.isArray(propdetails.type.colorScheme)) {
+                                colors = propdetails.type.colorScheme;
+                            } else {
+                                const scheme = propdetails.type.colorScheme || 'BuPu';
+                                if (this.colorSchemes.hasOwnProperty(scheme) && this.colorSchemes[scheme].length>=bins.length-1) {
+                                    colors = this.colorSchemes[scheme][bins.length-2];
+                                }
+                            } 
                             let stops = [];
                             for(let i = 0; i< bins.length; i++) {
                                 stops.push([bins[i], colors[i]]);                               ;
