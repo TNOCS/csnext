@@ -50,6 +50,7 @@ export class PropertyType {
     public stringFormat?: string;
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
+    public colorScheme?: string | string[];
     public type?: string;
     public unique?: number;
     public legendStyle?: any;

@@ -193,7 +193,9 @@ export class DataSources implements IDatasource {
                                     section: field.group,
                                     unit: field.unit,
                                     decimals: field.decimals,
-                                    resource: resource.name
+                                    resource: resource.name,
+                                    bins: field.bins,
+                                    colorScheme: field.colorScheme
                                 } as PropertyType) ;
                         }
                     // const table = await Table.load(d.data, schema, false);

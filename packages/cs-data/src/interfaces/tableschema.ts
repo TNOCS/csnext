@@ -199,6 +199,8 @@ export interface TableSchemaField {
     groupChar?:   string;
     falseValues?: string[];
     trueValues?:  string[];
+    bins?: number[];
+    colorScheme?: string;
 }
 
 /**
