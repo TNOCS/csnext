@@ -12,7 +12,7 @@ import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { MapOptions } from './classes/map-options';
 import { MapboxOptions } from 'mapbox-gl';
 import { DataChart } from './components/data-chart/data-chart';
-import { CreateElement } from 'vue/types/umd';
+import { CreateElement, VNode } from 'vue/types/umd';
 
 // classes
 export * from './classes/map-options';
@@ -81,9 +81,22 @@ CsMap.AddLayerServiceType(new LayerServer());
 CsMap.AddLayerServiceType(new LayerServerService());
 
 Vue.component('prop-value', {
+
     props: ['value', 'proptype'],
-    template: '<span>{{ value.toFixed(proptype.decimals || 0) }} {{ proptype.unit }}</span>'
+    render(createElement): VNode {       
+        switch (this.proptype.type) {
+            case 'number':
+                return createElement('span', this.value.toFixed(this.proptype.decimals || 0));                
+            case 'url': 
+                return createElement('a', { attrs: { href: this.value}}, 'link')
+            default:
+                return createElement('span', this.value);
+        }
+        
+    } //{ attrs: { 'class', '' }}, [value]);  }    
 });
+
+// '<span> {{ value}}  {{ proptype.unit }}</span>';
 
 Vue.component('feature-title', {
     props: ['feature', 'layer'],
