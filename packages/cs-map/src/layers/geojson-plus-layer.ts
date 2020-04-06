@@ -439,7 +439,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                                     colors = this.colorSchemes[scheme][bins.length-2];
                                 }
                             } 
-                            let stops = [];
+                            let stops: any[] = [];
                             for(let i = 0; i< bins.length; i++) {
                                 stops.push([bins[i], colors[i]]);                               ;
                             }                            

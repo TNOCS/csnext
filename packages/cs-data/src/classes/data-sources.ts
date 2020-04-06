@@ -128,9 +128,36 @@ export class DataSources implements IDatasource {
                     if (fk.reference && fk.reference.resource === first.name) {
                         if (first.format === 'geojson' && first.data && first.data._loaded && first.data._data.features) {
                             for (const feature of first.data._data.features) {
-                                const d = second.data._data.data.find(r => r.hasOwnProperty(fk.fields) && r[fk.fields] === feature.properties![fk.reference.fields]);
-                                if (d) {
-                                    feature.properties = { ...feature.properties, ...d};
+                                const data = second.data._data.data.filter(r => r.hasOwnProperty(fk.fields) && r[fk.fields] === feature.properties![fk.reference.fields]);
+                                if (data) {
+                                    const properties = {};
+                                    const values = {};
+                                    for (const d of data) {
+                                        for (const field of second.schema.fields) {
+
+                                            // check if the selector exists and references this field
+                                            if (field._selector && d.hasOwnProperty(field._selector) && d[field._selector] === field.name) {
+                                                if (field._value) {
+                                                    if (field._when) {
+                                                        if (!values.hasOwnProperty(field.name)) {
+                                                            values[field.name] = {}
+                                                        }
+                                                        values[field.name][d[field._when]] = d[field._value];
+                                                        properties[field.name] = d[field._value];
+                                                    } else {
+                                                        properties[field.name] = d[field._value];
+                                                    }
+                                                }
+
+                                            } else {
+                                                properties[field.name] = d[field.name];
+                                            }
+                                        }
+                                    }
+                                    feature.properties = { ...feature.properties, ...properties };
+                                    // feature.values = values;
+                                    console.log(values);
+
                                 }
                             }
                             // let merge_result = merge(first._source._data, second._data, fk.reference.fields[0], fk.fields[0]);
@@ -139,7 +166,7 @@ export class DataSources implements IDatasource {
                             // for (const feature of first._source._data.features) {
                             //     console.log(`Merge ${feature.properties[fk.reference.fields]}`);
                             // }
-                        // }
+                            // }
 
                         }
                     }
@@ -156,7 +183,7 @@ export class DataSources implements IDatasource {
 
     public parseCSv(data: any): Promise<Papa.ParseResult> {
         return new Promise((resolve, reject) => {
-                  Papa.parse(data, {complete: (r) => { resolve(r); }, error: reject, header: true, dynamicTyping: true, worker: true});
+            Papa.parse(data, { complete: (r) => { resolve(r); }, error: reject, header: true, dynamicTyping: true, worker: true });
         });
     }
 
@@ -185,19 +212,20 @@ export class DataSources implements IDatasource {
                 d._meta.default.properties = [];
                 if (resource.schema && resource.schema.fields) {
                     for (const field of resource.schema.fields) {
-                            d._meta.default.properties!.push(
-                                {title: field.title,
-                                    description: field.description,
-                                    type: field.type,
-                                    _key: field.name,
-                                    section: field.group,
-                                    unit: field.unit,
-                                    decimals: field.decimals,
-                                    resource: resource.name,
-                                    bins: field.bins,
-                                    colorScheme: field.colorScheme
-                                } as PropertyType) ;
-                        }
+                        d._meta.default.properties!.push(
+                            {
+                                title: field.title,
+                                description: field.description,
+                                type: field.type,
+                                _key: field.name,
+                                section: field.group,
+                                unit: field.unit,
+                                decimals: field.decimals,
+                                resource: resource.name,
+                                bins: field.bins,
+                                colorScheme: field.colorScheme
+                            } as PropertyType);
+                    }
                     // const table = await Table.load(d.data, schema, false);
                 }
                 resource.data = d;

@@ -201,6 +201,9 @@ export interface TableSchemaField {
     trueValues?:  string[];
     bins?: number[];
     colorScheme?: string;
+    _selector?: string;
+    _value?: string;
+    _when?: string;
 }
 
 /**
@@ -309,7 +312,8 @@ export enum Type {
     String = 'string',
     Time = 'time',
     Year = 'year',
-    Yearmonth = 'yearmonth'
+    Yearmonth = 'yearmonth',
+    Virtual = 'virtual'
 }
 
 /**
