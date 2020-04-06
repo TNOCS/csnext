@@ -25,11 +25,13 @@ export class PackageExplorer extends Vue {
     public value: any[] = [];
     public showInsightDetails = false;
     public showLegendDetails = false;
+    public showtimeline = true;
     public search: string = '';
     public searchSelection: any = null;
     public searchResult: any[] = [];
     public tableHeaders: any[] = [];
     public tableProperties: string[] = [];
+    
 
     private busManager = new MessageBusManager();
     // public search(s: string): any[] | undefined {
