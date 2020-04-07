@@ -1,0 +1,39 @@
+.mapboxgl-style-list
+{
+    display: none;
+}
+
+.mapboxgl-style-list button
+{
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    padding: 8px 8px 6px;
+    text-align: right;
+    width: 100%;
+}
+
+.mapboxgl-style-list button.active
+{
+    font-weight: bold;
+}
+
+.mapboxgl-style-list button:hover
+{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.mapboxgl-style-list button + button
+{
+    border-top: 1px solid #ddd;
+}
+
+.mapboxgl-grid-switcher
+{ 
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8' standalone='no'%3F%3E%3C!-- Generator: Adobe Illustrator 23.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg xmlns:ns='&amp;ns_sfw;' xmlns:dc='http://purl.org/dc/elements/1.1/' xmlns:cc='http://creativecommons.org/ns%23' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns%23' xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:sodipodi='http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd' xmlns:inkscape='http://www.inkscape.org/namespaces/inkscape' version='1.1' x='0px' y='0px' viewBox='0 0 20 20' enable-background='new 0 0 750 500' xml:space='preserve' id='svg3773' sodipodi:docname='grid.svg' inkscape:version='0.92.4 (5da689c313, 2019-01-14)' width='20' height='20'%3E%3Cdefs id='defs3777'%3E%3C/defs%3E%3Csodipodi:namedview pagecolor='%23ffffff' bordercolor='%23666666' borderopacity='1' objecttolerance='10' gridtolerance='10' guidetolerance='10' inkscape:pageopacity='0' inkscape:pageshadow='2' inkscape:window-width='1920' inkscape:window-height='1017' id='namedview3775' showgrid='false' inkscape:zoom='1.696' inkscape:cx='345.22406' inkscape:cy='250' inkscape:window-x='-8' inkscape:window-y='-8' inkscape:window-maximized='1' inkscape:current-layer='svg3773' /%3E%3Cmetadata id='metadata3713'%3E%3Cns:sfw%3E%3Cns:slices /%3E%3Cns:sliceSourceBounds bottomLeftOrigin='true' height='14230.31' width='11342.155' x='-4582.28' y='-6541.06' /%3E%3C/ns:sfw%3E%3Crdf:RDF%3E%3Ccc:Work rdf:about=''%3E%3Cdc:format%3Eimage/svg+xml%3C/dc:format%3E%3Cdc:type rdf:resource='http://purl.org/dc/dcmitype/StillImage' /%3E%3Cdc:title%3E%3C/dc:title%3E%3C/cc:Work%3E%3C/rdf:RDF%3E%3C/metadata%3E%3Cg id='FILL-BACKGROUND' transform='translate(0,-480)'%3E%3C/g%3E%3Cg id='AG-DIAGRAM' transform='translate(0,-480)'%3E%3C/g%3E%3Cg id='N-TEXT' transform='translate(0,-480)'%3E%3C/g%3E%3Cg id='AG-DETAIL' transform='translate(0,-480)'%3E%3C/g%3E%3Cg id='POLYLINE_1947_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3741' y2='362.5' x2='62.5' y1='362.5' x1='437.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1948_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3744' y2='287.5' x2='62.5' y1='287.5' x1='437.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1949_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3747' y2='212.5' x2='62.5' y1='212.5' x1='437.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1950_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3750' y2='137.5' x2='62.5' y1='137.5' x1='437.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1951_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3753' y2='437.5' x2='362.5' y1='62.5' x1='362.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1952_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3756' y2='437.5' x2='287.5' y1='62.5' x1='287.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1953_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3759' y2='437.5' x2='212.5' y1='62.5' x1='212.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='POLYLINE_1954_' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cline style='fill:none;stroke:%23000000;stroke-width:2.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' id='line3762' y2='437.5' x2='137.5' y1='62.5' x1='137.5' stroke-miterlimit='10' /%3E%3C/g%3E%3Cg id='AG-OUTLINE' style='stroke:%23000000' transform='matrix(0.04040279,0,0,0.04040279,-0.07711033,0.46534188)'%3E%3Cg id='POLYLINE_1946_' style='stroke:%23000000'%3E%3Crect x='62.5' y='62.5' stroke-miterlimit='10' width='375' height='375' id='rect3769' style='fill:none;stroke:%23000000;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70%;
+}

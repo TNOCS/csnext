@@ -1,5 +1,6 @@
 export interface IDialog {
-  visible: boolean;
+  visible?: boolean;
+  hide?: boolean;
   title?: string;
   text?: string;
   component?: any;

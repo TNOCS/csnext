@@ -13,6 +13,7 @@ export interface IWidget {
   options?: WidgetOptions;
   editorWidget?: IWidget;
   events?: IMessageBusService;
+  dashboard?: IDashboard;
   _dashboard?: IDashboard;
   _manager?: IDashboardManager;
   _initalized?: boolean;

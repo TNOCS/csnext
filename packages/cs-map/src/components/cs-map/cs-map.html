@@ -1,1 +1,4 @@
-<div :id="'mapbox-' + widget.id" style="width:100%; height: 100%"></div>
+<div style="width:100%; height: 100%; position: relative;" v-if="widget">
+    <div :id="'mapbox-' + widget.id" style="width:100%; height: 100%"></div>
+    <PackageExplorer v-if="options.showPackageExporer" :data="widget.content" style="position: absolute;top:0;left:0;right:0"></PackageExplorer>
+</div>

@@ -1,0 +1,38 @@
+<div class="mapboxgl-ctrl mapboxgl-ctrl-group grid-control-component">
+    <v-layout>
+        <div class="grid-style-icon" @click="toggleGrid()"
+            ><v-icon v-if="gridEnabled">grid_on</v-icon
+            ><v-icon v-if="!gridEnabled">grid_off</v-icon></div
+        >
+        <!-- <span v-if="gridEnabled">
+            <v-menu open-on-hover top offset-y>
+                <template v-slot:activator="{on}">
+                    <div v-on="on" class="grid-style-title">
+                        {{ gridStyle }}
+                    </div>
+                </template>
+                <v-list>
+                    <v-list-item
+                        v-for="(style, index) in gridStyles"
+                        :key="index"
+                        @click="selectGridStyle(style)"
+                    >
+                        <v-list-item-title>{{ style }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </span> -->
+        <!-- <v-checkbox v-model="GridEnabled" label="Grid Enabled"></v-checkbox> -->
+    </v-layout>
+
+    <!-- <div v-for="layer in layers">layer: {{ layer.id }}</div> -->
+    <!-- <v-layout>
+        <img
+            v-for="(value,key,index) in types"
+            :key="key"
+            :src="value.icon"
+            @click="addIcon(key)"
+            class="layer-editor-type-image"
+        />
+    </v-layout> -->
+</div>

@@ -10,21 +10,13 @@ import Vue from 'vue';
 
 @Component({
     template: require('./cs-log-list.html'),
-    components: { simplebar },
+    components: { simplebar }
 })
-export class CsLogList extends WidgetBase {    
-    public titleTemplate!: Handlebars.TemplateDelegate<any>;
-    public subTitleTemplate!: Handlebars.TemplateDelegate<any>;
-    public log: LogManager = new LogManager();
-    private visibleItems: ILogItem[] = [];
-    public reverseOrder: boolean = false;
+export class CsLogList extends WidgetBase {
 
-    private resizeHandle?: MessageBusHandle;
-    
-    @Watch('log.items')
-    private LogItemsChanged() {
-        this.setVisibleItems();
-    }
+    // #endregion Properties (6)
+
+    // #region Public Accessors (1)
 
     public get WidgetOptions(): LogListOptions {
         if (this.widget.options) {
@@ -34,26 +26,18 @@ export class CsLogList extends WidgetBase {
         }
     }
 
-    private title(item: ILogItem) {
-        return this.titleTemplate(item);
-    }
+    public log: LogManager = new LogManager();
+    public reverseOrder: boolean = false;
+    public subTitleTemplate!: Handlebars.TemplateDelegate<any>;
+    public titleTemplate!: Handlebars.TemplateDelegate<any>;
+    // #region Properties (6)
 
-    private subTitle(item: ILogItem) {
-        if (this.subTitleTemplate) {
-            return this.subTitleTemplate(item);
-        }
-    }
+    private resizeHandle?: MessageBusHandle;
+    private visibleItems: ILogItem[] = [];
 
-    public openDetails(item: ILogItem) {
-        if (this.WidgetOptions.openDetailsOnClick) {
-            let component = this.WidgetOptions.detailsComponent || 'cs-log-details';
-            this.$cs.OpenRightSidebarWidget({ component: component, options: { showToolbar: false, title: this.title(item) }, data: { item: item } });
-        }
-    }
+    // #endregion Public Accessors (1)
 
-    private setVisibleItems() {
-        Vue.set(this, 'visibleItems', this.reverseOrder ? this.log.items.slice().reverse() : this.log.items.slice());        
-    }
+    // #region Public Methods (5)
 
     /** load all log sources as specified in widget options */
     public InitLog() {
@@ -73,22 +57,21 @@ export class CsLogList extends WidgetBase {
         }
     }
 
-    // @Prop()
-    // public widget!: IWidget;
-
-    public beforeMount() {
-        if (!this.widget) {
-            return;
-        }
-    }
-
     public beforeDestroy() {
         if (this.widget && this.resizeHandle) {
             this.widget.events!.unsubscribe(this.resizeHandle);
         }
     }
 
-    mounted() {
+    // @Prop()
+    // public widget!: IWidget;
+    public beforeMount() {
+        if (!this.widget) {
+            return;
+        }
+    }
+
+    public mounted() {
         this.InitLog();
         if (this.widget) {
             this.resizeHandle = this.widget.events!.subscribe('resize', () => {
@@ -96,4 +79,36 @@ export class CsLogList extends WidgetBase {
             });
         }
     }
+
+    public openDetails(item: ILogItem) {
+        if (this.WidgetOptions.openDetailsOnClick) {
+            const component = this.WidgetOptions.detailsComponent || 'cs-log-details';
+            this.$cs.openRightSidebarWidget({ component, options: { showToolbar: false, title: this.title(item) }, data: { item } });
+        }
+    }
+
+    // #endregion Public Methods (5)
+
+    // #region Private Methods (4)
+
+    @Watch('log.items')
+    private LogItemsChanged() {
+        this.setVisibleItems();
+    }
+
+    private setVisibleItems() {
+        Vue.set(this, 'visibleItems', this.reverseOrder ? this.log.items.slice().reverse() : this.log.items.slice());
+    }
+
+    private subTitle(item: ILogItem) {
+        if (this.subTitleTemplate) {
+            return this.subTitleTemplate(item);
+        }
+    }
+
+    private title(item: ILogItem) {
+        return this.titleTemplate(item);
+    }
+
+    // #endregion Private Methods (4)
 }

@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-billboard",
-  "version": "0.0.125",
+  "version": "0.0.127",
   "description": "cs-billboard",
   "main": "./lib/csbillboard.cs.js",
   "types": "./dist/src/index.d.ts",
@@ -11,7 +11,7 @@
     "link": "yarn link",
     "unlink": "yarn unlink",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --mode development && tsc",
+    "build": "tsc && webpack --mode development",
     "build:production": "webpack --mode production && tsc",
     "clean": "del-cli yarn.lock yarn-error.log dist lib node_modules"
   },
@@ -19,10 +19,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.125",
-    "@csnext/cs-core": "^0.0.125",
-    "billboard.js": "^1.10.2",
-    "vue": "^2.6.10"
+    "@csnext/cs-client": "^0.0.127",
+    "@csnext/cs-core": "^0.0.127",
+    "billboard.js": "^1.11.1"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

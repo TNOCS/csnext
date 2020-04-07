@@ -1,14 +1,15 @@
+<v-card>
 <v-app-bar
   v-if="!$cs.project.header.hideToolbar"
-  :floating="$cs.project.header.floating"
-  :class="{'floating-toolbar': $cs.project.header.floating}"
+  :floating="$cs.isFloatingHeader"
+  :class="{'floating-toolbar': $cs.isFloatingHeader, 'compact-header': $cs.project.navigation === 'mobile-compact'}"
   id="main-toolbar"
   :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"
   :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped"
   :flat="$cs.project.header.flat"
   app
   :dense="$cs.project.header.dense"
-  :elevation="$cs.project.header.elevation"
+  :elevation="$cs.project.header.elevation"  
 >
   <!-- header -->
   <v-app-bar-nav-icon
@@ -23,37 +24,38 @@
     class="app-project-logo"
   />
 
-  <v-menu open-on-hover bottom class="header-title-menu">
-    <template v-slot:activator="{ on }">
-      
-      <div v-on="on" :style="{color:$cs.project.theme.colors.headerColor}" class="header-title-menu-activator">
-        <div class="header-title" v-if="!$cs.project.header.hideTitle">
-          {{ $cs.Translate($cs.project.header.title) }}
+  <div>
+    <v-menu open-on-hover bottom class="header-title-menu">
+      <template v-slot:activator="{ on }">
+        <div v-on="on"  class="header-title-menu-activator">
+          <div class="header-title" v-if="!$cs.project.header.hideTitle">
+            {{ $cs.Translate($cs.project.header.title) }}
+          </div>
+          <v-breadcrumbs
+            class="header-breadcrumbs"
+            v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense"
+            :items="$cs.project.header.breadcrumbItems"
+          >
+            <template v-slot:divider>
+              <v-icon>forward</v-icon>
+            </template>
+            <template v-slot:item="props">
+              <a class="breadcrumb-text" :href="props.item.href">{{
+                $cs.Translate(props.item)
+              }}</a>
+            </template>
+            <!-- <v-icon :style="{color:$cs.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
+            <!-- <v-breadcrumbs-item v-for="item in $cs.project.header.breadcrumbItems" :key="item" style="color:black">
+                    {{$cs.Translate(item)}}
+                  </v-breadcrumbs-item> -->
+          </v-breadcrumbs>
         </div>
-        <v-breadcrumbs
-          class="header-breadcrumbs"
-          v-if="$cs.project.header.breadcrumbs && !$cs.project.header.dense"
-          :items="$cs.project.header.breadcrumbItems"
-        >
-          <template v-slot:divider>
-            <v-icon>forward</v-icon>
-          </template>
-          <template v-slot:item="props">
-            <a style="color:black !important" :href="props.item.href">{{
-              $cs.Translate(props.item)
-            }}</a>
-          </template>
-          <!-- <v-icon :style="{color:$cs.project.theme.colors.menu}" slot="divider">chevron_right</v-icon> -->
-          <!-- <v-breadcrumbs-item v-for="item in $cs.project.header.breadcrumbItems" :key="item" style="color:black">
-                  {{$cs.Translate(item)}}
-                </v-breadcrumbs-item> -->
-        </v-breadcrumbs>
-      </div>
-    </template>
-    <template v-if="$cs.project.header.titleWidget">
-      <cs-widget :widget="$cs.project.header.titleWidget"> </cs-widget>
-    </template>
-  </v-menu>
+      </template>
+      <template v-if="$cs.project.header.titleWidget">
+        <cs-widget :widget="$cs.project.header.titleWidget"> </cs-widget>
+      </template>
+    </v-menu>
+  </div>
 
   <!-- tabs -->
 
@@ -179,8 +181,8 @@
       <v-btn
         class="sidebar-header-button"
         :class="{ 'primary':rightSidebar.dashboard && rightSidebar.open && item.id === rightSidebar.dashboard.id}"
-        v-for="(item, key, index) in rightSidebar.sidebars"
-        v-if="item.widgets.length>0 && !item.hide"
+        v-for="(item, key, index) in visibleSidebars"
+        v-if="item && item.widgets && item.widgets.length>0 && !item.hide"
         :key="index"
         text
         small
@@ -208,7 +210,7 @@
     </template>
     <template v-else>
       <v-btn
-        v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashboard.widgets.length>0"
+        v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashbard && rightSidebar.dashboard.widgets.length>0"
         @click="rightSidebar.open=!rightSidebar.open"
         class="header-icon"
         text
@@ -233,3 +235,4 @@
     </template>
   </template>
 </v-app-bar>
+</v-card>

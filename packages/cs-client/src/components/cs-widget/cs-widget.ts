@@ -25,12 +25,41 @@ import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
   }
 } as any)
 export class CsWidget extends Vue {
+  // #region Properties (8)
+
+  // tslint:disable-next-line:variable-name
+  public $refs!: {
+    widget: Vue;
+    component: Vue;
+  };
+  public app = AppState.Instance;
+  public mouseOver = false;
+  public widget?: IWidget;
+
+  private _options?: WidgetOptions = {};
+  private activeWidget?: IWidget;
+  private dsHandle?: MessageBusHandle;
+  private loadingDataSource = false;
+
+  // #endregion Properties (8)
+
+  // #region Constructors (1)
+
+  constructor() {
+    super();
+    this.initWidget();
+  }
+
+  // #endregion Constructors (1)
+
+  // #region Public Accessors (2)
 
   public get options(): WidgetOptions {
     if (this._options) { return this._options; }
     if (!this.widget) { return {}; }
     if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
-      this._options = { ...this.widget._dashboard.defaultWidgetOptions, ...this.widget.options };
+      const toolbarOptions = { ...this.widget._dashboard.defaultWidgetOptions.toolbarOptions, ...this.widget.options?.toolbarOptions};
+      this._options = { ...this.widget._dashboard.defaultWidgetOptions, ...this.widget.options, ...{ toolbarOptions: toolbarOptions} };
     } else if (this.widget.options) {
       this._options = this.widget.options;
     } else {
@@ -45,66 +74,10 @@ export class CsWidget extends Vue {
     }
     return this.options.widgetBorder;
   }
-  private loadingDataSource = false;
-  public widget?: IWidget;
-  public mouseOver = false;
-  public app = AppState.Instance;
 
-  public $refs!: {
-    widget: HTMLElement;
-    component: HTMLElement;
-  };
-  // tslint:disable-next-line:variable-name
-  private _options?: WidgetOptions = {};
-  private activeWidget?: IWidget;
+  // #endregion Public Accessors (2)
 
-  private dsHandle?: MessageBusHandle;
-
-  constructor() {
-    super();
-    this.initWidget();
-  }
-
-  public getComponent() {
-    if (this.activeWidget) {
-      return this.activeWidget.component;
-    } else if (this.widget) {
-      return this.widget.component;
-    }
-  }
-
-  public updateSize(trigger = true) {
-    if (!this.widget || !this.widget.events) {
-      return;
-    }
-    if (this.$refs.widget && this.$refs.component) {
-      this.widget._size = {
-        width: this.$refs.widget.clientWidth,
-        height: this.$refs.widget.clientHeight,
-        componentWidth: this.$refs.component.clientWidth,
-        componentHeight: this.$refs.component.clientHeight
-      };
-    }
-    if (trigger) {
-      this.widget.events.publish('resize', 'changed', this.widget._size);
-    }
-  }
-
-  public onResize() {
-    this.updateSize();
-  }
-
-  public widgetStyles(): any {
-    const res: any = {};
-    const opt = this.options;
-    if (opt.height) {
-      res['max-height'] = opt.height + 'px';
-    }
-    if (this.options && this.options.showToolbar) {
-      res.height = 'calc(100% - 30px)';
-    }
-    return res;
-  }
+  // #region Public Methods (15)
 
   public addMenuItem(menu: IMenu) {
     if (!this.widget || !this.widget.options) {
@@ -121,14 +94,93 @@ export class CsWidget extends Vue {
     }
   }
 
+  public beforeDestroy() {
+    if (this.dsHandle) {
+      this.$cs.bus.unsubscribe(this.dsHandle);
+    }
+  }
+
   public checkWidgetId(widget: IWidget) {
     if (widget && !widget.id) {
       widget.id = 'widget-' + guidGenerator();
     }
   }
 
-  public setActiveWidget(widget: IWidget) {
-    // Vue.set(this, 'activeWidget', widget);
+  public created() {
+    if (!this.widget) {
+      return;
+    }
+
+    if (!this.widget.options) {
+      this.widget.options = {};
+    }
+
+    this.widget._component = this.$refs.component;
+    if (this.widget && this.widget.datasource) {
+      this.dsHandle = this.$cs.bus.subscribe(
+        'ds-' + this.widget.datasource,
+        (a: string, d: any) => {
+          if (a === 'updated') {
+            this.widget!.content = d;
+          }
+        }
+      );
+    }
+
+    if (this.widget.options.canEdit) {
+      this.addMenuItem({
+        id: 'edit',
+        icon: 'mode_edit',
+        title: 'edit',
+        type: 'icon',
+        action: () => {
+          if (
+            this.widget &&
+            this.widget.editorWidget &&
+            this.$cs.project.rightSidebar
+          ) {
+            const editor = this.widget.editorWidget;
+            editor.data = {
+              data: this.widget.data,
+              widget: this.widget,
+              widgetoptions: this.widget.options,
+              manager:
+                this.widget._dashboard && this.widget._dashboard._manager
+                  ? this.widget._dashboard._manager
+                  : null
+            };
+            this.$cs.bus.publish('right-sidebar', 'open-widget', editor);
+          }
+        }
+      });
+    }
+
+    if (this.widget.options.canRemove) {
+      this.addMenuItem({
+        id: 'remove',
+        icon: 'delete',
+        type: 'icon',
+        title: 'remove',
+        action: () => {
+          if (this.widget && this.widget._dashboard) {
+            if (
+              this.widget._dashboard._manager &&
+              this.widget._dashboard._manager.removeWidget
+            ) {
+              this.widget._dashboard._manager.removeWidget(this.widget);
+            }
+          }
+        }
+      });
+    }
+  }
+
+  public getComponent() {
+    if (this.activeWidget) {
+      return this.activeWidget.component;
+    } else if (this.widget) {
+      return this.widget.component;
+    }
   }
 
   public initWidget() {
@@ -192,7 +244,7 @@ export class CsWidget extends Vue {
         icon: 'close',
         toolTip: 'CLOSE',
         action: () => {
-          this.$cs.CloseRightSidebarWidget(this.widget!.id!);
+          this.$cs.closeRightSidebarWidget(this.widget!.id!);
         }
       });
     }
@@ -204,7 +256,7 @@ export class CsWidget extends Vue {
         icon: 'close',
         toolTip: 'CLOSE',
         action: () => {
-          this.$cs.CloseRightSidebar();
+          this.$cs.closeRightSidebar();
           // this.$cs.CloseRightSidebarWidget(this.widget!.id!);
         }
       });
@@ -213,127 +265,17 @@ export class CsWidget extends Vue {
     this.widget._initalized = true;
   }
 
-  private checkWidgetContent() {
-    if (!this.widget) { return; }
-    if (this.widget.datasource !== undefined) {
-      if (this.widget.content) {
-        this.setWidgetContent(this.widget, this.widget.content);
-      } else if (!this.loadingDataSource) {
-        this.loadingDataSource = true;
-        this.$cs.loadDatasource(this.widget.datasource).then(d => {
-          this.loadingDataSource = false;
-          this.setWidgetContent(this.widget!, d);
-
-        });
-      }
-      else if (this.widget._dashboard && this.widget._dashboard.content) {
-        this.setWidgetContent(this.widget, this.widget._dashboard.content);
-      }
-    }
-  }
-
-  public setWidgetContent(widget: IWidget, content: any) {
-    Vue.set(widget, 'content', content);
-    if (this.$refs.component) {
-      if ((this.$refs.component as any).contentLoaded) {
-        (this.$refs.component as any).contentLoaded(content);
-      }
-
-      // if (this.$refs.component)
-      // widget.component.contentLoaded(content);
-    }
-  }
-
-  public created() {
-    if (!this.widget) {
-      return;
-    }
-
-    if (!this.widget.options) {
-      this.widget.options = {};
-    }
-
-    this.widget._component = this.$refs.component;
-    if (this.widget && this.widget.datasource) {
-
-      this.dsHandle = this.$cs.bus.subscribe(
-        'ds-' + this.widget.datasource,
-        (a: string, d: any) => {
-          if (a === 'updated') {
-            this.widget!.content = d;
-          }
-        }
-      );
-    }
-
-    if (this.widget.options.canEdit) {
-      this.addMenuItem({
-        id: 'edit',
-        icon: 'mode_edit',
-        title: 'edit',
-        action: () => {
-          if (
-            this.widget &&
-            this.widget.editorWidget &&
-            this.$cs.project.rightSidebar
-          ) {
-            const editor = this.widget.editorWidget;
-            editor.data = {
-              data: this.widget.data,
-              widget: this.widget,
-              widgetoptions: this.widget.options,
-              manager:
-                this.widget._dashboard && this.widget._dashboard._manager
-                  ? this.widget._dashboard._manager
-                  : null
-            };
-            this.$cs.bus.publish('right-sidebar', 'open-widget', editor);
-          }
-        }
-      });
-    }
-
-    if (this.widget.options.canRemove) {
-      this.addMenuItem({
-        id: 'remove',
-        icon: 'delete',
-        title: 'remove',
-        action: () => {
-          if (this.widget && this.widget._dashboard) {
-            if (
-              this.widget._dashboard._manager &&
-              this.widget._dashboard._manager.removeWidget
-            ) {
-              this.widget._dashboard._manager.removeWidget(this.widget);
-            }
-          }
-        }
-      });
-    }
-  }
-
-  public beforeDestroy() {
-    if (this.dsHandle) {
-      this.$cs.bus.unsubscribe(this.dsHandle);
-    }
-  }
-
   public mounted() {
     this.updateSize(false);
     if (!this.widget) { return; }
-    
-    // check if no datasource is defined
+    if (!this.widget.component) { return; }
+    // check if datasource is defined
     if (this.widget.datasource || (this.widget._dashboard && this.widget._dashboard.datasource)) {
       this.checkWidgetContent();
     } else if ((this.$refs.component as any).contentLoaded) {
+      this.setWidgetContent(this.widget, undefined);
       // call contentloaded for empty datasources
-      (this.$refs.component as any).contentLoaded(undefined);
-    }
-  }
-
-  public triggerMenuAction(menu: IMenu) {
-    if (menu.action) {
-      menu.action(menu);
+      // (this.$refs.component as any).contentLoaded(undefined);
     }
   }
 
@@ -345,4 +287,78 @@ export class CsWidget extends Vue {
     this.mouseOver = false;
   }
 
+  public onResize() {
+    this.updateSize();
+  }
+
+  public setActiveWidget(widget: IWidget) {
+    // Vue.set(this, 'activeWidget', widget);
+  }
+
+  public setWidgetContent(widget: IWidget, content: any) {
+    Vue.set(widget, 'content', content);
+    if (this.$refs.component !== undefined) {
+      if ((this.$refs.component as any).contentLoaded) {
+        (this.$refs.component as any).contentLoaded(content);
+      }
+    }
+  }
+
+  public triggerMenuAction(menu: IMenu) {
+    if (menu.action) {
+      menu.action(menu);
+    }
+  }
+
+  public updateSize(trigger = true) {
+    if (!this.widget || !this.widget.events) {
+      return;
+    }
+    if (this.$refs.widget && this.$refs.component) {
+      this.widget._size = {
+        width: this.$refs.widget.$el.clientWidth,
+        height: this.$refs.widget.$el.clientHeight,
+        componentWidth: this.$refs.component.$el.clientWidth,
+        componentHeight: this.$refs.component.$el.clientHeight
+      };
+    }
+    if (trigger) {
+      this.widget.events.publish('resize', 'changed', this.widget._size);
+    }
+  }
+
+  public widgetStyles(): any {
+    const res: any = {};
+    const opt = this.options;
+    if (opt.height) {
+      res['max-height'] = opt.height + 'px';
+    }
+    if (this.options && this.options.showToolbar) {
+      res.height = 'calc(100% - 30px)';
+    }
+    return res;
+  }
+
+  // #endregion Public Methods (15)
+
+  // #region Private Methods (1)
+
+  private checkWidgetContent() {
+    if (!this.widget) { return; }
+    if (this.widget.datasource !== undefined) {
+      if (this.widget.content) {
+        this.setWidgetContent(this.widget, this.widget.content);
+      } else if (!this.loadingDataSource) {
+        this.loadingDataSource = true;
+        $cs.loadDatasource(this.widget.datasource).then(d => {
+          this.loadingDataSource = false;
+          this.setWidgetContent(this.widget!, d);
+        });
+      } else if (this.widget._dashboard && this.widget._dashboard.content) {
+        this.setWidgetContent(this.widget, this.widget._dashboard.content);
+      }
+    }
+  }
+
+  // #endregion Private Methods (1)
 }

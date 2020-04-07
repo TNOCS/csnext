@@ -1,19 +1,15 @@
 import {
-    ILayerServiceOptions,
     ILayerService,
     IStartStopService,
-    GeojsonPlusLayer
+    GeojsonPlusLayer,
+    MapDatasource,
+    LayerSource,
+    IMapLayer,
+    LayerServerOptions
+
 } from '..';
 import axios from 'axios';
-import { MapLayers } from '../classes/map-layers';
-import { LayerSource } from '../classes/layer-source';
-import { IMapLayer } from '../classes/imap-layer';
 import { LinePaint } from 'mapbox-gl';
-
-export class LayerServerOptions implements ILayerServiceOptions {
-    public url?: string;
-    public tags?: string[];
-}
 
 export class LayerServer implements ILayerService, IStartStopService {
     id!: string;
@@ -32,12 +28,12 @@ export class LayerServer implements ILayerService, IStartStopService {
         Object.assign(this, init);
     }
 
-    async Start(manager: MapLayers) {
+    async Start(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
                 .get(this.options.url)
-                .then(response => {
+                .then(async response => {
                     if (
                         response &&
                         response.data &&
@@ -68,7 +64,7 @@ export class LayerServer implements ILayerService, IStartStopService {
                                 'line-opacity': ['get', 'stroke-opacity'],
                                 'line-width': ['get', 'stroke-width']
                             } as LinePaint;
-                            gl.initLayer(manager);
+                            await gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);
                         }
@@ -79,7 +75,7 @@ export class LayerServer implements ILayerService, IStartStopService {
     }
 
     /** remove previously added layers */
-    private removeExistingLayers(manager: MapLayers) {
+    private removeExistingLayers(manager: MapDatasource) {
         if (
             this.layers &&
             this.layers.length > 0 &&
@@ -94,7 +90,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         this.layers = [];
     }
 
-    Stop(manager: MapLayers) {
+    Stop(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         console.log('Stop service');
     }

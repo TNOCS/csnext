@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.125",
+  "version": "0.0.127",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/src/index.d.ts",
   "license": "MIT",
@@ -19,15 +19,15 @@
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.125",
-    "axios": "^0.19.0",
-    "simplebar-vue": "^1.3.1",
+    "@csnext/cs-core": "^0.0.127",
+    "axios": "^0.19.2",
+    "simplebar-vue": "^1.4.0",
     "socket.io-client": "^2.3.0",
-    "vue-i18n": "^8.15.0",
+    "vue-i18n": "^8.15.6",
     "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
-    "vue-router": "^3.1.3",
-    "vuetify": "^2.1.5"
+    "vue-router": "^3.1.6",
+    "vuetify": "2.2.18"
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",

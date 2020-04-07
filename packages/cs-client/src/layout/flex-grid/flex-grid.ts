@@ -3,7 +3,8 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
-  IWidget} from '@csnext/cs-core';
+  IWidget
+} from '@csnext/cs-core';
 import { LayoutManager, FlexSize } from '../..';
 import './flex-grid.css';
 import {
@@ -83,12 +84,11 @@ export class FlexGrid extends Vue {
     if (!this.dashboard || !this.dashboard.widgets) {
       return;
     }
-    this.dashboard.widgets
-      .filter(w => !w.options || !w.options.background)
-      .forEach(widget => {
-        const container = this.getContainer(widget);
-        container.widgets.push(widget);
-      });
+    for (const widget of this.dashboard.widgets
+      .filter(w => !w.options || !w.options.background)) {
+      const container = this.getContainer(widget);
+      container.widgets.push(widget);
+    }
   }
 
   public containerStyles(container: IFlexGridContainer): any {

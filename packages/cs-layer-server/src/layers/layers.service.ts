@@ -13,8 +13,8 @@ import {
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
-import { debounce } from 'lodash';
-import { Debounce, Throttle } from 'lodash-decorators';
+import { throttle } from 'lodash';
+import { Debounce } from 'lodash-decorators';
 
 import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
@@ -24,19 +24,10 @@ import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 import AsyncLock from 'async-lock';
-// var AsyncLock = require('async-lock');
-import { Server } from 'tls';
+import { timingSafeEqual } from 'crypto';
 
 @Injectable()
 export class LayerService {
-    private config: ServerConfig;
-    private absoluteConfigPath!: string;
-    private lock = new AsyncLock();
-
-    handleConnection(d: Client) {
-        // this.server.emit('buttonCount',AppService.buttonCount);
-        Logger.log(`Connection received from ${d.id}`);
-    }
 
     public static sourcePlugins: ISourcePluginType[] = [];
 
@@ -48,6 +39,9 @@ export class LayerService {
             LayerService.sourcePlugins.push(type);
         }
     }
+    private config: ServerConfig;
+    private absoluteConfigPath!: string;
+    private lock = new AsyncLock();
 
     constructor(
         @Inject('DefaultWebSocketGateway')
@@ -61,15 +55,12 @@ export class LayerService {
         this.initPlugins();
     }
 
-    /** loads available source plugins, can be automated later */
-    private initPlugins() {
-        LayerService.AddSourcePlugin(new KmlFileSource());
-        LayerService.AddSourcePlugin(new GeojsonSource());
-        LayerService.AddSourcePlugin(new PostGisSource());
-        LayerService.AddSourcePlugin(new ArangoDBSource());
+    public handleConnection(d: Client) {
+        // this.server.emit('buttonCount',AppService.buttonCount);
+        Logger.log(`Connection received from ${d.id}`);
     }
 
-    async init(configFile?: string, serverPath?: string) {
+    public async init(configFile?: string, serverPath?: string) {
         // Logger.log('Init Layer Server');
         if (configFile) {
             this.absoluteConfigPath = path.join(
@@ -80,8 +71,8 @@ export class LayerService {
             if (fs.existsSync(this.absoluteConfigPath)) {
                 Logger.log(`Loading config file: ${this.absoluteConfigPath}`);
                 // read config file
-                let file = path.join(serverPath ? serverPath : '', configFile);
-                let configString = fs.readFileSync(file, 'utf8');
+                const file = path.join(serverPath ? serverPath : '', configFile);
+                const configString = fs.readFileSync(file, 'utf8');
                 if (configString) {
                     // config avaialable
                     this.config = {
@@ -101,6 +92,9 @@ export class LayerService {
                     );
                     // no config found, start fresh
                 }
+                if (this.config && this.config.socketFlushInterval) {
+                    this.flushSocketQueue = this.getThrottleFnc();
+                }
                 await this.importLayers();
                 await this.initLayers();
             } else {
@@ -112,9 +106,9 @@ export class LayerService {
     }
 
     /** look in the import folder if there are any layers to be imported */
-    importLayers() {
+    public importLayers() {
         if (this.config.importPath) {
-            let absoluteImportPath = path.join(
+            const absoluteImportPath = path.join(
 
                 this.config.serverPath || '',
                 this.config.importPath
@@ -129,7 +123,7 @@ export class LayerService {
             }
 
             // construct import completed folder
-            let absoluteImportCompletedPath = path.join(
+            const absoluteImportCompletedPath = path.join(
                 absoluteImportPath,
                 'completed'
             );
@@ -161,7 +155,7 @@ export class LayerService {
                     sourcePlugin
                         .import(absoluteImportFile)
                         .then(sourceImport => {
-                            const file = id + '.json';
+                            const f = id + '.json';
 
                             const absoluteFilePath = path.join(
                                 this.config.serverPath || '',
@@ -175,7 +169,7 @@ export class LayerService {
 
                             const absoluteSourcePath = path.join(
                                 absoluteFilePath,
-                                file
+                                f
                             );
                             fs.writeFileSync(
                                 absoluteSourcePath,
@@ -192,10 +186,10 @@ export class LayerService {
                             );
 
                             const layer = {
-                                id: id,
+                                id,
                                 source: file,
                                 sourceType: 'geojson',
-                                title: title
+                                title
                             } as LayerDefinition;
 
                             this.addLayer(layer);
@@ -205,26 +199,25 @@ export class LayerService {
                             //   .catch(r => {});
                         }).catch(e => {
                             Logger.log(`Import failed for ${id}`);
-                        })
+                        });
                 }
             });
         }
     }
 
-    saveServerConfigDelay = () => {
-        debounce(() => {
-            this.saveServerConfig();
-        }, 5000);
-    };
+    @Debounce(5000)
+    saveServerConfigDelay() {
+        this.saveServerConfig();
+    }
 
     public addLayer(def: LayerDefinition): Promise<LayerDefinition> {
         return new Promise((resolve, reject) => {
-            let newDef = Object.assign(
+            const newDef = Object.assign(
                 {
                     id: Helpers.guidGenerator(),
                     sourceType: 'geojson',
                     version: '0.0.1',
-                    color: 'blue',
+                    color: 'gray',
                     isLive: false,
                     tags: [],
                     isEditable: false,
@@ -243,7 +236,7 @@ export class LayerService {
         Logger.log(`Saving server config: ${this.absoluteConfigPath}`);
 
         // create a duplicate without underscores;
-        let duplicate = JSON.parse(
+        const duplicate = JSON.parse(
             JSON.stringify(this.config)
         ) as ServerConfig;
 
@@ -315,7 +308,6 @@ export class LayerService {
             // if no default style has been selected, inspect source
             if (layer.sourceType === 'geojson') {
                 // get source
-
                 try {
                     const s = await this.getLayerSourceById(layer.id);
                     if (s !== undefined) {
@@ -325,65 +317,24 @@ export class LayerService {
                         }
                         layer.color = this.findColor(s);
                     }
-                } catch (e) { }
+                } catch (e) {
+                    Logger.error(`Error getting layer source ${layer.id}`);
+                    Logger.error(`${e}`);
+                 }
             }
             resolve(layer);
         });
     }
 
-    private findColor(content: GeoJSON.FeatureCollection): string {
-        if (content.features) {
-            for (const f of content.features) {
-                if (f.properties) {
-                    for (const p in f.properties) {
-                        if (f.properties[p].match(/\#(.*)/)) {
-                            return f.properties[p];
-                        }
-                    }
-                }
-            }
-        }
-        return 'lightgray';
-    }
-
-    private findType(content: GeoJSON.FeatureCollection): string[] {
-        let types: string[] = [];
-        for (const f of content.features) {
-            if (f.geometry && f.geometry.type) {
-                let type = this.getFeatureType(f);
-                if (type && types.indexOf(type) === -1) {
-                    types.push(type);
-                }
-            }
-        }
-        return types;
-    }
-
-    private getFeatureType(f: Feature): string | undefined {
-        let type: string | undefined = undefined;
-        switch (f.geometry.type) {
-            case 'Point':
-                type = 'point';
-                break;
-            case 'LineString':
-                type = 'line';
-                break;
-            case 'Polygon':
-                type = 'fill';
-                break;
-        }
-        return type;
-    }
-
     /** return all layers */
-    getLayers(): LayerDefinition[] {
+    public getLayers(): LayerDefinition[] {
         return this.config.layers;
     }
 
     /** find one specific layer */
-    getLayerById(id: string): Promise<LayerDefinition | undefined> {
+    public getLayerById(id: string): Promise<LayerDefinition | undefined> {
         return new Promise(async (resolve, reject) => {
-            let def = this.config.layers.find((l: any) => l.id === id);
+            const def = this.config.layers.find((l: any) => l.id === id);
             if (def) {
                 resolve(def);
             } else {
@@ -392,32 +343,52 @@ export class LayerService {
         });
     }
 
-    queueSocketUpdate(source: LayerSource, feature: Feature) {
+    public queueSocketUpdate(source: LayerSource, feature: Feature) {
         if (source) {
             if (!source._socketQueue) { source._socketQueue = {}; }
-
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
-                    feature: feature
+                    feature
                 };
             });
-
         }
     }
 
-    @Throttle(5000)
-    flushSocketQueue(source: LayerSource) {
+    queueSocketDelete(source: LayerSource, feature: Feature) {
+        if (source) {
+            if (!source._socketQueue) { source._socketQueue = {}; }
+            this.lock.acquire(source.id, () => {
+                source._socketQueue[feature.id] = {
+                    action: 'delete',
+                    feature: feature
+                };
+            });
+        }
+    }
+
+    private getThrottleFnc() {
+        const interval = (this.config && this.config.socketFlushInterval) || 5000;
+        Logger.log(`Flush socket queue every ${interval} ms`)
+        return throttle((source: LayerSource) => {
+            this._flushSocketQueue(source);
+        }, interval);
+    }
+
+    public flushSocketQueue = this.getThrottleFnc();
+
+    private _flushSocketQueue(source: LayerSource) {
         if (source) {
             if (source._socketQueue) {
                 this.lock.acquire(source.id, () => {
                     if (this.socket && this.socket.server) {
+                        const address = 'layer/' + source.id + '/features';
                         this.socket.server.emit(
-                            'layer/' + source.id + '/features',
+                            address,
                             source._socketQueue
                         );
+                        console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
                     }
-                    console.log(`Sending queue ${Object.keys(source._socketQueue).length}`);
                     source._socketQueue = {};
                 });
             }
@@ -434,8 +405,11 @@ export class LayerService {
             try {
                 // console.log(`Update feature ${feature.id}`);
                 // find source
-                let source = await this.getLayerSourceById(sourceid);
+                const source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+
                     // if featureid was given, update feature
                     if (featureId !== undefined) {
                         feature.id = featureId;
@@ -447,7 +421,7 @@ export class LayerService {
                     }
 
                     // find existing feature
-                    let existingFeatureIndex = source.features.findIndex(
+                    const existingFeatureIndex = source.features.findIndex(
                         f => f.id === feature.id
                     );
                     // not found, add
@@ -460,18 +434,8 @@ export class LayerService {
                     new GeojsonSource().initFeature(feature);
 
                     this.queueSocketUpdate(source, feature);
-                    this.flushSocketQueue(source)
+                    this.flushSocketQueue(source);
 
-                    // // send update over socket
-                    // if (this.socket && this.socket.server) {
-                    //     this.socket.server.emit(
-                    //         'layer/' + sourceid + '/features',
-                    //         JSON.stringify({
-                    //             action: 'update',
-                    //             feature: feature
-                    //         })
-                    //     );
-                    // }
                     this.saveSource(source);
                 }
                 resolve(feature);
@@ -482,27 +446,70 @@ export class LayerService {
     }
 
     /** add or update feature */
-    deleteFeature(sourceid: string, featureId: string): Promise<boolean> {
+    public getFeature(sourceid: string, featureId: string): Promise<Feature | undefined> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // find source
+                const source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {
+                    // actually remove feature
+                    const feature = source.features.find(f => f.id === featureId);
+                    resolve(feature);
+                }
+            } catch (e) {
+                reject('Source not found');
+            }
+        });
+    }
+
+    /** delete feature */
+    public deleteFeature(sourceid: string, featureId: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // find source
+                const source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+                    const deletedFeatures = source.features.filter(f => f.id && f.id === featureId);
+
+                    // actually remove feature
+                    source.features = source.features.filter(f => !f.id || f.id !== featureId);
+
+                    // send socket updates
+                    deletedFeatures.forEach(f => {
+                        this.queueSocketDelete(source, f);
+                        this.flushSocketQueue(source)
+                    });
+
+                    this.saveSource(source);
+                    resolve(true);
+                }
+            } catch (e) {
+                reject('Source not found');
+            }
+        });
+    }
+
+    /** delete all features */
+    deleteAllFeatures(sourceid: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             try {
                 // find source
                 let source = await this.getLayerSourceById(sourceid);
                 if (source && source.features) {
-                    // actually remove feature
-                    source.features = source.features.filter(
-                        f => !f.id || f.id !== featureId
-                    );
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+                    const deletedFeatures = [...source.features];
 
-                    // send update over socket
-                    if (this.socket && this.socket.server) {
-                        this.socket.server.emit(
-                            'layer/' + sourceid + '/features',
-                            JSON.stringify({
-                                action: 'delete',
-                                feature: { id: featureId }
-                            })
-                        );
-                    }
+                    // actually remove feature
+                    source.features.length = 0;
+
+                    // send socket updates
+                    deletedFeatures.forEach(f => {
+                        this.queueSocketDelete(source, f);
+                        this.flushSocketQueue(source)
+                    });
 
                     this.saveSource(source);
                     resolve(true);
@@ -514,13 +521,13 @@ export class LayerService {
     }
 
     /** update defintion for layer */
-    putLayerDefinitionById(
+    public putLayerDefinitionById(
         id: string,
         body: LayerDefinition
     ): Promise<LayerDefinition> {
         return new Promise(async (resolve, reject) => {
             Logger.log(`Updating layer definition for layer ${id}`);
-            let defIndex = this.config.layers.findIndex(l => l.id === id);
+            const defIndex = this.config.layers.findIndex(l => l.id === id);
             if (defIndex >= 0) {
                 // update layer definition in config
                 this.config.layers[defIndex] = {
@@ -545,7 +552,9 @@ export class LayerService {
                                 newLayerDef
                             );
                             newLayerDef = newSource.def;
-                        } catch (e) { }
+                        } catch (e) {
+                            Logger.log(`Error creating definition for ${id}`);
+                         }
                     }
                     this.saveServerConfig();
                     resolve(newLayerDef);
@@ -557,9 +566,9 @@ export class LayerService {
     }
 
     /** find one specific layer */
-    getLayerAndSourceById(id: string): Promise<LayerDefinition | undefined> {
+    public getLayerAndSourceById(id: string): Promise<LayerDefinition | undefined> {
         return new Promise(async (resolve, reject) => {
-            let def = await this.getLayerById(id);
+            const def = await this.getLayerById(id);
             if (def) {
                 def._layerSource = await this.getLayerSourceById(id);
                 resolve(def);
@@ -569,14 +578,14 @@ export class LayerService {
         });
     }
 
-    triggerLayerRefresh(id: string): Promise<boolean> {
+    public triggerLayerRefresh(id: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             Logger.log(`Triggering layer refresh for ${id}`);
             resolve(true);
         });
     }
 
-    getLayerSourceById(id: string): Promise<LayerSource | undefined> {
+    public getLayerSourceById(id: string): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             this.getLayerById(id)
                 .then(def => {
@@ -610,7 +619,9 @@ export class LayerService {
                                                         def.featureTypes =
                                                             meta.featureTypes;
                                                     }
-                                                } catch (e) { }
+                                                } catch (e) {
+                                                    Logger.error(`Error creating meta for ${def.externalUrl}`);
+                                                 }
                                             }
                                             resolve(response.data);
                                             return;
@@ -649,31 +660,8 @@ export class LayerService {
         });
     }
 
-    /** get a source plugin for a given extension (e.g. kml) */
-    private getExtensionSourcePlugin(ext: string): ISourcePlugin | undefined {
-        const plugin = LayerService.sourcePlugins.find(
-            p =>
-                p.fileExtensions !== undefined &&
-                p.fileExtensions.indexOf(ext.toLowerCase()) !== -1
-        );
-        if (plugin && typeof plugin.getInstance === 'function') {
-            return plugin.getInstance();
-        }
-    }
-
-    /** get a source plugin for a given source type */
-    private getSourcePlugin(type: string): ISourcePlugin | undefined {
-        // console.log('Looking for type: ' + type);
-        let plugin = LayerService.sourcePlugins.find(
-            p => p.source !== undefined && p.source === type
-        );
-        if (plugin && typeof plugin.getInstance === 'function') {
-            return plugin.getInstance();
-        }
-    }
-
     /** load & return layer source */
-    loadLayerSource(def: LayerDefinition): Promise<LayerSource | undefined> {
+    public loadLayerSource(def: LayerDefinition): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
@@ -718,7 +706,7 @@ export class LayerService {
                 }
             } else if (plugin && typeof plugin.load === 'function') {
                 try {
-                    let fileName = path.join(
+                    const fileName = path.join(
                         this.config.serverPath || '',
                         this.config.sourcePath || '',
                         def.id,
@@ -752,7 +740,7 @@ export class LayerService {
                     }
                 } catch (e) {
                     Logger.log(`Error loading: ${def.source}`);
-                    console.log(e);
+                    Logger.log(e);
                     reject();
                 }
             }
@@ -760,15 +748,10 @@ export class LayerService {
         });
     }
 
-    private updateMetaFilePath(def: LayerDefinition) {
-        def._localMeta = path.join(this.config.serverPath || '', this.config.sourcePath || '', def.id, def.meta);
-    }
-
-
     @Debounce(5000, { leading: true })
     public saveSource(source: LayerSource) {
         if (source._localFile) {
-            let content = JSON.stringify(
+            const content = JSON.stringify(
                 source,
                 (key, value) => {
                     if (key.startsWith('_')) {
@@ -783,7 +766,7 @@ export class LayerService {
         }
     }
 
-    putLayerSourceById(id: string, body: LayerSource): Promise<boolean> {
+    public putLayerSourceById(id: string, body: LayerSource): Promise<boolean> {
         return new Promise(resolve => {
             this.getLayerSourceById(id)
                 .then(s => {
@@ -803,5 +786,88 @@ export class LayerService {
                 });
             resolve(true);
         });
+    }
+
+    /** loads available source plugins, can be automated later */
+    private initPlugins() {
+        LayerService.AddSourcePlugin(new KmlFileSource());
+        LayerService.AddSourcePlugin(new GeojsonSource());
+        LayerService.AddSourcePlugin(new PostGisSource());
+        LayerService.AddSourcePlugin(new ArangoDBSource());
+    }
+
+    private findColor(content: GeoJSON.FeatureCollection): string {
+        if (content.features && content.features.length) {
+            for (const f of content.features) {
+                if (f.properties && Object.keys(f.properties).length > 0) {
+                    for (const p in f.properties) {
+                        if (f.properties[p] && f.properties[p].match) {
+                            if (f.properties[p].match(/\#(.*)/)) {
+                                return f.properties[p];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return 'lightgray';
+    }
+
+    private findType(content: GeoJSON.FeatureCollection): string[] {
+        const types: string[] = [];
+        if (content.features && content.features.length) {
+            for (const f of content.features) {
+                if (f.geometry && f.geometry.type) {
+                    const type = this.getFeatureType(f);
+                    if (type && types.indexOf(type) === -1) {
+                        types.push(type);
+                    }
+                }
+            }
+        }
+        return types;
+    }
+
+    private getFeatureType(f: Feature): string | undefined {
+        let type: string | undefined;
+        switch (f.geometry.type) {
+            case 'Point':
+                type = 'point';
+                break;
+            case 'LineString':
+                type = 'line';
+                break;
+            case 'Polygon':
+                type = 'fill';
+                break;
+        }
+        return type;
+    }
+
+    /** get a source plugin for a given extension (e.g. kml) */
+    private getExtensionSourcePlugin(ext: string): ISourcePlugin | undefined {
+        const plugin = LayerService.sourcePlugins.find(
+            p =>
+                p.fileExtensions !== undefined &&
+                p.fileExtensions.indexOf(ext.toLowerCase()) !== -1
+        );
+        if (plugin && typeof plugin.getInstance === 'function') {
+            return plugin.getInstance();
+        }
+    }
+
+    /** get a source plugin for a given source type */
+    private getSourcePlugin(type: string): ISourcePlugin | undefined {
+        // console.log('Looking for type: ' + type);
+        const plugin = LayerService.sourcePlugins.find(
+            p => p.source !== undefined && p.source === type
+        );
+        if (plugin && typeof plugin.getInstance === 'function') {
+            return plugin.getInstance();
+        }
+    }
+
+    private updateMetaFilePath(def: LayerDefinition) {
+        def._localMeta = path.join(this.config.serverPath || '', this.config.sourcePath || '', def.id, def.meta);
     }
 }

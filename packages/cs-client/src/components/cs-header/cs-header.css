@@ -10,6 +10,27 @@
   margin-left: 0 !important;
 }
 
+.compact-header {
+    width: 500px;    
+ 
+}
+
+
+.floating-toolbar {
+  margin-top: 15px !important;
+  margin-left: 15px;
+  max-width: 500px;
+  
+}
+
+.v-application .theme--light a.breadcrumb-text {
+  color: black;
+}
+
+.v-application .theme--dark a.breadcrumb-text {
+  color: white;
+}
+
 .sidebar-dashboard-selected {
   background: red;
 }

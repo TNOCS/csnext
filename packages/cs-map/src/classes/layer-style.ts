@@ -16,7 +16,7 @@ import {
 } from 'mapbox-gl';
 
 export interface ILayerStyle {
-    types?: string[];
+    type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
     iconZoomLevel?: number;
     title?: string;
     mapTitle?: string;
@@ -36,16 +36,16 @@ export const MapboxStopForm: IFormOptions = {
             _index: 0,
             type: 'number',
             title: 'value',
-            group: 'stop' 
+            group: 'stop'
         },
         {
             _index: 1,
             type: 'string',
             title: 'color',
-            group: 'stop'           
+            group: 'stop'
         }
     ]
-}
+};
 
 export const MapboxColorForm: IFormOptions = {
     title: 'Color',
@@ -63,7 +63,7 @@ export const MapboxColorForm: IFormOptions = {
             arrayType: MapboxStopForm
         }
     ]
-}
+};
 
 export const CirclePaintForm: IFormOptions = {
     title: 'Circle Layout',
@@ -71,7 +71,7 @@ export const CirclePaintForm: IFormOptions = {
     fields: [
         {
             _key: 'circle-color',
-            type: 'string',            
+            type: 'string',
             title: 'color',
             group: 'circle-color'
         },
@@ -102,7 +102,7 @@ export const CirclePaintForm: IFormOptions = {
         {
             _key: 'circle-stroke-color',
             type: 'string',
-            defaultValue: "#000000",
+            defaultValue: '#000000',
             title: 'stroke color',
             group: 'circle-stroke'
         },
@@ -147,7 +147,6 @@ export const LineLayoutForm: IFormOptions = {
     ]
 };
 
-
 export const LinePaintForm: IFormOptions = {
     title: 'Line Paint',
     isPanel: true,
@@ -182,7 +181,6 @@ export const LinePaintForm: IFormOptions = {
         }
     ]
 };
-
 
 export const FillPaintForm: IFormOptions = {
     title: 'Fill Paint',
@@ -223,7 +221,7 @@ export const FillPaintForm: IFormOptions = {
             type: 'number',
             title: 'width',
             group: 'line-color'
-        }        
+        }
     ]
 };
 
@@ -406,15 +404,12 @@ export class MapboxStyles {
     }
 }
 
+// tslint:disable-next-line: max-classes-per-file
 @Form({ title: 'Layer Style' })
 export class LayerStyle implements ILayerStyle {
-    /** feature types available in layer (fill, line, point, .etc)*/
-    @FormField({
-        title: 'Types',
-        type: 'checkboxes-horizontal',
-        options: ['point', 'line', 'fill']
-    })
-    public types?: string[];
+
+    public type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
+    // public types?: string[];
     public iconZoomLevel?: number;
     @FormField({ title: 'Feature title', type: 'string' })
     public title?: string;
@@ -422,10 +417,10 @@ export class LayerStyle implements ILayerStyle {
     public mapTitle?: string;
     @FormField({ title: 'Map Popup text', type: 'string' })
     public popup?: string;
-    @FormField({ title: 'Use Fill', type: 'checkbox', group: 'layout' })
-    public fill?: boolean;
-    @FormField({ title: 'Use Line', type: 'checkbox', group: 'layout' })
-    public line?: boolean;
+    // @FormField({ title: 'Use Fill', type: 'checkbox', group: 'layout' })
+    // public fill?: boolean;
+    // @FormField({ title: 'Use Line', type: 'checkbox', group: 'layout' })
+    // public line?: boolean;
     @FormField({ title: 'Use Point', type: 'checkbox', group: 'layout' })
     public pointCircle?: boolean;
     @FormField({ title: 'Icon', type: 'string' })
@@ -435,5 +430,9 @@ export class LayerStyle implements ILayerStyle {
     public defaultLegendProperty?: string;
     @FormField({ title: 'Styles', type: 'object' })
     public mapbox?: MapboxStyles;
+    @FormField({ title: 'Opacity', type: 'number', min: 0, max: 100, step: 1 })
+    public opacity?: number = 100;
+    public showSymbol?: boolean;
+    public _opacity?: number;
     public _originalMapbox?: MapboxStyles;
 }

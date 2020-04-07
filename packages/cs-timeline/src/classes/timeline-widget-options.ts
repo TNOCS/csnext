@@ -7,6 +7,7 @@ export interface TimelineWidgetOptions extends WidgetOptions {
     smallView?: boolean;
     showFocusTime?: boolean;
     showFitButton?: boolean;
+    showStackButton?: boolean;
     toggleSmallButton?: boolean;
     showGroupSelectionButton?: boolean;
 }

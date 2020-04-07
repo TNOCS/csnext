@@ -17,6 +17,7 @@ export * from './interactions/menu';
 
 export * from './dashboard/css-grid-dashboard-options';
 export * from './dashboard/css-grid-widget-options';
+export * from './dashboard/tab-dashboard-options';
 export * from './dashboard/dashboard-manager-config';
 export * from './dashboard/dashboard-options';
 export * from './dashboard/dashboard';
@@ -43,5 +44,7 @@ export * from './utils/message-bus/message-bus-manager';
 
 export * from './utils/guid';
 export * from './utils/function';
+export * from './utils/info';
+export * from './utils/loader';
 
 export * from './form/form-decorators';

@@ -1,5 +1,5 @@
 FROM node:12
-RUN npm install -g yarn @vue/cli npx typescript del-cli lerna
+RUN npm install -g @vue/cli typescript del-cli lerna
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
 COPY . .

@@ -6,10 +6,10 @@ export interface ILayer {
     /** layer as shown in interface */
     title: string;
     /** list of tags, used for clustering in layer selection */
-    tags: string[];
+    tags?: string[];
     sourceType?: string;
-    color: string;
-    description: string;
+    color?: string;
+    description?: string;
     // tslint:disable-next-line:ban-types
     popupContent?: string | Function | undefined;
     opacity?: number;

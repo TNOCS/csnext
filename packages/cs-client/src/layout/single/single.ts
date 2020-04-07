@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, IDashboard, ILayoutManagerConfig } from '@csnext/cs-core';
+import { IWidget, IDashboard, ILayoutManagerConfig, guidGenerator } from '@csnext/cs-core';
 import { LayoutManager } from '../../';
 import './single.css';
 
@@ -13,9 +13,9 @@ import './single.css';
 } as any)
 /** Single layout manager. Only shows first widget full screen */
 export class Single extends Vue {
+  public static id = 'single';
   public dashboard?: IDashboard;
   public widgetAvailable = false;
-  public static id = 'single';
   public widget?: IWidget;
 
   public created() {
@@ -26,3 +26,11 @@ export class Single extends Vue {
 
 }
 LayoutManager.add({ id: Single.id, name: 'single page', component: Single } as ILayoutManagerConfig);
+
+export function SingleDashboard(definition?: IDashboard): IDashboard {
+  if (definition) {
+    return { ...{ id: guidGenerator(), layout: Single.id, options: { } }, ...definition };
+  } else {
+    return {};
+  }
+}

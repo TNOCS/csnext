@@ -28,6 +28,7 @@ export interface ITimelineDataSource extends IDatasource {
 
 const TOGGLE_MENU_ID = 'togglesmall';
 const ZOOM_MENU_ID = 'zoom';
+const STACK_MENU_ID = 'stack';
 const GROUPS_MENU_ID = 'groups';
 const NO_GROUP = 'all';
 @Component({
@@ -182,6 +183,13 @@ export class CsTimeline extends WidgetBase {
         if (this.WidgetOptions.logSource) {
             this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
                 this.logSource = r;
+                this.busManager.subscribe(this.logSource.bus, Topics.LOG_TOPIC, (a: string, id: string) => {
+                    if (a === Topics.SELECT_LOG_ITEM) {
+                        if (id && this.timeline) {
+                            this.timeline.setSelection(id);
+                        }
+                    }
+                })
                 this.busManager.subscribe(this.logSource.bus, 'updated', () => {
                     this.update();
                 });
@@ -255,6 +263,21 @@ export class CsTimeline extends WidgetBase {
             } as IMenu);
         }
 
+        if (this.WidgetOptions.showStackButton) {
+            menus.push({
+                id: STACK_MENU_ID,
+                toolTip: 'STACK',
+                icon: 'reorder',
+                action: () => {
+                    if (this.timeline && this.WidgetOptions.timelineOptions) {
+                        this.WidgetOptions.timelineOptions.stack = !this.WidgetOptions.timelineOptions.stack;
+                        this.timeline.setOptions({ stack: this.WidgetOptions.timelineOptions.stack });
+                    }
+
+                }
+            })
+        }
+
         // this.widget.options.menus ? this.widget.options.menus :
         if (this.WidgetOptions.showFitButton) {
             menus.push({
@@ -268,18 +291,18 @@ export class CsTimeline extends WidgetBase {
             } as IMenu);
         }
 
-        if (this.WidgetOptions.toggleSmallButton) {
-            // check if already exists
-            if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
-                menus.push({
-                    id: TOGGLE_MENU_ID,
-                    icon: 'line_weight',
-                    action: () => {
-                        this.toggleView();
-                    }
-                });
-            }
-        }
+        // if (this.WidgetOptions.toggleSmallButton) {
+        //     // check if already exists
+        //     if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+        //         menus.push({
+        //             id: TOGGLE_MENU_ID,
+        //             icon: 'line_weight',
+        //             action: () => {
+        //                 this.toggleView();
+        //             }
+        //         });
+        //     }
+        // }
 
         if (this.WidgetOptions.showGroupSelectionButton) {
             // check if already exists
@@ -303,11 +326,8 @@ export class CsTimeline extends WidgetBase {
         this.busManager.subscribe(this.widget.events, Topics.RESIZE, () => {
             this.timeline!.redraw();
         });
-    }
 
-    // public mounted() {
-        
-    // }
+    }
 
     private addGroup(groupName: string) {
         if (!this.groupExists(groupName)) {
@@ -332,6 +352,7 @@ export class CsTimeline extends WidgetBase {
             this.timeline.addCustomTime(this.currentTime, 'focustime');
             this.timeline.on('click', this.handleTimelineClick);
         }
+        this.timeline.on('doubleClick', this.handleDoubleClick);
         this.timeline.on('select', this.handleEventSelect);
         this.timeline.on('timechanged', this.handleTimeChanged);
         this.timeline.on('timechange', this.handleTimeChange);
@@ -353,6 +374,10 @@ export class CsTimeline extends WidgetBase {
         if (d && d.id === 'focustime' && d.time && this.Time.events) {
             this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
         }
+    }
+
+    private handleDoubleClick(data: any) {
+        this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_DOUBLE_CLICK, data);
     }
 
     private handleEventSelect(data: any) {
@@ -408,10 +433,10 @@ export class CsTimeline extends WidgetBase {
         if (this.logSource && this.logSource.items) {
             for (const item of this.logSource.items) {
                 // item.content = item.content;
-                if (!item.style) {
-                    item.style = 'height:' + height;
-                }
-                if (this.smallView) { item.style += ''; }
+                // if (!item.style) {
+                //     item.style = 'height:' + height;
+                // }
+                // if (this.smallView) { item.style += ''; }
                 if (item.startDate) { item.start = new Date(item.startDate); }
                 if (item.endDate) { item.end = new Date(item.endDate); }
                 if (!item.group) { item.group = NO_GROUP; }

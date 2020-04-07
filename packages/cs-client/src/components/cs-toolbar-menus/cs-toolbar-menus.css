@@ -1,38 +1,36 @@
-.widget-default {
-  height: 100%;
-  width: 100%;
-  background: transparent;
+
+.menu.buttonClass {
+  margin-left: 4px;
 }
 
-.widget-container {
-  height: 100%;
+.menu-icon-down
+{
+  margin-left: -5px !important;
 }
 
-.widget-buttons-container{
-  position:absolute !important;
+.widget-buttons-container {
+  position: absolute !important;
   right: 10px;
-  top: 3px;  
+  top: 3px;
   z-index: 1000;
 }
 
-.widget-button{
+.widget-button {
   /* margin:0 !important; */
   /* width:18px !important;
   height:18px !important; */
 }
 
-.widget-button-icon
-{
-  width:16px !important;
-  height:16px !important;
+.widget-button-icon {
+  width: 16px !important;
+  height: 16px !important;
 }
-
 
 /* Borders */
 
-.widget-border-shadow { 
+.widget-border-shadow {
   margin: 2px;
-  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);  
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);
   height: calc(100% - 4px);
 }
 
@@ -40,4 +38,8 @@
   border-style: solid;
   border-width: 1px;
   border-color: black;
+}
+
+.cs-menu-container {
+  display: inline-flex;
 }

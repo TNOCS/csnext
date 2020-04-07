@@ -1,18 +1,19 @@
-<div style="  position: absolute;
-left: 0;
-right: 0;
-top: 0;
-bottom: 0;">
-    <v-text-field
-        solo
-        v-if="widget.options.searchEnabled"
-        class="layer-filter-field"
-        v-model="filter"
-        label="filter"
-        append-icon="search"
-    ></v-text-field>
-    <simplebar style="height: 100%">
-        <v-expansion-panels v-model="groupsexpanded" multiple accordion>
+<div>
+    <v-layout>
+        <v-text-field
+            solo
+            v-if="widget.options.searchEnabled"
+            class="layer-filter-field"
+            v-model="filter"
+            label="filter"
+            append-icon="search"
+        ></v-text-field>
+        <v-btn icon @click="createLayer()">
+            <v-icon>add</v-icon>
+        </v-btn>
+    </v-layout>
+    <simplebar data-simplebar-auto-hide="false">
+        <v-expansion-panels v-model="groupsexpanded" multiple accordion style="height:100%">
             <v-expansion-panel
                 v-if="widget.content"
                 v-for="(group, key) in Groups"
@@ -36,7 +37,7 @@ bottom: 0;">
                                 class="layer-group-item"
                                 @contextmenu="showLayerMenu"
                                 :id="layer.id"
-                                :class="{'layer-group-item-selected':layer.Visible}"
+                                :class="{'layer-group-item-selected':layer.enabled}"
                                 :style="{'border-left-color': layer.color}"
                             >
                                 <!-- <v-tooltip
@@ -47,7 +48,7 @@ bottom: 0;">
                                 <template v-slot:activator="{ on }"> -->
                                 <v-checkbox
                                     :label="layer.title"
-                                    v-model="layer.Visible"
+                                    v-model="layer.enabled"
                                     class="layer-group-item-title"
                                     @change="toggleLayer(layer)"
                                 ></v-checkbox>
@@ -55,7 +56,7 @@ bottom: 0;">
                                 <span>{{ layer.description }}</span>
                             </v-tooltip> -->
                                 <v-btn
-                                    v-if="layer.Visible"
+                                    v-if="layer.enabled"
                                     text
                                     right
                                     icon
@@ -90,7 +91,7 @@ bottom: 0;">
                                 </v-menu>
                             </v-layout>
                             <div
-                                v-if="layer._showMore && layer.Visible"
+                                v-if="layer._showMore && layer.enabled"
                                 class="layer-more-options"
                             >
                                 <v-slider

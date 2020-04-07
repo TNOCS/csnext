@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "module": "es2015",
+      "module": "esnext",
       "target": "es2015",      
       "noImplicitAny": false,
       "composite": true,      
@@ -13,6 +13,7 @@
       "emitDecoratorMetadata": true,
       "allowSyntheticDefaultImports": true,
       "resolveJsonModule": false,
+      "allowJs": false,
       "outDir": "./dist/"      
     },    
     "rules": {

@@ -5,12 +5,10 @@ import {
   IDashboard,
   IWidget,
   guidGenerator,
-  MessageBusService,
-  isFunction
+  MessageBusService
 } from '@csnext/cs-core';
 import './cs-dashboard.css';
 import {
-  CsApp,
   AppState,
   Logger,
   LayoutManager,
@@ -71,6 +69,7 @@ export class CsDashboard extends Vue {
 
   public showToolbar() {
     if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.showToolbar) { return true; }
     if (this.dashboard.parent) {
       if (this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hide) { return false; }
     } else {
@@ -106,7 +105,7 @@ export class CsDashboard extends Vue {
     }
 
     // init sub dashboards
-    if (this.dashboard && this.dashboard.dashboards && this.dashboard.dashboards) {
+    if (this.dashboard && this.dashboard.dashboards) {
       for (const d of this.dashboard.dashboards) {
         this.initDashboard(d);
       }
@@ -126,9 +125,9 @@ export class CsDashboard extends Vue {
     }
 
     if (dashboard.options.info) {
-      this.$cs.OpenInfo(dashboard.options.info);
+      this.$cs.openInfo(dashboard.options.info);
     } else {
-      this.$cs.CloseInfo();
+      this.$cs.closeInfo();
     }
 
     // if this is a main dashboard, set it as active dashboard on appstate
@@ -138,7 +137,7 @@ export class CsDashboard extends Vue {
       if (dashboard.options && dashboard.options.closeRightSidebar && this.$cs.project.rightSidebar) {
         this.$cs.project.rightSidebar.open = false;
       }
-      this.$cs.UpdateBreadCrumbs();
+      this.$cs.updateBreadCrumbs();
       this.$forceUpdate();
     }
 
@@ -187,7 +186,7 @@ export class CsDashboard extends Vue {
 
           // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
           if (this.dashboard.widgets) {
-            this.dashboard.widgets.forEach(w => {
+            for (const w of this.dashboard.widgets) {
               if (!w.datasource && this.dashboard && this.dashboard.content) {
                 Vue.set(w, 'content', this.dashboard.content);
               }
@@ -200,7 +199,7 @@ export class CsDashboard extends Vue {
               if (w._component && w._component.contentLoaded) {
                 w._component.contentLoaded(d);
               }
-            });
+            }
           }
         })
         .catch(() => {

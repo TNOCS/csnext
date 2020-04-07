@@ -9,6 +9,7 @@
   <cs-header
     :leftSidebar="leftSidebar"
     :rightSidebar="rightSidebar"
+    v-if="$cs.project.navigation.style !== 'bottom'"
   ></cs-header>
 
   <!-- side bars -->
@@ -78,19 +79,14 @@
   <!-- content -->
   <v-content
     fluid
-    v-bind:class="{ 'floating': $cs.project.header.floating }"
+    v-bind:class="{ 'floating': $cs.isFloatingHeader }"
     v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
   >
     <router-view :key="$route.path"> </router-view>
   </v-content>
 
   <!-- mobile navigation -->
-  <v-bottom-nav
-    app
-    router
-    v-if="$cs.project.navigation.style==='bottom'"
-    :value="true"
-  >
+  <v-bottom-navigation app router v-if="$cs.isBottomNavigation" :value="true">
     <v-btn
       v-for="dashboard in $cs.project.dashboards"
       :key="dashboard.id"
@@ -101,7 +97,7 @@
       <span>{{ dashboard.title }}</span>
       <v-icon>{{ dashboard.icon }}</v-icon>
     </v-btn>
-  </v-bottom-nav>
+  </v-bottom-navigation>
   <!-- footer -->
   <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
 
@@ -110,11 +106,17 @@
     :timeout="lastNotification.timeout"
     :top="true"
     :multi-line="true"
+    :color="lastNotification.color"
     v-model="lastNotification._visible"
   >
-    {{ $cs.Translate(lastNotification.title) }}
-    <v-btn text @click.native="clickNotification()">
-      {{ $cs.Translate(lastNotification.buttonText) }}</v-btn
-    >
+    <v-layout>
+      <v-icon v-if="lastNotification.icon">{{lastNotification.icon}}</v-icon>
+      <span class="notification-title">
+        {{ $cs.Translate(lastNotification.title) }}
+      </span>
+      <v-btn text @click.native="clickNotification()">
+        {{ $cs.Translate(lastNotification.buttonText) }}</v-btn
+      >
+    </v-layout>
   </v-snackbar>
 </v-app>

@@ -1,5 +1,5 @@
 <v-navigation-drawer
-  :width="sideBar.width"
+  :width="sidebarWidth"
   disable-route-watcher
   v-if="sideBar"
   disable-resize-watcher
@@ -11,21 +11,19 @@
   :persistent="sideBar.persistent"
   :temporary="sideBar.temporary"
   :floating="sideBar.floating"
-  app
-  overflow  
   class="cs-nav-drawer"
+  :app="true"
 >
   <v-toolbar v-if="sideBar.title">
     <v-list dense>
       <v-list-item>
         <v-icon v-if="app.project.navigation.icons">home</v-icon>
-        <v-list-item-title class="title">{{
-          $cs.Translate(sideBar.title)
-        }}</v-list-item-title>
+        <v-list-item-title class="title"
+          >{{ $cs.Translate(sideBar.title) }}</v-list-item-title
+        >
       </v-list-item>
     </v-list>
   </v-toolbar>
-  
 
   <v-divider v-if="sideBar.title"></v-divider>
   <div v-if="sideBar.component" class="sidebar-component-container">
@@ -35,7 +33,7 @@
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
   
-  <simplebar style="position: absolute;left:0;right:0;top:0;bottom:0;"
+  <simplebar class="sidebar-simplebar"
     v-else-if="app.project.navigation.style==='left-hierarchy' && !sideBar.right"
   >
     <v-list class="cs-sidebar-list">
@@ -57,9 +55,9 @@
               offset-x
             >
               <template v-slot:activator="{ on }">
-                <v-icon v-on="on" @click="SelectDashboard(item)">{{
-                  item.icon
-                }}</v-icon>
+                <v-icon v-on="on" @click="SelectDashboard(item)"
+                  >{{ item.icon }}</v-icon
+                >
               </template>
               <v-card>
                 <!-- <v-card-title>{{
@@ -75,9 +73,9 @@
                   >
                     <!-- @click="SelectDashboard(subItem)" -->
                     <v-list-item-content>
-                      <v-list-item-title>{{
-                        $cs.Translate(subItem.title)
-                      }}</v-list-item-title>
+                      <v-list-item-title
+                        >{{ $cs.Translate(subItem.title) }}</v-list-item-title
+                      >
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-icon>{{ subItem.action }}</v-icon>
@@ -88,9 +86,9 @@
             </v-menu>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="SelectDashboard(item)">{{
-              $cs.Translate(item.title)
-            }}</v-list-item-title>
+            <v-list-item-title @click="SelectDashboard(item)"
+              >{{ $cs.Translate(item.title) }}</v-list-item-title
+            >
           </v-list-item-content>
         </v-list-item>
         <v-list-item
@@ -102,9 +100,9 @@
         >
           <!-- @click="SelectDashboard(subItem)" -->
           <v-list-item-content>
-            <v-list-item-title>{{
-              $cs.Translate(subItem.title)
-            }}</v-list-item-title>
+            <v-list-item-title
+              >{{ $cs.Translate(subItem.title) }}</v-list-item-title
+            >
           </v-list-item-content>
           <v-list-item-action>
             <v-icon>{{ subItem.action }}</v-icon>
@@ -126,13 +124,13 @@
       <template v-slot:activator="{ on }">
         <div class="navbar-footer" v-on="on">
           <span class="navbar-footer-icon">
-            <v-icon small v-if="sideBar.footer.icon">{{
-              sideBar.footer.icon
-            }}</v-icon>
+            <v-icon small v-if="sideBar.footer.icon"
+              >{{ sideBar.footer.icon }}</v-icon
+            >
           </span>
-          <span class="navbar-footer-text" v-if="sideBar.footer.title">{{
-            $cs.Translate(sideBar.footer.title)
-          }}</span>
+          <span class="navbar-footer-text" v-if="sideBar.footer.title"
+            >{{ $cs.Translate(sideBar.footer.title) }}</span
+          >
         </div>
       </template>
       <span v-html="sideBar.footer.tooltip || sideBar.footer.title"></span>

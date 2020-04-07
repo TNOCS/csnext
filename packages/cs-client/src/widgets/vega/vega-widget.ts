@@ -4,6 +4,7 @@ import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 
 declare var vega: any;
+declare var vegaEmbed: any;
 
 @Component({
   name: 'vega-widget',
@@ -27,7 +28,8 @@ export class VegaWidget extends Vue {
       return this.widget.id;
     }
     if (!this._id) {
-      return (this._id = guidGenerator());
+      this._id = guidGenerator();
+      return this._id;
     }
     return this._id;
   }
@@ -38,11 +40,13 @@ export class VegaWidget extends Vue {
   }
 
   @Watch('widget.content', { deep: true })
+  @Watch('data')
   public contentChanged() {
     this.updateChart();
   }
 
   public mounted() {
+    this.updateChart();
     // alert('Init chart');
   }
 
@@ -71,9 +75,6 @@ export class VegaWidget extends Vue {
 
   private viewRender(spec: any) {
     Vue.nextTick(() => {
-      if (!this.widget || !this.widget.id) {
-        return;
-      }
       if (!spec.autosize) {
         if (!spec.width) {
           spec.width = this.$el.clientWidth - 50;
@@ -82,11 +83,12 @@ export class VegaWidget extends Vue {
           spec.height = this.$el.clientHeight - 50;
         }
       }
-      this.view = new vega.View(vega.parse(spec))
-        .renderer('canvas') // set renderer (canvas or svg)
-        .initialize('#vega-' + this.id) // initialize view within parent DOM container
-        .hover() // enable hover encode set processing
-        .run();
+      vegaEmbed('#vega-' + this.id, spec);
+      // this.view = new vega.View(vega.parse(spec))
+      //   .renderer('canvas') // set renderer (canvas or svg)
+      //   .initialize('#vega-' + this.id) // initialize view within parent DOM container
+      //   .hover() // enable hover encode set processing
+      //   .run();
     });
   }
 }

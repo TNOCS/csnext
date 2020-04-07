@@ -17,6 +17,7 @@ export interface ISidebarOptions {
   dashboard?: IDashboard;
   widget?: IWidget;
   canMinify?: boolean;
+  canResize?: boolean;
   width?: number;
   visible?: boolean;
   footer?: ISidebarFooterOptions;

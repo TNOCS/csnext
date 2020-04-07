@@ -1,8 +1,5 @@
 import { IMapLayer, CsMap } from '..';
 import { GeojsonLayer } from './geojson-layer';
-import { MessageBusService, guidGenerator } from '@csnext/cs-core';
-import { LayerSource } from '../classes/layer-source';
-import { BaseLayer } from './base-layer';
 
 export class GridLayer extends GeojsonLayer {
     public typeId = 'line';
@@ -21,5 +18,7 @@ export class GridLayer extends GeojsonLayer {
 
     public addLayer(map: CsMap) {
         super.addLayer(map);
+        this.enabled = true;
     }
+
 }

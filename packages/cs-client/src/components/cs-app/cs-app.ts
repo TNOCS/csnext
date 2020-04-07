@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify from 'vuetify';
+import Vuetify, { VuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -11,10 +11,7 @@ import {
   ISidebarOptions,
   IFooterOptions,
   IDialog,
-  MessageBusHandle,
-  MessageBusManager,
-  IMenu
-} from '@csnext/cs-core';
+  MessageBusManager} from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 
@@ -35,21 +32,28 @@ import 'simplebar/dist/simplebar.css';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
+
 const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'nl',
-  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages // set locale messages
+  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages,  // set locale messages
+  silentTranslationWarn: true
 });
 
 const vuetifyOpts = {
+  icons: {
+    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  }
   // lang: {
   //   t: (key, ...params) => i18n.t(key, params)
   // }
-};
+} as VuetifyPreset;
 
 Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
+
+
 
 @Component({
   name: 'cs-app',
@@ -124,6 +128,7 @@ export class CsApp extends Vue {
 
   public beforeDestroy() {
     this.busManager.stop();
+    document.removeEventListener('backbutton', this.backButtonPressed);
   }
 
   @Watch('app.project.dashboards')
@@ -140,7 +145,7 @@ export class CsApp extends Vue {
 
   @Watch('app.project.rightSidebar.sidebars')
   /** register keyboard shortcuts for sidebars */
-  public rightSidebarsChanged(n: any, o: any) {
+  public rightSidebarsChanged(n: any) {
     for (const key in n) {
       if (n.hasOwnProperty(key)) {
         const sidebar = n[key] as IDashboard;
@@ -148,7 +153,7 @@ export class CsApp extends Vue {
           const sc = sidebar.options.shortcut;
           if (!sc.id) { sc.id = 'sidebar-' + key; }
           sc._callback = () => {
-            AppState.Instance.OpenRightSidebarKey(key);
+            AppState.Instance.openRightSidebarKey(key);
           };
           AppState.Instance.keyboard.register(sc);
         }
@@ -175,7 +180,6 @@ export class CsApp extends Vue {
   }
 
   public InitTheme() {
-    // debugger
     if (this.$cs.project && this.$cs.project.theme) {
       if (this.$cs.project.theme.lightColors) {
         this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
@@ -234,11 +238,25 @@ export class CsApp extends Vue {
     if (adjacent) {
       this.SelectDashboard(adjacent);
     }
-    // console.log(adjacent);
+  }
+
+  public backButtonPressed() {
+    alert('back button');
+    if ($cs.isMobile && $cs.project.rightSidebar && $cs.project.rightSidebar.open) {
+      $cs.closeRightSidebar();
+    }
+  }
+
+  public onDeviceReady() {
+    alert('device ready');
   }
 
   public mounted() {
     this.isLoading = false;
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+    setTimeout(()=>{
+      document.addEventListener('backbutton', this.backButtonPressed, false);
+    }, 1000);
   }
 
   // Add a dashboard as a route
@@ -267,8 +285,8 @@ export class CsApp extends Vue {
         const sc = d.options.shortcut;
         if (!sc.id) { sc.id = 'dashboard-' + d.id; }
         sc._callback = () => {
-          router.push(d.pathLink as any).catch((e) => {
-            console.log(e);
+          router.push(d.pathLink as any).catch(() => {
+            // console.log(e);
           });
         };
         this.app.keyboard.register(sc);
@@ -310,11 +328,9 @@ export class CsApp extends Vue {
       if (d.leftSidebar) {
         this.leftSidebar = d.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', d.leftSidebar);
       } else if (this.$cs.project.leftSidebar) {
         this.leftSidebar = this.$cs.project.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', this.$cs.project.leftSidebar);
       } else {
         this.leftSidebar = {};
       }
@@ -323,12 +339,11 @@ export class CsApp extends Vue {
         this.rightSidebar = d.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', d.rightSidebar);
-      } else if (this.$cs.project.rightSidebar) {
+      } 
+      else if (this.$cs.project.rightSidebar) {
         this.rightSidebar = this.$cs.project.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', this.$cs.project.rightSidebar);
       } else {
         this.rightSidebar = {};
       }
@@ -367,6 +382,10 @@ export class CsApp extends Vue {
           Vue.set(this, 'dialog', dialog);
           this.dialog.visible = true;
           break;
+        case AppState.DIALOG_CLOSED:
+          this.dialog.visible = false;
+          break;
+
       }
     });
 
@@ -411,15 +430,15 @@ export class CsApp extends Vue {
   public clickNotification() {
     if (this.lastNotification.clickCallback) {
       this.lastNotification.clickCallback();
-      this.closeNotification();
     }
+    this.closeNotification();
   }
 
   public closeNotification() {
     if (this.lastNotification) {
       this.lastNotification = { _visible: false } as INotification;
-      this.UpdateNotifications();
     }
+    this.UpdateNotifications();
   }
 
   public InitNotifications() {

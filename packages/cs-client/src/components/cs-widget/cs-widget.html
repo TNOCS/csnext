@@ -1,58 +1,79 @@
-<v-card
-  :elevation="options.elevation"
-  :flat="options.flat"
-  :outlined="options.outlined"
-  :color="options.backgroundColor"
-  :raised="options.raised"
-  v-resize:debounce.50="onResize"
-  @mouseenter="mouseEnter()"
-  v-if="widget"
-  v-show="options && !options.hide"
-  @mouseleave="mouseLeave()"
-  class="widget-container"
-  :class="[widgetBorder]"
-  ref="widget"
->
-  <v-col class="cs-dashboard-col pa-0">
-    <v-flex
-      v-if="options.showToolbar && options.toolbarOptions"
-      shrink
-      class="dashboard-toolbar-flex"
-    >
-      <v-toolbar   
-        :absolute="options.toolbarOptions.absolute"
-        :prominent="options.toolbarOptions.prominent"
-        :color="options.toolbarOptions.backgroundColor"
-        :elevation="options.toolbarOptions.elevation"
-        :dense="options.toolbarOptions.dense"
-        :collapse="options.toolbarOptions.collapse"
-        :flat="options.toolbarOptions.flat"
+  <!-- <cs-dashboard
+    v-if="widget.dashboard"
+    :dashboard="widget.dashboard"
+  >
+  </cs-dashboard> -->
+  <v-card
+    v-if="!widget.dashboard"
+    :elevation="options.elevation"
+    :flat="options.flat"
+    :outlined="options.outlined"
+    :disabled="options.disabled"
+    :tile="options.tile"
+    :color="options.backgroundColor"
+    :raised="options.raised"
+    v-resize:debounce.50="onResize"
+    @mouseenter="mouseEnter()"
+    v-show="options && !options.hide"
+    @mouseleave="mouseLeave()"
+    class="widget-container"
+    :class="[options.class]"
+    :style="{margin: options.margin + 'px'}"
+    ref="widget"
+  >
+    <v-col class="cs-dashboard-col pa-0">
+      <v-flex
+        v-if="options.showToolbar && options.toolbarOptions"
+        shrink
+        class="dashboard-toolbar-flex"
       >
-        <v-icon
-          v-if="options.icon && !options.toolbarOptions.hideIcon"
-          class="pr-3"
-          >{{ options.icon }}</v-icon
+        <v-toolbar
+          :absolute="options.toolbarOptions.absolute"
+          :prominent="options.toolbarOptions.prominent"
+          :color="options.toolbarOptions.backgroundColor"
+          :elevation="options.toolbarOptions.elevation"
+          :dense="options.toolbarOptions.dense"
+          :collapse="options.toolbarOptions.collapse"
+          :flat="options.toolbarOptions.flat"
         >
-        <v-toolbar-title v-if="!options.toolbarOptions.hideTitle">{{
-          $cs.Translate(options.title)
-        }}</v-toolbar-title>
-        <v-spacer></v-spacer>
+          <v-icon
+            v-if="options.icon && !options.toolbarOptions.hideIcon"
+            class="pr-3"
+            >{{ options.icon }}</v-icon
+          >
+          <v-toolbar-title
+            v-if="!options.toolbarOptions || !options.toolbarOptions.hideTitle"
+            >{{ $cs.Translate(options.title) }}</v-toolbar-title
+          >
+          <v-spacer></v-spacer>
 
-        <cs-toolbar-menus v-if="!options.hideMenu && options.menus" :menus.sync="options.menus" :owner="widget._component"></cs-toolbar-menus>
-      </v-toolbar>
-    </v-flex>
+          <cs-toolbar-menus
+            v-if="!options.hideMenu"
+            :searchProperty="options.searchProperty"
+            :menus.sync="options.menus"
+            :owner="widget._component"
+          ></cs-toolbar-menus>
+        </v-toolbar>
+      </v-flex>
 
-    <v-flex grow class="dashboard-toolbar-flex">
-      <div :class="[options.class]" class="widget-default" style="height: 100%">
-        <component
-          :is="getComponent()"
-          :widget="widget"
-          :style="widgetStyles()"
-          ref="component"
-        ></component>
-        <!-- class="widget-default" -->
-      </div>
-    </v-flex>
-  </v-col>
-  <cs-toolbar-menus class="widget-buttons-container" v-if="!options.showToolbar && !options.hideMenu && options.menus" :menus="options.menus" :owner="widget._component"></cs-toolbar-menus>
-</v-card>
+      <v-flex grow class="dashboard-toolbar-flex">
+        <div class="widget-default" style="height: 100%">
+          <component
+            :is="getComponent()"
+            :widget="widget"
+            :style="widgetStyles()"
+            ref="component"
+          ></component>
+          <!-- class="widget-default" -->
+        </div>
+      </v-flex>
+    </v-col>
+    <cs-toolbar-menus
+      class="widget-buttons-container"
+      :searchProperty="options.searchProperty"
+      v-if="!options.showToolbar && !options.hideMenu"
+      :menus="options.menus"
+      :owner="widget._component"
+    ></cs-toolbar-menus>
+  </v-card>
+

@@ -60,7 +60,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'datetimepicker'
   | 'datepicker'
   | 'button-trigger'
-  | 'rating';
+  | 'rating'
+  | 'component';
   defaultValue?: any;
   description?: string;
   required?: boolean;
@@ -76,10 +77,18 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   clearable?: boolean;
   canAdd?: boolean;
   canEditKey?: boolean;
+  placeholder?: string;
   addUsingDialog?: boolean;
   readonly?: boolean;
+  keyText?: string;
+  keyValue?: string;
   icon?: string;
   colors?: string[];
+  component?: any;
+  locale?: string;
+  requirements?: ((value: object) => boolean)[];
+  _appendIcon?: string;
+  _isError?: boolean;
   keyValuesType?(): object;
   typeSelector?(value: object): string;
   triggerCallback?(obj: object, field: IFormFieldOptions);

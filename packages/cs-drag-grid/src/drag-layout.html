@@ -1,6 +1,18 @@
-<div style="position:absolute;left:0;top:0;right:0;bottom:0; overflow-y: visible">
-    <div data-simplebar>
-        <grid-layout :layout="layout">
+<div style="position: relative; height: 100%">
+    <simplebar style="position: absolute;left:0;right:0;top:0;bottom:0;">
+        <grid-layout
+            
+            @layout-updated="layoutUpdatedEvent"
+            :layout="layout"
+            :vertical-compact="options.VerticalCompact"
+            :col-num="options.ColNum"
+            :row-height="options.RowHeight"
+            :is-draggable="options.DragEnabled"
+            :is-resizable="options.ResizeEnabled"
+            :is-mirrored="options.IsMirrored"
+            :prevent-collision="options.PreventCollision"
+            :margin="Margin"
+        >
             <grid-item
                 v-for="widget in layout"
                 :class="{'grid-item-moving': isMoving}"
@@ -19,10 +31,5 @@
                 ></cs-widget>
             </grid-item>
         </grid-layout>
-    </div>
+    </simplebar>
 </div>
-<!-- <div :id="'muuri-' + dashboard.id" class="muuri-grid">
-        <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-            <muuri-widget :widget="widget" :grid="grid"></muuri-widget>            
-        </div>
-    </div> -->

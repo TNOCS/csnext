@@ -1,19 +1,12 @@
 import Component from 'vue-class-component';
 import { IWidget } from '@csnext/cs-core';
-
 import './layer-selection.css';
 import { Vue, Watch, Prop } from 'vue-property-decorator';
-import { MapLayers, IMapLayer } from '../../.';
-import { ILayerAction } from '../../classes/ilayer-action';
+import { MapDatasource, IMapLayer, ILayerAction } from '../../.';
 
 import simplebar from 'simplebar-vue';
-export interface ILayerGroup {
-    title: string;
-    color: string;
-    layers: IMapLayer[];
-    state: 'all' | 'none' | 'some';
-}
-
+import { ILayerGroup } from './layer-group';
+import { GeojsonPlusLayer } from '../../layers/geojson-plus-layer';
 @Component({
     name: 'layer-selection',
     props: { widget: null },
@@ -29,22 +22,6 @@ export class LayerSelection extends Vue {
     public showMenu = false;
     public filter: string = '';
     public Groups: { [id: string]: ILayerGroup } = {};
-
-    // public get groupsexpanded() : boolean[]
-
-    @Watch('groupsexpanded')
-    groupsChanged(v: boolean[]) {
-        localStorage.layergroupsexpanded = JSON.stringify(v);
-    }
-
-    constructor() {
-        super();
-    }
-
-    @Watch('filter')
-    filterChanged(search: string) {
-        this.updateGroups();
-    }
 
     public mounted() {
         this.updateGroups();
@@ -64,7 +41,7 @@ export class LayerSelection extends Vue {
     public toggleGroup(group: ILayerGroup) {
         if (
             group.layers &&
-            group.layers.findIndex(l => l.Visible === true) !== -1
+            group.layers.findIndex(l => l.enabled === true) !== -1
         ) {
             for (const layer of group.layers) {
                 if (layer._manager) {
@@ -83,10 +60,10 @@ export class LayerSelection extends Vue {
     public updateGroups() {
         let res: { [id: string]: ILayerGroup } = {};
         this.groupsexpanded = [];
-        
+
         if (this.MapManager && this.MapManager.layers) {
-            this.MapManager.layers.forEach(l => {
-                if (l.title) {
+            for (const l of this.MapManager.layers) {
+                if (l.title && !l.hideInLayerList) {
                     if (
                         this.filter.length === 0 ||
                         l.title
@@ -96,13 +73,12 @@ export class LayerSelection extends Vue {
                         if (!l.tags || l.tags.length === 0) {
                             l.tags = [' '];
                         }
-                        l.tags.forEach(t => {
+                        for (const t of l.tags) {
                             this.addLayerToGroup(res, t, l);
-                        });
+                        }
                     }
                 }
-            });
-
+            }
             let c = 0;
             while (this.groupsexpanded.length < Object.keys(res).length) {
                 this.groupsexpanded.push(c);
@@ -114,7 +90,7 @@ export class LayerSelection extends Vue {
                     const element = res[group];
                     if (
                         element.layers &&
-                        element.layers.findIndex(l => l.Visible === true) !== -1
+                        element.layers.findIndex(l => l.enabled === true) !== -1
                     ) {
                         element.state = 'some';
                     } else {
@@ -134,21 +110,14 @@ export class LayerSelection extends Vue {
     public setLayerOpacity(value: number, layer: IMapLayer) {
         if (this.MapManager && this.MapManager.MapControl && layer.id) {
             layer.setOpacity(value);
-            // layer.opacity = value / 100.0;
-            // this.MapLayers.MapControl.setPaintProperty(layer.id, 'line-opacity', value / 100.0);
-            // if (layer.paint) {
-            //     layer.paint['raster-opacity'] = value / 100.0;
-            // }
-            // this.MapLayers.MapControl.setPaintProperty(layer.id, 'raster-opacity', value / 100.0);
         }
-        // console.log(layer.opacity);
     }
 
     public showLayerMenu(e: MouseEvent, layer: IMapLayer) {
         if (e.currentTarget && this.MapManager && this.MapManager.layers) {
-            let targetId = e.currentTarget['id'];
-            let targetLayer = this.MapManager.layers.find(
-                l => l.id == targetId
+            const targetId = e.currentTarget['id'];
+            const targetLayer = this.MapManager.layers.find(
+                l => l.id === targetId
             );
             if (targetLayer) {
                 if (e) {
@@ -183,12 +152,17 @@ export class LayerSelection extends Vue {
         if (!layer._manager) {
             return;
         }
-        if (layer.Visible) {
+        if (layer.enabled) {
             layer._manager.showLayer(layer);
         } else {
             layer._manager.hideLayer(layer);
         }
-        console.log(layer.title, layer.Visible);
+        console.log(layer.title, layer.enabled);
+    }
+
+    public async createLayer() {
+        if (!this.MapManager) { return; }
+        this.MapManager.addGeojsonLayer('newlayer');
     }
 
     private addLayerToGroup(
@@ -204,58 +178,37 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public get MapManager(): MapLayers | undefined {
+    public get MapManager(): MapDatasource | undefined {
         if (this.widget.content) {
-            return this.widget.content as MapLayers;
+            return this.widget.content as MapDatasource;
         }
     }
 
-    // public get Tree() : any {
-    //     let tree: any[] = [];
-    //     if (this.Layers && this.Layers.layers) {
-    //         this.Layers.layers.forEach(l => {
-    //             tree.push({ text: l.title, layer: l, children: [] });
-    //         })
 
-    //     }
-    //     return tree;
-    // }
+    @Watch('groupsexpanded')
+    private groupsChanged(v: boolean[]) {
+        localStorage.layergroupsexpanded = JSON.stringify(v);
+    }
 
-    // private updateTree() {
-    //     console.log('Update tree');
-    //     this.tree = [];
-    //     if (this.MapLayers && this.MapLayers.layers) {
-    //         for (const l of this.MapLayers.layers) {
-    //             console.log(l);
-    //             if (!l.tags || l.tags.length === 0) {
-    //                 l.tags = [' '];
-    //             }
-    //             l.tags.forEach(t => {
-    //                 let tagchild = this.tree.find(i => i.name === t);
-    //                 if (!tagchild) {
-    //                     tagchild = { name: t, children: [] };
-    //                     this.tree.push(tagchild);
-    //                 }
-    //                 tagchild.children.push({ name: l.title, children: [] });
-    //             });
-    //         }
-    //     }
-    // }
+    @Watch('filter')
+    private filterChanged(search: string) {
+        this.updateGroups();
+    }
 
     @Watch('MapManager.layers')
-    layersChanged(d: any) {
+    private layersChanged(d: any) {
         this.updateGroups();
     }
 
     @Watch('widget.content')
-    datasourceUpdated(n: MapLayers) {
+    private datasourceUpdated(n: MapDatasource) {
         if (this.MapManager && this.MapManager.events) {
             this.updateGroups();
             this.MapManager.events.subscribe('layer', (a: string, e: any) => {
                 this.updateGroups();
             });
         }
-
         // this.updateTree();
     }
+
 }

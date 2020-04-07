@@ -1,0 +1,19 @@
+<div v-if="data">
+    <div v-if="panel.sections">
+        <div v-for="section in panel.sections" :key="section.title">
+            <template v-if="section.type === 'big-text'">
+                <data-big-text :data="data" :section="section" :layer="layer" :panel="panel" :features="features"></data-big-text>
+           </template>
+            <template v-if="section.type === 'chart'">
+                 <data-chart :data="data" :section="section" :layer="layer" :panel="panel" :features="features"></data-chart>
+            </template>
+            <template v-if="section.type === 'layerlist'">
+                <data-panel-list :data="data" :section="section" :layer="layer" :panel="panel" :features="features"></data-panel-list>
+            </template>
+            <template v-if="section.type === 'properties'">
+                <data-properties :data="data" :section="section" :panel="panel" :layer="layer" :features="features"></data-properties>
+            </template>
+        </div>
+
+    </div>
+</div>

@@ -8,7 +8,6 @@ import './cs-form-field.css';
 import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
-import '../v-datetime-picker/v-datetime-picker';
 import { Emit, Prop } from 'vue-property-decorator';
 import { format } from 'date-fns';
 @Component({
@@ -59,19 +58,38 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
-    public genColor(i : number) {
+    public get selectedObject(): any | undefined {
+        if (this.field && this.field.options && this.field && this.field.keyValue && this.target) {
+            let o = (Array.isArray(this.field.options)) ? this.field.options : this.field.options();
+            return o.find(s => s[this.field!.keyValue!] == this.target![this.field!._key!])
+        }
+    }
+
+    public set selectedObject(s: any) {
+        if (this.target && this.field && this.field.keyValue && this.field._key) {
+            this.target[this.field!._key] = s;
+        }
+    }
+
+    private getComponent(field: IFormFieldOptions) {
+        if (field && field.component) {
+            return field.component;
+        }
+    }
+
+    public genColor(i: number) {
         if (this.field && this.field.colors) {
             return this.field.colors[i];
         }
     };
 
-    public gettanggal(str: number) {
-        if (str != null) {
-            const s = new Date(str).toISOString();
-            return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
-        }
-        return '';
-    }
+    // public gettanggal(str: number) {
+    //     if (str != null) {
+    //         const s = new Date(str).toISOString();
+    //         return s.substring(8, 10) + '/' + s.substring(5, 7) + '/' + s.substring(0, 4);
+    //     }
+    //     return '';
+    // }
 
     public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
@@ -125,7 +143,7 @@ export class CsFormField extends Vue {
         }
     }
 
-    public formatDate(date): string | undefined {
+    public formatDate(date: string): string | undefined {
         if (!date) { return undefined }
         const [year, month, day] = date.split('-');
         return `${month}/${day}/${year}`;
@@ -158,7 +176,11 @@ export class CsFormField extends Vue {
     }
 
     public fieldUpdated(field: IFormFieldOptions) {
-        this.changed(field);
+        if (!field._isError) {
+            field._appendIcon = '';
+            this.changed(field);
+            this.$forceUpdate();
+        }
     }
 
     public fieldOptions(field: IFormFieldOptions) {
@@ -166,6 +188,12 @@ export class CsFormField extends Vue {
             return field.options();
         } else {
             return field.options;
+        }
+    }
+
+    public fieldError(error: boolean) {
+        if (this.field) {
+            this.field._isError = error;
         }
     }
 
@@ -236,10 +264,12 @@ export class CsFormField extends Vue {
         console.log(oldValue + ' -> ' + newValue);
     }
 
-    public mounted() {
-        // if (this.field && this.field.type === 'form') {
-        // }
+    public fieldInput(field: IFormFieldOptions) {
+        if (field) {
+            field._appendIcon = 'save'
+        }
     }
+
 }
 
 Vue.component('cs-formfield', CsFormField);

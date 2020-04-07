@@ -1,59 +1,75 @@
-import { Watch } from 'vue-property-decorator';
+import { Watch, Prop } from 'vue-property-decorator';
 import Component from 'vue-class-component';
 import './cs-markdown.css';
 import { WidgetBase } from '@csnext/cs-client';
 import Vue from 'vue';
-import MarkdownItVue from 'markdown-it-vue';
-import 'markdown-it-vue/dist/markdown-it-vue.css';
+import axios from 'axios';
+import simplebar from 'simplebar-vue';
+import VueShowdown from 'vue-showdown';
+// import { MdWidgetOptions } from '..';
 
 @Component({
     name: 'cs-markdown',
     template: require('./cs-markdown.html'),
-    components: { MarkdownItVue },
+    components: { simplebar },
     props: {
         widget: null
     }
 } as any)
 export class CsMarkdown extends WidgetBase {
 
+    public content: string = '';
+    // public options: MdWidgetOptions = {};
+    @Prop({ default: undefined }) private data?: string | {url: string};
+
     @Watch('widget.data', { deep: true })
-    public dataUpdated() {
-        // if (this.chart) {
-        //     this.chart.load(this.widget.data);
-        // }
+    public widgetDataUpdated() {
+        this.updateContent();
     }
 
-    @Watch('widget.content', { deep: true })
-    public contentUpdated() {
-        // if (this.chart) {
-        //     this.chart.load(this.widget.content);
-        // }
+    @Watch('data', { deep: true })
+    public dataUpdated() {
+        this.updateContent();
     }
+
+    // @Watch('widget.content', { deep: true })
+    // public contentUpdated() {
+    //     // if (this.chart) {
+    //     //     this.chart.load(this.widget.content);
+    //     // }
+    // }
 
     public mounted() {
-        Vue.nextTick(() => {
-            // this.chart = bb.generate({
-            //     bindto: '#' + this.widget.id,
-            //     data: this.getData()
-            // });
-
-            // if (this.widget.events) {
-            //     this.widget.events.subscribe(
-            //         'resize',
-            //         (a: string, size: IWidgetSize) => {
-            //             this.chart.resize({
-            //                 width: size.width-20,
-            //                 height: size.height-20
-            //             });
-            //         }
-            //     );
-            // }
-        });
+        this.updateContent();
     }
 
-    private getData(): any {
-        if (this.widget.data) { return this.widget.data; }
-        if (this.widget.content) { return this.widget.content; }
-        return undefined;
+    private updateContent() {
+        if (!this.widget && !this.data) { return; }
+        if (this.data) {
+            this.setContent(this.data);
+        } else if (this.widget) {
+            this.setContent(this.widget.data);
+        }
     }
+
+    private setContent(data: string | {url: string}) {
+        if (typeof (data) === 'string') {
+            Vue.set(this, 'content', data);
+        } else if (typeof (data) === 'string') {
+            Vue.set(this, 'content', data);
+        } else {
+            if (data && data.hasOwnProperty('url') && data.url) {
+                axios.get(data.url).then(u => {
+                    if (u && u.data) {
+                        Vue.set(this, 'content', u.data);
+                    } else {
+                        Vue.set(this, 'content', `Could not load ${data.url}`);
+                    }
+                }).catch((e) => {
+                    Vue.set(this, 'content', `Could not load ${data.url}`);
+                });
+            }
+        }
+    }
+
 }

@@ -7,12 +7,14 @@ const config = buildConfig(
     {
         '@csnext/cs-core': '@csnext/cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
-        '@csnext/cs-form': '@csnext/cs-form',
-        vue: 'Vue',
-        'mapbox-gl': 'mapbox-gl',
+        '@csnext/cs-form': '@csnext/cs-form',        
+        '@csnext/cs-data': '@csnext/cs-data',    
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
-        '@mapbox/mapbox-gl-draw/dist': '@mapbox/mapbox-gl-draw/dist'        
+        '@mapbox/mapbox-gl-geocoder' : '@mapbox/mapbox-gl-geocoder',
+        '@mapbox/mapbox-gl-traffic' : '@mapbox/mapbox-gl-traffic',
+        "handlebars": "handlebars",
+        "handlebars-intl": "handlebars-intl"
     },
     'csmap'
 );

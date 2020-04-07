@@ -1,0 +1,152 @@
+<div
+    class="feature-details-container"
+    v-if="manager"
+    style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; overflow-y: hidden;"
+>
+    <simplebar data-simplebar-auto-hide="false" style="height:100%">
+        <v-card class="mx-auto" tile flat>
+            <v-img
+                class="align-end"
+                :src="feature.properties.image"
+                height="200px"
+            >
+                <v-btn
+                    fab
+                    depressed
+                    small
+                    @click="closeSidebar()"
+                    class="primary sidebar-back-button"
+                    ><v-icon>arrow_forward</v-icon></v-btn
+                >
+                <v-card-title class="feature-component-title" v-html="title">
+                </v-card-title>
+            </v-img>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn
+                        v-on="on"
+                        style="margin-right:50px"
+                        absolute
+                        dark
+                        fab
+                        bottom
+                        right
+                        small                        
+                        @click="zoomIn()"
+                    >
+                        <v-icon>zoom_in</v-icon>
+                    </v-btn>
+                </template>
+                
+                <span>{{ $cs.Translate('ZOOMIN')}}</span>
+            </v-tooltip>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn
+                        v-on="on"
+                        absolute
+                        dark
+                        fab
+                        bottom
+                        right
+                        small
+                        :style="{'color': isBookmarked ? 'red' : 'green'}"
+                        @click="toggleBookmark()"
+                    >
+                        <v-icon>bookmark</v-icon>
+                    </v-btn>
+                </template>
+                <span v-if="!isBookmarked"
+                    >{{ $cs.Translate('ADD_BOOKMARK')}}</span
+                >
+                <span v-if="isBookmarked"
+                    >{{ $cs.Translate('REMOVE_BOOKMARK')}}</span
+                >
+            </v-tooltip>
+
+            <!-- <v-card-actions>
+            <v-btn text>Share</v-btn>
+
+            <v-btn color="purple" text>
+                Explore
+            </v-btn>
+
+            <v-spacer></v-spacer>
+
+            
+        </v-card-actions> -->
+        </v-card>
+        <data-dashboard
+            :data="manager"
+            :dashboard="dashboard"
+            :features="[feature]"
+            :layer="layer"
+        ></data-dashboard>
+        <!-- <v-tabs v-model="tabs" v-if="resources">
+            <v-tab
+                v-for="resource in resources"
+                :key="resource.name"
+                :href="'#' + resource.name"
+                >{{resource.title}}</v-tab
+            >
+        </v-tabs>
+        <v-tabs-items v-model="tabs" style="height:100%">
+            <v-tab-item
+                v-for="panel in panels"
+                :key="panel.name"
+                :value="panel"
+            >
+                <div>
+                   
+                </div>
+            </v-tab-item>
+        </v-tabs-items>
+      
+
+        <v-expansion-panels
+            multiple
+            v-if="sections"
+            v-model="sectionsPanels"
+            class="section-expansion-panel"
+        >
+            <v-expansion-panel
+                v-for="section in sections"
+                :key="section.id"
+                v-if="section.properties.length>0"
+            >
+                <v-expansion-panel-header class="feature-section-title">
+                    {{ section.title }}
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <div
+                        v-for="property in section.properties"
+                        class="feature-property"
+                    >
+                        <v-tooltip left :disabled="!property.type.description">
+                            <template v-slot:activator="{ on }">
+                                <div>
+                                    <div
+                                        v-on="on"
+                                        class="feature-property-key"
+                                        @click="setLegend(property)"
+                                        :disabled="!property.allowLegend"
+                                        :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
+                                    >
+                                        {{ property.type.title }}
+                                    </div>
+                                    <div class="feature-property-value">
+                                        {{ property.display }}
+                                    </div>
+                                </div>
+                            </template>
+                            <div>{{ property.type.description}}</div>
+                        </v-tooltip>
+                    </div>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels> -->
+    </simplebar>
+    <!-- </v-tab-item>
+        
+    </v-tabs-items> -->
+</div>

@@ -9,8 +9,5 @@ import { Watch } from 'vue-property-decorator';
 } as any)
 export class CsLoader extends Vue {
 
-  @Watch('isLoading')
-  public loadingChanged(d: any) {
-    console.log('Loading changed');
-  }
+  
 }

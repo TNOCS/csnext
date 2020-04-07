@@ -1,43 +1,27 @@
 import Component from 'vue-class-component';
-import { IWidget } from '@csnext/cs-core';
-
 import './layer-details.css';
-import { Vue, Watch } from 'vue-property-decorator';
-import { BaseLayer } from '../../layers/base-layer';
-import { PropertyType } from '../../classes/feature-type';
-import { MapLayers } from '../../classes/map-layers';
-import { IMapLayer } from '../../classes/imap-layer';
-import { LayerEditor } from '../layer-editor/layer-editor';
-import { LayerServiceEditor } from '../layer-service-editor/layer-service-editor';
-import { FeatureDetails } from '../feature-details/feature-details';
+import { Watch } from 'vue-property-decorator';
+import { BaseLayer, MapDatasource } from '../..';
 import simplebar from 'simplebar-vue';
 import { Feature } from 'geojson';
-
-export class section {
-    public id?: string;
-    public title?: string;
-    public properties?: property[];
-}
-
-export class property {
-    public key?: string;
-    public value?: any;
-    public type?: PropertyType;
-}
+import { WidgetBase } from '@csnext/cs-client';
 
 @Component({
-    name: 'feature-details',
-    props: { widget: null },
+    name: 'layer-details',
     components: { simplebar },
     template: require('./layer-details.html')
 } as any)
-export class LayerDetails extends Vue {
-    public widget!: IWidget;
-    public sectionsPanels: boolean[] = [];
-    public tabs = 'layer-items';
-    public filterProperties: string = '';
-    public filterPropertiesEnabled = false;
+export class LayerDetails extends WidgetBase {
+    // #region Properties (4)
+
+    public allFeatures?: mapboxgl.MapboxGeoJSONFeature[];
+    public listFilter: string = '';
     public filterItems = '';
+    public filteredFeatures: mapboxgl.MapboxGeoJSONFeature[] = [];
+
+    // #endregion Properties (4)
+
+    // #region Public Accessors (4)
 
     /** get active layer */
     public get layer(): BaseLayer | undefined {
@@ -47,25 +31,19 @@ export class LayerDetails extends Vue {
         return undefined;
     }
 
-    @Watch('filterItems')
-    private filterChanged() {
-        this.$forceUpdate();
-    }
-
-    /** returns true if features is included filter */
-    private filterFeature(f: Feature, s: string): boolean {
-        if (!this.layer) { return false; }
-        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
-    }
-
-    public get filteredFeatures(): Feature[] {
-        if (this.layer && this.layer._source && this.layer._source._geojson) {
-            return this.layer._source._geojson.features
-                .filter(f => {
-                    return this.filterFeature(f, this.filterItems);
-                });
+    /** get layer color */
+    public get layerColor(): string {
+        const layer = this.layer;
+        if (layer && layer.color) {
+            return layer.color;
         }
-        return [];
+        return 'blue';
+    }
+
+    public get manager(): MapDatasource | undefined {
+        if (this.widget.data && this.widget.data.manager) {
+            return this.widget.data.manager as MapDatasource;
+        }
     }
 
     /** get feature title */
@@ -78,19 +56,17 @@ export class LayerDetails extends Vue {
         }
     }
 
-    /** get layer color */
-    public get layerColor(): string {
-        const layer = this.layer;
-        if (layer && layer.color) {
-            return layer.color;
-        }
-        return 'blue';
+    // #endregion Public Accessors (4)
+
+    // #region Public Methods (4)
+
+    public contentLoaded() {
+        this.updateFeatures();
     }
 
-    public get manager(): MapLayers | undefined {
-        if (this.widget.data && this.widget.data.manager) {
-            return this.widget.data.manager as MapLayers;
-        }
+    @Watch('listFilter')
+    public filterChanged(v: string) {
+        this.updateFeatures();
     }
 
     public fitLayer() {
@@ -100,17 +76,35 @@ export class LayerDetails extends Vue {
     }
 
     public openFeature(feature: any) {
-        this.$cs.OpenRightSidebarWidget({
-            component: FeatureDetails,
-            id: 'featuredetails',
-            data: { layer: this.layer, feature: feature, manager: this.manager }
-        }, { open: true }, 'feature');
+        if (this.manager && this.layer) {
+            this.manager.openFeature(feature, this.layer);
+        }
     }
 
-    public editLayer(layer: IMapLayer) {
-        this.$cs.OpenRightSidebarWidget({
-            component: LayerServiceEditor,
-            data: { layer: layer }
-        }, undefined, 'layers');
+    // #endregion Public Methods (4)
+
+    // #region Private Methods (3)
+
+    /** returns true if features is included filter */
+    private filterFeature(f: mapboxgl.MapboxGeoJSONFeature, s: string): boolean {
+        if (!this.layer) { return false; }
+        if (!s || s.length === 0) { return true; }
+        return this.layer.parseTitle(f).toLowerCase().indexOf(s.toLowerCase()) >= 0;
     }
+
+    private getAllFeatures() {
+        if (this.layer && this.layer._source && this.layer._source._data) {
+            this.allFeatures = this.layer._source._data.features as mapboxgl.MapboxGeoJSONFeature[];
+        }
+    }
+
+    private updateFeatures() {
+
+        if (!this.allFeatures) {
+            this.getAllFeatures();
+        }
+        this.$set(this, 'filteredFeatures', this.allFeatures!.filter(f => this.filterFeature(f, this.listFilter)));
+    }
+
+    // #endregion Private Methods (3)
 }

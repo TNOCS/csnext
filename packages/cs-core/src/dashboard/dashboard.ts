@@ -1,4 +1,4 @@
-import { IFooterOptions, IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu } from '../';
+import { IFooterOptions, IDashboardManager, IWidget, WidgetOptions, ISidebarOptions, IDashboardOptions, IMessageBusService, IMenu, Info } from '../';
 
 export interface IDashboard {
   // dashboard id
@@ -62,6 +62,9 @@ export interface IDashboard {
 
   footer?: IFooterOptions;
 
+  /** dashboard specific sidebars */
+  sidebars?: { [key: string]: IDashboard };
+
   // optional list of sub dashboards
   dashboards?: IDashboard[];
 
@@ -78,6 +81,9 @@ export interface IDashboard {
   menus?: IMenu[];
 
   component?: any;
+
+  /** Background information description. Only available in UI if used in combination with cs-info component from @csnext/cs-markdown */
+  info?: Info;
 
   // if true, won't be visible in navigation
   hideFromNavigation?: boolean;

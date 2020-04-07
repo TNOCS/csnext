@@ -10,6 +10,6 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 # COPY . .
-RUN npm i -g lerna typescript @vue/cli
+RUN npm i -g lerna typescript @vue/cli vuepress
 
 ENV DEBIAN_FRONTEND=

@@ -1,4 +1,4 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { LayerStyle, ILayer, FeatureCollection, ISource } from '../shared';
 import { LayerSource} from './layer-source';
 import { LogSource } from './log-source';
@@ -6,75 +6,75 @@ import { LogSource } from './log-source';
 /** Layer specification */
 export class LogDefintion  {
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** unique id of this log */
     public id!: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** log title */
-    public title: string;  
+    public title: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** log description */
-    public description?: string;    
+    public description?: string;
 
-    @ApiModelProperty({ type: [String] })
+    @ApiProperty({ type: [String] })
     /** list of tags associated with this log */
     public tags?: string[];
 
-    @ApiModelProperty({default:'geojson'})
+    @ApiProperty({default: 'geojson'})
     /** type of the original source used by this log, default json */
     public sourceType?: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** version (sematic) of this log */
     public version?: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** reference to the source of this log (relative to server) */
     public source?: string;
-    
-    @ApiModelProperty()
+
+    @ApiProperty()
     /** external url to access the source */
     public sourceUrl?: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** if editable, layer and features can be updated by client */
     public isEditable?: boolean;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** if live, layer and features can be updated/pushed by server */
     public isLive?: boolean;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** if query needs connection, reference to connection key */
     public connectionId?: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** if query needs sql string, this is the default query string */
     public query?: string;
-    
-    @ApiModelProperty()
-    /** log color  */
-    public color?: string;    
 
-    @ApiModelProperty()
+    @ApiProperty()
+    /** log color  */
+    public color?: string;
+
+    @ApiProperty()
     public externalUrl?: string;
 
-    @ApiModelProperty()
+    @ApiProperty()
     public externalCacheDuration?: number;
 
-    @ApiModelProperty()
+    @ApiProperty()
     public disableFeatureList?: boolean;
 
-    @ApiModelProperty()
+    @ApiProperty()
     /** location of optional meta source containing featuretypes, propertytypes, etc. */
     public meta?: string;
 
     public featureTypes?: FeatureCollection;
-    // public properties?: PropertyCollection    
+    // public properties?: PropertyCollection
     public _logSource?: LogSource;
     public _localMeta?: string;
-    
+
 }
 

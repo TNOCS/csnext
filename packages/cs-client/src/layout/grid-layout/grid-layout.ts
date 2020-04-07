@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard } from '@csnext/cs-core';
+import { IDashboard, guidGenerator } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './grid-layout.css';
@@ -12,9 +12,17 @@ import './grid-layout.css';
   }
 } as any)
 export class GridLayout extends Vue {
-  public dashboard?: IDashboard;
   public static id = 'grid';
+  public dashboard?: IDashboard;
 }
 
 LayoutManager.addLayoutManager(GridLayout);
+
+export function GridDashboard(definition?: IDashboard): IDashboard {
+  if (definition) {
+    return { ...{ id: guidGenerator(), layout: GridLayout.id, options: { } }, ...definition };
+  } else {
+    return {};
+  }
+}
 

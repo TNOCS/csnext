@@ -1,84 +1,54 @@
-import { Form, FormField } from '@csnext/cs-core';
+// import { Form, FormField } from '@csnext/cs-core';
+// import { LayerStyle, MapboxStyles } from './layer-style';
+// import { PropertyCollection, PropertyType } from '@csnext/cs-data';
 
-@Form({
-    title: 'Property',
-    hideTitle: true,
-    groups: {
-        number: {
-            visible(f) {
-                return f.hasOwnProperty('type') && f['type'] === 'number';
-            }
-        }
-    }
-})
-export class PropertyType {
-    @FormField({ title: 'Title', type: 'string' })
-    public title?: string;
-    @FormField({
-        title: 'Type',
-        type: 'selection',
-        defaultValue: 'text',
-        required: true,
-        options: ['text', 'number']
-    })
-    public _key?: string;
-    public type?: string;
-    public description?: string;
-    @FormField({ title: 'String format', type: 'string'})
-    public stringFormat?: string;
-    @FormField({ title: 'Min', type: 'number', group: 'number' })
-    public min?: number;
-    @FormField({ title: 'Max', type: 'number', group: 'number' })
-    public max?: number;
-    @FormField({ title: 'Default', type: 'number', group: 'number' })
-    public default?: number;
-}
-
-@Form({
-    title: 'Property Collection',    
-    keyValuesType: () => {
-        return new PropertyType();
-    }
-})
-export class PropertyCollection {
-    [key: string]: string | PropertyType;
-}
-
-@Form({
-    title: 'Feature Types',
-    keyValuesType: () => {
-        return new FeatureType();
-    }
-})
-export class FeatureTypes {
-    [key: string]: FeatureType;
-}
-@Form({ title: 'Feature', hideTitle: true })
-export class FeatureType {
-    @FormField({ title: 'Title', type: 'string' })
-    public title?: string;
-    public mode?: string;
-    public notification?: string;
-    @FormField({ title: 'Icon', type: 'string' })
-    public icon?: string;
-    @FormField({
-        title: 'Properties',
-        type: 'keysobject',
-        canAdd: true,
-        canDelete: true,
-        canEditKey: true,
-        keyValuesType: () => {
-            return new PropertyType();
-        }
-    })
-    public properties?: PropertyCollection;
-}
-
-// "circle": {
-//     "mode": "draw_circle",
-//     "notification": "Begin met tekenen",
-//     "icon": "images/circle.png",
-//     "properties": {
-//       "type": "radius"
+// @Form({
+//     title: 'Feature Types',
+//     keyValuesType: () => {
+//         return new FeatureType();
 //     }
-//   }
+// })
+// export class FeatureTypes2 {
+//     [key: string]: FeatureType2;
+// }
+
+// // tslint:disable-next-line: max-classes-per-file
+// @Form({ title: 'Feature', hideTitle: true })
+// export class FeatureType2 {
+//     // #region Properties (8)
+
+//     @FormField({ title: 'Icon', type: 'string' })
+//     public icon?: string;
+//     public mode?: string;
+//     public notification?: string;
+//     @FormField({
+//         title: 'Properties',
+//         type: 'array',
+//         canAdd: true,
+//         canDelete: true,
+//         canEditKey: true
+//         // keyValuesType: () => {
+//         //     return new PropertyType();
+//         // }
+//     })
+//     public properties?: PropertyCollection;
+//     public propertyMap!: { [label: string]: PropertyType };
+//     /**  list of properties from propertyTypeData (as key) used for this featureType, seperated by a semi column
+//      * e.g: name;birthday;birthplay
+//      * */
+//     public propertyTypeKeys?: string;
+//     public style?: LayerStyle;
+//     @FormField({ title: 'Title', type: 'string' })
+//     public title?: string;
+
+//     // #endregion Properties (8)
+// }
+
+// // "circle": {
+// //     "mode": "draw_circle",
+// //     "notification": "Begin met tekenen",
+// //     "icon": "images/circle.png",
+// //     "properties": {
+// //       "type": "radius"
+// //     }
+// //   }

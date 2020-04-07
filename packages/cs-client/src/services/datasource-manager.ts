@@ -13,95 +13,88 @@ export class DatasourceManager {
   /** Available datasource handlers  */
   // private static Processors: { [id: string]: IDatasourceProcessor } = {};
 
-  constructor(private datasources: { [id: string]: IDatasource }) {}
+  constructor() { }
 
   /** Load a data source using the assigned data summary handler(s) */
   public load<T>(source: IDatasource | string): Promise<T> {
-    const datasource =
-      typeof source === 'string' ? this.datasources[source] : source;
-    // check if datasource is available
-    if (datasource === undefined) {
-      return new Promise((resolve, reject) => {
-        reject();
-        return;
-      });
-    }
-    // if data is already loaded, resolve datasource directly
-    if (datasource.loaded) {
-      return new Promise((resolve, reject) => {
-        resolve(datasource as T);
-        return;
-      });
-    }
-
-    // if data is available, resolve data directly
-    if (datasource.data) {
-      return new Promise((resolve, reject) => {
-        resolve(datasource.data);
-        return;
-      });
-    }
-
-    // if an execute function is available, call function and return promise
-    if (typeof datasource.execute !== 'function') {
-      return new Promise(resolve => {
-        resolve(datasource as T);
-        return;
-      });
-    }
-
-    // run processors
     return new Promise((resolve, reject) => {
-      if (datasource.data && datasource.loaded) {
-        resolve(datasource.data);
-        return;
-      }
-
-      // if datasource is already being loaded added promise to queue
-      if (datasource.isLoading) {
-        if (!datasource.requestQueue) {
-          datasource.requestQueue = [];
+      if (typeof source === 'string' && $cs.project.datasources && $cs.project.datasources.hasOwnProperty(source)) {
+        const datasource = $cs.project.datasources[source];
+        if (datasource.loaded) {
+          resolve(datasource as T);
+          return;
         }
-        datasource.requestQueue.push({ resolve, reject });
-        return;
-      }
-      datasource.isLoading = true;
-      if (typeof datasource.execute === 'function') {
-        datasource
-          .execute(this.datasources)
-          .catch(e => {
-            datasource.loaded = false;
-            datasource.isLoading = false;
-          })
-          .then(r => {
-            datasource.loaded = true;
-            datasource.isLoading = false;
-            resolve(r);
 
-            while (
-              datasource.requestQueue &&
-              datasource.requestQueue.length > 0
-            ) {
-              const item = datasource.requestQueue.pop();
-              if (item) {
-                item.resolve(r);
+        if (datasource.data) {
+          resolve(datasource.data);
+          return;
+        }
+
+        if (typeof datasource.execute !== 'function') {
+          resolve(datasource as T);
+        }
+
+        if (datasource.data && datasource.loaded) {
+          resolve(datasource.data);
+          return;
+        }
+
+        // if datasource is already being loaded added promise to queue
+        if (datasource.isLoading) {
+          if (!datasource.requestQueue) {
+            datasource.requestQueue = [];
+          }
+          datasource.requestQueue.push({ resolve, reject });
+          return;
+        }
+        datasource.isLoading = true;
+        if (typeof datasource.execute === 'function') {
+          datasource
+            .execute($cs.project.datasources)
+            .catch(e => {
+              datasource.loaded = false;
+              datasource.isLoading = false;
+              reject(e);
+              return;
+            })
+            .then(r => {
+              datasource.loaded = true;
+              datasource.isLoading = false;
+              resolve(r);
+
+              while (
+                datasource.requestQueue &&
+                datasource.requestQueue.length > 0
+              ) {
+                const item = datasource.requestQueue.pop();
+                if (item) {
+                  item.resolve(r);
+                }
               }
-            }
-          });
+            });
+        }
       }
     });
   }
 
+  public update(id: string, value: any) {
+    if (!$cs.project.datasources) {
+      $cs.project.datasources = {};
+    }
+    $cs.project.datasources[id] = value;
+    $cs.bus.publish('ds-' + id, 'updated', value);
+  }
+
   /** load all data sources */
   public loadAll() {
-    if (!this.datasources) {
+    if (!$cs.project.datasources) {
       return;
     }
-    for (const ds in this.datasources) {
-      if (!this.datasources.hasOwnProperty(ds)) {
+    for (const ds in $cs.project.datasources) {
+      if (!$cs.project.datasources.hasOwnProperty(ds)) {
         continue;
       }
-      const source = this.datasources[ds];
+      const source = $cs.project.datasources[ds];
       if (source) {
         this.load(source);
       }

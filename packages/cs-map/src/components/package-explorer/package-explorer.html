@@ -1,0 +1,458 @@
+<v-card
+    v-if="data"
+    class="package-explorer-card"
+    :class="{'map-mobile-toolbar': $cs.isMobile, 'package-explorer-open': !collapsed, 'map-mobile-toolbar-open': $cs.isMobile && !collapsed, 'package-explorer-card-fullscreen': fullscreen}"
+>
+    <v-toolbar flat class="pa-0 package-explorer-toolbar">
+        <v-progress-linear
+            :active="data.loader.loading"
+            indeterminate
+            absolute
+            top
+            color="deep-purple accent-4"
+        ></v-progress-linear>
+        <v-app-bar-nav-icon
+            @click="collapsed = !collapsed"
+        ></v-app-bar-nav-icon>
+        <img v-if="$cs.project.logo" :src="$cs.project.logo" class="package-explorer-logo"></img>
+        <!-- @click="$cs.project.leftSidebar.open = !$cs.project.leftSidebar.open" -->
+        <v-layout v-if="data.dataPackage">
+            <v-autocomplete
+                hide-details
+                v-if="data.mainLayer"
+                v-model="searchSelection"
+                hide-no-data
+                append-icon="search"
+                single-line
+                :search-input.sync="search"
+                :item-text="'properties.' + data.mainLayer.style.title"
+                item-value="properties.statnaam"
+                dense
+                :items="searchResult"
+                placeholder="zoeken"
+                return-object
+                filled
+                rounded                
+                class="mt-1"
+            >
+                <template v-slot:item="{ item }">
+                    <v-list-item-avatar>
+                        <img :src="data.mainLayer.style.icon" />
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title
+                            >{{item.properties[data.mainLayer.style.title]}}</v-list-item-title
+                        >
+                        <!-- <v-list-item-subtitle
+                        v-html="data.item.group"
+                    ></v-list-item-subtitle> -->
+                    </v-list-item-content>
+                </template>
+            </v-autocomplete>
+            <v-tooltip v-if="data.mainLayer" bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn @click="openInsights()" v-on="on" icon>
+                        <v-icon>dashboard</v-icon>
+                    </v-btn>
+                </template>
+                {{ $cs.Translate('INSIGHTS')}}
+            </v-tooltip>
+            <v-btn icon @click="openBookmarks()" v-if="data.mainLayer"
+                ><v-badge
+                    color="primary"
+                    overlap
+                    :dot="data.mainLayer.bookmarks.length === 0"
+                    :content="data.mainLayer.bookmarks.length"
+                >
+                    <v-icon>bookmark</v-icon>
+                </v-badge></v-btn
+            >
+            <v-tooltip v-if="data.mainLayer" bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn @click="showTable()" v-on="on" icon>
+                        <v-icon>table_chart</v-icon>
+                    </v-btn>
+                </template>
+                {{ $cs.Translate('TABLE')}}
+            </v-tooltip>
+            <v-tooltip v-if="data.mainLayer" bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn @click="shareState()" v-on="on" icon>
+                        <v-icon>share</v-icon>
+                    </v-btn>
+                </template>
+                {{ $cs.Translate('SHARE')}}
+            </v-tooltip>
+        </v-layout>
+
+        <!-- <v-toolbar-items
+            ><v-btn icon @click="collapsed = !collapsed"
+                ><v-icon v-if="collapsed">keyboard_arrow_down</v-icon>
+                <v-icon v-else="collapsed">keyboard_arrow_up</v-icon></v-btn
+            ></v-toolbar-items
+        > -->
+    </v-toolbar>
+        
+    <div v-if="collapsed">
+        <v-card
+            tile
+            elevation="0"
+            v-if="collapsed && !$cs.isMobile && data.activeInsightView"
+            class="pe-info-card active-insight-card"
+        >
+            <v-container class="pa-2" style="position: relative;">
+                <div
+                    v-if="data.activeInsight.title !== data.activeInsightView.title"
+                    class="overline"
+                >
+                    {{data.activeInsight.title}}
+                    <span v-if="data.activeInsight.views.length>1"
+                        >{{ data.activeInsightView.pos}} / {{
+                        data.activeInsight.views.length }}
+                    </span>
+                </div>
+
+                <v-card-title>
+                    {{ data.activeInsightView.title }}
+                </v-card-title>
+                <div
+                    class="pe-insight-navigation-buttons"
+                    v-if="data.activeInsight.views.length>1"
+                >
+                    <v-btn
+                        :disabled="data.activeInsightView.pos === 1"
+                        icon
+                        @click="activateInsightView(data.activeInsight.views[data.activeInsightView.pos - 2], data.activeInsight)"
+                    >
+                        <v-icon>chevron_left</v-icon>
+                    </v-btn>
+                    <v-btn
+                        icon
+                        :disabled="data.activeInsightView.pos === data.activeInsight.views.length"
+                        @click="activateInsightView(data.activeInsight.views[data.activeInsightView.pos], data.activeInsight)"
+                    >
+                        <v-icon>chevron_right</v-icon>
+                    </v-btn>
+                </div>
+                <v-tooltip v-if="data.mainLayer" bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                                v-on="on"
+                            class="pe-insights-detail-button"
+                            icon
+                            @click="showInsightDetails = !showInsightDetails"
+                        >
+                            <v-icon
+                                >{{ showInsightDetails ? 'keyboard_arrow_up' :
+                                'keyboard_arrow_down' }}</v-icon
+                            >
+                        </v-btn>
+                    </template>
+                    {{$cs.Translate('INSIGHTVIEWS')}}
+                </v-tooltip>
+                
+            </v-container>
+
+            <v-expand-transition>
+                <div v-show="showInsightDetails">
+                    <template
+                        v-if="data.activeInsightView.title !== data.activeInsight.description"
+                    >
+                        <v-divider></v-divider>
+                        <v-card-text
+                            v-html="data.activeInsightView.description"
+                        ></v-card-text>
+                    </template>
+                    <template
+                        v-if="data.activeInsight.views && data.activeInsight.views.length>1"
+                    >
+                        <v-divider></v-divider>
+                        <v-list>
+                            <v-list-item
+                                v-for="view in data.activeInsight.views"
+                                :key="view.name"
+                                @click="activateInsightView(view, data.activeInsight)"
+                            >
+                                <v-list-item-title
+                                    :class="{'selected-insight-title': view === data.activeInsightView}"
+                                    >{{view.pos}}.
+                                    {{view.title}}</v-list-item-title
+                                >
+                            </v-list-item>
+                        </v-list>
+                    </template>
+                </div>
+            </v-expand-transition>
+        </v-card>
+        <v-card
+        tile
+        elevation="0"
+        
+        class="pe-info-card active-insight-card"
+    >
+    </v-card>
+
+
+        <v-card
+            tile
+            elevation="0"
+            v-if="collapsed && !$cs.isMobile && data.mainLayer && data.mainLayer && data.mainLayer._legends"
+            class="pe-info-card pa-4 active-legends-card"
+        >
+            <div class="overline">
+                {{ $cs.Translate('LEGEND')}}
+            </div>
+            <template
+                v-if="data.mainLayer && data.mainLayer._legends"
+                v-for="legend in data.mainLayer._legends"
+            >
+                <v-container>
+                    <LayerLegendItem
+                        :key="legend.property"
+                        :legend="legend"
+                        :layer="data.mainLayer"
+                        :source="data"
+                    ></LayerLegendItem>
+                </v-container>
+            </template>
+            <v-tooltip v-if="data.mainLayer" bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn
+                            v-on="on"
+                class="pe-insights-detail-button"
+                icon
+                @click="showLegendDetails = !showLegendDetails"
+            >
+                <v-icon
+                    >{{ showLegendDetails ? 'keyboard_arrow_up' :
+                    'info' }}</v-icon
+                >
+            </v-btn>
+            </template>
+            {{$cs.Translate('MOREINFO')}}
+            </v-tooltip>
+            <v-expand-transition>
+                <div v-if="showLegendDetails">
+                    <template>
+                        <v-divider></v-divider>
+                        <v-card-text
+                            v-html="data.mainLayer._legends[0].propertyInfo.description"
+                        ></v-card-text>
+                        <v-chip
+                            class="ma-1"
+                            @click.stop="data.openSourceDetails(data.mainLayer._legends[0].propertyInfo.resource)"
+                        >
+                            <v-avatar left>
+                                <v-icon>folder</v-icon>
+                            </v-avatar>
+                            {{resourceInfo(data.mainLayer._legends[0].propertyInfo.resource).title}}
+                        </v-chip>
+                    </template>
+                </div>
+            </v-expand-transition>
+        </v-card>
+
+        <v-card
+            tile
+            elevation="0"
+            v-if="collapsed && !$cs.isMobile && data.activeInsightView && data.activeInsightView.dashboards && data.activeInsightView.dashboards.main"
+            class="pe-info-card pa-0 active-dashboard-card "
+        >
+            <data-dashboard
+                v-if="data.mainLayer"
+                :data="data"
+                :dashboard="data.activeInsightView.dashboards.main"
+                :layer="data.mainLayer"
+            ></data-dashboard>
+        </v-card>
+    </div>
+
+    <div v-if="collapsed" class="package-explorer-layers">
+        <v-layout>
+            <!-- <v-select
+                    label="Bronnen"
+                    single-line
+                    dense
+                    flat
+                    multiple
+                    :items="sources"
+                    item-text="title"
+                >
+                    <template v-slot:selection="{ item, index }">
+                        <v-chip v-if="index === 0">
+                            <span>{{ item.title }}</span>
+                        </v-chip>
+                        <span v-if="index === 1" class="grey--text caption"
+                            >(+{{ value.length - 1 }} others)</span
+                        >
+                    </template>
+                </v-select> -->
+        </v-layout>
+        <!-- <v-chip
+                class="ma-2"
+                filter
+                color="primary"
+                v-for="resource in data.dataPackage.resources"
+                :key="resource.path"
+                v-if="resource.format==='geojson'"
+                @click="loadResource(resource)"
+            >
+                {{ resource.name }}
+            </v-chip> -->
+    </div>
+
+    <div v-if="!collapsed" class="package-explorer-details">
+        <v-tabs dense v-model="tab">
+            <v-tab href="#insights">{{$cs.Translate('INSIGHTS')}}</v-tab>
+            <v-tab href="#sources">{{$cs.Translate('SOURCES')}}</v-tab>
+            <v-tab href="#bookmarks">{{$cs.Translate('BOOKMARKS')}}</v-tab>
+            <v-tab href="#table">{{$cs.Translate('TABLE')}}</v-tab>
+        </v-tabs>
+        <simplebar
+            style="position: absolute;left:0;right:0;top:112px;bottom:0;"
+        >
+            <v-tabs-items v-model="tab" v-if="data">
+                <v-tab-item value="insights">
+                    <v-list three-line>
+                        <template v-for="insight in insights">
+                            <v-list-item
+                                :key="insight.name"
+                                @click="activateInsight(insight)"
+                                :disabled="data.loader.loading"
+                            >
+                                <v-list-item-avatar tile>
+                                    <v-img
+                                        :src="insight.image"
+                                        class="pe-source-image"
+                                    ></v-img>
+                                </v-list-item-avatar>
+
+                                <v-list-item-content>
+                                    <v-list-item-title
+                                        v-html="insight.title"
+                                    ></v-list-item-title>
+                                    <v-list-item-subtitle
+                                        v-html="insight.description"
+                                    ></v-list-item-subtitle>
+                                    <v-layout>
+                                        <v-chip
+                                            class="ma-1"
+                                            v-for="resource in insightResources(insight)"
+                                            :key="resource.name"
+                                            @click.stop="data.openSourceDetails(resource)"
+                                        >
+                                            <v-avatar left>
+                                                <v-icon>folder</v-icon>
+                                            </v-avatar>
+                                            {{resource.title}}
+                                        </v-chip>
+                                    </v-layout>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                    </v-list>
+                </v-tab-item>
+                <v-tab-item value="sources">
+                    <data-sources :data="data"></data-sources>
+                </v-tab-item>
+                <v-tab-item
+                    value="bookmarks"
+                    v-if="data.mainLayer"
+                    style="height:100%"
+                >
+                    <v-list three-line>
+                        <template v-for="bookmark in data.mainLayer.bookmarks">
+                            <feature-preview
+                                :key="bookmark.id"
+                                :feature="bookmark"
+                                :data="data"
+                                :layer="data.mainLayer"
+                            ></feature-preview>
+                        </template>
+                    </v-list>
+                </v-tab-item>
+                <v-tab-item
+                    value="table"
+                    v-if="data.mainLayer"
+                    style="height:100%"
+                >
+                    <div>
+                        <v-layout>
+                            <v-select v-if="fullscreen"
+                            v-model="tableProperties"
+                            :items="data.mainLayer._source._featureType.properties"
+                            item-text="title"
+                            item-value="_key"
+                            style="max-width: 200px;"
+                            label="Select Item"
+                            multiple
+                            >
+                                <template v-slot:selection="{ item, index }">
+                                    <!-- <v-chip v-if="index === 0">
+                                    <span>{{ item.title }}</span>
+                                    </v-chip>
+                                    <span
+                                    v-if="index === 1"
+                                    class="grey--text caption"
+                                    >(+{{ value.length - 1 }} others)</span> -->
+                                </template>
+                            </v-select>
+                            <v-btn depressed class="ma-2" @click="toggleTableSize"
+                                ><span v-if="fullscreen">verkorte weergave</span
+                                ><span v-else>uitgebreide weergave</span></v-btn
+                            >
+                            <v-tooltip v-if="data.mainLayer" bottom class="ma-2">
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        @click="downloadGeojson()"
+                                        v-on="on"
+                                        depressed
+                                    >
+                                        <v-icon>save_alt</v-icon> geojson
+                                    </v-btn>
+                                </template>
+                                {{ $cs.Translate('DOWNLOAD')}}
+                            </v-tooltip>
+                            <v-tooltip v-if="data.mainLayer" bottom class="ma-2">
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        @click="downloadCsv()"
+                                        v-on="on"
+                                        depressed
+                                    >
+                                        <v-icon>save_alt</v-icon> csv
+                                    </v-btn>
+                                </template>
+                                {{ $cs.Translate('DOWNLOAD')}}
+                            </v-tooltip>
+                        </v-layout>
+                        <v-layout>
+                            
+                            <!-- <div v-if="fullscreen" style="width: 400px">
+                                <simplebar data-simplebar-auto-hide="true" style="height:100%">
+                                    <v-container fluid>
+                                        <v-checkbox v-model="tableProperties" v-for="(prop,index) in data.mainLayer._source._featureType.properties" :key="index" :label="prop.title" :value="prop._key"></v-checkbox>
+                                    </v-container>
+                                </simplebar>
+                            </div> -->
+                            <v-data-table
+                                :headers="tableHeaders"
+                                :items-per-page="50"
+                                :items="data.mainLayer._source._data.features"
+                                :footer-props="{
+                                    showFirstLastPage: true,
+                                    itemsPerPageOptions: [10, 50, 100],
+                                    firstIcon: 'arrow_back',
+                                    lastIcon: 'arrow_forward',
+                                    prevIcon: 'arrow_left',
+                                    nextIcon: 'arrow_right'
+                                  }"
+                                @click:row="tableOpenFeature"
+                            ></v-data-table>
+                        </v-layout>
+                    </div>
+                </v-tab-item>
+            </v-tabs-items>
+        </simplebar>
+    </div>
+</v-card>
