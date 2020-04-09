@@ -191,7 +191,14 @@
         class="pe-info-card active-insight-card"
     >
     </v-card>
-
+    <v-card
+    tile
+    elevation="0"
+    v-if="showtimeline"
+    class="pe-info-card pa-4 active-legends-card"
+>
+<date-time-value :value="data.focusDate"/>
+</v-card>
 
         <v-card
             tile

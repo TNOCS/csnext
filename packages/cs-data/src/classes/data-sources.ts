@@ -24,6 +24,8 @@ export class DataSources implements IDatasource {
     public dataPackage?: DataPackage;
     public resources: { [name: string]: DataResource } = {};
     public loader: Loader;
+    public dates: number[] = [];
+    public focusDate?: number;
 
     constructor(data?: { [name: string]: DataSource }, images?: { [id: string]: string }) {
         this.sources = {};
@@ -131,7 +133,20 @@ export class DataSources implements IDatasource {
                                 const data = second.data._data.data.filter(r => r.hasOwnProperty(fk.fields) && r[fk.fields] === feature.properties![fk.reference.fields]);
                                 if (data) {
                                     const properties = {};
-                                    const values = {};
+                                    const when = {};
+                                    const parseDate = (d, field, when): number => {
+                                        const date = new Date(d[field._when]).getTime();
+                                        if (date) {
+                                            if (this.dates.indexOf(date) === -1) {
+                                                this.dates.push(date);
+                                            }
+                                            if (!when.hasOwnProperty(field.name)) {
+                                                when[field.name] = {};
+                                                this.focusDate = date;
+                                            }
+                                        }
+                                        return date;
+                                    };
                                     for (const d of data) {
                                         for (const field of second.schema.fields) {
 
@@ -139,10 +154,8 @@ export class DataSources implements IDatasource {
                                             if (field._selector && d.hasOwnProperty(field._selector) && d[field._selector] === field.name) {
                                                 if (field._value) {
                                                     if (field._when) {
-                                                        if (!values.hasOwnProperty(field.name)) {
-                                                            values[field.name] = {}
-                                                        }
-                                                        values[field.name][d[field._when]] = d[field._value];
+                                                        const date = parseDate(d, field, when);
+                                                        when[field.name][date] = d[field._value];
                                                         properties[field.name] = d[field._value];
                                                     } else {
                                                         properties[field.name] = d[field._value];
@@ -150,14 +163,20 @@ export class DataSources implements IDatasource {
                                                 }
 
                                             } else {
-                                                properties[field.name] = d[field.name];
+                                                if (field._when) {
+                                                    const date = parseDate(d, field, when);
+
+                                                    when[field.name][date] = d[field.name];
+                                                    properties[field.name] = d[field.name];
+                                                } else {
+                                                    properties[field.name] = d[field.name];
+                                                }
+
                                             }
                                         }
                                     }
-                                    feature.properties = { ...feature.properties, ...properties };
-                                    // feature.values = values;
-                                    console.log(values);
-
+                                    feature.properties = { ...feature.properties, ...properties, ...{ _when: when } };
+                                    console.log(this.dates);
                                 }
                             }
                             // let merge_result = merge(first._source._data, second._data, fk.reference.fields[0], fk.fields[0]);
