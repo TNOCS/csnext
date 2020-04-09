@@ -197,7 +197,9 @@
     v-if="showtimeline"
     class="pe-info-card pa-4 active-legends-card"
 >
-<date-time-value :value="data.focusDate"/>
+    <v-btn :disabled="data.dates.indexOf(data.focusDate) === 0" icon @click="data.previousDate()"><v-icon>chevron_left</v-icon></v-btn>
+    <date-time-value :value="data.focusDate"/>    
+    <v-btn icon :disabled="data.dates.indexOf(data.focusDate) === data.dates.length-1" @click="data.nextDate()"><v-icon>chevron_right</v-icon></v-btn>
 </v-card>
 
         <v-card

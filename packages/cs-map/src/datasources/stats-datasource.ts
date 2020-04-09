@@ -7,9 +7,13 @@ import { DataResource, Insight, InsightView, DataSourceEvents } from '@csnext/cs
 import { MapDatasource, SidebarKeys } from './map-datasource';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import axios from 'axios';
+import Vue from 'vue';
 import { SourceDetails } from '../components/source-details/source-details';
 
 export class StatsDatasource extends MapDatasource {
+
+    public static TIME_TOPIC = "TIME_TOPIC";
+    public static FOCUS_TIME_CHANGED = "FOCUS_TIME_CHANGED";
 
     // #endregion Constructors (1)
     public id = 'stats-datasource';
@@ -52,6 +56,51 @@ export class StatsDatasource extends MapDatasource {
         if (layer._source && layer._source._data) {
             this.forceFileDownload(JSON.stringify(layer._source._data, undefined, 2), layer.title + '.json');
         }
+    }
+
+    /** Go to previous date available */
+    public previousDate() {
+        const focusIndex = this.dates.indexOf(this.focusDate);
+        if (focusIndex > 0) {
+            this.setFocusDate(this.dates[focusIndex - 1]);
+        }
+    }
+
+    /** Go to next date available */
+    public nextDate() {
+        const focusIndex = this.dates.indexOf(this.focusDate);
+        if (focusIndex < this.dates.length) {
+            this.setFocusDate(this.dates[focusIndex + 1]);
+        }
+    }
+
+    /** Set focus time to a specific date, calculate properties and refresh layer  */
+    public setFocusDate(date: number) {        
+        Vue.set(this, 'focusDate', date);        
+        this.updateDateProperties(date);
+        this.refreshLayer(this.mainLayer);
+        this.events.publish(StatsDatasource.TIME_TOPIC, StatsDatasource.FOCUS_TIME_CHANGED, date);
+        // this.focusDate = date;
+    }
+
+    /** update all feature properties for a specific date (if available)  */
+    public updateDateProperties(date: number) {
+        if (this.mainLayer && this.mainLayer._source && this.mainLayer._source._loaded) {
+            for (const feature of this.mainLayer._source._data.features) {
+                if (feature.properties.hasOwnProperty('_when')) {
+                    for (const key in feature.properties._when) {
+                        if (feature.properties._when.hasOwnProperty(key)) {
+                            const property = feature.properties._when[key] as {[d: number] : any};
+                            if (property.hasOwnProperty(date)) {
+                                feature.properties[key] = property[date];
+                            }                            
+                        }
+                    }
+                }
+                
+            }                        
+        }
+
     }
 
     public openSourceDetails(source: DataResource | string) {
