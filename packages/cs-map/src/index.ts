@@ -87,7 +87,9 @@ Vue.component('prop-value', {
             case 'number':
                 if (this.value) {
                     return createElement('span', this.value.toFixed(this.proptype.decimals || 0));
-                };
+                } else {
+                    return createElement('span','');
+                }
                 break;
             case 'url':
                 return createElement('a', { attrs: { href: this.value } }, 'link')
@@ -100,7 +102,11 @@ Vue.component('prop-value', {
 Vue.component('date-time-value', {
     props: ['value'],
     render(createElement): VNode {        
-        return createElement('span', $cs.i18n.d(this.value));
+        if (this.value && $cs.i18n) {
+            return createElement('span', $cs.i18n.d(this.value));
+        } else {
+            return createElement('span','');
+        }
     } //{ attrs: { 'class', '' }}, [value]);  }    
 });
 
