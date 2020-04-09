@@ -3,7 +3,6 @@ import axios from 'axios';
 import { FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
 import { DataSet } from './data-set';
 import { plainToClass } from 'class-transformer';
-import { Feature } from 'geojson';
 
 export enum DataSourceState {
     unloaded,

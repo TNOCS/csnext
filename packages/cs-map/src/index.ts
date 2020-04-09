@@ -81,18 +81,26 @@ CsMap.AddLayerServiceType(new LayerServer());
 CsMap.AddLayerServiceType(new LayerServerService());
 
 Vue.component('prop-value', {
-
     props: ['value', 'proptype'],
-    render(createElement): VNode {       
+    render(createElement): VNode {
         switch (this.proptype.type) {
             case 'number':
-                return createElement('span', this.value.toFixed(this.proptype.decimals || 0));                
-            case 'url': 
-                return createElement('a', { attrs: { href: this.value}}, 'link')
+                if (this.value) {
+                    return createElement('span', this.value.toFixed(this.proptype.decimals || 0));
+                };
+                break;
+            case 'url':
+                return createElement('a', { attrs: { href: this.value } }, 'link')
             default:
                 return createElement('span', this.value);
         }
-        
+    }
+});
+
+Vue.component('date-time-value', {
+    props: ['value'],
+    render(createElement): VNode {        
+        return createElement('span', $cs.i18n.d(this.value));
     } //{ attrs: { 'class', '' }}, [value]);  }    
 });
 
