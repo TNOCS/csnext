@@ -25,6 +25,7 @@ export class DataSource {
     public _data?: DataSet;
     public _loaded = false;
     public _bookmarks?: any[] = [];
+    public _promoteId?: string;
 
     public get _geojson() : DataSet | undefined {
         return this._data;
