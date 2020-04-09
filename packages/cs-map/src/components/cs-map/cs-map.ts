@@ -105,7 +105,7 @@ export class CsMap extends WidgetBase {
     // #region Properties (34)
 
     public static LAYER_CREATED = 'layer.created';
-    
+
     public static layerExtensions: ILayerExtensionType[] = [];
     public static layerTypes: IMapLayerType[] = [];
     public static serviceTypes: IStartStopService[] = [];
@@ -219,11 +219,21 @@ export class CsMap extends WidgetBase {
     @Watch('widget.content')
     public contentLoaded(d: MapDatasource) {
         console.log(d);
+        this.initStyles();
         this.initMapLayers();
     }
 
     public destroyed() {
         this.map.remove();
+    }
+
+    private initStyles() {
+        if (!this.widget || !this.widget.options || !this.widget.options) return;
+        const opts = this.widget.options as MapOptions;
+        if (opts.styleList && opts.styleList.length > 0) {
+            Vue.set(this, 'styles', opts.styleList);
+            console.log(`Set styles: ${JSON.stringify(opts.styleList)}`);
+        }
     }
 
     public initLayerSource(source: LayerSource): any {
@@ -267,6 +277,7 @@ export class CsMap extends WidgetBase {
 
     public mounted() {
         this.loadTranslations();
+        this.initStyles();
 
         Vue.nextTick(() => {
             if (this.options.token) {
@@ -373,20 +384,20 @@ export class CsMap extends WidgetBase {
                 this.map.addLayer({
                     id: 'dirt-mvt',
                     source: {
-                      type: 'vector',
-                      tiles: ['http://localhost:3000/v1/mvt/bagactueel.pand/{z}/{x}/{y}'],
-                      maxzoom: 10,
-                      minzoom: 15
+                        type: 'vector',
+                        tiles: ['http://localhost:3000/v1/mvt/bagactueel.pand/{z}/{x}/{y}'],
+                        maxzoom: 10,
+                        minzoom: 15
                     },
                     'source-layer': 'pand',
                     type: 'fill',
                     minzoom: 5,
                     paint: {
-                      'fill-color': '#088',
-                      'fill-outline-color': '#333'
+                        'fill-color': '#088',
+                        'fill-outline-color': '#333'
                     }
-                  });
-                
+                });
+
 
                 // this.map.addSource('bag', {
                 //     type: 'vector',

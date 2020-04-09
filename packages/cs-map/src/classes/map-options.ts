@@ -1,5 +1,6 @@
 import { WidgetOptions, Form, FormField, IDatasource } from '@csnext/cs-core';
 import { MapboxOptions } from 'mapbox-gl'
+import { MapboxStyleDefinition } from '..';
 
 @Form({ title: 'Map Options' })
 export class MapOptions extends WidgetOptions {
@@ -39,6 +40,7 @@ export class MapOptions extends WidgetOptions {
     public storePositionInUrl?: boolean = true;
     public f?: boolean = true;
     public style?: string = 'streets';
+    public styleList?: MapboxStyleDefinition[] = [];
     // @FormField({title: 'MapGL token'})
     public token?: string;
 

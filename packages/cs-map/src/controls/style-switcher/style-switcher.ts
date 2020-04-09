@@ -16,7 +16,7 @@ export class MapboxStyleSwitcherControl implements IControl {
     ];
     // #region Properties (3)
 
-    private static readonly DEFAULT_STYLE = 'Streets';
+    private static readonly DEFAULT_STYLE = 'streets';
 
     private controlContainer: HTMLElement | undefined;
 
