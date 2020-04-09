@@ -35,11 +35,11 @@
         "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch"
     },
     "devDependencies": {
-        "@types/node": "^13.9.3",
+        "@types/node": "^13.11.1",
         "@types/yargs": "^15.0.4",
         "cache-loader": "^4.1.0",
         "core-js": "3.6.4",
-        "css-loader": "^3.4.2",
+        "css-loader": "^3.5.1",
         "deepmerge": "4.2.2",
         "del-cli": "^3.0.0",
         "fibers": "^4.0.2",
