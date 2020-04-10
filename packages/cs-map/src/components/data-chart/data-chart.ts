@@ -92,6 +92,40 @@ export class DataChart extends WidgetBase {
                     }
                 } else if (this.options.charttype) {
                     switch (this.options.charttype) {
+                        case 'prop-history':
+                            debugger;
+                            spec = {
+                                'mark': 'line',
+                                'width': 350,
+                                'encoding': {
+                                    'y': {
+                                        'field': 'value',
+                                        'type': 'quantitative',
+                                        'title': ''
+                                    },
+                                    'x': {
+                                        'field': 'date',
+                                        'type': 'temporal',
+                                        'title': ''
+                                    }
+                                }
+                            };
+                            if (this.features.length === 1) {
+                                const feature = this.features[0];                    
+                                if (this.options.key && feature.properties.hasOwnProperty('_when') && feature.properties._when.hasOwnProperty(this.options.key)) {                                    
+                                    const d = feature.properties._when[this.options.key];
+                                    let values = [];
+                                    for (const date in d) {
+                                        if (d.hasOwnProperty(date)) {
+                                            const value = d[date];
+                                            values.push({date : parseInt(date), value});
+                                        }
+                                    }                                    
+                                    spec.data = { values };
+                                }
+                                console.log(JSON.stringify(spec));
+                            }
+                            break;
                         case 'rows':
                             spec = {
                                 'mark': 'bar',
