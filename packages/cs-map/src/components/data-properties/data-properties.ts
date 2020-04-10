@@ -156,7 +156,6 @@ export class DataProperties extends WidgetBase {
             // return f;
         }
         vue.set(this, 'sections', result);
-
     }
 
     public mounted() {
