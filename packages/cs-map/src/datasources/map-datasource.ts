@@ -644,6 +644,9 @@ export class MapDatasource extends DataSources {
                     this.updateLayerSource(layer);
                 }
             }
+            if (layer._events) {
+                layer._events.publish(CsMap.FEATURE, CsMap.FEATURE_UPDATED, feature);
+            }
         }
     }
 
