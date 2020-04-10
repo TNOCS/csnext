@@ -43,7 +43,7 @@ export class PackageExplorer extends Vue {
 
     constructor() {
         super();
-        this.busManager.start();
+        this.busManager.start();        
     }
 
     public beforeDestroy() {
@@ -225,6 +225,11 @@ export class PackageExplorer extends Vue {
         });
         this.busManager.subscribe(this.data.events, 'bookmarks', (a, e) => {
             this.$forceUpdate();
+        });
+        this.busManager.subscribe(this.data.events, StatsDatasource.TIME_TOPIC, (action: string, date: number) => {
+            if (action === StatsDatasource.FOCUS_TIME_CHANGED) {                    
+                this.$forceUpdate();
+            }
         });
         this.updateTableHeaders();
         this.$forceUpdate();
