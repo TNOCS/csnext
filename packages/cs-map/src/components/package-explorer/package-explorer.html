@@ -186,8 +186,7 @@
         </v-card>
         <v-card
         tile
-        elevation="0"
-        
+        elevation="0"        
         class="pe-info-card active-insight-card"
     >
     </v-card>
@@ -221,6 +220,7 @@
                         :legend="legend"
                         :layer="data.mainLayer"
                         :source="data"
+                        direction="horizontal"
                     ></LayerLegendItem>
                 </v-container>
             </template>

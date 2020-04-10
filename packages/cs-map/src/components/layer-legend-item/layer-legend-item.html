@@ -10,25 +10,48 @@
             {{ $cs.Translate('CREATE_FILTER')}}
         </v-tooltip>
     </v-layout>
-    <div v-if="legend.stops" v-for="stop in legend.stops">
-        <v-layout>
-            <span
-                class="map-legend-color-rectangle"
-                :style="getStopColor(stop, legend)"
-            ></span>
 
+    <template v-if="legend.stops">
+        <template v-if="direction==='horizontal'">
+            <v-layout>
+                <prop-value
+                    :value="legend.stops[0][0]"
+                    :proptype="legend.propertyInfo"
+                ></prop-value>
+                <span
+                    class="map-legend-color-rectangle"
+                    v-for="stop in legend.stops"
+                    :style="getStopColor(stop, legend)"
+                ></span>
+                <prop-value
+                    :value="legend.stops[legend.stops.length-1][0]"
+                    :proptype="legend.propertyInfo"
+                    showUnit="true"
+                ></prop-value>
+            </v-layout>
+        </template>
+        <template v-else>
+            <v-layout v-for="stop in legend.stops">
+                <span
+                    class="map-legend-color-rectangle"
+                    :style="getStopColor(stop, legend)"
+                ></span>
 
-            <span
-                v-if="['interval', 'exponential'].includes(legend.type)"
-                class="map-legend-color-text"
-                >to {{ stop[0] }} {{ legend.propertyInfo.unit }}</span
-            >      
-           
-            <span v-else class="map-legend-color-text">
-                <prop-value :value="stop[0]" :proptype="legend.propertyInfo"></prop-value>
-            </span>
-        </v-layout>
-    </div>
+                <span
+                    v-if="['interval', 'exponential'].includes(legend.type)"
+                    class="map-legend-color-text"
+                    >to {{ stop[0] }} {{ legend.propertyInfo.unit }}</span
+                >
+
+                <span v-else class="map-legend-color-text">
+                    <prop-value
+                        :value="stop[0]"
+                        :proptype="legend.propertyInfo"
+                    ></prop-value>
+                </span>
+            </v-layout>
+        </template>
+    </template>
     <div v-if="filter">
         <template v-if="filter.type === 'range'">
             <v-row dense style="flex-wrap: nowrap;">
@@ -37,8 +60,8 @@
                         outlined
                         dense
                         v-model="filter.min"
-                        editable 
-                        :rules="rules" 
+                        editable
+                        :rules="rules"
                         :step="step"
                         type="number"
                         :placeholder="legend.propertyInfo.unit"
@@ -62,9 +85,9 @@
                         dense
                         :step="step"
                         type="number"
-                        editable 
+                        editable
                         v-model="filter.max"
-                        :rules="rules" 
+                        :rules="rules"
                         :placeholder="legend.propertyInfo.unit"
                         @change="applyFilter(layer, filter)"
                     ></v-text-field>

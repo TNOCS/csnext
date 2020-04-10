@@ -8,13 +8,14 @@ import { PropertyType } from '@csnext/cs-data';
 
 @Component({
     name: 'layer-legend-item',
-    props: { legend: null, source: null, layer: null },
+    props: { legend: null, source: null, layer: null, direction: null },
     template: require('./layer-legend-item.html')
 } as any)
 export class LayerLegendItem extends Vue {
     public legend?: LayerLegend;
     public source?: MapDatasource;
     public layer?: GeojsonPlusLayer;
+    public direction?: string;
 
     public get filter(): LayerFilter | undefined {
         if (this.legend && this.layer && this.layer._filters && this.layer._filters.hasOwnProperty(this.legend.property)) {
