@@ -81,12 +81,14 @@ CsMap.AddLayerServiceType(new LayerServer());
 CsMap.AddLayerServiceType(new LayerServerService());
 
 Vue.component('prop-value', {
-    props: ['value', 'proptype'],
+    props: ['value', 'proptype', 'showUnit'],
     render(createElement): VNode {
         switch (this.proptype.type) {
             case 'number':
                 if (this.value) {
-                    return createElement('span', this.value.toFixed(this.proptype.decimals || 0));
+                    let value = this.value.toFixed(this.proptype.decimals || 0);
+                    if (this.showUnit && this.proptype.unit) { value+=' ' + this.proptype.unit; }
+                    return createElement('span', value);
                 } else {
                     return createElement('span','');
                 }
