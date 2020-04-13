@@ -42,6 +42,8 @@ export interface IDashboard {
 
   badgeIcon?: string;
 
+  badgeDot?: boolean;
+
   // id of default datasource
   datasource?: string;
 
