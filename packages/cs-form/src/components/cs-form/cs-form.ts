@@ -1,4 +1,4 @@
-import { Prop, Watch } from 'vue-property-decorator';
+import { Prop, Watch, Emit } from 'vue-property-decorator';
 import Vue from 'vue';
 import {
     IWidget,
@@ -64,6 +64,9 @@ export class CsForm extends Vue {
         this.init();
     }
 
+    @Emit()
+    private saved() {}
+
     @Watch('data')
     private dataChanged() {
         this.init();
@@ -93,8 +96,7 @@ export class CsForm extends Vue {
                 console.log('Save confirmed');
             });
         }
-
-        console.log('Saving form');
+        this.saved();
     }
 
     public closeForm() {
