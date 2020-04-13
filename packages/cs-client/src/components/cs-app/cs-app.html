@@ -92,7 +92,8 @@
       :key="dashboard.id"
       color="teal"
       text
-      :to="{path:dashboard.pathLink}"
+      @click="openMobileDashboard(dashboard)"
+      
     >
       <span>{{ dashboard.title }}</span>
       <v-icon>{{ dashboard.icon }}</v-icon>

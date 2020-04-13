@@ -11,7 +11,9 @@ import {
   ISidebarOptions,
   IFooterOptions,
   IDialog,
-  MessageBusManager} from '@csnext/cs-core';
+  MessageBusManager,
+  Topics
+} from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 
@@ -177,6 +179,7 @@ export class CsApp extends Vue {
 
   public onResize() {
     this.$cs.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    console.log(this.$cs.windowSize);
   }
 
   public InitTheme() {
@@ -241,20 +244,19 @@ export class CsApp extends Vue {
   }
 
   public backButtonPressed() {
-    alert('back button');
     if ($cs.isMobile && $cs.project.rightSidebar && $cs.project.rightSidebar.open) {
       $cs.closeRightSidebar();
     }
   }
 
   public onDeviceReady() {
-    alert('device ready');
+    // alert('device ready');
   }
 
   public mounted() {
     this.isLoading = false;
     document.addEventListener('deviceready', this.onDeviceReady, false);
-    setTimeout(()=>{
+    setTimeout(() => {
       document.addEventListener('backbutton', this.backButtonPressed, false);
     }, 1000);
   }
@@ -339,7 +341,7 @@ export class CsApp extends Vue {
         this.rightSidebar = d.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-      } 
+      }
       else if (this.$cs.project.rightSidebar) {
         this.rightSidebar = this.$cs.project.rightSidebar;
         this.rightSidebar.visible = true;
@@ -375,6 +377,7 @@ export class CsApp extends Vue {
   public created() {
     this.onResize();
     this.InitNotifications();
+    window.addEventListener("resize", this.onResize);
 
     this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
@@ -439,6 +442,28 @@ export class CsApp extends Vue {
       this.lastNotification = { _visible: false } as INotification;
     }
     this.UpdateNotifications();
+  }
+
+  public openMobileDashboard(dashboard: IDashboard) {
+    if (dashboard) {
+      if (dashboard === $cs.activeDashboard) {
+        dashboard.events.publish(Topics.DASHBOARD, Topics.DASHBOARD_RELOAD, dashboard);
+      } else
+        if (dashboard.url) {
+          // window.location.replace(dashboard.url);
+          window.open(dashboard.url, '_blank');
+        } else if (dashboard.pathLink) {
+          this.$router.push(dashboard.pathLink).then(e => {
+
+          }).catch(err => {
+            if (err.name = 'NavigationDuplicated') {
+
+            }
+
+            // console.log(err);
+          });
+        }
+    }
   }
 
   public InitNotifications() {
