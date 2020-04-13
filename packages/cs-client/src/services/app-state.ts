@@ -34,6 +34,10 @@ export class AppState extends AppStateBase {
   public static DASHBOARD_MAIN = 'dashboard.main';
   public static DASHBOARD_CHANGED = 'dashboard-changed';
   public static APP_STATE = 'app-state';
+  public static SOCKET = 'socket';
+  public static SOCKET_CONNECTED = 'socket-connected';
+  public static SOCKET_DISCONNECTED = 'socket-disconnected';
+  public static SOCKET_RECONNECTING = 'socket-reconnecting';
   public static YES = 'YES';
   public static NO = 'NO';
 
@@ -81,21 +85,22 @@ export class AppState extends AppStateBase {
       this.project.server.useSocket &&
       this.project.server.socketServerUrl
     ) {
-      this.socket = io(this.project.server.socketServerUrl);
-      // this.socket.on('connect', () => {
-
-      // });
-      // this.socket.on('reconnect', () => {
-
-      // });
-      // this.socket.on('disconnected', () => {
-
-      // });
+      this.socket = io(this.project.server.socketServerUrl, { });
+      
+      this.socket.on('connect', (e) => {        
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_CONNECTED, this.socket);
+      });
+      this.socket.on('reconnect', () => {
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_RECONNECTING, this.socket);
+      });
+      this.socket.on('disconnect', (e) => {        
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_DISCONNECTED, this.socket);
+      });      
     }
   }
 
   public get isMobile(): boolean {
-    return window.innerWidth < 800;
+    return ((window.innerWidth < 800) || (window.innerHeight < 800));
   }
 
   public get isFloatingHeader(): boolean {    
