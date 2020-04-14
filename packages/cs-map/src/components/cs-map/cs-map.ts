@@ -6,14 +6,12 @@ import './cs-map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 const locales = require('../../assets/locales.json');
 import { PackageExplorer } from './../package-explorer/package-explorer';
-
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import mapboxgl, { GeolocateControl, MapboxOptions, NavigationControl, ScaleControl } from 'mapbox-gl';
 import { FeatureCollection, Feature } from 'geojson';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
@@ -707,7 +705,6 @@ export class CsMap extends WidgetBase {
         }
         if (enabled) {
             this.$cs.addSidebar(SidebarKeys.LAYERS_SELECTION, { icon: 'layers' });
-
             this.$cs.openRightSidebarWidget(
                 {
                     component: LayerSelection,

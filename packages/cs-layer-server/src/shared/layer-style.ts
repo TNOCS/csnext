@@ -1,6 +1,4 @@
-import { Form, FormField, IFormOptions } from './';
 import { MapboxStyles, ILayerStyle } from './mapbox-styles';
-
 
 export class LayerStyle implements ILayerStyle {
     public types?: string[];

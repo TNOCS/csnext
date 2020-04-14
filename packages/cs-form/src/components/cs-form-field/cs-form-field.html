@@ -21,9 +21,9 @@
                 <v-rating v-model="target[field._key]" :clearable="field.clearable" :length="field.max-field.min+1" @input="fieldUpdated(field)">
                  <template v-slot:item="props">
                     <v-icon :color="props.isFilled ? genColor(props.index) : 'grey lighten-1'" @click="props.click">
-          {{ props.isFilled ? 'star' : 'star_border' }}
-        </v-icon>
-      </template>
+                    {{ props.isFilled ? (field.options && field.options.fullIcon ? field.options.fullIcon : 'star') : (field.options && field.options.emptyIcon ? field.options.emptyIcon : 'star_border') }}
+                    </v-icon>
+                </template>
                 </v-rating>
         </template>
         

@@ -35,6 +35,7 @@ export class DataSource {
         | 'raster'
         | 'raster-dem'
         | 'geojson'
+        | 'overpass'
         | 'image'
         | 'video'
         | 'table'

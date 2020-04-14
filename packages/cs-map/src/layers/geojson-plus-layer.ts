@@ -44,9 +44,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
     public featureTypes?: FeatureTypes;
 
-
-
-
     private clickEvent = this.onClick.bind(this);
     private contextMenuEvent = this.onContextMenu.bind(this);
     private enterEvent = this.onEnter.bind(this);
@@ -116,12 +113,12 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     public addLayer(widget: CsMap) {
         super.addLayer(widget);
         this.registerMapEvents(widget.map);
+        this.registerLayerExtensions();
         this.addCircleSymbol(widget);
         // if (!this._symbolLayer || !this._lineLayer || !this._manager) {
         //     return;
         // }
         // this.createCenterSource();
-        // this.registerLayerExtensions();
 
         // // subscribe to events
         // this._circleHandle = this.pipeEvents(

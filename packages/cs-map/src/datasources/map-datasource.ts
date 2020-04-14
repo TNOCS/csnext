@@ -892,6 +892,3 @@ export class MapDatasource extends DataSources {
     // #endregion Private Methods (4)
 }
 
-// tslint:disable-next-line: max-classes-per-file
-export class MapLayers extends MapDatasource {
-}
