@@ -15,16 +15,11 @@ export class StatsDatasource extends MapDatasource {
     public static TIME_TOPIC = "TIME_TOPIC";
     public static FOCUS_TIME_CHANGED = "FOCUS_TIME_CHANGED";
 
-    // #endregion Constructors (1)
     public id = 'stats-datasource';
 
     public activeInsight?: Insight;
     public activeInsightView?: InsightView;
     public mainLayer?: GeojsonPlusLayer;
-
-    // #endregion Public Accessors (3)
-
-    // #region Public Methods (28)
 
     public async activateInsight(insight: string | Insight, view = 0) {
         if (typeof insight === 'string') {
@@ -60,6 +55,7 @@ export class StatsDatasource extends MapDatasource {
 
     /** Go to previous date available */
     public previousDate() {
+        if (!this.focusDate) { return; }
         const focusIndex = this.dates.indexOf(this.focusDate);
         if (focusIndex > 0) {
             this.setFocusDate(this.dates[focusIndex - 1]);
@@ -68,6 +64,7 @@ export class StatsDatasource extends MapDatasource {
 
     /** Go to next date available */
     public nextDate() {
+        if (!this.focusDate) { return; }
         const focusIndex = this.dates.indexOf(this.focusDate);
         if (focusIndex < this.dates.length) {
             this.setFocusDate(this.dates[focusIndex + 1]);
@@ -75,30 +72,32 @@ export class StatsDatasource extends MapDatasource {
     }
 
     /** Set focus time to a specific date, calculate properties and refresh layer  */
-    public setFocusDate(date: number) {        
-        Vue.set(this, 'focusDate', date);        
+    public setFocusDate(date: number) {
+        Vue.set(this, 'focusDate', date);
         this.updateDateProperties(date);
-        this.refreshLayer(this.mainLayer);
+        if (this.mainLayer) {
+            this.refreshLayer(this.mainLayer);
+        }
         this.events.publish(StatsDatasource.TIME_TOPIC, StatsDatasource.FOCUS_TIME_CHANGED, date);
         // this.focusDate = date;
     }
 
     /** update all feature properties for a specific date (if available)  */
     public updateDateProperties(date: number) {
-        if (this.mainLayer && this.mainLayer._source && this.mainLayer._source._loaded) {
+        if (this.mainLayer && this.mainLayer._source && this.mainLayer._source._data && this.mainLayer._source._loaded) {
             for (const feature of this.mainLayer._source._data.features) {
-                if (feature.properties.hasOwnProperty('_when')) {
+                if (feature.properties && feature.properties.hasOwnProperty('_when')) {
                     for (const key in feature.properties._when) {
                         if (feature.properties._when.hasOwnProperty(key)) {
-                            const property = feature.properties._when[key] as {[d: number] : any};
+                            const property = feature.properties._when[key] as { [d: number]: any };
                             if (property.hasOwnProperty(date)) {
                                 feature.properties[key] = property[date];
-                            }                            
+                            }
                         }
                     }
                 }
-                
-            }                        
+
+            }
         }
 
     }
@@ -243,14 +242,14 @@ export class StatsDatasource extends MapDatasource {
             await this.activateResources(resources);
             if (this.mainLayer && this.MapWidget) {
                 this.mainLayer.filter = undefined;
-                if (view.map) {                    
+                if (view.map) {
                     this.MapWidget.options = { ...this.MapWidget.options, ...view.map };
                     // this.MapControl.triggerRepaint();                    
                     const options = this.MapWidget.options.mbOptions;
                     if (options && this.MapControl) {
                         if (options.center) { this.MapControl.setCenter(options.center); }
                         if (options.zoom) { this.MapControl.setZoom(options.zoom); }
-                    }                    
+                    }
                 }
                 if (view.style) {
                     await this.mainLayer.setStyle(view.style as LayerStyle);
@@ -306,7 +305,7 @@ export class StatsDatasource extends MapDatasource {
             const style = this.activeResource.style;
             this.mainLayer = await this.addGeojsonLayerFromSource(
                 resourceName,
-                this.activeResource.data, style, { id: resourceName} as IMapLayer
+                this.activeResource.data, style, { id: resourceName } as IMapLayer
             );
             resolve(this.activeResource);
         });

@@ -189,7 +189,7 @@
         @click="openRightSidebar(key)"
       >
         <template v-if="item.badgeType && item.badgeType!=='none'">
-          <v-badge overlap :color="item.badgeColor">
+          <v-badge :dot="item.badgeDot" overlap :color="item.badgeColor">
             <template v-if="item.badgeType==='icon'" v-slot:badge>
               <v-icon>
                 {{ item.badgeIcon }}

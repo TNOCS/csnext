@@ -112,9 +112,9 @@ export class DataChart extends WidgetBase {
                             };
                             if (this.features.length === 1) {
                                 const feature = this.features[0];                    
-                                if (this.options.key && feature.properties.hasOwnProperty('_when') && feature.properties._when.hasOwnProperty(this.options.key)) {                                    
+                                if (this.options.key && feature && feature.properties && feature.properties.hasOwnProperty('_when') && feature.properties._when?.hasOwnProperty(this.options.key)) {                                    
                                     const d = feature.properties._when[this.options.key];
-                                    let values = [];
+                                    let values : any = [];
                                     for (const date in d) {
                                         if (d.hasOwnProperty(date)) {
                                             const value = d[date];

@@ -447,7 +447,7 @@ export class CsApp extends Vue {
   public openMobileDashboard(dashboard: IDashboard) {
     if (dashboard) {
       if (dashboard === $cs.activeDashboard) {
-        dashboard.events.publish(Topics.DASHBOARD, Topics.DASHBOARD_RELOAD, dashboard);
+        dashboard.events?.publish(Topics.DASHBOARD, Topics.DASHBOARD_RELOAD, dashboard);
       } else
         if (dashboard.url) {
           // window.location.replace(dashboard.url);
