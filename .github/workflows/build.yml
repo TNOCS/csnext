@@ -22,13 +22,12 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
           node-version: 12
     - run: npm install
     - run: npm run build
-    - run: lerna publish --force-publish=* --canary --cd-version --yes patch
+    - run: npm run lerna:publish
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
