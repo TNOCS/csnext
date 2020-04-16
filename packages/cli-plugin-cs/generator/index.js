@@ -21,7 +21,7 @@ module.exports = (api, options, rootOptions) => {
         },
         devDependencies: {
             "@types/socket.io-client": "^1.4.32",
-            "raw-loader": "^4.0.0",
+            "html-loader": "^1.1.0",
             "@vue/cli-plugin-babel": "^4.1.1",
             "@vue/cli-plugin-typescript": "^4.1.1",
             "@vue/cli-service": "^4.1.1",
