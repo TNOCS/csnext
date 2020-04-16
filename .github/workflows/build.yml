@@ -30,4 +30,4 @@ jobs:
     - run: npm run build
     - run: npm run publish:beta
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
