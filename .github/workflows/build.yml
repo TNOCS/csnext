@@ -30,4 +30,5 @@ jobs:
     - run: npm install
     - run: npm run build
     - run: lerna publish --force-publish=* --canary --cd-version --yes patch
+      env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
