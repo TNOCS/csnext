@@ -1,4 +1,3 @@
-import { Form, FormField } from '.';
 
 export class PropertyLegend {
 
