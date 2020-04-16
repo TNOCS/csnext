@@ -27,7 +27,7 @@
         "build:docs-all": "yarn build:typedoc && yarn build:docs",
         "build:docker": "docker build -t tnocs/csnext .",
         "publish:npm": "lerna publish --force-publish=*",
-        "publish:beta": "lerna publish --force-publish=* --canary --cd-version patch",
+        "publish:beta": "lerna publish --force-publish=* --canary --cd-version patch --yes",
         "watch": "tsc -b -w packages",
         "rebuild": "yarn run clean && yarn install && yarn run build",
         "test": "lerna run test",
