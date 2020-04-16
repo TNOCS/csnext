@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [0.0.101](https://github.com/TNOCS/csnext/compare/v0.0.100...v0.0.101) (2018-12-19)
+## [0.0.128](https://github.com/TNOCS/csnext/compare/v0.0.127...v0.0.128) (2020-04-16)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -12,7 +12,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.100](https://github.com/TNOCS/csnext/compare/v0.0.99...v0.0.100) (2018-12-18)
+## [0.0.127](https://github.com/TNOCS/csnext/compare/v0.0.126...v0.0.127) (2019-12-01)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -20,7 +20,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.99](https://github.com/TNOCS/csnext/compare/v0.0.98...v0.0.99) (2018-12-13)
+## [0.0.126](https://github.com/TNOCS/csnext/compare/v0.0.125...v0.0.126) (2019-10-21)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -28,79 +28,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.98](https://github.com/TNOCS/csnext/compare/v0.0.97...v0.0.98) (2018-12-04)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.97](https://github.com/TNOCS/csnext/compare/v0.0.96...v0.0.97) (2018-12-03)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.96](https://github.com/TNOCS/csnext/compare/v0.0.95...v0.0.96) (2018-12-03)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.95](https://github.com/TNOCS/csnext/compare/v0.0.94...v0.0.95) (2018-11-27)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.94](https://github.com/TNOCS/csnext/compare/v0.0.93...v0.0.94) (2018-11-27)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.93](https://github.com/TNOCS/csnext/compare/v0.0.92...v0.0.93) (2018-11-26)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.92](https://github.com/TNOCS/csnext/compare/v0.0.91...v0.0.92) (2018-11-21)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.91](https://github.com/TNOCS/csnext/compare/v0.0.90...v0.0.91) (2018-11-16)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.90](https://github.com/TNOCS/csnext/compare/v0.0.89...v0.0.90) (2018-11-16)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.89](https://github.com/TNOCS/csnext/compare/v0.0.88...v0.0.89) (2018-11-16)
+## [0.0.125](https://github.com/TNOCS/csnext/compare/v0.0.124...v0.0.125) (2019-10-04)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -109,7 +37,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.88](https://github.com/TNOCS/csnext/compare/v0.0.87...v0.0.88) (2018-11-16)
+## [0.0.124](https://github.com/TNOCS/csnext/compare/v0.0.123...v0.0.124) (2019-10-02)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -118,15 +46,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.87](https://github.com/TNOCS/csnext/compare/v0.0.86...v0.0.87) (2018-11-16)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.86](https://github.com/TNOCS/csnext/compare/v0.0.85...v0.0.86) (2018-11-16)
+## [0.0.123](https://github.com/TNOCS/csnext/compare/v0.0.122...v0.0.123) (2019-09-11)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -135,7 +55,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.85](https://github.com/TNOCS/csnext/compare/v0.0.84...v0.0.85) (2018-11-15)
+## [0.0.122](https://github.com/TNOCS/csnext/compare/v0.0.121...v0.0.122) (2019-09-10)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -144,7 +64,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.84](https://github.com/TNOCS/csnext/compare/v0.0.83...v0.0.84) (2018-11-15)
+## [0.0.121](https://github.com/TNOCS/csnext/compare/v0.0.120...v0.0.121) (2019-09-08)
+
+**Note:** Version bump only for package @csnext/cs-billboard
+
+
+
+
+
+## [0.0.120](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.31...v0.0.120) (2019-09-08)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -153,7 +81,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.83](https://github.com/TNOCS/csnext/compare/v0.0.82...v0.0.83) (2018-11-14)
+## [0.0.119](https://github.com/TNOCS/csnext/compare/v0.0.120...v0.0.119) (2019-09-08)
+
+**Note:** Version bump only for package @csnext/cs-billboard
+
+
+
+
+
+## [0.0.119-beta.33](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.32...v0.0.119-beta.33) (2019-09-08)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -162,7 +98,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.82](https://github.com/TNOCS/csnext/compare/v0.0.81...v0.0.82) (2018-11-14)
+## [0.0.119-beta.31](https://github.com/TNOCS/csnext/compare/v0.0.119-beta.30...v0.0.119-beta.31) (2019-09-04)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -170,7 +106,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.81](https://github.com/TNOCS/csnext/compare/v0.0.80...v0.0.81) (2018-11-14)
+## [0.0.119-beta.30](https://github.com/TNOCS/csnext/compare/v0.0.118...v0.0.119-beta.30) (2019-09-04)
 
 **Note:** Version bump only for package @csnext/cs-billboard
 
@@ -178,221 +114,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-## [0.0.80](https://github.com/TNOCS/csnext/compare/v0.0.79...v0.0.80) (2018-11-13)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.79](https://github.com/TNOCS/csnext/compare/v0.0.78...v0.0.79) (2018-11-12)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-## [0.0.78](https://github.com/TNOCS/csnext/compare/v0.0.77...v0.0.78) (2018-11-11)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-
-<a name="0.0.77"></a>
-## [0.0.77](https://github.com/TNOCS/csnext/compare/v0.0.76...v0.0.77) (2018-11-08)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.76"></a>
-## [0.0.76](https://github.com/TNOCS/csnext/compare/v0.0.75...v0.0.76) (2018-11-08)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.74"></a>
-## [0.0.74](https://github.com/TNOCS/csnext/compare/v0.0.73...v0.0.74) (2018-10-31)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.73"></a>
-## [0.0.73](https://github.com/TNOCS/csnext/compare/v0.0.72...v0.0.73) (2018-10-30)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.72"></a>
-## [0.0.72](https://github.com/TNOCS/csnext/compare/v0.0.71...v0.0.72) (2018-10-26)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.71"></a>
-## [0.0.71](https://github.com/TNOCS/csnext/compare/v0.0.70...v0.0.71) (2018-10-23)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.70"></a>
-## [0.0.70](https://github.com/TNOCS/csnext/compare/v0.0.69...v0.0.70) (2018-10-22)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.69"></a>
-## [0.0.69](https://github.com/TNOCS/csnext/compare/v0.0.68...v0.0.69) (2018-10-11)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.68"></a>
-## [0.0.68](https://github.com/TNOCS/csnext/compare/v0.0.67...v0.0.68) (2018-10-03)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.67"></a>
-## [0.0.67](https://github.com/TNOCS/csnext/compare/v0.0.66...v0.0.67) (2018-09-27)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.66"></a>
-## [0.0.66](https://github.com/TNOCS/csnext/compare/v0.0.65...v0.0.66) (2018-09-19)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.65"></a>
-## [0.0.65](https://github.com/TNOCS/csnext/compare/v0.0.64...v0.0.65) (2018-09-19)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.64"></a>
-## [0.0.64](https://github.com/TNOCS/csnext/compare/v0.0.63...v0.0.64) (2018-09-18)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.63"></a>
-## [0.0.63](https://github.com/TNOCS/csnext/compare/v0.0.62...v0.0.63) (2018-09-10)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.62"></a>
-## [0.0.62](https://github.com/TNOCS/csnext/compare/v0.0.61...v0.0.62) (2018-09-10)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.61"></a>
-## [0.0.61](https://github.com/TNOCS/csnext/compare/v0.0.60...v0.0.61) (2018-09-07)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.60"></a>
-## [0.0.60](https://github.com/TNOCS/csnext/compare/v0.0.59...v0.0.60) (2018-09-06)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.59"></a>
-## [0.0.59](https://github.com/TNOCS/csnext/compare/v0.0.58...v0.0.59) (2018-09-05)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.58"></a>
-## [0.0.58](https://github.com/TNOCS/csnext/compare/v0.0.57...v0.0.58) (2018-09-05)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.57"></a>
-## [0.0.57](https://github.com/TNOCS/csnext/compare/v0.0.56...v0.0.57) (2018-09-03)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.56"></a>
-## [0.0.56](https://github.com/TNOCS/csnext/compare/v0.0.55...v0.0.56) (2018-08-30)
-
-**Note:** Version bump only for package @csnext/cs-billboard
-
-
-
-
-
-<a name="0.0.55"></a>
-## [0.0.55](https://github.com/TNOCS/csnext/compare/v0.0.54...v0.0.55) (2018-08-27)
+## [0.0.118](https://github.com/TNOCS/csnext/compare/v0.0.117...v0.0.118) (2019-07-12)
 
 **Note:** Version bump only for package @csnext/cs-billboard

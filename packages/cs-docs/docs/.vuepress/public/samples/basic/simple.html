@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="https://unpkg.com/vuetify@1.0.5/dist/vuetify.css" />
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.12/vue.js"></script>
-    <script src="https://unpkg.com/vuetify@1.0.17/dist/vuetify.js"></script>
-    <script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>
+    
+    <script src="https://unpkg.com/@csnext/cs-client/lib/csclient.cs.js"></script>    
     <!-- <script src="./../../packages/cs-muuri/lib/csmuuri.cs.js"></script> -->
 </head>
 
@@ -20,11 +20,14 @@
     <div id="main" />
 
     <script>
+
+        import CsPlugin from '@csnext/cs-client';
+
         let intro = Vue.component('introduction', {
             template: '<h1 class="maintitle">this is an introduction widget</h1>'
         });
 
-        Vue.use(Vuetify);
+        Vue.use(csclient.CsPlugin);
         new Vue({
             el: '#main',
             render: h => h(csclient.CsApp)
@@ -52,7 +55,7 @@
                     path: "/about",
                     title: "About",
                     widgets: [{
-                        component: csclient.MdWidget,
+                        component: csclient.HtmlWidget,
                         data: '# Intro'
                     }]
                 }

@@ -7,8 +7,4 @@ import './chart.css';
   name: 'actions',
   template: require('./chart.html'),
 } as any)
-export class Chart extends WidgetBase {
-  public mounted() {
-    console.log('Chart widget mounted');
-  }
-}
+export class Chart extends WidgetBase {}

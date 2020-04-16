@@ -1,9 +1,17 @@
-<v-container>
-  <v-toolbar-title>{{ $t('LANGUAGE') }}</v-toolbar-title>
+<v-container style="min-width: 150px">
+  <v-toolbar-title>{{ app.Translate('LANGUAGE') }}</v-toolbar-title>
   <v-divider class="my-2"></v-divider>
-  <v-layout row wrap dense>
+  <v-layout row wrap dense class="ma-0">
     <v-flex xs12 dense>
-      <v-radio-group v-model="app.i18n.locale" hide-details column> <v-radio v-for="language in languages" :label="language" :value="language" @click="switchLanguage(language)"></v-radio> </v-radio-group>
+      <v-radio-group v-model="app.i18n.locale" hide-details column>
+        <v-radio
+          v-for="language in languages"
+          :label="language"
+          :value="language"
+          :key="language"
+          @click="switchLanguage(language)"
+        ></v-radio>
+      </v-radio-group>
     </v-flex>
   </v-layout>
 </v-container>

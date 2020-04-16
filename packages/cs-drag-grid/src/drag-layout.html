@@ -1,43 +1,35 @@
-<div>
-    <grid-layout 
-        :layout="layout"
-        :col-num="dashboard.options.ColNum"
-        :row-height="dashboard.options.RowHeight"
-        :is-draggable="dashboard.options.DragEnabled"
-        :is-resizable="dashboard.options.ResizeEnabled"
-        :is-mirrored="dashboard.options.IsMirrored"
-        :vertical-compact="dashboard.options.VerticalCompact"
-        :responsive="dashboard.options.Responsive"        
-        :margin="Margin"
-        :use-css-transforms="dashboard.options.Animations"        
-        @layout-updated="layoutUpdatedEvent"
-    >
-    <!-- :class="{'no-item-animation':dashboard.options.Animations}" -->
-        <grid-item
+<div style="position: relative; height: 100%">
+    <simplebar style="position: absolute;left:0;right:0;top:0;bottom:0;">
+        <grid-layout
             
-            v-for="widget in layout"
-            :class="{'grid-item-moving': isMoving}"
-            
-            :key="widget.i"            
-            :x="widget.x"
-            :y="widget.y"
-            :w="widget.w"
-            :h="widget.h"
-            :i="widget.i"
+            @layout-updated="layoutUpdatedEvent"
+            :layout="layout"
+            :vertical-compact="options.VerticalCompact"
+            :col-num="options.ColNum"
+            :row-height="options.RowHeight"
+            :is-draggable="options.DragEnabled"
+            :is-resizable="options.ResizeEnabled"
+            :is-mirrored="options.IsMirrored"
+            :prevent-collision="options.PreventCollision"
+            :margin="Margin"
         >
-            <cs-widget
-                v-if="!isMoving"
+            <grid-item
+                v-for="widget in layout"
+                :class="{'grid-item-moving': isMoving}"
                 :key="widget.i"
-                :widget="findWidget(widget.i)"
-                style="height:100%; width:100%"
-            ></cs-widget>
-        </grid-item>
-    </grid-layout>
-    <!--
-        <div :id="'muuri-' + dashboard.id" class="muuri-grid">
-            <div v-for="widget in widgets" :key="'stack-' + widget.id" :id="widget.id" class="muuri-item">
-                <muuri-widget :widget="widget" :grid="grid"></muuri-widget>
-            </div>
-        </div>
-    -->
+                :x="widget.x"
+                :y="widget.y"
+                :w="widget.w"
+                :h="widget.h"
+                :i="widget.i"
+            >
+                <cs-widget
+                    v-if="!isMoving"
+                    :key="widget.i"
+                    :widget="widget.widget"
+                    style="height:100%; width:100%"
+                ></cs-widget>
+            </grid-item>
+        </grid-layout>
+    </simplebar>
 </div>

@@ -2,44 +2,45 @@
   margin-top: 0px;
 }
 
+html {
+  /* overflow-y: hidden !important; */
+}
+
 .v-toolbar--clipped {
   z-index: 4 !important;
 }
 
-.cs-navigation-tabbar
-{
+.cs-navigation-tabbar {
   margin-left: 20px;
 }
 
 .cs-navigation-tabbar .v-tabs__div {
-  font-size:20px;
+  font-size: 20px;
   font-weight: 800;
 }
 
-.cs-navigation-tabbar .tabs__bar
-{
-  background-color: transparent !important;
-  
+.cs-navigation-tabbar .tabs__bar {
+  /* background-color: transparent !important; */
 }
 
 .menu {
   background-color: red;
 }
 
-.app-menu{
-  color: red !important
+.app-menu {
+  color: red !important;
   /** margin-left:5px; */
-}
-
-
-.header-title-container {
-  margin-left: 16px;
 }
 
 @media only screen and (max-width: 480px) {
   .header-breadcrumbs {
     display: none !important;
   }
+}
+
+.notification-title {
+  align-self: center;
+  margin-left: 10px;
 }
 
 .sidebar {
@@ -54,20 +55,12 @@
   padding: 0 !important;
 }
 
-.breadcrumbs__item {
-  color:hsla(0,0%,100%,.5);
-}
-
-.header-breadcrumbs>li {
+.header-breadcrumbs > li {
   padding: 0 !important;
 }
 
-.header-title {
-  margin-left: 0 !important;
-}
-
 .floating {
-  margin-top: -48px !important;
+  margin-top: -64px !important;
 }
 
 .leftsidebar-pin {
@@ -85,10 +78,6 @@
   height: 100%;
 }
 
-.floating-toolbar {
-  margin-top: 10px !important;
-}
-
 .app-project-logo {
   height: 40px;
   margin: 4px;
@@ -97,4 +86,10 @@
 .content {
   height: 100%;
   padding: 0;
+}
+
+.rightsidebar-toggle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
 }

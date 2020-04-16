@@ -4,7 +4,11 @@
   "compilerOptions": {
     /* Basic Options */
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "importHelpers": true,    
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "experimentalDecorators": true
   },
-  "exclude": ["./dist"]
+  "exclude": ["./dist"],
+  "include": ["./src/**/*.json"]
 }

@@ -1,0 +1,10 @@
+<v-list-item class="feature-preview-item" @click="data.openFeature(feature, data.mainLayer)" >
+    <v-list-item-avatar tile>
+        <v-img :src="layer.style.icon" class="pe-source-image"></v-img>
+    </v-list-item-avatar>
+
+    <v-list-item-content style="align-self:start">
+        <v-list-item-title>{{ title }}</v-list-item-title>
+        <v-list-item-subtitle>{{ subTitle }}</v-list-item-subtitle>
+    </v-list-item-content>
+</v-list-item>

@@ -10,30 +10,25 @@ import {Watch} from 'vue-property-decorator';
   components: {}
 } as any)
 export class CsLanguageSwitch extends Vue {
+
+  public get Widget(): IWidget {
+    return (this.$parent as WidgetBase).widget;
+  }
   public app = AppState.Instance;
   public L = Logger.Instance;
   private languages: string[] = [];
 
   public initLanguages() {
-    if (!this.app.i18n) return;
+    if (!this.app.i18n) { return; }
     this.languages = Object.keys(this.app.i18n.messages);
-  }
-
-  private switchLanguage(language: string) {
-    if (!this.app.i18n) return;
-    this.app.i18n.locale = language;
-  }
-
-  public get Widget(): IWidget {
-    return (this.$parent as WidgetBase).widget;
-  }
-
-  @Watch('widget')
-  public dataChanged(d: any) {
-    // console.log('Widget changed');
   }
 
   public created() {
     this.initLanguages();
+  }
+
+  private switchLanguage(language: string) {
+    if (!this.app.i18n) { return; }
+    this.app.i18n.locale = language;
   }
 }

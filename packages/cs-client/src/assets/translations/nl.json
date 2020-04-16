@@ -2,6 +2,15 @@
   "IS_LOADING": "Aan het laden",
   "OPEN_RIGHT_SIDEBAR": "Open rechter paneel",
   "CLOSE_RIGHT_SIDEBAR": "Sluit rechter paneel",
+  "CLOSE": "Sluit",
   "LANGUAGE": "Taal",
-  "LANGUAGE_SETTINGS": "Taalinstellingen"
+  "LANGUAGE_SETTINGS": "Taalinstellingen",
+  "YES": "Ja",
+  "NO": "Nee",
+  "SEARCH": "Zoeken",
+  "FIELD_REQUIRED": "Dit veld is vereist",
+  "ABOUT": "Over",
+  "GROUP_VISIBILITY": "Groepen",
+  "SELECT_FEATURE": "Selecteer een object",
+  "SELECT_POINT": "Selecteer een punt op de kaart"
 }

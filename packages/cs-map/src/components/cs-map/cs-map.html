@@ -1,14 +1,4 @@
-<v-layout column style="height:100%">
-    <v-toolbar v-if="widget.options.showToolbar" dense flat>
-        <v-toolbar-title>Map</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <!-- <v-btn icon>
-            <v-icon>search</v-icon>
-        </v-btn> -->
-    </v-toolbar>
-
-
+<div style="width:100%; height: 100%; position: relative;" v-if="widget">
     <div :id="'mapbox-' + widget.id" style="width:100%; height: 100%"></div>
-
-
-</v-layout>
+    <PackageExplorer v-if="options.showPackageExporer" :data="widget.content" style="position: absolute;top:0;left:0;right:0"></PackageExplorer>
+</div>

@@ -1,139 +1,471 @@
-import { Watch, Prop } from 'vue-property-decorator';
+import { Prop } from 'vue-property-decorator';
 import Vue from 'vue';
-import { IWidget, guidGenerator } from '@csnext/cs-core';
+import {
+    IWidget,
+    MessageBusService,
+    IDatasource,
+    TimeDataSource,
+    Topics,
+    isFunction,
+    IMenu
+} from '@csnext/cs-core';
 import Component from 'vue-class-component';
 import './cs-timeline.css';
-import * as timeline from 'timeline-plus';
-import 'timeline-plus/dist/timeline.min.css';
 
-// import 'https://unpkg.com/timeline-plus/dist/timeline.js';
-// import 'https://unpkg.com/timeline-plus/dist/timeline.css';
+import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
+import { LogDataSource, WidgetBase } from '@csnext/cs-client';
+import { DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
+import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
+import { TimelineWidgetOptions } from '../..';
+// export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };
 
+export interface ITimelineDataSource extends IDatasource {
+    events: MessageBusService;
+    timelineItems: DataItem[];
+    addItem(item: DataItem): void;
+    removeItem(item: DataItem): void;
+}
+
+const TOGGLE_MENU_ID = 'togglesmall';
+const ZOOM_MENU_ID = 'zoom';
+const STACK_MENU_ID = 'stack';
+const GROUPS_MENU_ID = 'groups';
+const NO_GROUP = 'all';
 @Component({
     template: require('./cs-timeline.html')
 })
-export class CsTimeline extends Vue {
+export class CsTimeline extends WidgetBase {
     /** access the original widget from configuration */
 
-    public timeline: any;
-    initalized = false;
-    public minimize = false;
-    public showMenu = false;
-    public showFilterMenu = false;
-    
+    public GROUP_VISIBILITY_ID = 'timeline-group-';
+
+    public timeline?: Timeline;
+    // public datasource?: ITimelineDataSource;
+    public items: DataItem[] = [];
+    public groups: DataGroup[] = [];
+    public currentTime: Date = new Date();
+    // public log: LogManager = new LogManager();
+    public logSource?: LogDataSource;
+    public smallView: boolean = false;
+
+    public $refs!: {
+        timelineContainer: HTMLElement
+    };
+
+    public get Time(): TimeDataSource {
+        if (!this.widget.content) { return new TimeDataSource(); }
+        return this.widget.content as TimeDataSource;
+    }
 
     @Prop()
     public widget!: IWidget;
-
-    @Watch('widget.content')
-    dataLoaded() {}
-
-    public beforeMount() {
-        if (!this.widget) {
-            return;
+    public get WidgetOptions(): TimelineWidgetOptions {
+        if (this.widget.options) {
+            return this.widget.options as TimelineWidgetOptions;
+        } else {
+            return {};
         }
     }
 
-    mounted() {        
-        this.initTimeline();
+    public beforeDestroy() {
+        if (this.timeline) {
+            this.timeline.off('select', this.handleEventSelect);
+            this.timeline.off('timechanged', this.handleTimeChanged);
+            this.timeline.off('timechange', this.handleTimeChange);
+        }
     }
 
-    public destroyed() {
-        //    this.map.remove();
+    public update() {
+        this.updateItems();
+        if (this.timeline && this.groups && this.items) {
+            this.timeline.setData({ groups: this.groups, items: this.items });
+        }
     }
 
-    public initTimeline() {
-        if (this.initalized) return;
-        Vue.nextTick(()=> {
+    public toggleView() {
+        this.smallView = !this.smallView;
+        this.update();
+    }
 
-        
-        
-            if (this.widget && this.widget.id) {
-                this.initalized = true;
+    public setGroupVisibility(group: DataGroup, value: boolean = true) {
+        localStorage.setItem(this.GROUP_VISIBILITY_ID + group.id, value.toString());
+        this.update();
+    }
 
-                // console.log(this.project.ActiveEvent.eventItems);
-                // if (this.project.ActiveEvent.eventItems) {
-                //   console.log(this.project.ActiveEvent.locations);
-                //   for (const ei of this.project.ActiveEvent.eventItems) {
-                //     if (this.groups.findIndex(g => g.id === ei.locationId) === -1) {
-                //       this.groups.push({
-                //         id: ei.locationId,
-                //         content: ei.locationId
-                //         // Optional: a field 'className', 'style', 'order', [properties]
-                //       });
-                //     }
-                //   }
-                // }
+    public async initTimeline() {
+        if (this.timeline) {
+            // Timeline already exists, update instead of initialize
+            return this.update();
+        }
+        if (!this.widget || !this.widget.id) {
+            return console.warn('Could not find widget container of timeline');
+        }
+        // var container = document.getElementById(`timeline-${this.widget.id}`);
+        // if (!container) {
+        //     return console.warn(
+        //         'Could not find timeline container ' + this.widget.id
+        //     );
+        // }
 
-                var container = document.getElementById(this.widget.id);
-
-                var follow_options = {
-                    tooltip: {
-                        followMouse: true
+        const options: TimelineWidgetOptions =
+            (this.widget.options as TimelineWidgetOptions) ||
+            ({} as TimelineWidgetOptions);
+        if (options.timelineOptions) {
+            options.timelineOptions!.onAdd = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        // this.logSource.addItem(item);
                     }
-                };
-
-                // specify options
-                var options = {
-                    editable: false,
-                    height: '100%',
-                    start: new Date(2015, 0, 1),
-                    end: new Date(2030, 0, 1), // this.event.endDate),
-                    moveable: true,
-                    verticalScroll: false,
-                    margin: {
-                        item: 2
-                    }
-                    // timeAxis: { scale: "year", step: 2 }
-                };
-
-                let items = []; //this.getItems();
-                if (container) {
-                    console.log('Timeline');
-                    console.log(timeline);
-                    
-                    this.timeline = new timeline.Timeline(container, items, options);
                 }
-                // this.timeline.on('contextmenu', (props: any) => {
-                //     console.log(props);
-                //     this.showMenu = false;
-                //     this.x = props.event.clientX;
-                //     this.y = props.event.clientY;
-                //     this.$nextTick(() => {
-                //         this.showMenu = true;
-                //     });
-                //     props.event.preventDefault();
-                // });
-                // this.timeline.on('click', (data: any) => {
-                //     // if (
-                //     //     this.project &&
-                //     //     (data.what === 'background' || data.what === 'axis')
-                //     // ) {
-                //     //     Vue.nextTick(() => {
-                //     //         this.timeline.setCustomTime(data.time, 'focustime');
-                //     //     });
+                callback(item);
+            };
+            options.timelineOptions!.onMove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        const it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            it.start = new Date(item.start);
+                            it.startDate = it.start.getTime();
+                            if (item.group) {
+                                it.group = item.group.toString();
+                            }
+                            if (item.end) {
+                                it.end = new Date(item.end);
+                                it.endDate = it.end.getTime();
+                            }
+                            this.logSource.updateItem(it);
+                        }
+                    }
+                }
+                callback(item);
+            };
 
-                //     //     this.project.ActiveTime = new Date(data.time);
-                //     //     this.project.bus.publish(
-                //     //         'time',
-                //     //         'moved',
-                //     //         this.project.ActiveTime
-                //     //     );
-                //     // }
-                // });
-                // this.timeline.on('select', (data: any) => {
-                //     if (data.items && data.items.length === 1) {
-                //     }
-                // });
+            options.timelineOptions!.onRemove = (item, callback) => {
+                if (item) {
+                    if (this.logSource) {
+                        const it = this.logSource.items.find(i => i.id === item.id);
+                        if (it) {
+                            this.logSource.removeItem(it);
+                        }
+                    }
+                }
+                callback(item);
+            };
+
+        }
+
+        options.timelineOptions = {
+            ...{
+                locale: 'en', margin: { item: 2 }
+            }, ...options.timelineOptions
+        };
+
+        if (this.Time) {
+            if (this.Time.start) {
+                options.timelineOptions.start = this.Time.start;
             }
 
-            // this.timeline.on('timechanged', (d: any) => {
-            //     // if (d.id === 'focustime' && this.project) {
-            //     //     let time = d.time;
-            //     //     this.project.ActiveTime = time;
-            //     //     this.project.bus.publish('time', 'moved', time);
-            //     // }
-            // });
+            if (this.Time.end) {
+                options.timelineOptions.end = this.Time.end;
+            }
+        }
+
+        this.timeline = new Timeline(
+            this.$refs.timelineContainer,
+            this.items as DataItem[],
+
+            options.timelineOptions
+        );
+        this.setTimelineEvents();
+    }
+
+    public initLogSource() {
+        if (this.WidgetOptions.logSource) {
+            this.$cs.loadDatasource<LogDataSource>(this.WidgetOptions.logSource).then(r => {
+                this.logSource = r;
+                this.busManager.subscribe(this.logSource.bus, Topics.LOG_TOPIC, (a: string, id: string) => {
+                    if (a === Topics.SELECT_LOG_ITEM) {
+                        if (id && this.timeline) {
+                            this.timeline.setSelection(id);
+                        }
+                    }
+                })
+                this.busManager.subscribe(this.logSource.bus, 'updated', () => {
+                    this.update();
+                });
+                Vue.nextTick(() => {
+                    this.update();
+                });
+            }).catch(err => {
+                console.log(err);
+            });
+        }
+    }
+
+    public fitAll() {
+        if (this.timeline) {
+            this.timeline.fit({ animation: false });
+        }
+    }
+
+    public setWindow(start: Date, end: Date) {
+        if (this.timeline) {
+            this.timeline.setWindow(start, end);
+        }
+    }
+
+    public initToolbar() {
+        if (!this.widget.options) { this.widget.options = {}; }
+        const menus: IMenu[] = [];
+
+        if (this.WidgetOptions.showFitButton) {
+            menus.push({
+                id: 'today',
+                toolTip: 'TODAY',
+                icon: 'today',
+                items: [
+                    {
+                        title: 'TODAY',
+                        action: () => {
+                            const todayStart = new Date();
+                            todayStart.setHours(0);
+                            const todayEnd = new Date();
+                            todayEnd.setHours(24);
+                            this.setWindow(todayStart, todayEnd);
+                        }
+                    },
+                    {
+                        title: 'WEEK',
+                        action: () => {
+                            const curr = new Date();
+                            this.setWindow(new Date(curr.setDate(curr.getDate() - curr.getDay())), new Date(curr.setDate(curr.getDate() - curr.getDay() + 7)));
+                        }
+                    },
+                    {
+                        title: 'MONTH',
+                        action: () => {
+                            const date = new Date();
+                            this.setWindow(new Date(date.getFullYear(),
+                                date.getMonth(), 1), new Date(date.getFullYear(),
+                                    date.getMonth(), this.daysInMonth(date.getMonth() + 1,
+                                        date.getFullYear())));
+                        }
+                    },
+                    {
+                        title: 'YEAR',
+                        action: () => {
+                            const date = new Date();
+                            this.setWindow(new Date(date.getFullYear(), 0, 1), new Date(date.getFullYear(), 11, 31));
+                        }
+                    }
+                ],
+                visible: true
+            } as IMenu);
+        }
+
+        if (this.WidgetOptions.showStackButton) {
+            menus.push({
+                id: STACK_MENU_ID,
+                toolTip: 'STACK',
+                icon: 'reorder',
+                action: () => {
+                    if (this.timeline && this.WidgetOptions.timelineOptions) {
+                        this.WidgetOptions.timelineOptions.stack = !this.WidgetOptions.timelineOptions.stack;
+                        this.timeline.setOptions({ stack: this.WidgetOptions.timelineOptions.stack });
+                    }
+
+                }
+            })
+        }
+
+        // this.widget.options.menus ? this.widget.options.menus :
+        if (this.WidgetOptions.showFitButton) {
+            menus.push({
+                id: ZOOM_MENU_ID,
+                toolTip: 'FIT_TIMELINE_ZOOM',
+                icon: 'zoom_out_map',
+                action: () => {
+                    this.fitAll();
+                },
+                visible: true
+            } as IMenu);
+        }
+
+        // if (this.WidgetOptions.toggleSmallButton) {
+        //     // check if already exists
+        //     if (menus.findIndex((m: IMenu) => m.id === TOGGLE_MENU_ID) === -1) {
+        //         menus.push({
+        //             id: TOGGLE_MENU_ID,
+        //             icon: 'line_weight',
+        //             action: () => {
+        //                 this.toggleView();
+        //             }
+        //         });
+        //     }
+        // }
+
+        if (this.WidgetOptions.showGroupSelectionButton) {
+            // check if already exists
+            if (menus.findIndex((m: IMenu) => m.id === GROUPS_MENU_ID) === -1) {
+                menus.push({
+                    id: GROUPS_MENU_ID,
+                    icon: 'list',
+                    component: TimelineGroupSelection,
+                    data: this
+                });
+            }
+        }
+
+        Vue.set(this.widget.options, 'menus', menus);
+    }
+
+    public contentLoaded() {
+        this.initToolbar();
+        this.initTimeline();
+        this.initLogSource();
+        this.busManager.subscribe(this.widget.events, Topics.RESIZE, () => {
+            this.timeline!.redraw();
         });
+
+    }
+
+    private addGroup(groupName: string) {
+        if (!this.groupExists(groupName)) {
+
+            const visible = localStorage.getItem(this.GROUP_VISIBILITY_ID + groupName);
+            this.groups.push({
+                id: groupName,
+                content: groupName,
+                visible: (!visible) ? true : (visible.toLowerCase() === 'true')
+            } as DataGroup);
+        }
+    }
+
+    private groupExists(id: string) {
+        return this.groups.find(g => g.id === id);
+    }
+
+    private setTimelineEvents() {
+        if (!this.timeline) { return console.log('Could not set timeline events'); }
+        // this.timeline.on('click', this.handleTimelineClick);
+        if (this.WidgetOptions.showFocusTime) {
+            this.timeline.addCustomTime(this.currentTime, 'focustime');
+            this.timeline.on('click', this.handleTimelineClick);
+        }
+        this.timeline.on('doubleClick', this.handleDoubleClick);
+        this.timeline.on('select', this.handleEventSelect);
+        this.timeline.on('timechanged', this.handleTimeChanged);
+        this.timeline.on('timechange', this.handleTimeChange);
+
+        this.currentTime = new Date(this.timeline.getWindow().start);
+
+        if (this.Time && this.Time.events) {
+            this.busManager.subscribe(this.Time.events, Topics.TIME_TOPIC, this.handleIncomingTimeEvent);
+        }
+    }
+
+    private handleTimeChange(d: { id: string; time: Date }) {
+        if (d && d.id === 'focustime' && d.time && this.Time.events) {
+            this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVING, d.time);
+        }
+    }
+
+    private handleTimeChanged(d: { id: string; time: Date }) {
+        if (d && d.id === 'focustime' && d.time && this.Time.events) {
+            this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_MOVED, d.time);
+        }
+    }
+
+    private handleDoubleClick(data: any) {
+        this.Time.events.publish(Topics.TIME_TOPIC, Topics.TIMELINE_DOUBLE_CLICK, data);
+    }
+
+    private handleEventSelect(data: any) {
+        if (
+            (data as any).event.type === 'tap' &&
+            data.items &&
+            data.items.length === 1 &&
+            this.Time.events
+        ) {
+            const id = data.items[0];
+            console.log('Selected item ' + id);
+            if (this.logSource && isFunction(this.logSource.selectItemId)) {
+                this.logSource.selectItemId(id.toString());
+                // this.logSource.selectItemId(id);
+            }
+            this.Time.events.publish(
+                Topics.TIME_TOPIC,
+                'moved',
+                this.currentTime
+            );
+        }
+    }
+
+    private handleTimelineClick(data: TimelineEventPropertiesResult) {
+
+        if (data.item === null) { // (data.what === 'background' || data.what === 'axis') {
+            this.setDate(data.time);
+        }
+    }
+
+    private setDate(date: Date) {
+        Vue.nextTick(() => {
+            this.timeline!.setCustomTime(date, 'focustime');
+        });
+        this.currentTime = new Date(date);
+        if (this.Time.events) {
+            this.Time.focusTime = this.currentTime.getTime();
+            this.Time.events.publish(
+                Topics.TIME_TOPIC,
+                'moved',
+                this.currentTime
+            );
+        }
+    }
+
+    private daysInMonth(month, year) {
+        return new Date(year, month, 0).getDate();
+    }
+
+    private updateItems() {
+        const items: DataItem[] = [];
+        const height = this.smallView ? '5px' : '30px;';
+        if (this.logSource && this.logSource.items) {
+            for (const item of this.logSource.items) {
+                // item.content = item.content;
+                // if (!item.style) {
+                //     item.style = 'height:' + height;
+                // }
+                // if (this.smallView) { item.style += ''; }
+                if (item.startDate) { item.start = new Date(item.startDate); }
+                if (item.endDate) { item.end = new Date(item.endDate); }
+                if (!item.group) { item.group = NO_GROUP; }
+                this.addGroup(item.group);
+                items.push(item as DataItem);
+            }
+        }
+        this.items = items; // new DataSet(items);
+    }
+
+    private handleIncomingTimeEvent(action: string, data: any) {
+        if (!this.Time) { return; }
+        switch (action) {
+            // case 'add-item':
+            //     this.datasource.addItem(data as DataItem);
+            //     break;
+            case Topics.SET_FOCUS_TIME:
+                this.setDate(data);
+                break;
+            case Topics.SET_TIME_RANGE:
+                if (this.timeline) {
+                    this.timeline.setOptions({ start: data.start, end: data.end });
+                }
+                break;
+            case 'update':
+                this.update();
+                break;
+            default:
+                break;
+        }
     }
 }

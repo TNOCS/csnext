@@ -1,0 +1,5 @@
+.data-dashboard-grid {
+    display: grid;
+    grid-template-rows: auto;
+
+}

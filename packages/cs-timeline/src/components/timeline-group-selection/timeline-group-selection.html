@@ -1,0 +1,16 @@
+<div class="timeline-group-selection-container">
+    <v-container style="background:white">
+        <v-toolbar-title>{{$cs.Translate('GROUP_VISIBILITY')}}</v-toolbar-title>
+        <v-divider class="pt-1"></v-divider>
+        <div class="pt-1">
+            <v-checkbox
+                v-for="group in data.groups"
+                class="tag-filter-option"
+                :key="group.id"
+                :label="group.id"
+                v-model="group.visible"
+                @change="toggle(group)"
+            ></v-checkbox>
+        </div>
+    </v-container>
+</div>

@@ -1,5 +1,14 @@
-declare function require(path: string): any;
-declare module 'mapbox-gl-controls';
 declare module 'mapbox-gl-draw';
+// declare module 'sffjs';
 
-declare module '@mapbox/geojson-extent'
+import { VueConstructor } from 'vue';
+declare global {
+    interface StringConstructor {
+        format(format: string, ...value: any): string;
+    }
+}
+
+
+
+
+

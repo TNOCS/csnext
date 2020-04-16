@@ -2,6 +2,15 @@
   "IS_LOADING": "Is loading",
   "OPEN_RIGHT_SIDEBAR": "Open left sidepanel",
   "CLOSE_RIGHT_SIDEBAR": "Close right sidepanel",
+  "CLOSE": "Close",
   "LANGUAGE": "Language",
-  "LANGUAGE_SETTINGS": "Language settings"
+  "LANGUAGE_SETTINGS": "Language settings",
+  "YES": "Yes",
+  "NO": "No",
+  "SEARCH": "Search",
+  "FIELD_REQUIRED": "This field is required",
+  "ABOUT": "About",
+  "GROUP_VISIBILITY": "Group visibility",
+  "SELECT_FEATURE": "Select a feature",
+  "SELECT_POINT": "Select a point on the map"
 }

@@ -1,0 +1,45 @@
+
+.menu.buttonClass {
+  margin-left: 4px;
+}
+
+.menu-icon-down
+{
+  margin-left: -5px !important;
+}
+
+.widget-buttons-container {
+  position: absolute !important;
+  right: 10px;
+  top: 3px;
+  z-index: 1000;
+}
+
+.widget-button {
+  /* margin:0 !important; */
+  /* width:18px !important;
+  height:18px !important; */
+}
+
+.widget-button-icon {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Borders */
+
+.widget-border-shadow {
+  margin: 2px;
+  box-shadow: 0 1px 7px rgba(0, 0, 0, 0.4);
+  height: calc(100% - 4px);
+}
+
+.widget-border-line {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+.cs-menu-container {
+  display: inline-flex;
+}

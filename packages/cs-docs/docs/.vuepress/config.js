@@ -1,7 +1,7 @@
 module.exports = {
     title: 'Common Sense',
-    description: '',
-    base: '/csnext/',
+    description: 'This is a test',    
+    base: '/',
     dest: '../../docs/',
     head: [
         ['link', { rel: 'icon', href: `/logo.png` }],
@@ -65,10 +65,15 @@ module.exports = {
                     {
                         text: 'Development',
                         link: '/development/'
-                    }                    
+                    },
+                    {
+                        text: 'References',
+                        link: '/references/'
+                    }                
                 ],
                 sidebar: {
-                    '/guide/': genSidebarConfig('Guide')
+                    '/guide/': genSidebarConfig('Guide'),
+                    '/references/': genReferencesConfig(),
                 }
             }
         }       
@@ -83,4 +88,12 @@ function genSidebarConfig(title) {
             children: ['', 'installation', 'configuration', 'layout', 'navigation', 'sidebars', 'dashboards', 'widgets', 'datasources']
         }
     ];
+}
+
+function genReferencesConfig() {
+    const rsb = require('./references-sidebar-builder.js')
+    const config = require('./api-sidebar.json');
+
+    builder = new rsb(config)
+    return builder.build_sidenav()
 }

@@ -1,0 +1,21 @@
+.source-properties-table td {
+    border-bottom: none;
+}
+
+.source-field-description {
+    margin: 10px;
+}
+
+.source-field-header {
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+source-field-value {
+    font-weight: normal;
+    margin-bottom: 4px;
+}
+
+.source-field-title {
+    font-weight: 700;
+}

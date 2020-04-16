@@ -1,0 +1,72 @@
+<div
+    class="feature-details-container"
+    v-if="source"
+    style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; overflow-y: hidden;"
+>
+    <simplebar data-simplebar-auto-hide="false" style="height:100%">
+        <v-card class="mx-auto" tile flat>
+            <v-img class="align-end" :src="source.image" height="200px">
+                <v-btn
+                    fab
+                    depressed
+                    small
+                    @click="closeSidebar()"
+                    class="primary sidebar-back-button"
+                    ><v-icon>arrow_forward</v-icon></v-btn
+                >
+            </v-img>
+            <v-card-title v-html="source.title"></v-card-title>
+            <v-card-subtitle v-html="source.organisation"></v-card-subtitle>
+            <v-card-text v-html="source.description"></v-card-text>
+        </v-card>
+        <v-divider></v-divider>
+        <v-simple-table dense class="source-properties-table">
+            <template v-slot:default>
+                <tbody>
+                    <tr>
+                        <td><v-icon small>launch</v-icon></td>
+                        <td>
+                            <a
+                                style="text-overflow: ellipsis;"
+                                :href="source.source"
+                                target="_blank"
+                                >{{source.source}}</a
+                            >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><v-icon small>receipt</v-icon></td>
+                        <td>{{source.format}}</td>
+                    </tr>
+                    <tr v-if="source.modified">
+                        <td><v-icon small>date_range</v-icon></td>
+                        <td>{{source.modified}}</td>
+                    </tr>
+                    <tr v-if="source.rowCount">
+                        <td><v-icon small>format_list_numbered</v-icon></td>
+                        <td>{{source.rowCount}}</td>
+                    </tr>
+                </tbody>
+            </template>
+        </v-simple-table>
+
+        <v-divider></v-divider>
+        
+        <v-expansion-panels accordion>
+            <v-expansion-panel v-for="group in groups" :key="group.id" v-if="group.fields.length > 0">
+              <v-expansion-panel-header class="source-field-title">{{group.title}}</v-expansion-panel-header>
+              <v-expansion-panel-content class="source-field-description">
+                  <div v-for="field in group.fields" :key="field.name">
+                  <div class="source-field-header">{{field.title}}</div>
+                  <div v-if="field.title !== field.description" class="source-field-value">{{field.description}}</div>
+                  <!-- <div v-if="field.unit" class="source-field-header">{{$cs.Translate('UNIT')}}</div>
+                  <div class="source-field-value">{{field.unit}}</div> -->
+                  </div>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>        
+    </simplebar>
+    <!-- </v-tab-item>
+        
+    </v-tabs-items> -->
+</div>

@@ -1,20 +1,15 @@
 import {
-    ILayerServiceOptions,
     ILayerService,
     IStartStopService,
-    GeojsonPlusLayer
+    GeojsonPlusLayer,
+    MapDatasource,
+    LayerSource,
+    IMapLayer,
+    LayerServerOptions
+
 } from '..';
 import axios from 'axios';
-import { MapLayers } from '../classes/map-layers';
-import { GeojsonLayer } from '../layers/geojson-layer';
-import { LayerSource } from '../classes/layer-source';
 import { LinePaint } from 'mapbox-gl';
-import { IMapLayer } from '../classes/imap-layer';
-
-export class LayerServerOptions implements ILayerServiceOptions {
-    public url?: string;
-    public tags?: string[];
-}
 
 export class LayerServer implements ILayerService, IStartStopService {
     id!: string;
@@ -33,12 +28,12 @@ export class LayerServer implements ILayerService, IStartStopService {
         Object.assign(this, init);
     }
 
-    async Start(manager: MapLayers) {
+    async Start(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
                 .get(this.options.url)
-                .then(response => {
+                .then(async response => {
                     if (
                         response &&
                         response.data &&
@@ -56,20 +51,20 @@ export class LayerServer implements ILayerService, IStartStopService {
                             s.type = 'geojson';
                             let gl = new GeojsonPlusLayer();
                             gl.source = s;
-                            gl.color = layer.color ? layer.color : 'lightgrey';
+                            gl.color = layer.color ? layer.color : 'blue';
                             gl.title = layer.title;
                             if (layer.sourceType) {
                                 gl.type = layer.sourceType;
                             } else {
                                 gl.type = layer.type;
                             }
-                            gl.tags = this.options.tags;
-                            // gl.paint = {
-                            //     'line-color': ['get', 'stroke'],
-                            //     'line-opacity': ['get', 'stroke-opacity'],
-                            //     'line-width': ['get', 'stroke-width']
-                            // } as LinePaint;
-                            gl.initLayer(manager);
+                            gl.tags = this.options.tags || [];
+                            gl.paint = {
+                                'line-color': ['get', 'stroke'],
+                                'line-opacity': ['get', 'stroke-opacity'],
+                                'line-width': ['get', 'stroke-width']
+                            } as LinePaint;
+                            await gl.initLayer(manager);
                             manager.layers.push(gl);
                             this.layers.push(gl);
                         }
@@ -80,7 +75,7 @@ export class LayerServer implements ILayerService, IStartStopService {
     }
 
     /** remove previously added layers */
-    private removeExistingLayers(manager: MapLayers) {
+    private removeExistingLayers(manager: MapDatasource) {
         if (
             this.layers &&
             this.layers.length > 0 &&
@@ -95,7 +90,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         this.layers = [];
     }
 
-    Stop(manager: MapLayers) {
+    Stop(manager: MapDatasource) {
         this.removeExistingLayers(manager);
         console.log('Stop service');
     }

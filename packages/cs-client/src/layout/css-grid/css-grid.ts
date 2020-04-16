@@ -3,12 +3,15 @@ import Component from 'vue-class-component';
 import {
   IDashboard,
   ILayoutManagerConfig,
-  GridDashboardOptions,
-  IWidget} from '@csnext/cs-core';
+  CssGridDashboardOptions,
+  CssGridWidgetOptions,
+  IWidget,
+  guidGenerator
+} from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './css-grid.css';
-import { GridWidgetOptions } from './css-grid-widget-options';
+import './css-grid-templates.css';
 
 @Component({
   template: require('./css-grid.html'),
@@ -17,21 +20,35 @@ import { GridWidgetOptions } from './css-grid-widget-options';
   }
 } as any)
 export class CssGrid extends Vue {
+  public static id = 'css-grid';
   public dashboard?: IDashboard;
 
-  public gridStyle() {
-    if (!this.dashboard) {
-      return;
-    }
-    const style = {} as any;
-    const options = this.dashboard.options as GridDashboardOptions;
-
-    return { 'grid-template-columns': 'repeat(auto-fill, minmax(250px,1fr))' };
+  public get options(): CssGridDashboardOptions {
+    if (this.dashboard && this.dashboard.options) { return this.dashboard.options as CssGridDashboardOptions; }
+    return {};
   }
 
-  public gridWidgetClass(widget: IWidget) {
+  constructor() {
+    super();
+    if (this.options.template && !this.options.class) {
+      this.options.class = this.options.template;
+    }
+  }
+
+  public gridStyle() {
+    const style = { 'grid-gap': this.options.gap, 'column-gap': this.options.columnGap, 'row-gap': this.options.rowGap } as any;
+    // style['grid-template-columns'] = 'repeat(auto-fill, minmax(150px,1fr))';
+    // style['grid-template-rows'] = 'repeat(auto-fill, minmax(150px,1fr))';
+    return style;
+  }
+
+  public gridWidgetStyle(widget: IWidget) {
     const style: any = {};
-    const options = widget.options as GridWidgetOptions;
+    const options = widget.options as CssGridWidgetOptions;
+    if (!options) { return style; }
+    if (options.area) {
+      style['grid-area'] = options.area;
+    }
     if (options.columnStart) {
       style['grid-column-start'] = options.columnStart;
     }
@@ -49,7 +66,15 @@ export class CssGrid extends Vue {
 }
 
 LayoutManager.add({
-  id: 'css-grid',
+  id: CssGrid.id,
   name: 'css-grid page',
   component: CssGrid
 } as ILayoutManagerConfig);
+
+export function CssGridDashboard(definition?: IDashboard, options?: CssGridDashboardOptions): IDashboard {
+  if (definition) {
+    return { ...{ id: guidGenerator(), layout: CssGrid.id, options }, ...definition };
+  } else {
+    return {};
+  }
+}

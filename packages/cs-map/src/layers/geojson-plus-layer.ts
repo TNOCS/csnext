@@ -1,171 +1,276 @@
-import { MessageBusService, guidGenerator } from '@csnext/cs-core';
 import {
-    LayerSource,
-    MapLayers,
+    MapDatasource,
     FeatureEventDetails,
     IMapLayer,
-    IMapLayerType,
-    ILayerAction,
-    ILayerExtensionType,
-    ILayerExtension,
-    FeatureType
+    PropertyDetails
 } from './../.';
 import extent from '@mapbox/geojson-extent';
+
 import {
     LngLatBounds,
-    CirclePaint,
-    SymbolLayout,
-    LinePaint,
-    FillPaint
+    StyleFunction
 } from 'mapbox-gl';
 import { CsMap } from './..';
+import { PropertyType, MetaUtils, FeatureTypes } from '@csnext/cs-data';
 import mapboxgl from 'mapbox-gl';
-import { plainToClass } from 'class-transformer';
 import { GeojsonLayer } from './geojson-layer';
-import centroid from '@turf/centroid';
-import { FeatureCollection, Feature } from 'geojson';
 import { MessageBusHandle } from '@csnext/cs-core';
+import { BaseLayer } from './base-layer';
+import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
+// import { isNumber } from 'util';
 
-export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
-    types? = ['poi', 'geojson'];
+export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
-    public getInstance(init?: Partial<GeojsonPlusLayer>) {
-        let result = new GeojsonPlusLayer(init);
-        return result;
+    public colorSchemes =
+    {BuGn: [['#e5f5f9', '#2ca25f'], ['#e5f5f9','#99d8c9','#2ca25f'], ['#edf8fb','#b2e2e2','#66c2a4','#238b45'], ['#edf8fb','#b2e2e2','#66c2a4','#2ca25f','#006d2c'], ['#edf8fb','#ccece6','#99d8c9','#66c2a4','#2ca25f','#006d2c']],
+    BuPu: [['#e0ecf4','#8856a7'],['#e0ecf4','#9ebcda','#8856a7'],['#edf8fb','#b3cde3','#8c96c6','#88419d'],['#edf8fb','#b3cde3','#8c96c6','#8856a7','#810f7c'], ['#edf8fb','#bfd3e6','#9ebcda','#8c96c6','#8856a7','#810f7c']],
+    GnBu: [['#e0f3db','#43a2ca'],['#e0f3db','#a8ddb5','#43a2ca'],['#f0f9e8','#bae4bc','#7bccc4','#2b8cbe'],['#f0f9e8','#bae4bc','#7bccc4','#43a2ca','#0868ac'],['#f0f9e8','#ccebc5','#a8ddb5','#7bccc4','#43a2ca','#0868ac']],
+    OrRd: [['#fee8c8','#e34a33'],['#fee8c8','#fdbb84','#e34a33'],['#fef0d9','#fdcc8a','#fc8d59','#d7301f'],['#fef0d9','#fdcc8a','#fc8d59','#e34a33','#b30000'],['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000']],
+    PuBu: [['#ece7f2','#2b8cbe'], ['#ece7f2','#a6bddb','#2b8cbe'], ['#f1eef6','#bdc9e1','#74a9cf','#0570b0'], ['#f1eef6','#bdc9e1','#74a9cf','#2b8cbe','#045a8d'], ['#f1eef6','#d0d1e6','#a6bddb','#74a9cf','#2b8cbe','#045a8d']],
+    Greys: [['#f0f0f0','#636363'], ['#f0f0f0','#bdbdbd','#636363'], ['#f7f7f7','#cccccc','#969696','#525252'], ['#f7f7f7','#cccccc','#969696','#636363','#252525'], ['#f7f7f7','#d9d9d9','#bdbdbd','#969696','#636363','#252525'] ],
+    Blues: [['#deebf7','#3182bd'], ['#deebf7','#9ecae1','#3182bd'], ['#eff3ff','#bdd7e7','#6baed6','#2171b5'], ['#eff3ff','#bdd7e7','#6baed6','#3182bd','#08519c'], ['#eff3ff','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c']],
+    BrBg: [['#d8b365','#5ab4ac'], ['#d8b365','#f5f5f5','#5ab4ac'], ['#a6611a','#dfc27d','#80cdc1','#018571'], ['#a6611a','#dfc27d','#f5f5f5','#80cdc1','#018571'], ['#8c510a','#d8b365','#f6e8c3','#c7eae5','#5ab4ac','#01665e'] ],
+    PuOr: [['#f1a340','#998ec3'], ['#f1a340','#f7f7f7','#998ec3'], ['#e66101','#fdb863','#b2abd2','#5e3c99'], ['#e66101','#fdb863','#f7f7f7','#b2abd2','#5e3c99'], ['#b35806','#f1a340','#fee0b6','#d8daeb','#998ec3','#542788']],
+    Spectral: [['#fc8d59','#99d594'], ['#fc8d59','#ffffbf','#99d594'], ['#d7191c','#fdae61','#abdda4','#2b83ba'], ['#d7191c','#fdae61','#ffffbf','#abdda4','#2b83ba'], ['#d53e4f','#fc8d59','#fee08b','#e6f598','#99d594','#3288bd']]
+
     }
-    public typeId?: string = 'poi';
-    public id?: string;
-    public type?: 'poi';
-    public title?: string;
-    public source?: string | LayerSource;
-    public visible?: boolean;
-    public tags?: string[];
-    public color?: string;
-    public parentId?: string;
-    public filter?: any;
+    // #region Properties (32)
     public iconZoomLevel?: number;
-    public _parent?: GeojsonPlusLayer;
-    public symbolLayer!: GeojsonLayer;
-    public centerLayer!: GeojsonLayer;
-    public lineLayer!: GeojsonLayer;
-    public fillLayer!: GeojsonLayer;
-    public circleLayer!: GeojsonLayer;
-    public opacity?: number = 100;
-    public style!: LayerStyle;
-    public centerHandle?: MessageBusHandle;
     public isEditable?: boolean;
-    public centerGeoJson?: FeatureCollection;
-    public centerSource?: LayerSource;
-    public featureTypes?: { [key: string]: FeatureType };
+    public isLive?: boolean;
+    public socketEmitters: { [key: string]: SocketIOClient.Emitter } = {};
+    public type?: 'poi';
+    public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
+    public featureTypes?: FeatureTypes;
 
-    // circle style
-    public circleLayout!: mapboxgl.CircleLayout;
-    public circlePaint!: mapboxgl.CirclePaint;
-    public circleHandle?: MessageBusHandle;
+    private clickEvent = this.onClick.bind(this);
+    private contextMenuEvent = this.onContextMenu.bind(this);
+    private enterEvent = this.onEnter.bind(this);
+    private leaveEvent = this.onLeave.bind(this);
+    private moveEvent = this.onMove.bind(this);
+    private mapEventsRegistered = false;
+    private symbolLayer?: mapboxgl.Layer;
+    // Create a popup, but don't add it to the map yet.
+    private popup = new mapboxgl.Popup({
+        closeButton: false
+    });
 
-    // symbol style
-    public symbolLayout!: mapboxgl.SymbolLayout;
-    public symbolPaint!: mapboxgl.SymbolPaint;
-    public symbolHandle?: MessageBusHandle;
+    // #endregion Properties (32)
 
-    // line style
-    public lineLayout!: mapboxgl.LineLayout;
-    public linePaint!: mapboxgl.LinePaint;
-    public lineHandle?: MessageBusHandle;
-
-    // fill style
-    public fillLayout!: mapboxgl.FillLayout;
-    public fillPaint!: mapboxgl.FillPaint;
-    public fillHandle?: MessageBusHandle;
-
-    public _manager?: MapLayers;
-    public events: MessageBusService;
-    public popupContent?: string | Function | undefined;
-    public extensions?: ILayerExtensionType[];
-    public _extensions: ILayerExtension[] = [];
+    // #region Constructors (1)
 
     constructor(init?: Partial<IMapLayer>) {
-        Object.assign(this, init);
-        this.events = new MessageBusService();
+        super(init);
+        // this.events = new MessageBusService();
     }
 
-    public get Visible(): boolean | undefined {
-        return this.visible;
-    }
+    // #endregion Constructors (1)
 
-    public set Visible(value: boolean | undefined) {
-        if (this.visible === value) {
-            return;
+    // #region Public Methods (17)
+
+    public addCircleSymbol(widget) {
+        if (!this.style || !this._source || !this.style.showSymbol) { return; }
+        const imageId = this.id + '-symbol';
+        const symbolLayout = { ...{ 'icon-image': imageId }, ...this.style.mapbox?.symbolLayout };
+        if (this.style.icon) {
+            this.addImage(imageId, this.style.icon);
         }
-        this.visible = value;
+        this.symbolLayer = {
+                id: this.id + '-circle',
+                type: 'symbol',
+                source: this._source.id,
+                interactive: true,
+                layout: symbolLayout
+            } as mapboxgl.Layer;
+        this.addSupportLayer(this.symbolLayer);
     }
 
-    public getLayerActions(): ILayerAction[] {
-        let res: ILayerAction[] = [];
-        if (this.Visible) {
-            res.push({
-                title: 'Zoom to',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.zoomLayer(this);
-                    }
-                }
-            });
-            res.push({
-                title: 'Hide',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.hideLayer(this);
-                    }
-                }
-            });
-            res.push({
-                title: 'Refresh',
-                action: () => {
-                    if (this._manager) {                        
-                        this._manager.refreshLayer(this);
-                    }
-                }
-            });
+    public toggleBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
+        if (this.bookmarks.includes(bookmark)) {
+            return this.removeBookmark(bookmark);
         } else {
-            res.push({
-                title: 'Show',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.showLayer(this);
-                    }
-                }
-            });
+            return this.addBookmark(bookmark);
         }
-        return res;
     }
 
-    public setOpacity(value: number) {
-        this.opacity = value;
-        if (this.circleLayer) {
-            this.circleLayer.setOpacity(value);
+    public addBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
+        this.bookmarks.push(bookmark);
+        this._manager?.events.publish('bookmarks', 'updated');
+        return true;
+    }
+
+    public removeBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
+        const index = this.bookmarks.findIndex(b => b.id === bookmark.id);
+        if (index >= 0) {
+            this.bookmarks.splice(index, 1);
         }
-        if (this.centerLayer) {
-            this.centerLayer.setOpacity(value);
-        }
-        if (this.symbolLayer) {
-            this.symbolLayer.setOpacity(value);
-        }
-        if (this.fillLayer) {
-            this.fillLayer.setOpacity(value);
-        }
-        if (this.lineLayer) {
-            this.lineLayer.setOpacity(value);
-        }
+        this._manager?.events.publish('bookmarks', 'updated');
+        return true;
+    }
+
+
+    public addLayer(widget: CsMap) {
+        super.addLayer(widget);
+        this.registerMapEvents(widget.map);
+        this.registerLayerExtensions();
+        this.addCircleSymbol(widget);
+        // if (!this._symbolLayer || !this._lineLayer || !this._manager) {
+        //     return;
+        // }
+        // this.createCenterSource();
+
+        // // subscribe to events
+        // this._circleHandle = this.pipeEvents(
+        //     map,
+        //     this._circleLayer,
+        //     this._circleHandle
+        // );
+        // this._centerHandle = this.pipeEvents(
+        //     map,
+        //     this._centerLayer,
+        //     this._centerHandle
+        // );
+        // this._symbolHandle = this.pipeEvents(
+        //     map,
+        //     this._symbolLayer,
+        //     this._symbolHandle
+        // );
+        // this._lineHandle = this.pipeEvents(
+        //     map,
+        //     this._lineLayer,
+        //     this._lineHandle
+        // );
+        // this._fillHandle = this.pipeEvents(
+        //     map,
+        //     this._fillLayer,
+        //     this._fillHandle
+        // );
+
+        // this.enabled = true;
+    }
+
+    // public createCenterSource() {
+    //     if (this.iconZoomLevel === undefined) {
+    //         return;
+    //     }
+    //     if (this._centerGeoJson) {
+    //         return;
+    //     }
+    //     if (
+    //         this._source &&
+    //         this._source._data &&
+    //         this._manager &&
+    //         this._manager._sources
+    //     ) {
+    //         this._centerGeoJson = {
+    //             type: 'FeatureCollection',
+    //             features: []
+    //         } as FeatureCollection;
+    //         for (const f of this._source._data.features) {
+    //             const nf = {
+    //                 type: 'Feature',
+    //                 properties: f.properties,
+    //                 id: f.id
+    //             } as Feature;
+    //             nf.geometry = { type: 'Point', coordinates: [] };
+
+    //             try {
+    //                 switch (f.geometry.type) {
+    //                     case 'LineString':
+    //                         nf.geometry = centroid(f).geometry;
+    //                         break;
+    //                     case 'Polygon':
+    //                         nf.geometry = centroid(f).geometry;
+    //                         break;
+    //                     case 'Point':
+    //                         nf.geometry = f.geometry;
+
+    //                         break;
+    //                 }
+    //             } catch (e) {
+    //                 console.log('Error calculating center');
+    //             }
+    //             if (nf.geometry.coordinates.length > 1) {
+    //                 this._centerGeoJson.features.push(nf);
+    //             }
+    //         }
+    //         this._centerSource = new DataSource(this._centerGeoJson);
+    //         this._centerSource.id = this._source.id + '-center';
+    //         this._centerSource._loaded = true;
+
+    //         this._manager._sources.layers[
+    //             this._centerSource.id
+    //         ] = this._centerSource;
+    //         this._manager.updateSource(this._centerSource);
+
+    //         this._centerLayer = new GeojsonLayer({
+    //             id: this.id + '-center',
+    //             type: 'circle',
+    //             popupContent: this.popupContent,
+    //             source: this._centerSource,
+    //             parentId: this.id,
+    //             layout: this._circleLayout ? this._circleLayout : {},
+    //             paint: this._circlePaint
+    //                 ? this._circlePaint
+    //                 : ({
+    //                     'circle-radius': 10,
+    //                     'circle-color': ['get', 'stroke'],
+    //                     'circle-opacity': 0.5,
+    //                     'circle-stroke-width': 1,
+    //                     'circle-stroke-color': ['get', 'stroke'],
+    //                     'circle-stroke-opacity': 1
+    //                 } as CirclePaint),
+    //             filter: ['<=', ['zoom'], this.iconZoomLevel]
+    //             // filter: ['==', ['geometry-type'], 'Point']
+    //         });
+
+    //         this._centerLayer.initLayer(this._manager);
+
+    //         this._symbolLayer = new GeojsonLayer({
+    //             id: this.id + '-symbol',
+    //             type: 'symbol',
+    //             source: this._centerSource,
+    //             parentId: this.id,
+    //             style: this.style,
+    //             popupContent: this.popupContent,
+    //             layout: this._symbolLayout
+    //                 ? this._symbolLayout
+    //                 : ({
+    //                     'icon-size': 0.45,
+    //                     'text-field': this.style!.mapTitle,
+    //                     'text-anchor': 'center',
+    //                     'text-size': 12,
+    //                     'text-offset': [0, 1.5],
+    //                     'text-ignore-placement': true,
+    //                     'text-allow-overlap': true,
+    //                     'icon-allow-overlap': true,
+    //                     'icon-ignore-placement': true
+    //                 } as SymbolLayout),
+    //             paint: this._symbolPaint ? this._symbolPaint : {},
+    //             filter: ['<=', ['zoom'], this.iconZoomLevel]
+    //         });
+    //         this._symbolLayer.initLayer(this._manager);
+    //         // publish all events received from the circle layer
+    //     }
+    // }
+
+    public setFilter(filter: any[]) {
+        super.setFilter(filter);
+        // this.filter = filter;
+        // this._fillLayer?.setFilter(filter);
+        // this._symbolLayer?.setFilter(filter);
+        // this._lineLayer?.setFilter(filter);
+        // this._circleLayer?.setFilter(filter);
+        this.updateFilters();
     }
 
     public getBounds(): LngLatBounds | undefined {
         if (this._source) {
             // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
-            let geo = { ...this._source._geojson };
+            const geo = { ...this._source._data };
             try {
-                let bounds = extent(geo);
+                const bounds = extent(geo);
                 return bounds;
             } catch {
                 return undefined;
@@ -175,327 +280,90 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         }
     }
 
+    public getInstance(init?: Partial<GeojsonPlusLayer>) {
+        const result = new GeojsonPlusLayer();
+        return result;
+    }
+
+    public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
+        return new Promise(async (resolve) => {
+            await super.initLayer(manager);
+
+            // store original layouts
+            if (this.style && this.style.mapbox && !this.style._originalMapbox) {
+                this.style._originalMapbox = JSON.parse(
+                    JSON.stringify(this.style.mapbox)
+                );
+            }
+
+            if (!this.popupContent) {
+                this.popupContent = (d: FeatureEventDetails) => {
+                    return this.parsePopup(d.feature);
+                };
+            }
+
+            // make sure a text style is available
+            if (this.style && this.style.mapTitle && this.style.type === 'symbol') {
+                this.layout['text-field'] = this.style.mapTitle;
+                this.layout['text-anchor'] = 'center';
+                this.layout['text-size'] = 12;
+                this.layout['text-offset'] = [0, 1.5];
+            }
+
+            this.updateFilters();
+
+            if (this.style) {
+                // if specified, set default legend
+                if (this.style.defaultLegendProperty) {
+                    this.setLegend(this.style.defaultLegendProperty, false);
+                }
+            } else {
+                this.updateLegends();
+            }
+
+            // add reference to this maplayers manager
+            this._manager = manager;
+            this._initialized = true;
+            resolve(this);
+        });
+    }
+
     public moveLayer(beforeId?: string) {
-        if (this._manager && this._manager.MapControl && this.id) {
-            const map = this._manager.MapControl;
-            if (this.fillLayer) map.moveLayer(this.fillLayer.id!, beforeId);       
-            if (this.centerLayer) map.moveLayer(this.centerLayer.id!, beforeId);
-            if (this.circleLayer) map.moveLayer(this.circleLayer.id!, beforeId);
-            if (this.symbolLayer) map.moveLayer(this.symbolLayer.id!, beforeId);
-            if (this.lineLayer) map.moveLayer(this.lineLayer.id!, beforeId);
-        }
+        super.moveLayer(beforeId);
     }
 
-    private registerLayerExtensions() {
-        if (this.extensions) {
-            this.extensions.forEach(ext => {
-                const extensionType = CsMap.layerExtensions.find(
-                    le => le.id === ext.id
-                );
-                if (extensionType && extensionType.getInstance) {
-                    const extension = extensionType.getInstance(ext.options);
-                    this._extensions.push(extension);
-                    extension.start(this);
-                } else {
-                    console.warn(`Could not find extension ${ext.id}`);
-                }
-            });
-        }
+    public removeLayer(widget: CsMap) {
+        super.removeLayer(widget);
+        this.removeExtensions();
+        this.unregisterMapEvents(widget.map);
     }
 
-    public createCenterSource() {        
-        if (this.iconZoomLevel === undefined) {
-            return;
-        }
-        if (this.centerGeoJson) {
-            return;
-        }
-        if (
-            this._source &&
-            this._source._geojson &&
-            this._manager &&
-            this._manager._sources
-        ) {
-            this.centerGeoJson = {
-                type: 'FeatureCollection',
-                features: []
-            } as FeatureCollection;
-            for (const f of this._source._geojson.features) {
-                let nf = {
-                    type: 'Feature',
-                    properties: f.properties,
-                    id: f.id
-                } as Feature;
-                nf.geometry = { type: 'Point', coordinates: [] };
-
-                try {
-                    switch (f.geometry.type) {
-                        case 'LineString':
-                            nf.geometry = centroid(f).geometry; //.coordinates[0];
-                            break;
-                        case 'Polygon':
-                            nf.geometry = centroid(f).geometry;
-                            break;
-                        case 'Point':
-                            nf.geometry = f.geometry;
-
-                            break;
+    public removeLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
+        if (typeof property === 'string') {
+            // AppState.Instance.TriggerNotification({
+            //     title: 'set property ' + property
+            // });
+        } else if (property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox) {
+                for (const l of (property as PropertyDetails).legends!) {
+                    if (this.style && this.style._originalMapbox) {
+                        l.style[l.styleProperty] = this.style._originalMapbox[
+                            l.styleKey
+                        ][l.styleProperty];
                     }
-                } catch (e) {
-                    console.log('Error calculating center');
-                }
-                if (nf.geometry.coordinates.length > 1) {
-                    this.centerGeoJson.features.push(nf);
                 }
             }
-            this.centerSource = new LayerSource(this.centerGeoJson);
-            this.centerSource.id = this._source.id + '-center';
-            this.centerSource._loaded = true;
-
-            this._manager._sources.layers[
-                this.centerSource.id
-            ] = this.centerSource;
-            this._manager.updateSource(this.centerSource);
-
-            this.centerLayer = new GeojsonLayer({
-                id: this.id + '-center',
-                type: 'circle',
-                popupContent: this.popupContent,
-                source: this.centerSource,
-                parentId: this.id,
-                layout: this.circleLayout ? this.circleLayout : {},
-                paint: this.circlePaint
-                    ? this.circlePaint
-                    : ({
-                          'circle-radius': 10,
-                          'circle-color': ['get', 'stroke'],
-                          'circle-opacity': 0.5,
-                          'circle-stroke-width': 1,
-                          'circle-stroke-color': ['get', 'stroke'],
-                          'circle-stroke-opacity': 1
-                      } as CirclePaint),
-                filter: ['<=', ['zoom'], this.iconZoomLevel]
-                // filter: ['==', ['geometry-type'], 'Point']
-            });
-
-            this.centerLayer.initLayer(this._manager);
-
-            this.symbolLayer = new GeojsonLayer({
-                id: this.id + '-symbol',
-                type: 'symbol',
-                source: this.centerSource,
-                parentId: this.id,
-                style: this.style,
-                popupContent: this.popupContent,
-                layout: this.symbolLayout
-                    ? this.symbolLayout
-                    : ({
-                          'icon-size': 0.45,
-                          'text-field': this.style.title,
-                          'text-anchor': 'center',
-                          'text-size': 12,
-                          'text-offset': [0, 1.5],
-                          'icon-allow-overlap': true,
-                          'icon-ignore-placement': true
-                      } as SymbolLayout),
-                paint: this.symbolPaint ? this.symbolPaint : {},
-                filter: ['<=', ['zoom'], this.iconZoomLevel]
-            });
-            this.symbolLayer.initLayer(this._manager);
-            // publish all events received from the circle layer
+        }
+        this.updateLegends();
+        if (this._manager && refreshLayer) {
+            this._manager.refreshLayer(this);
         }
     }
 
-    public initLayer(manager: MapLayers) {
-        // check if we need to create an instance first of maplayer (needed if imported from json)
-
-        if (this.id === undefined) {
-            this.id = guidGenerator();
-        }
-        if (!this._source) {
-            if (typeof this.source === 'string') {
-                if (
-                    manager._sources &&
-                    manager._sources.layers.hasOwnProperty(this.source)
-                ) {
-                    this._source = manager._sources.layers[this.source];
-                }
-            } else {
-                this._source = this.source = plainToClass(
-                    LayerSource,
-                    this.source
-                );
-            }
-        }
-        if (this.title === undefined && this._source && this._source.id) {
-            this.title = this._source.id;
-        }
-
-        this.style = {
-            ...({
-                title: '{name}',
-                fill: false
-            } as LayerStyle),
-            ...this.style
-        };
-
-        if (!this.popupContent) {
-            this.popupContent = (d: Feature) => {
-                return this.style.popup
-                    ? this.parsePopupString(d, this.style.popup)
-                    : `<h2>${this.title}</h2>`;
-            };
-        }
-
-        if (this.style.pointCircle === true) {
-            console.log('PointCircle: ' + this.id);
-            this.circleLayer = new GeojsonLayer({
-                id: this.id + '-circles',
-                type: 'circle',
-                popupContent: this.popupContent,
-                source: this.source,
-                parentId: this.id,
-                layout: this.circleLayout ? this.circleLayout : {},
-                paint: this.circlePaint
-                    ? this.circlePaint
-                    : ({
-                          'circle-radius': 10,
-                          'circle-color': ['get', 'stroke'],
-                          'circle-opacity': 0.5,
-                          'circle-stroke-width': 1,
-                          'circle-stroke-color': ['get', 'stroke'],
-                          'circle-stroke-opacity': 1
-                      } as CirclePaint),
-                filter: ['all']
-            });
-            if (this.style.pointCircle) {
-                this.circleLayer.filter.push([
-                    '==',
-                    ['geometry-type'],
-                    'Point'
-                ]);
-            }
-            this.circleLayer.initLayer(manager);
-        }
-
-        this.symbolLayer = new GeojsonLayer({
-            id: this.id + '-symbol',
-            type: 'symbol',
-            source: this.source,
-            parentId: this.id,
-            style: this.style,
-            popupContent: this.popupContent,
-            layout: this.symbolLayout
-                ? this.symbolLayout
-                : ({
-                      'icon-size': 0.45,
-                      'text-field': this.style.title,
-                      'text-anchor': 'center',
-                      'text-size': 12,
-                      'text-offset': [0, 1.5],
-                      'icon-allow-overlap': true,
-                      'icon-ignore-placement': true
-                  } as SymbolLayout),
-            paint: this.symbolPaint ? this.symbolPaint : {},
-            filter: ['==', ['geometry-type'], 'Point']
-        });
-        this.symbolLayer.initLayer(manager);
-
-        this.lineLayer = new GeojsonLayer({
-            id: this.id + '-line',
-            type: 'line',
-            source: this.source,
-            parentId: this.id,
-            popupContent: this.popupContent,
-            layout: this.lineLayout,
-            paint: this.linePaint
-                ? this.linePaint
-                : ({
-                      'line-color': ['get', 'stroke'],
-                      'line-opacity': ['get', 'stroke-opacity'],
-                      'line-width': ['get', 'stroke-width']
-                  } as LinePaint),
-            filter: ['all']
-        });
-        if (!this.style.line) {
-            this.lineLayer.filter.push(['==', ['geometry-type'], 'LineString']);
-        }
-        if (this.iconZoomLevel !== undefined) {
-            this.lineLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
-        }
-        this.lineLayer.initLayer(manager);
-
-        this.fillLayer = new GeojsonLayer({
-            id: this.id + '-fill',
-            type: 'fill',
-            source: this.source,
-            parentId: this.id,
-            popupContent: this.popupContent,
-            layout: this.fillLayout,
-
-            paint: this.fillPaint
-                ? this.fillPaint
-                : ({
-                      'fill-color': ['get', 'color'],
-                      'fill-opacity': ['get', 'stroke-opacity']
-                  } as FillPaint),
-            filter: ['all']
-        });
-
-        if (!this.style.fill) {
-            this.fillLayer.filter.push(['==', ['geometry-type'], 'Polygon']);
-        }
-        if (this.iconZoomLevel !== undefined) {
-            this.fillLayer.filter.push(['>=', ['zoom'], this.iconZoomLevel]);
-        }
-        this.fillLayer.initLayer(manager);
-
-        // add reference to this maplayers manager
-        this._manager = manager;
-        this._initialized = true;
-        return this;
-    }
-
-    private parsePopupString(e: any, s: string) {
-        // if (e.features && e.features.length === 1) {
-        //     let f = e.features[0];
-
-        //     if (!f.properties) {
-        //         return s;
-        //     }
-        //     for (const key in f.properties) {
-        //         if (f.properties.hasOwnProperty(key)) {
-        //             const prop = f.properties[key];
-        //             s = s.split('{' + key + '}').join(prop);
-        //         }
-        //     }
-        // }
-        return s;
-    }
-
-    pipeEvents(
-        map: CsMap,
-        layer?: GeojsonLayer,
-        handle?: MessageBusHandle
-    ): MessageBusHandle | undefined {
-        if (layer && layer.events) {
-            if (handle !== undefined) {
-                return handle;
-            } else {
-                layer.addLayer(map);
-                return layer.events.subscribe(
-                    'feature',
-                    (a: string, data: FeatureEventDetails) => {
-                        if (a === CsMap.FEATURE_SELECT) {
-                            this.events.publish('feature', a, data);
-                        }
-                    }
-                );
-            }
-        }
-    }
-
-    removeSubLayer(
+    public removeSubLayer(
         map: CsMap,
         layer?: GeojsonLayer,
         handle?: MessageBusHandle
@@ -503,90 +371,330 @@ export class GeojsonPlusLayer implements IMapLayer, IMapLayerType {
         if (!layer) {
             return;
         }
-        if (layer.events && handle) {
-            layer.events.unsubscribe(handle);
+        if (layer._events && handle) {
+            layer._events.unsubscribe(handle);
             handle = undefined;
         }
         layer.removeLayer(map);
         return handle;
     }
 
-    public addLayer(map: CsMap) {        
-        if (!this.symbolLayer || !this.lineLayer || !this._manager) {
-            return;
-        }
-        this.createCenterSource();
-        this.registerLayerExtensions();
-
-        // subscribe to events
-        this.circleHandle = this.pipeEvents(
-            map,
-            this.circleLayer,
-            this.circleHandle
-        );
-        this.centerHandle = this.pipeEvents(
-            map,
-            this.centerLayer,
-            this.centerHandle
-        );
-        this.symbolHandle = this.pipeEvents(
-            map,
-            this.symbolLayer,
-            this.symbolHandle
-        );
-        this.lineHandle = this.pipeEvents(map, this.lineLayer, this.lineHandle);
-        this.fillHandle = this.pipeEvents(map, this.fillLayer, this.fillHandle);
-
-        this.Visible = true;
+    public async setStyle(style: LayerStyle) {
+        // const ft = this._source.getFeatureType();
+        this.style = { ...this.style, ...style };
+        await this.updateLayer();
     }
 
-    private removeExtensions() {
-        if (this._extensions && this._extensions.length) {
-            this._extensions.forEach(extension => {
-                extension.stop();
+    public setLegend(
+        property: PropertyDetails | PropertyType | string,
+        refreshLayer = true
+    ) {
+        if (!this._source) { return; }
+        const ft = this._source.getFeatureType();
+        if (typeof property === 'string') {
+            // find property details
+
+            if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(property)) {
+                property = { type: ft.propertyMap[property], key: property };
+            }
+        }
+        if (ft && property.hasOwnProperty('key')) {
+            if (this.style && this.style.mapbox && this._source) {
+                const propdetails = property as PropertyDetails;
+                MetaUtils.updateMetaProperty(this._source, ft, propdetails.type as PropertyType);
+
+                if (propdetails.type && propdetails.type._initialized) {
+                    if (propdetails.type.legendStyle !== undefined) {
+                        for (const style in propdetails.type.legendStyle) {
+                            if (propdetails.type.legendStyle.hasOwnProperty(style)) {
+                                const st = propdetails.type.legendStyle[style];
+                                if (!this.style.mapbox.hasOwnProperty(style)) {
+                                    this.style.mapbox[style] = {};
+                                }
+
+                                for (const key in st) {
+                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
+                                        const element = propdetails.type.legendStyle[style][key];
+                                        this.style.mapbox[style][key] = element;
+                                    }
+                                }
+                            }
+                        }
+
+                        // let color = propdetails.type.legendStyle.fillPaint['fill-color'];
+                        // this.style.mapbox.fillPaint['fill-color']  = color;
+                        // this.style.mapbox = JSON.parse(JSON.stringify(propdetails.type.legendStyle));
+                    } else {
+                        if (propdetails.type) {
+                            const bins = propdetails.type.bins || [propdetails.type.min, propdetails.type.max];
+                            let colors = ['#e5f5f9','#99d8c9','#2ca25f'];
+                            if (Array.isArray(propdetails.type.colorScheme)) {
+                                colors = propdetails.type.colorScheme;
+                            } else {
+                                const scheme = propdetails.type.colorScheme || 'BuPu';
+                                if (this.colorSchemes.hasOwnProperty(scheme) && this.colorSchemes[scheme].length>=bins.length-1) {
+                                    colors = this.colorSchemes[scheme][bins.length-2];
+                                }
+                            } 
+                            let stops: any[] = [];
+                            for(let i = 0; i< bins.length; i++) {
+                                stops.push([bins[i], colors[i]]);                               ;
+                            }                            
+
+                            const color = {
+                                property: propdetails.key,
+                                // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
+                                stops: stops,
+                                default: 'grey'
+                            } as StyleFunction;
+
+                            if (this.style.mapbox.fillPaint) {
+                                this.style.mapbox.fillPaint['fill-color'] = color;
+                            }
+                            if (this.style.mapbox.circlePaint) {
+                                this.style.mapbox.circlePaint['circle-color'] = color;
+                            }
+                            if (this.style.mapbox.linePaint) {
+                                this.style.mapbox.linePaint['line-color'] = color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        this.updateLegends();
+        if (this._manager && refreshLayer) {
+            this._manager.refreshLayer(this);
+        }
+    }
+
+    public setOpacity(value: number) {
+        if (!this.style) { return; }
+        this.style.opacity = value;
+        // if (this._circleLayer) {
+        //     this._circleLayer.setOpacity(value);
+        // }
+        // if (this._centerLayer) {
+        //     this._centerLayer.setOpacity(value);
+        // }
+        // if (this._symbolLayer) {
+        //     this._symbolLayer.setOpacity(value);
+        // }
+        // if (this._fillLayer) {
+        //     this._fillLayer.setOpacity(value);
+        // }
+        // if (this._lineLayer) {
+        //     this._lineLayer.setOpacity(value);
+        // }
+    }
+
+    public setPopupContent(popup: string | ((f: FeatureEventDetails) => {})) {
+        this.popupContent = popup;
+        // if (this._circleLayer) {
+        //     this._circleLayer.setPopupContent(popup);
+        // }
+        // if (this._centerLayer) {
+        //     this._centerLayer.setPopupContent(popup);
+        // }
+        // if (this._symbolLayer) {
+        //     this._symbolLayer.setPopupContent(popup);
+        // }
+        // if (this._fillLayer) {
+        //     this._fillLayer.setPopupContent(popup);
+        // }
+        // if (this._lineLayer) {
+        //     this._lineLayer.setPopupContent(popup);
+        // }
+    }
+
+    public async updateLayer() {
+        if (this._manager) {
+            await this.initLayer(this._manager);
+            this._manager.refreshLayer(this);
+        }
+    }
+
+    public updateLegends() {
+        if (!this._source) { return; }
+        let result: LayerLegend[] = [];
+
+        let key = '';
+
+        switch (this.style!.type) {
+            case 'line':
+                key = 'linePaint';
+                break;
+            case 'fill':
+                key = 'fillPaint';
+                break;
+            default:
+                key = 'circlePaint';
+        }
+
+        result = result.concat(this.getStyleLegend(key, this.style!.mapbox![key]));
+        const featureType = this._source.getFeatureType();
+        for (const legend of result) {
+            if (legend.property && featureType?.propertyMap && featureType.propertyMap.hasOwnProperty(legend.property)) {
+                legend.propertyInfo = featureType.propertyMap[legend.property];
+            }
+        }
+        // if (this.paint) {
+        //     for (const key in this.paint) {
+        //         if (this.paint.hasOwnProperty(key)) {
+        //             const element = this.paint[key];
+
+
+
+        //         }
+        //     }
+        // }
+
+        // if (this.style && this.style.mapbox) {
+        //     for (const styleKey of Object.keys(this.style.mapbox)) {
+        //         if (styleKey) {
+        //             // get property key from style
+        //             const legends = this.getStyleLegendKey(styleKey);
+
+        //             for (const legend of legends) {
+        //                 if (legend.property && this._source && this._source.featureType && this._source.featureType.propertyMap && this._source.featureType.propertyMap.hasOwnProperty(legend.property)) {
+        //                     legend.propertyInfo = this._source.featureType.propertyMap[legend.property];
+        //                 }
+        //                 result.push(legend);
+        //             }
+        //         }
+        //     }
+        // }
+        this._legends = result;
+        if (this._manager) {
+            this._manager.events.publish('legends', 'updated', this._legends);
+        }
+    }
+    // #endregion Public Methods (17)
+
+    // #region Private Methods (5)
+
+    protected registerLayerExtensions() {
+        super.registerLayerExtensions();
+    }
+
+    protected removeExtensions() {
+        super.removeExtensions();
+    }
+
+    private isFunction(functionToCheck) {
+        return (
+            functionToCheck &&
+            {}.toString.call(functionToCheck) === '[object Function]'
+        );
+    }
+
+    private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
+        let popup: string | undefined;
+        e.feature = BaseLayer.getFeatureFromEventDetails(e);
+        // if (layer.style && layer.style.popup) {
+        //     popup = layer.style.popup;
+        // } else
+        if (layer.popupContent) {
+            if (typeof layer.popupContent === 'string') {
+                popup = layer.popupContent;
+            } else if (this.isFunction(layer.popupContent)) {
+                popup = layer.popupContent(e);
+            }
+        }
+        if (popup) {
+            this.popup
+                .setLngLat(e.lngLat)
+                .setHTML(popup)
+                .addTo(widget.map);
+        }
+    }
+
+    private registerMapEvents(map: mapboxgl.Map) {
+        if (this.id && !this.mapEventsRegistered) {
+            // map.on('touchend', this.id, this.clickEvent);
+            map.on('click', this.id, this.clickEvent);
+            map.on('contextmenu', this.id, this.contextMenuEvent);
+            map.on('mousemove', this.id, this.moveEvent);
+            map.on('mouseenter', this.id, this.enterEvent);
+            map.on('mouseleave', this.id, this.leaveEvent);
+            this.mapEventsRegistered = true;
+        }
+    }
+
+    private unregisterMapEvents(map: mapboxgl.Map) {
+        if (this.id) {
+            // map.off('touchend', this.id, this.clickEvent);
+            map.off('click', this.id, this.clickEvent);
+            map.off('contextmenu', this.id, this.contextMenuEvent);
+            map.off('mouseenter', this.id, this.enterEvent);
+            map.off('mouseleave', this.id, this.leaveEvent);
+            map.off('mousemove', this.id, this.moveEvent);
+        }
+        this.mapEventsRegistered = false;
+    }
+
+    private onContextMenu(e: mapboxgl.MapLayerMouseEvent) {
+        if (this.Map && this._events) {
+            const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
+            if (feature) {
+                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_CONTEXT, {
+                    feature,
+                    features: e.features,
+                    context: e,
+                    lngLat: e.lngLat,
+                    layer: this
+                } as FeatureEventDetails);
+            }
+        }
+    }
+
+    private onClick(e: mapboxgl.MapLayerMouseEvent) {
+        if (this.Map && this._events) {
+            const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
+            if (feature) {
+                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_SELECT, {
+                    feature,
+                    features: e.features,
+                    context: e,
+                    lngLat: e.lngLat,
+                    layer: this
+                } as FeatureEventDetails);
+                if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
+                    this._manager!.selectFeature(feature, this, this.Map.options.showFeatureDetails ?? true);
+                }
+            }
+        }
+    }
+
+    private onEnter(e: mapboxgl.MapLayerMouseEvent) {
+        if (this.Map && this._events) {
+            this.Map.map.getCanvas().style.cursor = 'pointer';
+            this.createPopup(this.Map, this, e as any as FeatureEventDetails);
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_MOUSE_ENTER, {
+                features: e.features,
+                context: e
             });
-            this._extensions.length = 0;
         }
     }
 
-    public removeLayer(map: CsMap) {
-        console.log('Removing layer');
-        this.removeExtensions();
-
-        if (!this.symbolLayer || !this.lineLayer) {
-            return;
+    private onLeave(e) {
+        if (this.Map && this._events) {
+            this.Map.map.getCanvas().style.cursor = '';
+            if (this.popupContent) { this.popup.remove(); }
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_MOUSE_LEAVE, {
+                features: e.features,
+                context: e
+            });
         }
-
-        // remove event handles
-        this.lineHandle = this.removeSubLayer(
-            map,
-            this.lineLayer,
-            this.lineHandle
-        );
-        this.symbolHandle = this.removeSubLayer(
-            map,
-            this.symbolLayer,
-            this.symbolHandle
-        );
-        this.circleHandle = this.removeSubLayer(
-            map,
-            this.circleLayer,
-            this.circleHandle
-        );
-        this.centerHandle = this.removeSubLayer(
-            map,
-            this.centerLayer,
-            this.centerHandle
-        );
-        this.fillHandle = this.removeSubLayer(
-            map,
-            this.fillLayer,
-            this.fillHandle
-        );
-
-        this.Visible = false;
     }
 
-    public _source?: LayerSource;
-    public _initialized? = false;
+    private onMove(e) {
+        if (this.Map) {
+            if (this.popupContent && e && e.features) {
+                this.createPopup(this.Map, this, e);
+            }
+        }
+    }
+
+    // #endregion Private Methods (5)
 }

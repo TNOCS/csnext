@@ -2,6 +2,11 @@
     align-content: stretch;
     height: 100%;
   }
+
+  .timeline-timeline {
+    border-left: none !important;
+    border-right: none !important;
+  }
   
   .high-timeline-item {
     background-color: red;

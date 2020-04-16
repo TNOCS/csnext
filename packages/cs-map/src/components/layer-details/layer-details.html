@@ -1,0 +1,78 @@
+<div>
+    <!-- <v-toolbar tabs :color="layer.color">
+        <v-toolbar-title class="layer-details-title">{{
+            layer.title
+        }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+        <v-tooltip bottom v-if="tabs === 'layer-items'">
+            <template v-slot:activator="{ on }">
+                <v-btn
+                    @click="filterPropertiesEnabled = !filterPropertiesEnabled"
+                    icon
+                    v-on="on"
+                >
+                    <v-icon>search</v-icon>
+                </v-btn>
+            </template>
+            filter features
+        </v-tooltip>
+       
+        <v-tooltip bottom v-if="tabs === 'layer-items'">
+            <template v-slot:activator="{ on }">
+                <v-btn @click="fitLayer()" icon v-on="on">
+                    <v-icon>zoom_out_map</v-icon>
+                </v-btn>
+            </template>
+            zoom to
+        </v-tooltip>
+        <template v-slot:extension>
+            <v-tabs right v-model="tabs">
+                <v-tab href="#layer-items" v-if="!layer.disableFeatureList"
+                    >Items</v-tab
+                >
+              
+            </v-tabs>
+        </template>
+    </v-toolbar>
+
+    <div>
+        <v-tabs-items id="feature-properties-tab" v-model="tabs">
+            <v-tab-item
+                value="layer-items"
+                v-if="!layer.disableFeatureList"
+                style="position: relative"
+            >
+                <v-text-field
+                    solo
+                    v-if="filterPropertiesEnabled"
+                    class="layer-filter-field"
+                    v-model="filterItems"
+                    label="filter"
+                    append-icon="search"
+                ></v-text-field> -->
+
+    <simplebar>
+        <v-list>
+            <v-list-item v-for="feature in filteredFeatures" @click="openFeature(feature)" :key="feature.id">
+                <v-list-item-content >
+                    <!-- <v-list-item-title
+                                    v-text="feature"
+                                ></v-list-item-title> -->
+                    <v-list-item-title
+                    v-html="feature.id"
+                    ></v-list-item-title>    
+                    <!-- <v-list-item-action v-if="layer._legends.length > 0" >                
+                    <v-list-item-action-text v-text="feature[layer._legends[0].property]" />
+                    </v-list-item-action> -->
+                        
+                    <!-- v-text="layer.parseTitle(feature)" -->
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
+    </simplebar>
+    <!-- </v-tab-item>
+           
+        </v-tabs-items>
+    </div> -->
+</div>

@@ -1,0 +1,100 @@
+<div class="cs-menu-container">
+  <template v-if="searchProperty">
+    <v-btn icon v-if="!searchFocus" @click="searchFocus = true"><v-icon>search</v-icon></v-btn>
+    <v-text-field v-if="searchFocus" ref="searchField" @click:clear="searchFocus = false;search = ''" clearable prepend-inner-icon="search" rounded solo dense v-model="search"></v-text-field>
+  </template>
+  <template v-if="menus" v-for="menu in menus">
+    <v-btn-toggle v-if="menu.toggleGroup" :key="menu.id" borderless tile group>
+      <v-btn
+        v-for="item in menu.items"
+        :key="item.id"
+        @click="triggerMenuAction(item)"
+      >
+        <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+        <span v-if="item.title">{{ item.title }}</span>
+      </v-btn>
+    </v-btn-toggle>
+
+    <v-menu
+      :key="menu.id"
+      :close-on-content-click="menu.closeOnContentClick"
+      v-if="!menu.hide"
+      dense
+      bottom
+      offset-y
+    >
+      <template v-if="menu.items || menu.component" v-slot:activator="{ on }">
+        <v-btn
+          v-on="on"
+          :disabled="menu.disabled"
+          :fab="menu.type==='fab'"
+          :icon="!menu.type || menu.type==='icon'"
+          :text="menu.type==='text'"
+          :outlined="menu.outlined"
+          :color="menu.color"
+          :loading="menu.loading"
+          :class="menu.buttonClass"
+          @click.delegate="triggerMenuAction(menu)"
+        >
+          <v-icon v-if="menu.type!=='text'">{{ menu.icon }}</v-icon>
+          <span v-if="menu.type!=='icon'"
+            >{{ $cs.Translate(menu.title) }}
+            <v-icon :color="menu.color" class="menu-icon-down" v-if="menu.items" right
+              >mdi-menu-down</v-icon
+            >
+          </span>
+        </v-btn>
+      </template>
+      <template v-else v-slot:activator="{ on, attrs }">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              v-on="on"
+              :disabled="menu.disabled"
+              :fab="menu.type==='fab'"
+              :icon="!menu.type || menu.type==='icon'"
+              :text="menu.type==='text'"
+              :outlined="menu.outlined"
+              :color="menu.color"
+              :loading="menu.loading"
+              @click.delegate="triggerMenuAction(menu)"
+            >
+              <v-icon v-if="menu.icon && menu.type!=='text'">{{
+                menu.icon
+              }}</v-icon>
+              <span v-if="menu.type!=='icon'"
+                >{{ $cs.Translate(menu.title) }}
+                <v-icon v-if="menu.items" right>mdi-menu-down</v-icon>
+              </span>
+            </v-btn>
+          </template>
+          <span v-if="menu.toolTip">{{ $cs.Translate(menu.toolTip) }}</span>
+        </v-tooltip>
+      </template>
+
+      <v-list
+        v-if="menu.items && menu.items.length>0"
+        dense
+        :close-on-content-click="true"
+      >
+        <v-list-item
+          v-for="item in menu.items"
+          text
+          :key="item.id"
+          @click="triggerMenuAction(item)"
+        >
+          <v-list-item-title class="pr-1">
+            <span v-if="item.icon"
+              ><v-icon>{{ item.icon }}</v-icon></span
+            >
+            {{ $cs.Translate(item.title) }}</v-list-item-title
+          >
+        </v-list-item>
+      </v-list>
+
+      <v-card v-if="menu.component" style="z-index: 1000">
+        <component :is="menu.component" :data="menu.data"></component>
+      </v-card>
+    </v-menu>
+  </template>
+</div>

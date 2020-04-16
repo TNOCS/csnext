@@ -2,7 +2,7 @@
     "name": "@csnext/vue-cli-plugin-cs",
     "description": "cs plugin for vue-cli",
     "main": "index.js",
-    "version": "0.0.101",
+    "version": "0.0.128",
     "scripts": {
         "link": "yarn link"
     },
@@ -19,9 +19,10 @@
         "access": "public"
     },
     "dependencies": {
-        "@vue/cli-shared-utils": "^3.2.0"
+        "@vue/cli-shared-utils": "^4.1.1"
     },
     "devDependencies": {
-        "register-service-worker": "^1.5.2"
-    }
+        "register-service-worker": "^1.6.2"
+    },
+    "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

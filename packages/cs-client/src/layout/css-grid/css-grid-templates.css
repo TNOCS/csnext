@@ -1,0 +1,16 @@
+.left-right-template {
+  grid-template-columns: 50% 50%;
+  grid-template-areas: 'left right';
+}
+
+.top-bottom-template {
+  grid-template-rows: 50% 50%;
+  grid-template-areas: 
+    'top top'
+    'bottom bottom';
+}
+
+.double-grid-template {
+  overflow-y: hidden;
+  grid-template-columns: 50% 50%
+}

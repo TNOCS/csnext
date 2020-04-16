@@ -1,79 +1,99 @@
 import { MessageBusService, guidGenerator } from '@csnext/cs-core';
 import {
-    LayerSource,
-    MapLayers,
+    MapDatasource,
     FeatureEventDetails,
     IMapLayer,
-    IMapLayerType,
     LayerStyle
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import { LngLatBounds, SymbolPaint, SymbolLayout, FillPaint } from 'mapbox-gl';
+import { LngLatBounds, SymbolLayout, CirclePaint } from 'mapbox-gl';
 import { CsMap } from './..';
 import mapboxgl from 'mapbox-gl';
 import { plainToClass } from 'class-transformer';
-import { ILayerAction } from '../classes/ilayer-action';
-import { Feature, Polygon } from 'geojson';
-import {
-    ILayerExtension,
-    ILayerExtensionType
-} from '../classes/ilayer-extension';
+import { BaseLayer } from './base-layer';
+import { DataSource, FeatureType } from '@csnext/cs-data';
 
-export class GeojsonLayer implements IMapLayer, IMapLayerType {
-    types = ['symbol', 'raster', 'line', 'fill', 'circle'];
+export class GeojsonLayer extends BaseLayer {
+    // #region Properties (7)
 
-    private mapEventsRegistered = false;
-    public getInstance(init?: Partial<IMapLayer>) {
-        let result = new GeojsonLayer(init);
-        return result;
-    }
-    public typeId?: string = 'geojson';
-    public id?: string;
-    public type?: 'symbol' | 'raster' | 'line' | 'fill' | 'circle';
-    public title?: string;
+    // public type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
     // public opacity?: number;
-    public description?: string;
-    public source?: string | LayerSource;
-    public visible?: boolean;
-    public mask?: boolean;
-    public tags?: string[];
-    public color?: string;
-    public style?: LayerStyle;
-    public parentId?: string;
     public isEditable?: boolean;
-    public _parent?: GeojsonLayer;
-    public filter?: any;
-    public layout?:
-        | mapboxgl.SymbolLayout
-        | mapboxgl.FillLayout
-        | mapboxgl.LineLayout
-        | mapboxgl.CircleLayout;
-    public paint?:
-        | mapboxgl.SymbolPaint
-        | mapboxgl.LinePaint
-        | mapboxgl.FillPaint
-        | mapboxgl.CirclePaint;
-    public _manager?: MapLayers;
-    public events?: MessageBusService;
-    public popupContent?: string | Function | undefined;
-    public extensions?: ILayerExtensionType[];
-    public _extensions: ILayerExtension[] = [];
-    private _opacity?: number;
+
+    // #endregion Properties (7)
+
+    // #region Constructors (1)
 
     constructor(init?: Partial<IMapLayer>) {
-        Object.assign(this, init);
-        // this.events = new MessageBusService();
+        super(init);
     }
 
-    public get Visible(): boolean | undefined {
-        return this.visible;
-    }
+    // #endregion Constructors (1)
 
-    public set Visible(value: boolean | undefined) {
-        if (this.visible === value) {
-            return;
+    // #region Public Accessors (6)
+
+    public get layout(): mapboxgl.Layout {
+        if (this.style) {
+            if (!this.style.mapbox) { this.style.mapbox = {}; }
+            switch (this.style.type) {
+                case 'fill':
+                    if (!this.style.mapbox.fillLayout) { this.style.mapbox.fillLayout = {}; }
+                    return this.style.mapbox.fillLayout;
+                case 'line':
+                    if (!this.style.mapbox.lineLayout) { this.style.mapbox.lineLayout = {}; }
+                    return this.style.mapbox.lineLayout;
+                case 'symbol':
+                    if (!this.style.mapbox.symbolLayout) { this.style.mapbox.symbolLayout = {}; }
+                    return this.style.mapbox.symbolLayout;
+                case 'circle':
+                    if (!this.style.mapbox.circleLayout) { this.style.mapbox.circleLayout = {}; }
+                    return this.style.mapbox.circleLayout;
+            }
         }
-        this.visible = value;
+        return {};
+    }
+
+    public set layout(value: mapboxgl.Layout) {
+        if (this.style) {
+            if (!this.style.mapbox) { this.style.mapbox = {}; }
+            switch (this.style.type) {
+                case 'fill':
+                    this.style.mapbox.fillLayout = value;
+                    break;
+                case 'line':
+                    this.style.mapbox.lineLayout = value;
+                    break;
+                case 'symbol':
+                    this.style.mapbox.symbolLayout = value;
+                    break;
+                case 'circle':
+                    this.style.mapbox.circleLayout = value;
+                    break;
+            }
+        }
+    }
+
+    public get opacity(): number | undefined {
+        if (!this.style) { this.style = new LayerStyle(); }
+        if (this.MapControl) {
+            try {
+                const maxOpacity = 0;
+                // for (const { } of this.layerTypeProps()) {
+                //     const op =
+                //         this.MapControl.getPaintProperty(
+                //             this.id,
+                //             this.type + '-opacity'
+                //         ) * 100;
+                //     if (op > maxOpacity) {
+                //         maxOpacity = op;
+                //     }
+                // }
+                this.style._opacity = maxOpacity;
+            } catch (e) {
+                this.style._opacity = 100;
+            }
+        }
+        return this.style._opacity;
     }
 
     public set opacity(value: number | undefined) {
@@ -85,193 +105,51 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         // this.MapLayers.MapControl.setPaintProperty(layer.id, 'raster-opacity', value / 100.0);
     }
 
-    public get opacity(): number | undefined {
-        if (
-            this._initialized &&
-            this.id &&
-            this._manager &&
-            this._manager.MapControl &&
-            this.type
-        ) {
-            try {
-                let maxOpacity = 0;
-                for (const prop of this.layerTypeProps()) {
-                    const op =
-                        this._manager.MapControl.getPaintProperty(
-                            this.id,
-                            this.type + '-opacity'
-                        ) * 100;
-                    if (op > maxOpacity) {
-                        maxOpacity = op;
-                    }
-                }
-                this._opacity = maxOpacity;
-            } catch (e) {
-                this._opacity = 100;
+    public get paint(): mapboxgl.SymbolPaint
+        | mapboxgl.LinePaint
+        | mapboxgl.FillPaint
+        | mapboxgl.CirclePaint {
+        if (this.style && this.style.mapbox) {
+            switch (this.style.type) {
+                case 'fill':
+                    return this.style.mapbox.fillPaint || {};
+                case 'line':
+                    return this.style.mapbox.linePaint || {};
+                case 'symbol':
+                    return this.style.mapbox.symbolPaint || {};
+                case 'circle':
+                    return this.style.mapbox.circlePaint || {};
             }
         }
-        return this._opacity;
+        return {};
     }
 
-    layerTypeProps(): string[] {
-        let props: string[] = [];
-        if (this.type === 'symbol') {
-            props.push('text');
-            props.push('icon');
-        } else if (this.type) {
-            props.push(this.type);
-        }
-        return props;
-    }
-
-    setOpacity(value: number) {
-        this._opacity = value;
-        if (
-            this._initialized &&
-            this.id &&
-            this._manager &&
-            this._manager.MapControl
-        ) {
-            for (const prop of this.layerTypeProps()) {
-                this._manager.MapControl.setPaintProperty(
-                    this.id,
-                    prop + '-opacity',
-                    value / 100.0
-                );
-                if (!this.paint) this.paint = {};
-                this.paint[prop + '-opacity'] = this._opacity / 100.0;
+    public set paint(value: mapboxgl.SymbolPaint
+        | mapboxgl.LinePaint
+        | mapboxgl.FillPaint
+        | mapboxgl.CirclePaint) {
+        if (this.style) {
+            if (!this.style.mapbox) { this.style.mapbox = {}; }
+            switch (this.style.type) {
+                case 'fill':
+                    this.style.mapbox.fillPaint = value as mapboxgl.FillPaint;
+                    break;
+                case 'line':
+                    this.style.mapbox.linePaint = value as mapboxgl.LinePaint;
+                    break;
+                case 'symbol':
+                    this.style.mapbox.symbolPaint = value as mapboxgl.SymbolPaint;
+                    break;
+                case 'circle':
+                    this.style.mapbox.circlePaint = value as mapboxgl.CirclePaint;
+                    break;
             }
         }
     }
 
-    public getLayerActions(): ILayerAction[] {
-        let res: ILayerAction[] = [];
-        if (this.Visible) {
-            res.push({
-                title: 'Zoom to',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.zoomLayer(this);
-                    }
-                }
-            });
-            res.push({
-                title: 'Hide',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.hideLayer(this);
-                    }
-                }
-            });
-        } else {
-            res.push({
-                title: 'Show',
-                action: () => {
-                    if (this._manager) {
-                        this._manager.showLayer(this);
-                    }
-                }
-            });
-        }
-        return res;
-    }
+    // #endregion Public Accessors (6)
 
-    public getBounds(): LngLatBounds | undefined {
-        if (this._source) {
-            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
-            let geo = { ...this._source._geojson };
-            try {
-                let bounds = extent(geo);
-                return bounds;
-            } catch {
-                return undefined;
-            }
-        } else {
-            return undefined;
-        }
-    }
-
-    private isFunction(functionToCheck) {
-        return (
-            functionToCheck &&
-            {}.toString.call(functionToCheck) === '[object Function]'
-        );
-    }
-
-    // Create a popup, but don't add it to the map yet.
-    private popup = new mapboxgl.Popup({
-        closeButton: false
-    });
-
-    public initLayer(manager: MapLayers) {
-        // check if we need to create an instance first of maplayer (needed if imported from json)
-        let l =
-            typeof this.getBounds === 'function'
-                ? this
-                : plainToClass(GeojsonLayer, this);
-
-        // add reference to this maplayers manager
-        this._manager = manager;
-
-        if (l.id === undefined) {
-            l.id = guidGenerator();
-        }
-        if (typeof l.source === 'string') {
-            if (
-                manager._sources &&
-                manager._sources.layers.hasOwnProperty(l.source)
-            ) {
-                l._source = manager._sources.layers[l.source];
-            }
-        } else {
-            l._source = l.source = plainToClass(LayerSource, l.source);
-        }
-        // if no title has been set
-        if (l.title === undefined) {
-            // check if source has a title
-            if (l._source && l._source.title) {
-                l.title = l._source.title;
-            } else {
-                // otherwise use id
-                l.title = l.id;
-            }
-        }
-
-        if (!l.opacity) {
-            l.opacity = 100;
-        }
-
-        // check for event bus existence
-        if (!l.events) {
-            l.events = new MessageBusService();
-        }
-
-        // if no color is set, set default color
-        if (!l.color) {
-            l.color = 'red';
-        }
-
-        l.style = {
-            ...({ title: '{name}'} as LayerStyle),
-            ...l.style
-        };
-
-        if (l.id && l.style.icon) {
-            this.addImage(l.id, l.style.icon);
-            (this.layout as SymbolLayout)['icon-image'] = l.id;
-        }
-
-        if (l.id && l.style.icons) {
-            for (const key in l.style.icons) {
-                if (l.style.icons.hasOwnProperty(key)) {
-                    const url = l.style.icons[key];
-                    this.addImage(key, url);
-                }
-            }
-        }
-        l._initialized = true;
-        return l;
-    }
+    // #region Public Methods (8)
 
     public addImage(id: string, url: string) {
         if (this._manager && this._manager.MapControl) {
@@ -285,13 +163,211 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
+    public addLayer(widget: CsMap) {
+        if (!this.id || !this._source) {
+            return;
+        }
+
+        const mblayer = {
+            id: this.id,
+            type: this.style!.type,
+            source: this._source.id,
+            interactive: true
+        } as mapboxgl.Layer;
+
+        if (this.layout) {
+            mblayer.layout = this.layout;
+        }
+
+        if (this.paint) {
+            mblayer.paint = this.paint;
+        }
+
+        if (this.filter) {
+            mblayer.filter = this.filter;
+        }
+
+         // remove layer if it already exists
+        this.removeLayer(widget);
+        if (widget.map.getLayer(this.id) !== undefined) {
+             widget.map.removeLayer(this.id);
+         }
+
+        this.registerLayerExtensions();
+
+        widget.map.addLayer(mblayer);
+        this.state = 'visible';
+        // this.visible = true;
+        // map.zoomLayer(this);
+    }
+
+    public getBounds(): LngLatBounds | undefined {
+        if (this._source) {
+            // create a clone of geojson source, otherwise all features will be reset, bug mapbox?
+            const geo = { ...this._source._data };
+            try {
+                const bounds = extent(geo);
+                return bounds;
+            } catch {
+                return undefined;
+            }
+        } else {
+            return undefined;
+        }
+    }
+
+    public getInstance(init?: Partial<IMapLayer>) {
+        const result = new GeojsonLayer(init);
+        return result;
+    }
+
+    public initLayer(manager: MapDatasource): Promise<IMapLayer> {
+        return new Promise((resolve, reject) => {
+            // check if we need to create an instance first of maplayer (needed if imported from json)
+            const l =
+                typeof this.getBounds === 'function'
+                    ? this
+                    : plainToClass(GeojsonLayer, this);
+
+            // add reference to this maplayers manager
+            this._manager = manager;
+
+            if (l.id === undefined) {
+                l.id = guidGenerator();
+            }
+            if (typeof l.source === 'string') {
+                // if source is a string, it references another existing source
+                if (
+                    manager.sources &&
+                    manager.sources.hasOwnProperty(l.source)
+                ) {
+                    l._source = manager.sources[l.source];
+                }
+            } else {
+                if (!l._source) {
+                    l._source = l.source = plainToClass(DataSource, l.source);
+                }
+            }
+            // if no title has been set
+            if (l.title === undefined) {
+                // check if source has a title
+                if (l._source && l._source.title) {
+                    l.title = l._source.title;
+                } else {
+                    // otherwise use id
+                    l.title = l.id;
+                }
+            }
+
+            l.style = {
+                ...({ title: '{{title}}' } as LayerStyle),
+                ...l.style
+            };
+
+            if (!l.opacity) { l.opacity = 100; }
+
+            if (!l.style.type) {
+                // infer type from first feature, expect all to be the same
+                if (l._source && l._source._data && l._source._data.features && l._source._data.features.length > 0) {
+                    const first = l._source._data.features[0];
+                    if (first.geometry && first.geometry.type) {
+                        switch (first.geometry.type) {
+                            case 'MultiPoint':
+                            case 'Point':
+                                l.style.type = 'circle';
+                                break;
+                            case 'LineString':
+                            case 'MultiLineString':
+                                l.style.type = 'line';
+                                break;
+                            case 'Polygon':
+                            case 'MultiPolygon':
+                                l.style.type = 'fill';
+                                break;
+                        }
+                    }
+                }
+                if (!l.style.type) {
+                    l.style.type = 'circle';
+                }
+            }
+
+            // if no color is set, set default color
+            if (!l.color) { l.color = 'red'; }
+
+            // for symbol layers without an icon image, add style icon
+            if (l.style.type === 'symbol' && l.style.icon && !this.layout.hasOwnProperty('icon-image')) {
+                const imageId = l.id + '-symbol';
+                this.addImage(imageId, l.style.icon);
+                (this.layout as SymbolLayout)['icon-image'] = imageId;
+            }
+
+            if (l.style.icons) {
+                for (const key in l.style.icons) {
+                    if (l.style.icons.hasOwnProperty(key)) {
+                        const url = l.style.icons[key];
+                        this.addImage(key, url);
+                    }
+                }
+            }
+
+            l._initialized = true;
+            resolve(l);
+        });
+    }
+
     public moveLayer(beforeId?: string) {
         if (this._manager && this._manager.MapControl && this.id) {
             this._manager.MapControl.moveLayer(this.id, beforeId);
         }
     }
 
-    private registerLayerExtensions() {
+    public removeLayer(widget: CsMap) {
+        super.removeLayer(widget);
+        this.removeExtensions();
+        if (this.id) {
+            if (widget.map.getLayer(this.id) !== undefined) {
+                widget.map.removeLayer(this.id);
+                this.state = 'hidden';
+            }
+        }
+        // this.visible = false;
+    }
+
+    // public layerTypeProps(): string[] {
+    //     const props: string[] = [];
+    //     if (this.type === 'symbol') {
+    //         props.push('text');
+    //         props.push('icon');
+    //     } else if (this.type) {
+    //         props.push(this.type);
+    //     }
+    //     return props;
+    // }
+    public setOpacity(value: number) {
+        if (!this.style) { this.style = new LayerStyle(); }
+        this.style._opacity = value;
+
+        if (
+            this.MapControl
+        ) {
+            // for (const prop of this.layerTypeProps()) {
+            //     this.MapControl.setPaintProperty(
+            //         this.id,
+            //         prop + '-opacity',
+            //         value / 100.0
+            //     );
+            //     if (!this.paint) { this.paint = {}; }
+            //     this.paint[prop + '-opacity'] = this.style._opacity / 100.0;
+            // }
+        }
+    }
+
+    // #endregion Public Methods (8)
+
+    // #region Protected Methods (2)
+
+    protected registerLayerExtensions() {
         if (this.extensions) {
             this.extensions.forEach(ext => {
                 const extensionType = CsMap.layerExtensions.find(
@@ -308,107 +384,7 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    private registerMapEvents(map: CsMap) {
-        if (this.id && !this.mapEventsRegistered) {
-            map.map.on('touchend', this.id, e => {
-                console.log('Start click');
-                this.click(this, e);
-                
-            });
-            map.map.on('click', this.id, e => {
-                this.click(this, e);
-            });
-            map.map.on('mousemove', this.id, e => {
-                this.mouseMove(map, this, e);
-            });
-            map.map.on('mouseenter', this.id, e => {
-                this.mouseEnter(map, this, e);
-            });
-            map.map.on('mouseleave', this.id, e => {
-                this.mouseLeave(map, this, e);
-            });
-            this.mapEventsRegistered = true;
-        }
-    }
-
-    public addLayer(map: CsMap) {
-        if (!this.id || !this._source) {
-            return;
-        }
-
-        if (this.mask && this._source._geojson) {
-            try {
-                const bounds = [-180, -180, 180, 90];
-
-                let diff: undefined | Feature<Polygon> = undefined; //turf.difference(bboxPoly, mask);
-                const bboxPoly = turf.bboxPolygon(bounds);
-                for (const f of this._source._geojson.features) {
-                    const mask = f as Feature<Polygon>; //this._source._geojson.features[0] as Feature<Polygon>;
-                    diff = turf.difference(diff ? diff : bboxPoly, mask);
-                }
-                // const diff = turf.difference(bboxPoly, mask);
-                if (diff !== undefined) {
-                    this._source._geojson.features = [diff];
-                    if (this._manager && this._manager.MapControl) {
-                        this._manager.updateLayerSource(
-                            this,
-                            this._source._geojson
-                        );
-                    }
-                }
-            } catch (e) {}
-            this.type = 'fill';
-            // this.source = { type: 'geojson', data: difference.default(bboxPoly, mask)}
-
-            //         let res = {
-            //             id: id,
-            //             source: {
-            //                 type: 'geojson',
-            //                 data: difference.default(bboxPoly, mask)
-            //             },
-            //             type: 'fill',
-            //             paint: paint
-            //         } as Layer;
-
-            //         return res;
-            //     }
-        }
-
-        let mblayer = {
-            id: this.id,
-            type: this.type,
-            source: this._source.id,
-            interactive: true
-        } as mapboxgl.Layer;
-        if (this.layout) {
-            mblayer.layout = this.layout;
-        }
-        
-        if (this.paint) {
-            mblayer.paint = this.paint;
-        }
-
-        // mblayer.paint = {
-        //     'fill-color': ['get', 'color'],
-        //     'fill-opacity': 0.3
-        //   } as FillPaint;
-        if (this.filter) {
-            mblayer.filter = this.filter;
-        }
-
-        this.registerLayerExtensions();
-        this.registerMapEvents(map);
-
-        // remove layer if it already exists
-        if (map.map.getLayer(this.id) !== undefined) {
-            map.map.removeLayer(this.id);
-        }
-        map.map.addLayer(mblayer);
-        this.Visible = true;
-        // map.zoomLayer(this);
-    }
-
-    private removeExtensions() {
+    protected removeExtensions() {
         if (this._extensions && this._extensions.length) {
             this._extensions.forEach(extension => {
                 extension.stop();
@@ -417,73 +393,12 @@ export class GeojsonLayer implements IMapLayer, IMapLayerType {
         }
     }
 
-    public removeLayer(map: CsMap) {
-        this.removeExtensions();
-        if (this.id) {
-            if (map.map.getLayer(this.id) !== undefined) {
-                map.map.removeLayer(this.id);
-            }
-        }
-        this.Visible = false;
-    }
+    // #endregion Protected Methods (2)
 
-    private click(layer: GeojsonLayer, e: any) {
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_SELECT, {
-                features: e.features,
-                context: e
-            } as FeatureEventDetails);
-        }
-    }
+    // #region Private Methods (8)
 
-    private mouseLeave(map: CsMap, layer: GeojsonLayer, e: any) {
-        map.map.getCanvas().style.cursor = '';
-        if (layer.popupContent) this.popup.remove();
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_MOUSE_LEAVE, {
-                features: e.features,
-                context: e
-            });
-        }
-    }
+ 
 
-    private mouseMove(map: CsMap, layer: GeojsonLayer, e: any) {
-        if (layer.popupContent && e && e.features) {
-            this.createPopup(map, layer, e);
-        }
-    }
 
-    private mouseEnter(map: CsMap, layer: GeojsonLayer, e: any) {
-        map.map.getCanvas().style.cursor = 'pointer';
-        this.createPopup(map, layer, e);
-        if (layer.events) {
-            layer.events.publish('feature', CsMap.FEATURE_MOUSE_ENTER, {
-                features: e.features,
-                context: e
-            });
-        }
-    }
-
-    private createPopup(map: CsMap, layer: GeojsonLayer, e: any) {
-        let popup: string | undefined = undefined;
-        if (layer.style && layer.style.popup) {
-            popup = layer.style.popup;
-        } else if (layer.popupContent) {
-            if (typeof layer.popupContent === 'string') {
-                popup = layer.popupContent;
-            } else if (this.isFunction(layer.popupContent)) {
-                popup = layer.popupContent(e);
-            }
-            
-        }
-        if (popup) {
-            this.popup
-                .setLngLat(e.lngLat)
-                .setHTML(popup)
-                .addTo(map.map);
-        }
-    }
-
-    public _source?: LayerSource;
-    public _initialized? = false;
+    // #endregion Private Methods (8)
 }

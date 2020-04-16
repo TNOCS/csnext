@@ -1,0 +1,27 @@
+<v-card>
+    <v-card-title v-if="!data">
+        <v-spacer></v-spacer>
+        <v-text-field
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+        ></v-text-field>
+    </v-card-title>
+    <v-data-table v-if="layer"
+        :headers="listHeaders()"
+        :items="listItems()"
+        :sortBy="listSort()"
+        :sortDesc="true"
+        :search="search"
+        dense
+        @click:row="selectListRow"
+    >
+        <template slot="items" slot-scope="props">
+            <td v-for="header in listHeaders">
+                {{ props.item[header.value] }}
+            </td>
+        </template>
+    </v-data-table>
+</v-card>

@@ -1,0 +1,44 @@
+.header-title-menu {
+  margin-left: 20px;
+}
+
+#main-toolbar {
+  padding-right: 0px;
+}
+
+.header-title {
+  margin-left: 0 !important;
+}
+
+.compact-header {
+    width: 500px;    
+ 
+}
+
+
+.floating-toolbar {
+  margin-top: 15px !important;
+  margin-left: 15px;
+  max-width: 500px;
+  
+}
+
+.v-application .theme--light a.breadcrumb-text {
+  color: black;
+}
+
+.v-application .theme--dark a.breadcrumb-text {
+  color: white;
+}
+
+.sidebar-dashboard-selected {
+  background: red;
+}
+
+.sidebar-header-button {
+  margin: 0px !important;
+  padding: 0px !important;
+  min-width: 75px !important;
+  height: 100% !important;
+  border-left: 0px darkgray solid;
+}

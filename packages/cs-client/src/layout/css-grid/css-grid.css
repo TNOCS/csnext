@@ -1,3 +1,4 @@
 .css-grid-manager {
   position: relative;
+  display: grid;
 }

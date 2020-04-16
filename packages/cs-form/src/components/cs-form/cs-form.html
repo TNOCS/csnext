@@ -1,50 +1,54 @@
-<div v-if="Form">
-    <v-toolbar flat>
-        <v-toolbar-title> {{ Form.title }} </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn icon v-if="Form.saveButton"> <v-icon>search</v-icon> </v-btn>
-    </v-toolbar>
-    <v-container>
-        <v-form>
-            <v-layout row wrap v-for="group in fieldGroups" dense>
-                <v-flex
-                    :class="group.class"
-                    v-for="field in group.fields"
-                    :key="field.id"
-                    style="padding-right:2px"
-                    dense
-                >
-                    <v-tooltip bottom :disabled="!field.description">
-                        <template slot="activator">
-                            <template v-if="field.type === 'boolean'">
-                                <v-checkbox
-                                    v-model="Target[field._key]"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-checkbox>
-                            </template>
-                            <template v-if="field.type === 'string'">
-                                <v-text-field
-                                    v-model="Target[field._key]"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-text-field>
-                            </template>
-                            <template v-if="field.type === 'number'">
-                                <v-text-field
-                                    v-model="Target[field._key]"
-                                    type="number"
-                                    :label="field.title"
-                                    :required="field.required"
-                                ></v-text-field>
-                            </template>
-                        </template>
-                        {{ field.description }}
-                    </v-tooltip>
+<div v-if="Form" class="cs-form-base">
+    <v-toolbar dense v-if="Form.showToolbar" :class="[Form.toolbarClass]">
+        <v-toolbar-title>{{ $cs.Translate(Form.title) }}</v-toolbar-title>
 
-                    <!-- {{ field.title }} -->
-                </v-flex>
-            </v-layout>
-        </v-form>
-    </v-container>
+        <v-spacer></v-spacer>
+
+        <!-- <v-btn icon @click="saveForm()">
+            <v-icon>save</v-icon>
+        </v-btn> -->
+
+        <v-btn icon @click="closeForm()">
+            <v-icon>clear</v-icon>
+        </v-btn>
+    </v-toolbar>
+
+    <!-- <div v-for="group in fieldGroups">
+        {{ group}}
+    </div> -->
+
+    <v-expansion-panels multiple v-model="panel" :accordion="true" flat>
+        <v-expansion-panel style="background-color:transparent" >         
+            <v-expansion-panel-header style="background-color:transparent" class="form-title" v-if="!Form.hideTitle" expand-icon="none">
+                {{ $cs.Translate(Form.title) }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content style="background-color:transparent" >
+                <v-form flat>
+                    <v-row
+                        row
+                        wrap
+                        v-for="group in sortedFieldGroups"
+                        v-if="group._visible"
+                        :key="group.id"
+                        dense
+                    >
+                        <v-col
+                            v-for="field in group.fields"
+                            :key="field.id"
+                            style="padding-right:2px"
+                            dense
+                            v-if="fieldVisible(field)"
+                        >
+                            <cs-formfield
+                                :target="Target"
+                                :field="field"                                
+                                @triggered="fieldTriggered"
+                                @changed="fieldChanged"
+                            ></cs-formfield>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
 </div>

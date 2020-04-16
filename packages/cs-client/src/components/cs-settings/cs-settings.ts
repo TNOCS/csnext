@@ -65,11 +65,6 @@ export class CsSettings extends Vue {
     return (this.$parent as WidgetBase).widget;
   }
 
-  @Watch('widget')
-  public dataChanged(d: any) {
-    // console.log('Widget changed');
-  }
-
   public created() {
     this.initGroups();
   }

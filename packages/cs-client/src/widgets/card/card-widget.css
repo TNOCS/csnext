@@ -1,0 +1,28 @@
+
+
+.widget-buttons-container{
+  position:absolute !important;
+  right: 10px;
+  top: 3px;  
+}
+
+.widget-button{
+  margin:0 !important;
+  width:18px !important;
+  height:18px !important;
+}
+
+.widget-button-icon
+{
+  width:16px !important;
+  height:16px !important;
+}
+
+
+/* Borders */
+
+.widget-border-line {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}

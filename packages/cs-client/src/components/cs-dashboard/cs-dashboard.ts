@@ -7,8 +7,8 @@ import {
   guidGenerator,
   MessageBusService
 } from '@csnext/cs-core';
+import './cs-dashboard.css';
 import {
-  CsApp,
   AppState,
   Logger,
   LayoutManager,
@@ -24,24 +24,31 @@ import {
 } as any)
 export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
-  public app = AppState.Instance;
+  public selectedStepper: number = 1;
+  public selectedTab: number = 0;
 
-   @Watch('dashboard')
+  @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
     this.initDashboard(n);
   }
 
   @Watch('dashboard.menus')
   public menusChanged() {
-    this.app.bus.publish('menus', 'changed');
+    this.$cs.bus.publish('menus', 'changed');
   }
 
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[]) {
     if (n && n.length > 0) {
-      n.forEach(w => {
+      for (const w of n) {
         this.initWidget(w);
-      });
+      }
+    }
+  }
+
+  public selectStepperDashboard(dashboard: IDashboard) {
+    if (this.$router && dashboard.pathLink) {
+      this.$router.push(dashboard.pathLink).catch(err => { });
     }
   }
 
@@ -52,50 +59,37 @@ export class CsDashboard extends Vue {
   }
 
   public initWidget(widget: IWidget) {
-    // init widget
-    if (!widget) {
-      return;
-    }
-    if (widget._initalized) {
-      return;
-    }
-
-    if (typeof widget.component === 'string') {
-      // var classNameString = 'MyClass';
-      // tslint:disable-next-line:no-eval
-      widget.component = widget.component;
-    }
-
-    if (!widget.events) {
-      widget.events = new MessageBusService();
-    }
-    if (!widget.options) {
-      widget.options = {};
-    }
-    if (!widget.data) {
-      widget.data = {};
-    }
-    if (this.dashboard) {
+    if (this.dashboard && !widget._dashboard) {
       widget._dashboard = this.dashboard;
       if (this.dashboard._manager) {
         widget._manager = this.dashboard._manager;
       }
     }
-    widget._project = AppState.Instance.project;
-    this.checkWidgetId(widget);
-    this.checkDefaultWidgetOptions(widget);
+  }
 
-    // load datasource, if configured
-    if (widget.datasource !== undefined) {
-      this.app.loadDatasource(widget.datasource).then(d => {
-        this.$nextTick(() => {
-          Vue.set(widget, 'content', d);
-        });
-      });
-    } else if (this.dashboard && this.dashboard.content) {
-      Vue.set(widget, 'content', this.dashboard.content);
+  public showToolbar() {
+    if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.showToolbar) { return true; }
+    if (this.dashboard.parent) {
+      if (this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hide) { return false; }
+    } else {
+      if (this.dashboard.options && this.dashboard.options.toolbarOptions && !this.dashboard.options.toolbarOptions.hide) { return true; }
     }
-    widget._initalized = true;
+
+
+  }
+
+  public denseToolbar() {
+
+    if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.toolbarOptions && this.dashboard.options.toolbarOptions.dense) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.dense) { return true; }
+  }
+
+  public hideTitle() {
+    if (!this.dashboard) { return false; }
+    if (this.dashboard.options && this.dashboard.options.toolbarOptions && this.dashboard.options.toolbarOptions.hideTitle) { return true; }
+    if (this.dashboard.parent && this.dashboard.parent.options && this.dashboard.parent.options.toolbarOptions && this.dashboard.parent.options.toolbarOptions.hideTitle) { return true; }
   }
 
   /** init dashboard: load datasources, init widgets and init manager  */
@@ -109,6 +103,14 @@ export class CsDashboard extends Vue {
     if (!dashboard.events) {
       dashboard.events = new MessageBusService();
     }
+
+    // init sub dashboards
+    if (this.dashboard && this.dashboard.dashboards) {
+      for (const d of this.dashboard.dashboards) {
+        this.initDashboard(d);
+      }
+    }
+
     if (dashboard.hideFromNavigation === undefined) {
       dashboard.hideFromNavigation = false;
     }
@@ -116,54 +118,54 @@ export class CsDashboard extends Vue {
     if (!dashboard.options) {
       dashboard.options = {};
     }
-    // if (dashboard.options) {
-    //   dashboard.options._dashboard = dashboard;
-    // }
 
-    if (this.app.project.menus && dashboard.isMain) {
-      const dashboardEditButton = this.app.project.menus.find(
-        mi => mi.id === CsApp.DASHBOARD_EDIT_ID
-      );
-      if (dashboardEditButton) {
-        dashboardEditButton.visible =
-          dashboardEditButton && dashboard.options.EditButton;
-      }
+    if (dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.dashboards) {
+      this.selectedTab = dashboard.parent.dashboards.findIndex(d => dashboard.title === d.title);
+      this.selectedStepper = this.selectedTab + 1;
     }
+
+    if (dashboard.options.info) {
+      this.$cs.openInfo(dashboard.options.info);
+    } else {
+      this.$cs.closeInfo();
+    }
+
     // if this is a main dashboard, set it as active dashboard on appstate
     if (dashboard.isMain) {
-      this.app.activeDashboard = this.dashboard;
-      this.app.bus.publish('dashboard.main', 'init', this.dashboard);
+      this.$cs.activeDashboard = this.dashboard;
+      this.$cs.bus.publish(AppState.DASHBOARD_MAIN, 'init', this.dashboard);
+      if (dashboard.options && dashboard.options.closeRightSidebar && this.$cs.project.rightSidebar) {
+        this.$cs.project.rightSidebar.open = false;
+      }
+      this.$cs.updateBreadCrumbs();
+      this.$forceUpdate();
     }
 
     // init widgets
     if (this.dashboard && this.dashboard.widgets) {
-      this.dashboard.widgets.forEach(w => {
+      for (const w of this.dashboard.widgets) {
         this.initWidget(w);
-      });
+      }
     }
 
     // init dashboard manager
     if (dashboard.manager && !dashboard._manager) {
       if (
-        DashboardManager.dashboardManagers.hasOwnProperty(dashboard.manager)
+        DashboardManager.dashboardManagers.hasOwnProperty(dashboard.manager) && typeof (DashboardManager.dashboardManagers[dashboard.manager].getInstance) === 'function'
       ) {
         // instantiate manager
-        dashboard._manager = DashboardManager.dashboardManagers[
-          dashboard.manager
-        ].getInstance();
-        if (dashboard._manager) {
-          // start manager
-          dashboard._manager.start(dashboard);
+        const man = DashboardManager.dashboardManagers[dashboard.manager];
+        if (typeof (man.getInstance) === 'function') {
+          dashboard._manager = man.getInstance();
         }
+      } else {
+        Logger.error('dashboard manager', `Dashboard manager ${dashboard.manager} not configured correctly`);
       }
-    }
-    if (dashboard._manager && dashboard._manager.dashboardLoaded) {
-      dashboard._manager.dashboardLoaded(dashboard);
     }
 
     // load default datasource, if configured
     if (dashboard.datasource) {
-      this.app
+      this.$cs
         .loadDatasource(dashboard.datasource)
         .then(d => {
           if (!this.dashboard) {
@@ -171,9 +173,20 @@ export class CsDashboard extends Vue {
           }
           this.dashboard.content = d;
 
+          // if dashboard manager availabe, trigger data loaded event
+          // TODO: more or less legacy, check if still used by projects, other wise use content loaded, simular to widgets
+          if (this.dashboard._manager && typeof (this.dashboard._manager.dataLoaded) === 'function') {
+            this.dashboard._manager.dataLoaded(d);
+          }
+
+          // if dashboard manager availabe, trigger data loaded event
+          if (this.dashboard._manager && typeof (this.dashboard._manager.contentLoaded) === 'function') {
+            this.dashboard._manager.contentLoaded(d);
+          }
+
           // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
           if (this.dashboard.widgets) {
-            this.dashboard.widgets.forEach(w => {
+            for (const w of this.dashboard.widgets) {
               if (!w.datasource && this.dashboard && this.dashboard.content) {
                 Vue.set(w, 'content', this.dashboard.content);
               }
@@ -182,12 +195,11 @@ export class CsDashboard extends Vue {
               if (w._component && w._component.dataSourceUpdated) {
                 w._component.dataSourceUpdated(d);
               }
-            });
-          }
 
-          // if dashboard manager availabe, trigger data loaded event
-          if (this.dashboard._manager && typeof this.dashboard._manager.dataLoaded === 'function') {
-            this.dashboard._manager.dataLoaded(d);
+              if (w._component && w._component.contentLoaded) {
+                w._component.contentLoaded(d);
+              }
+            }
           }
         })
         .catch(() => {
@@ -207,13 +219,30 @@ export class CsDashboard extends Vue {
       return;
     }
     this.initDashboard(this.dashboard);
+
   }
+
+  public beforeMount() {
+    if (!this.dashboard) { return; }
+    if (this.dashboard && this.dashboard._manager) {
+      // start manager
+      if (typeof (this.dashboard._manager.start) === 'function') {
+        this.dashboard._manager.start(this.dashboard);
+      }
+    }
+
+    if (this.dashboard._manager && typeof (this.dashboard._manager.dashboardLoaded) === 'function') {
+      this.dashboard._manager.dashboardLoaded();
+    }
+  };
 
   /** dashboard will be closed. */
   public beforeDestroy() {
     // call stop function for manager
     if (this.dashboard && this.dashboard._manager) {
-      this.dashboard._manager.stop(this.dashboard);
+      if (typeof (this.dashboard._manager.stop) === 'function') {
+        this.dashboard._manager.stop(this.dashboard);
+      }
     }
   }
 
@@ -235,20 +264,4 @@ export class CsDashboard extends Vue {
     return new Vue();
   }
 
-  private checkDefaultWidgetOptions(widget: IWidget) {
-    if (
-      !widget.options ||
-      !widget._dashboard ||
-      !widget._dashboard.defaultWidgetOptions
-    ) {
-      return;
-    }
-    if (widget._dashboard && widget._dashboard.defaultWidgetOptions) {
-      for (const key in widget._dashboard.defaultWidgetOptions) {
-        if (!widget.options.hasOwnProperty(key)) {
-          widget.options[key] = widget._dashboard.defaultWidgetOptions[key];
-        }
-      }
-    }
-  }
 }

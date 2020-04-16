@@ -1,249 +1,197 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify, { VuetifyObject } from 'vuetify';
-import vuetifyEN from 'vuetify/src/locale/en';
-import vuetifyNL from 'vuetify/src/locale/nl';
+import Vuetify, { VuetifyPreset } from 'vuetify';
+import vuetifyEN from 'vuetify/es5/locale/en';
+import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
 import VueRouter, { RouteConfig } from 'vue-router';
 import {
   IDashboard,
   INotification,
-  IThemeColors,
   ISidebarOptions,
-  IWidget,
-  IMenu,
   IFooterOptions,
-  IDialog
+  IDialog,
+  MessageBusManager,
+  Topics
 } from '@csnext/cs-core';
 import { Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings, CsLanguageSwitch } from '../../';
-import './cs-app.css';
+import { AppState, Logger, CsDashboard, CsSettings } from '../../';
+
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
-import './../../assets/fonts/fonts.css';
-import * as en from './../../assets/translations/en.json';
-import * as nl from './../../assets/translations/nl.json';
-import 'vuetify/dist/vuetify.min.css';
 
-// register needed plugins'
-// tslint:disable-next-line:no-console
+// tslint:disable-next-line:no-var-requires
+const en = require('./../../assets/translations/en.json');
+// tslint:disable-next-line:no-var-requires
+const nl = require('./../../assets/translations/nl.json');
+import 'vuetify/dist/vuetify.min.css';
+import { CsHeader } from '../cs-header/cs-header';
+import { CsLoader } from '../cs-loader/cs-loader';
+
+import './../../assets/fonts/fonts.css';
+import './cs-app.css';
+import 'simplebar/dist/simplebar.css';
+
 Vue.use(VueRouter);
 Vue.use(VueI18n);
+
 const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'nl',
-  messages: {'en': en.default, 'nl': nl.default} as VueI18n.LocaleMessages // set locale messages
-});
-Vue.use(Vuetify, {
-  lang: {
-    t: (key, ...params) => i18n.t(key, params)
-  }
+  messages: { 'en': {}, 'nl': {} } as VueI18n.LocaleMessages,  // set locale messages
+  silentTranslationWarn: true
 });
 
+const vuetifyOpts = {
+  icons: {
+    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  }
+  // lang: {
+  //   t: (key, ...params) => i18n.t(key, params)
+  // }
+} as VuetifyPreset;
+
+Vue.use(Vuetify);
+
 const router = new VueRouter({ routes: [] });
+
+
 
 @Component({
   name: 'cs-app',
   router,
   i18n,
+  vuetify: new Vuetify(vuetifyOpts),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
-    'cs-footer': CsFooter
+    'cs-footer': CsFooter,
+    'cs-header': CsHeader,
+    'cs-loading': CsLoader
   }
 } as any)
 export class CsApp extends Vue {
-  public static DASHBOARD_EDIT_ID = 'edit_dashboard';
-  public static LANUAGE_SWITCH_ID = 'switch_language';
-
+  public static LANGUAGE_SWITCH_ID = 'switch_language';
+  public static LOADING_MENU_ID = 'loading_menu';
   public app = AppState.Instance;
+
   public settingsDialog = false;
-  public $vuetify!: VuetifyObject;
   public active = null;
   public leftSidebar: ISidebarOptions = {};
   public rightSidebar: ISidebarOptions = {};
   public footer: IFooterOptions = {};
-  public dialog: IDialog = { visible: false, toolbar: true };
-  public allMenus: IMenu[] = [];
-
+  public dialog: IDialog = { visible: false };
   // notification properties
   public lastNotification: INotification = { _visible: false } as INotification;
   public showNotifications = false;
   public unReadNotifications: INotification[] = [];
-
-  public settings = [
-    // {
-    //   id: 'dashboard_settings',
-    //   title: 'dashboard settings'
-    // }
-  ];
+  public isLoading: boolean = true;
+  private busManager = new MessageBusManager();
 
   constructor() {
     super();
-    this.app.router = router;
-    this.app.i18n = i18n;
-    this.app.i18n.mergeLocaleMessage('en',  {'$vuetify': vuetifyEN});
-    this.app.i18n.mergeLocaleMessage('nl',  {'$vuetify': vuetifyNL});
+    this.$cs.router = router;
+    this.$cs.i18n = i18n;
+    this.$cs.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });
+    this.$cs.i18n.mergeLocaleMessage('nl', { '$vuetify': vuetifyNL });
+    this.$cs.i18n.mergeLocaleMessage('en', (en as any).default ? (en as any).default : en);
+    this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default ? (nl as any).default : nl);
     this.InitNavigation();
 
-    this.app.bus.subscribe('right-sidebar', (action: string, data: any) => {
+    this.busManager.subscribe(this.$cs.bus, 'right-sidebar', (action: string, data: any) => {
       switch (action) {
         case 'open-widget':
           if (
-            this.app.project.rightSidebar &&
-            this.app.project.rightSidebar.dashboard &&
-            this.app.project.rightSidebar.dashboard.widgets
+            this.$cs.project.rightSidebar &&
+            this.$cs.project.rightSidebar.dashboard &&
+            this.$cs.project.rightSidebar.dashboard.widgets
           ) {
-            while (this.app.project.rightSidebar.dashboard.widgets.length > 0) {
-              this.app.project.rightSidebar.dashboard.widgets.pop();
+            while (this.$cs.project.rightSidebar.dashboard.widgets.length > 0) {
+              this.$cs.project.rightSidebar.dashboard.widgets.pop();
             }
-            this.app.project.rightSidebar.dashboard.widgets.push(data);
-            this.app.project.rightSidebar.open = true;
+            this.$cs.project.rightSidebar.dashboard.widgets.push(data);
+            this.$cs.project.rightSidebar.open = true;
           }
           break;
       }
     });
-    this.app.bus.subscribe('widget', (action: string, widget: IWidget) => {
+    this.busManager.subscribe(this.$cs.bus, 'widget', (action: string) => {
       switch (action) {
         case 'edit':
-          if (this.app.project.leftSidebar) {
-            this.app.project.leftSidebar.component = CsSettings;
-            // this.$set(this.app.project.rightSidebar, 'component', CsSettings);
-            this.app.project.leftSidebar.open = true;
+          if (this.$cs.project.leftSidebar) {
+            this.$cs.project.leftSidebar.component = CsSettings;
+            // this.$set(this.$cs.project.rightSidebar, 'component', CsSettings);
+            this.$cs.project.leftSidebar.open = true;
           }
           break;
       }
     });
+  }
+
+  public beforeDestroy() {
+    this.busManager.stop();
+    document.removeEventListener('backbutton', this.backButtonPressed);
   }
 
   @Watch('app.project.dashboards')
-  public projectChanged(data: any) {
+  public projectChanged() {
     this.InitNavigation();
     this.InitTheme();
-    this.InitMenus();
+    // this.InitMenus();
+  }
+
+  @Watch('app.project.theme.dark')
+  public themeChanged() {
+    this.$vuetify.theme.dark = this.app.project.theme ? (this.app.project.theme.dark === true) : false;
+  }
+
+  @Watch('app.project.rightSidebar.sidebars')
+  /** register keyboard shortcuts for sidebars */
+  public rightSidebarsChanged(n: any) {
+    for (const key in n) {
+      if (n.hasOwnProperty(key)) {
+        const sidebar = n[key] as IDashboard;
+        if (sidebar && sidebar.options && sidebar.options.shortcut) {
+          const sc = sidebar.options.shortcut;
+          if (!sc.id) { sc.id = 'sidebar-' + key; }
+          sc._callback = () => {
+            AppState.Instance.openRightSidebarKey(key);
+          };
+          AppState.Instance.keyboard.register(sc);
+        }
+
+      }
+    }
   }
 
   @Watch('app.project.notifications', { deep: true })
-  public noticationsUpdated(n: INotification[], o: INotification[]) {
+  public noticationsUpdated() {
     this.UpdateNotifications();
   }
 
   @Watch('app.project.rightSidebar.dashboard')
-  public sideBarChanged(n: IDashboard, o: IDashboard) {
+  public rightSidebarChanged(n: IDashboard) {
     if (!this.rightSidebar) {
       return;
     }
     this.rightSidebar.dashboard = n;
   }
 
-  @Watch('$route')
-  public routeChanged(n: any, o: any) {
-    if (
-      this.app.project &&
-      this.app.project.header &&
-      this.app.project.header.breadcrumbs
-    ) {
-      this.app.project.header.breadcrumbItems = [];
-      n.fullPath.split('/').forEach(s => {
-        if (
-          s &&
-          this.app.project.header &&
-          this.app.project.header.breadcrumbItems
-        ) {
-          this.app.project.header.breadcrumbItems.push(s);
-        }
-      });
-    }
-  }
-
-  public openDashboard(dashboard: IDashboard) {
-    if (dashboard) {
-      if (dashboard.url) {
-        // window.location.replace(dashboard.url);
-        window.open(dashboard.url, '_blank');
-      } else if (dashboard.path) {
-        this.$router.push(dashboard.path);
-      }
-    }
-  }
-
-  public InitMenus() {
-    if (!this.app.project.menus) {
-      this.app.project.menus = [];
-    }
-    if (this.app.project.languages && this.app.project.languages.showLanguageSwitchMenu) {
-      if (!this.app.project.menus.find(menu => menu.id === CsApp.LANUAGE_SWITCH_ID)) {
-        this.app.project.menus.push({
-          id: CsApp.LANUAGE_SWITCH_ID,
-          icon: 'translate',
-          title: 'LANGUAGE',
-          toolTip: 'LANGUAGE_SETTINGS',
-          enabled: true,
-          visible: true,
-          component: CsLanguageSwitch
-        });
-      }
-    }
-    // create edit dashboard button
-    if (!this.app.project.menus.find(m => m.id === CsApp.DASHBOARD_EDIT_ID)) {
-      this.app.project.menus.push({
-        id: CsApp.DASHBOARD_EDIT_ID,
-        icon: 'mode_edit',
-        title: 'Edit Dashboard',
-        enabled: false,
-        visible: false,
-        action: m => {
-          // notify dashboard manager that edit was started
-          if (this.app.activeDashboard) {
-            // if there is a manager with own editdashboard implementation use that
-            if (
-              this.app.activeDashboard._manager &&
-              this.app.activeDashboard._manager.editDashboard
-            ) {
-              this.app.activeDashboard._manager.editDashboard(
-                this.app.activeDashboard
-              );
-            } else {
-              if (this.app.project.rightSidebar) {
-                // let s = Vue.component('test', { template: '<h1>editor</h1>'});
-                // this.app.OpenRightSidebarWidget({component: MdWidget, data: 'editor'} as IWidget, { });
-                AppState.Instance.OpenRightSidebarWidget({
-                  component: CsSettings,
-                  data: { obj: this.app.activeDashboard.options }
-                });
-              }
-            }
-          }
-          // }
-        }
-      });
-    }
-
-    this.allMenus = this.app.project.menus;
-    if (this.app.activeDashboard && this.app.activeDashboard.menus) {
-      this.allMenus = [...this.allMenus, ...this.app.activeDashboard.menus];
-    }
-  }
-
-  public toggleMenu(menu: IMenu) {
-    menu.toggleState = menu.toggleState ? !menu.toggleState : true;
-    this.activateMenu(menu);
-  }
-
-  // menu button was clicked
-  public activateMenu(menu: IMenu) {
-    if (menu.action) {
-      menu.action(menu);
-    }
-  }
-
   public onResize() {
-    this.app.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    this.$cs.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    console.log(this.$cs.windowSize);
   }
 
   public InitTheme() {
-    if (this.app.project && this.app.project.theme) {
-      this.$vuetify.theme = this.app.project.theme.colors as any;
+    if (this.$cs.project && this.$cs.project.theme) {
+      if (this.$cs.project.theme.lightColors) {
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.lightColors };
+      } else {
+        this.$vuetify.theme.themes.light = { ...this.$vuetify.theme.themes.light, ...this.$cs.project.theme.colors };
+      }
+      if (this.$cs.project.theme.darkColors) {
+        this.$vuetify.theme.themes.dark = { ...this.$vuetify.theme.themes.dark, ...this.$cs.project.theme.darkColors };
+      }
     }
   }
 
@@ -276,68 +224,99 @@ export class CsApp extends Vue {
   // swipe gesture
   public swipe(direction: string) {
     if (
-      !this.app.activeDashboard ||
-      !this.app.activeDashboard.options ||
-      !this.app.activeDashboard.options.TouchGesturesEnabled
+      !this.$cs.activeDashboard ||
+      !this.$cs.activeDashboard.options ||
+      !this.$cs.activeDashboard.options.touchGesturesEnabled
     ) {
       return;
     }
-    const d = this.app.activeDashboard;
+    const d = this.$cs.activeDashboard;
     const adjacent = this.getAdjacentDashboard(
       direction,
-      this.app.activeDashboard,
+      this.$cs.activeDashboard,
       d.parent && d.parent.dashboards
         ? d.parent.dashboards
-        : this.app.project.dashboards
+        : this.$cs.project.dashboards
     );
     if (adjacent) {
       this.SelectDashboard(adjacent);
     }
-    // console.log(adjacent);
+  }
+
+  public backButtonPressed() {
+    if ($cs.isMobile && $cs.project.rightSidebar && $cs.project.rightSidebar.open) {
+      $cs.closeRightSidebar();
+    }
+  }
+
+  public onDeviceReady() {
+    // alert('device ready');
+  }
+
+  public mounted() {
+    this.isLoading = false;
+    document.addEventListener('deviceready', this.onDeviceReady, false);
+    setTimeout(() => {
+      document.addEventListener('backbutton', this.backButtonPressed, false);
+    }, 1000);
   }
 
   // Add a dashboard as a route
   public AddDashboardRoute(d: IDashboard) {
     if (d.dashboards && d.dashboards.length > 0) {
-      d.dashboards.forEach(dash => {
+      for (const dash of d.dashboards) {
         dash.parent = d;
         this.AddDashboardRoute(dash);
-      });
+      }
+      if (d.options && d.options.toolbarOptions && d.options.toolbarOptions.navigation && d.dashboards && d.dashboards.length > 0) {
+        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
+      }
     } else if (d.path) {
-      router.addRoutes([
-        {
-          name: d.id,
-          path: d.path,
-          component: CsDashboard,
-          props: route => ({ dashboard: d }),
-          alias: d.title,
-          meta: d
-        } as RouteConfig
-      ]);
+      const route = {
+        name: d.id,
+        path: d.path,
+        component: CsDashboard,
+        props: () => ({ dashboard: d }),
+        alias: '/' + d.title,
+        meta: d
+      } as RouteConfig;
+      router.addRoutes([route]);
+
+      // check for keyboard shortcut
+      if (d.options && d.options.shortcut && d.pathLink) {
+        const sc = d.options.shortcut;
+        if (!sc.id) { sc.id = 'dashboard-' + d.id; }
+        sc._callback = () => {
+          router.push(d.pathLink as any).catch(() => {
+            // console.log(e);
+          });
+        };
+        this.app.keyboard.register(sc);
+      }
     }
+
   }
 
   // Make sure all dashboards are available as routes
   public InitNavigation() {
-    if (!this.app || !this.app.project || !this.app.project.dashboards) {
+    if (!this.$cs || !this.$cs.project || !this.$cs.project.dashboards) {
       return;
     }
 
     // create routes for dashboards
-    this.app.project.dashboards.forEach(d => {
+    for (const d of this.$cs.project.dashboards) {
       this.AddDashboardRoute(d);
-    });
-
+    }
     Logger.info('navigation', 'navigation initialized');
   }
 
   // tslint:disable-next-line:no-empty
-  public selectBreadCrumb(item: any) {}
+  public selectBreadCrumb() { }
 
   public SelectDashboard(d: IDashboard) {
-    Logger.info('SelectDashboard', d.path);
-    if (router && d.path && !d.dashboards) {
-      router.push(d.path);
+    Logger.info('SelectDashboard', d.pathLink);
+    if (router && d.pathLink && !d.dashboards) {
+      router.push(d.pathLink).catch((e) => { console.log(e); });
     }
   }
 
@@ -351,11 +330,9 @@ export class CsApp extends Vue {
       if (d.leftSidebar) {
         this.leftSidebar = d.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', d.leftSidebar);
-      } else if (this.app.project.leftSidebar) {
-        this.leftSidebar = this.app.project.leftSidebar;
+      } else if (this.$cs.project.leftSidebar) {
+        this.leftSidebar = this.$cs.project.leftSidebar;
         this.leftSidebar.visible = true;
-        // Vue.set(this, 'leftSidebar', this.app.project.leftSidebar);
       } else {
         this.leftSidebar = {};
       }
@@ -364,12 +341,11 @@ export class CsApp extends Vue {
         this.rightSidebar = d.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', d.rightSidebar);
-      } else if (this.app.project.rightSidebar) {
-        this.rightSidebar = this.app.project.rightSidebar;
+      }
+      else if (this.$cs.project.rightSidebar) {
+        this.rightSidebar = this.$cs.project.rightSidebar;
         this.rightSidebar.visible = true;
         this.rightSidebar.right = true;
-        // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
       } else {
         this.rightSidebar = {};
       }
@@ -383,45 +359,51 @@ export class CsApp extends Vue {
         this.footer.visible = true;
       }
       // Vue.set(this, 'rightSidebar', d.rightSidebar);
-    } else if (this.app.project.footer) {
-      this.footer = this.app.project.footer;
-      // Vue.set(this, 'rightSidebar', this.app.project.rightSidebar);
+    } else if (this.$cs.project.footer) {
+      this.footer = this.$cs.project.footer;
+      // Vue.set(this, 'rightSidebar', this.$cs.project.rightSidebar);
     } else {
       this.footer = {};
+    }
+  }
+
+  public actionCallback(action: string) {
+    if (this.dialog && this.dialog.actionCallback) {
+      this.dialog.visible = false;
+      this.dialog.actionCallback(action);
     }
   }
 
   public created() {
     this.onResize();
     this.InitNotifications();
+    window.addEventListener("resize", this.onResize);
 
-    this.app.bus.subscribe('dialog', (action: string, dialog: IDialog) => {
+    this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
-        case 'new':
+        case AppState.DIALOG_ADDED:
           Vue.set(this, 'dialog', dialog);
           this.dialog.visible = true;
           break;
+        case AppState.DIALOG_CLOSED:
+          this.dialog.visible = false;
+          break;
+
       }
     });
 
     // listen to dashboard init events
-    this.app.bus.subscribe(
-      'dashboard.main',
+    this.busManager.subscribe(this.$cs.bus,
+      AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.UpdateSideBars(dashboard);
         this.UpdateFooter(dashboard);
-        this.InitMenus();
       }
     );
 
-    // menu list changed (e.g. if dashboard menu was updated)
-    this.app.bus.subscribe('menus', (action: string) => {
-      this.InitMenus();
-    });
-
-    if (this.app.activeDashboard) {
-      this.UpdateSideBars(this.app.activeDashboard);
-      this.UpdateFooter(this.app.activeDashboard);
+    if (this.$cs.activeDashboard) {
+      this.UpdateSideBars(this.$cs.activeDashboard);
+      this.UpdateFooter(this.$cs.activeDashboard);
     }
   }
 
@@ -436,28 +418,76 @@ export class CsApp extends Vue {
   /** Update list of unread notification  */
   public UpdateNotifications() {
     if (
-      !this.app.project.notifications ||
-      !this.app.project.notifications.items
+      !this.$cs.project.notifications ||
+      !this.$cs.project.notifications.items
     ) {
       return;
     }
     this.$set(
       this,
       'unReadNotifications',
-      this.app.project.notifications.items.filter(not => !not.isRead)
+      this.$cs.project.notifications.items.filter(not => !not.isRead)
     );
   }
+
+  public clickNotification() {
+    if (this.lastNotification.clickCallback) {
+      this.lastNotification.clickCallback();
+    }
+    this.closeNotification();
+  }
+
+  public closeNotification() {
+    if (this.lastNotification) {
+      this.lastNotification = { _visible: false } as INotification;
+    }
+    this.UpdateNotifications();
+  }
+
+  public openMobileDashboard(dashboard: IDashboard) {
+    if (dashboard) {
+      if (dashboard === $cs.activeDashboard) {
+        dashboard.events?.publish(Topics.DASHBOARD, Topics.DASHBOARD_RELOAD, dashboard);
+      } else
+        if (dashboard.url) {
+          // window.location.replace(dashboard.url);
+          window.open(dashboard.url, '_blank');
+        } else if (dashboard.pathLink) {
+          this.$router.push(dashboard.pathLink).then(e => {
+
+          }).catch(err => {
+            if (err.name = 'NavigationDuplicated') {
+
+            }
+
+            // console.log(err);
+          });
+        }
+    }
+  }
+
   public InitNotifications() {
-    if (this.app.bus) {
-      this.app.bus.subscribe(
+    if (this.$cs.bus) {
+      this.busManager.subscribe(this.$cs.bus,
         'notification',
         (action: string, notification: INotification) => {
           if (action === 'new') {
+            if (this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              // this.lastNotification.clickCallback();
+            }
             this.lastNotification = notification;
             this.UpdateNotifications();
+          } else if (action === 'clear-all') {
+            if (this.lastNotification && this.lastNotification.clickCallback) {
+              // Call callback of previous notification before closing it
+              this.lastNotification.clickCallback();
+            }
+            this.closeNotification();
           }
         }
       );
     }
   }
+
 }

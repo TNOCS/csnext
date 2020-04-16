@@ -1,8 +1,10 @@
 {
-  "lerna": "2.11.0",
+  "lerna": "3.15",
   "packages": [
     "packages/*"
   ],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
   "command": {
     "publish": {
       "allowBranch": "*",
@@ -21,5 +23,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.0.101"
+  "version": "0.0.128"
 }

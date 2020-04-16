@@ -1,9 +1,11 @@
 {
   "extends": "../tsconfig.settings.json",
   // "include": ["src/"],
-  "compilerOptions": {
-    /* Basic Options */
-    "outDir": "./dist"     
+  "compilerOptions": {  
+    /* Basic Options */    
+    "resolveJsonModule": true,
+    "outDir": "./dist" 
   },
+  "include": ["src/", "**/*.json"],
   "exclude": ["./dist"]
 }

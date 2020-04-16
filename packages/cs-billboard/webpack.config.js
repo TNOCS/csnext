@@ -1,5 +1,4 @@
 const buildConfig = require('./../webpack.config.base.js');
-const package = require('./package.json');
 
 const config = [
     buildConfig(
@@ -9,11 +8,12 @@ const config = [
             cs: ['./src/index.ts']
         },
         {
-            vue: 'Vue',
-            vuetify: 'vuetify',
-            'vue-markdown': 'vue-markdown'
+            '@csnext/cs-client': '@csnext/cs-client',
+            '@csnext/cs-core': '@csnext/cs-core',
+            vue: 'Vue',   
+            Vue: 'Vue'    
         },
-        'cs'
+        'csbillboard'
     )
 ];
 module.exports = config;

@@ -1,0 +1,25 @@
+{
+  "name": "@csnext/cs-markdown",
+  "version": "0.0.128",
+  "description": "cs-markdown",
+  "main": "./lib/csmarkdown.cs.js",
+  "types": "./dist/src/index.d.ts",
+  "url": "https://github.com/TNOCS/cs-markdown",
+  "bugs": "https://github.com/TNOCS/csnext/issues",
+  "license": "MIT",
+  "scripts": {
+    "link": "yarn link",
+    "unlink": "yarn unlink",
+    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --mode development && tsc",
+    "build:production": "webpack --mode production && tsc",
+    "clean": "del-cli yarn.lock yarn-error.log dist lib node_modules"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@csnext/cs-client": "^0.0.128",
+    "vue-showdown": "2.4.1"
+  }
+}

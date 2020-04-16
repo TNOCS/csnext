@@ -1,5 +1,4 @@
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -69,3 +68,4 @@ packages/**/lib/**
 packages/cs-core/src/classes/navigation-options.ts
 old/
 packages/**/typescript/**/*.*
+tsconfig.tsbuildinfo

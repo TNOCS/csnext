@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-drag-grid",
-  "version": "0.0.101",
+  "version": "0.0.128",
   "description": "cs-drag-grid",
   "main": "./lib/csdraggrid.cs.js",
   "types": "./dist/index.d.ts",
@@ -9,25 +9,18 @@
   "license": "MIT",
   "scripts": {
     "link": "yarn link",
-    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --mode development",
-    "clean": "del-cli dist lib"
+    "unlink": "yarn unlink",
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "webpack --mode development && tsc",
+    "build:production": "webpack --mode production && tsc",
+    "clean": "del-cli  yarn.lock yarn-error.log dist lib typescript node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.101",
-    "vue-grid-layout": "^2.3.3"
+    "@csnext/cs-client": "^0.0.128",
+    "vue-grid-layout": "^2.3.7"
   },
-  "devDependencies": {
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^1.0.0",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.2",
-    "typescript": "^3.2.2",
-    "webpack": "~4.28.2",
-    "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-cli": "^3.1.2"
-  }
+  "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

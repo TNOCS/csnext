@@ -5,10 +5,9 @@ const config = buildConfig(
     'csform',
     { cs: ['./src/index.ts'] },
     {
-        'cs-core': 'cs-core',
+        '@csnext/cs-core': '@csnext/cs-core',
         '@csnext/cs-client': '@csnext/cs-client',
-        vue: 'Vue',        
-        Vue: 'Vue'
+        vue: 'Vue'
     },
     'csform'
 );
