@@ -28,6 +28,6 @@ jobs:
           node-version: 12
     - run: npm install
     - run: npm run build
-    - run: npm run lerna:publish
+    - run: npm run publish:beta
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
