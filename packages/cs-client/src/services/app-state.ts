@@ -100,6 +100,7 @@ export class AppState extends AppStateBase {
   }
 
   public get isMobile(): boolean {
+    if (this.project?.navigation?.forceDesktop) { return false; }
     return ((window.innerWidth < 800) || (window.innerHeight < 800));
   }
 

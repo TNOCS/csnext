@@ -4,7 +4,7 @@ import './timeline-group-selection.css';
 import Vue from 'vue';
 import { Prop } from 'vue-property-decorator';
 import { CsTimeline } from '../cs-timeline/cs-timeline';
-import { DataGroup } from 'vis-timeline';
+import { DataGroup } from 'vis-timeline/esnext';
 
 @Component({
   name: 'timeline-group-selection',

@@ -10,6 +10,8 @@ export class NavigationOptions {
   public style?: 'left-hierarchy' | 'tabs' | 'bottom' | 'mobile-compact';
   @FormField({ title: 'auto mobile bottom', type: 'checkbox' })
   public autoMobileBottom?: boolean;
+  
+  public forceDesktop?: boolean;
 
   // #endregion Properties (2)
 

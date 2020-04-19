@@ -130,10 +130,10 @@ export class DataProperties extends WidgetBase {
                     if (proptype.stringFormat !== undefined) {
                         prop.display = prop.value; // String.format(pt.stringFormat, prop.value);
                     }
-                    if (proptype.handlebarFormat !== undefined) {
-                        const template = Handlebars.compile(proptype.stringFormat);
-                        prop.display = template(prop);
-                    }
+                    // if (proptype.handlebarFormat !== undefined) {
+                    //     const template = Handlebars.compile(proptype.stringFormat);
+                    //     prop.display = template(prop);
+                    // }
 
                     // tslint:disable-next-line: no-shadowed-variable
                     let section: PropertySection | undefined = defaultSection;

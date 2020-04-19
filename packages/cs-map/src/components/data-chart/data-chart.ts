@@ -93,7 +93,6 @@ export class DataChart extends WidgetBase {
                 } else if (this.options.charttype) {
                     switch (this.options.charttype) {
                         case 'prop-history':
-                            debugger;
                             spec = {
                                 'mark': 'line',
                                 'width': 350,

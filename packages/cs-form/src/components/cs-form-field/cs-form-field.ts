@@ -9,7 +9,7 @@ import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
 import { Emit, Prop } from 'vue-property-decorator';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 @Component({
     name: 'cs-formfield',
     template: require('./cs-form-field.html'),
@@ -132,7 +132,7 @@ export class CsFormField extends Vue {
     }
 
     public formattedDate(date: number): string | undefined {
-        if (date) {
+        if (date) {            
             return format(new Date(date), 'yyyy-MM-dd');
         }
     }
