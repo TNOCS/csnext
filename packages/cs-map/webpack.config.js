@@ -12,9 +12,8 @@ const config = buildConfig(
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
         '@mapbox/mapbox-gl-geocoder' : '@mapbox/mapbox-gl-geocoder',
-        '@mapbox/mapbox-gl-traffic' : '@mapbox/mapbox-gl-traffic',
-        "handlebars": "handlebars",
-        "handlebars-intl": "handlebars-intl"
+        '@mapbox/mapbox-gl-traffic' : '@mapbox/mapbox-gl-traffic',        
+        "osmtogeojson": "osmtogeojson"
     },
     'csmap'
 );
