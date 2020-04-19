@@ -6,7 +6,7 @@ import { CsMap } from '..';
 import Axios from 'axios';
 import osmtogeojson from 'osmtogeojson';
 import { LngLatBounds } from 'mapbox-gl';
-import _ from 'lodash';
+import throttle from 'lodash.throttle';
 import { AppState } from '@csnext/cs-client';
 
 export interface IOverpassExtensionOptions {
@@ -90,7 +90,7 @@ export class OverpassExtension implements ILayerExtension, ILayerExtensionType, 
         }
     }
 
-    private getQuery = _.throttle(() => this.getQueryThrottled(), 1500);
+    private getQuery = throttle(() => this.getQueryThrottled(), 1500);
 
     private async getQueryThrottled() {
         if (!this.amenity || !this._layer || !this._layer._source || !this._originalFeatures) { return; }

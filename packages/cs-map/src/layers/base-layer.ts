@@ -12,13 +12,13 @@ import mapboxgl, { Layout, MapboxGeoJSONFeature } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
 import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
 import { Feature } from 'geojson';
-import Handlebars from 'handlebars';
+// import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
-import HandlebarsIntl from 'handlebars-intl';
+// import HandlebarsIntl from 'handlebars-intl';
 import { LayerFilter } from '../classes/layer-filter';
 import { PropertyDetails } from '../components/feature-details/property-details';
 
-HandlebarsIntl.registerWith(Handlebars);
+// HandlebarsIntl.registerWith(Handlebars);
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
@@ -112,8 +112,8 @@ export class BaseLayer implements IMapLayer {
     public featureTypes?: FeatureTypes;
     // public _visible?: boolean;
 
-    private _titleTemplate?: Handlebars.TemplateDelegate;
-    private _popupTemplate?: Handlebars.TemplateDelegate;
+    // private _titleTemplate?: Handlebars.TemplateDelegate;
+    // private _popupTemplate?: Handlebars.TemplateDelegate;
 
     // #endregion Properties (35)
 
@@ -340,10 +340,10 @@ export class BaseLayer implements IMapLayer {
         if (this.style && this.style.popup) {
             const state = this.MapControl.getFeatureState(f);
             if (!state.hasOwnProperty('popup')) {
-                if (!this._popupTemplate) {
-                    this._popupTemplate = Handlebars.compile(this.style.popup);
-                }
-                state.popup = this._popupTemplate(f, { data: { intl: this.intlData } });
+                // if (!this._popupTemplate) {
+                //     this._popupTemplate = Handlebars.compile(this.style.popup);
+                // }
+                // state.popup = this._popupTemplate(f, { data: { intl: this.intlData } });
                 this.MapControl.setFeatureState(f, state);
             }
             return state.popup;
