@@ -91,6 +91,27 @@ export class CsFormField extends Vue {
     //     return '';
     // }
 
+    public get ColorValue(): string | any {
+        if (this.target && this.field && this.field._key) {
+            return this.target[this.field._key];
+        } else {
+            return "";
+        }
+    }
+
+    public set ColorValue(v: string | any) {
+        if (v && this.target && this.field && this.field._key) {            
+            if (typeof(v) === 'string') {
+                this.target[this.field._key] = v;
+            } else {
+                if (v.hasOwnProperty('hex')) {
+                    this.target[this.field._key] = v.hex;
+                }
+            }
+            // this.changed(this.field);
+        }
+    }
+
     public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
             return this.formattedDate(this.target[this.field._key]);
