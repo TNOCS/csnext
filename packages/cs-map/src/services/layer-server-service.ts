@@ -120,10 +120,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             if (layer.tags) {
                                 gl.tags = [...gl.tags, ...layer.tags];
                             }
-                            // TODO: fix remove feature types
-                            // if (layer._source.featureTypes) {
-                            //     gl._source.featureTypes = layer._source.featureTypes;
-                            // }
 
                             if (gl.isEditable) {
                                 this.initEditableLayer(gl);

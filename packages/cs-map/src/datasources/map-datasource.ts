@@ -369,7 +369,6 @@ export class MapDatasource extends DataSources {
         layer.moveLayer(beforeId);
     }
 
-    //TODO: implement
     public selectFeature(feature: number | mapboxgl.MapboxGeoJSONFeature | undefined, layer: IMapLayer, open: boolean) {
         if (!feature) { return; }
         if (typeof (feature) === 'number') {

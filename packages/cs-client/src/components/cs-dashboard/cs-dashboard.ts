@@ -174,7 +174,6 @@ export class CsDashboard extends Vue {
           this.dashboard.content = d;
 
           // if dashboard manager availabe, trigger data loaded event
-          // TODO: more or less legacy, check if still used by projects, other wise use content loaded, simular to widgets
           if (this.dashboard._manager && typeof (this.dashboard._manager.dataLoaded) === 'function') {
             this.dashboard._manager.dataLoaded(d);
           }

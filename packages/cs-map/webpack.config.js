@@ -12,14 +12,13 @@ const config = buildConfig(
         axios: 'axios',
         '@mapbox/mapbox-gl-draw': '@mapbox/mapbox-gl-draw',
         '@mapbox/mapbox-gl-geocoder' : '@mapbox/mapbox-gl-geocoder',
-        '@mapbox/mapbox-gl-traffic' : '@mapbox/mapbox-gl-traffic',        
-        "osmtogeojson": "osmtogeojson"
+        '@mapbox/mapbox-gl-traffic' : '@mapbox/mapbox-gl-traffic'        
     },
     'csmap'
 );
 
 
-config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
+// config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
 
 config.node = {
     fs: 'empty',
