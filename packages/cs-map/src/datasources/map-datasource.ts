@@ -126,18 +126,20 @@ export class MapDatasource extends DataSources {
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = rl._source = source;
-                rl.enabled = true;
+                rl.enabled = (args?.enabled !== undefined) ? args.enabled : true;
 
                 rl.initLayer(this).then(() => {
                     // rl.popupContent = undefined;
                     if (this.layers) {
                         this.layers.push(rl);
-                        this.showLayer(rl).then(() => {
-                            this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
-                            resolve(rl);
-                        }).catch(() => {
-                            reject();
-                        });
+                        if (rl.enabled) {
+                            this.showLayer(rl).then(() => {
+                                this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
+                                resolve(rl);
+                            }).catch(() => {
+                                reject();
+                            });
+                        }
                     }
                 }).catch(() => {
                     console.log('error loading');
@@ -168,9 +170,27 @@ export class MapDatasource extends DataSources {
             } else {
                 source._meta = meta;
             }
+
+            if (args?.enabled !== undefined && args!.enabled === false) {
+                const rl = new GeojsonPlusLayer(args);
+                if (!rl.id) {
+                    rl.id = source.id ? source.id : title;
+                }
+                rl.title = title;
+                rl.source = source;
+                rl.openFeatureDetails = true;
+                rl.style = style ? style : DEFAULT_LAYER_STYLE;                
+                rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
+                rl.initLayer(this).then(() => {                                            
+                    this.layers.push(rl);                
+                    resolve(rl);
+                })
+            } else {
             // this.updateSource(source);            
-            const layer = await this.addGeojsonLayerFromSource(title, source, style, args);
-            resolve(layer);
+                const layer = await this.addGeojsonLayerFromSource(title, source, style, args);
+                resolve(layer);
+            }
+            
         });
     }
 
