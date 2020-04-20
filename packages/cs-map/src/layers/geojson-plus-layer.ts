@@ -55,7 +55,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private popup = new mapboxgl.Popup({
         closeButton: false
     });
-    private hoveredStateId = null;
+    private hoveredStateId : any = null;
 
     // #endregion Properties (32)
 
@@ -144,7 +144,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     public async initLayer(manager: MapDatasource): Promise<IMapLayer> {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             await super.initLayer(manager);
 
             // store original layouts
@@ -181,8 +181,8 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
             // add reference to this maplayers manager
             this._manager = manager;
-            this._initialized = true;
-            resolve(this);
+            this._initialized = true;           
+            resolve(this);           
         });
     }
 
@@ -481,14 +481,14 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     private onLeave(e) {
-        if (this.Map && this._events) {
+        if (this.Map && this._events && this.MapControl) {
             this.Map.map.getCanvas().style.cursor = '';
             if (this.popupContent) { this.popup.remove(); }
             this._events.publish(CsMap.FEATURE, CsMap.FEATURE_MOUSE_LEAVE, {
                 features: e.features,
                 context: e
             });
-            if (this.hoveredStateId && this._source) {
+            if (this.hoveredStateId && this._source && this._source.id) {
                 this.MapControl.setFeatureState(
                     { source: this._source.id, id: this.hoveredStateId },
                     { hover: false }
@@ -499,14 +499,14 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     private onMove(e) {
-        if (this.Map) {
+        if (this.Map && this.MapControl) {
             if (this.popupContent && e && e.features) {
                 this.createPopup(this.Map, this, e);
             }
-            if (e.features.length > 0 && this._source) {
+            if (e.features.length > 0 && this._source && this._source.id) {
                 if (this.hoveredStateId) {
                     this.MapControl.setFeatureState(
-                        { source: this._source?.id, id: this.hoveredStateId },
+                        { source: this._source.id, id: this.hoveredStateId },
                         { hover: false }
                     );
                 }

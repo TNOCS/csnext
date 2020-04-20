@@ -182,7 +182,9 @@ export class MapDatasource extends DataSources {
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;                
                 rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
                 rl.initLayer(this).then(() => {                                            
-                    this.layers.push(rl);                
+                    if (this.layers) {
+                        this.layers.push(rl);                
+                    }
                     resolve(rl);
                 })
             } else {
