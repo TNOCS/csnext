@@ -9,11 +9,11 @@
                 <!-- <v-text-field v-model="target[field._key]"></v-text-field> -->
             <v-menu :close-on-content-click="false" max-width="290">
                 <template v-slot:activator="{ on }">
-                    <v-text-field v-model="target[field._key]" :label="$cs.Translate(field.title)" v-on="on">
-                            <v-icon slot="append" :color="target[field._key]">color_lens</v-icon>
+                    <v-text-field v-model="ColorValue" :label="$cs.Translate(field.title)" v-on="on">
+                            <v-icon slot="append" :color="ColorValue">color_lens</v-icon>
                     </v-text-field>
                 </template>
-                <v-color-picker v-model="target[field._key]" mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>    
+                <v-color-picker v-model="ColorValue" mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>    
             </v-menu>
         </template>
         <template v-if="field.type === 'rating'">
