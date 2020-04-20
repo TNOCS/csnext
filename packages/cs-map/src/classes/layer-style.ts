@@ -431,7 +431,9 @@ export class LayerStyle implements ILayerStyle {
     @FormField({ title: 'Styles', type: 'object' })
     public mapbox?: MapboxStyles;
     @FormField({ title: 'Opacity', type: 'number', min: 0, max: 100, step: 1 })
-    public opacity?: number = 100;
+    public opacity?: number = 50;
+    @FormField({ title: 'Hover Opacity', type: 'number', min: 0, max: 100, step: 1 })
+    public hoverOpacity?: number = 75;
     public showSymbol?: boolean;
     public _opacity?: number;
     public _originalMapbox?: MapboxStyles;
