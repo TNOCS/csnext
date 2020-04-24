@@ -205,27 +205,6 @@ export class FeatureComponent extends WidgetBase {
     }
 
     public contentLoaded() {
-        // this.initMenu();
-        // this.updateSections();
-        // this.busManager.subscribe(this.manager.events, 'legends', (a, e) => {
-        //     this.$forceUpdate();
-        // });
-
-        // if (this.layer) {
-        //     this.busManager.subscribe(this.layer._events, 'feature', (
-        //         (a: string, f: FeatureEventDetails) => {
-        //             if (a === CsMap.FEATURE_SELECT) {
-        //                 if (this.widget.data.layer === f.layer) {
-        //                     this.widget.data = f;
-        //                     this.updateSections();
-        //                     this.updateFilter();
-        //                 } else {
-        //                     alert('layer switch');
-        //                 }
-        //             }
-        //         }));
-        // }
-
         if (this.manager) {
             this.busManager.subscribe(this.manager.events, 'legends', () => {
                 this.updateSections();
@@ -277,7 +256,6 @@ export class FeatureComponent extends WidgetBase {
     public zoomIn() {
         if (!this.manager || !this.feature) { return; }
         this.manager.zoomFeature(this.feature);
-        
     }
 
     @Watch('sectionsPanels')

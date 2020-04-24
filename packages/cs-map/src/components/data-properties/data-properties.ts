@@ -168,6 +168,11 @@ export class DataProperties extends WidgetBase {
                 this.updateSections();
             }
         });
+        this.busManager.subscribe(this.data.events, StatsDatasource.TIME_TOPIC, (action: string, date: number) => {
+            if (action === StatsDatasource.FOCUS_TIME_CHANGED) {                     
+                this.updateSections();                    
+            }
+        });
         // this.busManager.subscribe(this.data.events, '')
         this.updateSections();
     }

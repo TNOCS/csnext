@@ -40,14 +40,14 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/mapbox-gl": "^1.9.0",
+        "@types/mapbox-gl": "^1.9.1",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },
     "peerDependencies": {
         "vega": "^5.10.1",
-        "vega-embed": "^6.5.2",
-        "vega-lite": "^4.10.1"
+        "vega-embed": "^6.6.0",
+        "vega-lite": "^4.11.0"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

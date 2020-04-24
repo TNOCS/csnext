@@ -5,7 +5,7 @@ import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 
-import { BaseLayer, MapDatasource, LayerLegend, CsMap } from '../../';
+import { BaseLayer, MapDatasource, LayerLegend, CsMap, StatsDatasource } from '../../';
 import { PropertyType } from '@csnext/cs-data';
 // import Handlebars from 'handlebars';
 
@@ -105,22 +105,6 @@ export class FeatureDetails extends WidgetBase {
     public contentLoaded() {
         this.initMenu();
         this.updateSections();
-
-        // if (this.layer) {
-        //     this.busManager.subscribe(this.layer._events, 'feature', (
-        //         (a: string, f: FeatureEventDetails) => {
-        //             if (a === CsMap.FEATURE_SELECT) {
-        //                 if (this.widget.data.layer === f.layer) {
-        //                     this.widget.data = f;
-        //                     this.updateSections();
-        //                     this.updateFilter();
-        //                 } else {
-        //                     alert('layer switch');
-        //                 }
-        //             }
-        //         }));
-        // }
-
         if (this.manager) {
             this.busManager.subscribe(this.manager.events, CsMap.LEGENDS, () => {
                 this.updateSections();
@@ -184,7 +168,6 @@ export class FeatureDetails extends WidgetBase {
             }
         }
         this.featureSectionsExpanded[this.layer.id] = res;
-        // localStorage.featureSectionsExpanded = JSON.stringify(this.featureSectionsExpanded);
     }
 
     /** get list of available section, with their properties */
