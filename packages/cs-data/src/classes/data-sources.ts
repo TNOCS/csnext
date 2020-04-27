@@ -175,18 +175,9 @@ export class DataSources implements IDatasource {
                                             }
                                         }
                                     }
-                                    feature.properties = { ...feature.properties, ...properties, ...{ _when: when } };
-                                    console.log(this.dates);
+                                    feature.properties = { ...feature.properties, ...properties, ...{ _when: when } };                                    
                                 }
-                            }
-                            // let merge_result = merge(first._source._data, second._data, fk.reference.fields[0], fk.fields[0]);
-                            // console.log('merge result');
-                            // console.log(merge_result);
-                            // for (const feature of first._source._data.features) {
-                            //     console.log(`Merge ${feature.properties[fk.reference.fields]}`);
-                            // }
-                            // }
-
+                            }                        
                         }
                     }
                 }
