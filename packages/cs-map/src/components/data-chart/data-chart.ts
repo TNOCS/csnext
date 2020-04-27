@@ -25,6 +25,7 @@ export class DataChart extends WidgetBase {
     public section!: InsightSection;
     public layer!: GeojsonPlusLayer;
     public features!: mapboxgl.MapboxGeoJSONFeature[];
+    public mark?: string;
 
     public vegadata: any = {};
 
@@ -94,8 +95,25 @@ export class DataChart extends WidgetBase {
                     switch (this.options.charttype) {
                         case 'prop-history':
                             spec = {
-                                'mark': 'line',
+                                'mark': this.options.mark ?? 'bar',
                                 'width': 350,
+                                "color": {
+                                    "x1": 1,
+                                    "y1": 1,
+                                    "x2": 1,
+                                    "y2": 0,
+                                    "gradient": "linear",
+                                    "stops": [
+                                      {
+                                        "offset": 0,
+                                        "color": "white"
+                                      },
+                                      {
+                                        "offset": 1,
+                                        "color": "darkgreen"
+                                      }
+                                    ]
+                                  },
                                 'encoding': {
                                     'y': {
                                         'field': 'value',
@@ -111,18 +129,21 @@ export class DataChart extends WidgetBase {
                             };
                             if (this.features.length === 1) {
                                 const feature = this.features[0];                    
-                                if (this.options.key && feature && feature.properties && feature.properties.hasOwnProperty('_when') && feature.properties._when?.hasOwnProperty(this.options.key)) {                                    
-                                    const d = feature.properties._when[this.options.key];
-                                    let values : any = [];
-                                    for (const date in d) {
-                                        if (d.hasOwnProperty(date)) {
-                                            const value = d[date];
-                                            values.push({date : parseInt(date), value});
-                                        }
-                                    }                                    
-                                    spec.data = { values };
-                                }
-                                console.log(JSON.stringify(spec));
+                                if (this.options.key && feature && feature.properties && feature.properties.hasOwnProperty('_when'))
+                                {
+                                    const when = (typeof(feature.properties._when) === 'string') ? JSON.parse(feature.properties._when) : feature.properties._when;
+                                    if (when.hasOwnProperty(this.options.key)) {
+                                        const d = when[this.options.key];
+                                        let values : any = [];
+                                        for (const date in d) {
+                                            if (d.hasOwnProperty(date)) {
+                                                const value = d[date];
+                                                values.push({date : parseInt(date), value});
+                                            }
+                                        }                                    
+                                        spec.data = { values };
+                                    }
+                                }                                
                             }
                             break;
                         case 'rows':
