@@ -5,6 +5,7 @@ import {
     SwaggerModule,
     SwaggerDocumentOptions
 } from '@nestjs/swagger';
+import compression from 'compression';
 import { INestApplication, Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
 export { LayerController } from './layers/layers.controller';
@@ -88,6 +89,7 @@ export class NestServer {
 
             SwaggerModule.setup('api', this.app, document);
             this.app.enableCors({ origin: true });
+            this.app.use(compression());
             if (this.config && this.config.staticFolder) {
 
                 if (this.config.staticPath) {
