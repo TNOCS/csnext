@@ -45,7 +45,7 @@
         "@types/turf": "^3.5.32"
     },
     "peerDependencies": {
-        "vega": "^5.10.1",
+        "vega": "^5.11.0",
         "vega-embed": "^6.6.0",
         "vega-lite": "^4.11.0"
     },
