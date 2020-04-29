@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-timeline",
-    "version": "0.0.128",
+    "version": "0.0.129",
     "description": "cs-timeline",
     "main": "./lib/cstimeline.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -19,15 +19,15 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.128",
-        "@csnext/cs-core": "^0.0.128",
-        "vis-timeline": "7.3.4",
-        "keycharm": "0.3.1",
-        "vis-uuid": "1.1.4",
-        "vis-util": "4.0.0",
+        "@csnext/cs-client": "^0.0.129",
+        "@csnext/cs-core": "^0.0.129",
         "@egjs/hammerjs": "2.0.17",
+        "keycharm": "0.3.1",
+        "propagating-hammerjs": "1.4.7",
         "vis-data": "6.5.1",
-        "propagating-hammerjs": "1.4.7"
+        "vis-timeline": "7.3.4",
+        "vis-util": "4.0.0",
+        "vis-uuid": "1.1.4"
     },
     "devDependencies": {
         "moment-locales-webpack-plugin": "1.2.0"
