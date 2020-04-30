@@ -15,6 +15,8 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
+import PeliasGeocoder from '../../controls/pelias/pelias-geocoder'
+import '../../controls/pelias/pelias-geocoder.css';
 
 import {
     MapDatasource,
@@ -144,6 +146,7 @@ export class CsMap extends WidgetBase {
     private _pointerPickerActivated = false;
     private geocoderControl?: MapboxGeocoder;
     private geolocatorControl?: GeolocateControl;
+    private peliasControl?: any;
     private gridControl?: GridControl;
     private layersWidgetControl?: LayersWidgetControl;
     private legendControl?: LayerLegendControl;
@@ -436,6 +439,8 @@ export class CsMap extends WidgetBase {
 
                 this.showGeocoder(this.mapOptions.showGeocoder || false);
 
+                this.showPelias(this.mapOptions.showPelias || false);
+
                 this.updateNavigationControl();
 
                 this.showStyles(this.mapOptions.showStyles || false);
@@ -613,6 +618,35 @@ export class CsMap extends WidgetBase {
             this.map.addControl(this.geolocatorControl, 'top-left');
         }
     }
+
+    @Watch('widget.options.showPelias')
+    public showPelias(enabled: boolean = true, old?: boolean) {        
+        if (!enabled && old && this.peliasControl) {
+            this.map.removeControl(this.peliasControl);
+        }
+        if (enabled && this.options.peliasOptions) {
+            if (!this.peliasControl) {
+                var iconMarkerEl = document.createElement("div");
+                iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
+                  "<div class='marker-pulse'></div>";
+
+                this.peliasControl = new PeliasGeocoder(
+                    {params: {'access-token': this.options.peliasOptions.accessToken},
+                flyTo: 'hybrid',
+                wof: true,
+                url: this.options.peliasOptions.url ?? 'https://places.jawg.io/v1',
+                useFocusPoint: true,
+                marker: {
+                  icon: iconMarkerEl,
+                  multiple: false
+                },
+                customAttribution: ''       
+              });
+            }
+            this.map.addControl(this.peliasControl, 'top-right');
+        }
+    }
+
 
     @Watch('widget.options.showGrid')
     public showGrid(enabled: boolean, old?: boolean) {
