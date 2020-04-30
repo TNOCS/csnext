@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 const locales = require('../../assets/locales.json');
 import { PackageExplorer } from './../package-explorer/package-explorer';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import mapboxgl, { GeolocateControl, MapboxOptions, NavigationControl, ScaleControl } from 'mapbox-gl';
+import mapboxgl, { GeolocateControl, MapboxOptions, NavigationControl, ScaleControl, Marker } from 'mapbox-gl';
 import { FeatureCollection, Feature } from 'geojson';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -624,23 +624,16 @@ export class CsMap extends WidgetBase {
         if (!enabled && old && this.peliasControl) {
             this.map.removeControl(this.peliasControl);
         }
+        
         if (enabled && this.options.peliasOptions) {
-            if (!this.peliasControl) {
-                var iconMarkerEl = document.createElement("div");
-                iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
-                  "<div class='marker-pulse'></div>";
-
+            if (!this.peliasControl) {                
                 this.peliasControl = new PeliasGeocoder(
                     {params: {'access-token': this.options.peliasOptions.accessToken},
                 flyTo: 'hybrid',
                 wof: true,
                 url: this.options.peliasOptions.url ?? 'https://places.jawg.io/v1',
-                useFocusPoint: true,
-                marker: {
-                  icon: iconMarkerEl,
-                  multiple: false
-                },
-                customAttribution: ''       
+                useFocusPoint: true,     
+                customAttribution: 'JAWG search'       
               });
             }
             this.map.addControl(this.peliasControl, 'top-right');
