@@ -51,7 +51,8 @@ export class NestServer {
         host?: string,
         port?: number,
         external?: string,
-        swaggerConfig?: any
+        swaggerConfig?: any,
+        globalPrefix?: string
     ): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             // this.app = await NestFactory.create(moduleType);
@@ -67,7 +68,6 @@ export class NestServer {
                 external =
                     process.env.LAYER_SERVER_EXTERNAL || 'localhost:3009';
             }
-
             if (swaggerConfig) {
                 this.swaggerConfig = swaggerConfig;
             } else {
@@ -77,6 +77,10 @@ export class NestServer {
                     .setVersion('0.0.1')
                     .addTag('layer')
                     .build();
+            }
+            if (globalPrefix) {
+                this.app.setGlobalPrefix(globalPrefix);
+                Logger.log(`SetGlobalPrefix '${globalPrefix}`);
             }
 
             // this.server.use('/dashboard', express.static(path.join(__dirname, '/dashboard')));
