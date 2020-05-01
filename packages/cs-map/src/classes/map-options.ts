@@ -2,6 +2,11 @@ import { WidgetOptions, Form, FormField, IDatasource } from '@csnext/cs-core';
 import { MapboxOptions } from 'mapbox-gl'
 import { MapboxStyleDefinition } from '..';
 
+export class PeliasOptions {
+    public accessToken?: string;
+    public url?: string;
+}
+
 @Form({ title: 'Map Options' })
 export class MapOptions extends WidgetOptions {
     // #region Properties (23)
@@ -21,6 +26,7 @@ export class MapOptions extends WidgetOptions {
     public showDraw?: boolean = false;
     public showEditor?: boolean = false;
     public showGeocoder?: boolean = true;
+    public showPelias?: boolean = true;
     public showGeolocater?: boolean = false;
     public showGrid?: boolean = false;
     public showLayers?: boolean = true;
@@ -43,6 +49,7 @@ export class MapOptions extends WidgetOptions {
     public styleList?: MapboxStyleDefinition[] = [];
     // @FormField({title: 'MapGL token'})
     public token?: string;
+    public peliasOptions?: PeliasOptions;
 
     // #endregion Properties (23)
 
