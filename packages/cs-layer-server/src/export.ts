@@ -3,10 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import {
     DocumentBuilder,
     SwaggerModule,
-    SwaggerDocumentOptions
+    OpenAPIObject
 } from '@nestjs/swagger';
 import compression from 'compression';
-import { INestApplication, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './shared';
@@ -17,6 +17,7 @@ export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
 export { LogService } from './logs/log-service';
 export { LogController } from './logs/log-controller';
+export * from './server/server-basic-auth-config';
 export * from './classes/layer-definition';
 export * from './classes/mapbox-style';
 export * from './classes/layer-source';
@@ -30,12 +31,19 @@ export * from './log-items/log-items-controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import express from 'express';
+import basicAuth from 'express-basic-auth';
+import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
+
 
 export class ServerConfig {
     public staticFolder?: string;
     public staticPath?: string;
     public hbsViewFolder?: string;
     public assetsPath?: string;
+    public openApi: boolean = true;
+    public cors: boolean = true;
+    public basicAuth?: ServerBasicAuthConfig;
+  
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -44,6 +52,7 @@ export class NestServer {
     public app!: NestExpressApplication;
     public swaggerConfig!: any;
     public config?: ServerConfig;
+    public openAPI?: OpenAPIObject;
 
     public bootstrap(
         moduleType: any,
@@ -54,10 +63,8 @@ export class NestServer {
         swaggerConfig?: any,
         globalPrefix?: string
     ): Promise<boolean> {
-        return new Promise(async (resolve, reject) => {
-            // this.app = await NestFactory.create(moduleType);
-            this.app = await NestFactory.create<NestExpressApplication>(moduleType, { cors: true /* enable preflight cors */ });
-            // // get config from env settings
+        return new Promise(async (resolve) => {
+            this.app = await NestFactory.create<NestExpressApplication>(moduleType, { cors: this.config.cors});
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
             }
@@ -68,36 +75,47 @@ export class NestServer {
                 external =
                     process.env.LAYER_SERVER_EXTERNAL || 'localhost:3009';
             }
-            if (swaggerConfig) {
-                this.swaggerConfig = swaggerConfig;
-            } else {
-                this.swaggerConfig = new DocumentBuilder()
-                    .setTitle(title)
-                    .setDescription(title)                
-                    .setVersion('0.0.1')
-                    .addTag('layer')
-                    .build();
+
+            if (this.config && this.config.openApi) {
+                if (swaggerConfig) {
+                    this.swaggerConfig = swaggerConfig;
+                } else {
+                    this.swaggerConfig = new DocumentBuilder()
+                        .setTitle(title)
+                        .setDescription(title)
+                        .setVersion('0.0.1')
+                        .addTag('layer')
+                        .build();
+                }
+
+                this.openAPI = SwaggerModule.createDocument(
+                    this.app,
+                    this.swaggerConfig
+                );
+    
+                SwaggerModule.setup('api', this.app, this.openAPI);
             }
+
             if (globalPrefix) {
                 this.app.setGlobalPrefix(globalPrefix);
                 Logger.log(`SetGlobalPrefix '${globalPrefix}`);
             }
 
-            // this.server.use('/dashboard', express.static(path.join(__dirname, '/dashboard')));
-            // this.server.get('/swagger.json', (_req, res) => res.json(document));
-
-            const document = SwaggerModule.createDocument(
-                this.app,
-                this.swaggerConfig
-            );
-
-            SwaggerModule.setup('api', this.app, document);
-            this.app.enableCors({ origin: true });
+            if (this.config && this.config.basicAuth && this.config.basicAuth.enabled) {
+                this.app.use(basicAuth({     
+                    challenge: this.config.basicAuth.challenge,               
+                    users: this.config.basicAuth.users
+                }));
+            }
+           
+            if (this.config && this.config.cors) {
+                this.app.enableCors({ origin: true });
+            }
             this.app.use(compression());
             if (this.config && this.config.staticFolder) {
 
                 if (this.config.staticPath) {
-                    const publicDirectory: string = this.config.staticFolder;                    
+                    const publicDirectory: string = this.config.staticFolder;
                     this.app.use(this.config.staticPath, express.static(publicDirectory));
                     Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
                 }
