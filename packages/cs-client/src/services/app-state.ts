@@ -54,6 +54,24 @@ export class AppState extends AppStateBase {
   public dashboardManager: DashboardManager;
   public loader: Loader;
 
+  /** gets server url */
+  public serverUrl(url?: string) : string {
+    if (process.env.VUE_APP_SERVER_URL) {
+      return process.env.VUE_APP_SERVER_URL;
+    } else if (window.hasOwnProperty('_env') && ((window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL'))) {
+        return (window as any)._env.VUE_APP_SERVER_URL;
+    } 
+    else if (url !== undefined) {
+      return url;
+    } else {
+        var protocol = window.location.protocol;
+        var hostname = window.location.hostname;
+        var port = window.location.port;
+        const serverurl = `${protocol}//${hostname}:${port}`;
+        return serverurl;
+    } 
+  }
+
   public socket?: SocketIOClient.Socket;
   /** Manages active project */
   // public projectManager?: ProjectManager;
