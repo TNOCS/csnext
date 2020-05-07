@@ -12,12 +12,14 @@ import {
   AppState,
   Logger,
   LayoutManager,
-  DashboardManager
+  DashboardManager,
+  CsToolbarMenus
 } from '../../';
 
 @Component({
   name: 'cs-dashboard',
   template: require('./cs-dashboard.html'),
+  components: { CsToolbarMenus },
   props: {
     dashboard: null
   }

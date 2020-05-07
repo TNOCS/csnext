@@ -1,7 +1,7 @@
 <v-col class="cs-dashboard-col pa-0">
 
   <v-flex shrink class="dashboard-toolbar-flex">
-    <v-toolbar
+    <!-- <v-toolbar
       :dense="denseToolbar()"
       text
       secondary
@@ -12,7 +12,35 @@
         $cs.Translate(dashboard.title)
       }}</v-toolbar-title>
             
-    </v-toolbar>
+    </v-toolbar> -->
+
+    <v-toolbar
+      v-if="dashboard.options.toolbarOptions" 
+          :absolute="dashboard.options.toolbarOptions.absolute"
+          :prominent="dashboard.options.toolbarOptions.prominent"
+          :color="dashboard.options.toolbarOptions.backgroundColor"
+          :elevation="dashboard.options.toolbarOptions.elevation"
+          :dense="dashboard.options.toolbarOptions.dense"
+          :collapse="dashboard.options.toolbarOptions.collapse"
+          :flat="dashboard.options.toolbarOptions.flat"
+        >
+          <v-icon
+            v-if="dashboard.options.icon && !dashboard.options.toolbarOptions.hideIcon"
+            class="pr-3"
+            >{{ dashboard.options.icon }}</v-icon
+          >
+          <v-toolbar-title
+            v-if="!dashboard.options.toolbarOptions || !dashboard.options.toolbarOptions.hideTitle"
+            >{{ $cs.Translate(dashboard.title) }}</v-toolbar-title
+          >
+          <v-spacer></v-spacer>
+
+          <!-- <cs-toolbar-menus
+            v-if="!dashboard.options.hideMenu"
+            :searchProperty="dashboard.options.searchProperty"
+            :menus.sync="dashboard.options.menus"            
+          ></cs-toolbar-menus> -->
+        </v-toolbar>
 
     <template
         v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation === 'stepper-inline'"
