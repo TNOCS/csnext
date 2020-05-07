@@ -14,6 +14,14 @@
   class="cs-nav-drawer"
   :app="true"
 >
+  <v-btn
+    fab
+    depressed
+    small
+    @click="closeSidebar()"
+    class="primary sidebar-back-button"
+    ><v-icon>arrow_forward</v-icon></v-btn
+  >
   <v-toolbar v-if="sideBar.title">
     <v-list dense>
       <v-list-item>
@@ -32,8 +40,9 @@
   <div v-if="sideBar.dashboard" class="sidebar-dashboard-container">
     <cs-dashboard :dashboard="sideBar.dashboard"></cs-dashboard>
   </div>
-  
-  <simplebar class="sidebar-simplebar"
+
+  <simplebar
+    class="sidebar-simplebar"
     v-else-if="app.project.navigation.style==='left-hierarchy' && !sideBar.right"
   >
     <v-list class="cs-sidebar-list">
