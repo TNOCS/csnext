@@ -34,7 +34,6 @@ import express from 'express';
 import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
 
-
 export class ServerConfig {
     public staticFolder?: string;
     public staticPath?: string;
@@ -43,7 +42,6 @@ export class ServerConfig {
     public openApi: boolean = true;
     public cors: boolean = true;
     public basicAuth?: ServerBasicAuthConfig;
-  
 }
 
 // tslint:disable-next-line: max-classes-per-file
