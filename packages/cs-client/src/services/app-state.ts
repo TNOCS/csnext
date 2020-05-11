@@ -40,6 +40,12 @@ export class AppState extends AppStateBase {
   public static SOCKET_RECONNECTING = 'socket-reconnecting';
   public static YES = 'YES';
   public static NO = 'NO';
+  public static INFO_WIDGET = 'info-widget';
+  public static INFO_WIDGET_ADDED = 'info-widget-added';
+  public static INFO_WIDGET_CLEARED = 'info-widget-cleared';
+  public static NOTIFICATION = 'notification';
+  public static NOTIFICATION_ADDED = 'new';
+  public static NOTIFICATION_CLEARED = 'clear-all'
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -53,6 +59,7 @@ export class AppState extends AppStateBase {
   public layoutManager: LayoutManager;
   public dashboardManager: DashboardManager;
   public loader: Loader;
+  public activeInfoWidget?: IWidget;
 
   /** gets server url */
   public serverUrl(url?: string) : string {
@@ -344,6 +351,16 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public addInfoWidget(widget: IWidget) {
+    // Vue.set(this, 'activeInfoWidget', widget);
+    this.activeInfoWidget = widget;
+    this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_ADDED, widget);
+  }
+
+  public clearInfoWidget() {
+    this.activeInfoWidget = undefined;
+    this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_CLEARED, undefined);
+  }
   
   public TriggerNotification = this.triggerNotification;
 
@@ -362,7 +379,7 @@ export class AppState extends AppStateBase {
       ...notification
     };
 
-    this.bus.publish('notification', 'new', notification);
+    this.bus.publish(AppState.NOTIFICATION, AppState.NOTIFICATION_ADDED, notification);
     if (
       this.project.notifications &&
       this.project.notifications.items &&
@@ -373,7 +390,7 @@ export class AppState extends AppStateBase {
   }
 
   public clearNotifications() {
-    this.bus.publish('notification', 'clear-all');
+    this.bus.publish(AppState.NOTIFICATION, AppState.NOTIFICATION_CLEARED);
     if (this.project.notifications && this.project.notifications.items) {
       this.project.notifications.items.length = 0;
     }

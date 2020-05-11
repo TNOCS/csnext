@@ -468,16 +468,16 @@ export class CsApp extends Vue {
   public InitNotifications() {
     if (this.$cs.bus) {
       this.busManager.subscribe(this.$cs.bus,
-        'notification',
+        AppState.NOTIFICATION,
         (action: string, notification: INotification) => {
-          if (action === 'new') {
+          if (action === AppState.NOTIFICATION_ADDED) {
             if (this.lastNotification.clickCallback) {
               // Call callback of previous notification before closing it
               // this.lastNotification.clickCallback();
             }
             this.lastNotification = notification;
             this.UpdateNotifications();
-          } else if (action === 'clear-all') {
+          } else if (action === AppState.NOTIFICATION_CLEARED) {
             if (this.lastNotification && this.lastNotification.clickCallback) {
               // Call callback of previous notification before closing it
               this.lastNotification.clickCallback();
