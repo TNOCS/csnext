@@ -65,6 +65,7 @@ export class CsMap extends WidgetBase {
     public static DRAWLAYER = 'drawlayer';
     public static MAP_DOUBLE_CLICK = 'map.doubleclick';
     public static MAP_CLICK = 'map.click';
+    public static MAP_CONTEXT = 'map.context';
     public static MAP = 'map';
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
@@ -307,6 +308,21 @@ export class CsMap extends WidgetBase {
             // init map
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
+            this.map.on('styleimagemissing', (e:any) => {
+                if (this.manager && this.manager.layers) {
+                for (const layer of this.manager.layers) {
+                    if (layer.extensions) {
+                        for (const ext of layer._extensions) {
+                            if (typeof ext.missingImage === 'function') {
+                                ext.missingImage(e.id);
+                            }
+                            
+                        }
+                    }
+                }
+                }                
+            });
+
             this.map.on('dblclick', (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_DOUBLE_CLICK, ev);
@@ -316,6 +332,12 @@ export class CsMap extends WidgetBase {
             this.map.on('click', (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_CLICK, ev);
+                }
+            });
+
+            this.map.on("contextmenu", (ev) =>{
+                if (this.manager && this.manager.events) {
+                    this.manager.events.publish(CsMap.MAP, CsMap.MAP_CONTEXT, ev);
                 }
             });
 
@@ -380,7 +402,7 @@ export class CsMap extends WidgetBase {
             // });
 
             // check if map has loaded
-            this.map.on('load', e => {
+            this.map.on('load', e => {                
                 this.initMapLayers();
                 this.startServices();
                 this.mapLoaded(e);
@@ -470,6 +492,7 @@ export class CsMap extends WidgetBase {
                 this.setScrollZoom(this.mapOptions.scrollZoom || true);
 
                 this.setDragPan(this.mapOptions.dragPan || true);
+
 
                 // setTimeout(() => {
                 //     if (this.mapOptions.showDetailsOnLoad) {

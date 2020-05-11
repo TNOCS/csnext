@@ -31,6 +31,7 @@ import Vue from 'vue';
 import { LayerDetails } from '../components/layer-details/layer-details';
 import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet, DataResource, Insight, InsightView } from '@csnext/cs-data';
 import { FeatureComponent } from '../components/feature-details/feature-component';
+import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -112,7 +113,8 @@ export class MapDatasource extends DataSources {
         title: string,
         source: DataSource,
         style?: LayerStyle,
-        args?: IMapLayer
+        args?: IMapLayer,
+        extentions?: ILayerExtensionType[]
     ): Promise<GeojsonPlusLayer | undefined> {
 
         return new Promise((resolve, reject) => {
@@ -127,6 +129,9 @@ export class MapDatasource extends DataSources {
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;
                 rl.source = rl._source = source;
                 rl.enabled = (args?.enabled !== undefined) ? args.enabled : true;
+                if (extentions) {
+                    rl.extensions = extentions;
+                }
 
                 rl.initLayer(this).then(() => {
                     // rl.popupContent = undefined;
@@ -157,7 +162,8 @@ export class MapDatasource extends DataSources {
         style?: LayerStyle,
         meta?: string | FeatureTypes,
         args?: IMapLayer,
-        id?: string
+        id?: string,
+        extentions?: ILayerExtensionType[]
     ): Promise<GeojsonPlusLayer> {
         return new Promise(async (resolve, reject) => {
             const source = new DataSource(geojson);
@@ -181,6 +187,9 @@ export class MapDatasource extends DataSources {
                 rl.openFeatureDetails = true;
                 rl.style = style ? style : DEFAULT_LAYER_STYLE;                
                 rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
+                if (extentions) {
+                    rl.extensions = extentions;
+                }
                 rl.initLayer(this).then(() => {                                            
                     if (this.layers) {
                         this.layers.push(rl);                
@@ -189,7 +198,7 @@ export class MapDatasource extends DataSources {
                 })
             } else {
             // this.updateSource(source);            
-                const layer = await this.addGeojsonLayerFromSource(title, source, style, args);
+                const layer = await this.addGeojsonLayerFromSource(title, source, style, args,extentions);
                 resolve(layer);
             }
             
@@ -322,7 +331,7 @@ export class MapDatasource extends DataSources {
             if (layer) { this.hideLayer(layer); }
         } else {
             Vue.set(ml, 'visible', false);
-            ml.enabled = false;
+            Vue.set(ml, 'enabled', false);            
 
             // unsubscribe all subscriptions
             ml._busManager.stop();
@@ -534,11 +543,13 @@ export class MapDatasource extends DataSources {
 
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            ml.enabled = true;
+            Vue.set(ml, 'enabled', true);            
+            Vue.set(ml, 'visible', true);
             if (this.map) {
                 this.map
                     .showLayer(ml)
                     .then(maplayer => {
+                        
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
                             this.events.publish(
@@ -770,12 +781,13 @@ export class MapDatasource extends DataSources {
 
     public updateSource(source: LayerSource): DataSource {
         const s = super.updateSource(source);
-        if (source && source.id && source._data && this.MapControl) {
+        if (s && s.id && s._data && this.MapControl) {
             const mapsource = this.MapControl.getSource(
-                source.id
+                s.id
             ) as GeoJSONSource;
-            if (mapsource) {
-                this.updateDataSet(source.id, source._data);
+            if (mapsource && s._data) {
+                mapsource.setData(s._data as GeoJSON.FeatureCollection);
+                // this.updateDataSet(source.id, source._data);
             } else if (this.map) {
                 this.map.addSource(source);
                 // this.map.initLayerSource(source);
