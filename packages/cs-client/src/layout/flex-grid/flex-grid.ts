@@ -14,6 +14,7 @@ import {
 } from './flex-grid-options';
 import { FlexWidgetOptions } from './flex-widget-options';
 import { Watch } from 'vue-property-decorator';
+import { LayoutComponent } from '../layout-component';
 
 @Component({
   template: require('./flex-grid.html'),
@@ -21,7 +22,7 @@ import { Watch } from 'vue-property-decorator';
     dashboard: null
   }
 } as any)
-export class FlexGrid extends Vue {
+export class FlexGrid extends LayoutComponent {
   public dashboard!: IDashboard;
   public containers: IFlexGridContainer[] = [];
   public get options(): FlexGridOptions {

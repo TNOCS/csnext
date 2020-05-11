@@ -12,6 +12,7 @@ import { LayoutManager } from '../..';
 
 import './css-grid.css';
 import './css-grid-templates.css';
+import { LayoutComponent } from '../layout-component';
 
 @Component({
   template: require('./css-grid.html'),
@@ -19,7 +20,7 @@ import './css-grid-templates.css';
     dashboard: null
   }
 } as any)
-export class CssGrid extends Vue {
+export class CssGrid extends LayoutComponent {
   public static id = 'css-grid';
   public dashboard?: IDashboard;
 

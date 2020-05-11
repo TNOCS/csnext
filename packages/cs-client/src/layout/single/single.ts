@@ -3,6 +3,7 @@ import Component from 'vue-class-component';
 import { IWidget, IDashboard, ILayoutManagerConfig, guidGenerator } from '@csnext/cs-core';
 import { LayoutManager } from '../../';
 import './single.css';
+import { LayoutComponent } from '../layout-component';
 
 @Component({
   name: 'single',
@@ -12,7 +13,7 @@ import './single.css';
   }
 } as any)
 /** Single layout manager. Only shows first widget full screen */
-export class Single extends Vue {
+export class Single extends LayoutComponent {
   public static id = 'single';
   public dashboard?: IDashboard;
   public widgetAvailable = false;
