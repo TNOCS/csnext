@@ -66,6 +66,7 @@ export class CsMap extends WidgetBase {
     public static MAP_DOUBLE_CLICK = 'map.doubleclick';
     public static MAP_CLICK = 'map.click';
     public static MAP_CONTEXT = 'map.context';
+    public static MAP_MOVE = 'map.move';
     public static MAP = 'map';
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
@@ -145,6 +146,8 @@ export class CsMap extends WidgetBase {
 
     public featurePickerActivated = false;
     private _pointerPickerActivated = false;
+    private cursorLocationInfoEnabled: boolean = false;
+    private cursorLocationInfo: string = '';
     private geocoderControl?: MapboxGeocoder;
     private geolocatorControl?: GeolocateControl;
     private peliasControl?: any;
@@ -341,6 +344,12 @@ export class CsMap extends WidgetBase {
                 }
             });
 
+            this.map.on("mousemove", (ev) => {
+                if (this.cursorLocationInfoEnabled) {
+                    this.cursorLocationInfo = JSON.stringify(ev.lngLat.wrap());
+                }
+            });
+
             // if (this.options.storePositionInUrl) {
             this.map.on('moveend', (() => {
                 this.updateUrlQueryParams();
@@ -458,6 +467,8 @@ export class CsMap extends WidgetBase {
                 // if (this.mapOptions.showClickLayer) {
                 //     this.addClickLayer();
                 // }
+
+                this.showCursorLocationInfo(this.mapOptions.showCursorLocationInfo || false);
 
                 this.showGeocoder(this.mapOptions.showGeocoder || false);
 
@@ -616,6 +627,17 @@ export class CsMap extends WidgetBase {
                 visualizePitch: true
             });
             this.map.addControl(this.navigationControl, 'top-left');
+        }
+    }
+
+    @Watch('widget.options.showCursorLocationInfo')
+    public showCursorLocationInfo(enabled: boolean, old?: boolean) {
+        if (!enabled && old) {
+            this.cursorLocationInfo = '';
+            this.cursorLocationInfoEnabled = false;
+        }
+        if (enabled) {
+            this.cursorLocationInfoEnabled = true;
         }
     }
 
