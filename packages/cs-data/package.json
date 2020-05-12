@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.7",
+    "@types/mapbox-gl": "1.9.1",
     "@types/neat-csv": "4.0.0",
     "@types/papaparse": "5.0.3",
     "@types/vega": "3.2.0"

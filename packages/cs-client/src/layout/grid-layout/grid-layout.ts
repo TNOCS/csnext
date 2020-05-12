@@ -1,3 +1,4 @@
+import { LayoutComponent } from './../layout-component';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { IDashboard, guidGenerator } from '@csnext/cs-core';
@@ -11,7 +12,7 @@ import './grid-layout.css';
     dashboard: null
   }
 } as any)
-export class GridLayout extends Vue {
+export class GridLayout extends LayoutComponent {
   public static id = 'grid';
   public dashboard?: IDashboard;
 }

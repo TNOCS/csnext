@@ -12,12 +12,15 @@ import {
   AppState,
   Logger,
   LayoutManager,
-  DashboardManager
+  DashboardManager,
+  CsToolbarMenus
 } from '../../';
+import { LayoutComponent } from '../../layout/layout-component';
 
 @Component({
   name: 'cs-dashboard',
   template: require('./cs-dashboard.html'),
+  components: { CsToolbarMenus },
   props: {
     dashboard: null
   }
@@ -26,6 +29,7 @@ export class CsDashboard extends Vue {
   public dashboard?: IDashboard;
   public selectedStepper: number = 1;
   public selectedTab: number = 0;
+  public layoutComponent?: LayoutComponent;
 
   @Watch('dashboard')
   public dashboardChanged(n: IDashboard) {
@@ -246,6 +250,7 @@ export class CsDashboard extends Vue {
   }
 
   public get component(): Vue {
+    if (this.layoutComponent) { return this.layoutComponent; }
     if (this.dashboard) {
       // use default single layout, if no layout has been specified
       if (!this.dashboard.layout) {
@@ -254,11 +259,12 @@ export class CsDashboard extends Vue {
 
       // lookup layout manager
       if (LayoutManager.layoutManagers.hasOwnProperty(this.dashboard.layout)) {
-        return LayoutManager.layoutManagers[this.dashboard.layout].component;
+        this.layoutComponent = LayoutManager.layoutManagers[this.dashboard.layout].component;
       } else {
         Logger.error('dashboard', `Layout manager ${this.dashboard.layout} is not available, using grid instead`);
-        return LayoutManager.layoutManagers.grid.component;
+        this.layoutComponent = LayoutManager.layoutManagers.grid.component;
       }
+      return this.layoutComponent || new Vue();
     }
     return new Vue();
   }

@@ -163,10 +163,20 @@ export class GeojsonLayer extends BaseLayer {
         }
     }
 
+    public async refreshSourceUrl() {
+        if (this._source && this._source.url) {
+            await this._source.refreshSource();      
+            if (this._source._data) { this.updateGeojson(this._source._data); }
+            
+        }
+    }
+
     public addLayer(widget: CsMap) {
         if (!this.id || !this._source) {
             return;
         }
+
+      
 
         const mblayer = {
             id: this.id,
@@ -193,7 +203,7 @@ export class GeojsonLayer extends BaseLayer {
              widget.map.removeLayer(this.id);
          }
 
-        this.registerLayerExtensions();
+         this.registerLayerExtensions();
 
         widget.map.addLayer(mblayer);
         this.state = 'visible';
@@ -367,7 +377,7 @@ export class GeojsonLayer extends BaseLayer {
 
     // #region Protected Methods (2)
 
-    protected registerLayerExtensions() {
+    protected registerLayerExtensions() {        
         if (this.extensions) {
             this.extensions.forEach(ext => {
                 const extensionType = CsMap.layerExtensions.find(
@@ -376,7 +386,7 @@ export class GeojsonLayer extends BaseLayer {
                 if (extensionType && extensionType.getInstance) {
                     const extension = extensionType.getInstance(ext.options);
                     this._extensions.push(extension);
-                    extension.start(this);
+                    extension.start(this);                    
                 } else {
                     console.warn(`Could not find extension ${ext.id}`);
                 }

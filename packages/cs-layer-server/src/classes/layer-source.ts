@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Feature } from 'geojson';
 
 /** actual layer source (content) for a layer */
 export class LayerSource implements GeoJSON.FeatureCollection {
     @ApiProperty({ required: true})
     public type: 'FeatureCollection' = 'FeatureCollection';
     @ApiProperty()
-    public features!: any;
+    public features!: Feature[];
     @ApiProperty()
     public bbox?: [number, number, number, number] | [number, number, number, number, number, number] | undefined;
     @ApiProperty({ required: true})

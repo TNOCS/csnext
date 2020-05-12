@@ -6,9 +6,10 @@ import { AppState, Logger, CsDashboard } from '../../';
 import './cs-sidebar.css';
 import simplebar from 'simplebar-vue';
 
+
 @Component({
   name: 'cs-sidebar',
-  components: { simplebar },
+  components: { simplebar,  },
   template: require('./cs-sidebar.html')
 } as any)
 export class CsSidebar extends Vue {

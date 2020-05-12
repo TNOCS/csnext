@@ -449,7 +449,8 @@ export class BaseLayer implements IMapLayer {
 
     public updateGeojson(data: DataSet) {
         if (this._manager && this._source && this._source.id) {
-            this._manager.updateDataSet(this._source.id, data);
+            this._source._data = data;
+            this._manager.updateSource(this._source);
         }
     }
 

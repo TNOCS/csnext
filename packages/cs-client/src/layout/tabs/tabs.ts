@@ -4,6 +4,7 @@ import { IDashboard, TabDashboardOptions, guidGenerator } from '@csnext/cs-core'
 import { LayoutManager } from '../..';
 
 import './tabs.css';
+import { Prop } from 'vue-property-decorator';
 
 @Component({
   template: require('./tabs.html'),
@@ -13,7 +14,7 @@ import './tabs.css';
 } as any)
 export class TabsLayout extends Vue {
   public static id = 'tabs';
-  public dashboard?: IDashboard;
+  public dashboard?: IDashboard;  
   public tab = null;
 
   public get options(): TabDashboardOptions {

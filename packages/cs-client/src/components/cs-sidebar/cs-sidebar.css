@@ -29,6 +29,11 @@
   bottom: 5px;
 }
 
+.cs-nav-drawer .v-navigation-drawer__content {
+  overflow-y: hidden;
+
+}
+
 .sidebar-active-tile {
   background-color: red;
 }

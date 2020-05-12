@@ -26,7 +26,7 @@ export class DataSource {
     public _bookmarks?: any[] = [];
     public _promoteId?: string;
 
-    public get _geojson() : DataSet | undefined {
+    public get _geojson(): DataSet | undefined {
         return this._data;
     }
 
@@ -65,6 +65,23 @@ export class DataSource {
         if (!this.id) {
             this.id = guidGenerator();
         }
+    }
+
+    public refreshSource(): Promise<DataSet> {
+        return new Promise(async (resolve, reject) => {
+            if (this.url) {
+                axios
+                    .get(this.url)
+                    .then(async response => {
+                        if (response) {
+                            this._data = this.InitFeatures(response.data, this.id);
+                            this._loaded = true;
+                            resolve(this._data);
+                        }
+                    });
+            }
+        })
+
     }
 
     public loadSource(featureTypes?: FeatureTypes): Promise<DataSet> {
@@ -254,7 +271,7 @@ export class DataSource {
     public updateFeatureTypePropertyMap(type: FeatureType) {
         if (type.properties) {
             type.propertyMap = {};
-            if ( Object.keys(type.properties).length > 0) {
+            if (Object.keys(type.properties).length > 0) {
                 for (const prop of type.properties) {
                     if (prop._key) {
                         type.propertyMap[prop._key] = prop;

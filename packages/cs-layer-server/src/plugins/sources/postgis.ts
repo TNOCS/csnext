@@ -9,6 +9,7 @@ import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Client } from 'pg';
 import uuidv1 from 'uuid/v1';
+import { Feature } from 'geojson';
 
 export class PostGisSource implements ISourcePlugin, ISourcePluginType {
   id = 'postgis';
@@ -38,7 +39,7 @@ export class PostGisSource implements ISourcePlugin, ISourcePluginType {
               type: 'Feature',
               geometry: JSON.parse(row.geo),
               properties: {}
-            };            
+            } as Feature;
             for (const key in row) {
               if (row.hasOwnProperty(key)) {
                 const element = row[key];

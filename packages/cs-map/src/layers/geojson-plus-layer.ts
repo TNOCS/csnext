@@ -391,7 +391,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         );
     }
 
-    private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
+    private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {        
         let popup: string | undefined;
         e.feature = BaseLayer.getFeatureFromEventDetails(e);
         // if (layer.style && layer.style.popup) {

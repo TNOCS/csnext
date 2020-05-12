@@ -1,4 +1,4 @@
-import { MapDatasource, CsMap, ILayerAction, ILayerService, PropertyDetails, FeatureEventDetails, ILayerExtensionType, LayerFilter, LayerStyle } from '..';
+import { MapDatasource, CsMap, ILayerAction, ILayerService, PropertyDetails, FeatureEventDetails, ILayerExtensionType, LayerFilter, LayerStyle, ILayerExtension } from '..';
 import { MessageBusService, MessageBusManager, MessageBusHandle } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
 import { PropertyType, DataSource, FeatureTypes, FeatureType } from '@csnext/cs-data';
@@ -50,6 +50,7 @@ export interface IMapLayer {
     _legends?: LayerLegend[];
     _filters?: { [key: string]: LayerFilter };
     _manager?: MapDatasource;
+    _extensions: ILayerExtension[];
     /** associated service */
     _service?: ILayerService;
     _showMenu?: boolean;
