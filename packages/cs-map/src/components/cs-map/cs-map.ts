@@ -35,6 +35,7 @@ import {
 import { WidgetBase } from '@csnext/cs-client';
 import { MapboxStyleSwitcherControl, GridControl, LayerDraw, LayerLegendControl, LayersWidgetControl } from '../../controls';
 import { SidebarKeys } from '../../datasources/map-datasource';
+import { convertToDMS } from '../../utils/conversion';
 
 @Component({
     components: { PackageExplorer },
@@ -146,7 +147,7 @@ export class CsMap extends WidgetBase {
 
     public featurePickerActivated = false;
     private _pointerPickerActivated = false;
-    private cursorLocationInfoEnabled: boolean = false;
+    private cursorLocationInfoFormat: 'NONE' | 'LATLON' | 'DMS' = 'NONE';
     private cursorLocationInfo: string = '';
     private geocoderControl?: MapboxGeocoder;
     private geolocatorControl?: GeolocateControl;
@@ -345,8 +346,10 @@ export class CsMap extends WidgetBase {
             });
 
             this.map.on("mousemove", (ev) => {
-                if (this.cursorLocationInfoEnabled) {
+                if (this.cursorLocationInfoFormat == 'LATLON') {
                     this.cursorLocationInfo = JSON.stringify(ev.lngLat.wrap());
+                } else if (this.cursorLocationInfoFormat == 'DMS') {
+                    this.cursorLocationInfo = `${convertToDMS(ev.lngLat.lat, false)} - ${convertToDMS(ev.lngLat.lng, true)}`;
                 }
             });
 
@@ -468,7 +471,7 @@ export class CsMap extends WidgetBase {
                 //     this.addClickLayer();
                 // }
 
-                this.showCursorLocationInfo(this.mapOptions.showCursorLocationInfo || false);
+                this.showCursorLocationInfo(this.mapOptions.showCursorLocationInfo || 'NONE');
 
                 this.showGeocoder(this.mapOptions.showGeocoder || false);
 
@@ -631,13 +634,13 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showCursorLocationInfo')
-    public showCursorLocationInfo(enabled: boolean, old?: boolean) {
-        if (!enabled && old) {
+    public showCursorLocationInfo(enabled: 'NONE' | 'LATLON' | 'DMS', old?: 'NONE' | 'LATLON' | 'DMS') {
+        if ((!enabled || enabled == 'NONE') && (!!old || old != 'NONE')) {
             this.cursorLocationInfo = '';
-            this.cursorLocationInfoEnabled = false;
+            this.cursorLocationInfoFormat = 'NONE';
         }
         if (enabled) {
-            this.cursorLocationInfoEnabled = true;
+            (enabled == 'DMS') ? this.cursorLocationInfoFormat = 'DMS' : this.cursorLocationInfoFormat = 'LATLON';
         }
     }
 

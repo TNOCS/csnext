@@ -38,7 +38,8 @@ export class MapOptions extends WidgetOptions {
     public showScale?: boolean = false;
     public showStyles?: boolean = true;
     public showPackageExporer?: boolean = false;
-    public showCursorLocationInfo?: boolean = false;
+    /** Show the current location in a specific format */
+    public showCursorLocationInfo?: 'NONE' | 'LATLON' | 'DMS' = 'NONE';
     public mouseEventsOnIcon: boolean = false;
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;
