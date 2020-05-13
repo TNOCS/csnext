@@ -113,7 +113,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
     public addLayer(widget: CsMap) {
         super.addLayer(widget);
-        this.registerMapEvents(widget.map);
+        this.registerMapEvents(widget.map, widget.options.mouseEventsOnIcon);
         this.registerLayerExtensions();
         this.addCircleSymbol(widget);
     }       
@@ -193,7 +193,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     public removeLayer(widget: CsMap) {
         super.removeLayer(widget);
         this.removeExtensions();
-        this.unregisterMapEvents(widget.map);
+        this.unregisterMapEvents(widget.map, widget.options.mouseEventsOnIcon);
     }
 
     public removeLegend(
@@ -412,26 +412,28 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         }
     }
 
-    private registerMapEvents(map: mapboxgl.Map) {
-        if (this.id && !this.mapEventsRegistered) {
-            // map.on('touchend', this.id, this.clickEvent);
-            map.on('click', this.id, this.clickEvent);
-            map.on('contextmenu', this.id, this.contextMenuEvent);
-            map.on('mousemove', this.id, this.moveEvent);
-            map.on('mouseenter', this.id, this.enterEvent);
-            map.on('mouseleave', this.id, this.leaveEvent);
+    private registerMapEvents(map: mapboxgl.Map, forSymbol: boolean = false) {
+        const id = forSymbol ? this.id + '-circle' : this.id;
+        if (id && !this.mapEventsRegistered) {
+            // map.on('touchend', id, this.clickEvent);
+            map.on('click', id, this.clickEvent);
+            map.on('contextmenu', id, this.contextMenuEvent);
+            map.on('mousemove', id, this.moveEvent);
+            map.on('mouseenter', id, this.enterEvent);
+            map.on('mouseleave', id, this.leaveEvent);
             this.mapEventsRegistered = true;
         }
     }
 
-    private unregisterMapEvents(map: mapboxgl.Map) {
-        if (this.id) {
-            // map.off('touchend', this.id, this.clickEvent);
-            map.off('click', this.id, this.clickEvent);
-            map.off('contextmenu', this.id, this.contextMenuEvent);
-            map.off('mouseenter', this.id, this.enterEvent);
-            map.off('mouseleave', this.id, this.leaveEvent);
-            map.off('mousemove', this.id, this.moveEvent);
+    private unregisterMapEvents(map: mapboxgl.Map, forSymbol: boolean = false) {
+        const id = this.id && forSymbol ? this.id + '-circle' : this.id;
+        if (id) {
+            // map.off('touchend', id, this.clickEvent);
+            map.off('click', id, this.clickEvent);
+            map.off('contextmenu', id, this.contextMenuEvent);
+            map.off('mouseenter', id, this.enterEvent);
+            map.off('mouseleave', id, this.leaveEvent);
+            map.off('mousemove', id, this.moveEvent);
         }
         this.mapEventsRegistered = false;
     }

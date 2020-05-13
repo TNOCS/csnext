@@ -39,6 +39,7 @@ export class MapOptions extends WidgetOptions {
     public showStyles?: boolean = true;
     public showPackageExporer?: boolean = false;
     public showCursorLocationInfo?: boolean = false;
+    public mouseEventsOnIcon: boolean = false;
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;
     public showTraffic?: boolean = false;
