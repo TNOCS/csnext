@@ -11,7 +11,7 @@ import { CsMap } from './..';
 import mapboxgl, { Layout, MapboxGeoJSONFeature } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
 import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
-import { Feature } from 'geojson';
+import { Feature, GeoJsonProperties } from 'geojson';
 // import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
 // import HandlebarsIntl from 'handlebars-intl';
@@ -333,6 +333,12 @@ export class BaseLayer implements IMapLayer {
 
     public moveLayer(beforeId?: string) { }
 
+    private interpolatePopup(template: string, params: Object) {
+        const names = Object.keys(params);
+        const vals = Object.values(params);
+        return new Function(...names, `return \`${template}\`;`)(...vals);
+    }
+
     public parsePopup(f?: mapboxgl.MapboxGeoJSONFeature): string {
         if (!f || !f.id || !this.MapControl) {
             return '';
@@ -343,7 +349,7 @@ export class BaseLayer implements IMapLayer {
                 // if (!this._popupTemplate) {
                 //     this._popupTemplate = Handlebars.compile(this.style.popup);
                 // }
-                // state.popup = this._popupTemplate(f, { data: { intl: this.intlData } });
+                state.popup = this.interpolatePopup(this.style.popup, f.properties as Object);
                 this.MapControl.setFeatureState(f, state);
             }
             return state.popup;
