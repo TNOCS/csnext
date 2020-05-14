@@ -10,5 +10,5 @@ export const convertToDMS = (dd: number, isLng: boolean) => {
     let sec = frac * 3600 - min * 60;
     // Round it to 2 decimal points.
     // sec = Math.round(sec * 100) / 100;
-    return `${deg}°${min}'${sec.toFixed(3)}"${dir}`;
+    return `${deg}°${min}'${sec.toFixed(1)}"${dir}`;
 }
