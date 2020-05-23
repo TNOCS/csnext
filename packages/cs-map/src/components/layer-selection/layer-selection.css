@@ -30,14 +30,14 @@
     border-left-style: solid;    
     border-left-color: gray;
     border-left-width: 4px;
-    margin-left:-4px;
+    /* margin-left:-4px; */
 }
 
 .layer-group-item-selected {        
     border-left-style: solid;    
     border-left-color: gray;
     border-left-width: 4px;
-    margin-left:-4px;
+    /* margin-left:-4px; */
 }
 
 .layer-opacity-button {
@@ -73,7 +73,19 @@
     height: 45px;
     padding-top: 8px;
     white-space: nowrap;
+    border-left-style: solid;    
+    border-left-color: transparent;
+    border-left-width: 4px;
+    /* margin-left: 4px; */
 }
+
+.layer-list .simplebar-track.simplebar-horizontal {
+    display: none;
+ }
+
+ /* .simplebar-content {
+    overflow-x: hidden;
+  } */
 
 .layer-options-button {
     right: 10px;
