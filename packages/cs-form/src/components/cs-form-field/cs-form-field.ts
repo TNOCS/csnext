@@ -100,8 +100,11 @@ export class CsFormField extends Vue {
     }
 
     public set ColorValue(v: string | any) {
-        if (v && this.target && this.field && this.field._key) {            
-            if (typeof(v) === 'string') {
+        if (v && this.target && this.field && this.field._key) {
+            if (typeof (v) === 'string') {
+                if (v.toString().match(/#[a-zA-Z0-9]{8}/)) {
+                    v = v.substr(0, 7);
+                }
                 this.target[this.field._key] = v;
             } else {
                 if (v.hasOwnProperty('hex')) {
@@ -153,7 +156,7 @@ export class CsFormField extends Vue {
     }
 
     public formattedDate(date: number): string | undefined {
-        if (date) {            
+        if (date) {
             return format(new Date(date), 'yyyy-MM-dd');
         }
     }

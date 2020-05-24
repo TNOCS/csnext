@@ -13,7 +13,7 @@
                             <v-icon slot="append" :color="ColorValue">color_lens</v-icon>
                     </v-text-field>
                 </template>
-                <v-color-picker v-model="ColorValue" mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>    
+                <v-color-picker v-model="ColorValue" show-swatches mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>
             </v-menu>
         </template>
         <template v-if="field.type === 'rating'">

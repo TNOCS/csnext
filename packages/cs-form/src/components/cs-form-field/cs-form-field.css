@@ -8,6 +8,23 @@
     padding-top: 0px;
 }
 
+
+    .v-color-picker__controls {
+      .v-color-picker__preview {
+        .v-color-picker__sliders {
+          .v-color-picker__alpha {
+            display: none;
+          }
+        }
+      }
+      .v-color-picker__edit {
+        .v-color-picker__input:last-child {
+          display: none;
+        }
+      }
+    }
+
+
 .form-title {
     font-weight: 600;
     font-size: 125%;
