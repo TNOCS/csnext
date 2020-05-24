@@ -68,6 +68,15 @@
     overflow-y: hidden;
 }
 
+.full-height-tab{
+    height: calc(100% - 50px);
+    padding-bottom: 24px;
+  }
+
+  .full-height {
+    height: 100%;
+  }
+
 .layer-group-item {        
     padding-left: 15px;
     height: 45px;
@@ -81,7 +90,7 @@
 
 .layer-list {
     position: absolute;
-    top: 80px;
+    top: 50px;
     bottom: 0;
     left: 0;
     right: 0;

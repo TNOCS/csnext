@@ -17,6 +17,7 @@ export class LayerSelection extends Vue {
     public widget!: IWidget;
     public tree: any[] = [];
     public items = [];
+    public tab = 'layers';
     public open = [];
     public groupsexpanded: number[] = [];
     public showMenu = false;
