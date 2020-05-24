@@ -27,7 +27,7 @@
     "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
     "vue-router": "^3.1.6",
-    "vuetify": "2.3.0-beta.5"
+    "vuetify": "2.3.0-beta.6"
   },
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",
