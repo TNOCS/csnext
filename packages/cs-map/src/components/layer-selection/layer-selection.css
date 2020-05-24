@@ -79,6 +79,16 @@
     /* margin-left: 4px; */
 }
 
+.layer-list {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-right: 5px;
+
+}
+
 .layer-list .simplebar-track.simplebar-horizontal {
     display: none;
  }
