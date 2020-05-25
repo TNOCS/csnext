@@ -32,7 +32,7 @@
         "@turf/length": "^6.0.2",
         "class-transformer": "0.2.3",
         "lodash.throttle": "4.1.1",
-        "mapbox-gl": "1.10.0",
+        "mapbox-gl": "1.10.1",
         "mapbox-gl-controls": "^1.6.2",
         "numeral": "^2.0.6",
         "osmtogeojson": "^3.0.0-beta.4"
