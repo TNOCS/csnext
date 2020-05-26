@@ -24,9 +24,9 @@
         "@egjs/hammerjs": "2.0.17",
         "keycharm": "0.3.1",
         "propagating-hammerjs": "1.4.7",
-        "vis-data": "6.5.1",
-        "vis-timeline": "7.3.4",
-        "vis-util": "4.0.0",
+        "vis-data": "6.5.3",
+        "vis-timeline": "7.3.6",
+        "vis-util": "4.0.2",
         "vis-uuid": "1.1.4"
     },
     "devDependencies": {

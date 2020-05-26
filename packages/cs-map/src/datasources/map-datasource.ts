@@ -105,6 +105,10 @@ export class MapDatasource extends DataSources {
         this.layers = layers;
     }
 
+    public getLayer(id: string) : IMapLayer | undefined {
+        return this.layers?.find(l => l.id === id);        
+    }
+
     // #endregion Public Accessors (3)
 
     // #region Public Methods (28)
@@ -166,40 +170,53 @@ export class MapDatasource extends DataSources {
         extentions?: ILayerExtensionType[]
     ): Promise<GeojsonPlusLayer> {
         return new Promise(async (resolve, reject) => {
-            const source = new DataSource(geojson);
-            source.title = title;
-            source.id = (id) ? id : this.sources.hasOwnProperty(title) ? guidGenerator() : title;
 
-            // if meta is provided as a string, it is considered an URL
-            if (typeof meta === 'string') {
-                source.metaUrl = meta;
-            } else {
-                source._meta = meta;
-            }
+            if (!id) {
+                id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
+             }
+            const layer = this.getLayer(id);
+            if (layer) {
+                // if (layer._source) {
+                //     this.updateSource(new DataSource(geojson));
+                // }                
+            } 
+            else {
+            // check if 
+                const source = new DataSource(geojson);
+                source.title = title;
+                source.id = id;
 
-            if (args?.enabled !== undefined && args!.enabled === false) {
-                const rl = new GeojsonPlusLayer(args);
-                if (!rl.id) {
-                    rl.id = source.id ? source.id : title;
+                // if meta is provided as a string, it is considered an URL
+                if (typeof meta === 'string') {
+                    source.metaUrl = meta;
+                } else {
+                    source._meta = meta;
                 }
-                rl.title = title;
-                rl.source = source;
-                rl.openFeatureDetails = true;
-                rl.style = style ? style : DEFAULT_LAYER_STYLE;                
-                rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
-                if (extentions) {
-                    rl.extensions = extentions;
-                }
-                rl.initLayer(this).then(() => {                                            
-                    if (this.layers) {
-                        this.layers.push(rl);                
+
+                if (args?.enabled !== undefined && args!.enabled === false) {
+                    const rl = new GeojsonPlusLayer(args);
+                    if (!rl.id) {
+                        rl.id = source.id ? source.id : title;
                     }
-                    resolve(rl);
-                })
-            } else {
-            // this.updateSource(source);            
-                const layer = await this.addGeojsonLayerFromSource(title, source, style, args,extentions);
-                resolve(layer);
+                    rl.title = title;
+                    rl.source = source;
+                    rl.openFeatureDetails = true;
+                    rl.style = style ? style : DEFAULT_LAYER_STYLE;                
+                    rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
+                    if (extentions) {
+                        rl.extensions = extentions;
+                    }
+                    rl.initLayer(this).then(() => {                                            
+                        if (this.layers) {
+                            this.layers.push(rl);                
+                        }
+                        resolve(rl);
+                    })
+                } else {
+                // this.updateSource(source);            
+                    const layer = await this.addGeojsonLayerFromSource(title, source, style, args,extentions);
+                    resolve(layer);
+                }
             }
             
         });
