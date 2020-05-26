@@ -2343,14 +2343,7 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
   integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
 
-"@types/mapbox-gl@1.10.1", "@types/mapbox-gl@^1.10.1":
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/@types/mapbox-gl/-/mapbox-gl-1.10.1.tgz#8f5afbe7e750d5cfc7cab05d9b7ece80866cb4bf"
-  integrity sha512-NXnQktb9MsVqdCL+o6CssQGgdAJXvcP6vU2W8LXdiZ6vPMwY1vxnTt2FIdAwwNgCY+v6IKjEu8FDRXbfP8FPDA==
-  dependencies:
-    "@types/geojson" "*"
-
-"@types/mapbox-gl@^1.10.2":
+"@types/mapbox-gl@1.10.2", "@types/mapbox-gl@^1.10.2":
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/@types/mapbox-gl/-/mapbox-gl-1.10.2.tgz#ba903e9d70e69200efe29444ee33e0c111f9d53c"
   integrity sha512-fgsFVivgopfge1HwUmkMqjEg0XO0sMqI2au3GKhg8g6vpexjszvy63chNpLiz5MOLu4APbKXm18JsKSmhzzoMw==
@@ -2442,10 +2435,10 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/socket.io-client@^1.4.32":
-  version "1.4.32"
-  resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
-  integrity sha512-Vs55Kq8F+OWvy1RLA31rT+cAyemzgm0EWNeax6BWF8H7QiiOYMJIdcwSDdm5LVgfEkoepsWkS+40+WNb7BUMbg==
+"@types/socket.io-client@^1.4.33":
+  version "1.4.33"
+  resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.33.tgz#8e705b9b3f7fba6cb329d27cd2eda222812adbf1"
+  integrity sha512-m4LnxkljsI9fMsjwpW5QhRpMixo2BeeLpFmg0AE+sS4H1pzAd/cs/ftTiL60FLZgfFa8PFRPx5KsHu8O0bADKQ==
 
 "@types/socket.io@^2.1.8":
   version "2.1.8"
@@ -3496,10 +3489,10 @@ big.js@^5.2.2:
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
-billboard.js@^1.12.8:
-  version "1.12.8"
-  resolved "https://registry.yarnpkg.com/billboard.js/-/billboard.js-1.12.8.tgz#a28d8f9dae87a4b3094d76f1fc2f247d195a7514"
-  integrity sha512-pQMAzTu6cqgtPhQQ08G/Ebx/hDzcpGGkm/74lpMvJ4Qrp/HSFg4C7SUdxquynMNOJmsXA4e/wuw6UHFn2sIUzQ==
+billboard.js@^1.12.9:
+  version "1.12.9"
+  resolved "https://registry.yarnpkg.com/billboard.js/-/billboard.js-1.12.9.tgz#d2f9ebceb044230dbc95348913f2d667dfa05dab"
+  integrity sha512-3nb12JMYYVm+FPvwBDnSwsb0ZEmjkJ6s7kglT7uS73IkweFhsLbunOWCm/xe0ISr2/6QDoK4/9f6VAaXjSDaCA==
   dependencies:
     d3-axis "^1.0.12"
     d3-brush "^1.1.5"
@@ -5232,10 +5225,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-date-fns@2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.11.1.tgz#197b8be1bbf5c5e6fe8bea817f0fe111820e7a12"
-  integrity sha512-3RdUoinZ43URd2MJcquzBbDQo+J87cSzB8NkXdZiN5ia1UNyep0oCyitfiL88+R7clGTeq/RniXAc16gWyAu1w==
+date-fns@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.14.0.tgz#359a87a265bb34ef2e38f93ecf63ac453f9bc7ba"
+  integrity sha512-1zD+68jhFgDIM0rF05rcwYO8cExdNqxjq4xP1QKM60Q45mnO6zaMWB4tOzrIr4M4GSLntsKeE4c9Bdl2jhL/yw==
 
 dateformat@^3.0.0:
   version "3.0.3"
@@ -8809,17 +8802,17 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mapbox-gl-controls@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/mapbox-gl-controls/-/mapbox-gl-controls-1.6.2.tgz#45871274f9a7ecf8e79aa8d93bdf61612b6aee4d"
-  integrity sha512-Vyml5C7Tie/yUbN8RJdbA646N3NL01HbibZZ52aFn0422X7T30yLMVdYfSStHJMBUKmocB8UJqhNLSrtNMb9Ig==
+mapbox-gl-controls@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/mapbox-gl-controls/-/mapbox-gl-controls-1.6.4.tgz#f416681bb6308f0451266689de7073b32fabb764"
+  integrity sha512-YJjbB/3B5tiG0mu8YDrCyLPJC2dU/AqT44ZOaIOSfi+PfJ7cVCcubebPm3tnOR399OIRPyaSMRqGIRCudFHfzA==
   dependencies:
     "@turf/distance" "6.0.1"
 
-mapbox-gl@1.10.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-1.10.0.tgz#c33e74d1f328e820e245ff8ed7b5dbbbc4be204f"
-  integrity sha512-SrJXcR9s5yEsPuW2kKKumA1KqYW9RrL8j7ZcIh6glRQ/x3lwNMfwz/UEJAJcVNgeX+fiwzuBoDIdeGB/vSkZLQ==
+mapbox-gl@1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-1.10.1.tgz#7dbd53bdf2f78e45e125c1115e94dea286ef663c"
+  integrity sha512-0aHt+lFUpYfvh0kMIqXqNXqoYMuhuAsMlw87TbhWrw78Tx2zfuPI0Lx31/YPUgJ+Ire0tzQ4JnuBL7acDNXmMg==
   dependencies:
     "@mapbox/geojson-rewind" "^0.5.0"
     "@mapbox/geojson-types" "^1.0.2"
@@ -13968,20 +13961,20 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vis-data@6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.5.1.tgz#cd11f8bbf4a17064559b7c75532c3d6f419ff290"
-  integrity sha512-bOIG0REskXot0JbuAYLFRR61xf4ls+nIYNnZ7X04iq2y/Vrg896A/bfquQjhsERZipOmCgllAR0d58OGyo9s0g==
+vis-data@6.5.3:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.5.3.tgz#39b3b66f93a393b9f2a61416e0185505e210d6f2"
+  integrity sha512-y7NlLWKnzEfVVUT6LYZrTbZGrFummHlHlRa/cv8OWL5O52fi9l0qUsHk/VhBkEEuoQRR+u6ZMyriFauvXXtSKQ==
 
-vis-timeline@7.3.4:
-  version "7.3.4"
-  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-7.3.4.tgz#b8db26267c0fb97d9c9055c53831cf4068c6dbe2"
-  integrity sha512-NWO2aMtdekyLqUu9/34Uqj5vRQnhYqHSmNMB4siqq1TySPRNSD/nZtYHSYWF+iGLshJmOaaJ0si/PrHsdAyYkQ==
+vis-timeline@7.3.6:
+  version "7.3.6"
+  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-7.3.6.tgz#63ba163e9f8d51d24bdc3b1ebae754c97999f980"
+  integrity sha512-ddmAvHWGcIwIn7tTgR/5h2cNXbPtfRR5MWyO1njJYZTAo9fh+2WjnrV3K05qHLBH0gCQTXvO3ue/DeLPEl7dkw==
 
-vis-util@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-4.0.0.tgz#a9900cffb0bbcef3ce88d5834f82b03808101e10"
-  integrity sha512-HLInh9yhJe3AH8I9tgWna304jYABa47Y9kO4M0QKtgSLnVgz7xK0952HFCeGMBJWMXr9XXWporoz/XqND15ukQ==
+vis-util@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-4.0.2.tgz#3e500eb85ceedd45cbfca90a0b0371a36e9be46b"
+  integrity sha512-clGBek4sgafknI6CnGUZTRY0PVRr1meh8bVtEfpJVe1u1uC+t5J2ODrTVelhIPdvFtEVnfNcrrzQOo/3eSCAiw==
 
 vis-uuid@1.1.4:
   version "1.1.4"
@@ -14025,10 +14018,10 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
-vue-i18n@^8.17.5:
-  version "8.17.5"
-  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.5.tgz#e34ceda4273a83be94c392358a227d66b76acb12"
-  integrity sha512-gijXwvyTH3aeJhuq8EoQ9SDDlm1mgJexNccSK1ctalxsa6C7ifbWiH7V/YGfm9WJ7udYoD8ezfZdazxxvKvKYw==
+vue-i18n@^8.17.7:
+  version "8.17.7"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.17.7.tgz#d87e653e815a07f86e2c2dfe35261e6ea105c38a"
+  integrity sha512-7IQJ+72IIIxfR6Mt+X6EDmMP1i5oETFpc0FttnWKA9cgacf1DAlyho1aTItekG+AkbNs6nz4q3sYrXaPdC0irA==
 
 vue-loader@^15.7.1:
   version "15.9.2"
@@ -14064,10 +14057,15 @@ vue-resize-directive@^1.2.0:
     intersection-observer "^0.5.0"
     lodash.debounce "^4.0.8"
 
-vue-router@^3.1.3, vue-router@^3.1.6:
+vue-router@^3.1.3:
   version "3.1.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.1.6.tgz#45f5a3a3843e31702c061dd829393554e4328f89"
   integrity sha512-GYhn2ynaZlysZMkFE5oCHRUTqE8BWs/a9YbKpNLi0i7xD6KG1EzDqpHQmv1F5gXjr8kL5iIVS8EOtRaVUEXTqA==
+
+vue-router@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
+  integrity sha512-khkrcUIzMcI1rDcNtqkvLwfRFzB97GmJEsPAQdj7t/VvpGhmXLOkUfhc+Ah8CvpSXGXwuWuQO+x8Sy/xDhXZIA==
 
 vue-server-renderer@^2.6.10:
   version "2.6.11"
