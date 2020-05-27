@@ -465,7 +465,8 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                     layer: this
                 } as FeatureEventDetails);
                 if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
-                    this._manager!.selectFeature(feature, this, this.openFeatureDetails ?? this.Map.options.showFeatureDetails ?? true);
+                    const openDetails = (this.openFeatureDetails === false || this.Map.options.showFeatureDetails === false) ? false : true;
+                    this._manager!.selectFeature(feature, this, openDetails);
                 }
             }
         }
