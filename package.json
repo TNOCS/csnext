@@ -42,7 +42,7 @@
         "css-loader": "^3.5.3",
         "deepmerge": "4.2.2",
         "del-cli": "^3.0.0",
-        "fibers": "^4.0.3",
+        "fibers": "^5.0.0",
         "lerna": "^3.21.0",
         "postcss-loader": "^3.0.0",
         "purify-css": "^1.2.5",
