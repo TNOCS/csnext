@@ -5,9 +5,10 @@ import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
 import { SplitPanelOptions } from './split-panel-options';
 import { SplitComp } from './split-comp';
-import VueSplit from 'vue-split-panel';
 
-// Vue.use(VueSplitGrid);
+import VueSplitGrid from 'vue-split-grid';
+
+Vue.use(VueSplitGrid);
 
 // const splitComp = Vue.component('split-comp', {
 //     template: require('./split-comp.html'),
@@ -134,4 +135,4 @@ export class SplitPanel extends Vue {
     }
 }
 
-Vue.use(VueSplit);
+
