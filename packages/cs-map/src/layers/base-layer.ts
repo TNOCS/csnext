@@ -345,10 +345,7 @@ export class BaseLayer implements IMapLayer {
         }
         if (this.style && this.style.popup) {
             const state = this.MapControl.getFeatureState(f);
-            if (!state.hasOwnProperty('popup')) {
-                // if (!this._popupTemplate) {
-                //     this._popupTemplate = Handlebars.compile(this.style.popup);
-                // }
+            if (true || !state.hasOwnProperty('popup')) { // always update as properties might be updated
                 state.popup = this.interpolatePopup(this.style.popup, f.properties as Object);
                 this.MapControl.setFeatureState(f, state);
             }
