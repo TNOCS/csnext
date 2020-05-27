@@ -31,8 +31,6 @@ export class CsAgenda extends WidgetBase {
         calendar: any;
     };
 
-   
-
     GROUP_VISIBILITY_ID = 'timeline-group-';
 
     public today = '2019-01-01';
@@ -99,8 +97,8 @@ export class CsAgenda extends WidgetBase {
             for (const item of this.logSource.items) {
                 res.push({
                     name: item.content,
-                    start: this.getDate(item.start),
-                    end: this.getDate(item.end)
+                    start: (item.start) ? this.getDate(item.start) : undefined,
+                    end: (item.end) ? this.getDate(item.end) : undefined
                 })
             }
 

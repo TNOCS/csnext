@@ -32,22 +32,22 @@
         "@turf/length": "^6.0.2",
         "class-transformer": "0.2.3",
         "lodash.throttle": "4.1.1",
-        "mapbox-gl": "1.10.0",
-        "mapbox-gl-controls": "^1.6.2",
+        "mapbox-gl": "1.10.1",
+        "mapbox-gl-controls": "^1.6.4",
         "numeral": "^2.0.6",
         "osmtogeojson": "^3.0.0-beta.4"
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/mapbox-gl": "^1.9.1",
+        "@types/mapbox-gl": "^1.10.2",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },
     "peerDependencies": {
-        "vega": "^5.11.1",
-        "vega-embed": "^6.6.0",
-        "vega-lite": "^4.11.0"
+        "vega": "^5.12.3",
+        "vega-embed": "^6.8.0",
+        "vega-lite": "^4.12.2"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

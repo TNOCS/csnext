@@ -23,14 +23,14 @@
     "axios": "^0.19.2",
     "simplebar-vue": "^1.5.0",
     "socket.io-client": "^2.3.0",
-    "vue-i18n": "^8.17.5",
+    "vue-i18n": "^8.17.7",
     "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
-    "vue-router": "^3.1.6",
-    "vuetify": "2.3.0-beta.3"
+    "vue-router": "^3.2.0",
+    "vuetify": "2.3.0-beta.6"
   },
   "devDependencies": {
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io-client": "^1.4.33",
     "base64-inline-loader": "^1.1.1"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
