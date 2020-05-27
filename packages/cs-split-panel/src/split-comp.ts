@@ -3,9 +3,15 @@ import Component from 'vue-class-component';
 import { IDashboard, IWidget } from '@csnext/cs-core';
 import './split-panel.css';
 import { Watch } from 'vue-property-decorator';
+import { SplitGrid, SplitGridArea, SplitGridGutter } from 'vue-split-grid';
 
 @Component({
     template: require('./split-comp.html'),
+    components: {
+        SplitGrid,
+        SplitGridArea,
+        SplitGridGutter
+    },
     props: {
         options: null,
         dashboard: null
@@ -16,6 +22,17 @@ export class SplitComp extends Vue {
     public $refs!: {
         splitmain: any;
     };
+
+    public getDirection(dir: string) {
+        switch (dir) {
+            case 'vertical':
+                return 'row';
+            case 'horizontal':
+                return 'column';
+            default:
+                return dir;
+        }        
+    }
 
     public optionsUpdated() {
 

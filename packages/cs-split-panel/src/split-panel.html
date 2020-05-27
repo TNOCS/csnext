@@ -1,6 +1,7 @@
 <div class="split-manager">
         <!-- <split-panel></split-panel> -->
     <split-comp
+        v-if="dashboard.options"
         ref="splitcomp"
         :options="dashboard.options.splitpanel"
         :dashboard="dashboard"

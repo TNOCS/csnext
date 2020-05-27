@@ -12,7 +12,7 @@
     "unlink": "yarn unlink",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "tsc && webpack --mode development",
-    "build:production": "webpack --mode production && tsc",
+    "build:production": "webpack --mode development && tsc",
     "clean": "del-cli  yarn.lock yarn-error.log dist lib typescript node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
