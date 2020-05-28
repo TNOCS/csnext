@@ -5,10 +5,10 @@
 >
     <template v-for="element in options.elements">
         <SplitGridArea
+            v-if="element"
             :key="element.widgetId"
             :sizeValue="element.size"
-            :sizeUnit="element.sizeUnit"
-            
+            :sizeUnit="element.sizeUnit"            
             :expandToMin="true"
             :class="{'hide-vertical-scroll':options.disableVerticalScroll}"
         >
@@ -19,9 +19,10 @@
                 ></cs-widget>
             </template>
             <template v-else>
-                <!-- {{ element.elements }} -->
-                <split-comp
+                <!-- {{ element.elements }} -->                
+                <split-comp                    
                     :options="element.splitpanel"
+                    ref="splitcomp"
                     :dashboard="dashboard"
                 ></split-comp>
             </template>

@@ -41,23 +41,12 @@ export class SplitPanel extends Vue {
 
     public presetMenu?: IMenu;
 
-    public $refs!: {
-        splitcomp: SplitComp;
-    };
-
     public splitOptions?: SplitPanelOptions;
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
 
         if (this.options) {
             this.$set(this.options, 'splitpanel', splitPanel);
-            // this.options.splitpanel = splitPanel;
-            // this.options.defaultPreset = key;
-            // this.$refs.splitcomp.optionsUpdated();
-
-            // this.$forceUpdate();
-            // this.$refs.splitcomp.optionsUpdated();
-            // this.dashboard.component.initDashboard(this.dashboard);
         };
     }
 

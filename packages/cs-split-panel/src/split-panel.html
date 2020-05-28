@@ -2,10 +2,11 @@
         <!-- <split-panel></split-panel> -->
     <split-comp
         v-if="dashboard.options"
-        ref="splitcomp"
+        
         :options="dashboard.options.splitpanel"
         :dashboard="dashboard"
     ></split-comp>
+    <!-- ref="splitcomp" -->
     <!--  -->
     <!-- <Split style="height: 100%; width: 100%" ref="mySplit">
     <SplitArea v-for="widget in dashboard.widgets" :key="widget.id" :size="widget.options.width">
