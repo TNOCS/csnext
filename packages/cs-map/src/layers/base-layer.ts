@@ -1,4 +1,4 @@
-import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator, MessageBusHandle } from '@csnext/cs-core';
+import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator, MessageBusHandle, IWidget } from '@csnext/cs-core';
 import {
     MapDatasource,
     IMapLayer,
@@ -99,6 +99,7 @@ export class BaseLayer implements IMapLayer {
     public openFeatureDetails?: boolean;
     public parentId?: string;
     public popupContent?: string | Function | undefined;
+    public popupInfoWidget?: IWidget;
     public source?: string | DataSource;
     public state?: 'hidden' | 'loading' | 'visible';
     public enabled?: boolean;
