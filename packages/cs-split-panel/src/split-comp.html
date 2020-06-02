@@ -1,31 +1,8 @@
-<SplitGrid
-    style="height: 100%; width: 100%"
-    v-if="options.elements"
-    :direction="getDirection(options.direction)"
->
-    <template v-for="element in options.elements">
-        <SplitGridArea
-            v-if="element"
-            :key="element.widgetId"
-            :sizeValue="element.size"
-            :sizeUnit="element.sizeUnit"            
-            :expandToMin="true"
-            :class="{'hide-vertical-scroll':options.disableVerticalScroll}"
-        >
-        <!-- :minSize="element.minSize" -->
-            <template v-if="element.widgetId">
-                <cs-widget
-                    :widget="getWidget(element.widgetId, dashboard)"
-                ></cs-widget>
-            </template>
-            <template v-else>
-                <!-- {{ element.elements }} -->                
-                <split-comp                    
-                    :options="element.splitpanel"
-                    ref="splitcomp"
-                    :dashboard="dashboard"
-                ></split-comp>
-            </template>
+<SplitGrid style="height: 100%; width: 100%" v-if="options && options.elements" :direction="getDirection(options.direction)">
+    <template v-for="(element, idx) in options.elements">
+        <SplitGridArea :key="idx" :sizeValue="element.size" :sizeUnit="element.sizeUnit" :expandToMin="true">
+            <cs-widget v-if="element.widgetId" :widget="getWidget(element.widgetId, dashboard)"></cs-widget>
+            <split-comp v-else-if="getSplitpanel(element)" :options="getSplitpanel(element)" :dashboard="dashboard"></split-comp>
         </SplitGridArea>
         <SplitGridGutter v-if="element !== options.elements[options.elements.length-1]" />
     </template>
