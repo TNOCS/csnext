@@ -1,16 +1,7 @@
-<div class="split-manager">
-        <!-- <split-panel></split-panel> -->
+<div class="split-manager">        
     <split-comp
-        v-if="dashboard.options"
-        
+        v-if="dashboard.options"        
         :options="dashboard.options.splitpanel"
         :dashboard="dashboard"
     ></split-comp>
-    <!-- ref="splitcomp" -->
-    <!--  -->
-    <!-- <Split style="height: 100%; width: 100%" ref="mySplit">
-    <SplitArea v-for="widget in dashboard.widgets" :key="widget.id" :size="widget.options.width">
-      <cs-widget :widget="widget"></cs-widget>
-    </SplitArea>
-  </Split> -->
 </div>

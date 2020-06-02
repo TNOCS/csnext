@@ -27,7 +27,7 @@ export class SplitComp extends Vue {
 
     public getSplitpanel(panelElm: SplitElement) {
         console.log(panelElm);
-        return panelElm && panelElm.splitpanel ? panelElm.splitpanel : {};
+        return panelElm && panelElm.splitpanel ? panelElm.splitpanel : undefined;
     }
 
     public getDirection(dir: string) {
