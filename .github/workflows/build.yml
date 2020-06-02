@@ -37,6 +37,9 @@ jobs:
         npm whoami
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: git update-index --assume-unchanged .npmrc
+    - run: git update-index --assume-unchanged package.json
+    - run: git update-index --assume-unchanged package-lock.json
     - run: npm run publish:beta-ci
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
