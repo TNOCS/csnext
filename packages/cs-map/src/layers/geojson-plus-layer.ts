@@ -5,6 +5,7 @@ import {
     PropertyDetails
 } from './../.';
 import extent from '@mapbox/geojson-extent';
+import Vue from 'vue';
 
 import {
     LngLatBounds,
@@ -18,6 +19,7 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
+import { CsWidget } from '@csnext/cs-client';
 // import { isNumber } from 'util';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
@@ -391,24 +393,47 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         );
     }
 
+    public getComponent() {
+        debugger;
+    }
+
     private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {        
         let popup: string | undefined;
         e.feature = BaseLayer.getFeatureFromEventDetails(e);
-        // if (layer.style && layer.style.popup) {
-        //     popup = layer.style.popup;
-        // } else
-        if (layer.popupContent) {
-            if (typeof layer.popupContent === 'string') {
-                popup = layer.popupContent;
-            } else if (this.isFunction(layer.popupContent)) {
-                popup = layer.popupContent(e);
+        if (this.popupInfoWidget && this.popupInfoWidget.component) {            
+                const app = new CsWidget();
+                app.widget = this.popupInfoWidget;
+                app.initWidget();
+                if (!app.widget.data) { app.widget.data = {} };
+                app.widget.data.event = e;
+                
+                   // :widget="widget"
+                    // :style="widgetStyles()"
+                let popupContainer = document.createElement('span');
+                app.$mount(popupContainer);
+                this.popup
+                    .setLngLat((e.feature!.geometry as any).coordinates!.slice())                    
+                    .setDOMContent(app.$el)                    
+                    .addTo(widget.map);                    
+                    
+        } else {
+
+            // if (layer.style && layer.style.popup) {
+            //     popup = layer.style.popup;
+            // } else
+            if (layer.popupContent) {
+                if (typeof layer.popupContent === 'string') {
+                    popup = layer.popupContent;
+                } else if (this.isFunction(layer.popupContent)) {
+                    popup = layer.popupContent(e);
+                }
             }
-        }
-        if (popup) {
-            this.popup
-                .setLngLat(e.lngLat)
-                .setHTML(popup)
-                .addTo(widget.map);
+            if (popup) {
+                this.popup
+                    .setLngLat(e.lngLat)
+                    .setHTML(popup)
+                    .addTo(widget.map);
+            }
         }
     }
 
@@ -503,7 +528,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
     private onMove(e) {
         if (this.Map && this.MapControl) {
-            if (this.popupContent && e && e.features) {
+            if (!this.popupInfoWidget && this.popupContent && e && e.features) {
                 this.createPopup(this.Map, this, e);
             }
             if (e.features.length > 0 && this._source && this._source.id) {
