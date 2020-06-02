@@ -37,6 +37,6 @@ jobs:
         npm whoami
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-    - run: npm run publish:beta
+    - run: npm run publish:beta-ci
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
