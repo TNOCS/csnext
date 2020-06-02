@@ -40,6 +40,7 @@ jobs:
     - run: git update-index --assume-unchanged .npmrc
     - run: git update-index --assume-unchanged package.json
     - run: rm package-lock.json
-    - run: npm run publish:beta-ci
+    - run: npm run publish:beta
+    - run: npm run publish:release
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
