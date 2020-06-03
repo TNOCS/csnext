@@ -14,7 +14,7 @@
                 v-if="element.widgetId"
                 :widget="getWidget(element.widgetId, dashboard)"
             ></cs-widget>
-
+                        <!-- next level -->
             <SplitGrid
                 style="height: 100%; width: 100%"
                 v-if="element.splitpanel && element.splitpanel.elements"
@@ -68,9 +68,6 @@
                     />
                 </template>
             </SplitGrid>
-
-            <!-- :options="getSplitpanel(element)"
-                     :dashboard="dashboard" -->
         </SplitGridArea>
         <SplitGridGutter
             v-if="element !== options.elements[options.elements.length-1]"
