@@ -13,6 +13,7 @@
   :floating="sideBar.floating"
   class="cs-nav-drawer"
   :app="true"
+  v-if="!sideBar.disabled"
 >
   <v-btn
     v-if="sideBar.closeButton"     

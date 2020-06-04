@@ -23,6 +23,7 @@ export interface ISidebarOptions {
   footer?: ISidebarFooterOptions;
   closeButton?: boolean;
   sidebars?: { [key: string]: IDashboard };
+  disabled?: boolean;
 }
 
 export interface ISidebarFooterOptions {
