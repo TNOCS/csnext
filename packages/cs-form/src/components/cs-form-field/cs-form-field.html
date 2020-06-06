@@ -71,12 +71,12 @@
                     v-model="DateValue"
                     :disabled="field.readonly"
                     :label="$cs.Translate(field.title)"    
-                    @blur="fieldUpdated(field)"                                 
-                    type="date"                    
+                    @blur="fieldUpdated(field)"                             
+                    type="date"                                       
                   ></v-text-field>
                 </v-layout>
                 </template>
-                <v-date-picker v-if="!field.readonly" v-model="DateValue" :value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
+                <v-date-picker v-if="!field.readonly" v-model="DateValue" value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
               </v-menu>
               <v-menu
               v-model="timeMenu"
