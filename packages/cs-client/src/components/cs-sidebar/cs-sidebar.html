@@ -1,7 +1,7 @@
 <v-navigation-drawer
   :width="sidebarWidth"
   disable-route-watcher
-  v-if="sideBar"
+  v-if="sideBar && !sideBar.disabled"
   disable-resize-watcher
   v-model="sideBar.open"
   :right="sideBar.right"
@@ -13,7 +13,6 @@
   :floating="sideBar.floating"
   class="cs-nav-drawer"
   :app="true"
-  v-if="!sideBar.disabled"
 >
   <v-btn
     v-if="sideBar.closeButton"     
