@@ -24,10 +24,12 @@ import uuidv1 from 'uuid/v1';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 import AsyncLock from 'async-lock';
-import { timingSafeEqual } from 'crypto';
+import { AggregateRoot } from '@nestjs/cqrs';
+import { FeatureUpdatedEvent } from '../events/feature-events';
+
 
 @Injectable()
-export class LayerService {
+export class LayerService extends AggregateRoot {
 
     public static sourcePlugins: ISourcePluginType[] = [];
 
@@ -45,8 +47,9 @@ export class LayerService {
 
     constructor(
         @Inject('DefaultWebSocketGateway')
-        private readonly socket: DefaultWebSocketGateway
+        private readonly socket: DefaultWebSocketGateway        
     ) {
+        super();
         this.config = {
             layers: [],
             sourcePath: './sources/',
@@ -435,8 +438,9 @@ export class LayerService {
 
                     this.queueSocketUpdate(source, feature);
                     this.flushSocketQueue(source);
-
                     this.saveSource(source);
+                    this.apply(new FeatureUpdatedEvent(sourceid, feature));
+                    // this.eventBus.publish(new FeatureUpdatedEvent(feature.id!, feature));                    
                 }
                 resolve(feature);
             } catch (e) {

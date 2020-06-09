@@ -27,6 +27,7 @@ export * from './classes/log-definition';
 export * from './classes/log-item';
 export * from './classes/log-source';
 export * from './log-items/log-items-controller';
+export * from './events/';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
