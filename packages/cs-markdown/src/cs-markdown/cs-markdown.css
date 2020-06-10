@@ -8,3 +8,8 @@
     border: 1px solid grey;
     padding: 2px 4px;
 }
+
+.full-height-tab {
+    height: calc(100% - 50px);
+    padding-bottom: 24px;
+}
