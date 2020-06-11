@@ -108,7 +108,7 @@ export class GridControl implements IControl {
             // add layer
             this.layer = new GridLayer();
             this.layer.title = 'grid';
-            this.layer.style = { mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
+            this.layer.style = { type: 'line', mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
             this.layer.filter = ['>=', ['zoom'], ['number', ['get', 'level']]];
             this.layer.id = 'map-grid';
             this.layer.hideInLayerList = true;
