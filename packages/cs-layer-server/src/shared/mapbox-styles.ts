@@ -1,4 +1,4 @@
-import { Form, FormField, IFormOptions } from './';
+import { IFormOptions } from '@csnext/cs-core';
 import {
     LinePaint,
     LineLayout,

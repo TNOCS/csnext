@@ -20,7 +20,7 @@ const mod = {
         },
         {
             test: /\.html$/,
-            loader: "raw-loader"
+            loader: "html-loader"
         },
         {
             test: /\.css$/,
@@ -59,9 +59,10 @@ const mod = {
     ]
 };
 
-function buildConfig(path, libraryName, entry, externals, analyzer) {
-    let plugins = [],
-        outputFile;
+function buildConfig(path, libraryName, entry, externals, analyzer, plugins) {
+    if (!plugins) { plugins = []; }
+    
+    let outputFile;
 
     if (env === "build") {
         outputFile = libraryName + ".[name].min.js";
@@ -74,7 +75,7 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
         filename: outputFile,
         library: libraryName,
         libraryTarget: "umd",
-        globalObject: 'this',
+        globalObject: "this",
         umdNamedDefine: true
     };
 
@@ -106,13 +107,13 @@ function buildConfig(path, libraryName, entry, externals, analyzer) {
         externals: {
             ...{
                 "core-js": "core-js",
-                "simplebar": "simplebar",
-                "vue": 'Vue',        
+                simplebar: "simplebar",
+                vue: "Vue",
                 "vue-property-decorator": "vue-property-decorator",
                 "vue-class-component": "vue-class-component",
                 "class-transformer": "class-transformer",
-                "css-loader": "css-loader",                
-                "css-loader/dist": "css-loader/dist",            
+                "css-loader": "css-loader",
+                "css-loader/dist": "css-loader/dist",
                 "simplebar-vue": "simplebar-vue",
                 "style-loader": "style-loader",
                 "style-loader/dist": "style-loader/dist",

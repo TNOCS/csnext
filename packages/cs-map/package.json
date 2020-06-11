@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-map",
-    "version": "0.0.128",
+    "version": "0.0.130",
     "description": "cs-map",
     "main": "./lib/csmap.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -12,16 +12,16 @@
         "unlink": "yarn unlink",
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "tsc && webpack --mode development",
-        "build:production": "tsc && webpack --mode production",
+        "build:production": "tsc && webpack --mode development",
         "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
     },
     "publishConfig": {
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.128",
-        "@csnext/cs-data": "^0.0.128",
-        "@csnext/cs-form": "^0.0.128",
+        "@csnext/cs-client": "^0.0.130",
+        "@csnext/cs-data": "^0.0.130",
+        "@csnext/cs-form": "^0.0.130",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.2",
         "@mapbox/mapbox-gl-geocoder": "^4.5.1",
@@ -31,24 +31,23 @@
         "@turf/centroid": "^6.0.2",
         "@turf/length": "^6.0.2",
         "class-transformer": "0.2.3",
-        "handlebars": "^4.7.6",
-        "handlebars-intl": "1.1.2",
-        "lodash": "^4.17.15",
-        "mapbox-gl": "1.9.1",
-        "mapbox-gl-controls": "^1.6.2",
+        "lodash.throttle": "4.1.1",
+        "mapbox-gl": "1.10.1",
+        "mapbox-gl-controls": "^1.6.4",
         "numeral": "^2.0.6",
         "osmtogeojson": "^3.0.0-beta.4"
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
-        "@types/mapbox-gl": "^1.9.0",
+        "@types/lodash.throttle": "^4.1.6",
+        "@types/mapbox-gl": "^1.10.2",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },
     "peerDependencies": {
-        "vega": "^5.10.1",
-        "vega-embed": "^6.5.2",
-        "vega-lite": "^4.10.1"
+        "vega": "^5.12.3",
+        "vega-embed": "^6.8.0",
+        "vega-lite": "^4.12.2"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

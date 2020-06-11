@@ -120,10 +120,6 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             if (layer.tags) {
                                 gl.tags = [...gl.tags, ...layer.tags];
                             }
-                            // TODO: fix remove feature types
-                            // if (layer._source.featureTypes) {
-                            //     gl._source.featureTypes = layer._source.featureTypes;
-                            // }
 
                             if (gl.isEditable) {
                                 this.initEditableLayer(gl);
@@ -202,8 +198,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 this.socket.on('layer/' + gl.id, (data: any) => {
                     this.updateLiveLayer(data, gl);
                 });
-                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
-                    console.log('Got features');
+                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {                    
                     this.updateLiveLayerFeatures(data, gl, true);
                 });
             }
@@ -349,7 +344,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.manager && this.socket && data.action) {
             switch (data.action) {
                 case 'update':
-                    this.manager.updateLayerFeature(gl, data.feature, forceUpdate);
+                    this.manager.updateLayerFeature(gl, data.feature, forceUpdate);                    
                     break;
                 case 'delete':
                     if (data.feature && data.feature.hasOwnProperty('id')) {

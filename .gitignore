@@ -35,6 +35,8 @@ build/Release
 node_modules/
 jspm_packages/
 
+csnext.code-workspace
+
 # Typescript v1 declaration files
 typings/
 

@@ -1,7 +1,6 @@
 <v-col class="cs-dashboard-col pa-0">
-
   <v-flex shrink class="dashboard-toolbar-flex">
-    <v-toolbar
+    <!-- <v-toolbar
       :dense="denseToolbar()"
       text
       secondary
@@ -12,10 +11,47 @@
         $cs.Translate(dashboard.title)
       }}</v-toolbar-title>
             
+    </v-toolbar> -->
+
+    <v-toolbar
+      v-if="dashboard.options.toolbarOptions"
+      :absolute="dashboard.options.toolbarOptions.absolute"
+      :prominent="dashboard.options.toolbarOptions.prominent"
+      :color="dashboard.options.toolbarOptions.backgroundColor"
+      :elevation="dashboard.options.toolbarOptions.elevation"
+      :dense="dashboard.options.toolbarOptions.dense"
+      :collapse="dashboard.options.toolbarOptions.collapse"
+      :flat="dashboard.options.toolbarOptions.flat"
+    >
+      <v-icon
+        v-if="dashboard.options.icon && !dashboard.options.toolbarOptions.hideIcon"
+        class="pr-3"
+        >{{ dashboard.options.icon }}</v-icon
+      >
+      <v-toolbar-title
+        v-if="!dashboard.options.toolbarOptions || !dashboard.options.toolbarOptions.hideTitle"
+        >{{ $cs.Translate(dashboard.title) }}</v-toolbar-title
+      >
+      <v-spacer></v-spacer>
+
+      <!-- <cs-toolbar-menus
+            v-if="!dashboard.options.hideMenu"
+            :searchProperty="dashboard.options.searchProperty"
+            :menus.sync="dashboard.options.menus"            
+          ></cs-toolbar-menus> -->
     </v-toolbar>
 
     <template
-        v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation === 'stepper-inline'"
+      v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation === 'stepper-inline'"
+    >
+      <v-toolbar
+        :absolute="dashboard.parent.options.toolbarOptions.absolute"
+        :prominent="dashboard.parent.options.toolbarOptions.prominent"
+        :color="dashboard.parent.options.toolbarOptions.backgroundColor"
+        :elevation="dashboard.parent.options.toolbarOptions.elevation"
+        :dense="dashboard.parent.options.toolbarOptions.dense"
+        :collapse="dashboard.parent.options.toolbarOptions.collapse"
+        :flat="dashboard.parent.options.toolbarOptions.flat"
       >
         <v-stepper
           :value="selectedStepper"
@@ -34,11 +70,20 @@
             ></template>
           </v-stepper-header>
         </v-stepper>
-      </template>
+      </v-toolbar>
+    </template>
 
-      <template
-
-        v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation !== 'stepper-inline'"
+    <template
+      v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation !== 'stepper-inline'"
+    >
+      <v-toolbar
+        :absolute="dashboard.parent.options.toolbarOptions.absolute"
+        :prominent="dashboard.parent.options.toolbarOptions.prominent"
+        :color="dashboard.parent.options.toolbarOptions.backgroundColor"
+        :elevation="dashboard.parent.options.toolbarOptions.elevation"
+        :dense="dashboard.parent.options.toolbarOptions.dense"
+        :collapse="dashboard.parent.options.toolbarOptions.collapse"
+        :flat="dashboard.parent.options.toolbarOptions.flat"
       >
         <template
           v-if="dashboard.parent.options.toolbarOptions.navigation === 'stepper'"
@@ -75,7 +120,8 @@
             </v-tab>
           </v-tabs>
         </template>
-      </template>
+      </v-toolbar>
+    </template>
   </v-flex>
 
   <v-flex grow class="dashboard-toolbar-flex"
@@ -89,5 +135,4 @@
       :class="dashboard.options.class"
     ></component>
   </v-flex>
-  
 </v-col>

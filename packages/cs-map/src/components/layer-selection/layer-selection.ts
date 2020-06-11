@@ -17,14 +17,16 @@ export class LayerSelection extends Vue {
     public widget!: IWidget;
     public tree: any[] = [];
     public items = [];
+    public tab = 'layers';
     public open = [];
     public groupsexpanded: number[] = [];
     public showMenu = false;
     public filter: string = '';
     public Groups: { [id: string]: ILayerGroup } = {};
 
-    public mounted() {
+    public mounted() {        
         this.updateGroups();
+        
         if (localStorage.layergroupsexpanded) {
             try {
                 this.groupsexpanded = JSON.parse(
@@ -171,8 +173,8 @@ export class LayerSelection extends Vue {
         l: IMapLayer
     ) {
         if (res.hasOwnProperty(t)) {
-            res[t].layers.push(l);
-            this.groupsexpanded.push(this.groupsexpanded.length - 1);
+            res[t].layers.push(l);            
+            this.groupsexpanded.push(this.groupsexpanded.length);
         } else {
             res[t] = { title: t, color: 'gray', layers: [l], state: 'none' };
         }

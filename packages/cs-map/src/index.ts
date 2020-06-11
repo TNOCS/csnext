@@ -74,6 +74,9 @@ export * from './services/feature-action';
 export * from './extensions/time-interpolation-extension';
 export * from './extensions/wms-time-extension';
 
+// utils
+export * from './utils/conversion';
+
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
 CsMap.AddLayerType(new GridLayer());

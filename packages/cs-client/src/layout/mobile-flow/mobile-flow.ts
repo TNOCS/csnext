@@ -4,6 +4,7 @@ import { IDashboard, guidGenerator } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
 import './mobile-flow.css';
+import { LayoutComponent } from '../layout-component';
 
 @Component({
   template: require('./mobile-flow.html'),
@@ -11,7 +12,7 @@ import './mobile-flow.css';
     dashboard: null
   }
 } as any)
-export class MobileFlow extends Vue {
+export class MobileFlow extends LayoutComponent {
   public static id = 'mobile-flow';
   public dashboard?: IDashboard;
 }

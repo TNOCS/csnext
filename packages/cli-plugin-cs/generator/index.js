@@ -21,7 +21,7 @@ module.exports = (api, options, rootOptions) => {
         },
         devDependencies: {
             "@types/socket.io-client": "^1.4.32",
-            "raw-loader": "^4.0.0",
+            "html-loader": "^1.1.0",
             "@vue/cli-plugin-babel": "^4.1.1",
             "@vue/cli-plugin-typescript": "^4.1.1",
             "@vue/cli-service": "^4.1.1",
@@ -32,7 +32,7 @@ module.exports = (api, options, rootOptions) => {
             "core-js": "^3.4.5",
             "sass-loader": "^8.0.0",
             "sass": "1.23.7",
-            "typescript": "^3.7.2",
+            "typescript": "^3.9.3",
             "@babel/core": "^7.7.4",            
             "html-loader": "^0.5.5",
             "reflect-metadata": "^0.1.13"

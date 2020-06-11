@@ -9,11 +9,11 @@
                 <!-- <v-text-field v-model="target[field._key]"></v-text-field> -->
             <v-menu :close-on-content-click="false" max-width="290">
                 <template v-slot:activator="{ on }">
-                    <v-text-field v-model="target[field._key]" :label="$cs.Translate(field.title)" v-on="on">
-                            <v-icon slot="append" :color="target[field._key]">color_lens</v-icon>
+                    <v-text-field v-model="ColorValue" :label="$cs.Translate(field.title)" v-on="on">
+                            <v-icon slot="append" :color="ColorValue">color_lens</v-icon>
                     </v-text-field>
                 </template>
-                <v-color-picker v-model="target[field._key]" mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>    
+                <v-color-picker v-model="ColorValue" show-swatches mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>
             </v-menu>
         </template>
         <template v-if="field.type === 'rating'">
@@ -71,12 +71,12 @@
                     v-model="DateValue"
                     :disabled="field.readonly"
                     :label="$cs.Translate(field.title)"    
-                    @blur="fieldUpdated(field)"                                 
-                    type="date"                    
+                    @blur="fieldUpdated(field)"                             
+                    type="date"                                       
                   ></v-text-field>
                 </v-layout>
                 </template>
-                <v-date-picker v-if="!field.readonly" v-model="DateValue" :value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
+                <v-date-picker v-if="!field.readonly" v-model="DateValue" value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
               </v-menu>
               <v-menu
               v-model="timeMenu"

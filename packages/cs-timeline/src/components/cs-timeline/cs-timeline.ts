@@ -14,7 +14,7 @@ import './cs-timeline.css';
 
 import 'vis-timeline/dist/vis-timeline-graph2d.min.css';
 import { LogDataSource, WidgetBase } from '@csnext/cs-client';
-import { DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline';
+import { DataGroup, DataItem, Timeline, TimelineEventPropertiesResult } from 'vis-timeline/esnext';
 import { TimelineGroupSelection } from '../timeline-group-selection/timeline-group-selection';
 import { TimelineWidgetOptions } from '../..';
 // export { TimelineOptions, DataGroup, DataItem, TimelineItem, Timeline, DataSet, TimelineEventPropertiesResult };

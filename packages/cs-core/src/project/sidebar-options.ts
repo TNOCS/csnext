@@ -21,7 +21,9 @@ export interface ISidebarOptions {
   width?: number;
   visible?: boolean;
   footer?: ISidebarFooterOptions;
+  closeButton?: boolean;
   sidebars?: { [key: string]: IDashboard };
+  disabled?: boolean;
 }
 
 export interface ISidebarFooterOptions {

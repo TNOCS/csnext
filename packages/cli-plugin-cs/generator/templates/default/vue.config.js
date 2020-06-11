@@ -14,7 +14,7 @@ module.exports = {
             rules: [
                 {
                     test: /\.html$/,
-                    loader: "raw-loader",
+                    loader: "html-loader",
                     exclude: ["/public/index.html"]
                 }
             ]

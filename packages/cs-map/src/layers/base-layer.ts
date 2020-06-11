@@ -1,4 +1,4 @@
-import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator, MessageBusHandle } from '@csnext/cs-core';
+import { MessageBusService, Form, FormField, MessageBusManager, guidGenerator, MessageBusHandle, IWidget } from '@csnext/cs-core';
 import {
     MapDatasource,
     IMapLayer,
@@ -11,14 +11,14 @@ import { CsMap } from './..';
 import mapboxgl, { Layout, MapboxGeoJSONFeature } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
 import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
-import { Feature } from 'geojson';
-import Handlebars from 'handlebars';
+import { Feature, GeoJsonProperties } from 'geojson';
+// import Handlebars from 'handlebars';
 import { LayerLegend } from '../classes/layer-legend';
-import HandlebarsIntl from 'handlebars-intl';
+// import HandlebarsIntl from 'handlebars-intl';
 import { LayerFilter } from '../classes/layer-filter';
 import { PropertyDetails } from '../components/feature-details/property-details';
 
-HandlebarsIntl.registerWith(Handlebars);
+// HandlebarsIntl.registerWith(Handlebars);
 
 @Form({ title: 'Layer' })
 export class BaseLayer implements IMapLayer {
@@ -99,6 +99,7 @@ export class BaseLayer implements IMapLayer {
     public openFeatureDetails?: boolean;
     public parentId?: string;
     public popupContent?: string | Function | undefined;
+    public popupInfoWidget?: IWidget;
     public source?: string | DataSource;
     public state?: 'hidden' | 'loading' | 'visible';
     public enabled?: boolean;
@@ -112,8 +113,8 @@ export class BaseLayer implements IMapLayer {
     public featureTypes?: FeatureTypes;
     // public _visible?: boolean;
 
-    private _titleTemplate?: Handlebars.TemplateDelegate;
-    private _popupTemplate?: Handlebars.TemplateDelegate;
+    // private _titleTemplate?: Handlebars.TemplateDelegate;
+    // private _popupTemplate?: Handlebars.TemplateDelegate;
 
     // #endregion Properties (35)
 
@@ -333,17 +334,20 @@ export class BaseLayer implements IMapLayer {
 
     public moveLayer(beforeId?: string) { }
 
+    private interpolatePopup(template: string, params: Object) {
+        const names = Object.keys(params);
+        const vals = Object.values(params);
+        return new Function(...names, `return \`${template}\`;`)(...vals);
+    }
+
     public parsePopup(f?: mapboxgl.MapboxGeoJSONFeature): string {
         if (!f || !f.id || !this.MapControl) {
             return '';
         }
         if (this.style && this.style.popup) {
             const state = this.MapControl.getFeatureState(f);
-            if (!state.hasOwnProperty('popup')) {
-                if (!this._popupTemplate) {
-                    this._popupTemplate = Handlebars.compile(this.style.popup);
-                }
-                state.popup = this._popupTemplate(f, { data: { intl: this.intlData } });
+            if (true || !state.hasOwnProperty('popup')) { // always update as properties might be updated
+                state.popup = this.interpolatePopup(this.style.popup, f.properties as Object);
                 this.MapControl.setFeatureState(f, state);
             }
             return state.popup;
@@ -449,7 +453,8 @@ export class BaseLayer implements IMapLayer {
 
     public updateGeojson(data: DataSet) {
         if (this._manager && this._source && this._source.id) {
-            this._manager.updateDataSet(this._source.id, data);
+            this._source._data = data;
+            this._manager.updateSource(this._source);
         }
     }
 

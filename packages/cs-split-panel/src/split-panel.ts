@@ -5,9 +5,10 @@ import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
 import { SplitPanelOptions } from './split-panel-options';
 import { SplitComp } from './split-comp';
-import VueSplit from 'vue-split-panel';
 
-// Vue.use(VueSplitGrid);
+import VueSplitGrid from 'vue-split-grid';
+
+Vue.use(VueSplitGrid);
 
 // const splitComp = Vue.component('split-comp', {
 //     template: require('./split-comp.html'),
@@ -40,23 +41,12 @@ export class SplitPanel extends Vue {
 
     public presetMenu?: IMenu;
 
-    public $refs!: {
-        splitcomp: SplitComp;
-    };
-
     public splitOptions?: SplitPanelOptions;
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
 
         if (this.options) {
             this.$set(this.options, 'splitpanel', splitPanel);
-            // this.options.splitpanel = splitPanel;
-            // this.options.defaultPreset = key;
-            // this.$refs.splitcomp.optionsUpdated();
-
-            // this.$forceUpdate();
-            // this.$refs.splitcomp.optionsUpdated();
-            // this.dashboard.component.initDashboard(this.dashboard);
         };
     }
 
@@ -134,4 +124,4 @@ export class SplitPanel extends Vue {
     }
 }
 
-Vue.use(VueSplit);
+

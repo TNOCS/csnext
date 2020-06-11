@@ -9,6 +9,7 @@ import fs from 'fs';
 import * as arangojs from 'arangojs';
 import { Logger } from '@nestjs/common';
 import uuidv1 from 'uuid/v1';
+import { Feature } from 'geojson';
 
 export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
   public id = 'arangodb';
@@ -49,7 +50,7 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
             type: 'Feature',
             geometry: result.pos,
             properties: result.props
-          };
+          } as Feature;
           geojson.features.push(f);
         }
 

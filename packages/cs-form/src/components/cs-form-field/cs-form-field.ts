@@ -9,7 +9,7 @@ import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
 import { Emit, Prop } from 'vue-property-decorator';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
 @Component({
     name: 'cs-formfield',
     template: require('./cs-form-field.html'),
@@ -90,6 +90,30 @@ export class CsFormField extends Vue {
     //     }
     //     return '';
     // }
+
+    public get ColorValue(): string | any {
+        if (this.target && this.field && this.field._key) {
+            return this.target[this.field._key];
+        } else {
+            return "";
+        }
+    }
+
+    public set ColorValue(v: string | any) {
+        if (v && this.target && this.field && this.field._key) {
+            if (typeof (v) === 'string') {
+                if (v.toString().match(/#[a-zA-Z0-9]{8}/)) {
+                    v = v.substr(0, 7);
+                }
+                this.target[this.field._key] = v;
+            } else {
+                if (v.hasOwnProperty('hex')) {
+                    this.target[this.field._key] = v.hex;
+                }
+            }
+            // this.changed(this.field);
+        }
+    }
 
     public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {

@@ -15,6 +15,7 @@ export * from './datasources/log/log-item';
 export * from './datasources/log/log-manager';
 
 // layout managers
+export * from './layout/layout-component';
 export * from './layout/single/single';
 export * from './layout/grid-layout/grid-layout';
 export * from './layout/css-grid/css-grid';

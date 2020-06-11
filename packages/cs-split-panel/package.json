@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-split-panel",
-  "version": "0.0.128",
+  "version": "0.0.130",
   "description": "cs-split-panel",
   "main": "./lib/cssplitpanel.cs.js",
   "types": "./dist/src/index.d.ts",
@@ -12,15 +12,15 @@
     "unlink": "yarn unlink",
     "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development && tsc",
-    "build:production": "webpack --mode production && tsc",
+    "build:production": "webpack --mode development && tsc",
     "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-client": "^0.0.128",
-    "vue-split-panel": "^1.0.4"
+    "@csnext/cs-client": "^0.0.130",
+    "vue-split-grid": "0.8.0"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

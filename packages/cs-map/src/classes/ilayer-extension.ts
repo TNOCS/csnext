@@ -15,4 +15,5 @@ export interface ILayerExtensionType {
 export interface ILayerExtension extends ILayerExtensionType {
     start(layer: IMapLayer);
     stop();
+    missingImage?(id: string);
 }

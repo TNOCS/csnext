@@ -1,6 +1,6 @@
 {
   "name": "@csnext/cs-client",
-  "version": "0.0.128",
+  "version": "0.0.130",
   "main": "./lib/csclient.cs.js",
   "types": "./dist/src/index.d.ts",
   "license": "MIT",
@@ -12,25 +12,25 @@
     "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
     "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
     "build": "webpack --mode development",
-    "build:production": "webpack --mode production",
+    "build:production": "webpack --mode development",
     "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@csnext/cs-core": "^0.0.128",
+    "@csnext/cs-core": "^0.0.130",
     "axios": "^0.19.2",
-    "simplebar-vue": "^1.4.0",
+    "simplebar-vue": "^1.5.0",
     "socket.io-client": "^2.3.0",
-    "vue-i18n": "^8.16.0",
+    "vue-i18n": "^8.18.2",
     "vue-mixin-decorator": "^1.2.0",
     "vue-resize-directive": "^1.2.0",
-    "vue-router": "^3.1.6",
-    "vuetify": "2.2.21"
+    "vue-router": "^3.3.2",
+    "vuetify": "2.3.0-beta.9"
   },
   "devDependencies": {
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io-client": "^1.4.33",
     "base64-inline-loader": "^1.1.1"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
