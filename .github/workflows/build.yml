@@ -8,8 +8,8 @@ on:
     branches: 
       - master
       - dev      
-  pull_request:
-    branches: [ master ]
+#  pull_request:
+#    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -28,6 +28,7 @@ jobs:
           node-version: 14
     - run: npm install
     - run: npm run build
+    - run: git reset --hard
     - name: Authenticate with Registry
       run: |
         yarn logout
@@ -37,8 +38,6 @@ jobs:
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - run: git update-index --assume-unchanged .npmrc
-    - run: git update-index --assume-unchanged package.json
-    - run: rm package-lock.json
     - run: npm view @csnext/cs-client versions  --json
       name: View all published @csnext versions
     - run: npm run publish:beta

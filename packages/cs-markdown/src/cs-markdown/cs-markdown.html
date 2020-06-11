@@ -1,10 +1,10 @@
 <!-- <div v-if="widget !== undefined" :id="widget.id"> -->
-<div v-if="widget || data">
+<div v-if="widget || data" class="full-height-tab">
     <!-- <markdown-it-vue class="md-body" :content="content" :options="widget ? widget.options : {}" /> -->
     <VueShowdown
         class="md-body"
         :markdown="content"
         flavor="github" 
-        :options="{ emoji: true }"     
+        :options="{ emoji: true, tables: true }"     
     />
 </div>
