@@ -14,15 +14,16 @@
   class="cs-nav-drawer"
   :app="true"
 >
-  <v-btn
-    v-if="sideBar.closeButton"     
-    fab
-    depressed
-    small
-    @click="closeSidebar()"
-    class="primary sidebar-back-button"
-    ><v-icon>arrow_forward</v-icon></v-btn
-  >
+<v-btn
+v-if="sideBar.closeButton"
+fab
+depressed
+small
+@click="closeSidebar()"
+class="primary sidebar-close-button"
+style="position:absolute; top: 10px; right: 10px; z-index: 10"
+><v-icon>arrow_forward</v-icon></v-btn
+>
   <v-toolbar v-if="sideBar.title">
     <v-list dense>
       <v-list-item>
@@ -33,6 +34,7 @@
       </v-list-item>
     </v-list>
   </v-toolbar>
+
 
   <v-divider v-if="sideBar.title"></v-divider>
   <div v-if="sideBar.component" class="sidebar-component-container">
