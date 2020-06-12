@@ -5631,9 +5631,9 @@ ejs@^2.6.1:
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.413:
-  version "1.3.467"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.467.tgz#84eeb332134d49f0e49b88588824e56b20af9e27"
-  integrity sha512-U+QgsL8TZDU/n+rDnYDa3hY5uy3C4iry9mrJS0PNBBGwnocuQ+aHSfgY44mdlaK9744X5YqrrGUvD9PxCLY1HA==
+  version "1.3.468"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.468.tgz#7ff3e162e4ca91fd972c67dd51b00e7e421ceba2"
+  integrity sha512-+KAppdklzPd5v8nLOvtDiD/S67mCT9gFRAvngYe8zuFy9azHhT9vWWH6WEPPCcyjQ1JMYVgqbN29yZ0paqxsEw==
 
 element-resize-detector@^1.1.15:
   version "1.2.1"
@@ -12707,9 +12707,9 @@ svgo@^1.0.0:
     util.promisify "~1.0.0"
 
 swagger-ui-dist@^3.18.1:
-  version "3.26.0"
-  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.26.0.tgz#6dccd492bf9c97fe508d8438c754991277a6164f"
-  integrity sha512-z58RlRUk//dTg6jwgFBVv0JNyfDpoRNUgEyoA9cRheNvUuklMTKMY3hgDfXSZpmnGgZEG8iA/SAZGE56hvRuug==
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.26.1.tgz#4acc5606c7fa2e2c1d29a5d53e99d0c8fe8bbdfa"
+  integrity sha512-QXk1eKHgTSCgQE1Xlo8lcQKB/ouwDiJKBGHI9jHPCMy5TCQtQdUJOr29rTYD5XUDmew7Y9YPM1TI6PLcwJKWmA==
 
 swagger-ui-express@^4.1.4:
   version "4.1.4"
@@ -14069,10 +14069,10 @@ vuepress@1.3.1:
     opencollective-postinstall "^2.0.2"
     update-notifier "^4.0.0"
 
-vuetify@2.3.0-beta.10:
-  version "2.3.0-beta.10"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.3.0-beta.10.tgz#3f77928f685690e75f92c473aa4172575d1f1763"
-  integrity sha512-RzEX+FMlnptXJOJJTc5ZqNzHVOtRlhLwTsddXu8izE+abf59aEIX8SrevKUVGQ36Sq/Ytmmp03ut4J6+TsjIBA==
+vuetify@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.3.0.tgz#c78854c7e7abe2674d88d8832950f951789e9193"
+  integrity sha512-55lQr5878vACGD+jldcttpaGybZf4Qb1uo8WPdT97a179TuDCkPPxWEThRfMlgcpf5kfxae4c5ox+mfgmb/V6Q==
 
 walk@2.3.14:
   version "2.3.14"
