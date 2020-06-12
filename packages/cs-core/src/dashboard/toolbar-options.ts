@@ -20,4 +20,6 @@ export class ToolbarOptions {
     public absolute?: boolean;
     @FormField({ title: 'Elevation', type: 'slider', min: 0, max: 10 })
     public elevation?: number;
+    @FormField({ title: 'Background Image', type: 'string'})
+    public backgroundImage?: string;
 }
