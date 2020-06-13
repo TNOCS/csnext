@@ -224,7 +224,7 @@ export class MapDatasource extends DataSources {
 
     public addLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise(async (resolve, reject) => {
-            if (!ml.type || !this.layers) {
+            if (!this.layers) {
                 reject();
                 return;
             }
@@ -609,6 +609,63 @@ export class MapDatasource extends DataSources {
         })
     }
 
+    
+
+    public startDraw(mode = 'draw_line_string', title?: string): Promise<LngLat[] | undefined> {
+        return new Promise((resolve, reject) => {
+            if (!this.map || !this.map.map || !this.map.mapDraw) { return; }
+            
+            if (this.map.pointPickerActivated) {
+                reject();
+                return;
+            }
+
+            AppState.Instance.triggerNotification({
+                title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: () => {
+                    reject();
+                    this.map!.pointPickerActivated = false;
+                    if (this.pointPickerHandler) {
+                        this.events.unsubscribe(this.pointPickerHandler);
+                    }
+                    return {};
+                }
+            });
+
+            const createLine = (e: GeoJSON.FeatureCollection) => {
+                this.map?.map.off('draw.create', createLine);
+                if (e && e.features && e.features.length === 1) {                                        
+                    resolve((e.features[0].geometry as unknown) as LngLat[]);
+                } else {
+                    reject();
+                }
+             }
+
+            this.map.map.on('draw.create', createLine);
+            this.map.mapDraw.changeMode(mode);
+            // this.manager.events.publish(
+            //     CsMap.DRAWLAYER,
+            //     CsMap.DRAWLAYER_START_DRAWING,
+            //     this.activeType
+            // );
+
+
+            // this.map.pointPickerActivated = true;
+            // this.pointPickerHandler = this.events.subscribe(CsMap.MAP, (a: string, e: any) => {
+            //     if (a === CsMap.MAP_CLICK) {
+            //         this.map!.pointPickerActivated = false;
+            //         if (this.pointPickerHandler) {
+            //             this.events.unsubscribe(this.pointPickerHandler);
+            //         }
+            //         if (e.lngLat) {
+            //             resolve(e.lngLat);
+            //         }
+            //         AppState.Instance.clearNotifications();
+            //         return;
+            //     }
+            // });
+        });
+    }
+
     public startPointPicker(title?: string): Promise<LngLat | undefined> {
         return new Promise((resolve, reject) => {
             if (!this.map) { return; }
@@ -880,13 +937,13 @@ export class MapDatasource extends DataSources {
 
     /** Create a IMapLayer instance based on layer type, optionally provide maplayer config */
     private getLayerInstance(
-        type: string,
+        type: string = 'geojson',
         init?: IMapLayer
     ): IMapLayer | undefined {
         const layerType = CsMap.layerTypes.find(
             lt => lt.types !== undefined && lt.types.includes(type)
         );
-        if (!layerType || !layerType.getInstance) {
+        if (!layerType || !layerType.getInstance) {            
             return;
         }
         const res = layerType.getInstance(init);

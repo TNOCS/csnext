@@ -77,13 +77,13 @@
   </v-dialog>
 
   <!-- content -->
-  <v-content
+  <v-main
     fluid
     v-bind:class="{ 'floating': $cs.isFloatingHeader }"
     v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}"
   >
     <router-view :key="$route.path"> </router-view>
-  </v-content>
+  </v-main>
 
   <!-- mobile navigation -->
   <v-bottom-navigation app router v-if="$cs.isBottomNavigation" :value="true">

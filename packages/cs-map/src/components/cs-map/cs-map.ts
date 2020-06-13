@@ -321,6 +321,8 @@ export class CsMap extends WidgetBase {
                 }                
             });
 
+
+
             this.map.on('dblclick', (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_DOUBLE_CLICK, ev);
@@ -389,17 +391,18 @@ export class CsMap extends WidgetBase {
                         point: false,
                         line_string: false,
                         polygon: false,
-                        combine_features: false,
-                        uncombine_features: false
+                        combine_features: false,                        
+                        uncombine_features: false,
+                        trash: false
                     },
                     modes: {
                         ...MapboxDraw.modes
                         // draw_circle: RadiusMode // eslint-disable-line camelcase
                     },
                     displayControlsDefault: true
-                });
+                });            
 
-                this.map.addControl(this.mapDraw, 'top-left');
+                this.map.addControl(this.mapDraw, 'bottom-left');
             }
 
             // this.map.on('styledata', (e:any) => {

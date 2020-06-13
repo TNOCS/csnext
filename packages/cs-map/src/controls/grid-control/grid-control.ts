@@ -3,6 +3,8 @@ import './grid-control.css';
 import { CsMap, MapDatasource, GridLayer, LayerSource } from '../..';
 import { guidGenerator } from '@csnext/cs-core';
 import { FeatureCollection } from 'geojson';
+import { GeojsonPlusLayer } from '../../layers/geojson-plus-layer';
+import { GeojsonLayer } from '../../layers/geojson-layer';
 
 export class GridControl implements IControl {
 
@@ -13,7 +15,7 @@ export class GridControl implements IControl {
 
     private static readonly DEFAULT_STYLE = 'LatLon';
 
-    public layer!: GridLayer;
+    public layer!: GeojsonLayer;
     public manager!: MapDatasource;
 
     private controlContainer: HTMLElement | undefined;
@@ -106,17 +108,41 @@ export class GridControl implements IControl {
 
         } else {
             // add layer
-            this.layer = new GridLayer();
+            this.layer = new GeojsonLayer();
             this.layer.title = 'grid';
-            this.layer.style = { mapbox: { linePaint: { 'line-width': 2, 'line-color': '#cc000000', 'line-dasharray': [2, 1] } } };
+            this.layer.style = { type: 'line', mapbox: { linePaint: { 'line-width': 2, 'line-color': 'grey', 'line-dasharray': [2, 1] } } };
             this.layer.filter = ['>=', ['zoom'], ['number', ['get', 'level']]];
-            this.layer.id = 'map-grid';
+            this.layer.id = 'map-grid';       
+            this.layer.typeId = 'geojson'                 
             this.layer.hideInLayerList = true;
             this.layer.tags = ['map'];
             // this.layer.type = 'line';
 
             const gs: FeatureCollection = { type: 'FeatureCollection', features: [] };
             for (let x = -180; x <= 180; x++) {
+
+                if ((x % 10) === 0) {
+                    gs.features.push({
+                        type: 'Feature',
+                        properties: {
+                            name: x,
+                            level: 1,
+                        },
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: [
+                                [
+                                    x,
+                                    -90
+                                ],
+                                [
+                                    x,
+                                    90
+                                ]
+                            ]
+                        }
+                    });
+                } else {
                 gs.features.push({
                     type: 'Feature',
                     properties: {
@@ -137,6 +163,7 @@ export class GridControl implements IControl {
                         ]
                     }
                 });
+            }
 
                 for (let sx = 1; sx < 10; sx++) {
                     gs.features.push({
@@ -163,6 +190,24 @@ export class GridControl implements IControl {
             }
 
             for (let y = -90; y <= 90; y++) {
+                if ((y % 10) === 0) {
+                gs.features.push({
+                    type: 'Feature',
+                    properties: { name: y, level: 1 },
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [
+                            [
+                                -180,
+                                y
+                            ],
+                            [
+                                180, y
+                            ]
+                        ]
+                    }
+                });
+            } else {
                 gs.features.push({
                     type: 'Feature',
                     properties: { name: y, level: 5 },
@@ -179,6 +224,7 @@ export class GridControl implements IControl {
                         ]
                     }
                 });
+            }
 
                 for (let sy = 1; sy < 10; sy++) {
                     gs.features.push({
