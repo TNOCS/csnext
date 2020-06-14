@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-timeline",
-    "version": "0.0.130",
+    "version": "0.0.131",
     "description": "cs-timeline",
     "main": "./lib/cstimeline.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -19,8 +19,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.130",
-        "@csnext/cs-core": "^0.0.130",
+        "@csnext/cs-client": "^0.0.131",
+        "@csnext/cs-core": "^0.0.131",
         "@egjs/hammerjs": "2.0.17",
         "keycharm": "0.3.1",
         "propagating-hammerjs": "1.4.7",

@@ -1,6 +1,6 @@
 {
     "name": "@csnext/cs-map",
-    "version": "0.0.130",
+    "version": "0.0.131",
     "description": "cs-map",
     "main": "./lib/csmap.cs.js",
     "types": "./dist/src/index.d.ts",
@@ -19,9 +19,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@csnext/cs-client": "^0.0.130",
-        "@csnext/cs-data": "^0.0.130",
-        "@csnext/cs-form": "^0.0.130",
+        "@csnext/cs-client": "^0.0.131",
+        "@csnext/cs-data": "^0.0.131",
+        "@csnext/cs-form": "^0.0.131",
         "@mapbox/geojson-extent": "^0.3.2",
         "@mapbox/mapbox-gl-draw": "1.1.2",
         "@mapbox/mapbox-gl-geocoder": "^4.5.1",

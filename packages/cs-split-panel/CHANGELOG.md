@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.131](https://github.com/TNOCS/csnext/compare/v0.0.130...v0.0.131) (2020-06-14)
+
+**Note:** Version bump only for package @csnext/cs-split-panel
+
+
+
+
+
+
 ## [0.0.130](https://github.com/TNOCS/csnext/compare/v0.0.129...v0.0.130) (2020-06-02)
 
 **Note:** Version bump only for package @csnext/cs-split-panel
