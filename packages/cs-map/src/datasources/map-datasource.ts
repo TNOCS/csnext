@@ -611,11 +611,7 @@ export class MapDatasource extends DataSources {
 
     
 
-<<<<<<< HEAD
     public startDraw(mode = 'draw_line_string', title?: string): Promise<{ coordinates: number[][]} | undefined> {
-=======
-    public startDraw(mode = 'draw_line_string', title?: string): Promise<LngLat[] | undefined> {
->>>>>>> dev
         return new Promise((resolve, reject) => {
             if (!this.map || !this.map.map || !this.map.mapDraw) { return; }
             
@@ -625,7 +621,6 @@ export class MapDatasource extends DataSources {
             }
 
             AppState.Instance.triggerNotification({
-<<<<<<< HEAD
                 title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: (cleared?: boolean) => { 
                     if (!cleared) {                    
                         reject();
@@ -633,13 +628,6 @@ export class MapDatasource extends DataSources {
                         if (this.pointPickerHandler) {
                             this.events.unsubscribe(this.pointPickerHandler);
                         }
-=======
-                title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: () => {
-                    reject();
-                    this.map!.pointPickerActivated = false;
-                    if (this.pointPickerHandler) {
-                        this.events.unsubscribe(this.pointPickerHandler);
->>>>>>> dev
                     }
                     return {};
                 }
@@ -647,15 +635,10 @@ export class MapDatasource extends DataSources {
 
             const createLine = (e: GeoJSON.FeatureCollection) => {
                 this.map?.map.off('draw.create', createLine);
-<<<<<<< HEAD
                 if (e && e.features && e.features.length === 1) {
                     this.map?.mapDraw.deleteAll();
                     $cs.clearNotifications();                                
                     resolve((e.features[0].geometry as unknown) as any);
-=======
-                if (e && e.features && e.features.length === 1) {                                        
-                    resolve((e.features[0].geometry as unknown) as LngLat[]);
->>>>>>> dev
                 } else {
                     reject();
                 }
