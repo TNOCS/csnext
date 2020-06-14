@@ -480,7 +480,7 @@ export class CsApp extends Vue {
           } else if (action === AppState.NOTIFICATION_CLEARED) {
             if (this.lastNotification && this.lastNotification.clickCallback) {
               // Call callback of previous notification before closing it
-              this.lastNotification.clickCallback();
+              this.lastNotification.clickCallback(true);
             }
             this.closeNotification();
           }
