@@ -85,6 +85,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   icon?: string;
   colors?: string[];
   component?: any;
+  hint?: string;
+  persistentHint?: boolean;
   locale?: string;
   requirements?: ((value: object) => boolean)[];
   _appendIcon?: string;

@@ -110,6 +110,8 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :disabled="field.readonly"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
@@ -126,7 +128,9 @@
                 <v-combobox
                     :items="fieldOptions(field)"
                     v-model="target[field._key]"
-                    :label="$cs.Translate(field.title)"                    
+                    :label="$cs.Translate(field.title)"     
+                    :hint="field.hint"
+                :persistentHint="field.persistentHint"               
                     :disabled="field.readonly"     
                     :append-outer-icon="field._appendIcon"
                 @input="fieldInput(field)"
@@ -147,6 +151,8 @@
                         :itemValue="field.keyValue"
                         :clearable="field.clearable"                  
                         :disabled="field.readonly"     
+                        :hint="field.hint"
+                        :persistentHint="field.persistentHint"
                         :return-object="false"
                         @change="fieldUpdated(field)"              
                     ></v-combobox>
@@ -169,6 +175,8 @@
                 :append-outer-icon="field._appendIcon"
                 @update:error="fieldError"
                 @input="fieldInput(field)"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 @click:append-outer="fieldUpdated(field)"
                 @change="fieldUpdated(field)"
             ></v-text-field>
@@ -194,6 +202,8 @@
                 @input="fieldInput(field)"
                 @click:append-outer="fieldUpdated(field)"
                 @change="fieldUpdated(field)"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 auto-grow
                 rows="2"
             ></v-textarea>
@@ -210,6 +220,8 @@
         <template v-if="field.type === 'slider'">
             <v-slider
                 enabled
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 :label="$cs.Translate(field.title)"
                 v-model="target[field._key]"
                 :min="field.min"
@@ -222,6 +234,8 @@
         <template v-if="field.type === 'checkbox'">
             <v-checkbox
                 :label="$cs.Translate(field.title)"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 v-model="target[field._key]"
                 :disabled="field.readonly"
                 @change="fieldUpdated(field)"
@@ -249,6 +263,8 @@
                 :rules="[rules.valueMin, rules.valueMax, rules.required]"
                 :label="$cs.Translate(field.title)"
                 :clearable="field.clearable"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 :required="field.required"
                 :disabled="field.readonly"
                 @change="fieldUpdated(field)"
@@ -260,6 +276,8 @@
                 :label="$cs.Translate(field.title)"
                 :required="field.required"
                 :clearable="field.clearable"
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 :disabled="field.readonly"
                 @change="fieldUpdated(field)"
             ></v-text-field>
@@ -282,6 +300,8 @@
                 :disabled="field.readonly"
                 flat
                 chips
+                :hint="field.hint"
+                :persistentHint="field.persistentHint"
                 :clearable="field.clearable"
                 solo
                 multiple
