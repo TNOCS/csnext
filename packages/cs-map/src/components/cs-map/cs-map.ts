@@ -697,7 +697,7 @@ export class CsMap extends WidgetBase {
         }
         if (enabled) {
             this.$cs.addSidebar(SidebarKeys.LAYERS_SELECTION, { icon: 'layers' });
-            this.$cs.openRightSidebarWidget(
+            this.$cs.addRightSidebarWidget(
                 {
                     component: LayerSelection,
                     options: {
@@ -705,7 +705,7 @@ export class CsMap extends WidgetBase {
                     } as LayerSelectionOptions,
                     datasource: this.widget.datasource
                 },
-                { open: false },
+                { },
                 SidebarKeys.LAYERS_SELECTION
             );
         }
