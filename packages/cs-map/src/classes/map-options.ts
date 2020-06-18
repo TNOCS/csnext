@@ -40,7 +40,7 @@ export class MapOptions extends WidgetOptions {
     public showPackageExporer?: boolean = false;
     /** Show the current location in a specific format */
     public showCursorLocationInfo?: 'NONE' | 'LATLON' | 'DMS' = 'NONE';
-    public mouseEventsOnIcon: boolean = false;
+    public mouseEventsOnIcon?: boolean = false;
     /** show toolbar on top of map */
     public showToolbar?: boolean = true;
     public showTraffic?: boolean = false;
