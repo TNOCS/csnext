@@ -26,7 +26,8 @@
       "SOURCES": "Sources",
       "TABLE": "Table",
       "UNIT": "Unit",
-      "ZOOMIN": "Zoom in"
+      "ZOOMIN": "Zoom in",
+      "ADD_SOURCE": "Add source"
     },
     "nl": {
       "ADD_BOOKMARK": "Bookmark toevoegen",
@@ -55,6 +56,7 @@
       "SOURCES": "Bronnen",
       "TABLE": "Gegevens tabel",
       "UNIT": "Unit",
-      "ZOOMIN": "Toon op kaart"
+      "ZOOMIN": "Toon op kaart",
+      "ADD_SOURCE": "Bron toevoegen"
     }
   }

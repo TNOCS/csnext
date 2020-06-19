@@ -263,6 +263,15 @@ export class StatsDatasource extends MapDatasource {
         this.events.publish(DataSourceEvents.INSIGHT_VIEW, DataSourceEvents.ACTIVATED, view);
     }
 
+    public async addResourceToInsightView(source: string) {
+        if (this.activeInsightView) {   
+            if (!this.activeInsightView.resources.includes(source)) {
+                this.activeInsightView.resources.push(source)
+                await this.activateInsightView(this.activeInsightView, this.activeInsight);
+            }                        
+        }; 
+    }
+
     public async activateResources(resources: string[]) {
         const activeResources = Object.keys(this.resources);
         let layer: DataResource | undefined;

@@ -35,6 +35,7 @@
                     <v-list-item-title
                         v-html="source.title"
                     ></v-list-item-title>
+                    {{ source.data?._loaded }}
                     <v-list-item-subtitle
                         v-html="source.description"
                     ></v-list-item-subtitle>
@@ -47,7 +48,8 @@
                             <v-avatar left>
                                 <v-icon>folder</v-icon>
                             </v-avatar>
-                            {{fk.reference.resource}}
+                            {{fk.reference.resource}}                    
+                        </v-btn>
                         </v-chip>
                     </div>
                 </v-list-item-content>
@@ -66,6 +68,11 @@
                         </v-tooltip>
                     </template>
                     <v-list>
+                        <v-list-item @click="addSource(source)">
+                            <v-list-item-title
+                                >{{$cs.Translate('ADD_SOURCE')}}</v-list-item-title
+                            >
+                        </v-list-item>
                         <v-list-item
                             v-if="source.source"
                             :href="source.source"
@@ -79,7 +86,7 @@
                             <v-list-item-title
                                 >{{$cs.Translate('DOWNLOAD')}}</v-list-item-title
                             >
-                        </v-list-item>
+                        </v-list-item>                        
                     </v-list>
                 </v-menu>
 

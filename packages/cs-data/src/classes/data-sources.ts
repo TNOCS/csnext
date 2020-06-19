@@ -191,7 +191,7 @@ export class DataSources implements IDatasource {
         });
     }
 
-    public parseCSv(data: any): Promise<Papa.ParseResult> {
+    public parseCSv(data: any): Promise<any> {
         return new Promise((resolve, reject) => {
             Papa.parse(data, { complete: (r) => { resolve(r); }, error: reject, header: true, dynamicTyping: true, worker: true });
         });

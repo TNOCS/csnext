@@ -29,6 +29,11 @@ export class DataSources extends vue {
         this.data.openSourceDetails(source);
     }
 
+    public async addSource(source: DataResource) {        
+        if (this.data && source) {   
+            this.data.addResourceToInsightView(source.name);
+        };        
+    }
 
     private uniques(prop: string) {
         let result = [this.allTitle];
