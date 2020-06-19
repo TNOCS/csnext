@@ -25,7 +25,7 @@
         "keycharm": "0.3.1",
         "propagating-hammerjs": "1.4.7",
         "vis-data": "6.5.1",
-        "vis-timeline": "7.3.4",
+        "vis-timeline": "7.3.6",
         "vis-util": "4.0.0",
         "vis-uuid": "1.1.4"
     },
