@@ -62,21 +62,21 @@ export class AppState extends AppStateBase {
   public activeInfoWidget?: IWidget;
 
   /** gets server url */
-  public serverUrl(url?: string) : string {
+  public serverUrl(url?: string): string {
     if (process.env.VUE_APP_SERVER_URL) {
       return process.env.VUE_APP_SERVER_URL;
     } else if (window.hasOwnProperty('_env') && ((window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL'))) {
-        return (window as any)._env.VUE_APP_SERVER_URL;
-    } 
+      return (window as any)._env.VUE_APP_SERVER_URL;
+    }
     else if (url !== undefined) {
       return url;
     } else {
-        var protocol = window.location.protocol;
-        var hostname = window.location.hostname;
-        var port = window.location.port;
-        const serverurl = `${protocol}//${hostname}:${port}`;
-        return serverurl;
-    } 
+      var protocol = window.location.protocol;
+      var hostname = window.location.hostname;
+      var port = window.location.port;
+      const serverurl = `${protocol}//${hostname}:${port}`;
+      return serverurl;
+    }
   }
 
   public socket?: SocketIOClient.Socket;
@@ -110,17 +110,17 @@ export class AppState extends AppStateBase {
       this.project.server.useSocket &&
       this.project.server.socketServerUrl
     ) {
-      this.socket = io(this.project.server.socketServerUrl, { });
-      
-      this.socket.on('connect', (e) => {        
+      this.socket = io(this.project.server.socketServerUrl, {});
+
+      this.socket.on('connect', (e) => {
         this.bus.publish(AppState.SOCKET, AppState.SOCKET_CONNECTED, this.socket);
       });
       this.socket.on('reconnect', () => {
         this.bus.publish(AppState.SOCKET, AppState.SOCKET_RECONNECTING, this.socket);
       });
-      this.socket.on('disconnect', (e) => {        
+      this.socket.on('disconnect', (e) => {
         this.bus.publish(AppState.SOCKET, AppState.SOCKET_DISCONNECTED, this.socket);
-      });      
+      });
     }
   }
 
@@ -129,12 +129,12 @@ export class AppState extends AppStateBase {
     return ((window.innerWidth < 800) || (window.innerHeight < 800));
   }
 
-  public get isFloatingHeader(): boolean {    
-      return this.project?.header?.floating === true && !this.isMobile;    
+  public get isFloatingHeader(): boolean {
+    return this.project?.header?.floating === true && !this.isMobile;
   }
 
-  public get isBottomNavigation(): boolean {    
-    return this.project?.navigation?.style==='bottom' || (this.project?.navigation?.style ===  'mobile-compact' && this.isMobile);
+  public get isBottomNavigation(): boolean {
+    return this.project?.navigation?.style === 'bottom' || (this.project?.navigation?.style === 'mobile-compact' && this.isMobile);
   }
 
   public copyToClipboard(str: string) {
@@ -361,7 +361,7 @@ export class AppState extends AppStateBase {
     this.activeInfoWidget = undefined;
     this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_CLEARED, undefined);
   }
-  
+
   public TriggerNotification = this.triggerNotification;
 
   /** Triggers notification */
@@ -466,7 +466,6 @@ export class AppState extends AppStateBase {
   }
 
   public closeInfo() {
-
     this.closeRightSidebarKey('info');
   }
 
@@ -492,7 +491,7 @@ export class AppState extends AppStateBase {
     return false;
   }
 
-  public openRightSidebarKey(key: string) {
+  public addRightSidebarKey(key: string, open: boolean = false) {
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
       if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
@@ -500,8 +499,14 @@ export class AppState extends AppStateBase {
       }
       const d = this.project.rightSidebar.sidebars[key];
       d.hide = false;
-      this.openRightSidebar(d);
+      if (open) {
+        this.openRightSidebar(d);
+      }
     }
+  }
+
+  public openRightSidebarKey(key: string) {
+    this.addRightSidebarKey(key, true);
   }
 
   public openRightSidebar(dashboard?: IDashboard) {
@@ -529,16 +534,26 @@ export class AppState extends AppStateBase {
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
   public openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
+    this.addRightSidebarWidget(widget, options, key, replace, true);
+  }
 
+  /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
+  public addRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace: boolean = true, open: boolean = false) {
     if (!replace && widget.id && this.project.rightSidebar && this.project.rightSidebar.dashboard && this.findWidget(widget.id, this.project.rightSidebar.dashboard)) {
       return;
     }
-
-
-
     Vue.nextTick(() => {
-      this.openRightSidebarKey(key);
-      this.clearRightSidebar();
+      if (open) {
+        this.openRightSidebarKey(key);
+        this.clearRightSidebar();
+      } else {
+        this.addRightSidebarKey(key);
+        if (this.project.rightSidebar && this.project.rightSidebar.sidebars) {
+          if (this.project.rightSidebar.sidebars.hasOwnProperty(key) && this.project.rightSidebar.sidebars[key].widgets) {
+            this.project.rightSidebar.sidebars[key].widgets!.push(widget);
+          }
+        }
+      }
       if (
         this.project.rightSidebar &&
         this.project.rightSidebar.dashboard &&
@@ -553,12 +568,13 @@ export class AppState extends AppStateBase {
             this.project.rightSidebar.width = options.width;
           }
         } else {
-          this.project.rightSidebar.open = true;
+          this.project.rightSidebar.open = this.project.rightSidebar.open !== undefined ? this.project.rightSidebar.open : true;
         }
       }
+      this.bus.publish(AppState.DASHBOARD_MAIN, AppState.DASHBOARD_CHANGED, AppState.Instance.activeDashboard); //To trigger the watch on visibleHeaders
+      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
     });
     // }
-    this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
   }
 
   public toggleRightSidebarWidget(widget: IWidget, options?: ISidebarOptions) {

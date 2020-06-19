@@ -30,4 +30,6 @@ export abstract class AppStateBase {
   public windowSize = { x: 0, y: 0 };
 
   public abstract openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions);
+
+  public abstract addRightSidebarWidget(widget: IWidget, options?: ISidebarOptions);
 }
