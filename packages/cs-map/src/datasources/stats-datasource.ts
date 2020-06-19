@@ -264,7 +264,7 @@ export class StatsDatasource extends MapDatasource {
     }
 
     public async addResourceToInsightView(source: string) {
-        if (this.activeInsightView) {   
+        if (this.activeInsight && this.activeInsightView && this.activeInsightView.resources) {   
             if (!this.activeInsightView.resources.includes(source)) {
                 this.activeInsightView.resources.push(source)
                 await this.activateInsightView(this.activeInsightView, this.activeInsight);
