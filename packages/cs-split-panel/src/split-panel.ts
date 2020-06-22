@@ -44,7 +44,6 @@ export class SplitPanel extends Vue {
     public splitOptions?: SplitPanelOptions;
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
-
         if (this.options) {
             this.$set(this.options, 'splitpanel', splitPanel);
         };

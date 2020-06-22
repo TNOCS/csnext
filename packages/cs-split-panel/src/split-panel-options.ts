@@ -6,5 +6,4 @@ export class SplitPanelOptions extends BaseDashboardOptions {
   public direction: 'horizontal' | 'vertical' = 'horizontal';
   public elements: SplitElement[] = [];
   public disableVerticalScroll = false;
-
 }

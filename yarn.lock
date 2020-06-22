@@ -13386,7 +13386,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@8.1.0:
+uuid@8.1.0, uuid@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.1.0.tgz#6f1536eb43249f473abc6bd58ff983da1ca30d8d"
   integrity sha512-CI18flHDznR0lq54xBycOVmphdCYnQLKn8abKn7PXUiKUGdEd+/l9LWNJmugXel4hXq7S+RMNl34ecyC9TntWg==
@@ -13780,25 +13780,20 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vis-data@6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.5.1.tgz#cd11f8bbf4a17064559b7c75532c3d6f419ff290"
-  integrity sha512-bOIG0REskXot0JbuAYLFRR61xf4ls+nIYNnZ7X04iq2y/Vrg896A/bfquQjhsERZipOmCgllAR0d58OGyo9s0g==
+vis-data@6.6.1:
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/vis-data/-/vis-data-6.6.1.tgz#2aa52e46c305ad46bb7abe6e7634e2eecd743b15"
+  integrity sha512-xmujDB2Dzf8T04rGFJ9OP4OA6zRVrz8R9hb0CVKryBrZRCljCga9JjSfgctA8S7wdZu7otDtUIwX4ZOgfV/57w==
 
-vis-timeline@7.3.6:
-  version "7.3.6"
-  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-7.3.6.tgz#63ba163e9f8d51d24bdc3b1ebae754c97999f980"
-  integrity sha512-ddmAvHWGcIwIn7tTgR/5h2cNXbPtfRR5MWyO1njJYZTAo9fh+2WjnrV3K05qHLBH0gCQTXvO3ue/DeLPEl7dkw==
+vis-timeline@7.3.7:
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/vis-timeline/-/vis-timeline-7.3.7.tgz#af4b8d7c72ba9bd00944b9c2cb80d46ff629c516"
+  integrity sha512-1tqPdJsM6JXCBY80Ut15TCQD2VoolAabQ7mXguOH/X+HrBCv7KstkfZ3J2eVkHWevGEh2D8m+c8reyW2E6YI3Q==
 
-vis-util@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-4.0.0.tgz#a9900cffb0bbcef3ce88d5834f82b03808101e10"
-  integrity sha512-HLInh9yhJe3AH8I9tgWna304jYABa47Y9kO4M0QKtgSLnVgz7xK0952HFCeGMBJWMXr9XXWporoz/XqND15ukQ==
-
-vis-uuid@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/vis-uuid/-/vis-uuid-1.1.4.tgz#83beb27b01230067383b925b6e15084dd8bae6d5"
-  integrity sha512-ODyfCeFSzVQtLzS7d8NEoWoLK1YJKNcpNEek3ZyorSd0QCm0w8rSnsB18IUmauXbBpTB5AN8xTREW/rgnUf31w==
+vis-util@4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/vis-util/-/vis-util-4.3.2.tgz#85174bad67744a16c712f0a4bee60f8c19fc6865"
+  integrity sha512-FIS75hhrzbX1qJwFVwVVm1q2/TEktJWjgWsV0T3E9AYC4PWyQCBKk2LgsSLi+O8NBi7gTe9D4K75MqdPTHrRnA==
 
 vlq@^0.2.2:
   version "0.2.3"
