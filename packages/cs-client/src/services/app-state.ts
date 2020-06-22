@@ -613,7 +613,7 @@ export class AppState extends AppStateBase {
   }
 
   /** initializes given dashboards */
-  private initializeDashboards(dashboards: IDashboard[]) {
+  public initializeDashboards(dashboards: IDashboard[]) {
     if (dashboards) {
       for (const d of dashboards) {
         d.isMain = true;
