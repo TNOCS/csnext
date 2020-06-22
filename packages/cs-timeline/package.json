@@ -24,10 +24,10 @@
         "@egjs/hammerjs": "2.0.17",
         "keycharm": "0.3.1",
         "propagating-hammerjs": "1.4.7",
-        "vis-data": "6.5.1",
-        "vis-timeline": "7.3.6",
-        "vis-util": "4.0.0",
-        "vis-uuid": "1.1.4"
+        "vis-data": "6.6.1",
+        "vis-timeline": "7.3.7",
+        "vis-util": "4.3.2",
+        "uuid": "^8.1.0"
     },
     "devDependencies": {
         "moment-locales-webpack-plugin": "1.2.0"

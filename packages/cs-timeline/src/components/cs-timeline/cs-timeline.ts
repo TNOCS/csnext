@@ -402,7 +402,6 @@ export class CsTimeline extends WidgetBase {
     }
 
     private handleTimelineClick(data: TimelineEventPropertiesResult) {
-
         if (data.item === null) { // (data.what === 'background' || data.what === 'axis') {
             this.setDate(data.time);
         }
