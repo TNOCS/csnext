@@ -46,6 +46,5 @@ export class SplitComp extends Vue {
             return dashboard.widgets.find(w => w.id === id);
         }
     }
-
 }
 
