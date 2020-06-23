@@ -72,6 +72,7 @@ html {
   position: absolute;
   right: 4px;
   bottom: 5px;
+  z-index: 300;
 }
 
 .content--wrap {
