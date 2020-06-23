@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard, IMenu } from '@csnext/cs-core';
+import { IDashboard, IMenu, MessageBusHandle } from '@csnext/cs-core';
+import { AppState } from '@csnext/cs-client';
 import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
 import { SplitPanelOptions } from './split-panel-options';
@@ -34,14 +35,10 @@ Vue.use(VueSplitGrid);
     }
 } as any)
 export class SplitPanel extends Vue {
-
     public static id = 'split-panel';
-    
     public dashboard!: IDashboard;
-
     public presetMenu?: IMenu;
-
-    public splitOptions?: SplitPanelOptions;
+    private busHandle?: MessageBusHandle;
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
         if (this.options) {
@@ -65,11 +62,28 @@ export class SplitPanel extends Vue {
         this.dashboard.options = value;
     }
 
+    public update(options: SplitPanelOptions) {
+        this.options!.splitpanel = options;
+        this.$forceUpdate();
+    }
+
     constructor() {
         super();
     }
 
+    destroyed() {
+        if (this.busHandle) AppState.Instance.bus.unsubscribe(this.busHandle);
+        delete this.busHandle;
+    }
+
     created() {
+        if (!this.busHandle) {
+            this.busHandle = AppState.Instance.bus.subscribe(AppState.DASHBOARD_MAIN, (a: string, d: any) => {
+                if (a === AppState.DASHBOARD_CHANGED) {
+                    this.$forceUpdate();
+                }
+            });
+        }
         if (this.options) {
             if (!this.options.splitpanel) {
                 if (this.options.presets) {
@@ -88,7 +102,7 @@ export class SplitPanel extends Vue {
     }
 
     mounted() {
-        if (this.options && this.options.presets && Object.keys(this.options.presets).length > 1) {
+        if (this.options && this.options.presets && Object.keys(this.options.presets).length > 1 && !this.options.hidePresetMenu) {
             if (!this.dashboard.menus) {
                 this.dashboard.menus = [];
             }

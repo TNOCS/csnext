@@ -1,19 +1,19 @@
-<SplitGrid style="height: 100%; width: 100%" v-if="options && options.elements" :direction="getDirection(options.direction)">
+<SplitGrid class="split-grid-comp" v-if="options && options.elements" :direction="getDirection(options.direction)">
     <template v-for="(element, idx) in options.elements">
         <SplitGridArea :key="idx" :sizeValue="element.size" :sizeUnit="element.sizeUnit" :expandToMin="true">
             <cs-widget v-if="element.widgetId" :widget="getWidget(element.widgetId, dashboard)"></cs-widget>
             <!-- next level -->
-            <SplitGrid style="height: 100%; width: 100%" v-if="element.splitpanel && element.splitpanel.elements" :direction="getDirection(element.splitpanel.direction)">
+            <SplitGrid class="split-grid-comp" v-if="element.splitpanel && element.splitpanel.elements" :direction="getDirection(element.splitpanel.direction)">
                 <template v-for="(el, id) in element.splitpanel.elements">
                     <SplitGridArea :key="id" :sizeValue="el.size" :sizeUnit="el.sizeUnit" :expandToMin="true">
                         <cs-widget v-if="el.widgetId" :widget="getWidget(el.widgetId, dashboard)"></cs-widget>
                         <!-- next level -->
-                        <SplitGrid style="height: 100%; width: 100%" v-if="el.splitpanel && el.splitpanel.elements" :direction="getDirection(el.splitpanel.direction)">
+                        <SplitGrid class="split-grid-comp" v-if="el.splitpanel && el.splitpanel.elements" :direction="getDirection(el.splitpanel.direction)">
                             <template v-for="(ell, idd) in el.splitpanel.elements">
                                 <SplitGridArea :key="idd" :sizeValue="ell.size" :sizeUnit="ell.sizeUnit" :expandToMin="true">
                                     <cs-widget v-if="ell.widgetId" :widget="getWidget(ell.widgetId, dashboard)"></cs-widget>
                                     <!-- next level -->
-                                    <SplitGrid style="height: 100%; width: 100%" v-if="ell.splitpanel && ell.splitpanel.elements" :direction="getDirection(ell.splitpanel.direction)">
+                                    <SplitGrid class="split-grid-comp" v-if="ell.splitpanel && ell.splitpanel.elements" :direction="getDirection(ell.splitpanel.direction)">
                                         <template v-for="(elll, iddd) in el.splitpanel.elements">
                                             <SplitGridArea :key="iddd" :sizeValue="elll.size" :sizeUnit="elll.sizeUnit" :expandToMin="true">
                                                 <cs-widget v-if="elll.widgetId" :widget="getWidget(elll.widgetId, dashboard)"></cs-widget>

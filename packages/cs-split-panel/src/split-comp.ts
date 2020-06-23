@@ -16,7 +16,6 @@ import { SplitElement } from './split-element';
     }
 } as any)
 export class SplitComp extends Vue {
-
     @Prop({ default: null }) private options;
     @Prop({ default: null }) private dashboard;
 

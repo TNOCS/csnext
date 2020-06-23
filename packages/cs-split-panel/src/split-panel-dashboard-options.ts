@@ -7,6 +7,7 @@ export class SplitPanelPresetOptions {
 
 export class SplitPanelDashboardOptions extends BaseDashboardOptions {
   public splitpanel?: SplitPanelOptions;
+  public hidePresetMenu?: boolean;
   public defaultPreset?: string;
   public presetOptions?: SplitPanelPresetOptions;
   public presets?: { [title: string] : SplitPanelOptions };

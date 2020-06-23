@@ -1,5 +1,10 @@
-.split-manager {
+.split-grid-comp {
+    width: 100%;
     height: 100%;
+}
+
+.split-manager {
+    height: 100vh;
 }
 
 .vsg_gutter {
