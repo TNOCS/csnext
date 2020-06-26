@@ -34,7 +34,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import express from 'express';
 import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
-import { ExpressPeerServer, PeerServer } from 'peer';
+import { ExpressPeerServer  } from 'peer';
+import { IPeerOptions } from './classes/peer-options';
 
 export class ServerConfig {
     public staticFolder?: string;
@@ -44,7 +45,7 @@ export class ServerConfig {
     public openApi: boolean = true;
     public cors: boolean = true;
     public basicAuth?: ServerBasicAuthConfig;
-    public peerOptions?: any;
+    public peerOptions?: IPeerOptions;
 }
 
 // tslint:disable-next-line: max-classes-per-file
