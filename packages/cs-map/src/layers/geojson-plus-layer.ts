@@ -9,7 +9,8 @@ import Vue from 'vue';
 
 import {
     LngLatBounds,
-    StyleFunction
+    StyleFunction,
+    LngLatLike
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import { PropertyType, MetaUtils, FeatureTypes } from '@csnext/cs-data';
@@ -20,6 +21,7 @@ import { BaseLayer } from './base-layer';
 import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
 import { CsWidget } from '@csnext/cs-client';
+import { Geometry } from 'geojson';
 // import { isNumber } from 'util';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
@@ -407,18 +409,26 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             app.initWidget();
             if (!app.widget.data) { app.widget.data = {} };
             app.widget.data.event = e;
-
             // :widget="widget"
             // :style="widgetStyles()"
             let popupContainer = document.createElement('span');
             app.$mount(popupContainer);
+            const geom: Geometry = e.feature!.geometry;
+            let lngLat: LngLatLike;
+            if (geom.type === 'Point') {
+                lngLat = geom.coordinates.slice() as [number, number];
+            } else if (geom.type === 'LineString') {
+                lngLat = geom.coordinates[0].slice() as [number, number];
+            } else if (geom.type === 'Polygon') {
+                lngLat = geom.coordinates[0][0].slice() as [number, number];
+            } else {
+                lngLat = widget.map.getCenter();
+            }
             this.popup
-                .setLngLat((e.feature!.geometry as any).coordinates!.slice())
+                .setLngLat(lngLat)
                 .setDOMContent(app.$el)
                 .addTo(widget.map);
-
         } else {
-
             // if (layer.style && layer.style.popup) {
             //     popup = layer.style.popup;
             // } else
