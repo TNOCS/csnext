@@ -193,7 +193,7 @@ export class CsMap extends WidgetBase {
                         break;
                     default:
                         source.type = 'geojson';
-                        const _promoteId = ((source._data) as any)._promoteId;
+                        const _promoteId = source._promoteId || ((source._data) as any)._promoteId;
                         this.map.addSource(source.id, {
                             type: source.type,
                             data: source._data as FeatureCollection,
