@@ -41,6 +41,7 @@
     "lodash": "^4.17.15",
     "lodash-decorators": "^6.0.1",
     "moment": "^2.26.0",
+    "peer": "0.5.3",
     "pg": "^7.18.2",
     "pg-query-stream": "^3.0.3",
     "reflect-metadata": "^0.1.13",

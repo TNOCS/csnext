@@ -34,6 +34,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import express from 'express';
 import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
+import { ExpressPeerServer, PeerServer } from 'peer';
 
 export class ServerConfig {
     public staticFolder?: string;
@@ -43,6 +44,7 @@ export class ServerConfig {
     public openApi: boolean = true;
     public cors: boolean = true;
     public basicAuth?: ServerBasicAuthConfig;
+    public peerOptions?: any;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -52,6 +54,7 @@ export class NestServer {
     public swaggerConfig!: any;
     public config?: ServerConfig;
     public openAPI?: OpenAPIObject;
+    public peerServer?: any;
 
     public bootstrap(
         moduleType: any,
@@ -109,6 +112,11 @@ export class NestServer {
            
             if (this.config && this.config.cors) {
                 this.app.enableCors({ origin: true });
+            }
+
+            if (this.config.peerOptions) {
+                this.peerServer = ExpressPeerServer(this.app.getHttpServer(), this.config.peerOptions);
+                this.app.use('/peerjs', this.peerServer);
             }
             this.app.use(compression());
             if (this.config && this.config.staticFolder) {
