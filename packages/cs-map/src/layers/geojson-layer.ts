@@ -166,8 +166,7 @@ export class GeojsonLayer extends BaseLayer {
     public async refreshSourceUrl() {
         if (this._source && this._source.url) {
             await this._source.refreshSource();      
-            if (this._source._data) { this.updateGeojson(this._source._data); }
-            
+            if (this._source._data) { this.updateGeojson(this._source._data); }   
         }
     }
 
@@ -175,9 +174,6 @@ export class GeojsonLayer extends BaseLayer {
         if (!this.id || !this._source) {
             return;
         }
-
-      
-
         const mblayer = {
             id: this.id,
             type: this.style!.type,
