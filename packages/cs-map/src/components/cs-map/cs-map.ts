@@ -306,19 +306,19 @@ export class CsMap extends WidgetBase {
             // init map
             this.map = new mapboxgl.Map(this.options.mbOptions);
 
-            this.map.on('styleimagemissing', (e:any) => {
+            this.map.on('styleimagemissing', (e: any) => {
                 if (this.manager && this.manager.layers) {
-                for (const layer of this.manager.layers) {
-                    if (layer.extensions) {
-                        for (const ext of layer._extensions) {
-                            if (typeof ext.missingImage === 'function') {
-                                ext.missingImage(e.id);
+                    for (const layer of this.manager.layers) {
+                        if (layer.extensions) {
+                            for (const ext of layer._extensions) {
+                                if (typeof ext.missingImage === 'function') {
+                                    ext.missingImage(e.id);
+                                }
+
                             }
-                            
                         }
                     }
                 }
-                }                
             });
 
 
@@ -335,7 +335,7 @@ export class CsMap extends WidgetBase {
                 }
             });
 
-            this.map.on("contextmenu", (ev) =>{
+            this.map.on("contextmenu", (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_CONTEXT, ev);
                 }
@@ -391,7 +391,7 @@ export class CsMap extends WidgetBase {
                         point: false,
                         line_string: false,
                         polygon: false,
-                        combine_features: false,                        
+                        combine_features: false,
                         uncombine_features: false,
                         trash: false
                     },
@@ -400,7 +400,7 @@ export class CsMap extends WidgetBase {
                         // draw_circle: RadiusMode // eslint-disable-line camelcase
                     },
                     displayControlsDefault: true
-                });            
+                });
 
                 this.map.addControl(this.mapDraw, 'bottom-left');
             }
@@ -411,7 +411,7 @@ export class CsMap extends WidgetBase {
             // });
 
             // check if map has loaded
-            this.map.on('load', e => {                
+            this.map.on('load', e => {
                 this.initMapLayers();
                 this.startServices();
                 this.mapLoaded(e);
@@ -621,21 +621,22 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.options.showPelias')
-    public showPelias(enabled: boolean = true, old?: boolean) {        
+    public showPelias(enabled: boolean = true, old?: boolean) {
         if (!enabled && old && this.peliasControl) {
             this.map.removeControl(this.peliasControl);
         }
-        
+
         if (enabled && this.options.peliasOptions) {
-            if (!this.peliasControl) {                
+            if (!this.peliasControl) {
                 this.peliasControl = new PeliasGeocoder(
-                    {params: {'access-token': this.options.peliasOptions.accessToken},
-                flyTo: 'hybrid',
-                wof: true,
-                url: this.options.peliasOptions.url ?? 'https://places.jawg.io/v1',
-                useFocusPoint: true,     
-                customAttribution: 'JAWG search'       
-              });
+                    {
+                        params: { 'access-token': this.options.peliasOptions.accessToken },
+                        flyTo: 'hybrid',
+                        wof: true,
+                        url: this.options.peliasOptions.url ?? 'https://places.jawg.io/v1',
+                        useFocusPoint: true,
+                        customAttribution: 'JAWG search'
+                    });
             }
             this.map.addControl(this.peliasControl, 'top-right');
         }
@@ -673,14 +674,9 @@ export class CsMap extends WidgetBase {
                         }
 
                         if (this.manager && this.manager.events) {
-                            this.manager.events.publish(
-                                'layer',
-                                'added',
-                                layer
-                            );
-
+                            this.manager.events.publish('layer', 'added', layer);
                             if (layer._events) {
-                                layer._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED);                               
+                                layer._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED);
                             }
                         }
                         resolve(layer);
@@ -705,7 +701,7 @@ export class CsMap extends WidgetBase {
                     } as LayerSelectionOptions,
                     datasource: this.widget.datasource
                 },
-                { },
+                {},
                 SidebarKeys.LAYERS_SELECTION
             );
         }

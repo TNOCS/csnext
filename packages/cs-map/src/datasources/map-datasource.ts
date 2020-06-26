@@ -105,8 +105,8 @@ export class MapDatasource extends DataSources {
         this.layers = layers;
     }
 
-    public getLayer(id: string) : IMapLayer | undefined {
-        return this.layers?.find(l => l.id === id);        
+    public getLayer(id: string): IMapLayer | undefined {
+        return this.layers?.find(l => l.id === id);
     }
 
     // #endregion Public Accessors (3)
@@ -167,24 +167,28 @@ export class MapDatasource extends DataSources {
         meta?: string | FeatureTypes,
         args?: IMapLayer,
         id?: string,
-        extentions?: ILayerExtensionType[]
+        extentions?: ILayerExtensionType[],
+        promoteId?: string
     ): Promise<GeojsonPlusLayer> {
         return new Promise(async (resolve, reject) => {
-
             if (!id) {
                 id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
-             }
+            }
             const layer = this.getLayer(id);
             if (layer) {
                 // if (layer._source) {
                 //     this.updateSource(new DataSource(geojson));
                 // }                
-            } 
+            }
             else {
-            // check if 
+                // check if 
                 const source = new DataSource(geojson);
                 source.title = title;
                 source.id = id;
+
+                if (promoteId) {
+                    source._promoteId = promoteId;
+                }
 
                 // if meta is provided as a string, it is considered an URL
                 if (typeof meta === 'string') {
@@ -201,24 +205,24 @@ export class MapDatasource extends DataSources {
                     rl.title = title;
                     rl.source = source;
                     rl.openFeatureDetails = true;
-                    rl.style = style ? style : DEFAULT_LAYER_STYLE;                
+                    rl.style = style ? style : DEFAULT_LAYER_STYLE;
                     rl.enabled = (args.enabled !== undefined) ? args.enabled : true;
                     if (extentions) {
                         rl.extensions = extentions;
                     }
-                    rl.initLayer(this).then(() => {                                            
+                    rl.initLayer(this).then(() => {
                         if (this.layers) {
-                            this.layers.push(rl);                
+                            this.layers.push(rl);
                         }
                         resolve(rl);
                     })
                 } else {
-                // this.updateSource(source);            
-                    const layer = await this.addGeojsonLayerFromSource(title, source, style, args,extentions);
+                    // this.updateSource(source);            
+                    const layer = await this.addGeojsonLayerFromSource(title, source, style, args, extentions);
                     resolve(layer);
                 }
             }
-            
+
         });
     }
 
@@ -348,7 +352,7 @@ export class MapDatasource extends DataSources {
             if (layer) { this.hideLayer(layer); }
         } else {
             Vue.set(ml, 'visible', false);
-            Vue.set(ml, 'enabled', false);            
+            Vue.set(ml, 'enabled', false);
 
             // unsubscribe all subscriptions
             ml._busManager.stop();
@@ -560,13 +564,13 @@ export class MapDatasource extends DataSources {
 
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            Vue.set(ml, 'enabled', true);            
+            Vue.set(ml, 'enabled', true);
             Vue.set(ml, 'visible', true);
             if (this.map) {
                 this.map
                     .showLayer(ml)
                     .then(maplayer => {
-                        
+
                         if (ml.isEditable) {
                             this.activeDrawLayer = ml;
                             this.events.publish(
@@ -609,20 +613,20 @@ export class MapDatasource extends DataSources {
         })
     }
 
-    
 
-    public startDraw(mode = 'draw_line_string', title?: string): Promise<{ coordinates: number[][]} | undefined> {
+
+    public startDraw(mode = 'draw_line_string', title?: string): Promise<{ coordinates: number[][] } | undefined> {
         return new Promise((resolve, reject) => {
             if (!this.map || !this.map.map || !this.map.mapDraw) { return; }
-            
+
             if (this.map.pointPickerActivated) {
                 reject();
                 return;
             }
 
             AppState.Instance.triggerNotification({
-                title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: (cleared?: boolean) => { 
-                    if (!cleared) {                    
+                title: title ? title : 'SELECT_POINT', timeout: 0, clickCallback: (cleared?: boolean) => {
+                    if (!cleared) {
                         reject();
                         this.map!.pointPickerActivated = false;
                         if (this.pointPickerHandler) {
@@ -637,12 +641,12 @@ export class MapDatasource extends DataSources {
                 this.map?.map.off('draw.create', createLine);
                 if (e && e.features && e.features.length === 1) {
                     this.map?.mapDraw.deleteAll();
-                    $cs.clearNotifications();                                
+                    $cs.clearNotifications();
                     resolve((e.features[0].geometry as unknown) as any);
                 } else {
                     reject();
                 }
-             }
+            }
 
             this.map.map.on('draw.create', createLine);
             this.map.mapDraw.changeMode(mode);
@@ -713,16 +717,11 @@ export class MapDatasource extends DataSources {
         }
     }
 
-    public updateFeatureProperty(
-        source: string,
-        featureId: number,
-        props: any
-    ) {
+    public updateFeatureProperty(source: string, featureId: number, props: any) {
         if (this.MapControl) {
-            this.MapControl.setFeatureState(
-                { source, id: featureId as any },
-                props
-            );
+            const fId = { source: source, id: featureId };
+            const oldState = this.MapControl.getFeatureState(fId);
+            this.MapControl.setFeatureState(fId, { ...oldState, ...props });
         }
     }
 
@@ -947,7 +946,7 @@ export class MapDatasource extends DataSources {
         const layerType = CsMap.layerTypes.find(
             lt => lt.types !== undefined && lt.types.includes(type)
         );
-        if (!layerType || !layerType.getInstance) {            
+        if (!layerType || !layerType.getInstance) {
             return;
         }
         const res = layerType.getInstance(init);
