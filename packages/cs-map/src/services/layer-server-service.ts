@@ -51,130 +51,94 @@ export class LayerServerService implements ILayerService, IStartStopService {
         return result;
     }
 
+    public async updateLayerList() {
+        if (!this.options) { return; }
+        axios
+            .get(this.options.url + 'layers/')
+            .then(async response => {
+                if (
+                    response &&
+                    response.data &&
+                    this.options &&
+                    this.manager && 
+                    this.manager.layers
+                ) {
+                    for (const layer of response.data as IMapLayer[]) {
+                        const style = layer.style as LayerStyle;
+
+                        const s = new LayerSource();
+                        if (!layer.color) {
+                            layer.color = 'blue';
+                        }
+                        s.url = this.options.url + 'sources/' + layer.id;
+                        s.id = layer.id;
+                        s.type = 'geojson';
+                        const gl = new GeojsonPlusLayer();
+                        gl._service = this;
+                        gl.source = s;
+                        gl.openFeatureDetails = true;
+                        gl.isEditable = layer.isEditable;
+                        gl.isLive = layer.isLive;
+                        gl.featureTypes = layer.featureTypes;
+                        if (style) {
+                            if (style.iconZoomLevel) {
+                                gl.iconZoomLevel = style.iconZoomLevel;
+                            }
+                            gl.style = style;
+                            if (gl.style && gl.style.popup) {
+                                console.log(gl.style.popup);
+                            }
+                        }
+
+                        gl.color = layer.color ? layer.color : 'blue';
+                        gl.title = layer.title;
+                        gl.id = layer.id;
+                        gl.extensions = layer.extensions;
+
+                        gl.tags = [];
+                        if (this.options.tags) {
+                            gl.tags = this.options.tags;
+                        }
+                        if (layer.tags) {
+                            gl.tags = [...gl.tags, ...layer.tags];
+                        }
+
+                        if (gl.isEditable) {
+                            this.initEditableLayer(gl);
+                        } else {
+                            if (gl.isLive) {
+                                this.initLiveLayer(gl);
+                            }
+                        }
+                        await gl.initLayer(this.manager);
+                        this.manager.layers.push(gl);
+                        this.layers.push(gl);
+                    }
+
+                    if (this.options.activeLayers) {
+                        for (const ad of this.options.activeLayers) {
+                            const layer = this.layers.find(
+                                l => l.id === ad
+                            );
+                            if (layer && this.manager) {
+                                console.log('Active layer ' + layer.id);
+                                this.manager!.loadLayer(layer).then(l => {
+                                    this.manager!.showLayer(l);
+                                }).catch(e => console.warn(e));
+                            }
+                        }
+                    }
+                    this.manager?.events?.publish('layer', 'list-updated', this.manager.layers);
+                }
+            })
+            .catch((e) => { console.log(e); });
+    }
+
     public async Start(manager: MapDatasource) {
         this.manager = manager;
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
-            axios
-                .get(this.options.url + 'layers/')
-                .then(async response => {
-                    if (
-                        response &&
-                        response.data &&
-                        this.options &&
-                        manager.layers
-                    ) {
-                        for (const layer of response.data as IMapLayer[]) {
-                            const style = layer.style as LayerStyle;
-                            // style.mapbox = new MapboxStyles({
-
-                            // });
-
-                            const s = new LayerSource();
-                            if (!layer.color) {
-                                layer.color = 'blue';
-                            }
-                            s.url = this.options.url + 'sources/' + layer.id;
-                            s.id = layer.id;
-                            s.type = 'geojson';
-                            const gl = new GeojsonPlusLayer();
-                            gl._service = this;
-                            gl.source = s;
-                            gl.openFeatureDetails = true;
-                            gl.isEditable = layer.isEditable;
-                            gl.isLive = layer.isLive;
-                            gl.featureTypes = layer.featureTypes;
-                            if (style)
-                            {
-                                if (style.iconZoomLevel) {
-                                   gl.iconZoomLevel = style.iconZoomLevel;
-                                }
-                                gl.style = style;
-                                if (gl.style && gl.style.popup) {
-                                    console.log(gl.style.popup);
-                                }
-                            }
-                            
-                            gl.color = layer.color ? layer.color : 'blue';
-                            gl.title = layer.title;
-                            gl.id = layer.id;
-                            gl.extensions = layer.extensions;
-                            
-                            if (layer.sourceType) {
-                                // gl.type = layer.sourceType;
-                            } else {
-                                // gl.type = layer.type;
-                            }
-                            // if (layer.style && layer.style.mapbox) {
-                            //     gl._symbolLayout =
-                            //         layer.style.mapbox.symbolLayout;
-                            //     gl._symbolPaint = layer.style.mapbox.symbolPaint;
-                            //     gl._circlePaint = layer.style.mapbox.circlePaint;
-                            //     gl._fillPaint = layer.style.mapbox.fillPaint;
-                            //     gl._linePaint = layer.style.mapbox.linePaint;
-                            // }
-                            gl.tags = [];
-                            if (this.options.tags) {
-                                gl.tags = this.options.tags;
-                            }
-                            if (layer.tags) {
-                                gl.tags = [...gl.tags, ...layer.tags];
-                            }
-
-                            if (gl.isEditable) {
-                                this.initEditableLayer(gl);
-                            } else {
-                                if (gl.isLive) {
-                                    this.initLiveLayer(gl);
-                                }
-                            }
-
-                            // gl.paint = {
-                            //     'line-color': ['get', 'stroke'],
-                            //     'line-opacity': ['get', 'stroke-opacity'],
-                            //     'line-width': ['get', 'stroke-width']
-                            // } as LinePaint;
-                            await gl.initLayer(manager);
-                            manager.layers.push(gl);
-                            gl._events.subscribe(CsMap.FEATURE, (a: string) => {
-                                if (
-                                    a === CsMap.FEATURE_SELECT &&
-                                    this.options!.openFeatureDetails
-                                ) {
-                                    // MainBus.events.publish(
-                                    //     'rightsidebar',
-                                    //     'open-widget',
-                                    //     {
-                                    //         component: FeatureDetails,
-                                    //         data: {
-                                    //             feature: f,
-                                    //             layer: layer,
-                                    //             manager: this
-                                    //         }
-                                    //     }
-                                    // );
-                                    // console.log(AppStateBase.Instance.bus);
-                                }
-                            });
-                            this.layers.push(gl);
-                        }
-
-                        if (this.options.activeLayers) {
-                            for (const ad of this.options.activeLayers) {
-                                const layer = this.layers.find(
-                                    l => l.id === ad
-                                );
-                                if (layer && this.manager) {
-                                    console.log('Active layer ' + layer.id);
-                                    this.manager!.loadLayer(layer).then(l => {
-                                        this.manager!.showLayer(l);
-                                    }).catch(e => console.warn(e));
-                                }
-                            }
-                        }
-                    }
-                })
-                .catch((e) => { console.log(e); });
+            await this.updateLayerList();
         }
 
         this.manager.events.subscribe(CsMap.LAYER, (a: string, l: GeojsonPlusLayer) => {
@@ -198,7 +162,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 this.socket.on('layer/' + gl.id, (data: any) => {
                     this.updateLiveLayer(data, gl);
                 });
-                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {                    
+                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
                     this.updateLiveLayerFeatures(data, gl, true);
                 });
             }
@@ -237,6 +201,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         const res: ILayerAction[] = [];
         res.push({
             title: 'Edit',
+            layer: layer,
             action: () => {
                 this.manager!.editLayer(layer);
                 // AppState.Instance.openRightSidebarWidget({
@@ -299,13 +264,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 'Content-Type': 'application/json'
             }
         })
-        .then(r => {
-            console.log(r);
-            this.initLiveLayer(gl);
-        })
-        .catch(e => {
-            console.log(e);
-        });
+            .then(r => {
+                console.log(r);
+                this.initLiveLayer(gl);
+            })
+            .catch(e => {
+                console.log(e);
+            });
 
     }
 
@@ -344,7 +309,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.manager && this.socket && data.action) {
             switch (data.action) {
                 case 'update':
-                    this.manager.updateLayerFeature(gl, data.feature, forceUpdate);                    
+                    this.manager.updateLayerFeature(gl, data.feature, forceUpdate);
                     break;
                 case 'delete':
                     if (data.feature && data.feature.hasOwnProperty('id')) {

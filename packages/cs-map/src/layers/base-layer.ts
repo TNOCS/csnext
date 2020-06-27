@@ -231,6 +231,7 @@ export class BaseLayer implements IMapLayer {
         if (this.enabled) {
             res.push({
                 title: 'Zoom to',
+                layer: this,
                 action: () => {
                     if (this._manager) {
                         this._manager.zoomLayer(this);
@@ -239,6 +240,7 @@ export class BaseLayer implements IMapLayer {
             });
             res.push({
                 title: 'Hide',
+                layer: this,
                 action: () => {
                     if (this._manager) {
                         this._manager.hideLayer(this);
@@ -247,6 +249,7 @@ export class BaseLayer implements IMapLayer {
             });
             res.push({
                 title: 'Refresh',
+                layer: this,
                 action: () => {
                     if (this._manager) {
                         this._manager.refreshLayer(this);
@@ -256,6 +259,7 @@ export class BaseLayer implements IMapLayer {
             if (!this.disableFeatureList) {
                 res.push({
                     title: 'Show features',
+                    layer: this,
                     action: () => {
                         if (this._manager) {
                             this._manager.openLayer(this);
@@ -266,6 +270,7 @@ export class BaseLayer implements IMapLayer {
         } else {
             res.push({
                 title: 'Show',
+                layer: this,
                 action: () => {
                     if (this._manager) {
                         this._manager.showLayer(this);
