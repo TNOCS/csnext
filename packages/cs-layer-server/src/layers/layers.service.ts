@@ -466,6 +466,23 @@ export class LayerService extends AggregateRoot {
         });
     }
 
+    public deleteLayer(layerId: string): Promise<boolean> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const layer = this.getLayerById(layerId);
+                if (layer) {
+                    this.config.layers = this.config.layers.filter(l => l.id === layerId);
+                    this.saveServerConfigDelay();
+                    resolve(true);
+                } else {
+                    reject('Layer not found');
+                }
+            } catch (e) {
+                reject('Error deleting layer');
+            }
+        });
+    }
+
     /** delete feature */
     public deleteFeature(sourceid: string, featureId: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
