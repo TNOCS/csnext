@@ -11,6 +11,48 @@
     <simplebar class="layer-list">
         <v-tabs-items v-model="tab" class="full-height">
             <v-tab-item value="tab-layers" class="full-height">
+                <v-treeview
+                    v-model="tree"
+                    :open="open"
+                    :items="layerTree"
+                    multiple
+                    item-key="id"
+                    selectable
+                    open-all
+                    open-on-click
+                    @input="activeUpdated()"
+                >
+                    <template v-slot:prepend="{ item, open }">
+                        <v-icon v-if="item.children">
+                            {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+                        </v-icon>
+                        <v-icon v-else>
+                            layers
+                        </v-icon>
+                    </template>
+                    <template v-slot:append="{ item, open }">
+                        <v-menu>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn v-bind="attrs" icon v-on="on">
+                                    <v-icon>more_vert</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item
+                                    v-for="(menuitem, i) in layerMenu(item.id)"
+                                    :key="i"
+                                    @click="menuitem.action(menuitem.layer)"
+                                >
+                                    <v-list-item-title
+                                        >{{ menuitem.title }}
+                                    </v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </template>
+                </v-treeview>
+            </v-tab-item>
+            <v-tab-item value="tab-layers-old" class="full-height">
                 <div class="full-height-tab">
                     <v-text-field
                         solo

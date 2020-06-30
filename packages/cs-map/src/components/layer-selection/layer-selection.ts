@@ -17,16 +17,19 @@ export class LayerSelection extends Vue {
     public widget!: IWidget;
     public tree: any[] = [];
     public items = [];
+    public filter : string | null = null;
     public tab = 'layers';
     public open = [];
     public groupsexpanded: number[] = [];
-    public showMenu = false;
-    public filter: string = '';
+    public showMenu = false;    
     public Groups: { [id: string]: ILayerGroup } = {};
+    public caseSensitive = false;
+    public layerTree: any[] = [
+    ]
 
     public mounted() {        
-        this.updateGroups();
-        
+        this.updateTree();
+
         if (localStorage.layergroupsexpanded) {
             try {
                 this.groupsexpanded = JSON.parse(
@@ -59,50 +62,50 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public updateGroups() {
-        let res: { [id: string]: ILayerGroup } = {};
-        this.groupsexpanded = [];
+    public updateTree() {
+
+        let tree : any[] = [];
+        console.log('update tree');
 
         if (this.MapManager && this.MapManager.layers) {
             for (const l of this.MapManager.layers) {
-                if (l.title && !l.hideInLayerList) {
-                    if (
-                        this.filter.length === 0 ||
-                        l.title
-                            .toLowerCase()
-                            .indexOf(this.filter.toLowerCase()) !== -1
-                    ) {
-                        if (!l.tags || l.tags.length === 0) {
-                            l.tags = [' '];
+                if (l.title && !l.hideInLayerList) {                
+                    // get layer tags
+                    if (!l.tags || l.tags.length === 0) {
+                        tree.push({name: l.title, id: l.id});
+                    } else for (const tag of l.tags) {
+                        // find tag tree item
+                        let leaf = tree.find(l =>  l.name === tag);
+                        if (!leaf) {
+                            leaf = { name: tag, id: `tag-${tag}`, children: [] };
+                            tree.push(leaf);
                         }
-                        for (const t of l.tags) {
-                            this.addLayerToGroup(res, t, l);
-                        }
-                    }
+                        leaf.children.push({name: l.title, id: l.id});                            
+                    }                
                 }
-            }
-            let c = 0;
-            while (this.groupsexpanded.length < Object.keys(res).length) {
-                this.groupsexpanded.push(c);
-                c += 1;
-            }
-
-            for (const group in res) {
-                if (res.hasOwnProperty(group)) {
-                    const element = res[group];
-                    if (
-                        element.layers &&
-                        element.layers.findIndex(l => l.enabled === true) !== -1
-                    ) {
-                        element.state = 'some';
-                    } else {
-                        element.state = 'none';
-                    }
-                }
-            }
+            }   
+            this.layerTree = tree;
+            this.tree = this.MapManager.layers.filter(l=> l.enabled).map(r=>r.id);
+            console.log(this.tree);
+            this.$forceUpdate();         
         }
-        this.Groups = res;
+
     }
+
+    public activeUpdated() {
+        if (!this.MapManager || !this.MapManager.layers) { return; }
+        for (const layer of this.MapManager?.layers!) {
+            if (layer.enabled && !this.tree.includes(layer.id)) {
+                this.MapManager.hideLayer(layer);
+            }
+            if (!layer.enabled && this.tree.includes(layer.id)) {
+                this.MapManager.showLayer(layer);
+            }
+            
+        }
+    }
+
+    
 
     public toggleShowMore(layer: IMapLayer) {
         layer._showMore = !layer._showMore;
@@ -139,7 +142,9 @@ export class LayerSelection extends Vue {
         }
     }
 
-    public layerMenu(layer: IMapLayer): ILayerAction[] {
+    public layerMenu(layerId: string): ILayerAction[] {        
+        const layer = this.MapManager!.layers!.find(l => l.id === layerId);
+        if (!layer) return [];
         let results: ILayerAction[] = [];
         if (layer.getLayerActions) {
             results = [...results, ...layer.getLayerActions()];
@@ -173,7 +178,7 @@ export class LayerSelection extends Vue {
         l: IMapLayer
     ) {
         if (res.hasOwnProperty(t)) {
-            res[t].layers.push(l);            
+            res[t].layers.push(l);
             this.groupsexpanded.push(this.groupsexpanded.length);
         } else {
             res[t] = { title: t, color: 'gray', layers: [l], state: 'none' };
@@ -193,24 +198,23 @@ export class LayerSelection extends Vue {
     }
 
     @Watch('filter')
-    private filterChanged(search: string) {
-        this.updateGroups();
+    private filterChanged(search: string) {        
+        this.updateTree();
     }
 
     @Watch('MapManager.layers')
-    private layersChanged(d: any) {
-        this.updateGroups();
+    private layersChanged(d: any) {        
+        this.updateTree();
     }
 
     @Watch('widget.content')
     private datasourceUpdated(n: MapDatasource) {
-        if (this.MapManager && this.MapManager.events) {
-            this.updateGroups();
-            this.MapManager.events.subscribe('layer', (a: string, e: any) => {
-                this.updateGroups();
+        if (this.MapManager && this.MapManager.events) {            
+            this.updateTree();
+            this.MapManager.events.subscribe('layer', (a: string, e: any) => {                
+                this.updateTree();
             });
         }
         // this.updateTree();
     }
-
 }
