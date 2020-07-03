@@ -55,8 +55,6 @@ Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
 
-
-
 @Component({
   name: 'cs-app',
   router,
@@ -381,7 +379,7 @@ export class CsApp extends Vue {
     this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
         case AppState.DIALOG_ADDED:
-          Vue.set(this, 'dialog', dialog);
+          this.dialog = Object.assign(this.dialog, dialog);
           this.dialog.visible = true;
           break;
         case AppState.DIALOG_CLOSED:
