@@ -9,7 +9,7 @@ export interface IDialog {
   scrollable?: boolean;
   // toolbar?: boolean;
   data?: any;
-  width?: number;
+  width?: number | string;
   actions?: string[];
   actionCallback?(action: string);
 }
