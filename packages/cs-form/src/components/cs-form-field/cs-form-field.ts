@@ -32,7 +32,7 @@ export class CsFormField extends Vue {
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
 
     private rules: { [key: string]: Function } = {
-        required: val => !!val || this.$cs.Translate('FIELD_REQUIRED'),
+        required: val => { if (this.field?.required && !val) return this.$cs.Translate('FIELD_REQUIRED'); return true; },
         valueMin: val => {
             if (!this.field || !this.field.min) { return true; }
             if (typeof +val === 'number' && +val >= this.field.min) { return true; }
