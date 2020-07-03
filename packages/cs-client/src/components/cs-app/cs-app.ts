@@ -379,7 +379,8 @@ export class CsApp extends Vue {
     this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
         case AppState.DIALOG_ADDED:
-          this.dialog = Object.assign(this.dialog, dialog);
+          const emptyDialog = {component: undefined, actions: undefined, persistent: false, actionCallback: undefined } as IDialog;
+          this.dialog = Object.assign(this.dialog, emptyDialog, dialog);
           this.dialog.visible = true;
           break;
         case AppState.DIALOG_CLOSED:
