@@ -33,7 +33,7 @@
         "rebuild": "yarn run clean && yarn install && yarn run build",
         "test": "lerna run test",
         "lerna:version": "lerna version --conventional-graduate --preid patch",
-        "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch"        
+        "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch"
     },
     "devDependencies": {
         "@types/node": "^13.13.5",
@@ -44,10 +44,10 @@
         "deepmerge": "4.2.2",
         "del-cli": "^3.0.0",
         "fibers": "^5.0.0",
+        "html-loader": "^1.1.0",
         "lerna": "^3.21.0",
         "postcss-loader": "^3.0.0",
         "purify-css": "^1.2.5",
-        "html-loader": "^1.1.0",
         "reflect-metadata": "^0.1.13",
         "sass": "1.26.5",
         "sass-loader": "^8.0.2",
