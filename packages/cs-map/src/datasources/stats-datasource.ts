@@ -139,7 +139,7 @@ export class StatsDatasource extends MapDatasource {
                 .then(response => {
                     this.forceFileDownload(response.data, source.name + '.' + source.format);
                 })
-                .catch(() => console.log('error occured'));
+                .catch((e) => console.log('error occured'));
         }
     }
 
