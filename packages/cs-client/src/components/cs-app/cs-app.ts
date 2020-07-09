@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import Vuetify, { VuetifyPreset } from 'vuetify';
+import VuetifyPlugin, { Vuetify, VuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -31,6 +31,7 @@ import { CsLoader } from '../cs-loader/cs-loader';
 import './../../assets/fonts/fonts.css';
 import './cs-app.css';
 import 'simplebar/dist/simplebar.css';
+// import Vuetify from 'vuetify/lib';
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -51,7 +52,7 @@ const vuetifyOpts = {
   // }
 } as VuetifyPreset;
 
-Vue.use(Vuetify);
+Vue.use(VuetifyPlugin);
 
 const router = new VueRouter({ routes: [] });
 
@@ -59,7 +60,7 @@ const router = new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   i18n,
-  vuetify: new Vuetify(vuetifyOpts),
+  vuetify: new VuetifyPlugin(vuetifyOpts),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
@@ -87,7 +88,8 @@ export class CsApp extends Vue {
   private busManager = new MessageBusManager();
 
   constructor() {
-    super();
+    super();        
+    this.$cs.vuetify = this.$vuetify;
     this.$cs.router = router;
     this.$cs.i18n = i18n;
     this.$cs.i18n.mergeLocaleMessage('en', { '$vuetify': vuetifyEN });

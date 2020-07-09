@@ -18,9 +18,11 @@ import {
 import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, LayoutManager, DashboardManager } from '../';
 import VueRouter from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
+
 import io from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
+import { Framework } from 'vuetify';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState extends AppStateBase {
@@ -86,6 +88,7 @@ export class AppState extends AppStateBase {
   public logger = Logger.Instance;
   /** Vue router instance */
   public router?: VueRouter;
+  public vuetify?: Framework ;
   /** Vue i18n instance */
   public i18n?: VueI18n;
   /** manages keyboard shortcuts */
