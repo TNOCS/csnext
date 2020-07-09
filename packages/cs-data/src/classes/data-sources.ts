@@ -119,7 +119,7 @@ export class DataSources implements IDatasource {
         // const resource = await datapackage.Resource.load({path: 'https://raw.githubusercontent.com/frictionlessdata/datapackage-js/master/data/data.csv'});
     }
 
-    public async mergeResources(first: DataResource, second: DataResource): Promise<boolean> {
+    public async mergeResourcesOld(first: DataResource, second: DataResource): Promise<boolean> {
         return new Promise((resolve) => {
             if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
             const loaderId = this.loader.addLoader();
@@ -130,54 +130,71 @@ export class DataSources implements IDatasource {
                     if (fk.reference && fk.reference.resource === first.name) {
                         if (first.format === 'geojson' && first.data && first.data._loaded && first.data._data.features) {
                             for (const feature of first.data._data.features) {
-                                const data = second.data._data.data.filter(r => r.hasOwnProperty(fk.fields) && r[fk.fields] === feature.properties![fk.reference.fields]);
-                                if (data) {
-                                    const properties = {};
-                                    const when = {};
-                                    const parseDate = (d, field, when): number => {
-                                        const date = new Date(d[field._when]).getTime();
-                                        if (date) {
-                                            if (this.dates.indexOf(date) === -1) {
-                                                this.dates.push(date);
-                                            }
-                                            if (!when.hasOwnProperty(field.name)) {
-                                                when[field.name] = {};
-                                                this.focusDate = date;
-                                            }
+                                const target = (feature.properties!.hasOwnProperty(fk.reference.fields)) ? feature.properties![fk.reference.fields] : undefined;
+                                if (target) {
+                                    const data = second.data._data.data.filter(r => {
+                                        try {
+                                            // return false;
+                                            const source = (r.hasOwnProperty(fk.fields) && r[fk.fields] !== null) ? r[fk.fields] : undefined;
+                                            return (source && source === target);
+                                            // return (r.hasOwnProperty(fk.fields) && r[fk.fields] !== null && feature.properties!.hasOwnProperty(fk.reference.fields) && r[fk.fields].toString() === feature.properties![fk.reference.fields].toString());
+                                        } catch (e) {
+                                            console.log(e);
+                                            return false;
                                         }
-                                        return date;
-                                    };
-                                    for (const d of data) {
-                                        for (const field of second.schema.fields) {
+                                    });
 
-                                            // check if the selector exists and references this field
-                                            if (field._selector && d.hasOwnProperty(field._selector) && d[field._selector] === field.name) {
-                                                if (field._value) {
+                                    // let data = [];
+
+
+                                    if (data && data.length > 0) {
+                                        const properties = {};
+                                        const when = {};
+                                        const parseDate = (d, field, when): number => {
+                                            const date = new Date(d[field._when]).getTime();
+                                            if (date) {
+                                                if (this.dates.indexOf(date) === -1) {
+                                                    this.dates.push(date);
+                                                }
+                                                if (!when.hasOwnProperty(field.name)) {
+                                                    when[field.name] = {};
+                                                    this.focusDate = date;
+                                                }
+                                            }
+                                            return date;
+                                        };
+                                        for (const d of data) {
+                                            for (const field of second.schema.fields) {
+
+                                                // check if the selector exists and references this field
+                                                if (field._selector && d.hasOwnProperty(field._selector) && d[field._selector] === field.name) {
+                                                    if (field._value) {
+                                                        if (field._when) {
+                                                            const date = parseDate(d, field, when);
+                                                            when[field.name][date] = d[field._value];
+                                                            properties[field.name] = d[field._value];
+                                                        } else {
+                                                            properties[field.name] = d[field._value];
+                                                        }
+                                                    }
+
+                                                } else {
                                                     if (field._when) {
                                                         const date = parseDate(d, field, when);
-                                                        when[field.name][date] = d[field._value];
-                                                        properties[field.name] = d[field._value];
+
+                                                        when[field.name][date] = d[field.name];
+                                                        properties[field.name] = d[field.name];
                                                     } else {
-                                                        properties[field.name] = d[field._value];
+                                                        properties[field.name] = d[field.name];
                                                     }
+
                                                 }
-
-                                            } else {
-                                                if (field._when) {
-                                                    const date = parseDate(d, field, when);
-
-                                                    when[field.name][date] = d[field.name];
-                                                    properties[field.name] = d[field.name];
-                                                } else {
-                                                    properties[field.name] = d[field.name];
-                                                }
-
                                             }
                                         }
+                                        feature.properties = { ...feature.properties, ...properties, ...{ _when: when } };
                                     }
-                                    feature.properties = { ...feature.properties, ...properties, ...{ _when: when } };                                    
                                 }
-                            }                        
+                            }
                         }
                     }
                 }
@@ -186,8 +203,48 @@ export class DataSources implements IDatasource {
                     first.data.updateFeatureTypePropertyMap(first.data._meta.default);
                 }
             }
+
             this.loader.removeLoader(loaderId);
             resolve(true);
+
+        });
+    }
+
+    public async mergeResources(first: DataResource, second: DataResource): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
+            const loaderId = this.loader.addLoader();
+            // const merge = (a: FeatureCollection, b: any, p1: string, p2: string) => a.features.filter( aa => {
+            //     return !b.find(bb => aa.properties && aa.properties[p1] === bb[p2])} )[0].concat(b);
+            if (second.schema && second.schema.foreignKeys) {
+                for (const fk of second.schema.foreignKeys) {
+                    if (fk.reference && fk.reference.resource === first.name) {
+                        const map = {};
+
+                        if (first.format === 'geojson' && first.data && first.data._loaded && first.data._data.features) {
+                            for (const item of second.data._data.data) {
+                                map[item![fk.fields]] = item;
+                            }
+                            console.log(map);
+                            // second.data._data.data.forEach(item => map[item![fk.fields]] = item);
+                            for (const feature of first.data._data.features) {
+                                if (feature.properties!.hasOwnProperty(fk.reference.fields) && map.hasOwnProperty(feature.properties![fk.reference.fields])) {
+                                    feature.properties = { ...feature.properties, ...map[feature.properties![fk.reference.fields]] }
+                                };
+                            };
+                        }
+
+                    }
+                }
+                if (first.data._meta && first.data._meta.default && first.data._meta.default.properties && second.data._meta && second.data._meta.default.properties) {
+                    first.data._meta.default.properties = first.data._meta.default.properties.concat(second.data._meta.default.properties);
+                    first.data.updateFeatureTypePropertyMap(first.data._meta.default);
+                }
+            }
+
+            this.loader.removeLoader(loaderId);
+            resolve(true);
+
         });
     }
 
