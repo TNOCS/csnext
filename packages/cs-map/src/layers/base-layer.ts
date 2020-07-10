@@ -64,19 +64,6 @@ export class BaseLayer implements IMapLayer {
     public extensions?: ILayerExtensionType[];
     public supportLayers: string[] = [];
     public selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
-    // @FormField({ title: 'Features', type: 'keyvalue', canAdd: true, canDelete: true })
-    // @FormField({
-    //     title: 'Feature types',
-    //     type: 'keysobject',
-    //     canEditKey: true,
-    //     canAdd: true,
-    //     canDelete: true,
-    //     addUsingDialog: true,
-    //     keyValuesType: () => {
-    //         return new FeatureType();
-    //     }
-    // })
-    // public featureTypes?: FeatureTypes;
     public filter?: any[];
     @FormField({ title: 'Hide in layer list', type: 'checkbox' })
     public hideInLayerList?: boolean;
@@ -111,14 +98,6 @@ export class BaseLayer implements IMapLayer {
     public title: string = '';
     public typeId?: string = 'geojson';
     public featureTypes?: FeatureTypes;
-    // public _visible?: boolean;
-
-    // private _titleTemplate?: Handlebars.TemplateDelegate;
-    // private _popupTemplate?: Handlebars.TemplateDelegate;
-
-    // #endregion Properties (35)
-
-    // #region Constructors (1)
 
     constructor(init?: Partial<IMapLayer>) {
         if (init) {
@@ -136,10 +115,6 @@ export class BaseLayer implements IMapLayer {
         }
     }
 
-    // #endregion Constructors (1)
-
-    // #region Public Accessors (3)
-
     public get MapControl(): mapboxgl.Map | undefined {
         if (this._initialized &&
             this.id &&
@@ -150,23 +125,6 @@ export class BaseLayer implements IMapLayer {
             return undefined;
         }
     }
-
-    // public get visible(): boolean | undefined {
-    //     return this._visible;
-    // }
-
-    // public set visible(value: boolean | undefined) {
-    //     if (this._visible === value) {
-    //         return;
-    //     }
-    //     this._visible = value;
-    // }
-
-    // #endregion Public Accessors (3)
-
-
-
-    // #region Public Methods (24)
 
     public addLayer(map: CsMap) { }
 
@@ -367,29 +325,14 @@ export class BaseLayer implements IMapLayer {
 
     public parseTitle(f?: mapboxgl.MapboxGeoJSONFeature): string {
         if (this.MapControl && this.style && this.style.title && f && f.properties) {
-            return f.properties[this.style.title];
-            // if (!this._titleTemplate) {
-            //     this._titleTemplate = Handlebars.compile(this.style.title);
-            // }
-            // const state = this.MapControl.getFeatureState(f);
-            // if (state) {
-            //     if (!state.hasOwnProperty('title')) {
-            //         state.title = this._titleTemplate(f, { data: { intl: this.intlData } });
-            //         this.MapControl.setFeatureState(f, state);
-            //     }
-            //     return state.title;
-            // } else {
-            //     return this._titleTemplate(f, { data: { intl: this.intlData } });
-            // }
+            return f.properties[this.style.title];        
         } else {
             return `${this.title}`;
         }
     }
 
     public removeLayer(map: CsMap) {
-        if (!this.MapControl) { return; }
-        // this._legends = [];
-        // this._filters = {};
+        if (!this.MapControl) { return; }        
         if (this.supportLayers && this.supportLayers.length > 0) {
             for (const layer of this.supportLayers) {
                 this.MapControl.removeLayer(layer);

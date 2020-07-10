@@ -1,15 +1,6 @@
 <div>
-    <v-expansion-panels
-        multiple
-        v-if="data"
-        v-model="sectionsPanels"
-        class="section-expansion-panel"
-    >
-        <v-expansion-panel
-            v-for="s in sections"
-            :key="s.id"
-            v-if="s.properties.length>0"
-        >
+    <v-expansion-panels multiple v-if="data" v-model="sectionsPanels" class="section-expansion-panel">
+        <v-expansion-panel v-for="s in sections" :key="s.id" v-if="s.properties.length>0">
             <v-expansion-panel-header v-if="!section.hideTitle" class="feature-section-title">
                 {{ s.title }}
             </v-expansion-panel-header>
@@ -40,6 +31,7 @@
                     <div
                         v-for="property in s.properties"
                         class="feature-property"
+                        v-if="property.value !== 'null'"
                     >
                         <div>
                             <div
@@ -51,7 +43,7 @@
                                 {{ property.type.title }}
                             </div>
                             <div class="feature-property-value">                                                              
-                                <prop-value
+                                <prop-value 
                                     :value="property.value"
                                     :proptype="property.type"
                                 ></prop-value>
