@@ -70,6 +70,9 @@ export interface IDashboard {
   // optional list of sub dashboards
   dashboards?: IDashboard[];
 
+  // list of dashboards that can be included e.g. within split panel
+  refDashboards?: IDashboard[];
+
   // parent dashboard, if this is a child dashboard
   parent?: IDashboard;
 
