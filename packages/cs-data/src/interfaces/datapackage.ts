@@ -186,6 +186,11 @@ export interface DataResource {
      * Organisation provinding the data
      */
     organisation?: string;
+
+    /**
+     * Image for this resource
+     */
+    image?: string;
 }
 
 /**

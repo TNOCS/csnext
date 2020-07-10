@@ -23,6 +23,7 @@ export interface IMapLayer {
     sourceType?: string;
     color: string;
     description: string;
+    logo?: string;
     popupContent?: string | Function | undefined;
     opacity?: number;
     source?: string | DataSource;

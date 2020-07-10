@@ -1,10 +1,7 @@
 <div class="feature-details-container" v-if="manager" style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; overflow-y: hidden;">
     <simplebar data-simplebar-auto-hide="false" style="height:100%">
         <v-card class="mx-auto" tile flat>
-            <v-img class="align-end" :src="feature.properties.image" height="200px">
-                <v-btn fab depressed small @click="closeSidebar()" class="primary sidebar-back-button">
-                    <v-icon>arrow_forward</v-icon>
-                </v-btn>
+            <v-img class="align-end primary" :src="image" height="200px">
                 <v-card-title class="feature-component-title" v-html="title">
                 </v-card-title>
             </v-img>

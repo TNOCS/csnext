@@ -266,13 +266,14 @@ export class DataSources implements IDatasource {
                     break;
                 case 'geojson':
                     d = new DataSource(data);
-                    d.type = 'geojson';
+                    d.type = 'geojson';                    
                     break;
                 default:
                     reject('Resource format not recognized');
                     break;
             }
             if (d !== undefined) {
+                d.logo = resource.image;
                 d._meta = new FeatureTypes();
                 d._meta.default = new FeatureType();
                 d._meta.default.properties = [];
