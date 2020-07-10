@@ -224,8 +224,7 @@ export class DataSources implements IDatasource {
                         if (first.format === 'geojson' && first.data && first.data._loaded && first.data._data.features) {
                             for (const item of second.data._data.data) {
                                 map[item![fk.fields]] = item;
-                            }
-                            console.log(map);
+                            }                            
                             // second.data._data.data.forEach(item => map[item![fk.fields]] = item);
                             for (const feature of first.data._data.features) {
                                 if (feature.properties!.hasOwnProperty(fk.reference.fields) && map.hasOwnProperty(feature.properties![fk.reference.fields])) {

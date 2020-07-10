@@ -225,8 +225,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.content')
-    public contentLoaded(d: MapDatasource) {
-        console.log(d);
+    public contentLoaded(d: MapDatasource) {        
         this.initStyles();
         this.initMapLayers();
     }
