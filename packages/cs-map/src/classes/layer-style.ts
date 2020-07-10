@@ -14,6 +14,7 @@ import {
     CirclePaint,
     CircleLayout
 } from 'mapbox-gl';
+import { ClusterSettings } from './layer-source';
 
 export interface ILayerStyle {
     type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
@@ -435,6 +436,7 @@ export class LayerStyle implements ILayerStyle {
     @FormField({ title: 'Hover Opacity', type: 'number', min: 0, max: 100, step: 1 })
     public hoverOpacity?: number = 75;
     public showSymbol?: boolean;
+    public clusterSettings?: ClusterSettings;
     public _opacity?: number;
     public _originalMapbox?: MapboxStyles;
 }

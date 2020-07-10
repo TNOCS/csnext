@@ -5,7 +5,6 @@ import {
     PropertyDetails
 } from './../.';
 import extent from '@mapbox/geojson-extent';
-import Vue from 'vue';
 
 import {
     LngLatBounds,
@@ -22,7 +21,6 @@ import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
 import { CsWidget } from '@csnext/cs-client';
 import { Geometry } from 'geojson';
-// import { isNumber } from 'util';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
@@ -40,7 +38,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             Spectral: [['#fc8d59', '#99d594'], ['#fc8d59', '#ffffbf', '#99d594'], ['#d7191c', '#fdae61', '#abdda4', '#2b83ba'], ['#d7191c', '#fdae61', '#ffffbf', '#abdda4', '#2b83ba'], ['#d53e4f', '#fc8d59', '#fee08b', '#e6f598', '#99d594', '#3288bd']]
 
         }
-    // #region Properties (32)
     public iconZoomLevel?: number;
     public isEditable?: boolean;
     public isLive?: boolean;
@@ -56,26 +53,19 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private moveEvent = this.onMove.bind(this);
     private mapEventsRegistered = false;
     private symbolLayer?: mapboxgl.Layer;
+    private clusterLayer?: mapboxgl.Layer;
     // Create a popup, but don't add it to the map yet.
     private popup = new mapboxgl.Popup({
         closeButton: false
     });
     private hoveredStateId: any = null;
 
-    // #endregion Properties (32)
-
-    // #region Constructors (1)
-
     constructor(init?: Partial<IMapLayer>) {
         super(init);
         // this.events = new MessageBusService();
     }
 
-    // #endregion Constructors (1)
-
-    // #region Public Methods (17)
-
-    public addCircleSymbol(widget) {
+    public addCircleSymbol() {
         if (!this.style || !this._source || !this.style.showSymbol) { return; }
         const imageId = this.id + '-symbol';
         const symbolLayout = { ...{ 'icon-image': imageId }, ...this.style.mapbox?.symbolLayout };
@@ -90,6 +80,53 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             layout: symbolLayout
         } as mapboxgl.Layer;
         this.addSupportLayer(this.symbolLayer);
+    }
+
+    public addClusterLayer() {
+        this.clusterLayer = {
+            id: 'clusters',
+            type: 'circle',
+            source: this._source?.id,
+            filter: ['has', 'point_count'],
+            paint: this.style?.clusterSettings?.paint ?? {
+                // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+                // with three steps to implement three types of circles:
+                //   * Blue, 20px circles when point count is less than 100
+                //   * Yellow, 30px circles when point count is between 100 and 750
+                //   * Pink, 40px circles when point count is greater than or equal to 750
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#e0f3db',
+                    50,
+                    '#a8ddb5',
+                    450,
+                    '#43a2ca'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    50,
+                    30,
+                    450,
+                    40
+                ]
+            }
+        };
+        this.addSupportLayer(this.clusterLayer);
+
+        this.addSupportLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: this._source?.id,
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+            }
+        });
     }
 
     public toggleBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
@@ -120,7 +157,10 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         super.addLayer(widget);
         this.registerMapEvents(widget.map, widget.options.mouseEventsOnIcon);
         this.registerLayerExtensions();
-        this.addCircleSymbol(widget);
+        this.addCircleSymbol();
+        if (this.style?.clusterSettings?.cluster) {
+            this.addClusterLayer();
+        }
     }
 
     public setFilter(filter: any[]) {
@@ -377,9 +417,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             this._manager.events.publish('legends', 'updated', this._legends);
         }
     }
-    // #endregion Public Methods (17)
-
-    // #region Private Methods (5)
 
     protected registerLayerExtensions() {
         super.registerLayerExtensions();
@@ -493,18 +530,21 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         if (this.Map && this._events) {
             const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
             if (feature) {
-                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_SELECT, {
-                    feature,
-                    features: e.features,
-                    context: e,
-                    lngLat: e.lngLat,
-                    layer: this
-                } as FeatureEventDetails);
-                if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
-                    const openDetails = (this.openFeatureDetails === false || this.Map.options.showFeatureDetails === false) ? false : true;
-                    this._manager!.selectFeature(feature, this, openDetails);
+                if (!feature.properties?.cluster) {
+                    this._events.publish(CsMap.FEATURE, CsMap.FEATURE_SELECT, {
+                        feature,
+                        features: e.features,
+                        context: e,
+                        lngLat: e.lngLat,
+                        layer: this
+                    } as FeatureEventDetails);
+                    if (!(this._manager!.MapWidget as CsMap).featurePickerActivated) {
+                        const openDetails = (this.openFeatureDetails === false || this.Map.options.showFeatureDetails === false) ? false : true;
+                        this._manager!.selectFeature(feature, this, openDetails);
+                    }
                 }
             }
+
         }
     }
 
@@ -551,6 +591,4 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             }
         }
     }
-
-    // #endregion Private Methods (5)
 }
