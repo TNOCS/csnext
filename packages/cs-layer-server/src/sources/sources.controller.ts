@@ -1,4 +1,4 @@
-import { Get, Controller, Param, Post, Body, Put } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Put, Optional, Query } from '@nestjs/common';
 import { LayerSource } from '../classes';
 
 import {
@@ -13,7 +13,7 @@ import { LayerService } from '../layers/layers.service';
 @ApiTags()
 @Controller('sources')
 export class SourceController {
-  constructor(private readonly layerService: LayerService) {}
+  constructor(private readonly layerService: LayerService) { }
 
   @ApiOperation({
     summary: 'Get layer source',
@@ -30,9 +30,13 @@ export class SourceController {
   })
   @Get(':id')
   public async getLayerSource(
-    @Param('id') id: string
+    @Param('id') id: string,
+    @Query('bbox') bbox?: string,
+    @Query('filter') filter?: string,
   ): Promise<LayerSource | undefined> {
-    return await this.layerService.getLayerSourceById(id);
+    const res = await this.layerService.getLayerSourceById(id, { filter, bbox: bbox?.split(',').map(v => parseFloat(v)) });
+    console.log('done');
+    return res;
   }
 
   @Put(':id')

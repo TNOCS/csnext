@@ -26,6 +26,7 @@ import Axios from 'axios';
 import AsyncLock from 'async-lock';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { FeatureUpdatedEvent } from '../events/feature-events';
+import { QueryOptions } from '../classes/query-options';
 
 
 @Injectable()
@@ -47,7 +48,7 @@ export class LayerService extends AggregateRoot {
 
     constructor(
         @Inject('DefaultWebSocketGateway')
-        private readonly socket: DefaultWebSocketGateway        
+        private readonly socket: DefaultWebSocketGateway
     ) {
         super();
         this.config = {
@@ -323,7 +324,7 @@ export class LayerService extends AggregateRoot {
                 } catch (e) {
                     Logger.error(`Error getting layer source ${layer.id}`);
                     Logger.error(`${e}`);
-                 }
+                }
             }
             resolve(layer);
         });
@@ -471,7 +472,7 @@ export class LayerService extends AggregateRoot {
             try {
                 const layer = this.getLayerById(layerId);
                 if (layer) {
-                    this.config.layers = this.config.layers.filter(l => l.id === layerId);
+                    this.config.layers = this.config.layers.filter(l => l.id !== layerId);
                     this.saveServerConfigDelay();
                     resolve(true);
                 } else {
@@ -575,7 +576,7 @@ export class LayerService extends AggregateRoot {
                             newLayerDef = newSource.def;
                         } catch (e) {
                             Logger.log(`Error creating definition for ${id}`);
-                         }
+                        }
                     }
                     this.saveServerConfig();
                     resolve(newLayerDef);
@@ -606,7 +607,7 @@ export class LayerService extends AggregateRoot {
         });
     }
 
-    public getLayerSourceById(id: string): Promise<LayerSource | undefined> {
+    public getLayerSourceById(id: string, options?: QueryOptions): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             this.getLayerById(id)
                 .then(def => {
@@ -642,7 +643,7 @@ export class LayerService extends AggregateRoot {
                                                     }
                                                 } catch (e) {
                                                     Logger.error(`Error creating meta for ${def.externalUrl}`);
-                                                 }
+                                                }
                                             }
                                             resolve(response.data);
                                             return;
@@ -662,10 +663,12 @@ export class LayerService extends AggregateRoot {
                         } else {
                             // load layer source
 
-                            this.loadLayerSource(def)
+                            this.loadLayerSource(def, options)
                                 .then(d => {
-                                    def._layerSource = d;
-                                    resolve(def._layerSource);
+                                    if (!def.disableCache) {
+                                        def._layerSource = d;
+                                    }
+                                    resolve({ ...d, ...{ _socketQueue: undefined } });
                                     return;
                                 })
                                 .catch(() => {
@@ -682,7 +685,7 @@ export class LayerService extends AggregateRoot {
     }
 
     /** load & return layer source */
-    public loadLayerSource(def: LayerDefinition): Promise<LayerSource | undefined> {
+    public loadLayerSource(def: LayerDefinition, options?: QueryOptions): Promise<LayerSource | undefined> {
         return new Promise(async (resolve, reject) => {
             // no source defined
             if (!def.source) {
@@ -691,7 +694,7 @@ export class LayerService extends AggregateRoot {
             }
 
             // layer source already loaded, return existing
-            if (def._layerSource) {
+            if (!def.disableCache && def._layerSource) {
                 resolve(def._layerSource);
                 return;
             }
@@ -701,9 +704,12 @@ export class LayerService extends AggregateRoot {
                 def.sourceType = 'geojson';
             }
 
-            // find sourceplugin
+            // find sourceplugin            
             const plugin = this.getSourcePlugin(def.sourceType);
+
+
             if (plugin && typeof plugin.query === 'function') {
+                console.log(this.config);
                 if (
                     this.config.connections &&
                     def.connectionId &&
@@ -713,7 +719,8 @@ export class LayerService extends AggregateRoot {
                         plugin
                             .query(
                                 this.config.connections[def.connectionId],
-                                def.query
+                                def.query,
+                                options
                             )
                             .then(r => {
                                 resolve(r.source);
@@ -724,6 +731,8 @@ export class LayerService extends AggregateRoot {
                                 return;
                             });
                     }
+                } else {
+                    console.log('config not correct');
                 }
             } else if (plugin && typeof plugin.load === 'function') {
                 try {
@@ -743,17 +752,19 @@ export class LayerService extends AggregateRoot {
                     );
 
                     // update feature types from meta data
-                    if (loadResult.meta) {
-                        def.featureTypes = loadResult.meta.featureTypes;
-                        // if meta data was returned, but no meta file, create a meta file
-                        if (
-                            def.meta === undefined &&
-                            loadResult.meta.featureTypes
-                        ) {
-                            def.meta = def.id + '.meta.json';
-                            this.updateMetaFilePath(def);
-                        }
-                    }
+                    // if (loadResult.meta) {
+                    //     if (loadResult.meta.featureTypes) {
+                    //         def.featureTypes = loadResult.meta.featureTypes;
+                    //     }
+                    //     // if meta data was returned, but no meta file, create a meta file
+                    //     if (
+                    //         def.meta === undefined &&
+                    //         loadResult.meta.featureTypes
+                    //     ) {
+                    //         def.meta = def.id + '.meta.json';
+                    //         this.updateMetaFilePath(def);
+                    //     }
+                    // }
 
                     if (loadResult.source) {
                         resolve(loadResult.source);

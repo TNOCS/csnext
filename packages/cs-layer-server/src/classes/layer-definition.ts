@@ -73,6 +73,7 @@ export class LayerDefinition implements ILayer {
     @ApiProperty()
     /** location of optional meta source containing featuretypes, propertytypes, etc. */
     public meta?: string;
+    public disableCache?: boolean;
 
     public style?: LayerStyle;
     public featureTypes?: FeatureCollection;

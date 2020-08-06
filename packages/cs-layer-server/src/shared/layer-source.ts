@@ -37,6 +37,7 @@ export class LayerSource implements ISource {
                 reject('Url not defined');
                 return;
             }
+           
             if (!this.type || this.type === 'geojson') {
                 axios
                     .get(this.url)
