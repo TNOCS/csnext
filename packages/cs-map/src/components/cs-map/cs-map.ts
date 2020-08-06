@@ -32,7 +32,7 @@ import {
     IMapLayerType
 } from '../../.';
 
-import { WidgetBase } from '@csnext/cs-client';
+import { WidgetBase, AppState } from '@csnext/cs-client';
 import { MapboxStyleSwitcherControl, GridControl, LayerDraw, LayerLegendControl, LayersWidgetControl } from '../../controls';
 import { SidebarKeys } from '../../datasources/map-datasource';
 import { convertToDMS } from '../../utils/conversion';
@@ -188,7 +188,7 @@ export class CsMap extends WidgetBase {
                             this.map.addSource(source.id, {
                                 type: source.type,
                                 tiles: [source.url],
-                                tileSize: 256                                
+                                tileSize: 256
                             });
                         }
                         break;
@@ -202,7 +202,7 @@ export class CsMap extends WidgetBase {
                             promoteId: _promoteId || undefined
                         } as any;
                         if (clusterSettings) {
-                            Object.assign(mapsource, clusterSettings);                            
+                            Object.assign(mapsource, clusterSettings);
                         }
                         this.map.addSource(source.id, mapsource);
                         break;
@@ -225,7 +225,7 @@ export class CsMap extends WidgetBase {
     }
 
     @Watch('widget.content')
-    public contentLoaded(d: MapDatasource) {        
+    public contentLoaded(d: MapDatasource) {
         this.initStyles();
         this.initMapLayers();
     }
@@ -336,6 +336,10 @@ export class CsMap extends WidgetBase {
             this.map.on('click', (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_CLICK, ev);
+
+                    if ($cs.activeInfoWidget) {
+                        $cs.clearInfoWidget();
+                    }
                 }
             });
 
@@ -953,6 +957,12 @@ export class CsMap extends WidgetBase {
                     }
                 }
             }
+        }
+        if (this.options.showInfoWidget) {
+            this.busManager.subscribe($cs.bus, AppState.INFO_WIDGET, (a: string, e: string) => {
+                this.$forceUpdate();
+
+            })
         }
         if (this.widget.events) { this.widget.events.publish(CsMap.MAP, CsMap.MAP_LOADED, e); }
         if (this.manager && this.manager.events) {

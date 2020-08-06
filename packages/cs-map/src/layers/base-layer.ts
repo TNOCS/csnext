@@ -68,20 +68,6 @@ export class BaseLayer implements IMapLayer {
     @FormField({ title: 'Hide in layer list', type: 'checkbox' })
     public hideInLayerList?: boolean;
     public id!: string;
-    public intlData = {
-        'locales': 'en-US',
-        'formats': {
-            'number': {
-                'USD': {
-                    'style': 'currency',
-                    'currency': 'USD'
-                },
-                'percentage': {
-                    'style': 'percent'
-                }
-            }
-        }
-    };
     @FormField({ title: 'Open Feature Details', type: 'checkbox' })
     public openFeatureDetails?: boolean;
     public parentId?: string;

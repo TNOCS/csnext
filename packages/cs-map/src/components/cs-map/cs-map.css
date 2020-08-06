@@ -65,3 +65,12 @@
     color: #222;
     background: rgba(255, 255, 255, 0.1);
 }
+
+.map-info-widget {
+    position: absolute;
+    bottom: 5px;
+    left: calc(50% - 250px);
+    width: 500px;
+    min-height: 50px;
+    max-height: 100px;
+}

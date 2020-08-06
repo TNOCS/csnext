@@ -434,7 +434,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     public getComponent() {
-        debugger;
+        
     }
 
     private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {

@@ -89,9 +89,11 @@ export class LayerServerService implements ILayerService, IStartStopService {
                                 console.log(gl.style.popup);
                             }
                         }
+                        
 
                         gl.color = layer.color ? layer.color : 'blue';
                         gl.title = layer.title;
+                        gl.description = layer.description;
                         gl.id = layer.id;
                         gl.extensions = layer.extensions;
 
@@ -122,9 +124,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             );
                             if (layer && this.manager) {
                                 console.log('Active layer ' + layer.id);
-                                this.manager!.loadLayer(layer).then(l => {
-                                    this.manager!.showLayer(l);
-                                }).catch(e => console.warn(e));
+                                await this.manager.showLayer(layer);                       
                             }
                         }
                     }
