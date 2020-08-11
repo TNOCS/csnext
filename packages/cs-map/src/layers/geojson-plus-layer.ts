@@ -45,6 +45,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     public type?: 'poi';
     public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
     public featureTypes?: FeatureTypes;
+    public activeFeatureTypes?: string[];
 
     private clickEvent = this.onClick.bind(this);
     private contextMenuEvent = this.onContextMenu.bind(this);
@@ -157,6 +158,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         super.addLayer(widget);
         this.registerMapEvents(widget.map, widget.options.mouseEventsOnIcon);
         this.registerLayerExtensions();
+        this.updateImages();
         this.addCircleSymbol();
         if (this.style?.clusterSettings?.cluster) {
             this.addClusterLayer();
@@ -387,6 +389,20 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         }
     }
 
+    public updateImages() {
+        if (this.featureTypes) {
+            for (const key in this.featureTypes) {
+                if (Object.prototype.hasOwnProperty.call(this.featureTypes, key)) {
+                    const ft = this.featureTypes[key];
+                    if (ft.icon) {                        
+                        this.addImage(key, ft.icon);
+                    }
+                }
+            }
+        }
+
+    }
+
     public updateLegends() {
         if (!this._source) { return; }
         let result: LayerLegend[] = [];
@@ -434,7 +450,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     public getComponent() {
-        
+
     }
 
     private createPopup(widget: CsMap, layer: GeojsonLayer, e: FeatureEventDetails) {
