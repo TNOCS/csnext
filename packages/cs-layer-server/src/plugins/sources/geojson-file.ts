@@ -110,14 +110,14 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         def: LayerDefinition
     ): Promise<{ def: LayerDefinition; source: LayerSource }> {
         return new Promise((resolve, reject) => {
-            // console.log('Creating new file');
+            console.log('Creating new file');
             if (def.id) {
                 const sourceFolder = path.join(folder, def.id);
                 def.source = def.id + '.json';
                 const sourceFile = path.join(sourceFolder, def.source);
                 if (!fs.existsSync(sourceFolder)) {
-                    // console.log('Creating new folder');
-                    // console.log(sourceFolder);
+                    console.log('Creating new folder');
+                    console.log(sourceFolder);
                     fs.mkdirSync(sourceFolder);
                 }
 

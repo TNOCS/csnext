@@ -29,19 +29,7 @@ export class FeatureComponent extends WidgetBase {
 
     public get dashboard(): InsightDashboard {
         const res = {
-            panels: [
-                // {
-                //     title: 'test',
-                //     sections: [
-                //         { title: 'test', type: 'chart'}
-                //     ]
-                // },
-                // {
-                //     title: 'test2',
-                //     sections: [
-                //         { title: 'test', type: 'chart'}
-                //     ]
-                // }
+            panels: [               
             ]
         } as InsightDashboard;
         if (this.manager && this.manager.activeInsightView && this.manager.activeInsightView.dashboards && this.manager.activeInsightView.dashboards.feature) {
@@ -66,10 +54,6 @@ export class FeatureComponent extends WidgetBase {
     }
 
     private featureSectionsExpanded!: { [key: string]: string[] };
-
-    // #endregion Properties (4)
-
-    // #region Public Accessors (7)
 
     /** get active feature */
     public get feature(): mapboxgl.MapboxGeoJSONFeature | undefined {
@@ -194,13 +178,9 @@ export class FeatureComponent extends WidgetBase {
         $cs.closeRightSidebar();
     }
 
-    // #endregion Public Accessors (7)
-
-    // #region Public Methods (7)
-
     public centerFeature() {
         if (this.feature && this.manager) {
-            this.manager.zoomFeature(this.feature, 14);
+            this.manager.zoomFeature(this.feature, 16);
         }
     }
 
@@ -217,19 +197,7 @@ export class FeatureComponent extends WidgetBase {
         this.updateSections();
     }
 
-    public initMenu() {
-        // this.addMenuItem({
-        //     id: 'open-layer',
-        //     type: 'icon',
-        //     icon: 'list',
-        //     toolTip: 'OPEN LAYER',
-        //     title: 'OPEN LAYER',
-        //     action: () => {
-        //         if (this.manager && this.layer) {
-        //             this.manager.openLayer(this.layer);
-        //         }
-        //     }
-        // } as IMenu);
+    public initMenu() {       
     }
 
     public setLegend(property: PropertyDetails) {
@@ -243,6 +211,16 @@ export class FeatureComponent extends WidgetBase {
                 this.layer.setLegend(property, true);
             }
         }
+    }
+
+    public get image() : string {        
+        if (this.feature?.properties?.image) {
+            return this.feature.properties.image;
+        } else if (this.layer?._source?.logo) {
+            return this.layer._source.logo; 
+        } else {
+            return '';
+        }        
     }
 
     public updateFilter() {

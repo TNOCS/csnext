@@ -5,5 +5,6 @@ export class SplitElement {
     public sizeUnit?: string = '%';
     public minSize?: number;
     public widgetId?: string;
+    public dashboardId?: string;
     public splitpanel?: SplitPanelOptions;
 }

@@ -26,6 +26,7 @@ export * from './classes/layer-style';
 export * from './classes/log-definition';
 export * from './classes/log-item';
 export * from './classes/log-source';
+export * from './classes/query-options';
 export * from './log-items/log-items-controller';
 export * from './events/';
 // export { TilesController } from './tiles/tiles.controller';

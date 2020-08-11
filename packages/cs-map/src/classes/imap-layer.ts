@@ -23,6 +23,7 @@ export interface IMapLayer {
     sourceType?: string;
     color: string;
     description: string;
+    logo?: string;
     popupContent?: string | Function | undefined;
     opacity?: number;
     source?: string | DataSource;
@@ -42,6 +43,7 @@ export interface IMapLayer {
     openFeatureDetails?: boolean;
     hideInLayerList?: boolean;
     featureTypes?: FeatureTypes;
+    activeFeatureTypes?: string[];
     selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
 
     // #region Properties (10)

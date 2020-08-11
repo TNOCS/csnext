@@ -1,37 +1,37 @@
 {
-  "name": "@csnext/cs-client",
-  "version": "0.0.131",
-  "main": "./lib/csclient.cs.js",
-  "types": "./dist/src/index.d.ts",
-  "license": "MIT",
-  "url": "https://github.com/TNOCS/csnext",
-  "bugs": "https://github.com/TNOCS/csnext/issues",
-  "scripts": {
-    "link": "yarn link",
-    "unlink": "yarn unlink",
-    "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
-    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --mode development",
-    "build:production": "webpack --mode development",
-    "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@csnext/cs-core": "^0.0.131",
-    "axios": "^0.19.2",
-    "simplebar-vue": "^1.5.0",
-    "socket.io-client": "^2.3.0",
-    "vue-i18n": "^8.18.2",
-    "vue-mixin-decorator": "^1.2.0",
-    "vue-resize-directive": "^1.2.0",
-    "vue-router": "^3.3.4",
-    "vuetify": "2.3.1"
-  },
-  "devDependencies": {
-    "@types/socket.io-client": "^1.4.33",
-    "base64-inline-loader": "^1.1.1"
-  },
-  "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
+    "name": "@csnext/cs-client",
+    "version": "0.0.131",
+    "main": "./lib/csclient.cs.js",
+    "types": "./dist/src/index.d.ts",
+    "license": "MIT",
+    "url": "https://github.com/TNOCS/csnext",
+    "bugs": "https://github.com/TNOCS/csnext/issues",
+    "scripts": {
+        "link": "yarn link",
+        "unlink": "yarn unlink",
+        "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
+        "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "build": "webpack --mode development",
+        "build:production": "webpack --mode development",
+        "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@csnext/cs-core": "^0.0.131",
+        "axios": "^0.19.2",
+        "simplebar-vue": "^1.5.1",
+        "socket.io-client": "^2.3.0",
+        "vue-i18n": "^8.20.0",
+        "vue-mixin-decorator": "^1.2.0",
+        "vue-resize-directive": "^1.2.0",
+        "vue-router": "^3.4.2",
+        "vuetify": "2.3.8"
+    },
+    "devDependencies": {
+        "@types/socket.io-client": "^1.4.33",
+        "base64-inline-loader": "^1.1.1"
+    },
+    "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

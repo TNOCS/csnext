@@ -28,6 +28,7 @@ export class MapOptions extends WidgetOptions {
     public showGeocoder?: boolean = true;
     public showPelias?: boolean = true;
     public showGeolocater?: boolean = false;
+    public showInfoWidget?: boolean = false;
     public showGrid?: boolean = false;
     public showLayers?: boolean = true;
     public showFeatureDetails?: boolean = false;

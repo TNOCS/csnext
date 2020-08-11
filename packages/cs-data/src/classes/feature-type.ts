@@ -43,12 +43,3 @@ export class FeatureType {
 
     // #endregion Properties (8)
 }
-
-// "circle": {
-//     "mode": "draw_circle",
-//     "notification": "Begin met tekenen",
-//     "icon": "images/circle.png",
-//     "properties": {
-//       "type": "radius"
-//     }
-//   }

@@ -285,8 +285,8 @@ export class StatsDatasource extends MapDatasource {
                     await this.unloadResource(key);
                 }
             }
-            for (const resourceName of resources) {
-                const resource = await this.loadResource(resourceName);
+            for (const resourceName of resources) {                
+                const resource = await this.loadResource(resourceName);                
                 if (resource && resource.format === 'geojson') {
                     layer = await this.activateLayerResource(resource.name);
                 }
@@ -294,8 +294,8 @@ export class StatsDatasource extends MapDatasource {
             if (layer && this.mainLayer && this.mainLayer._source && this.mainLayer._source._meta) {
                 for (const resourceName in this.resources) {
                     if (resourceName !== layer.name && this.resources.hasOwnProperty(resourceName)) {
-                        const resource = this.resources[resourceName];
-                        await this.mergeResources(layer, resource);
+                        const resource = this.resources[resourceName];                          
+                        await this.mergeResources(layer, resource);                                                
                     }
                 }
                 this.mainLayer._source.updateFeatureTypePropertyMap(this.mainLayer._source._meta.default);

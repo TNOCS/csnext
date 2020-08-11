@@ -4,7 +4,6 @@ import { CsMap } from './.';
 import { GeojsonLayer } from './layers/geojson-layer';
 import { LayerServer } from './services/layer-server';
 import { GeojsonPlusLayer } from './layers/geojson-plus-layer';
-import { OverpassExtension } from './extensions/overpass-extension';
 import { TimeInterpolationExtension } from './extensions/time-interpolation-extension';
 import { WmsTimeExtension } from './extensions/wms-time-extension';
 import { LayerServerService } from './services/layer-server-service';
@@ -13,7 +12,7 @@ import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { MapOptions } from './classes/map-options';
 import { MapboxOptions } from 'mapbox-gl';
 import { DataChart } from './components/data-chart/data-chart';
-import { CreateElement, VNode } from 'vue/types/umd';
+import { VNode } from 'vue/types/umd';
 
 // classes
 export * from './classes/map-options';
@@ -80,7 +79,6 @@ export * from './utils/conversion';
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
 CsMap.AddLayerType(new GridLayer());
-CsMap.AddLayerExtension(new OverpassExtension());
 CsMap.AddLayerExtension(new TimeInterpolationExtension());
 CsMap.AddLayerExtension(new WmsTimeExtension());
 CsMap.AddLayerServiceType(new LayerServer());
@@ -98,9 +96,10 @@ Vue.component('prop-value', {
                 } else {
                     return createElement('span','');
                 }
-                break;
-            case 'url':
-                return createElement('a', { attrs: { href: this.value } }, 'link')
+            case 'boolean':
+                return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
+            case 'url':                
+                return createElement('a', { attrs: { href: (!this.value.startsWith('http')) ? 'https://' + this.value : this.value } }, this.value)
             default:
                 return createElement('span', this.value);
         }

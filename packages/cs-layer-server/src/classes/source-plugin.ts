@@ -2,6 +2,7 @@ import { LayerSource } from "./layer-source";
 import { ServerConfig, LayerMeta } from ".";
 import { Layer } from "mapbox-gl";
 import { LayerDefinition } from './layer-definition';
+import { QueryOptions } from './query-options';
 
 export interface ILoadResult {
     source: LayerSource;
@@ -25,7 +26,7 @@ export interface ISourcePlugin {
     /** import function for converting different formats to geojson */  
     import?(file: string) : Promise<LayerSource | undefined>;
     load?(file: string, meta?: string) : Promise<ILoadResult>;
-    query?(connection: Connection, query: string) : Promise<ILoadResult>;
+    query?(connection: Connection, query: string, options: QueryOptions) : Promise<ILoadResult>;
     createEmpty?(folder: string, def: LayerDefinition) : Promise<{ def: LayerDefinition, source: LayerSource}>;
     saveMeta?(def: LayerDefinition);
 }

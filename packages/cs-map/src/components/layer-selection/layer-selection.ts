@@ -64,9 +64,7 @@ export class LayerSelection extends Vue {
 
     public updateTree() {
 
-        let tree : any[] = [];
-        console.log('update tree');
-
+        let tree : any[] = [];        
         if (this.MapManager && this.MapManager.layers) {
             for (const l of this.MapManager.layers) {
                 if (l.title && !l.hideInLayerList) {                
@@ -85,8 +83,7 @@ export class LayerSelection extends Vue {
                 }
             }   
             this.layerTree = tree;
-            this.tree = this.MapManager.layers.filter(l=> l.enabled).map(r=>r.id);
-            console.log(this.tree);
+            this.tree = this.MapManager.layers.filter(l=> l.enabled).map(r=>r.id);            
             this.$forceUpdate();         
         }
 

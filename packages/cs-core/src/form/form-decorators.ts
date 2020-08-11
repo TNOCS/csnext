@@ -97,15 +97,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
 }
 
 export function Form(options: IFormOptions) {
-  return function decorator(target: any) {
-    // console.log('Meta');
-    // const keys = Reflect.getMetadataKeys(target);
-    // for (const key of keys) {
-    //   const d = Reflect.getOwnMetadata(key, target);
-    //   console.log(d);
-    // }
-
-    // console.log(target);
+  return function decorator(target: any) {    
     if (!target.prototype.hasOwnProperty('_form')) {
       target.prototype._form = options;
     } else {

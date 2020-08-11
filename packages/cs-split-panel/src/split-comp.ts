@@ -45,5 +45,11 @@ export class SplitComp extends Vue {
             return dashboard.widgets.find(w => w.id === id);
         }
     }
+
+    public getDashboard(id: string, dashboard: IDashboard): IDashboard | undefined {
+        if (dashboard && dashboard.refDashboards) {
+            return dashboard.refDashboards.find(d => d.id === id);
+        }
+    }
 }
 

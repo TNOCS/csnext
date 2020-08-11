@@ -32,10 +32,11 @@ import {
     IMapLayerType
 } from '../../.';
 
-import { WidgetBase } from '@csnext/cs-client';
+import { WidgetBase, AppState } from '@csnext/cs-client';
 import { MapboxStyleSwitcherControl, GridControl, LayerDraw, LayerLegendControl, LayersWidgetControl } from '../../controls';
 import { SidebarKeys } from '../../datasources/map-datasource';
 import { convertToDMS } from '../../utils/conversion';
+import { ClusterSettings } from '../../classes/layer-source';
 
 @Component({
     components: { PackageExplorer },
@@ -173,7 +174,7 @@ export class CsMap extends WidgetBase {
         }
     }
 
-    public addSource(source: LayerSource) {
+    public addSource(source: LayerSource, clusterSettings?: ClusterSettings) {
         if (source.id) {
             const original = this.map.getSource(source.id);
             if (original !== undefined) {
@@ -194,12 +195,16 @@ export class CsMap extends WidgetBase {
                     default:
                         source.type = 'geojson';
                         const _promoteId = source._promoteId || ((source._data) as any)._promoteId;
-                        this.map.addSource(source.id, {
+                        let mapsource = {
                             type: source.type,
                             data: source._data as FeatureCollection,
                             generateId: !_promoteId,
                             promoteId: _promoteId || undefined
-                        });
+                        } as any;
+                        if (clusterSettings) {
+                            Object.assign(mapsource, clusterSettings);
+                        }
+                        this.map.addSource(source.id, mapsource);
                         break;
                 }
                 // let vs = this.map.getSource(source.id) as GeoJSONSource;
@@ -221,7 +226,6 @@ export class CsMap extends WidgetBase {
 
     @Watch('widget.content')
     public contentLoaded(d: MapDatasource) {
-        console.log(d);
         this.initStyles();
         this.initMapLayers();
     }
@@ -239,11 +243,11 @@ export class CsMap extends WidgetBase {
         }
     }
 
-    public initLayerSource(source: LayerSource): any {
+    public initLayerSource(source: LayerSource, clusterSettings?: ClusterSettings): any {
         // load datasource
         if (source.id && source._data) {
             if (!this.map.isSourceLoaded(source.id)) {
-                this.addSource(source);
+                this.addSource(source, clusterSettings);
             }
         }
     }
@@ -332,6 +336,10 @@ export class CsMap extends WidgetBase {
             this.map.on('click', (ev) => {
                 if (this.manager && this.manager.events) {
                     this.manager.events.publish(CsMap.MAP, CsMap.MAP_CLICK, ev);
+
+                    if ($cs.activeInfoWidget) {
+                        $cs.clearInfoWidget();
+                    }
                 }
             });
 
@@ -666,7 +674,7 @@ export class CsMap extends WidgetBase {
                 layer._source.loadSource(layer.featureTypes).then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source);
+                        this.addSource(layer._source, layer.style?.clusterSettings);
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
@@ -949,6 +957,12 @@ export class CsMap extends WidgetBase {
                     }
                 }
             }
+        }
+        if (this.options.showInfoWidget) {
+            this.busManager.subscribe($cs.bus, AppState.INFO_WIDGET, (a: string, e: string) => {
+                this.$forceUpdate();
+
+            })
         }
         if (this.widget.events) { this.widget.events.publish(CsMap.MAP, CsMap.MAP_LOADED, e); }
         if (this.manager && this.manager.events) {

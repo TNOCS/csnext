@@ -25,7 +25,7 @@ export class PackageExplorer extends Vue {
     public value: any[] = [];
     public showInsightDetails = false;
     public showLegendDetails = false;
-    public showtimeline = true;
+    public showtimeline = false;
     public search: string = '';
     public searchSelection: any = null;
     public searchResult: any[] = [];

@@ -19,6 +19,7 @@ export class DataSource {
     // public featureTypes?: FeatureTypes;
     public defaultFeatureType?: string;
     public state: DataSourceState;
+    public logo?: string;
 
     public _meta?: FeatureTypes;
     public _data?: DataSet;
