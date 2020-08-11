@@ -75,6 +75,8 @@ export class LayerDefinition implements ILayer {
     public meta?: string;
     public disableCache?: boolean;
 
+    public type?: string;
+
     public style?: LayerStyle;
     public featureTypes?: FeatureCollection;
     // public properties?: PropertyCollection

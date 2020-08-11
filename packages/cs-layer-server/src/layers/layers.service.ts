@@ -709,7 +709,7 @@ export class LayerService extends AggregateRoot {
 
 
             if (plugin && typeof plugin.query === 'function') {
-                console.log(this.config);
+                // console.log(this.config);
                 if (
                     this.config.connections &&
                     def.connectionId &&

@@ -16,8 +16,7 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
   public id = 'arangodb';
   public source = 'arangodb';
 
-  public getInstance() {
-    console.log('Get arango');
+  public getInstance() {  
     return new ArangoDBSource();
   }
 
@@ -33,6 +32,12 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
 
       try {
         let q = '';
+        let filter = '';
+        if (options.types) {
+          q += `LET types = ${JSON.stringify(options.types)}\n`;
+          filter+=`POSITION(types, poi.type) AND `;
+          console.log(options.types);
+        }
         if (options.bbox) {
           q += `LET area = GEO_POLYGON([
             [${options.bbox[0]}, ${options.bbox[1]}],
@@ -41,9 +46,9 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
             [${options.bbox[0]}, ${options.bbox[3]}],
             [${options.bbox[0]}, ${options.bbox[1]}]
             ])\n`;
-          q += `FOR poi IN pois FILTER ${options.filter} AND GEO_CONTAINS(area, poi.geometry) RETURN poi`;
+          q += `FOR poi IN pois FILTER ${filter} GEO_CONTAINS(area, poi.geometry) RETURN poi`;
         } else {
-          q += `FOR poi IN pois FILTER ${options.filter} AND GEO_CONTAINS(area, poi.geometry) RETURN poi`;
+          q += `FOR poi IN pois FILTER ${filter} GEO_CONTAINS(area, poi.geometry) RETURN poi`;
         }
 
         // Connection to ArangoDB
@@ -52,8 +57,7 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
         });
 
         db.useBasicAuth(dbConfig.username, dbConfig.password);
-        db.useDatabase(dbConfig.database);
-        Logger.log(q);
+        db.useDatabase(dbConfig.database);        
         const res = await db.query(q);
         const geojson = new LayerSource();
         geojson.features = [];
@@ -70,6 +74,7 @@ export class ArangoDBSource implements ISourcePlugin, ISourcePluginType {
 
           geojson.features.push(f);
         }
+        console.log(geojson.features.length);
 
         // for (const row of res.rows) {
         //   let f = {
