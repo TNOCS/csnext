@@ -110,7 +110,7 @@
         </template>
     <template v-if="field.type === 'selection'">
             <v-select
-                :items="field.options"
+                :items="fieldOptions(field)"
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :disabled="field.readonly"
