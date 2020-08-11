@@ -31,7 +31,7 @@
         "@types/geojson": "^7946.0.7",
         "@types/mapbox-gl": "1.11.1",
         "@types/neat-csv": "4.0.0",
-        "@types/papaparse": "5.0.3",
+        "@types/papaparse": "5.0.6",
         "@types/vega": "3.2.0"
     },
     "gitHead": "7068e77f606a1134679f7716b100e19204f50296"

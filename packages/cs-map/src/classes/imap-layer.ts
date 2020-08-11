@@ -43,6 +43,7 @@ export interface IMapLayer {
     openFeatureDetails?: boolean;
     hideInLayerList?: boolean;
     featureTypes?: FeatureTypes;
+    activeFeatureTypes?: string[];
     selectedFeature?: mapboxgl.MapboxGeoJSONFeature;
 
     // #region Properties (10)

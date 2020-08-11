@@ -70,7 +70,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         if (!layer.color) {
                             layer.color = 'blue';
                         }
-                        s.url = this.options.url + 'sources/' + layer.id;
+                        
+                        // s.url = this.options.url + 'sources/' + layer.id;
                         s.id = layer.id;
                         s.type = 'geojson';
                         const gl = new GeojsonPlusLayer();
@@ -78,6 +79,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         gl.source = s;
                         gl.openFeatureDetails = true;
                         gl.isEditable = layer.isEditable;
+                        gl.activeFeatureTypes = layer.activeFeatureTypes;
                         gl.isLive = layer.isLive;
                         gl.featureTypes = layer.featureTypes;
                         if (style) {
@@ -88,9 +90,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             if (gl.style && gl.style.popup) {
                                 console.log(gl.style.popup);
                             }
-                        }
-                        
-
+                        }                        
                         gl.color = layer.color ? layer.color : 'blue';
                         gl.title = layer.title;
                         gl.description = layer.description;
