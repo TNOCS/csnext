@@ -354,8 +354,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public addInfoWidget(widget: IWidget) {
-    // Vue.set(this, 'activeInfoWidget', widget);
+  public addInfoWidget(widget: IWidget) {    
     this.activeInfoWidget = widget;
     this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_ADDED, widget);
   }

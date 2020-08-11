@@ -99,6 +99,10 @@ export class CsSidebar extends Vue {
     }
   }
 
+  public closeSidebar() {
+    $cs.closeRightSidebar();
+  }
+
   private setEvents() {
     const minSize = 12;
     const el = this.$el as HTMLElement;
