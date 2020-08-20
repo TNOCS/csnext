@@ -394,7 +394,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             for (const key in this.featureTypes) {
                 if (Object.prototype.hasOwnProperty.call(this.featureTypes, key)) {
                     const ft = this.featureTypes[key];
-                    if (ft.icon) {                        
+                    if (ft.icon) {
                         this.addImage(key, ft.icon);
                     }
                 }
@@ -481,24 +481,24 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                 .setLngLat(lngLat)
                 .setDOMContent(app.$el)
                 .addTo(widget.map);
-        } else {
-            // if (layer.style && layer.style.popup) {
-            //     popup = layer.style.popup;
-            // } else
-            if (layer.popupContent) {
-                if (typeof layer.popupContent === 'string') {
-                    popup = layer.popupContent;
-                } else if (this.isFunction(layer.popupContent)) {
-                    popup = layer.popupContent(e);
-                }
-            }
-            if (popup) {
-                this.popup
-                    .setLngLat(e.lngLat)
-                    .setHTML(popup)
-                    .addTo(widget.map);
+        }
+        // if (layer.style && layer.style.popup) {
+        //     popup = layer.style.popup;
+        // } else
+        if (layer.popupContent) {
+            if (typeof layer.popupContent === 'string') {
+                popup = layer.popupContent;
+            } else if (this.isFunction(layer.popupContent)) {
+                popup = layer.popupContent(e);
             }
         }
+        if (popup) {
+            this.popup
+                .setLngLat(e.lngLat)
+                .setHTML(popup)
+                .addTo(widget.map);
+        }
+
     }
 
     private registerMapEvents(map: mapboxgl.Map, forSymbol: boolean = false) {
