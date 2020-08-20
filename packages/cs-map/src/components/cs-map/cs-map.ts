@@ -356,12 +356,9 @@ export class CsMap extends WidgetBase {
                     this.cursorLocationInfo = `${convertToDMS(ev.lngLat.lat, false)} - ${convertToDMS(ev.lngLat.lng, true)}`;
                 }
             });
-
-            // if (this.options.storePositionInUrl) {
             this.map.on('moveend', (() => {
                 this.updateUrlQueryParams();
             }));
-            // }
 
             // ad navigation control
             this.mapOptions = {
@@ -979,9 +976,11 @@ export class CsMap extends WidgetBase {
     private updateUrlQueryParams() {
         const center = this.map.getCenter();
         const zoom = this.map.getZoom();
-        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };
-        this.$router.replace({ path: this.$route.params[0], query: combined }).catch(() => {
-            // console.log(err);
-        }); // this.$route.query}
+        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };        
+        this.$router.replace({ path: this.$route.params[0], query: combined }, ()=> {
+
+        }, (err) => {
+            console.log(err);
+        })
     }
 }
