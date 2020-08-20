@@ -37,6 +37,7 @@ export class FeatureType {
      * e.g: name;birthday;birthplay
      */
     public propertyTypeKeys?: string;
+    public infoTemplate?: string;
     public style?: any;
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
