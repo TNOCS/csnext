@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard, IMenu, MessageBusHandle } from '@csnext/cs-core';
+import { IDashboard, IMenu, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
 import { AppState } from '@csnext/cs-client';
 import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
@@ -39,6 +39,7 @@ export class SplitPanel extends Vue {
     public dashboard!: IDashboard;
     public presetMenu?: IMenu;
     private busHandle?: MessageBusHandle;
+    private bus = new MessageBusManager();
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
         if (this.options) {
@@ -69,21 +70,23 @@ export class SplitPanel extends Vue {
 
     constructor() {
         super();
+        this.bus.start();
     }
 
     destroyed() {
-        if (this.busHandle) AppState.Instance.bus.unsubscribe(this.busHandle);
-        delete this.busHandle;
+        this.bus.stop();        
     }
 
     created() {
-        if (!this.busHandle) {
-            this.busHandle = AppState.Instance.bus.subscribe(AppState.DASHBOARD_MAIN, (a: string, d: any) => {
-                if (a === AppState.DASHBOARD_CHANGED) {
-                    this.$forceUpdate();
-                }
-            });
-        }
+        this.bus.subscribe(AppState.Instance.bus, AppState.DASHBOARD_MAIN, (a: string, d: any) => {
+            if (a === AppState.DASHBOARD_CHANGED) {
+                this.$forceUpdate();
+            }
+        });        
+        this.bus.subscribe(this.dashboard.events, AppState.DASHBOARD_CHANGED, (a: string, d: any) => {
+            alert('Dashboard changed')
+            // this.update(this.options?.splitpanel!);
+        });
         if (this.options) {
             if (!this.options.splitpanel) {
                 if (this.options.presets) {
