@@ -3,8 +3,8 @@ import Component from 'vue-class-component';
 import './feature-component.css';
 import { Vue, Watch } from 'vue-property-decorator';
 
-import { LayerLegend, StatsDatasource } from '../../';
-import { PropertyType, DataResource, InsightDashboard } from '@csnext/cs-data';
+import { StatsDatasource } from '../../';
+import { PropertyType, LayerLegend, DataResource, InsightDashboard } from '@csnext/cs-data';
 // import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';

@@ -305,6 +305,8 @@ export class DataSource {
                     if (!correct) { f.geometry.coordinates = [[]]; }
                 }
 
+                
+
             }
         }
         return data;

@@ -5,8 +5,8 @@ import './feature-details.css';
 import { Vue, Watch } from 'vue-property-decorator';
 import { Feature } from 'geojson';
 
-import { BaseLayer, MapDatasource, LayerLegend, CsMap, StatsDatasource } from '../../';
-import { PropertyType } from '@csnext/cs-data';
+import { BaseLayer, MapDatasource, CsMap, StatsDatasource } from '../../';
+import { PropertyType, LayerLegend } from '@csnext/cs-data';
 // import Handlebars from 'handlebars';
 
 import simplebar from 'simplebar-vue';

@@ -1,5 +1,4 @@
-import { LayerLegend } from '../../';
-import { PropertyType } from '@csnext/cs-data';
+import { PropertyType, LayerLegend } from '@csnext/cs-data';
 // tslint:disable-next-line: max-classes-per-file
 export class PropertyDetails
 {

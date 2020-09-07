@@ -12,12 +12,11 @@ import {
     LngLatLike
 } from 'mapbox-gl';
 import { CsMap } from './..';
-import { PropertyType, MetaUtils, FeatureTypes } from '@csnext/cs-data';
+import { PropertyType, MetaUtils, FeatureTypes, LayerLegend } from '@csnext/cs-data';
 import mapboxgl from 'mapbox-gl';
 import { GeojsonLayer } from './geojson-layer';
 import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
-import { LayerLegend } from '../classes/layer-legend';
 import { LayerStyle } from '../classes/layer-style';
 import { CsWidget } from '@csnext/cs-client';
 import { Geometry } from 'geojson';

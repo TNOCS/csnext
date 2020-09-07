@@ -29,7 +29,7 @@ export * from './classes/ilayer-action';
 export * from './classes/layer-style';
 export * from './classes/layer-filter';
 export * from './interfaces/source';
-export * from './classes/layer-legend';
+// export * from './classes/layer-legend';
 export * from './classes/map-style-definition';
 export * from './services/layer-server-options';
 
@@ -111,7 +111,7 @@ Vue.component('date-time-value', {
     render(createElement): VNode {        
         if (this.value && $cs.i18n) {
             return createElement('span', $cs.i18n.d(this.value));
-        } else {
+        } else {            
             return createElement('span','');
         }
     } //{ attrs: { 'class', '' }}, [value]);  }    

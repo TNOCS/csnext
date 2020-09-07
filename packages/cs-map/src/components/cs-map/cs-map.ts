@@ -980,7 +980,7 @@ export class CsMap extends WidgetBase {
         this.$router.replace({ path: this.$route.params[0], query: combined }, ()=> {
 
         }, (err) => {
-            console.log(err);
+            // console.log(err);
         })
     }
 }

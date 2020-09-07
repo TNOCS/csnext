@@ -1,4 +1,7 @@
 // imported  with: https://app.quicktype.io/
+
+import { LayerLegend } from '../classes/layer-legend';
+
 /**
  * A Table Schema for this resource, compliant with the [Table Schema](/tableschema/)
  * specification.
@@ -201,6 +204,7 @@ export interface TableSchemaField {
     trueValues?:  string[];
     bins?: number[];
     colorScheme?: string;
+    legend?: LayerLegend;
     _selector?: string;
     _value?: string;
     _when?: string;
