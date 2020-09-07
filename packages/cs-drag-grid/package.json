@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@csnext/cs-client": "^0.0.131",
-    "vue-grid-layout": "^2.3.7"
+    "vue-grid-layout": "^2.3.8"
   },
   "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }
