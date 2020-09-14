@@ -1,4 +1,4 @@
-import { PropertyType } from '@csnext/cs-data';
+import { PropertyType } from './property-type';
 
 export interface LayerLegend {
     property: string;
