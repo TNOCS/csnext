@@ -22,10 +22,7 @@
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-data": "^0.0.131",
         "@csnext/cs-form": "^0.0.131",
-        "@mapbox/geojson-extent": "^0.3.2",
-        "@mapbox/mapbox-gl-draw": "1.2.0",
-        "@mapbox/mapbox-gl-geocoder": "^4.7.0",
-        "@mapbox/mapbox-gl-traffic": "1.0.2",
+        "@mapbox/geojson-extent": "^0.3.2",        
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.4.0",
         "@turf/centroid": "^6.0.2",
@@ -35,7 +32,9 @@
         "mapbox-gl": "1.12.0",
         "mapbox-gl-controls": "^1.6.5",
         "numeral": "^2.0.6",
-        "osmtogeojson": "^3.0.0-beta.4"
+        "@mapbox/mapbox-gl-draw": "1.2.0",
+        "@mapbox/mapbox-gl-geocoder": "^4.7.0",
+        "@mapbox/mapbox-gl-traffic": "1.0.2"        
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
@@ -47,7 +46,8 @@
     "peerDependencies": {
         "vega": "^5.14.0",
         "vega-embed": "^6.11.1",
-        "vega-lite": "^4.14.1"
+        "vega-lite": "^4.14.1",        
+        "osmtogeojson": "^3.0.0-beta.4"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }
