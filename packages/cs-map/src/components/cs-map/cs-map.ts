@@ -6,17 +6,20 @@ import './cs-map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 const locales = require('../../assets/locales.json');
 import { PackageExplorer } from './../package-explorer/package-explorer';
-import MapboxDraw from '@mapbox/mapbox-gl-draw';
+
 import mapboxgl, { GeolocateControl, MapboxOptions, NavigationControl, ScaleControl, Marker } from 'mapbox-gl';
 import { FeatureCollection, Feature } from 'geojson';
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import RulerControl from 'mapbox-gl-controls/lib/ruler';
-import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
+
 import '@mapbox/mapbox-gl-traffic/mapbox-gl-traffic.css';
 import PeliasGeocoder from '../../controls/pelias/pelias-geocoder'
 import '../../controls/pelias/pelias-geocoder.css';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 
 import {
     MapDatasource,
@@ -980,7 +983,7 @@ export class CsMap extends WidgetBase {
         this.$router.replace({ path: this.$route.params[0], query: combined }, ()=> {
 
         }, (err) => {
-            console.log(err);
+            // console.log(err);
         })
     }
 }

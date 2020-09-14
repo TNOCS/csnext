@@ -440,7 +440,7 @@ export class LayerService extends AggregateRoot {
                     this.queueSocketUpdate(source, feature);
                     this.flushSocketQueue(source);
                     this.saveSource(source);
-                    this.apply(new FeatureUpdatedEvent(sourceid, feature));
+                    // this.apply(new FeatureUpdatedEvent(sourceid, feature));
                     // this.eventBus.publish(new FeatureUpdatedEvent(feature.id!, feature));                    
                 }
                 resolve(feature);

@@ -2,9 +2,9 @@ import Component from 'vue-class-component';
 
 import './layer-legend-item.css';
 import { Vue, Watch } from 'vue-property-decorator';
-import { MapDatasource, LayerLegend, IMapLayer, LayerFilter } from '../..';
+import { MapDatasource,  IMapLayer, LayerFilter } from '../..';
 import { GeojsonPlusLayer } from '../../layers/geojson-plus-layer';
-import { PropertyType } from '@csnext/cs-data';
+import { PropertyType, LayerLegend } from '@csnext/cs-data';
 
 @Component({
     name: 'layer-legend-item',

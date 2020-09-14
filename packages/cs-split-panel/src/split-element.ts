@@ -7,4 +7,6 @@ export class SplitElement {
     public widgetId?: string;
     public dashboardId?: string;
     public splitpanel?: SplitPanelOptions;
+    public hide?: boolean;
 }
+

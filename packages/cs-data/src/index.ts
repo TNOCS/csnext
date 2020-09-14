@@ -5,6 +5,7 @@ export * from './classes/data-source';
 export * from './classes/data-sources';
 export * from './classes/data-set';
 export * from './classes/data-collection';
+export * from './classes/layer-legend';
 export * from './utils/meta-utils';
 export * from './interfaces/datapackage';
 export * from './interfaces/tableschema';

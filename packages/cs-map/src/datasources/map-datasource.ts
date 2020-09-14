@@ -3,15 +3,13 @@ import {
     CsMap,
     IMapLayer,
     GeojsonLayer,
-    PropertyDetails,
     IStartStopService,
     LayerSource,
     ILayerService,
     LayerStyle,
     LayerEditor,
-    FeatureDetails,
     FeatureEventDetails,
-    LayerSources
+    LayerSources, PropertyDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -29,9 +27,9 @@ import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import Vue from 'vue';
 import { LayerDetails } from '../components/layer-details/layer-details';
-import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet, DataResource, Insight, InsightView } from '@csnext/cs-data';
+import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet } from '@csnext/cs-data';
 import { FeatureComponent } from '../components/feature-details/feature-component';
-import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
+import { ILayerExtensionType } from '../classes/ilayer-extension';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -59,13 +57,12 @@ export const SidebarKeys = {
 export class MapDatasource extends DataSources {
     public _sources?: LayerSources;
     public id = 'map-datasource';
+    privatHandler?: MessageBusHandle;
     private pointPickerHandler?: MessageBusHandle;
     private featurePickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
-    private readonly FEATURE_SIDEBAR_ID = 'feature';
-    private readonly LAYER_DETAILS_SIDEBAR_ID = 'layerdetails';
 
     // #region Public Accessors (3)
 
@@ -170,7 +167,7 @@ export class MapDatasource extends DataSources {
         extentions?: ILayerExtensionType[],
         promoteId?: string
     ): Promise<GeojsonPlusLayer> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             if (!id) {
                 id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
             }
@@ -613,7 +610,53 @@ export class MapDatasource extends DataSources {
         })
     }
 
+    public stopEdit() {
+        if (this.map?.mapDraw) {
+            this.map.mapDraw.deleteAll();
+        }
+    }
 
+    public startEdit(feature: Feature) : Promise<Feature | undefined> {
+        
+        return new Promise((resolve) => {
+            
+            if (!this.map || !this.map.map || !this.map.mapDraw) { return; }
+            const mode = feature.geometry.type === 'Point' ? 'simple_select' : 'direct_select';
+            
+           
+            // this.map.map.select(feature.id);
+
+            const updateLine = (res: { action: string, features: GeoJSON.Feature[] }) => {                                
+                if (!this.map || !this.map.mapDraw) { return; }
+                if (this.map.mapDraw) {
+                    this.map.mapDraw.deleteAll();
+                }
+                this.map.map.off('draw.update', updateLine);                
+                
+                resolve(res.features[0]);
+                
+                // resolve(feature);
+                // if (e && e.features && e.features.length === 1) {
+                //     // this.map?.mapDraw.deleteAll();
+                //     $cs.clearNotifications();
+                //     resolve((e.features[0].geometry as unknown) as any);
+                // } else {
+                //     reject();
+                // }
+            }            
+            this.map.map.on('draw.update', updateLine);
+            if (this.map.mapDraw) {
+                this.map.mapDraw.add(feature);
+                this.map.mapDraw.changeMode(mode, { featureId: feature.id});
+            }
+
+            // this.map.map.on('draw.update', updateLine);
+            
+            
+            // resolve(feature);
+
+        })
+    }
 
     public startDraw(mode = 'draw_line_string', title?: string): Promise<{ coordinates: number[][] } | undefined> {
         return new Promise((resolve, reject) => {
@@ -648,29 +691,10 @@ export class MapDatasource extends DataSources {
                 }
             }
 
+            
+
             this.map.map.on('draw.create', createLine);
-            this.map.mapDraw.changeMode(mode);
-            // this.manager.events.publish(
-            //     CsMap.DRAWLAYER,
-            //     CsMap.DRAWLAYER_START_DRAWING,
-            //     this.activeType
-            // );
-
-
-            // this.map.pointPickerActivated = true;
-            // this.pointPickerHandler = this.events.subscribe(CsMap.MAP, (a: string, e: any) => {
-            //     if (a === CsMap.MAP_CLICK) {
-            //         this.map!.pointPickerActivated = false;
-            //         if (this.pointPickerHandler) {
-            //             this.events.unsubscribe(this.pointPickerHandler);
-            //         }
-            //         if (e.lngLat) {
-            //             resolve(e.lngLat);
-            //         }
-            //         AppState.Instance.clearNotifications();
-            //         return;
-            //     }
-            // });
+            this.map.mapDraw.changeMode(mode);            
         });
     }
 

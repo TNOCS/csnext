@@ -6,14 +6,13 @@ import {
     ILayerService,
     FeatureEventDetails
 } from './../.';
-import { PropertyType, FeatureType, DataSource, DataSet, FeatureTypes } from '@csnext/cs-data';
+import { PropertyType, FeatureType, DataSource, DataSet, LayerLegend, FeatureTypes } from '@csnext/cs-data';
 import { CsMap } from './..';
 import mapboxgl, { Layout, MapboxGeoJSONFeature } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
 import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
 import { Feature, GeoJsonProperties } from 'geojson';
 // import Handlebars from 'handlebars';
-import { LayerLegend } from '../classes/layer-legend';
 // import HandlebarsIntl from 'handlebars-intl';
 import { LayerFilter } from '../classes/layer-filter';
 import { PropertyDetails } from '../components/feature-details/property-details';

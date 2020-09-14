@@ -290,6 +290,7 @@ export class DataSources implements IDatasource {
                                 decimals: field.decimals,
                                 resource: resource.name,
                                 bins: field.bins,
+                                legendStyle: field.legend,
                                 colorScheme: field.colorScheme
                             } as PropertyType);
                     }

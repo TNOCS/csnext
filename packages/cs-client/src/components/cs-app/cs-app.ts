@@ -30,7 +30,7 @@ import { CsLoader } from '../cs-loader/cs-loader';
 
 import './../../assets/fonts/fonts.css';
 import './cs-app.css';
-import 'simplebar/dist/simplebar.css';
+// import 'simplebar/dist/simplebar.css';
 // import Vuetify from 'vuetify/lib';
 
 Vue.use(VueRouter);
