@@ -9,7 +9,7 @@ import {
     LayerStyle,
     LayerEditor,
     FeatureEventDetails,
-    LayerSources
+    LayerSources, PropertyDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -58,6 +58,7 @@ export class MapDatasource extends DataSources {
     public _sources?: LayerSources;
     public id = 'map-datasource';
     privatHandler?: MessageBusHandle;
+    private pointPickerHandler?: MessageBusHandle;
     private featurePickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
@@ -547,9 +548,9 @@ export class MapDatasource extends DataSources {
         this.layers = this.layers.filter(l => l.id !== layerId);
     }
 
-    public removeLegend() { }
+    public removeLegend(layer: IMapLayer, legend: PropertyDetails) { }
 
-    public showLayerById(): Promise<IMapLayer> {
+    public showLayerById(id: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (!this.layers) return reject();
             const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l);
