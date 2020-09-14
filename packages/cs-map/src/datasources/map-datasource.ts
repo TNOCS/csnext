@@ -3,13 +3,11 @@ import {
     CsMap,
     IMapLayer,
     GeojsonLayer,
-    PropertyDetails,
     IStartStopService,
     LayerSource,
     ILayerService,
     LayerStyle,
     LayerEditor,
-    FeatureDetails,
     FeatureEventDetails,
     LayerSources
 } from '../.';
@@ -24,14 +22,14 @@ import {
     Polygon
 } from 'geojson';
 
-import { GeoJSONSource, RasterSource, LngLat, MapboxGeoJSONFeature } from 'mapbox-gl';
+import { GeoJSONSource, RasterSource, LngLat } from 'mapbox-gl';
 import { AppState } from '@csnext/cs-client';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import Vue from 'vue';
 import { LayerDetails } from '../components/layer-details/layer-details';
-import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet, DataResource, Insight, InsightView } from '@csnext/cs-data';
+import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet } from '@csnext/cs-data';
 import { FeatureComponent } from '../components/feature-details/feature-component';
-import { ILayerExtension, ILayerExtensionType } from '../classes/ilayer-extension';
+import { ILayerExtensionType } from '../classes/ilayer-extension';
 
 const DEFAULT_LAYER_STYLE = {
     mapbox: {
@@ -59,13 +57,11 @@ export const SidebarKeys = {
 export class MapDatasource extends DataSources {
     public _sources?: LayerSources;
     public id = 'map-datasource';
-    private pointPickerHandler?: MessageBusHandle;
+    privatHandler?: MessageBusHandle;
     private featurePickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
     public activeDrawLayer?: IMapLayer;
     private map?: CsMap;
-    private readonly FEATURE_SIDEBAR_ID = 'feature';
-    private readonly LAYER_DETAILS_SIDEBAR_ID = 'layerdetails';
 
     // #region Public Accessors (3)
 
@@ -170,7 +166,7 @@ export class MapDatasource extends DataSources {
         extentions?: ILayerExtensionType[],
         promoteId?: string
     ): Promise<GeojsonPlusLayer> {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
             if (!id) {
                 id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
             }
@@ -551,9 +547,9 @@ export class MapDatasource extends DataSources {
         this.layers = this.layers.filter(l => l.id !== layerId);
     }
 
-    public removeLegend(layer: IMapLayer, legend: PropertyDetails) { }
+    public removeLegend() { }
 
-    public showLayerById(id: string): Promise<IMapLayer> {
+    public showLayerById(): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (!this.layers) return reject();
             const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l);
@@ -621,7 +617,7 @@ export class MapDatasource extends DataSources {
 
     public startEdit(feature: Feature) : Promise<Feature | undefined> {
         
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             
             if (!this.map || !this.map.map || !this.map.mapDraw) { return; }
             const mode = feature.geometry.type === 'Point' ? 'simple_select' : 'direct_select';
