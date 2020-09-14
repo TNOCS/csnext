@@ -36,7 +36,7 @@ export class SourceController {
     @Query('types') types?: string,
   ): Promise<LayerSource | undefined> {
     const res = await this.layerService.getLayerSourceById(id, { filter, types: types?.split(','), bbox: bbox?.split(',').map(v => parseFloat(v)) });    
-    return res;
+    return {...res, ...{ _socketQueue: undefined}};
   }
 
   @Put(':id')
