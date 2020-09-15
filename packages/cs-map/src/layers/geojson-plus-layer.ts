@@ -317,9 +317,16 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                                 }
 
                                 for (const key in st) {
-                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {
+                                    if (propdetails.type.legendStyle[style].hasOwnProperty(key)) {                                        
                                         const element = propdetails.type.legendStyle[style][key];
-                                        this.style.mapbox[style][key] = element;
+                                        if (element.hasOwnProperty('expression')) {
+                                            this.style.mapbox[style][key] = element.expression;    
+                                        } else {
+                                            if (!element.hasOwnProperty('property')) {
+                                                element.property = propdetails.key;
+                                            }
+                                            this.style.mapbox[style][key] = element;
+                                        }
                                     }
                                 }
                             }

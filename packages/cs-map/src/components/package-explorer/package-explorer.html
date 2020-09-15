@@ -142,6 +142,15 @@
             <template v-if="data.mainLayer && data.mainLayer._legends" v-for="legend in data.mainLayer._legends">
                 <v-container>
                     <LayerLegendItem
+                        v-if="legend.type === 'categorical'"
+                        :key="legend.property"
+                        :legend="legend"
+                        :layer="data.mainLayer"
+                        :source="data"
+                        direction="vertical"
+                    ></LayerLegendItem>
+                    <LayerLegendItem
+                        v-else
                         :key="legend.property"
                         :legend="legend"
                         :layer="data.mainLayer"
