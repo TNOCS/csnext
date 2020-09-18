@@ -112,7 +112,7 @@ export class MapDatasource extends DataSources {
 
     public addGeojsonLayerFromSource(
         title: string,
-        source: DataSource,
+        source: DataSource,        
         style?: LayerStyle,
         args?: IMapLayer,
         extentions?: ILayerExtensionType[]
@@ -120,40 +120,42 @@ export class MapDatasource extends DataSources {
 
         return new Promise((resolve, reject) => {
             // load data
-            source.loadSource().then(() => {
-                const rl = new GeojsonPlusLayer(args);
-                if (!rl.id) {
-                    rl.id = source.id ? source.id : title;
-                }
-                rl.title = title;
-                rl.openFeatureDetails = true;
-                rl.style = style ? style : DEFAULT_LAYER_STYLE;
-                rl.source = rl._source = source;
-                rl.enabled = (args?.enabled !== undefined) ? args.enabled : true;
-                if (extentions) {
-                    rl.extensions = extentions;
-                }
-
-                rl.initLayer(this).then(() => {
-                    // rl.popupContent = undefined;
-                    if (this.layers) {
-                        this.layers.push(rl);
-                        if (rl.enabled) {
-                            this.showLayer(rl).then(() => {
-                                this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
-                                resolve(rl);
-                            }).catch(() => {
-                                reject();
-                            });
-                        }
+            
+                source.loadSource().then(() => {
+                    const rl = new GeojsonPlusLayer(args);
+                    if (!rl.id) {
+                        rl.id = source.id ? source.id : title;
                     }
-                }).catch(() => {
-                    console.log('error loading');
-                });
-            }).catch(e => {
-                console.log(e);
-                reject();
-            });
+                    rl.title = title;
+                    rl.openFeatureDetails = true;
+                    rl.style = style ? style : DEFAULT_LAYER_STYLE;                    
+                    rl.source = rl._source = source;
+                    rl.enabled = (args?.enabled !== undefined) ? args.enabled : true;
+                    if (extentions) {
+                        rl.extensions = extentions;
+                    }
+    
+                    rl.initLayer(this).then(() => {
+                        // rl.popupContent = undefined;
+                        if (this.layers) {
+                            this.layers.push(rl);
+                            if (rl.enabled) {
+                                this.showLayer(rl).then(() => {
+                                    this.events.publish(CsMap.LAYER, CsMap.LAYER_CREATED, rl);
+                                    resolve(rl);
+                                }).catch(() => {
+                                    reject();
+                                });
+                            }
+                        }
+                    }).catch(() => {
+                        console.log('error loading');
+                    });
+                }).catch(e => {
+                    console.log(e);
+                    reject();
+                });           
+            
         });
     }
 
