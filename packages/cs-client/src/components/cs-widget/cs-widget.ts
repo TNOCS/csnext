@@ -205,7 +205,7 @@ export class CsWidget extends Vue {
     if (!this.widget.data) {
       this.widget.data = {};
     }
-
+    
     if (!this.widget.options.menus) {
       Vue.set(this.widget.options, 'menus', []);
     }
