@@ -291,7 +291,7 @@ export class DataSources implements IDatasource {
                                 resource: resource.name,
                                 bins: field.bins,
                                 legendStyle: field.legend,
-                                colorScheme: field.colorScheme                                
+                                colorScheme: field.colorScheme
                             } as PropertyType);
                     }
                     // const table = await Table.load(d.data, schema, false);
