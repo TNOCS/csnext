@@ -1,3 +1,5 @@
+
+import { IWidget } from './../widget/widget'
 export interface IDialog {
   visible?: boolean;
   hide?: boolean;
@@ -7,6 +9,7 @@ export interface IDialog {
   persistent?: boolean;
   fullscreen?: boolean;
   scrollable?: boolean;
+  widget?: IWidget;
   // toolbar?: boolean;
   data?: any;
   width?: number | string;

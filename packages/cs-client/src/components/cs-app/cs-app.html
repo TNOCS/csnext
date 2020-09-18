@@ -36,10 +36,12 @@
     transition="dialog-bottom-transition"
   >
     <v-card>
-      <v-card-title class="headline" primary-title>
-        {{ dialog.title }}
-      </v-card-title>
-      <!-- <v-toolbar card color="primary" v-if="dialog.toolbar">
+      <cs-widget v-if="dialog.widget" :widget="dialog.widget"></cs-widget>
+      <div v-else>
+        <v-card-title class="headline" primary-title>
+          {{ dialog.title }}
+        </v-card-title>
+        <!-- <v-toolbar card color="primary" v-if="dialog.toolbar">
         <v-btn
           v-if="!dialog.persistent"
           icon          
@@ -50,29 +52,30 @@
         <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar> -->
-      <v-card-text>
-        <component
-          v-if="dialog.component"
-          :is="dialog.component"
-          :data="dialog.data"
-        ></component>
-        <div v-if="dialog.text">
-          <span v-html="dialog.text"></span>
-        </div>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions v-if="dialog.actions && dialog.actions.length>0">
-        <v-spacer></v-spacer>
-        <v-btn
-          v-for="action in dialog.actions"
-          :key="action"
-          text
-          @click="actionCallback(action)"
-        >
-          {{ action }}
-        </v-btn>
-      </v-card-actions>
-      <div style="flex: 1 1 auto;"></div>
+        <v-card-text>
+          <component
+            v-if="dialog.component"
+            :is="dialog.component"
+            :data="dialog.data"
+          ></component>
+          <div v-if="dialog.text">
+            <span v-html="dialog.text"></span>
+          </div>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions v-if="dialog.actions && dialog.actions.length>0">
+          <v-spacer></v-spacer>
+          <v-btn
+            v-for="action in dialog.actions"
+            :key="action"
+            text
+            @click="actionCallback(action)"
+          >
+            {{ action }}
+          </v-btn>
+        </v-card-actions>
+        <div style="flex: 1 1 auto;"></div>
+      </div>
     </v-card>
   </v-dialog>
 
@@ -93,7 +96,6 @@
       color="teal"
       text
       @click="openMobileDashboard(dashboard)"
-      
     >
       <span>{{ dashboard.title }}</span>
       <v-icon>{{ dashboard.icon }}</v-icon>

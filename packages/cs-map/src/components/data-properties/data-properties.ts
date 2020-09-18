@@ -122,7 +122,7 @@ export class DataProperties extends WidgetBase {
                     const prop = {
                         key,
                         value: element,
-                        allowLegend: proptype.type === 'number',
+                        allowLegend: proptype.type === 'number' || proptype.legendStyle,
                         type: proptype,
                         legends,
                         display: element

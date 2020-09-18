@@ -1,4 +1,5 @@
 import { Form, FormField } from '@csnext/cs-core';
+import { LayerLegend } from './layer-legend';
 
 @Form({
     title: 'Property',
@@ -55,6 +56,7 @@ export class PropertyType {
     public unique?: number;
     public legendStyle?: any;
     public resource?: string;
+    public legend?: LayerLegend;
     // #endregion Properties (20)
 }
 
