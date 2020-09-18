@@ -2292,6 +2292,11 @@
   integrity sha512-Wk7nG1JSaMfMpoMJDKUsWYugliB2Vy55pdjLpmLixeyMi7HizW2I/9QoxsPCkXl3dO+ZOVqPumKaDUv5zJu2uQ==
 
 "@types/node@^13.13.5":
+  version "13.13.17"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.17.tgz#fba8bdd9be9a61adbceac654450673c2f520b0f0"
+  integrity sha512-rGZftvdDpsYtG/rOlDOwny1f6Aq4FHJdGSVfPg5vC2DaR9Rt4W2OpsOF5GTU2bSqZmwTkfnsvJhhzpMWYxxlEA==
+
+"@types/node@^13.13.5":
   version "13.13.15"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.15.tgz#fe1cc3aa465a3ea6858b793fd380b66c39919766"
   integrity sha512-kwbcs0jySLxzLsa2nWUAGOd/s21WU1jebrEdtzhsj1D4Yps1EOuyI1Qcu+FD56dL7NRNIJtDDjcqIG22NwkgLw==
@@ -12000,17 +12005,15 @@ simplebar-vue@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/simplebar-vue/-/simplebar-vue-1.5.1.tgz#336da5960d333a4e92c4d89619f58ee7958bb055"
   integrity sha512-EuM58B7pYAwaYovaTuGayp2QTm0jKDzLNC9uey9q/NOTI6Gg71O4rduXgb6+vJJJQRsXqxyXR4LMvYnhA9hjuA==
+
+simplebar-core@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/simplebar-core/-/simplebar-core-1.0.2.tgz#5f23abd96d7b80078de267d81ddbd517116c074b"
+  integrity sha512-01BSmdUphVatUB78rjDMZzkfawW7iYX1+zJmKJRsGzj5BnOmBgKC6zYrUbg3DdR0j3wPwdKjbUfcanV+kQwrcg==
+
   dependencies:
     can-use-dom "^0.1.0"
     lodash-es "^4.17.15"
-
-simplebar-vue@2.0.0-beta.2:
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/simplebar-vue/-/simplebar-vue-2.0.0-beta.2.tgz#fd9d52adf2b6e56333d9c9a3515ecbea501df413"
-  integrity sha512-GVMtYvW4MhmC6FNRaLt9Atyi0FbdHFN/KNvCqHW6gADIOyUZb4qQ0XsA1wUE2Cc+4kUC6b8y36+UUrOXKPpf7Q==
-  dependencies:
-    core-js "^3.6.5"
-    simplebar-core "^1.0.0"
 
 slash@^1.0.0:
   version "1.0.0"
