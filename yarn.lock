@@ -13597,6 +13597,7 @@ vega-hierarchy@~4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/vega-hierarchy/-/vega-hierarchy-4.0.8.tgz#9a9bba6800744374e2803e161f7daba459602b80"
   integrity sha512-8O2asfoAEaW8Hfu/06m6t5BErrNo0OJzU8XyKon8aeGY2YbQMKT7fiEzUrzDC39Zb2suThuzBOjpcwiu7rh/Hg==
+
   dependencies:
     d3-hierarchy "^2.0.0"
     vega-dataflow "^5.7.2"
@@ -13623,6 +13624,7 @@ vega-parser@~6.0.3:
     vega-functions "^5.7.2"
     vega-scale "^7.1.0"
     vega-util "^1.15.1"
+
 
 vega-projection@^1.4.4, vega-projection@~1.4.4:
   version "1.4.4"
