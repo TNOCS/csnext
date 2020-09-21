@@ -3,7 +3,7 @@ import {
     LayerStyle
 } from '../.';
 
-import { DataResource, Insight, InsightView, DataSourceEvents } from '@csnext/cs-data';
+import { DataResource, Insight, InsightView, DataSourceEvents, DataSource, DataSet } from '@csnext/cs-data';
 import { MapDatasource, SidebarKeys } from './map-datasource';
 import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import axios from 'axios';
@@ -84,7 +84,7 @@ export class StatsDatasource extends MapDatasource {
 
     /** update all feature properties for a specific date (if available)  */
     public updateDateProperties(date: number) {
-        if (this.mainLayer && this.mainLayer._source && this.mainLayer._source._data && this.mainLayer._source._loaded) {
+        if (this.mainLayer && this.mainLayer._source && this.mainLayer._source._data && this.mainLayer._source) {
             for (const feature of this.mainLayer._source._data.features) {
                 if (feature.properties && feature.properties.hasOwnProperty('_when')) {
                     for (const key in feature.properties._when) {
@@ -188,6 +188,7 @@ export class StatsDatasource extends MapDatasource {
 
     public async restoreState() {
         if (!$cs.router) { return; }
+        await this.createLayers();
         const route = $cs.router.currentRoute;
         if (route && route.query.hasOwnProperty('q')) {
             const res = new URLSearchParams(route.query.q.toString());
@@ -228,6 +229,7 @@ export class StatsDatasource extends MapDatasource {
                 await this.activateInsight(i);
             }
         }
+
     }
 
     public async activateInsightView(view: InsightView, insight: Insight) {
@@ -264,12 +266,38 @@ export class StatsDatasource extends MapDatasource {
     }
 
     public async addResourceToInsightView(source: string) {
-        if (this.activeInsight && this.activeInsightView && this.activeInsightView.resources) {   
+        if (this.activeInsight && this.activeInsightView && this.activeInsightView.resources) {
             if (!this.activeInsightView.resources.includes(source)) {
                 this.activeInsightView.resources.push(source)
                 await this.activateInsightView(this.activeInsightView, this.activeInsight);
-            }                        
-        }; 
+            }
+        };
+    }
+
+    public async createLayers() {
+        if (!this.dataPackage || !this.layers) { return; }
+        for (const resource of this.dataPackage.resources) {
+            if (resource.format === 'geojson' && typeof resource.path === 'string') {
+                console.log('activate ' + resource.name);
+                if (!this.getLayer(resource.name)) {
+                    let source = await this.createDataSourceFromResource(undefined, resource); // new DataSource({ type : 'FeatureCollection', features : [] });                    
+                    let l = new GeojsonPlusLayer({
+                        externalUrl: resource.path,
+                        title: resource.name,
+                        id: resource.name,
+                        style: resource.style,
+                        source: source
+                    });                    
+                    await l.initLayer(this);
+                    this.layers.push(l);
+                    
+
+                    // const source = await this.activateLayerResource(resource.name);
+                    // await this.addGeojsonLayer(resource.name);
+                }
+            }
+        }
+
     }
 
     public async activateResources(resources: string[]) {
@@ -279,25 +307,36 @@ export class StatsDatasource extends MapDatasource {
             for (const key in this.resources) {
                 if (!resources.includes(key) && this.resources.hasOwnProperty(key)) {
                     const resource = this.resources[key];
-                    if (resource.format === 'geojson') {
-                        this.removeLayer(resource.name);
-                    }
-                    await this.unloadResource(key);
+                    // if (resource.format === 'geojson') {
+                    //     this.removeLayer(resource.name);
+                    // }
+                    // await this.unloadResource(key);
                 }
             }
-            for (const resourceName of resources) {                
-                const resource = await this.loadResource(resourceName);                
+            for (const resourceName of resources) {
+                const resource = await this.loadResource(resourceName);
                 if (resource && resource.format === 'geojson') {
                     layer = await this.activateLayerResource(resource.name);
+                    // this.mainLayer = await this.getLayer(resourceName) as GeojsonPlusLayer;
                 }
             }
-            if (layer && this.mainLayer && this.mainLayer._source && this.mainLayer._source._meta) {
+            // if (layer.data?._meta) {
+            //     for (const resourceName in this.resources) {
+            //         if (resourceName !== layer.name && this.resources.hasOwnProperty(resourceName)) {
+            //             const resource = this.resources[resourceName];
+            //             await this.mergeResources(layer, resource);
+            //         }
+            //     }
+            //     this.mainLayer._source.updateFeatureTypePropertyMap(layer.data._meta.default);
+            // }
+            if (layer?.data?._meta && this.mainLayer && this.mainLayer._source && this.mainLayer._source._meta) {
                 for (const resourceName in this.resources) {
                     if (resourceName !== layer.name && this.resources.hasOwnProperty(resourceName)) {
                         const resource = this.resources[resourceName];                          
                         await this.mergeResources(layer, resource);                                                
                     }
                 }
+                this.mainLayer._source._meta = layer.data._meta;
                 this.mainLayer._source.updateFeatureTypePropertyMap(this.mainLayer._source._meta.default);
             }
         }
@@ -306,16 +345,20 @@ export class StatsDatasource extends MapDatasource {
     public activateLayerResource(resourceName: string): Promise<DataResource> {
         return new Promise(async (resolve, reject) => {
             $cs.closeRightSidebar();
-            if (this.activeResource) {
-                this.removeLayer(this.activeResource.name);
-            }
+            // if (this.activeResource) {
+            //     this.removeLayer(this.activeResource.name);
+            // }
             await this.activateResource(resourceName);
             if (!this.activeResource || !this.activeResource.data) { reject(); return; }
-            const style = this.activeResource.style;
-            this.mainLayer = await this.addGeojsonLayerFromSource(
-                resourceName,
-                this.activeResource.data, style, { id: resourceName } as IMapLayer
-            );
+            // find layer
+            this.mainLayer = this.getLayer(resourceName) as GeojsonPlusLayer;
+            this.mainLayer.updateGeojson(this.activeResource.data._geojson as unknown as DataSet);
+            this.showLayer(this.mainLayer)
+            
+            // this.mainLayer = await this.addGeojsonLayerFromSource(
+            //     resourceName,
+            //     this.activeResource.data, this.activeResource.style, { id: resourceName } as IMapLayer
+            // );
             resolve(this.activeResource);
         });
     }

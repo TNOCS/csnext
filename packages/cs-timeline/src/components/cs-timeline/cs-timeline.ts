@@ -311,7 +311,8 @@ export class CsTimeline extends WidgetBase {
                     id: GROUPS_MENU_ID,
                     icon: 'list',
                     component: TimelineGroupSelection,
-                    data: this
+                    data: this,
+                    closeOnContentClick: false
                 });
             }
         }

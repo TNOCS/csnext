@@ -29,7 +29,6 @@ export * from './classes/ilayer-action';
 export * from './classes/layer-style';
 export * from './classes/layer-filter';
 export * from './interfaces/source';
-// export * from './classes/layer-legend';
 export * from './classes/map-style-definition';
 export * from './services/layer-server-options';
 
