@@ -432,6 +432,18 @@ export class AppState extends AppStateBase {
     return this.triggerDialog(d);
   }
 
+  public triggerInputDialog(title: string, text: string, defaultValue?: string): Promise<string> {
+    return new Promise((resolve) => {    
+      const d = {
+        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, persistent: true, width: 400 
+      } as IDialog;
+      d.actionCallback = (action: string) => {
+        resolve(action);
+      };
+      this.triggerDialog(d);
+  });
+  }
+
   /** if rightsidebar exists, clear component and close */
   public clearRightSidebar() {
     if (
