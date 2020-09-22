@@ -86,6 +86,7 @@ export class CsApp extends Vue {
   public unReadNotifications: INotification[] = [];
   public isLoading: boolean = true;
   private busManager = new MessageBusManager();
+  public dialogInput: string = '';
 
   constructor() {
     super();        
@@ -366,6 +367,10 @@ export class CsApp extends Vue {
     }
   }
 
+  public saveDialogInput() {
+
+  }
+
   public actionCallback(action: string) {
     if (this.dialog && this.dialog.actionCallback) {
       this.dialog.visible = false;
@@ -382,9 +387,8 @@ export class CsApp extends Vue {
       switch (action) {
         case AppState.DIALOG_ADDED:
           const emptyDialog = {component: undefined, actions: undefined, persistent: false, actionCallback: undefined, widget: undefined } as IDialog;
-
           this.dialog = Object.assign(this.dialog, emptyDialog, dialog);          
-          this.dialog.visible = true;
+          this.dialog.visible = true;          
           break;
         case AppState.DIALOG_CLOSED:
           this.dialog.visible = false;

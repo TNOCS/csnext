@@ -57,8 +57,12 @@
             :is="dialog.component"
             :data="dialog.data"
           ></component>
-          <div v-if="dialog.text">
-            <span v-html="dialog.text"></span>
+          <div v-if="dialog.textInput">
+            <v-text-field v-model="dialogInput" required label="Regular"></v-text-field>
+            <v-btn @click="actionCallback(dialogInput)">{{ $cs.Translate('OK')}}</v-btn>
+          </div>
+          <div v-else>
+            <span v-if="dialog.text" v-html="dialog.text"></span>
           </div>
         </v-card-text>
         <v-divider></v-divider>
