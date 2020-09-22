@@ -58,7 +58,7 @@
             :data="dialog.data"
           ></component>
           <div v-if="dialog.textInput">
-            <v-text-field v-model="dialogInput" required label="Regular"></v-text-field>
+            <v-text-field v-model="dialogInput" required :label="dialog.text"></v-text-field>
             <v-btn @click="actionCallback(dialogInput)">{{ $cs.Translate('OK')}}</v-btn>
           </div>
           <div v-else>
