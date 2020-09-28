@@ -10,6 +10,7 @@ export interface IDialog {
   fullscreen?: boolean;
   scrollable?: boolean;
   widget?: IWidget;
+  textInput?: boolean;
   // toolbar?: boolean;
   data?: any;
   width?: number | string;

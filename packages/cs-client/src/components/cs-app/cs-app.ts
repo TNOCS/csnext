@@ -374,6 +374,9 @@ export class CsApp extends Vue {
   public actionCallback(action: string) {
     if (this.dialog && this.dialog.actionCallback) {
       this.dialog.visible = false;
+      if (this.dialog.textInput) {
+        this.dialog.textInput = undefined;
+      }
       this.dialog.actionCallback(action);
     }
   }
