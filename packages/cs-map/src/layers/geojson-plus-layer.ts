@@ -487,24 +487,24 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                 .setLngLat(lngLat)
                 .setDOMContent(app.$el)
                 .addTo(widget.map);
-        }
+        // }
         // if (layer.style && layer.style.popup) {
         //     popup = layer.style.popup;
-        // } else
-        if (layer.popupContent) {
-            if (typeof layer.popupContent === 'string') {
-                popup = layer.popupContent;
-            } else if (this.isFunction(layer.popupContent)) {
-                popup = layer.popupContent(e);
+        } else
+            if (layer.popupContent) {
+                if (typeof layer.popupContent === 'string') {
+                    popup = layer.popupContent;
+                } else if (this.isFunction(layer.popupContent)) {
+                    popup = layer.popupContent(e);
+                }
+            }
+            if (popup) {
+                this.popup
+                    .setLngLat(e.lngLat)
+                    .setHTML(popup)
+                    .addTo(widget.map);
             }
         }
-        if (popup) {
-            this.popup
-                .setLngLat(e.lngLat)
-                .setHTML(popup)
-                .addTo(widget.map);
-        }
-
     }
 
     private registerMapEvents(map: mapboxgl.Map, forSymbol: boolean = false) {
