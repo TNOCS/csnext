@@ -207,7 +207,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             }
 
             // make sure a text style is available
-            if (this.style && this.style.mapTitle && this.style.type === 'symbol') {
+            if (this.style && this.style.mapTitle) {
                 this.layout['text-field'] = this.style.mapTitle;
                 this.layout['text-anchor'] = 'center';
                 this.layout['text-size'] = 12;
