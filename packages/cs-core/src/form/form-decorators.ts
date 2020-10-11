@@ -61,7 +61,8 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'datepicker'
   | 'button-trigger'
   | 'rating'
-  | 'component';
+  | 'component'
+  | 'imagelist';
   defaultValue?: any;
   description?: string;
   required?: boolean;
