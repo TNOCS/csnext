@@ -39,7 +39,7 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/mapbox-gl": "^1.11.2",
+        "@types/mapbox-gl": "^1.12.3",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },

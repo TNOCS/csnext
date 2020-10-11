@@ -410,7 +410,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     }
 
     public updateLegends() {
-        if (!this._source) { return; }
+        if (!this._source || !this.style?.mapbox) { return; }
         let result: LayerLegend[] = [];
 
         let key = '';

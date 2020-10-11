@@ -315,6 +315,7 @@ export class StatsDatasource extends MapDatasource {
             }
             for (const resourceName of resources) {
                 const resource = await this.loadResource(resourceName);
+                
                 if (resource && resource.format === 'geojson') {
                     layer = await this.activateLayerResource(resource.name);
                     // this.mainLayer = await this.getLayer(resourceName) as GeojsonPlusLayer;

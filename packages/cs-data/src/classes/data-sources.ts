@@ -119,7 +119,7 @@ export class DataSources implements IDatasource {
         // const resource = await datapackage.Resource.load({path: 'https://raw.githubusercontent.com/frictionlessdata/datapackage-js/master/data/data.csv'});
     }
 
-    public async mergeResourcesOld(first: DataResource, second: DataResource): Promise<boolean> {
+    public async mergeResources(first: DataResource, second: DataResource): Promise<boolean> {
         return new Promise((resolve) => {
             if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
             const loaderId = this.loader.addLoader();
@@ -210,7 +210,7 @@ export class DataSources implements IDatasource {
         });
     }
 
-    public async mergeResources(first: DataResource, second: DataResource): Promise<boolean> {
+    public async mergeResourcesNew(first: DataResource, second: DataResource): Promise<boolean> {
         return new Promise((resolve) => {
             if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
             const loaderId = this.loader.addLoader();
@@ -281,7 +281,7 @@ export class DataSources implements IDatasource {
                     for (const field of resource.schema.fields) {
                         d._meta.default.properties!.push(
                             {
-                                title: field.title,
+                                title: field.title ?? field.name,
                                 description: field.description,
                                 type: field.type,
                                 _key: field.name,

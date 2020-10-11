@@ -6,7 +6,7 @@ import {
     ILayerService,
     FeatureEventDetails
 } from './../.';
-import { PropertyType, FeatureType, DataSource, DataSet, LayerLegend, FeatureTypes } from '@csnext/cs-data';
+import { PropertyType, FeatureType, DataSource, DataSet, LayerLegend, FeatureTypes, DataSourceState } from '@csnext/cs-data';
 import { CsMap } from './..';
 import mapboxgl, { Layout, MapboxGeoJSONFeature } from 'mapbox-gl';
 import { ILayerAction } from '../classes/ilayer-action';
@@ -386,7 +386,11 @@ export class BaseLayer implements IMapLayer {
 
     public updateGeojson(data: DataSet) {
         if (this._manager && this._source && this._source.id) {
+            
             this._source._data = data;
+            this._source._loaded = data !== undefined;
+            this._source.state = DataSourceState.loaded;
+
             this._manager.updateSource(this._source);
         }
     }
