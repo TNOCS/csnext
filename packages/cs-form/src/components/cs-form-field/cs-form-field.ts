@@ -57,7 +57,7 @@ export class CsFormField extends Vue {
         if (typeof this.field.options === 'function') {
             let res = this.field.options();
             if (Promise.resolve(res) == res) {
-                Vue.set(this, 'items', await this.field.options())                
+                Vue.set(this, 'items', await this.field.options());                
             } else {
                 this.items = this.field.options() as any[];
             }                        
@@ -75,7 +75,7 @@ export class CsFormField extends Vue {
 
     public get selectedObject(): any | undefined {
         if (this.field && this.field.options && this.field && this.field.keyValue && this.target) {
-            let o = (Array.isArray(this.field.options)) ? this.field.options : this.field.options();
+            let o = this.items; //(Array.isArray(this.field.options)) ? this.field.options : this.field.options();
             return o.find(s => s[this.field!.keyValue!] == this.target![this.field!._key!])
         }
     }

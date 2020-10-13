@@ -633,6 +633,7 @@ export class CsMap extends WidgetBase {
         if (!enabled && old && this.peliasControl) {
             this.map.removeControl(this.peliasControl);
         }
+        
 
         if (enabled && this.options.peliasOptions) {
             if (!this.peliasControl) {
@@ -645,6 +646,7 @@ export class CsMap extends WidgetBase {
                         useFocusPoint: true,
                         customAttribution: 'JAWG search'
                     });
+                    
             }
             this.map.addControl(this.peliasControl, 'top-right');
         }

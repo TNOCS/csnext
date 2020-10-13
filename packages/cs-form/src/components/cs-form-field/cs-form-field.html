@@ -23,7 +23,11 @@
             @input="fieldInput(field)"
             @click:append-outer="fieldUpdated(field)"
             @change="fieldUpdated(field)"              
-        ></v-combobox>
+        >
+        <template v-slot:item="props">            
+            <span v-if="props"><v-img :src="props.item.image" max-height="48" max-width="48" style="float:left; margin-right: 10px"></v-img>{{ props.item.title }}</span>  
+          </template>
+    </v-combobox>
         </template>
     <template v-if="field.type === 'colorpicker'">
                 <!-- <v-text-field v-model="target[field._key]"></v-text-field> -->
