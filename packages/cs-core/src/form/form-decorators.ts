@@ -71,7 +71,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   max?: number;
   step?: number;
   sortWeight?: number;
-  options?: any[] | (() => any[]);
+  options?: any[] | (()=>any[]) | (() => Promise<any[]>);
   arrayType?: IFormOptions;
   form?: IFormOptions;
   canDelete?: boolean;  

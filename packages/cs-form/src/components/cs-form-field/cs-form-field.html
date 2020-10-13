@@ -8,11 +8,12 @@
     <template v-if="field.type === 'imagelist'">
         
         <v-combobox
-            :items="fieldOptions(field)"
+            :items="items"
             v-model="target[field._key]"
             :label="$cs.Translate(field.title)"     
             :hint="field.hint"
             itemText="title"
+            hide-no-data
             clearable
             :return-object="false"
             itemValue="image"            
@@ -129,7 +130,7 @@
         </template>
     <template v-if="field.type === 'selection'">
             <v-select
-                :items="fieldOptions(field)"
+                :items="items"
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :disabled="field.readonly"
@@ -138,7 +139,7 @@
         </template>
     <template v-if="field.type === 'combobox'">
                 <v-combobox
-                    :items="fieldOptions(field)"
+                :items="items"
                     v-model="target[field._key]"
                     :label="$cs.Translate(field.title)"     
                     :hint="field.hint"
@@ -156,7 +157,7 @@
             </template>
     <template v-if="field.type === 'combobox-objects'">
                     <v-combobox
-                        :items="fieldOptions(field)"
+                    :items="items"
                         v-model="selectedObject"
                         :label="$cs.Translate(field.title)" 
                         :itemText="field.keyText" 

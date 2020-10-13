@@ -28,6 +28,7 @@ export class CsFormField extends Vue {
     public dateFormatted = this.formatDate(new Date().toISOString().substr(0, 10));
     public dateMenu = false;
     public timeMenu = false;
+    public items: any[] = [];
 
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
 
@@ -50,6 +51,20 @@ export class CsFormField extends Vue {
 
     @Emit()
     public triggered(field: IFormFieldOptions) { }
+
+    public async mounted() {        
+        if (!this.field?.options) { return; }
+        if (typeof this.field.options === 'function') {
+            let res = this.field.options();
+            if (Promise.resolve(res) == res) {
+                Vue.set(this, 'items', await this.field.options())                
+            } else {
+                this.items = this.field.options() as any[];
+            }                        
+        } else {
+            return this.items = this.field.options;                        
+        }
+    }
 
     public triggerClick(field: IFormFieldOptions) {
         if (field.triggerCallback && this.target) {
@@ -207,11 +222,13 @@ export class CsFormField extends Vue {
         }
     }
 
-    public fieldOptions(field: IFormFieldOptions) {
+    public fieldOptions(field: IFormFieldOptions) {     
+        console.log('field options')   ;
         if (typeof field.options === 'function') {
-            return field.options();
+            const items = field.options(); 
+            return items;            
         } else {
-            return field.options;
+            return field.options;                        
         }
     }
 
