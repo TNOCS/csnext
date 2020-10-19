@@ -7,7 +7,7 @@
         <SplitGridArea
             :key="idx"
             :sizeValue="element.size"
-            v-if="!element.hide"
+            :render="!element.hide"
             :sizeUnit="element.sizeUnit"
             :expandToMin="true"
         >
@@ -23,6 +23,7 @@
             <SplitGrid
                 class="split-grid-comp"
                 v-if="element.splitpanel && element.splitpanel.elements"
+                :render="element.splitpanel && element.splitpanel.elements"
                 :direction="getDirection(element.splitpanel.direction)"
             >
                 <template v-for="(el, id) in element.splitpanel.elements">
@@ -30,6 +31,7 @@
                         :key="id"
                         :sizeValue="el.size"
                         v-if="!el.hide"
+                        :render="!el.hide"
                         :sizeUnit="el.sizeUnit"
                         :expandToMin="true"
                     >
@@ -52,7 +54,7 @@
                             >
                                 <SplitGridArea
                                     :key="idd"
-                                    v-if="!ell.hide"
+                                    :render="!ell.hide"
                                     :sizeValue="ell.size"
                                     :sizeUnit="ell.sizeUnit"
                                     :expandToMin="true"
@@ -69,6 +71,7 @@
                                     <SplitGrid
                                         class="split-grid-comp"
                                         v-if="ell.splitpanel && ell.splitpanel.elements"
+                                        :render="ell.splitpanel && ell.splitpanel.elements"
                                         :direction="getDirection(ell.splitpanel.direction)"
                                     >
                                         <template
@@ -76,7 +79,7 @@
                                         >
                                             <SplitGridArea
                                                 :key="iddd"
-                                                v-if="!elll.hide"
+                                                :render="!elll.hide"
                                                 :sizeValue="elll.size"
                                                 :sizeUnit="elll.sizeUnit"
                                                 :expandToMin="true"
@@ -91,26 +94,26 @@
                                                 ></cs-dashboard>
                                             </SplitGridArea>
                                             <SplitGridGutter
-                                                v-if="!elll.hid && elll !== ell.splitpanel.elements[ell.splitpanel.elements.length-1]"
+                                                :render="!elll.hid && elll !== ell.splitpanel.elements[ell.splitpanel.elements.length-1]"
                                             />
                                         </template>
                                     </SplitGrid>
                                 </SplitGridArea>
 
                                 <SplitGridGutter
-                                    v-if="!ell.hide && ell !== el.splitpanel.elements[el.splitpanel.elements.length-1]"
+                                    :render="!ell.hide && ell !== el.splitpanel.elements[el.splitpanel.elements.length-1]"
                                 />
                             </template>
                         </SplitGrid>
                     </SplitGridArea>
                     <SplitGridGutter
-                        v-if="!el.hide && el !== element.splitpanel.elements[element.splitpanel.elements.length-1]"
+                        :render="!el.hide && el !== element.splitpanel.elements[element.splitpanel.elements.length-1]"
                     />
                 </template>
             </SplitGrid>
         </SplitGridArea>
         <SplitGridGutter
-            v-if="!element.hide && element !== options.elements[options.elements.length-1]"
+            :render="!element.hide && element !== options.elements[options.elements.length-1]"
         />
     </template>
 </SplitGrid>
