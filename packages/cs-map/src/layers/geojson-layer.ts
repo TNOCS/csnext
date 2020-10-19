@@ -154,19 +154,21 @@ export class GeojsonLayer extends BaseLayer {
     public addImage(id: string, url: string) {
         if (this._manager && this._manager.MapControl) {
             if (!this._manager.MapControl.hasImage(id)) {
-                this._manager.MapControl.loadImage(url, (error, image) => {
-                    if (!error) {
-                        this._manager!.MapControl!.addImage(id, image);
-                    }
-                });
+                if (!this._manager!.MapControl.hasImage(id)) {
+                    this._manager.MapControl.loadImage(url, (error, image) => {
+                        if (!error) {
+                            this._manager!.MapControl!.addImage(id, image);
+                        }
+                    });
+                }
             }
         }
     }
 
     public async refreshSourceUrl() {
         if (this._source && this._source.url) {
-            await this._source.refreshSource();      
-            if (this._source._data) { this.updateGeojson(this._source._data); }   
+            await this._source.refreshSource();
+            if (this._source._data) { this.updateGeojson(this._source._data); }
         }
     }
 
@@ -193,13 +195,13 @@ export class GeojsonLayer extends BaseLayer {
             mblayer.filter = this.filter;
         }
 
-         // remove layer if it already exists
+        // remove layer if it already exists
         this.removeLayer(widget);
         if (widget.map.getLayer(this.id) !== undefined) {
-             widget.map.removeLayer(this.id);
-         }
+            widget.map.removeLayer(this.id);
+        }
 
-         this.registerLayerExtensions();
+        this.registerLayerExtensions();
 
         widget.map.addLayer(mblayer);
         this.state = 'visible';
@@ -373,7 +375,7 @@ export class GeojsonLayer extends BaseLayer {
 
     // #region Protected Methods (2)
 
-    protected registerLayerExtensions() {        
+    protected registerLayerExtensions() {
         if (this.extensions) {
             this.extensions.forEach(ext => {
                 const extensionType = CsMap.layerExtensions.find(
@@ -382,7 +384,7 @@ export class GeojsonLayer extends BaseLayer {
                 if (extensionType && extensionType.getInstance) {
                     const extension = extensionType.getInstance(ext.options);
                     this._extensions.push(extension);
-                    extension.start(this);                    
+                    extension.start(this);
                 } else {
                     console.warn(`Could not find extension ${ext.id}`);
                 }
@@ -403,7 +405,7 @@ export class GeojsonLayer extends BaseLayer {
 
     // #region Private Methods (8)
 
- 
+
 
 
     // #endregion Private Methods (8)
