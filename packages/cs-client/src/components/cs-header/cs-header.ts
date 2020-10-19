@@ -74,12 +74,17 @@ export class CsHeader extends Vue {
       }
     }
 
-    Vue.set(this, 'allMenus', this.$cs.project.menus);
-
     // this.allMenus = this.$cs.project.menus;
     if (this.$cs.activeDashboard && this.$cs.activeDashboard.menus) {
-      Vue.set(this, 'allMenus', [...this.allMenus, ...this.$cs.activeDashboard.menus]);
+
+      for (const menu of this.$cs.activeDashboard.menus) {
+        if (!menu._dashboard) { menu._dashboard = this.$cs.activeDashboard; }
+      }
+
+      Vue.set(this, 'allMenus', [...this.$cs.project.menus, ...this.$cs.activeDashboard.menus]);
       // this.allMenus = ;
+    } else {
+      Vue.set(this, 'allMenus', this.$cs.project.menus);
     }
   }
 
