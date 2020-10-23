@@ -4,7 +4,8 @@ import {
     LayerSource,
     ILoadResult,
     LayerMeta,
-    LayerDefinition
+    LayerDefinition,
+    ServerConfig
 } from '../../classes';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
@@ -77,6 +78,27 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         });
     }
 
+    public loadSource(def: LayerDefinition, config: ServerConfig): Promise<ILoadResult> {
+
+        const sourcePath = path.join(config.serverPath || '', config.sourcePath || '');
+
+        if (!fs.existsSync(sourcePath)) {
+            fs.mkdirSync(sourcePath);
+        };
+
+        def.source = def.id + '.json';
+        const fileName = path.join(sourcePath, def.id, def.source);
+        if (!fs.existsSync(fileName)) {
+            this.createEmpty(sourcePath, def).then(r => {
+                return this.load(fileName);
+            }).catch((e) => {
+                return Promise.reject(`Error creating ${fileName}`);
+            })
+        } else {
+            return this.load(fileName);
+        }        
+    }
+
     public determinePropertyType(val: any): string {
         try {
             if (val === undefined || val === null) { return 'text'; }
@@ -107,20 +129,19 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
 
     public createEmpty(
         folder: string,
-        def: LayerDefinition
+        def?: LayerDefinition
     ): Promise<{ def: LayerDefinition; source: LayerSource }> {
         return new Promise((resolve, reject) => {
             console.log('Creating new file');
             if (def.id) {
                 const sourceFolder = path.join(folder, def.id);
-                def.source = def.id + '.json';
+                
                 const sourceFile = path.join(sourceFolder, def.source);
                 if (!fs.existsSync(sourceFolder)) {
                     console.log('Creating new folder');
                     console.log(sourceFolder);
                     fs.mkdirSync(sourceFolder);
                 }
-
                 const source = new LayerSource();
                 source.id = def.id;
                 source.type = 'FeatureCollection';
@@ -213,7 +234,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                         }
 
                         if (proptype.type === 'number' && proptype._values) {
-                            if (unique.length > 1) {                                
+                            if (unique.length > 1) {
                                 proptype.min = parseFloat(
                                     min(proptype._values).toString()
                                 );

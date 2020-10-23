@@ -26,6 +26,7 @@ export interface ISourcePlugin {
     /** import function for converting different formats to geojson */  
     import?(file: string) : Promise<LayerSource | undefined>;
     load?(file: string, meta?: string) : Promise<ILoadResult>;
+    loadSource?(def: LayerDefinition, source: ServerConfig) : Promise<ILoadResult>;
     query?(connection: Connection, query: string, options: QueryOptions) : Promise<ILoadResult>;
     createEmpty?(folder: string, def: LayerDefinition) : Promise<{ def: LayerDefinition, source: LayerSource}>;
     saveMeta?(def: LayerDefinition);

@@ -350,12 +350,19 @@ export class LayerService extends AggregateRoot {
     public queueSocketUpdate(source: LayerSource, feature: Feature) {
         if (source) {
             if (!source._socketQueue) { source._socketQueue = {}; }
+            // source._socketQueue[feature.id] = {
+            //         action: 'update',
+            //         feature
+            //     };
+
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
                     feature
                 };
-            });
+            }).catch((e) => {
+                Logger.error(`Error get lock for queuing feature (${source.id} - ${feature.id})`);
+            })
         }
     }
 
@@ -733,6 +740,25 @@ export class LayerService extends AggregateRoot {
                     }
                 } else {
                     console.log('config not correct');
+                }
+            } else if (plugin && typeof plugin.loadSource === 'function') {
+                try {
+                    
+                    if (def.meta) {
+                        this.updateMetaFilePath(def);
+                    }
+                    const loadResult = await plugin.loadSource(
+                        def, this.config
+                    );
+
+                    if (loadResult.source) {
+                        resolve(loadResult.source);
+                        return;
+                    }
+                } catch (e) {
+                    Logger.log(`Error loading: ${def.source}`);
+                    Logger.log(e);
+                    reject();
                 }
             } else if (plugin && typeof plugin.load === 'function') {
                 try {

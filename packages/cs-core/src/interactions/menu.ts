@@ -1,3 +1,5 @@
+import { IDashboard } from '../dashboard/dashboard';
+
 export interface IMenu {
   id?: string;
   icon?: string;
@@ -18,8 +20,9 @@ export interface IMenu {
   toolTip?: string;
   method?: string;
   items?: IMenu[];
-  action?: (menu: IMenu) => void;
+  action?: (menu: IMenu, dashboard?: IDashboard) => void;
   component?: any;
   closeOnContentClick?: boolean;
   data?: any;
+  _dashboard?: IDashboard;
 }
