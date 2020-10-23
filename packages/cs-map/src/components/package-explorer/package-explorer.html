@@ -40,6 +40,7 @@
                     </v-btn>
                 </template> {{ $cs.Translate('TABLE')}}
             </v-tooltip>
+       
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="shareState()" v-on="on" icon>
@@ -47,6 +48,14 @@
                     </v-btn>
                 </template> {{ $cs.Translate('SHARE')}}
             </v-tooltip>
+            <v-tooltip v-if="data.mainLayer" bottom>
+                <template v-slot:activator="{ on }">
+                    <v-btn @click="toggleLayers()" v-on="on" icon>
+                        <v-icon>layers</v-icon>
+                    </v-btn>
+                </template> {{ $cs.Translate('LAYERS')}}
+            </v-tooltip>
+         
         </v-layout>
 
         <!-- <v-toolbar-items

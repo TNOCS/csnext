@@ -9,6 +9,7 @@ import { StatsDatasource } from '../../datasources/stats-datasource';
 import { FeaturePreview } from './../feature-preview/feature-preview';
 import { Watch } from 'vue-property-decorator';
 import { MessageBusManager } from '@csnext/cs-core';
+import { LayerSelection, LayerSelectionOptions, SidebarKeys } from '../..';
 
 @Component({
     name: 'package-explorer',
@@ -103,6 +104,21 @@ export class PackageExplorer extends Vue {
         if (this.data && this.data.mainLayer) {
             this.data.downloadCsv(this.data.mainLayer);
         }
+    }
+
+    public toggleLayers() {
+        alert('open layers');
+        this.$cs.addRightSidebarWidget(
+            {
+                component: LayerSelection,
+                options: {
+                    searchEnabled: true
+                } as LayerSelectionOptions,
+                datasource: this.data.id
+            },
+            {},
+            SidebarKeys.LAYERS_SELECTION
+        );
     }
 
     public downloadPackage() {
