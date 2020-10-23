@@ -153,14 +153,12 @@ export class GeojsonLayer extends BaseLayer {
 
     public addImage(id: string, url: string) {
         if (this._manager && this._manager.MapControl) {
-            if (!this._manager.MapControl.hasImage(id)) {
-                if (!this._manager!.MapControl.hasImage(id)) {
-                    this._manager.MapControl.loadImage(url, (error, image) => {
-                        if (!error) {
-                            this._manager!.MapControl!.addImage(id, image);
-                        }
-                    });
-                }
+            if (!this._manager!.MapControl.hasImage(id)) {
+                this._manager.MapControl.loadImage(url, (error, image) => {
+                    if (!error) {
+                        this._manager!.MapControl!.addImage(id, image);
+                    }
+                });
             }
         }
     }
