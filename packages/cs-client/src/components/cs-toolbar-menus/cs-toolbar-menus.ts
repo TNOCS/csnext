@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import './cs-toolbar-menus.css';
 import { Prop, Watch, PropSync } from 'vue-property-decorator';
-import { IDashboard, IMenu } from '@csnext/cs-core';
+import { IDashboard, IMenu, IWidget } from '@csnext/cs-core';
+import { CsWidget } from '../cs-widget/cs-widget';
 
 @Component({
   name: 'cs-toolbar-menus',
@@ -23,7 +24,7 @@ export class CsToolbarMenus extends Vue {
   public menus?: IMenu[];
 
   @Prop()
-  public owner?: any;
+  public owner?: IWidget;
 
   public get search(): string {
     if (this.searchProperty && this.owner) {
@@ -43,8 +44,8 @@ export class CsToolbarMenus extends Vue {
     if (menu.action) {            
       menu.action(menu, menu._dashboard);
     }
-    if (menu.method && this.owner && typeof (this.owner[menu.method] === 'function')) {
-      this.owner[menu.method](menu);
+    if (menu.method && this.owner?._component && typeof (this.owner._component[menu.method] === 'function')) {
+      this.owner._component[menu.method](menu);
     }
   }
 
