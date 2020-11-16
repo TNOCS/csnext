@@ -311,6 +311,9 @@ export class CsWidget extends Vue {
   }
 
   public updateSize(trigger = true) {
+    if (typeof this.widget?._component.resize === 'function') {
+      this.widget._component.resize(this.widget._size);
+    }
     if (!this.widget || !this.widget.events) {
       return;
     }
@@ -322,6 +325,7 @@ export class CsWidget extends Vue {
         componentHeight: this.$refs.component.$el.clientHeight
       };
     }
+    
     if (trigger) {
       this.widget.events.publish('resize', 'changed', this.widget._size);
     }

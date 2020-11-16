@@ -398,7 +398,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public closeDialog() {
+  public closeDialog() {    
     this.bus.publish(AppState.DIALOG, AppState.DIALOG_CLOSED);
   }
 

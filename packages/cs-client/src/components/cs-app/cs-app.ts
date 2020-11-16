@@ -393,7 +393,7 @@ export class CsApp extends Vue {
           this.dialog = Object.assign(this.dialog, emptyDialog, dialog);          
           this.dialog.visible = true;          
           break;
-        case AppState.DIALOG_CLOSED:
+        case AppState.DIALOG_CLOSED:                              
           this.dialog.visible = false;
           this.dialog.widget = undefined;
           break;

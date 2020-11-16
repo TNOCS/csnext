@@ -163,5 +163,11 @@
         </v-btn>
         </template>
         </template>
+        <v-progress-linear        
+        :active="$cs.loader.loading"        
+        indeterminate
+        absolute
+        bottom        
+      ></v-progress-linear>
     </v-app-bar>
 </v-card>
