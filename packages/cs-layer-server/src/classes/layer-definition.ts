@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LayerStyle, ILayer, FeatureCollection, ISource } from '../shared';
+import { ILayer, LayerStyle } from '.';
+import { FeatureCollection } from './feature-collection';
 import { LayerSource} from './layer-source';
 
 /** Layer specification */

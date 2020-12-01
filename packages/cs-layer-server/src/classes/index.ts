@@ -9,6 +9,9 @@ export * from './layer-style';
 export * from './log-definition';
 export * from './log-item';
 export * from './log-source';
-// export * from './property-type';
-// export * from './feature-type';
+export * from './layer';
+export * from './property-type';
+export * from './feature-type';
+export * from './feature-collection';
+export * from './layer-legend';
 

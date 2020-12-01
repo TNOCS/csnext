@@ -24,7 +24,11 @@
 
     /* Experimental Options */
   },
-  "exclude": ["./dist"],
+  "references": [
+    { "path": "../cs-core" },
+    { "path": "../cs-data" }
+  ],
+  "exclude": ["./dist", "./old"],
 
   // "references": [
   //   { "path":"../cs-map-core" }

@@ -16,8 +16,7 @@
         "clean": "del-cli package-lock.json dist lib node_modules",
         "build": "tsc"
     },
-    "dependencies": {
-        "@csnext/cs-core": "^0.0.131",
+    "dependencies": {        
         "@macrostrat/dbgeo-stream": "^1.0.0",
         "@mapbox/togeojson": "^0.16.0",
         "@nestjs/common": "^7.4.2",

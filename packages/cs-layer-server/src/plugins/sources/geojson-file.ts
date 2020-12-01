@@ -23,7 +23,7 @@ import {
     uniqueCountSorted
 } from 'simple-statistics';
 // import { createTileIndex } from '../../tiles/geojson-tiles';
-import { FeatureType, PropertyType } from '../../shared';
+import { FeatureType, PropertyType } from '../../classes';
 import _ from 'lodash';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
@@ -159,7 +159,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
         return new Promise((resolve, reject) => {
             const result = new LayerMeta();
             const ft = new FeatureType();
-            ft.properties = {};
+            ft.properties = [];
 
             // for (const feature of source.features) {
             if (source.features && source.features.length > 0) {
@@ -251,7 +251,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                             }
 
                             // let steps = ckmeans(proptype._values, 5);
-                            proptype.legend = {};
+                            // proptype.legend = {};
                         }
                         delete proptype._values;
                     }

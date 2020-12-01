@@ -8,10 +8,12 @@ import {
 import compression from 'compression';
 import { Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
+import { FeatureType } from '@csnext/cs-data';
 export { LayerController } from './layers/layers.controller';
-export { LayerSource } from './shared';
+export { LayerSource } from './classes';
 export { LayerService } from './layers/layers.service';
 export { EnvController } from './env/env.controller';
+// export { FeatureType } from '@csnext/cs-data';
 
 export { SourceController } from './sources/sources.controller';
 export { FeatureController } from './features/features.controller';
@@ -57,6 +59,7 @@ export class NestServer {
     public config?: ServerConfig;
     public openAPI?: OpenAPIObject;
     public peerServer?: any;
+    public ft?: FeatureType;
 
     public bootstrap(
         moduleType: any,
@@ -68,6 +71,9 @@ export class NestServer {
         globalPrefix?: string
     ): Promise<boolean> {
         return new Promise(async (resolve) => {
+            this.ft = {
+                icon: 'test'
+            }
             this.app = await NestFactory.create<NestExpressApplication>(moduleType, { cors: this.config.cors});
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
