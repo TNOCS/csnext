@@ -311,7 +311,7 @@ export class CsWidget extends Vue {
   }
 
   public updateSize(trigger = true) {
-    if (typeof this.widget?._component.resize === 'function') {
+    if (typeof this.widget?._component?.resize === 'function') {
       this.widget._component.resize(this.widget._size);
     }
     if (!this.widget || !this.widget.events) {
