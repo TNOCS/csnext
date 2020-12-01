@@ -10,5 +10,9 @@ export * from './utils/meta-utils';
 export * from './interfaces/datapackage';
 export * from './interfaces/tableschema';
 export * from './interfaces/insight';
+export * from './classes/info-panel/info-panel';
+export * from './classes/info-panel/info-panel-section';
+export * from './classes/info-panel/info-template';
+export * from './classes/relation-type';
 
 declare var datapackage: any;

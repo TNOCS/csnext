@@ -1,5 +1,6 @@
 import { Form, FormField } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
+import { RelationType } from './relation-type';
 
 @Form({
     title: 'Property',
@@ -12,29 +13,22 @@ import { LayerLegend } from './layer-legend';
         }
     }
 })
+/** Property description */
 export class PropertyType {
-    // #region Properties (20)
-
-    public _initialized?: boolean = false;
-    @FormField({
-        title: 'Type',
-        type: 'selection',
-        defaultValue: 'text',
-        required: true,
-        options: ['text', 'number']
-    })
-    public _key?: string;
-    public _values?: any[];
+    
+    @FormField({ title: 'Label', type: 'string' })
+    public label?: string;
+    @FormField({ title: 'Label', type: 'string' })
+    public description?: string;
     public count?: number;
     @FormField({ title: 'Default', type: 'number', group: 'number' })
-    public default?: number;
-    public description?: string;
+    public default?: any;
+    
     public unit?: string;
     public decimals?: number;
     @FormField({ title: 'Handlebar format', type: 'string' })
     public handlebarFormat?: string;
-    @FormField({ title: 'Label', type: 'string' })
-    public label!: string;
+    
     @FormField({ title: 'Max', type: 'number', group: 'number' })
     public max?: number;
     // public options?: any[];
@@ -51,13 +45,28 @@ export class PropertyType {
     public stringFormat?: string;
     @FormField({ title: 'Title', type: 'string' })
     public title?: string;
-    public colorScheme?: string | string[];
+    public colorScheme?: string | string[];    
     public type?: string;
     public unique?: number;
     public legendStyle?: any;
     public resource?: string;
     public legend?: LayerLegend;
-    // #endregion Properties (20)
+    public relation?: RelationType;
+    public hidden?: boolean;
+    public readonly?: boolean;  
+    public urlTemplate?: string;  
+
+    public class?: string;
+    public _initialized?: boolean = false;
+    @FormField({
+        title: 'Type',
+        type: 'selection',
+        defaultValue: 'text',
+        required: true,
+        options: ['text', 'number']
+    })
+    public _key?: string;
+    public _values?: any[];    
 }
 
 export type PropertyCollection = PropertyType[];
