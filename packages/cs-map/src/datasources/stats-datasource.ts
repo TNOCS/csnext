@@ -304,32 +304,18 @@ export class StatsDatasource extends MapDatasource {
         const activeResources = Object.keys(this.resources);
         let layer: DataResource | undefined;
         if (resources && JSON.stringify(activeResources) !== JSON.stringify(resources)) {
-            for (const key in this.resources) {
-                if (!resources.includes(key) && this.resources.hasOwnProperty(key)) {
-                    const resource = this.resources[key];
-                    // if (resource.format === 'geojson') {
-                    //     this.removeLayer(resource.name);
-                    // }
-                    // await this.unloadResource(key);
-                }
-            }
+            // for (const key in this.resources) {
+            //     if (!resources.includes(key) && this.resources.hasOwnProperty(key)) {
+            //         const resource = this.resources[key];                    
+            //     }
+            // }
             for (const resourceName of resources) {
                 const resource = await this.loadResource(resourceName);
                 
                 if (resource && resource.format === 'geojson') {
-                    layer = await this.activateLayerResource(resource.name);
-                    // this.mainLayer = await this.getLayer(resourceName) as GeojsonPlusLayer;
+                    layer = await this.activateLayerResource(resource.name);                    
                 }
-            }
-            // if (layer.data?._meta) {
-            //     for (const resourceName in this.resources) {
-            //         if (resourceName !== layer.name && this.resources.hasOwnProperty(resourceName)) {
-            //             const resource = this.resources[resourceName];
-            //             await this.mergeResources(layer, resource);
-            //         }
-            //     }
-            //     this.mainLayer._source.updateFeatureTypePropertyMap(layer.data._meta.default);
-            // }
+            }            
             if (layer?.data?._meta && this.mainLayer && this.mainLayer._source && this.mainLayer._source._meta) {
                 for (const resourceName in this.resources) {
                     if (resourceName !== layer.name && this.resources.hasOwnProperty(resourceName)) {

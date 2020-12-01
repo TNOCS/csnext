@@ -22,14 +22,14 @@
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-data": "^0.0.131",
         "@csnext/cs-form": "^0.0.131",
-        "@mapbox/geojson-extent": "^0.3.2",        
+        "@mapbox/geojson-extent": "^1.0.0",        
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.4.0",
         "@turf/centroid": "^6.0.2",
         "@turf/length": "^6.0.2",
-        "class-transformer": "0.2.3",
+        "class-transformer": "0.3.1",
         "lodash.throttle": "4.1.1",
-        "mapbox-gl": "1.12.0",
+        "mapbox-gl": "1.13.0",
         "mapbox-gl-controls": "^1.6.5",
         "numeral": "^2.0.6",
         "@mapbox/mapbox-gl-draw": "1.2.0",
@@ -39,14 +39,14 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
         "@types/lodash.throttle": "^4.1.6",
-        "@types/mapbox-gl": "^1.12.3",
+        "@types/mapbox-gl": "^1.12.8",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32"
     },
     "peerDependencies": {
-        "vega": "^5.14.0",
-        "vega-embed": "^6.11.1",
-        "vega-lite": "^4.14.1",        
+        "vega": "^5.17.0",
+        "vega-embed": "^6.13.0",
+        "vega-lite": "^4.17.0",        
         "osmtogeojson": "^3.0.0-beta.4"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"

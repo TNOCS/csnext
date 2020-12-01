@@ -161,7 +161,7 @@ export class PackageExplorer extends Vue {
                     }
                     }
                     for (const prop of this.tableProperties) {
-                        if (this.data.mainLayer._source._featureType.propertyMap.hasOwnProperty(prop)) {
+                        if (this.data.mainLayer._source._featureType?.propertyMap?.hasOwnProperty(prop)) {
                             const p = this.data.mainLayer._source._featureType.propertyMap[prop];
                             headers.push({
                                 text: p.title,
