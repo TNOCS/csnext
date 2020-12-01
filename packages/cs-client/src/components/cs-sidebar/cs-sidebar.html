@@ -59,7 +59,7 @@ style="position:absolute; top: 10px; right: 10px; z-index: 10"
       >
         <v-list-item slot="activator" class="sidebar-menu-list-item">
           <v-list-item-action>
-            <v-menu content-class="sidebar" v-if="item.dashboards" :open-on-hover="!!sideBar.mini && !!item.dashboards" :nudge-width="200"
+            <v-menu content-class="sidebar" v-if="!!item.dashboards" :open-on-hover="!!sideBar.mini && !!item.dashboards" :nudge-width="200"
               offset-x>
               <template v-slot:activator="{ on }">
                 <v-icon v-on="on" @click="SelectDashboard(item)">{{ item.icon }}</v-icon>
@@ -78,6 +78,7 @@ style="position:absolute; top: 10px; right: 10px; z-index: 10"
                 </v-list>
               </v-card>
             </v-menu>
+            <v-icon v-else @click="SelectDashboard(item)">{{ item.icon }}</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title @click="SelectDashboard(item)">{{ $cs.Translate(item.title) }}</v-list-item-title>
