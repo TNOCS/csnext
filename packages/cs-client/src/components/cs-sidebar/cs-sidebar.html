@@ -80,8 +80,8 @@ style="position:absolute; top: 10px; right: 10px; z-index: 10"
             </v-menu>
             <v-icon v-else @click="SelectDashboard(item)">{{ item.icon }}</v-icon>
           </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title @click="SelectDashboard(item)">{{ $cs.Translate(item.title) }}</v-list-item-title>
+          <v-list-item-content @click="SelectDashboard(item)">
+            <v-list-item-title>{{ $cs.Translate(item.title) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item
