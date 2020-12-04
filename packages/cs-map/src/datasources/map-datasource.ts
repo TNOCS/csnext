@@ -169,7 +169,7 @@ export class MapDatasource extends DataSources {
         extentions?: ILayerExtensionType[],
         promoteId?: string
     ): Promise<GeojsonPlusLayer> {
-        return new Promise(async (resolve) => {
+        return new Promise(async (resolve, reject) => {
             if (!id) {
                 id = this.sources.hasOwnProperty(title) ? guidGenerator() : title;
             }
@@ -217,8 +217,15 @@ export class MapDatasource extends DataSources {
                     })
                 } else {
                     // this.updateSource(source);            
-                    const layer = await this.addGeojsonLayerFromSource(title, source, style, args, extentions);
-                    resolve(layer);
+                    this.addGeojsonLayerFromSource(title, source, style, args, extentions).then(l => {
+                        if (l) {
+                            resolve(l);
+                        } else {
+                            reject();
+                        }
+                    }).catch(e => {
+                        reject(e);
+                    })
                 }
             }
 
