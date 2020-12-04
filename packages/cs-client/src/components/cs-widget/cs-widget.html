@@ -70,4 +70,6 @@
       :owner="widget._component"
     ></cs-toolbar-menus>
   </v-card>
-
+  <v-card v-else>
+    <cs-dashboard :dashboard="widget.dashboard"></cs-dashboard>
+  </v-card>
