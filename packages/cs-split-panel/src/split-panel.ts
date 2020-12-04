@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IDashboard, IMenu, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
+import { guidGenerator, IDashboard, IMenu, MessageBusHandle, MessageBusManager } from '@csnext/cs-core';
 import { AppState } from '@csnext/cs-client';
 import './split-panel.css';
 import { SplitPanelDashboardOptions } from './split-panel-dashboard-options';
@@ -10,23 +10,6 @@ import { SplitComp } from './split-comp';
 import VueSplitGrid from 'vue-split-grid';
 
 Vue.use(VueSplitGrid);
-
-// const splitComp = Vue.component('split-comp', {
-//     template: require('./split-comp.html'),
-//     props: ['options', 'dashboard'],
-//     // data: { dashboard: null },
-//     methods: {
-//         getWidget: (id: string, dashboard: IDashboard) => {
-//             if (dashboard && dashboard.widgets) {
-//                 return dashboard.widgets.find(w => w.id === id);
-//             }
-//         },
-//         reset: () => {
-//             alert('Reset');
-//         }
-//     }
-// });
-
 @Component({
     template: require('./split-panel.html'),
     components: { SplitComp },
@@ -38,7 +21,6 @@ export class SplitPanel extends Vue {
     public static id = 'split-panel';
     public dashboard!: IDashboard;
     public presetMenu?: IMenu;
-    private busHandle?: MessageBusHandle;
     private bus = new MessageBusManager();
 
     public selectStepper(index: number, splitPanel: SplitPanelOptions, key: string) {
@@ -139,5 +121,3 @@ export class SplitPanel extends Vue {
         }
     }
 }
-
-
