@@ -8,7 +8,7 @@ import {
 import compression from 'compression';
 import { Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
-import { FeatureType } from '@csnext/cs-data';
+// import { FeatureType } from '@csnext/cs-data';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './classes';
 export { LayerService } from './layers/layers.service';
@@ -23,6 +23,9 @@ export * from './server/server-basic-auth-config';
 export * from './classes/layer-definition';
 export * from './classes/mapbox-style';
 export * from './classes/layer-source';
+export * from './classes/feature-type';
+export * from './classes/feature-collection';
+export * from './classes/property-type';
 export * from './classes/layer-meta';
 export * from './classes/layer-style';
 export * from './classes/log-definition';
@@ -58,8 +61,7 @@ export class NestServer {
     public swaggerConfig!: any;
     public config?: ServerConfig;
     public openAPI?: OpenAPIObject;
-    public peerServer?: any;
-    public ft?: FeatureType;
+    public peerServer?: any;    
 
     public bootstrap(
         moduleType: any,
@@ -70,10 +72,7 @@ export class NestServer {
         swaggerConfig?: any,
         globalPrefix?: string
     ): Promise<boolean> {
-        return new Promise(async (resolve) => {
-            this.ft = {
-                icon: 'test'
-            }
+        return new Promise(async (resolve) => {            
             this.app = await NestFactory.create<NestExpressApplication>(moduleType, { cors: this.config.cors});
             if (!host) {
                 host = process.env.LAYER_SERVER_HOST || 'localhost';
