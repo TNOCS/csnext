@@ -88,8 +88,12 @@ export class DataSource {
     public loadSource(featureTypes?: FeatureTypes): Promise<DataSet> {
         return new Promise(async (resolve, reject) => {
             if (this.state === DataSourceState.loaded) {
-                resolve(this._data);
-                return;
+                if (this._data) {
+                    resolve(this._data);
+                    return;
+                } else {
+                    reject();
+                }                
             }
             if (!this.url) {
                 // no url given, create empty feature collection
