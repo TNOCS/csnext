@@ -1,0 +1,59 @@
+.element-info-facts {
+    margin: 14px;
+  }
+  .ei-link {
+    /* cursor: pointer; */
+  }
+  
+  .link-avatar {
+    background: red;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    float: left;
+  }
+  
+  .from-tag:hover {
+    background: lightgray;
+  }
+  
+  .to-tag:hover {
+    background: lightgray;
+  }
+  
+  .rel-tag:hover {
+    background: lightgray;
+  }
+  
+  .feature-property-value {
+    font-size: 16px;
+    text-align: right;
+    justify-content: flex-end;
+  }
+  
+  .feature-property {
+    height: 100%;  
+  }
+  
+  .feature-property-key {
+    position: absolute;
+    font-size: 16px;
+    width: 66%;
+  }
+  
+  .prop-key {
+    font-weight: 700;
+  }
+  
+  .prop-value {
+    text-overflow: ellipsis; 
+    overflow: hidden;  
+    white-space: nowrap;
+  }
+  
+  .info-image {
+    /* width: 28px; */
+    height: 28px;
+  }

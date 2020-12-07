@@ -1,0 +1,17 @@
+.infopanel-container {
+    margin: 0px;
+}
+
+.infopanel-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.infopanel-subtitle {
+    font-size: 16px;    
+}
+
+.section-title {
+    font-weight: 600;    
+    font-size: 18px;
+}

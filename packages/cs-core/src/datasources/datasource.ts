@@ -9,7 +9,7 @@ export interface IDatasource {
   instant?: boolean;
   isLoading?: boolean;
   loaded?: boolean;
-  events?: MessageBusService;
+  events?: MessageBusService;  
   // tslint:disable-next-line:ban-types
   requestQueue?: Array<{ resolve: Function; reject: Function }>;
   execute?(

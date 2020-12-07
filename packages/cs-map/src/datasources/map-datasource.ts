@@ -57,11 +57,12 @@ export const SidebarKeys = {
 export class MapDatasource extends DataSources {
     public _sources?: LayerSources;
     public id = 'map-datasource';
-    privatHandler?: MessageBusHandle;
+    
     private pointPickerHandler?: MessageBusHandle;
     private featurePickerHandler?: MessageBusHandle;
     public events = new MessageBusService();
-    public activeDrawLayer?: IMapLayer;
+    public activeDrawLayer?: IMapLayer;        
+    public detailsComponent?: any;
     private map?: CsMap;
 
     // #region Public Accessors (3)
@@ -405,9 +406,9 @@ export class MapDatasource extends DataSources {
         layer.moveLayer(beforeId);
     }
 
-    public selectFeature(feature: number | mapboxgl.MapboxGeoJSONFeature | undefined, layer: IMapLayer, open: boolean) {
+    public selectFeature(feature: number | mapboxgl.MapboxGeoJSONFeature | undefined, layer: IMapLayer, open: boolean) {        
         if (!feature) { return; }
-        if (typeof (feature) === 'number') {
+        if (typeof (feature) === 'number') {            
             // if (layer.source && typeof(layer.source) === 'string') {
             //     const source = this.MapControl.getSource(layer.source);
 
@@ -435,7 +436,7 @@ export class MapDatasource extends DataSources {
         AppState.Instance.openRightSidebarWidget(
             {
                 id: 'feature-details-component',
-                component: FeatureComponent,
+                component: (this.detailsComponent) ? this.detailsComponent :  FeatureComponent,
                 options: {
                     showToolbar: false,
                     toolbarOptions: {

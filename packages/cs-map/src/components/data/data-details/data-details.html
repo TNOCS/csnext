@@ -1,0 +1,61 @@
+<v-card flat style="height:100%">
+    <v-toolbar color="cyan" dark flat>
+        <v-toolbar-title>test</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <!-- <v-btn icon @click="deleteNode()">
+                <v-icon>delete</v-icon>
+            </v-btn>
+
+            <v-btn v-if="!activeElement._isEditting" icon @click="editNode()">
+                <v-icon>create</v-icon>
+            </v-btn>
+            <v-btn v-else icon @click="saveNode()">
+                <v-icon>save</v-icon>
+            </v-btn>
+
+            <v-btn icon @click="graphNode()">
+                <v-icon>scatter_plot</v-icon>
+            </v-btn> -->
+
+        <!-- <v-btn icon>
+          <v-icon>note_add</v-icon>
+        </v-btn> -->
+
+        <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+        
+            <template v-slot:extension>
+                <v-tabs v-model="tab" class="elevation-2">
+                    <v-tabs-slider></v-tabs-slider>
+                    <v-tab href="#tab-properties"
+                        >{{ $cs.Translate('PROPERTIES') }}</v-tab
+                    >
+                    <v-tab href="#tab-facts"
+                        >{{ $cs.Translate('FACTS') }}</v-tab
+                    >                    
+                    <v-tab href="#tab-documents"
+                        >{{ $cs.Translate('DOCUMENTS') }}</v-tab
+                    >
+                </v-tabs>
+            </template>
+    </v-toolbar>
+
+    <simplebar class="full-height">
+        <v-tabs-items v-model="tab" style="margin-bottom: 200px">
+                <v-tab-item value="tab-properties">
+                    <data-info-panel
+                        v-if="widget.data.feature"
+                        :key="componentKey"
+                        :data="widget.data.feature.properties"
+                        :source="source"
+                        :node="widget.data.feature"
+                        :featureType="widget.data.feature._featureType"
+                        panel="details"
+                    ></data-info-panel>
+                </v-tab-item>
+            </v-tabs-items>
+    </simplebar>
+</v-card>

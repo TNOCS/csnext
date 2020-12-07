@@ -1,0 +1,57 @@
+<div>
+    <v-expansion-panels multiple v-if="data" v-model="sectionsPanels" class="section-expansion-panel">
+        <v-expansion-panel v-for="s in sections" :key="s.id" v-if="s.properties.length>0">
+            <v-expansion-panel-header v-if="!section.hideTitle" class="feature-section-title">
+                {{ s.title }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+                <template v-if="s.type === 'big-text'">
+                    <v-container>
+                        <v-row no-gutters>
+                            <v-col
+                                cols="4"
+                                @click="setLegend(property)"
+                                :disabled="!property.allowLegend"
+                                v-for="property in s.properties"
+                                :key="property.key"
+                                :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
+                            >
+                                {{ property.type.title}}
+                                <h1>
+                                    <prop-value                                        
+                                        :value="property.value"
+                                        :proptype="property.type"
+                                    ></prop-value>
+                                </h1>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </template>
+                <template v-if="s.type === 'list' || !s.type">
+                    <div
+                        v-for="property in s.properties"
+                        class="feature-property"
+                        v-if="property.value !== 'null'"
+                    >
+                        <div>
+                            <div
+                                class="feature-property-key"
+                                @click="clickPropertyKey(property)"
+                                :disabled="!property.allowLegend"
+                                :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
+                            >
+                                {{ property.type.title }}
+                            </div>
+                            <div class="feature-property-value">                                                              
+                                <prop-value 
+                                    :value="property.value"
+                                    :proptype="property.type"
+                                ></prop-value>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+    </v-expansion-panels>
+</div>

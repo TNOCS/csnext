@@ -3,11 +3,10 @@ import vue from 'vue';
 import './data-properties.css';
 import simplebar from 'simplebar-vue';
 import { WidgetBase } from '@csnext/cs-client';
-import { PropertyDetails, GeojsonPlusLayer, PropertySection } from '../..';
 import { InsightDashboardPanel, LayerLegend, InsightSection, PropertyType } from '@csnext/cs-data';
-import { StatsDatasource } from '../../datasources/stats-datasource';
 import { Watch } from 'vue-property-decorator';
-import { CsMap } from '../cs-map/cs-map';
+import { IDatasource } from '@csnext/cs-core';
+import { GeojsonPlusLayer, PropertyDetails, PropertySection } from '@csnext/cs-map';
 
 @Component({
     name: 'data-properties',
@@ -18,31 +17,33 @@ import { CsMap } from '../cs-map/cs-map';
 export class DataProperties extends WidgetBase {
 
     public panel?: InsightDashboardPanel;
-    public data?: StatsDatasource;
+    public data?: IDatasource;
     public section?: InsightSection;
     public features?: mapboxgl.MapboxGeoJSONFeature[];
     public feature?: mapboxgl.MapboxGeoJSONFeature;
     public layer?: GeojsonPlusLayer;
     public sections: PropertySection[] = [];
+    public content?: any;
 
     private filterPropertiesEnabled = false;
     private featureSectionsExpanded!: { [key: string]: string[] };
     private sectionsPanels: number[] = [];
 
-    public setLegend(property: PropertyDetails) {
-        if (!property || !property.allowLegend) { return; }
-        if (property.legends && property.legends.length > 0) {
-            if (this.data && this.layer) {
-                this.layer.removeLegend(property, true);
-            }
-        } else {
-            if (this.data && this.layer) {
-                this.layer.setLegend(property, true);
-            }
-        }
-        if (this.data && this.data.activeInsight) {
-            this.data.disableInsight();
-        }
+    public clickPropertyKey(property: PropertyDetails) {
+
+        // if (!property || !property.allowLegend) { return; }
+        // if (property.legends && property.legends.length > 0) {
+        //     if (this.data && this.layer) {
+        //         this.layer.removeLegend(property, true);
+        //     }
+        // } else {
+        //     if (this.data && this.layer) {
+        //         this.layer.setLegend(property, true);
+        //     }
+        // }
+        // if (this.data && this.data.activeInsight) {
+        //     this.data.disableInsight();
+        // }
     }
 
     public get style(): string {
@@ -112,7 +113,7 @@ export class DataProperties extends WidgetBase {
                     // find legend
                     if (this.layer._legends) {
                         legends = this.layer._legends.filter(
-                            l => l.property === key
+                            (l: any) => l.property === key
                         );
                         // if (legends.length > 0) {
                         // }
@@ -158,21 +159,22 @@ export class DataProperties extends WidgetBase {
         vue.set(this, 'sections', result);
     }
 
-    public mounted() {
+    public mounted() {        
         if (!this.data) { return; }
+        alert('data properties');
         this.busManager.subscribe(this.data.events, 'legends', (a, e) => {
             this.updateSections();
         });
-        this.busManager.subscribe(this.data.events, CsMap.FEATURE, (a, e) => {
-            if (a === CsMap.FEATURE_SELECT) {
-                this.updateSections();
-            }
-        });
-        this.busManager.subscribe(this.data.events, StatsDatasource.TIME_TOPIC, (action: string, date: number) => {
-            if (action === StatsDatasource.FOCUS_TIME_CHANGED) {                     
-                this.updateSections();                    
-            }
-        });
+        // this.busManager.subscribe(this.data.events,  CsMap.FEATURE, (a, e) => {
+        //     if (a === CsMap.FEATURE_SELECT) {
+        //         this.updateSections();
+        //     }
+        // });
+        // this.busManager.subscribe(this.data.events, StatsDatasource.TIME_TOPIC, (action: string, date: number) => {
+        //     if (action === StatsDatasource.FOCUS_TIME_CHANGED) {                     
+        //         this.updateSections();                    
+        //     }
+        // });
         // this.busManager.subscribe(this.data.events, '')
         this.updateSections();
     }

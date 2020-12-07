@@ -1,0 +1,6 @@
+<div class="infopanel-container">
+        <!-- {{ JSON.stringify(data)}} -->        
+    <div v-if="data && infoPanel"  v-for="section in infoPanel.sections">
+        <component :is="section.sectionType" :source="source" :data="data" :node="node" :section="section" :featureType="featureType" :infoPanel="infoPanel"></component>        
+    </div>
+</div>

@@ -54,6 +54,7 @@ export class MapOptions extends WidgetOptions {
     // @FormField({title: 'MapGL token'})
     public token?: string;
     public peliasOptions?: PeliasOptions;
+    public customFeatureComponent?: Vue;
 
     // #endregion Properties (23)
 

@@ -51,6 +51,7 @@ export * from './components/data-sources/data-sources';
 export * from './components/data-properties/data-properties';
 export * from './components/data-big-text/data-big-text';
 export * from './components/feature-preview/feature-preview';
+export * from './components/data/data-details/data-details';
 
 // layers
 export * from './layers/base-layer';
