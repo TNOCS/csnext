@@ -71,7 +71,9 @@ export class LayerServerService implements ILayerService, IStartStopService {
                             layer.color = 'blue';
                         }
                         
-                        // s.url = this.options.url + 'sources/' + layer.id;
+                        if (this.options && this.options.setSourceUrl) {
+                            s.url = this.options.url + 'sources/' + layer.id;
+                        }
                         s.id = layer.id;
                         s.type = 'geojson';
                         const gl = new GeojsonPlusLayer();
