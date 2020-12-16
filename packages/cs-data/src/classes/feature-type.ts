@@ -4,16 +4,6 @@ import { PropertyCollection, PropertyType } from './..';
 import { InfoPanel } from './info-panel/info-panel';
 import { InfoTemplate } from './info-panel/info-template';
 
-@Form({
-    title: 'Feature Types',
-    keyValuesType: () => {
-        return new FeatureType();
-    }
-})
-export class FeatureTypes {
-    [key: string]: FeatureType;
-}
-
 // tslint:disable-next-line: max-classes-per-file
 @Form({ title: 'Feature', hideTitle: true })
 export class FeatureType {

@@ -8,3 +8,5 @@ export class DataSet implements DataCollection {
     public bbox?: [number, number, number, number] | [number, number, number, number, number, number];
     public data?: any[];
 }
+
+

@@ -3,12 +3,7 @@ import axios from 'axios';
 import { FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
 import { DataSet } from './data-set';
 import { plainToClass } from 'class-transformer';
-
-export enum DataSourceState {
-    unloaded,
-    loading,
-    loaded
-}
+import { DataSourceState } from './data-source-state';
 
 export class DataSource {
     public id?: string;

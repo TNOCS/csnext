@@ -3,7 +3,8 @@ import { IDatasource, guidGenerator, MessageBusService, Loader } from '@csnext/c
 import { DataSet, DataSource } from '..';
 import { plainToClass } from 'class-transformer';
 import Axios from 'axios';
-import { FeatureType, FeatureTypes } from './feature-type';
+import { FeatureType } from './feature-type';
+import { FeatureTypes } from "./feature-types";
 import { DataPackage, DataResource } from '../interfaces/datapackage';
 import { PropertyType } from './property-type';
 
