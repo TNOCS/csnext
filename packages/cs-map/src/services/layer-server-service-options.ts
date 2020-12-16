@@ -4,4 +4,5 @@ export class LayerServerServiceOptions implements ILayerServiceOptions {
     public tags?: string[];
     public activeLayers?: string[];
     public openFeatureDetails?: boolean;
+    public setSourceUrl?: boolean;
 }
