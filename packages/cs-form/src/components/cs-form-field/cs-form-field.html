@@ -313,7 +313,7 @@
             {{ $cs.Translate(field.title) }}
             <v-combobox
                 v-model="target[field._key]"
-                :items="field.options"
+                :items="items"
                 :disabled="field.readonly"
                 flat
                 chips
