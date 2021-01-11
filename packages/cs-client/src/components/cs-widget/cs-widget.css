@@ -8,6 +8,10 @@
   height: 100%;
 }
 
+.widget-toolbar {
+  height: 40px !important;
+}
+
 .widget-buttons-container{
   position:absolute !important;
   right: 10px;
