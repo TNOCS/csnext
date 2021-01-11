@@ -201,7 +201,7 @@ export class GeojsonLayer extends BaseLayer {
 
         this.registerLayerExtensions();
 
-        widget.map.addLayer(mblayer);
+        widget.map.addLayer(mblayer as mapboxgl.AnyLayer);
         this.state = 'visible';
         // this.visible = true;
         // map.zoomLayer(this);

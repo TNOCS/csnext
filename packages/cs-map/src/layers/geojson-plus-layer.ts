@@ -79,7 +79,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             interactive: true,
             layout: symbolLayout
         } as mapboxgl.Layer;
-        this.addSupportLayer(this.symbolLayer);
+        this.addSupportLayer(this.symbolLayer as mapboxgl.AnyLayer);
     }
 
     public addClusterLayer() {
@@ -114,7 +114,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                 ]
             }
         };
-        this.addSupportLayer(this.clusterLayer);
+        this.addSupportLayer(this.clusterLayer as mapboxgl.AnyLayer);
 
         this.addSupportLayer({
             id: 'cluster-count',

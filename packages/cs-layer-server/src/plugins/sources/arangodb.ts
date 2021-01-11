@@ -8,7 +8,7 @@ import {
 import fs from 'fs';
 import * as arangojs from 'arangojs';
 import { Logger } from '@nestjs/common';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1} from 'uuid';
 import { Feature } from 'geojson';
 import { QueryOptions } from '../../classes/query-options';
 

@@ -16,6 +16,7 @@ export { EnvController } from './env/env.controller';
 // export { FeatureType } from '@csnext/cs-data';
 
 export { SourceController } from './sources/sources.controller';
+export { TypesController } from './types/types.controller';
 export { FeatureController } from './features/features.controller';
 export { LogService } from './logs/log-service';
 export { LogController } from './logs/log-controller';
@@ -85,25 +86,7 @@ export class NestServer {
                     process.env.LAYER_SERVER_EXTERNAL || 'localhost:3009';
             }
 
-            if (this.config && this.config.openApi) {
-                if (swaggerConfig) {
-                    this.swaggerConfig = swaggerConfig;
-                } else {
-                    this.swaggerConfig = new DocumentBuilder()
-                        .setTitle(title)
-                        .setDescription(title)
-                        .setVersion('0.0.1')
-                        .addTag('layer')
-                        .build();
-                }
-
-                this.openAPI = SwaggerModule.createDocument(
-                    this.app,
-                    this.swaggerConfig
-                );
-    
-                SwaggerModule.setup('api', this.app, this.openAPI);
-            }
+            
 
             if (globalPrefix) {
                 this.app.setGlobalPrefix(globalPrefix);
@@ -148,8 +131,12 @@ export class NestServer {
                 Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
             }
 
+            this.initOpenApi(swaggerConfig, title);
+
             await this.app.listen(port, host, () => {
                 this.app.useWebSocketAdapter(new WsAdapter());
+
+                
 
                 // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
                 Logger.log(`Server is listening on port ${port}.`);
@@ -157,5 +144,35 @@ export class NestServer {
                 resolve(true);
             });
         });
+    }
+
+    private initOpenApi(swaggerConfig: any, title: string)
+    {
+        try {
+            if (this.config && this.config.openApi)
+            {
+                if (swaggerConfig)
+                {
+                    this.swaggerConfig = swaggerConfig;
+                } else
+                {
+                    this.swaggerConfig = new DocumentBuilder()
+                        .setTitle(title)
+                        .setDescription(title)
+                        .setVersion('0.0.1')
+                        .addTag('layer')
+                        .build();
+                }
+                // console.log(JSON.stringify(this.swaggerConfig));
+                this.openAPI = SwaggerModule.createDocument(
+                    this.app,
+                    this.swaggerConfig
+                );
+
+                SwaggerModule.setup('api', this.app, this.openAPI);
+            }
+        } catch(e) {
+            Logger.error(`Error creating open api endpoint`)
+        }
     }
 }

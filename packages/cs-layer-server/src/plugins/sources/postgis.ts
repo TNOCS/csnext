@@ -8,7 +8,7 @@ import {
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Client } from 'pg';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1} from 'uuid';
 import { Feature } from 'geojson';
 
 export class PostGisSource implements ISourcePlugin, ISourcePluginType {

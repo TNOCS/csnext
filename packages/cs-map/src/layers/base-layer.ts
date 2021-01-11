@@ -326,7 +326,7 @@ export class BaseLayer implements IMapLayer {
         }
     }
 
-    public addSupportLayer(layer: mapboxgl.Layer) {
+    public addSupportLayer(layer: mapboxgl.AnyLayer) {
         if (this.MapControl && layer.id) {
             this.MapControl.addLayer(layer);
             this.supportLayers.push(layer.id);

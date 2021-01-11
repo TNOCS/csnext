@@ -77,4 +77,5 @@ export class PropertyType {
     public class?: string;
     public _initialized?: boolean = false;        
     public _values?: any[];    
+    public _originalType?: string;
 }

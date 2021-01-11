@@ -8,7 +8,8 @@ import {
     ServerConfig,
     LayerDefinition,
     LayerSource,
-    Helpers
+    Helpers,
+    FeatureType
 } from '../classes';
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
@@ -20,7 +21,7 @@ import { Client } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
 import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1} from 'uuid';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 import AsyncLock from 'async-lock';
@@ -42,7 +43,7 @@ export class LayerService extends AggregateRoot {
             LayerService.sourcePlugins.push(type);
         }
     }
-    private config: ServerConfig;
+    public config: ServerConfig;
     private absoluteConfigPath!: string;
     private lock = new AsyncLock();
 
@@ -53,6 +54,7 @@ export class LayerService extends AggregateRoot {
         super();
         this.config = {
             layers: [],
+            types: [],            
             sourcePath: './sources/',
             importPath: './import'
         };
@@ -212,6 +214,33 @@ export class LayerService extends AggregateRoot {
     @Debounce(5000)
     saveServerConfigDelay() {
         this.saveServerConfig();
+    }
+
+    public getTypes() : FeatureType[] {
+        return this.config.types;
+    }
+
+    public updateFeatureType(ft: FeatureType) : Promise<FeatureType | undefined> {
+        return new Promise((resolve, reject) => {
+            let i = this.config.types.findIndex(nd => nd.type === ft.type);
+            if (i === -1) {
+                this.config.types.push(ft);                
+            } else {
+                this.config.types[i] = ft;
+            }
+            resolve(ft);
+        })
+    }
+
+    public updateFeatureTypes(fts: FeatureType[]) : Promise<FeatureType[] | undefined> {
+        return new Promise((resolve, reject) => {
+            for (const type of fts) {
+                console.log(type.type + ' - ' + type.title);
+                
+            }
+            this.config.types = fts;            
+            resolve(fts);
+        })
     }
 
     public addLayer(def: LayerDefinition): Promise<LayerDefinition> {

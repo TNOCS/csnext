@@ -11,7 +11,7 @@ import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Feature } from 'geojson';
 import path from 'path';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1} from 'uuid';
 import moment from 'moment';
 import {
     min,
