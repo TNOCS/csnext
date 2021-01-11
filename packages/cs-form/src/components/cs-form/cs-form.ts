@@ -106,7 +106,9 @@ export class CsForm extends Vue {
     }
 
     public fieldVisible(field: IFormFieldOptions) : boolean {
+        if (field.optional) { return false; }
         if (!field.requirements) { return true; }
+
         for (const req of field.requirements) {
             if (!this.formObject || !req(this.formObject)) { return false; }            
         }

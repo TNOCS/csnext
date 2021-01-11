@@ -89,6 +89,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   hint?: string;
   persistentHint?: boolean;
   locale?: string;
+  optional?: boolean;
   requirements?: ((value: object) => boolean)[];
   _appendIcon?: string;
   _isError?: boolean;
