@@ -391,7 +391,7 @@ export class MapboxStyles {
     public symbolLayout?: SymbolLayout;
     @FormField({ title: 'Symbol Paint', type: 'object', form: SymbolPaintForm })
     public symbolPaint?: SymbolPaint;
-    @FormField({ title: 'Circle Paint', type: 'object', form: FillPaintForm })
+    @FormField({ title: 'Fill Paint', type: 'object', form: FillPaintForm })
     public fillPaint?: FillPaint;
     public fillLayout?: FillLayout;
     @FormField({ title: 'Circle Paint', type: 'object', form: CirclePaintForm })

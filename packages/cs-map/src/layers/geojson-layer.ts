@@ -294,7 +294,11 @@ export class GeojsonLayer extends BaseLayer {
                     }
                 }
                 if (!l.style.type) {
-                    l.style.type = 'circle';
+                    if (l.style.mapbox && l.style.mapbox.fillPaint) {
+                        l.style.type = 'fill';
+                    } else {
+                        l.style.type = 'circle';
+                    }
                 }
             }
 
