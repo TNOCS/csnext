@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import VuetifyPlugin, { Vuetify, VuetifyPreset } from 'vuetify';
+import Vuetify, { UserVuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
@@ -50,9 +50,9 @@ const vuetifyOpts = {
   // lang: {
   //   t: (key, ...params) => i18n.t(key, params)
   // }
-} as VuetifyPreset;
+} as UserVuetifyPreset;
 
-Vue.use(VuetifyPlugin);
+Vue.use(Vuetify);
 
 const router = new VueRouter({ routes: [] });
 
@@ -60,7 +60,7 @@ const router = new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   i18n,
-  vuetify: new VuetifyPlugin(vuetifyOpts),
+  vuetify: new Vuetify(vuetifyOpts),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,

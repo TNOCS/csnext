@@ -20,17 +20,17 @@
     },
     "dependencies": {
         "@csnext/cs-core": "^0.0.131",
-        "axios": "^0.21.0",
+        "axios": "^0.21.1",
         "simplebar-vue": "1.6.0",
         "socket.io-client": "^2.3.1",
-        "vue-i18n": "^8.22.2",
+        "vue-i18n": "^8.22.3",
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
-        "vue-router": "^3.4.3",
-        "vuetify": "2.3.10"
+        "vue-router": "^3.4.9",
+        "vuetify": "2.4.2"
     },
     "devDependencies": {
-        "@types/socket.io-client": "^1.4.33",
+        "@types/socket.io-client": "^1.4.34",
         "base64-inline-loader": "^1.1.1"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
