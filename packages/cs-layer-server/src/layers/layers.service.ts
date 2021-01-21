@@ -66,8 +66,7 @@ export class LayerService extends AggregateRoot {
         Logger.log(`Connection received from ${d.id}`);
     }
 
-    public async init(configFile?: string, serverPath?: string) {
-        // Logger.log('Init Layer Server');
+    public async init(configFile?: string, serverPath?: string) { 
         if (configFile) {
             this.absoluteConfigPath = path.join(
                 serverPath ? serverPath : '',
@@ -77,7 +76,7 @@ export class LayerService extends AggregateRoot {
             if (fs.existsSync(this.absoluteConfigPath)) {
                 Logger.log(`Loading config file: ${this.absoluteConfigPath}`);
                 // read config file
-                const file = path.join(serverPath ? serverPath : '', configFile);
+                const file = path.join(serverPath ? serverPath : '', configFile);                
                 const configString = fs.readFileSync(file, 'utf8');
                 if (configString) {
                     // config avaialable
@@ -238,7 +237,8 @@ export class LayerService extends AggregateRoot {
                 console.log(type.type + ' - ' + type.title);
                 
             }
-            this.config.types = fts;            
+            this.config.types = fts;    
+            this.saveServerConfigDelay();        
             resolve(fts);
         })
     }
