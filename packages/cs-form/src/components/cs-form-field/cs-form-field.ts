@@ -199,6 +199,20 @@ export class CsFormField extends Vue {
         }
     }
 
+    public deleteFromArray(key: string, index: number) {
+        if (
+            key !== undefined &&            
+            this.field &&
+            this.target !== undefined            
+        ) {                        
+            if (this.target.hasOwnProperty(key)) {
+                (this.target[key] as Array<any>).splice(index, 1);
+                this.fieldUpdated(this.field);
+                this.$forceUpdate();            
+            }
+        }
+    }
+
     public deleteKeyFromObject(key: string, field: IFormFieldOptions) {
         if (
             key !== undefined &&
@@ -252,6 +266,36 @@ export class CsFormField extends Vue {
                 this.$forceUpdate();
             }
         }
+    }
+
+    public addObject(field: IFormFieldOptions) {
+        if (
+            !this.target ||
+            !field._key ||
+            !field.keyValuesType
+        ) {
+            return;
+        }
+        if (!this.target.hasOwnProperty(field._key)) {
+            this.target[field._key] = []; 
+        }
+        // check if field already exists, if not create one
+        if (field.newItem) {
+            this.target[field._key].push(field.newItem());
+        } else {        
+            this.target[field._key].push({});
+        }
+        this.fieldUpdated(field);
+        if (field.addUsingDialog) {
+            // let form = new CsForm();
+            // this.$cs.TriggerDialog({
+            //     component: CsForm,
+            //     data: this.target[field._key]['new'],
+            //     toolbar: true,
+            //     title: field.title
+            // } as IDialog);
+        }
+        this.$forceUpdate();
     }
 
     public addKeyObject(field: IFormFieldOptions) {

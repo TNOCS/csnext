@@ -73,6 +73,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   sortWeight?: number;
   options?: any[] | (()=>any[]) | (() => Promise<any[]>);
   arrayType?: IFormOptions;
+  arrayFieldType?: string;
   form?: IFormOptions;
   canDelete?: boolean;  
   clearable?: boolean;
@@ -80,6 +81,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   canEditKey?: boolean;
   placeholder?: string;
   addUsingDialog?: boolean;
+  newItem?: ()=>any;
   readonly?: boolean;
   keyText?: string;
   keyValue?: string;

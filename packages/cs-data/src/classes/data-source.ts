@@ -4,6 +4,7 @@ import { FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
 import { DataSet } from './data-set';
 import { plainToClass } from 'class-transformer';
 import { DataSourceState } from './data-source-state';
+import { PropertyValueType } from './property-type';
 
 export class DataSource {
     public id?: string;
@@ -252,7 +253,7 @@ export class DataSource {
                                     label: prop,
                                     title: prop,
                                     description: prop,
-                                    type: Number.isFinite(value) ? 'number' : 'string'
+                                    type: Number.isFinite(value) ? PropertyValueType.number : PropertyValueType.string
                                 });
                             }
                         }

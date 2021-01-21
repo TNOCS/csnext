@@ -2,6 +2,20 @@ import { Form, FormField } from '@csnext/cs-core';
 import { LayerLegend } from './layer-legend';
 import { RelationType } from './relation-type';
 
+export enum PropertyValueType {    
+    boolean = 'boolean',
+    date = 'date',
+    datetime = 'datetime',    
+    number = 'number',    
+    string = 'string',
+    time = 'time',
+    year = 'year',
+    yearmonth = 'yearmonth',
+    relation = 'relation',
+    url = 'url',
+    options = 'options',
+    image = 'image'
+}
 
 
 @Form({
@@ -18,9 +32,11 @@ import { RelationType } from './relation-type';
 /** Property description */
 export class PropertyType {
 
-    static isNumber = [ (v: any) => { return v.type && v.type === 'number'}];
-    static isString = [ (v: any) => { return v.type && v.type === 'string'}];
-    static isUrl = [ (v: any) => { return v.type && v.type === 'url'}];
+    static isNumber = [ (v: any) => { return v.type && v.type === PropertyValueType.number}];
+    static isString = [ (v: any) => { return v.type && v.type === PropertyValueType.string}];
+    static isOptions = [ (v: any) => { return v.type && v.type === PropertyValueType.options}];
+    static isRelation = [ (v: any) => { return v.type && v.type === PropertyValueType.relation}];
+    static isUrl = [ (v: any) => { return v.type && v.type === PropertyValueType.url}];
     
     @FormField({ title: 'Label', type: 'string' })
     public label?: string;
@@ -55,7 +71,7 @@ export class PropertyType {
         required: true,
         defaultValue: 'text',
         type: 'selection', options: ['string', 'number', 'url', 'relation'] })
-    public type?: string;
+    public type?: PropertyValueType;
 
     public unique?: number;
     public legendStyle?: any;

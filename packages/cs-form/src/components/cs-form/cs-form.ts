@@ -73,6 +73,7 @@ export class CsForm extends Vue {
     }
 
     @Watch('widget.content')
+    @Watch('formdef')
     private datasourceChanged() {
         this.init();
     }
