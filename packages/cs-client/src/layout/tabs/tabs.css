@@ -1,10 +1,19 @@
-.tabs-manager {
+.tabs2-manager {
   position: relative;
-
+  height: 600px !important;
+  background-color: blue;;
 }
 
-.tabs-layout-manager-content {
-  height: '500px';
+.tabs-manager {  
+  position: relative;
+  height: 100%;
+  /* background-color: chocolate;   */
+}
 
-  
+.tabs-tab-items {    
+  height: 100%;
+}
+
+.tabs-tab-item-widget {  
+  height: 100% !important;
 }

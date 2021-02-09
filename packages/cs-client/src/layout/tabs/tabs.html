@@ -15,12 +15,10 @@
     </v-tab>
   </v-tabs>
 
-  <v-tabs-items v-model="tab" style="height:100%">
+  <v-tabs-items v-model="tab" class="tabs-tab-items">
     <v-tab-item
       v-for="widget in dashboard.widgets"
-      :key="widget.id"
-      style="height:100%"
-    >
+      :key="widget.id" class="tabs-tab-item-widget">
       <cs-widget :widget="widget"></cs-widget>
     </v-tab-item>
   </v-tabs-items>

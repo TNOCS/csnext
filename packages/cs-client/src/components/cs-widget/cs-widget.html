@@ -14,9 +14,10 @@
     class="widget-container"
     :class="[options.class]"
     :style="{margin: options.margin + 'px'}"
-    ref="widget"
+    ref="widget"    
   >
-    <v-col class="cs-dashboard-col pa-0">
+    
+    <v-col class="cs-dashboard-col pa-0" v-if="options.showToolbar && options.toolbarOptions">
       <v-flex
         v-if="options.showToolbar && options.toolbarOptions"
         shrink
@@ -52,25 +53,37 @@
         </v-toolbar>
       </v-flex>
 
-      <v-flex grow class="dashboard-toolbar-flex">
-        <div class="widget-default" style="height: 100%">
+      <v-flex grow class="dashboard-toolbar-flex widget-default">        
           <component
             :is="getComponent()"
             :widget="widget"
             :style="widgetStyles()"
             ref="component"
-          ></component>
-        </div>
+          ></component>        
       </v-flex>
     </v-col>
-    <cs-toolbar-menus
+  
+
+  <div v-else class="cs-dashboard-col widget-default">
+    
+    <component
+            :is="getComponent()"
+            :widget="widget"
+            :style="widgetStyles()"
+            ref="component"
+          ></component>        
+          <cs-toolbar-menus
       class="widget-buttons-container"
       :searchProperty="options.searchProperty"
-      v-if="!options.showToolbar && !options.hideMenu"
+      v-if="!options.hideMenu"
       :menus="options.menus"
       :owner="widget._component"
     ></cs-toolbar-menus>
+  </div>
+    
   </v-card>
-  <v-card v-else>
-    <cs-dashboard :dashboard="widget.dashboard"></cs-dashboard>
-  </v-card>
+  <!-- <v-card > -->
+    <cs-dashboard v-else class="widget-container"
+    :class="[options.class]"
+    :style="{margin: options.margin + 'px'}" :dashboard="widget.dashboard"></cs-dashboard>
+  <!-- </v-card> -->
