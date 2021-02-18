@@ -93,8 +93,7 @@ export class FeatureType {
     {
         if (ft.properties) {
             for (const prop of ft.properties) {
-                if (!prop._originalType) { 
-                    console.log(ft.type + ' - ' + prop._key);
+                if (!prop._originalType) {                     
                     prop._originalType = ft.type; 
                 }
             }
@@ -126,7 +125,7 @@ export class FeatureType {
                             props.push(p);
                         } else
                         {
-                            let i = props.findIndex(f => (f._key === p._key));
+                            let i = props.findIndex(f => (f.key === p.key));
                             if (i === -1)
                             {
                                 props.push(p);

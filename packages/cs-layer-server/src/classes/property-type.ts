@@ -38,7 +38,7 @@ export class PropertyType {
     public label?: string;    
     public description?: string;
     public count?: number;
-    public _key?: string;
+    public key?: string;
     
     public default?: any;
     
