@@ -709,7 +709,7 @@ export class CsMap extends WidgetBase {
                     options: {
                         searchEnabled: true
                     } as LayerSelectionOptions,
-                    datasource: this.widget.datasource
+                    datasource: this.widget.datasource ?? this.widget?._dashboard?.datasource
                 },
                 {},
                 SidebarKeys.LAYERS_SELECTION

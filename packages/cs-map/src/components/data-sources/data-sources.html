@@ -1,4 +1,4 @@
-<simplebar data-simplebar-auto-hide="false" style="height:100%">
+<simplebar data-simplebar-auto-hide="false" style="height:100%" v-if="source">
     <v-layout class="mr-2">
         <v-select class="ma-2" dense :items="sourceFormats" v-model="formatFilter" :label="$cs.Translate('FORMAT')" outlined></v-select>
         <v-select class="ma-2" dense :items="sourceOrganisations" v-model="organisationFilter" :label="$cs.Translate('ORGANISATION')" outlined></v-select>
@@ -11,22 +11,22 @@
     </v-layout>
 
     <v-list three-line>
-        <template v-for="source in filteredSources">
-            <v-list-item :key="source.path" @click="openSourceDetails(source)">
+        <template v-for="src in filteredSources">
+            <v-list-item :key="src.path" @click="openSourceDetails(src)">
                 <v-list-item-avatar tile>
-                    <v-img :src="source.image" class="pe-source-image"></v-img>
+                    <v-img :src="src.image" class="pe-source-image"></v-img>
                 </v-list-item-avatar>
 
                 <v-list-item-content>
                     <v-list-item-title
-                        v-html="source.title"
+                        v-html="src.title"
                     ></v-list-item-title>                    
                     <v-list-item-subtitle
-                        v-html="source.description"
+                        v-html="src.description"
                     ></v-list-item-subtitle>
-                    <div v-if="source.schema.foreignKeys">
+                    <div v-if="src.schema.foreignKeys">
                         <v-chip
-                            v-for="fk in source.schema.foreignKeys"
+                            v-for="fk in src.schema.foreignKeys"
                             :key="fk.fields"
                             @click.stop="data.openSourceDetails(fk.reference.resource)"
                         >
@@ -53,10 +53,10 @@
         </v-tooltip>
         </template>
         <v-list>
-            <v-list-item @click="addSource(source)">
+            <v-list-item @click="addSource(src)">
                 <v-list-item-title>{{$cs.Translate('ADD_SOURCE')}}</v-list-item-title>
             </v-list-item>
-            <v-list-item v-if="source.source" :href="source.source" target="_blank">
+            <v-list-item v-if="src.source" :href="src.source" target="_blank">
                 <v-list-item-title>{{$cs.Translate('OPEN_SOURCE')}}</v-list-item-title>
             </v-list-item>
             <v-list-item @click="downloadSource(source)">

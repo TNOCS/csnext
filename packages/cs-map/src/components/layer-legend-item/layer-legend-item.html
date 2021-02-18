@@ -31,7 +31,7 @@
             </v-layout>
         </template>
         <template v-else>
-            <v-layout v-for="stop in legend.stops">
+            <v-layout v-for="(stop, si) in legend.stops" :key="si">
                 <span
                     class="map-legend-color-rectangle"
                     :style="getStopColor(stop, legend)"

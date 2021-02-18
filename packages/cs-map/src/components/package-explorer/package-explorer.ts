@@ -2,18 +2,17 @@ import Component from 'vue-class-component';
 import './package-explorer.css';
 import simplebar from 'simplebar-vue';
 import Vue from 'vue';
-import axios from 'axios';
 import { DataResource, Insight, InsightView, DataSourceEvents, LayerLegend  } from '@csnext/cs-data';
 import { LayerLegendItem } from '../layer-legend-item/layer-legend-item';
 import { StatsDatasource } from '../../datasources/stats-datasource';
 import { FeaturePreview } from './../feature-preview/feature-preview';
 import { Watch } from 'vue-property-decorator';
 import { MessageBusManager } from '@csnext/cs-core';
-import { LayerSelection, LayerSelectionOptions, SidebarKeys } from '../..';
+import { LayerSelection, LayerSelectionOptions, SidebarKeys, DataInsights } from '../..';
 
 @Component({
     name: 'package-explorer',
-    components: { simplebar, LayerLegendItem, FeaturePreview },
+    components: { simplebar, LayerLegendItem, FeaturePreview, DataInsights },
     props: ['data'],
     template: require('./package-explorer.html')
 } as any)
@@ -154,8 +153,8 @@ export class PackageExplorer extends Vue {
                     if (this.tableProperties.length === 0) {
                         let p = 0;
                         for (const prop of this.data.mainLayer._source._featureType.properties) {
-                        if (p < 10 && prop.type === 'number' && prop._key) {
-                            this.tableProperties.push(prop._key);
+                        if (p < 10 && prop.type === 'number' && prop.key) {
+                            this.tableProperties.push(prop.key);
                             p += 1;
                         }
                     }
@@ -166,7 +165,7 @@ export class PackageExplorer extends Vue {
                             headers.push({
                                 text: p.title,
                                 align: 'right',
-                                value: 'properties.' + p._key
+                                value: 'properties.' + p.key
                             });
                         }
                     }
@@ -257,24 +256,7 @@ export class PackageExplorer extends Vue {
         }
     }
 
-    public insightResources(insight: Insight): DataResource[] {
-        const result: DataResource[] = [];
-        if (insight.views) {
-            for (const view of insight.views) {
-                if (view.resources && this.data.dataPackage) {
-                    for (const resource of view.resources) {
-                        const re = this.data.dataPackage.resources.find(s => s.name === resource);
-                        if (re && re.path) {
-                            if (result.findIndex(r => re && r && r.path === re.path) === -1) {
-                                result.push(re);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
+  
 
     public loadResource(resource: DataResource) {
         if (!resource.data) {

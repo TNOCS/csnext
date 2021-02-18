@@ -1,6 +1,6 @@
 <v-card v-if="data" class="package-explorer-card" :class="{'map-mobile-toolbar': $cs.isMobile, 'package-explorer-open': !collapsed, 'map-mobile-toolbar-open': $cs.isMobile && !collapsed, 'package-explorer-card-fullscreen': fullscreen}">
     <v-toolbar flat class="pa-0 package-explorer-toolbar">
-        <v-progress-linear :active="data.loader.loading" indeterminate absolute top color="deep-purple accent-4"></v-progress-linear>
+        <v-progress-linear :active="$cs.loader.loading" indeterminate absolute top color="deep-purple accent-4"></v-progress-linear>
         <v-app-bar-nav-icon @click="collapsed = !collapsed"></v-app-bar-nav-icon>
         <img v-if="$cs.project.logo" :src="$cs.project.logo" class="package-explorer-logo"></img>
         <!-- @click="$cs.project.leftSidebar.open = !$cs.project.leftSidebar.open" -->
@@ -253,44 +253,7 @@
         <simplebar style="position: absolute;left:0;right:0;top:112px;bottom:0;">
             <v-tabs-items v-model="tab" v-if="data">
                 <v-tab-item value="insights">
-                    <v-list three-line>
-                        <template v-for="insight in insights">
-                            <v-list-item
-                                :key="insight.name"
-                                @click="activateInsight(insight)"
-                                :disabled="data.loader.loading"
-                            >
-                                <v-list-item-avatar tile>
-                                    <v-img
-                                        :src="insight.image"
-                                        class="pe-source-image"
-                                    ></v-img>
-                                </v-list-item-avatar>
-
-                                <v-list-item-content>
-                                    <v-list-item-title
-                                        v-html="insight.title"
-                                    ></v-list-item-title>
-                                    <v-list-item-subtitle
-                                        v-html="insight.description"
-                                    ></v-list-item-subtitle>
-                                    <v-layout>
-                                        <v-chip
-                                            class="ma-1"
-                                            v-for="resource in insightResources(insight)"
-                                            :key="resource.name"
-                                            @click.stop="data.openSourceDetails(resource)"
-                                        >
-                                            <v-avatar left>
-                                                <v-icon>folder</v-icon>
-                                            </v-avatar>
-                                            {{resource.title}}
-                                        </v-chip>
-                                    </v-layout>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </template>
-                    </v-list>
+                    <data-insigths :data="data"></data-insigths>                    
                 </v-tab-item>
                 <v-tab-item value="sources">
                     <data-sources :data="data"></data-sources>

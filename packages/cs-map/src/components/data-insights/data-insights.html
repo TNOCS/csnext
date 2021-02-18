@@ -1,0 +1,41 @@
+<simplebar data-simplebar-auto-hide="false" v-if="source" >    
+    <v-list three-line v-if="insights" >
+        <template v-for="insight in insights">
+            <v-list-item
+                :key="insight.name"
+                @click="activateInsight(insight)"
+                :disabled="$cs.loader.loading"
+            >
+                <v-list-item-avatar tile>
+                    <v-img
+                        :src="insight.image"
+                        class="pe-source-image"
+                    ></v-img>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                    <v-list-item-title
+                        v-html="insight.title"
+                    ></v-list-item-title>
+                    <v-list-item-subtitle
+                        v-html="insight.description"
+                    ></v-list-item-subtitle>
+                    <v-layout>
+                        <v-chip
+                            class="ma-1"
+                            v-for="resource in insightResources(insight)"
+                            :key="resource.name"
+                            @click.stop="source.openSourceDetails(resource)"
+                        >
+                            <v-avatar left>
+                                <v-icon>folder</v-icon>
+                            </v-avatar>
+                            {{resource.title}}
+                        </v-chip>
+                    </v-layout>
+                </v-list-item-content>
+            </v-list-item>
+        </template>
+    </v-list>
+</div>
+</simplebar>

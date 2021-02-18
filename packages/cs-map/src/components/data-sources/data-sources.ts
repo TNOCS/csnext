@@ -3,8 +3,9 @@ import Component from 'vue-class-component';
 import './data-sources.css';
 import simplebar from 'simplebar-vue';
 import { StatsDatasource } from '../../datasources/stats-datasource';
-import { DataResource, DataSource } from '@csnext/cs-data';
+import { DataResource, DataSource, DataSourceEvents } from '@csnext/cs-data';
 import { PropertySection } from '../..';
+import { WidgetBase } from '@csnext/cs-client';
 
 @Component({
     name: 'data-sources',
@@ -12,26 +13,33 @@ import { PropertySection } from '../..';
     components: { simplebar },
     template: require('./data-sources.html')
 } as any)
-export class DataSources extends vue {
+export class DataSources extends WidgetBase {
     public data!: StatsDatasource;
     public formatFilter = this.allTitle;
     public organisationFilter = this.allTitle;
+
+    public get source() : StatsDatasource | undefined {
+        if (this.data) { return this.data; }
+        if (this.widget.content) { return this.widget.content; } 
+    }
 
     public get allTitle(): string {
         return $cs.Translate('ALL');
     }
 
     public downloadSource(source: DataResource) {
-        this.data.downloadSource(source);
+        if (!this.source) { return; }
+        this.source.downloadSource(source);
     }
 
     public openSourceDetails(source: DataResource) {
-        this.data.openSourceDetails(source);
+        if (!this.source) { return; }
+        this.source.openSourceDetails(source);
     }
 
     public async addSource(source: DataResource) {        
-        if (this.data && source) {   
-            this.data.addResourceToInsightView(source.name);
+        if (this.source && source) {   
+            this.source.addResourceToInsightView(source.name);
         };        
     }
 
@@ -56,14 +64,23 @@ export class DataSources extends vue {
     }
 
     public get filteredSources(): DataResource[] | undefined {
-        if (this.sources && this.data && this.data.dataPackage) {
+        if (this.sources && this.source?.dataPackage) {
             return this.sources.filter(s => ((this.formatFilter === this.allTitle || (s.format !== undefined && s.format === this.formatFilter)) && (this.organisationFilter === this.allTitle || (s.organisation !== undefined && s.organisation === this.organisationFilter))));
         }
     }
 
     public get sources() {
-        if (this.data.dataPackage) {
-            return this.data.dataPackage.resources;
+        if (this.source?.dataPackage) {
+            return this.source.dataPackage.resources;
+        }
+    }
+
+    public contentLoaded() {
+        this.$forceUpdate();
+        if (this.source?.events) {
+            this.busManager.subscribe(this.source.events, DataSourceEvents.INSIGHT_VIEW, (a, e) => {
+                this.$forceUpdate();
+            });
         }
     }
 

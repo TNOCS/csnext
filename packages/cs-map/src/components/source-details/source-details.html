@@ -1,11 +1,10 @@
 <div
     class="feature-details-container"
-    v-if="source"
-    style="position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; overflow-y: hidden;"
+    v-if="source"    
 >
-    <simplebar data-simplebar-auto-hide="false" style="height:100%">
+    <simplebar data-simplebar-auto-hide="false" style="height:100%"></simplebar>
         <v-card class="mx-auto" tile flat>
-            <v-img class="align-end" :src="source.image" height="200px">
+            <!-- <v-img class="align-end" :src="source.image" height="200px">
                 <v-btn
                     fab
                     depressed
@@ -14,7 +13,7 @@
                     class="primary sidebar-back-button"
                     ><v-icon>arrow_forward</v-icon></v-btn
                 >
-            </v-img>
+            </v-img> -->
             <v-card-title v-html="source.title"></v-card-title>
             <v-card-subtitle v-html="source.organisation"></v-card-subtitle>
             <v-card-text v-html="source.description"></v-card-text>
