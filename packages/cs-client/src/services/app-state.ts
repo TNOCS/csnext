@@ -59,8 +59,7 @@ export class AppState extends AppStateBase {
 
   public datasourceManager: DatasourceManager;
   public layoutManager: LayoutManager;
-  public dashboardManager: DashboardManager;
-  public loader: Loader;
+  public dashboardManager: DashboardManager;  
   public activeInfoWidget?: IWidget;
 
   /** gets server url */

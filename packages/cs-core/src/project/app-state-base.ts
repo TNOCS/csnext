@@ -5,7 +5,8 @@ import {
   INotification,
   MainBus,
   IWidget,
-  ISidebarOptions
+  ISidebarOptions,
+  Loader
 } from '..';
 
 export abstract class AppStateBase {
@@ -14,6 +15,8 @@ export abstract class AppStateBase {
 
   /** Project definition */
   public project: IProject = {};
+
+  public loader!: Loader;
 
   /** Event bus for publish/subscribe events in application */
 
