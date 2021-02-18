@@ -11,6 +11,9 @@ export class Topics {
   public static readonly TIMELINE_MOVING = 'moving';
   public static readonly TIMELINE_DOUBLE_CLICK = 'doubleclick';
   public static readonly RESIZE = 'resize';
+  public static readonly RESIZE_STARTED = 'started';
+  public static readonly RESIZE_CHANGED = 'changed';
+  
   public static readonly DASHBOARD = "dashboard";
   public static readonly DASHBOARD_RELOAD = "dashboard-reload";
 }
