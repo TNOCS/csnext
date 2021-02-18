@@ -42,6 +42,7 @@ export class CsForm extends Vue {
     public data?: IFormObject;
     public formkey?: string;
     public formdef?: IFormOptions;
+    public optionalFields?: FieldGroup[] = [];
     public panel = [0];
     public keys: { [key: string]: IFormObject } = {};
     /** specify a single field to show, others are hidden */
@@ -153,9 +154,17 @@ export class CsForm extends Vue {
             return;
         }
 
+        let optionalFieldGroup: FieldGroup = new FieldGroup();
+        this.optionalFields = [optionalFieldGroup];
+
+
         this.Form.fields.map(f => {
             // show all fields, or optionally filter only specified field
             if (!this.field || this.field === f._key) {
+                // if form supports optional items and target doesn't have property, add it to the optional list
+                if (this.Form.optionalSupport && f._key && f.title && !this.Target.hasOwnProperty(f._key)) {
+                    optionalFieldGroup.fields.push(f);
+                } else {
                 if (f.type === 'keysobject') {
                 }
                 if (!f.group) {
@@ -177,9 +186,10 @@ export class CsForm extends Vue {
                     }
                 }
             }
+            }
         });
         this.fieldGroups.map(fg => {
-            switch (fg.fields.length) {
+            switch (fg.fields?.length) {
                 case 1:
                     fg.class = 'md12';
                     break;
@@ -248,6 +258,14 @@ export class CsForm extends Vue {
                 this.updateGroupVisibility(group);
             }
         }
+    }
+
+    public addField(field: IFormFieldOptions) {
+        if (field._key) {
+            this.Target[field._key] = field.defaultValue || '';
+            this.initGroups();
+        }
+        
     }
 
     public get Target(): any {

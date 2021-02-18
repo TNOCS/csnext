@@ -305,8 +305,7 @@
                 <v-btn icon text v-if="field.canAdd" @click="addObject(field)">
                     <v-icon>add</v-icon>
                 </v-btn>
-                <v-card v-for="(item, indx) in target[field._key]" :key="indx" style="padding-top: 15px;" flat >
-                    
+                <v-card v-for="(item, indx) in getVisibleArray(field)" :key="indx" style="padding-top: 15px;" flat >                    
                     <cs-form v-if="field.arrayFieldType === 'object'" :data="item" :formdef.sync="field.arrayType" @saved="fieldUpdated(field)"></cs-form>
                     <cs-form-field v-else :target="item" :field="target[field._key]"></cs-form-field>                    
                     <v-btn style="position: absolute; top: 0; right: 0; z-index: 2000;" icon text right v-if="field.canDelete" @click="deleteFromArray(field._key, indx)">

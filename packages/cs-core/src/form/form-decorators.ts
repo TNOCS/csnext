@@ -9,6 +9,8 @@ export interface IFormOptions {
   showToolbar?: boolean;
   toolbarClass?: string;
   isPanelOpen?: boolean;
+  optionalSupport?: boolean;
+  data?: any;
   keys?: boolean;
   groups?: { [name: string]: IFormGroupOptions };
   keyValuesType?(): object;
@@ -79,6 +81,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   clearable?: boolean;
   canAdd?: boolean;
   canEditKey?: boolean;
+  data?: any;
   placeholder?: string;
   addUsingDialog?: boolean;
   newItem?: ()=>any;
@@ -93,6 +96,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   locale?: string;
   optional?: boolean;
   requirements?: ((value: object) => boolean)[];
+  arrayFilter?: ((value: object) => boolean);
   _appendIcon?: string;
   _isError?: boolean;
   keyValuesType?(): object;

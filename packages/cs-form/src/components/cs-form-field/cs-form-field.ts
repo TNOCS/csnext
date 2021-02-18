@@ -73,6 +73,15 @@ export class CsFormField extends Vue {
         this.triggered(field);
     }
 
+    public getVisibleArray(field: IFormFieldOptions) {        
+        if (!this.target || !field?._key) { return []; }
+        if (field.arrayFilter && typeof(field.arrayFilter) === 'function' ) {
+            return field.arrayFilter(this.target[field._key]);
+        } else {
+            return this.target[field._key];
+        }
+    }
+
     public get selectedObject(): any | undefined {
         if (this.field && this.field.options && this.field && this.field.keyValue && this.target) {
             let o = this.items; //(Array.isArray(this.field.options)) ? this.field.options : this.field.options();
