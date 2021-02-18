@@ -6,7 +6,8 @@ import {
   MessageBusService,
   MessageBusHandle,
   guidGenerator,
-  WidgetOptions
+  WidgetOptions,
+  Topics
 } from '@csnext/cs-core';
 import resize from 'vue-resize-directive';
 import './cs-widget.css';
@@ -291,6 +292,10 @@ export class CsWidget extends Vue {
     this.updateSize();
   }
 
+  public onResizeStart() {
+    this.updateSize(true, true);
+  }
+
   public setActiveWidget(widget: IWidget) {
     // Vue.set(this, 'activeWidget', widget);
   }
@@ -310,10 +315,7 @@ export class CsWidget extends Vue {
     }
   }
 
-  public updateSize(trigger = true) {
-    if (typeof this.widget?._component?.resize === 'function') {
-      this.widget._component.resize(this.widget._size);
-    }
+  public updateSize(trigger = true, started = false) {    
     if (!this.widget || !this.widget.events) {
       return;
     }
@@ -325,9 +327,17 @@ export class CsWidget extends Vue {
         componentHeight: this.$refs.component.$el.clientHeight
       };
     }
+
+    if (!started && typeof this.widget?._component?.resize === 'function') {
+      this.widget._component.resize(this.widget._size);
+    }
+
+    if (started && typeof this.widget?._component?.resizeStart === 'function') {
+      this.widget._component.resizeStart(this.widget._size);
+    }
     
     if (trigger) {
-      this.widget.events.publish('resize', 'changed', this.widget._size);
+      this.widget.events.publish(Topics.RESIZE, started ? Topics.RESIZE_STARTED : Topics.RESIZE_CHANGED, this.widget._size);
     }
   }
 

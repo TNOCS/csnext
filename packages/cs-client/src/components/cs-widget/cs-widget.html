@@ -8,6 +8,7 @@
     :color="options.backgroundColor"
     :raised="options.raised"
     v-resize:debounce.50="onResize"
+    v-resize.initial="onResizeStart"
     @mouseenter="mouseEnter()"
     v-show="options && !options.hide"
     @mouseleave="mouseLeave()"
