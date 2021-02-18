@@ -48,11 +48,21 @@ export class FeatureType {
             if (typeof(ft.baseType) === 'string' ) {
                 ft.baseType = [ft.baseType];
             }   
+
+            // if (ft.infoPanels!) {
+            //     ft.infoPanels = {
+            //         popup: {
+            //             title: 'title',
+            //             subtitle: 'description'
+            //         }
+            //     }
+            // }
+
             
             if (ft.properties) {
                 for (const p of ft.properties)
                 {     
-                    if (!p._key && p.label) { p._key = p.label.toLowerCase(); }
+                    if (!p.key && p.label) { p.key = p.label.toLowerCase(); }
                     if (!p.type) {                         
                         if (p.relation) {
                             p.type = PropertyValueType.relation;                                
@@ -93,8 +103,7 @@ export class FeatureType {
     {             
         if (ft.properties) {
             for (const prop of ft.properties) {
-                if (!prop._originalType) { 
-                    console.log(ft.type + ' - ' + prop._key);
+                if (!prop._originalType) {                     
                     prop._originalType = ft.type; 
                 }
             }
@@ -102,11 +111,11 @@ export class FeatureType {
         return ft;
     }
 
-    public static updateTypeInheritence(base: FeatureType, ft: FeatureType, types: FeatureTypes) {
+    public static updateTypeInheritence(base: FeatureType, ft: FeatureType, types: FeatureTypes) {        
         if (!base._inheritedTypes) {            
             if (base.baseType && Array.isArray(base.baseType)) {
-                for (const bb of base.baseType) {
-                    let ob = types[bb];
+                for (const bb of base.baseType) {                    
+                    let ob = types[bb];        
                     if (ob) {
                         FeatureType.updateTypeInheritence(ob, base, types);
                     }                    
@@ -115,6 +124,7 @@ export class FeatureType {
         }
         if (!ft._inheritedTypes) {
             ft._inheritedTypes = [];
+        }
             if (ft.type) { ft._inheritedTypes.push(ft.type)};
             if (base.type) { ft._inheritedTypes.push(base.type)};
             if (base._inheritedTypes) {
@@ -124,7 +134,7 @@ export class FeatureType {
                     }                    
                 }
             }            
-        }
+        
     }
 
     public static mergeBaseType(baseType: string, ft: FeatureType, types: FeatureTypes) : FeatureTypes
@@ -160,7 +170,7 @@ export class FeatureType {
                 {
                     for (const p of ft.properties)
                     {       
-                        let i = props.findIndex(f => (f._key === p._key));                 
+                        let i = props.findIndex(f => (f.key === p.key));                 
                         if (p.relation)
                         {
                             if (i === -1) {
@@ -181,7 +191,6 @@ export class FeatureType {
                         }
                     }
                     ft.properties = props;
-
                 }
                 // .filter(p => ft.properties?.findIndex(f => f._key === p._key) === -1)?.concat(ft.properties);
             }
@@ -190,18 +199,20 @@ export class FeatureType {
                 if (!ft.infoPanels) { ft.infoPanels = {}; }
                 for (const panel of Object.keys(base.infoPanels))
                 {
-                    // if (!ft.infoPanels.hasOwnProperty(panel))
-                    // {
-                    //     ft.infoPanels[panel] = base.infoPanels[panel];
-                    // } else
-                    // {
-                    //     if (!ft.infoPanels[panel].sections) { ft.infoPanels[panel].sections = []; }
-                    //     if (base.infoPanels[panel].sections)
-                    //     {
-                    //         ft.infoPanels[panel].sections = [...base.infoPanels[panel].sections!, ...ft.infoPanels[panel].sections!];
-                    //     }
-                    //     ft.infoPanels[panel] = { ...base.infoPanels[panel], ...ft.infoPanels[panel] };
-                    // }
+                    if (!ft.infoPanels.hasOwnProperty(panel))
+                    {
+                        ft.infoPanels[panel] = base.infoPanels[panel];
+                    } else
+                    {
+                        // if (!ft.infoPanels[panel].sections) { ft.infoPanels[panel].sections = []; }
+                        // if (base.infoPanels[panel].sections)
+                        // {                        
+                        //     let res = [...base.infoPanels[panel].sections!.filter(s => ft.infoPanels![panel].sections?.findIndex(t => t.title === s.title))];     
+                            
+                        //     ft.infoPanels[panel].sections = [...res, ...ft.infoPanels[panel].sections!];
+                        // }
+                        // ft.infoPanels[panel] = { ...base.infoPanels[panel], ...ft.infoPanels[panel] };
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { IDatasource, guidGenerator, MessageBusService, Loader } from '@csnext/cs-core';
+import { IDatasource, guidGenerator, MessageBusService, Loader, AppStateBase } from '@csnext/cs-core';
 import { DataSet, DataSource } from '..';
 import { plainToClass } from 'class-transformer';
 import Axios from 'axios';
@@ -23,12 +23,11 @@ export class DataSources implements IDatasource {
     public events = new MessageBusService();
     public id?: string;
     public dataPackage?: DataPackage;
-    public resources: { [name: string]: DataResource } = {};
-    public loader: Loader;
+    public resources: { [name: string]: DataResource } = {};    
     public dates: number[] = [];
     public focusDate?: number;
 
-    constructor(data?: { [name: string]: DataSource }, images?: { [id: string]: string }) {
+    constructor(public state: AppStateBase, data?: { [name: string]: DataSource }, images?: { [id: string]: string }) {
         this.sources = {};
         for (const l in data) {
             if (data.hasOwnProperty(l)) {
@@ -39,7 +38,7 @@ export class DataSources implements IDatasource {
         if (images) {
             this.images = images;
         }
-        this.loader = new Loader(this.events);
+        // this.state.loader = new Loader(this.events);
     }
 
     public getDataSource(id: string): DataSource | undefined {
@@ -104,7 +103,7 @@ export class DataSources implements IDatasource {
 
     public loadPackage(uri: string): Promise<DataPackage> {
         // const t = new Table();
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {            
             Axios.get(uri).then(async r => {
                 if (r.data) {
                     this.dataPackage = r.data as DataPackage;
@@ -122,8 +121,8 @@ export class DataSources implements IDatasource {
 
     public async mergeResources(first: DataResource, second: DataResource): Promise<boolean> {
         return new Promise((resolve) => {
-            if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
-            const loaderId = this.loader.addLoader();
+            if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }            
+            const loaderId = this.state.loader.addLoader();
             // const merge = (a: FeatureCollection, b: any, p1: string, p2: string) => a.features.filter( aa => {
             //     return !b.find(bb => aa.properties && aa.properties[p1] === bb[p2])} )[0].concat(b);
             if (second.schema && second.schema.foreignKeys) {
@@ -205,7 +204,7 @@ export class DataSources implements IDatasource {
                 }
             }
 
-            this.loader.removeLoader(loaderId);
+            this.state.loader.removeLoader(loaderId);
             resolve(true);
 
         });
@@ -214,7 +213,7 @@ export class DataSources implements IDatasource {
     public async mergeResourcesNew(first: DataResource, second: DataResource): Promise<boolean> {
         return new Promise((resolve) => {
             if (!first.data || !first.data._data || !second.data || !second.data._data || !second.data._data.data) { return; }
-            const loaderId = this.loader.addLoader();
+            const loaderId = this.state.loader.addLoader();
             // const merge = (a: FeatureCollection, b: any, p1: string, p2: string) => a.features.filter( aa => {
             //     return !b.find(bb => aa.properties && aa.properties[p1] === bb[p2])} )[0].concat(b);
             if (second.schema && second.schema.foreignKeys) {
@@ -242,7 +241,7 @@ export class DataSources implements IDatasource {
                 }
             }
 
-            this.loader.removeLoader(loaderId);
+            this.state.loader.removeLoader(loaderId);
             resolve(true);
 
         });
@@ -285,7 +284,7 @@ export class DataSources implements IDatasource {
                                 title: field.title ?? field.name,
                                 description: field.description,
                                 type: field.type,
-                                _key: field.name,
+                                key: field.name,
                                 section: field.group,
                                 unit: field.unit,
                                 decimals: field.decimals,
@@ -332,16 +331,16 @@ export class DataSources implements IDatasource {
 
     public async loadResource(resourceName: string): Promise<DataResource> {
         return new Promise((resolve, reject) => {
-            // if (this.loader.loading) { reject(); }
+            // if (this.state.loader.loading) { reject(); }
             if (this.dataPackage && this.dataPackage.resources) {
                 const resource = this.dataPackage.resources.find(r => r.name === resourceName);
                 if (resource && resource.path) {
-                    this.loader.addLoader(resourceName);
+                    this.state.loader.addLoader(resourceName);
                     Axios.get(resource.path.toString()).then(async d => {
                         if (d.data) {
                             this.createDataSourceFromResource(d.data, resource).then(() => {
                                 this.resources[resource.name] = resource;
-                                this.loader.removeLoader(resourceName);
+                                this.state.loader.removeLoader(resourceName);
                                 resolve(resource);
                                 return;
                             });

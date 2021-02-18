@@ -75,15 +75,15 @@ export class MetaUtils {
                 for (const feature of source.features) {
                     if (feature.properties) {
                         for (const prop of ft.properties) {
-                            if (prop._key && feature.properties.hasOwnProperty(prop._key)) {
+                            if (prop.key && feature.properties.hasOwnProperty(prop.key)) {
                                 if (prop.type !== undefined) {
-                                    let value = feature.properties[prop._key];
+                                    let value = feature.properties[prop.key];
                                     if (
                                         prop.type === 'number' &&
                                         typeof value === 'string'
                                     ) {
                                         value = parseFloat(value);
-                                        feature.properties[prop._key] = value;
+                                        feature.properties[prop.key] = value;
                                     }
                                     prop._values!.push(value);
                                 }
@@ -140,15 +140,15 @@ export class MetaUtils {
             //   let feature = source.features[0];
             for (const feature of source._data.features) {
                 if (feature.properties) {
-                    if (prop._key && feature.properties.hasOwnProperty(prop._key)) {
+                    if (prop.key && feature.properties.hasOwnProperty(prop.key)) {
                         if (prop.type !== undefined) {
-                            let value = feature.properties[prop._key];
+                            let value = feature.properties[prop.key];
                             if (
                                 prop.type === 'number' &&
                                 typeof value === 'string'
                             ) {
                                 value = parseFloat(value);
-                                feature.properties[prop._key] = value;
+                                feature.properties[prop.key] = value;
                             }
                             if (value !== undefined && value !== null) {
                                 prop._values!.push(value);
@@ -222,8 +222,8 @@ export class MetaUtils {
         for (const key in properties) {
             if (properties.hasOwnProperty(key)) {
                 const value = properties[key];
-                if (!value._key) {
-                    value._key = key;
+                if (!value.key) {
+                    value.key = key;
                 }
                 if (!value.label) {
                     value.label = key;

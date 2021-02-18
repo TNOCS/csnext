@@ -274,8 +274,8 @@ export class DataSource {
             type.propertyMap = {};
             if (Object.keys(type.properties).length > 0) {
                 for (const prop of type.properties) {
-                    if (prop._key) {
-                        type.propertyMap[prop._key] = prop;
+                    if (prop.key) {
+                        type.propertyMap[prop.key] = prop;
                     }
                 }
             }

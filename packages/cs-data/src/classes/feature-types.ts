@@ -4,10 +4,10 @@ import { FeatureType } from './feature-type';
 
 @Form({
     title: 'Feature Types',
-    keyValuesType: () =>
-    {
-        return new FeatureType();
-    }
+    // _keyValuesType: () =>
+    // {
+    //     return new FeatureType();
+    // }
 })
 export class FeatureTypes
 {

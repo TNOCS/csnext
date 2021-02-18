@@ -14,7 +14,9 @@ export enum PropertyValueType {
     relation = 'relation',
     url = 'url',
     options = 'options',
-    image = 'image'
+    image = 'image',
+    epoch = 'epoch',
+    wkt = 'wkt'
 }
 
 
@@ -86,7 +88,9 @@ export class PropertyType {
     public class?: string;
     public _initialized?: boolean = false;
     public _originalType?: string;        
-    public _key?: string;
+    @FormField({ title: 'Key', type: 'string' })
+    public key?: string;
+
     public _values?: any[];    
 }
 
