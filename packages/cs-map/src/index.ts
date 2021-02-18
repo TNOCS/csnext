@@ -52,6 +52,8 @@ export * from './components/data-properties/data-properties';
 export * from './components/data-big-text/data-big-text';
 export * from './components/feature-preview/feature-preview';
 export * from './components/data/data-details/data-details';
+export * from './components/data-insights/data-insights';
+export * from './components/data-table/data-table';
 
 // layers
 export * from './layers/base-layer';
@@ -96,6 +98,8 @@ Vue.component('prop-value', {
                 } else {
                     return createElement('span','');
                 }
+            case 'epoch':
+                return createElement('span', new Date(this.value).toLocaleString());
             case 'boolean':
                 return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
             case 'url':                

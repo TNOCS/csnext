@@ -23,6 +23,8 @@ export class PropertyValue {
                   }
               case 'epoch':
                   return createElement('span', new Date(value).toLocaleString());
+                case 'date':
+                    return createElement('span', new Date(value).toLocaleString());                
               case 'image':
                   return createElement('img', { class: 'info-image', attrs: { src: value}} );
               case 'boolean':

@@ -99,7 +99,7 @@ export class MapDatasource extends DataSources {
         },
         public services?: IStartStopService[]
     ) {
-        super(sources);
+        super($cs, sources);
         this.layers = layers;
     }
 

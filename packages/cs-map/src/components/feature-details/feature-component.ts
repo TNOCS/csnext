@@ -291,7 +291,7 @@ export class FeatureComponent extends WidgetBase {
                 let proptype: PropertyType;
                 if (typeof pt === 'string') {
                     proptype = {
-                        _key: key,
+                        key: key,
                         title: key,
                         type: 'number',
                         description: key
@@ -355,7 +355,7 @@ export class FeatureComponent extends WidgetBase {
     private propertyFilter(prop: PropertyType, filter: string): boolean {
         if (!filter || filter.length === 0) { return true; }
         const lowerCaseFilter = filter.toLowerCase();
-        if (prop._key && prop._key.toLowerCase().indexOf(lowerCaseFilter) >= 0) {
+        if (prop.key && prop.key.toLowerCase().indexOf(lowerCaseFilter) >= 0) {
             return true;
         }
         if (

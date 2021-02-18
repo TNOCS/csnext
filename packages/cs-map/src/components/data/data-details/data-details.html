@@ -1,6 +1,6 @@
 <v-card flat style="height:100%">
     <v-toolbar color="cyan" dark flat>
-        <v-toolbar-title>test</v-toolbar-title>
+        <!-- <v-toolbar-title>test</v-toolbar-title> -->
 
         <v-spacer></v-spacer>
 
@@ -33,9 +33,9 @@
                     <v-tab href="#tab-properties"
                         >{{ $cs.Translate('PROPERTIES') }}</v-tab
                     >
-                    <v-tab href="#tab-facts"
+                    <!-- <v-tab href="#tab-facts"
                         >{{ $cs.Translate('FACTS') }}</v-tab
-                    >                    
+                    >                     -->
                     <v-tab href="#tab-documents"
                         >{{ $cs.Translate('DOCUMENTS') }}</v-tab
                     >
@@ -52,7 +52,7 @@
                         :data="widget.data.feature.properties"
                         :source="source"
                         :node="widget.data.feature"
-                        :featureType="widget.data.feature._featureType"
+                        :featureType="widget.data.featureType"
                         panel="details"
                     ></data-info-panel>
                 </v-tab-item>

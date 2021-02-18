@@ -15,14 +15,14 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   name: 'title-section',
-  template: `<div class="title-section">        
+  template: `<div class="title-section">
   <div class="infopanel-title">{{data[infoPanel.title]}}</div>
   <div class="infopanel-subtitle">{{data[infoPanel.subtitle]}} <span class="infopanel-aliases" v-if="data[infoPanel.aliases]"> ({{data[infoPanel.aliases]}})</span></div>
 </div>`
 })
 export default class TitleSection extends BaseSection {
 
-public mounted() {
+public mounted() {  
     
 }
      

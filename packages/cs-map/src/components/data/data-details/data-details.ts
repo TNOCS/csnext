@@ -36,6 +36,7 @@ export class DataDetails extends WidgetBase {
 
     public updateFeature() {
         if (!this.source || !this.feature) { return; }
+        
         this.componentKey+=1;
 
     }
@@ -47,6 +48,7 @@ export class DataDetails extends WidgetBase {
                 switch (a) {
                     case CsMap.FEATURE_SELECT:
                         if (event.feature) {
+                            this.widget.data.featureType = event.layer._source?._featureType;
                             this.widget.data.feature = event.feature;
                             this.updateFeature();
                             

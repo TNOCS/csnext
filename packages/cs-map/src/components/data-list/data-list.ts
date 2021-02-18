@@ -46,7 +46,7 @@ export class DataPanelList extends vue {
                 text: pt.title + '(' + pt.unit + ')',
                 align: 'right',
                 sortable: true,
-                value: 'properties.' + pt._key
+                value: 'properties.' + pt.key
             }];
         } else
         {

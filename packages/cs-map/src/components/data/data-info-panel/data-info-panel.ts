@@ -25,9 +25,10 @@ export class DataInfoPanel extends vue {
     public sections?: InfoPanelSection[];
     public source?: IDatasource;
     
-    public mounted() {        
+    public mounted() {                
         if (this.panel && this.featureType?.infoPanels?.hasOwnProperty(this.panel)) {            
             this.infoPanel = this.featureType.infoPanels[this.panel];
+            if (!this.infoPanel) { return; }
             
             if (this.infoPanel?.basePanel) {
                 // let panel = 

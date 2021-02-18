@@ -25,12 +25,16 @@ export class StatsDatasource extends MapDatasource {
         if (typeof insight === 'string') {
             if (this.dataPackage && this.dataPackage.insights) {
                 const i = this.dataPackage.insights.find(s => s.name === insight);
-                if (i) { await this.activateInsight(i, view); }
+                if (i) { 
+                    await this.activateInsight(i, view);                     
+                }
+
             }
         } else {
             this.activeInsight = insight;
             if (insight.views && insight.views.length > view) {
                 await this.activateInsightView(insight.views[view], insight);
+                this.storeState();
             }
         }
     }
@@ -237,8 +241,20 @@ export class StatsDatasource extends MapDatasource {
         // const activeResources = this.activeInsightView?.resources;
         if (!view.title) { view.title = insight.title; }
         if (!view.description) { view.description = insight.description; }
-        this.activeInsightView = view;
+
         // unload existing resources
+        if (this.activeInsightView?.resources) {
+            for (const resource of this.activeInsightView.resources) {
+                this.unloadResource(resource);
+                
+            }
+            
+            // await this.disableInsight();
+        }
+
+        this.activeInsightView = view;
+        
+        
         const resources = view.resources;
         if (resources) {
             await this.activateResources(resources);
@@ -257,6 +273,34 @@ export class StatsDatasource extends MapDatasource {
                     await this.mainLayer.setStyle(view.style as LayerStyle);
                     // this.mainLayer.setLegend(view.defaultLegendProperty, true);
                 }
+
+                if (this.mainLayer._source?._featureType) {
+                    if (!this.mainLayer._source._featureType.infoPanels) {
+                        this.mainLayer._source._featureType.infoPanels =  {
+                            "popup": {
+                                "title": "statnaam",
+                                "subtitle": "description",
+                                "sections": [
+                                    {
+                                        "sectionType": "title-section"
+                                    }
+                                ]
+                            },
+                            "details": {
+                                "title": "statnaam",
+                                "subtitle": "description",
+                                "aliases": "aliases",
+                                "basePanel": "popup",
+                                "sections": [                              
+                                    {
+                                        "sectionType": "title-section"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+
                 // if (view.selection) {
                 //     this.mainLayer
                 // }

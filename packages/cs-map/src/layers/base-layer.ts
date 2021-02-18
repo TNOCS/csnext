@@ -422,7 +422,7 @@ export class BaseLayer implements IMapLayer {
         return res;
     }
 
-    private updateFilterArray(filter: any[]) {
+    private updateFilterArray(filter: any[]) {        
         if (filter && this._source) {
             if (Array.isArray(filter)) {
                 if (filter.length === 3 && LayerFilter.operators.includes(filter[0])) {
@@ -441,16 +441,18 @@ export class BaseLayer implements IMapLayer {
 
                     // update filter
                     const f = this._filters[prop];
-                    switch (filter[0]) {
-                        case '>=':
-                            f.min = filter[2];
-                            break;
-                        case '<=':
-                            f.max = filter[2];
-                            break;
-                        case '=':
-                            f.value = filter[2];
-                            break;
+                    if (f) {
+                        switch (filter[0]) {
+                            case '>=':
+                                f.min = filter[2];
+                                break;
+                            case '<=':
+                                f.max = filter[2];
+                                break;
+                            case '=':
+                                f.value = filter[2];
+                                break;
+                        }
                     }
 
                 } else {

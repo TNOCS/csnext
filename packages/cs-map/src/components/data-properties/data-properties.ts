@@ -91,7 +91,7 @@ export class DataProperties extends WidgetBase {
                     let proptype: PropertyType;
                     if (typeof pt === 'string') {
                         proptype = {
-                            _key: key,
+                            key: key,
                             title: key,
                             type: 'string',
                             description: key

@@ -294,8 +294,8 @@ export class DataChart extends WidgetBase {
             const f = this.features[0];
             if (f.properties) {
                 for (const prop of ft.properties) {
-                    if (prop.title && prop._key && prop.section === this.options.propertyGroup) {
-                        values.push({ title: prop.title, value: f.properties[prop._key] });
+                    if (prop.title && prop.key && prop.section === this.options.propertyGroup) {
+                        values.push({ title: prop.title, value: f.properties[prop.key] });
                     }
                 }
             }
