@@ -54,6 +54,7 @@ export class DataProperties extends WidgetBase {
         if (this.section && !this.section.id) {
             this.section.id = this.layer.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
         }
+        this.features = this.layer?._source?._data?.features as any;
         const defaultSection = {
             id: 'default',
             title: $cs.Translate('PROPERTIES'),
@@ -74,7 +75,7 @@ export class DataProperties extends WidgetBase {
             this.sectionsPanels.push(0);
         }
 
-        if (this.data && this.layer && this.layer._source && this.features && this.features.length === 1) {
+        if (this.data && this.layer && this.layer._source && this.features && this.features.length > 1) {
             /** find feature type */
             const ft = this.layer._source.getFeatureType();
             this.feature = this.features[0];

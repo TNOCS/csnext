@@ -34,6 +34,12 @@ export class DataDetails extends WidgetBase {
         }
     }
 
+    public get layer(): IDatasource | undefined {
+        if (this.widget.data.layer) {
+            return this.widget.data.layer;
+        }
+    }
+
     public updateFeature() {
         if (!this.source || !this.feature) { return; }
         
@@ -50,6 +56,7 @@ export class DataDetails extends WidgetBase {
                         if (event.feature) {
                             this.widget.data.featureType = event.layer._source?._featureType;
                             this.widget.data.feature = event.feature;
+                            this.widget.data.layer = event.layer;
                             this.updateFeature();
                             
                             

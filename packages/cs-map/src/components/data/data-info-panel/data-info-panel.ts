@@ -13,7 +13,7 @@ import { IDatasource } from '@csnext/cs-core';
 @Component({
     name: 'data-info-panel',
     components: { ImageSection, TitleSection},
-    props: ['data', 'featureType', 'panel', 'node', 'source'],
+    props: ['data', 'featureType', 'panel', 'node', 'source', 'layer'],
     template: require('./data-info-panel.html')
 } as any)
 export class DataInfoPanel extends vue {
@@ -23,9 +23,13 @@ export class DataInfoPanel extends vue {
     // public node?: GraphElement;
     public infoPanel: InfoPanel | null = null;
     public sections?: InfoPanelSection[];
-    public source?: IDatasource;
     
-    public mounted() {                
+    public source?: IDatasource;
+    public layer?: any;
+    public features?: any;
+    
+    public mounted() {        
+        this.features = this.source?.data?._data?.features;
         if (this.panel && this.featureType?.infoPanels?.hasOwnProperty(this.panel)) {            
             this.infoPanel = this.featureType.infoPanels[this.panel];
             if (!this.infoPanel) { return; }
@@ -35,7 +39,7 @@ export class DataInfoPanel extends vue {
                 // this.sections = [...this.infoPanel.basePanelthis.infoPanel.sections, 
             }
             if (!this.infoPanel.sections) {
-                this.infoPanel.sections = [ { sectionType: 'title-section'}]
+                this.infoPanel.sections = [ { sectionType: 'title-section'}, { sectionType: 'data-properties'}]
             }
             
         }        

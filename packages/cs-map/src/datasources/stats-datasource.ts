@@ -294,6 +294,9 @@ export class StatsDatasource extends MapDatasource {
                                 "sections": [                              
                                     {
                                         "sectionType": "title-section"
+                                    },
+                                    {
+                                        "sectionType": "data-properties"
                                     }
                                 ]
                             }

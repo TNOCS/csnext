@@ -51,7 +51,7 @@ export class DataProperties extends WidgetBase {
     }
 
     public updateSections() {
-        if (!this.layer || !this.layer.id || !this.panel) { return; }
+        if (!this.layer || !this.layer.id || !this.panel) { return; }        
         if (this.section && !this.section.id) {
             this.section.id = this.layer.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
         }
@@ -159,9 +159,9 @@ export class DataProperties extends WidgetBase {
         vue.set(this, 'sections', result);
     }
 
-    public mounted() {        
+    public mounted() {           
         if (!this.data) { return; }
-        alert('data properties');
+        debugger;
         this.busManager.subscribe(this.data.events, 'legends', (a, e) => {
             this.updateSections();
         });
