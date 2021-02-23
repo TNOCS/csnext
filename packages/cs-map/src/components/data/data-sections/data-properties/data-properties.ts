@@ -6,20 +6,21 @@ import { WidgetBase } from '@csnext/cs-client';
 import { InsightDashboardPanel, LayerLegend, InsightSection, PropertyType } from '@csnext/cs-data';
 import { Watch } from 'vue-property-decorator';
 import { IDatasource } from '@csnext/cs-core';
-import { GeojsonPlusLayer, PropertyDetails, PropertySection } from '@csnext/cs-map';
+import { GeojsonPlusLayer } from '@csnext/cs-map';
+import { PropertySection } from './property-section';
+import { PropertyDetails} from './property-details';
 
 @Component({
     name: 'data-properties',
     components: { simplebar },
-    props: ['data', 'section', 'panel', 'features', 'layer'],
+    props: ['data', 'section', 'panel', 'feature', 'layer'],
     template: require('./data-properties.html')
 } as any)
-export class DataProperties extends WidgetBase {
+export default class DataProperties extends WidgetBase {
 
     public panel?: InsightDashboardPanel;
     public data?: IDatasource;
     public section?: InsightSection;
-    public features?: mapboxgl.MapboxGeoJSONFeature[];
     public feature?: mapboxgl.MapboxGeoJSONFeature;
     public layer?: GeojsonPlusLayer;
     public sections: PropertySection[] = [];
@@ -50,7 +51,7 @@ export class DataProperties extends WidgetBase {
         return (this.section && this.section.style) ? this.section.style : 'list';
     }
 
-    public updateSections() {
+    public updateSections() {        
         if (!this.layer || !this.layer.id || !this.panel) { return; }        
         if (this.section && !this.section.id) {
             this.section.id = this.layer.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
@@ -75,13 +76,13 @@ export class DataProperties extends WidgetBase {
             this.sectionsPanels.push(0);
         }
 
-        if (this.data && this.layer && this.layer._source && this.features && this.features.length === 1) {
+        if (this.data && this.layer && this.layer._source && this.data) {
             /** find feature type */
             const ft = this.layer._source.getFeatureType();
-            this.feature = this.features[0];
+            // this.feature = this.features[0];
 
             /** lookup all properties */
-            for (const key in this.feature.properties) {
+            for (const key in this.data) {
                 if (key[0] !== '_') {
                     let pt: PropertyType | string = key;
                     /** find property type */
@@ -119,7 +120,7 @@ export class DataProperties extends WidgetBase {
                         // }
                     }
 
-                    const element = this.feature.properties[key];
+                    const element = this.data[key];
                     const prop = {
                         key,
                         value: element,
@@ -160,8 +161,7 @@ export class DataProperties extends WidgetBase {
     }
 
     public mounted() {           
-        if (!this.data) { return; }
-        debugger;
+        if (!this.data) { return; }        
         this.busManager.subscribe(this.data.events, 'legends', (a, e) => {
             this.updateSections();
         });

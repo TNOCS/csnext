@@ -551,7 +551,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private onClick(e: mapboxgl.MapLayerMouseEvent) {
         if (this.Map && this._events) {
             const feature = (e.features && e.features.length > 0) ? e.features[0] : undefined;
-            if (feature) {
+            if (feature) {                
                 if (!feature.properties?.cluster) {
                     this._events.publish(CsMap.FEATURE, CsMap.FEATURE_SELECT, {
                         feature,

@@ -3,8 +3,7 @@ import Component from 'vue-class-component';
 import './data-sources.css';
 import simplebar from 'simplebar-vue';
 import { StatsDatasource } from '../../datasources/stats-datasource';
-import { DataResource, DataSource, DataSourceEvents } from '@csnext/cs-data';
-import { PropertySection } from '../..';
+import { DataResource, DataSourceEvents } from '@csnext/cs-data';
 import { WidgetBase } from '@csnext/cs-client';
 
 @Component({

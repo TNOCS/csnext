@@ -1,6 +1,5 @@
 import { BaseSection } from './base-section';
-import { Component, Vue, Watch } from "vue-property-decorator";
-
+import { Component } from "vue-property-decorator";
 @Component({
   name: 'title-section',
   template: `<div class="instance-section">                      

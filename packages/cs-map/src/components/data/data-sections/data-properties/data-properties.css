@@ -2,6 +2,8 @@
     font-size: 14px;
     text-align: right;    
     justify-content: flex-end;
+    max-width: 300px;
+    float: right;
 }
 
 .sidebar-back-button {
@@ -11,11 +13,11 @@
 }
 
 .feature-details-container {
-    position: absolute;
+    /* position: absolute;
     top:0;
     bottom:0;
     left:0;
-    right: 0;
+    right: 0; */
 }
 
 .feature-component-title {
@@ -26,8 +28,6 @@
 
 .allow-feature-legend {
     cursor: pointer;
-    background-color: 'red'
-    
 }
 
 .feature-section-title {
@@ -45,10 +45,10 @@
     font-weight: 600;
 }
 
-.section-expansion-panel .v-expansion-panel__header {
+.section-expansion-panel.v-expansion-panel-header {
     padding-left: 8px;
-    padding-right: 12px;
-    margin-right: 8px;
+    /* padding-right: 12px; */
+    margin-right: 5px !important;
 }
 
 .v-expansion-panel-content__wrap {
@@ -87,7 +87,7 @@
     border-bottom: solid 1px #ccc;
     padding: 8px 0px;
     min-height: 40px;
-    margin-right: 12px !important;
+    margin-right: 15px !important;
 }
 
 .section {

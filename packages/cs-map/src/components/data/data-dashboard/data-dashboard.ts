@@ -3,7 +3,7 @@ import Component from 'vue-class-component';
 import './data-dashboard.css';
 import simplebar from 'simplebar-vue';
 import { WidgetBase } from '@csnext/cs-client';
-import { InsightDashboard, InsightDashboardPanel } from '@csnext/cs-data';
+import { InsightDashboard } from '@csnext/cs-data';
 import { GeojsonPlusLayer, StatsDatasource } from '@csnext/cs-map';
 import { DataPanel } from './../data-panel/data-panel';
 import { Watch } from 'vue-property-decorator';

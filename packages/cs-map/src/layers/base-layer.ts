@@ -4,7 +4,8 @@ import {
     IMapLayer,
     LayerStyle,
     ILayerService,
-    FeatureEventDetails
+    FeatureEventDetails,
+    PropertyDetails
 } from './../.';
 import { PropertyType, FeatureType, DataSource, DataSet, LayerLegend, FeatureTypes, DataSourceState } from '@csnext/cs-data';
 import { CsMap } from './..';
@@ -15,7 +16,6 @@ import { Feature, GeoJsonProperties } from 'geojson';
 // import Handlebars from 'handlebars';
 // import HandlebarsIntl from 'handlebars-intl';
 import { LayerFilter } from '../classes/layer-filter';
-import { PropertyDetails } from '../components/feature-details/property-details';
 
 // HandlebarsIntl.registerWith(Handlebars);
 

@@ -18,7 +18,7 @@
                             >
                                 {{ property.type.title}}
                                 <h1>
-                                    <prop-value
+                                    <prop-value                                        
                                         :value="property.value"
                                         :proptype="property.type"
                                     ></prop-value>
@@ -31,18 +31,18 @@
                     <div
                         v-for="property in s.properties"
                         class="feature-property"
-                        v-if="property.value !== 'null'"
+                        v-if="property.value && property.value !== undefined && property.value !== 'null'"
                     >
                         <div>
                             <div
                                 class="feature-property-key"
-                                @click="setLegend(property)"
+                                @click="clickPropertyKey(property)"
                                 :disabled="!property.allowLegend"
                                 :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
                             >
                                 {{ property.type.title }}
                             </div>
-                            <div class="feature-property-value">                                                              
+                            <div class="feature-property-value">                                                                                              
                                 <prop-value 
                                     :value="property.value"
                                     :proptype="property.type"

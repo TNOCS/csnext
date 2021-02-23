@@ -32,7 +32,7 @@
         "mapbox-gl": "1.13.0",
         "mapbox-gl-controls": "^1.6.5",
         "numeral": "^2.0.6",
-        "@mapbox/mapbox-gl-draw": "1.2.0",
+        "@mapbox/mapbox-gl-draw": "1.2.1",
         "@mapbox/mapbox-gl-geocoder": "^4.7.0",
         "@mapbox/mapbox-gl-traffic": "1.0.2"        
     },

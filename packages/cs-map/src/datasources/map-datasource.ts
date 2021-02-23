@@ -9,7 +9,9 @@ import {
     LayerStyle,
     LayerEditor,
     FeatureEventDetails,
-    LayerSources, PropertyDetails
+    LayerSources,
+    PropertyDetails,
+    DataDetails
 } from '../.';
 
 import { guidGenerator } from '@csnext/cs-core';
@@ -28,7 +30,6 @@ import { GeojsonPlusLayer } from '../layers/geojson-plus-layer';
 import Vue from 'vue';
 import { LayerDetails } from '../components/layer-details/layer-details';
 import { FeatureTypes, DataSources, DataCollection, DataSource, DataSet } from '@csnext/cs-data';
-import { FeatureComponent } from '../components/feature-details/feature-component';
 import { ILayerExtensionType } from '../classes/ilayer-extension';
 
 const DEFAULT_LAYER_STYLE = {
@@ -99,7 +100,7 @@ export class MapDatasource extends DataSources {
         },
         public services?: IStartStopService[]
     ) {
-        super($cs, sources);
+        super(AppState.Instance, sources);
         this.layers = layers;
     }
 
@@ -432,11 +433,11 @@ export class MapDatasource extends DataSources {
 
     public openFeature(feature?: Feature, layer?: IMapLayer) {
         // if (!feature || !layer) { return; }
-        AppState.Instance.addSidebar(SidebarKeys.FEATURE_DETAILS, { icon: 'folder_open' });
+        AppState.Instance.addSidebar(SidebarKeys.FEATURE_DETAILS, { icon: 'folder_open' });        
         AppState.Instance.openRightSidebarWidget(
             {
                 id: 'feature-details-component',
-                component: (this.detailsComponent) ? this.detailsComponent :  FeatureComponent,
+                component: (this.detailsComponent) ? this.detailsComponent :  DataDetails,
                 options: {
                     showToolbar: false,
                     toolbarOptions: {
@@ -447,6 +448,7 @@ export class MapDatasource extends DataSources {
                 },
                 data: {
                     feature,
+                    features: [feature],
                     layer,
                     manager: this
                 }

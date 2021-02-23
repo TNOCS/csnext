@@ -278,7 +278,7 @@ export class StatsDatasource extends MapDatasource {
                     if (!this.mainLayer._source._featureType.infoPanels) {
                         this.mainLayer._source._featureType.infoPanels =  {
                             "popup": {
-                                "title": "statnaam",
+                                "title": this.mainLayer?.style?.title,
                                 "subtitle": "description",
                                 "sections": [
                                     {
@@ -287,7 +287,7 @@ export class StatsDatasource extends MapDatasource {
                                 ]
                             },
                             "details": {
-                                "title": "statnaam",
+                                "title": this.mainLayer?.style?.title,
                                 "subtitle": "description",
                                 "aliases": "aliases",
                                 "basePanel": "popup",

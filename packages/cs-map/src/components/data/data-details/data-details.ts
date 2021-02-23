@@ -10,23 +10,23 @@ import { DataInfoPanel } from '../data-info-panel/data-info-panel';
 @Component({
     name: 'data-details',
     components: { simplebar, DataInfoPanel },
-    props: ['data', 'section', 'panel', 'features', 'layer'],
+    props: ['data', 'section', 'panel', 'layer', 'feature'],
     template: require('./data-details.html')
 } as any)
 export class DataDetails extends WidgetBase {
 
-    public tab = 'tab-properties';
+    public tab = 'tab-info-panel';
     public componentKey = 0;
-
+  
     // public activeElement: any | null = null;
 
-    /** get active feature */
-    public get feature(): mapboxgl.MapboxGeoJSONFeature | undefined {
-        if (this.widget.data && this.widget.data.feature) {
-            return this.widget.data.feature;
-        }
-        return undefined;
-    }
+    // /** get active feature */
+    // public get feature(): mapboxgl.MapboxGeoJSONFeature | undefined {
+    //     if (this.widget.data && this.widget.data.feature) {
+    //         return this.widget.data.feature;
+    //     }
+    //     return undefined;
+    // }
 
     public get source(): IDatasource | undefined {
         if (this.widget.data && this.widget.data.manager) {
@@ -34,14 +34,14 @@ export class DataDetails extends WidgetBase {
         }
     }
 
-    public get layer(): IDatasource | undefined {
-        if (this.widget.data.layer) {
-            return this.widget.data.layer;
-        }
-    }
+    // public get layer(): IDatasource | undefined {
+    //     if (this.widget.data.layer) {
+    //         return this.widget.data.layer;
+    //     }
+    // }
 
     public updateFeature() {
-        if (!this.source || !this.feature) { return; }
+        if (!this.source) { return; }
         
         this.componentKey+=1;
 
@@ -55,7 +55,7 @@ export class DataDetails extends WidgetBase {
                     case CsMap.FEATURE_SELECT:
                         if (event.feature) {
                             this.widget.data.featureType = event.layer._source?._featureType;
-                            this.widget.data.feature = event.feature;
+                            this.widget.data.feature = event.feature;                            
                             this.widget.data.layer = event.layer;
                             this.updateFeature();
                             

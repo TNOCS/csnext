@@ -178,7 +178,7 @@ export class LayerSelection extends Vue {
             res[t].layers.push(l);
             this.groupsexpanded.push(this.groupsexpanded.length);
         } else {
-            res[t] = { title: t, color: 'gray', layers: [l], state: 'none' };
+            res[t] = { title: t, color: 'white', layers: [l], state: 'none' };
         }
     }
 

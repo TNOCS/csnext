@@ -3,10 +3,9 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 
 import './layer-legend-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapDatasource, IMapLayer, LayerFilter } from '../..';
+import { MapDatasource, IMapLayer, LayerFilter, PropertyDetails } from '../..';
 import '../slider-control';
 import { FeatureTypes, LayerLegend } from '@csnext/cs-data';
-import { PropertyDetails } from '../../components/feature-details/property-details';
 
 @Component({
     name: 'layer-legend-component',
