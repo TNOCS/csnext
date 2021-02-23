@@ -1,3 +1,4 @@
+import {GeojsonPlusLayer } from './../../../../layers/geojson-plus-layer';
 import Component from 'vue-class-component';
 import vue from 'vue';
 import './data-properties.css';
@@ -6,7 +7,6 @@ import { WidgetBase } from '@csnext/cs-client';
 import { InsightDashboardPanel, LayerLegend, InsightSection, PropertyType } from '@csnext/cs-data';
 import { Watch } from 'vue-property-decorator';
 import { IDatasource } from '@csnext/cs-core';
-import { GeojsonPlusLayer } from '@csnext/cs-map';
 import { PropertySection } from './property-section';
 import { PropertyDetails} from './property-details';
 
