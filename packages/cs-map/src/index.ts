@@ -57,6 +57,7 @@ export * from './components/feature-preview/feature-preview';
 export * from './components/data/data-details/data-details';
 export * from './components/data-insights/data-insights';
 export * from './components/data-table/data-table';
+export * from './components/data/data-sections/data-properties/property-section'
 
 // layers
 export * from './layers/base-layer';
