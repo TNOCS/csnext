@@ -143,8 +143,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
         if (this.options?.url && this.options.loadFeatureTypes) {
             axios
                 .get(`${this.options.url}types`)
-                .then(r => {                    
-                    this.manager.featureTypes = r.data;                                        
+                .then(r => {                           
+                    this.manager!.featureTypes = r.data;                                                            
                 })
                 .catch(e => {
                     console.log(e);
