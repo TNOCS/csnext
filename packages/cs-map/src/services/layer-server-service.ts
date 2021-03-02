@@ -64,7 +64,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                     this.manager.layers
                 ) {
                     for (const layer of response.data as IMapLayer[]) {
-                        const style = layer.style as LayerStyle;
+                        const style = layer.style as LayerStyle;                        
 
                         const s = new LayerSource();
                         if (!layer.color) {
@@ -79,10 +79,13 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         const gl = new GeojsonPlusLayer();
                         gl._service = this;
                         gl.source = s;
+                        if (!gl.source._featureType && this.manager?.featureTypes?.hasOwnProperty(layer.id)) {
+                            gl.source._featureType = this.manager.featureTypes[layer.id];
+                        }
                         gl.openFeatureDetails = true;
                         gl.isEditable = layer.isEditable;
                         gl.activeFeatureTypes = layer.activeFeatureTypes;
-                        gl.isLive = layer.isLive;
+                        gl.isLive = layer.isLive;                                
                         gl.featureTypes = layer.featureTypes;
                         if (style) {
                             if (style.iconZoomLevel) {
@@ -136,9 +139,23 @@ export class LayerServerService implements ILayerService, IStartStopService {
             .catch((e) => { console.log(e); });
     }
 
+    public async loadFeatureTypes() {
+        if (this.options?.url && this.options.loadFeatureTypes) {
+            axios
+                .get(`${this.options.url}types`)
+                .then(r => {                    
+                    this.manager.featureTypes = r.data;                                        
+                })
+                .catch(e => {
+                    console.log(e);
+                });            
+        }
+    }
+
     public async Start(manager: MapDatasource) {
         this.manager = manager;
         this.removeExistingLayers(manager);
+        this.loadFeatureTypes();        
         if (this.options && this.options.url) {
             await this.updateLayerList();
         }
@@ -147,7 +164,8 @@ export class LayerServerService implements ILayerService, IStartStopService {
             if (a === CsMap.LAYER_CREATED) {
                 this.createLiveLayer(l);
             }
-        })
+        });
+
     }
 
     public disableLayerSocket(gl: GeojsonPlusLayer) {
@@ -374,8 +392,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                 const body = gl._source!._data;
                 if (body && this.socket) {
                     // tslint:disable-next-line:no-string-literal
-                    body['lastUpdatedBy'] = this.socket.id;
-                    console.log(gl._source!._data);
+                    body['lastUpdatedBy'] = this.socket.id;                    
                     axios
                         .put(url, gl._source!._data, {
                             headers: {
