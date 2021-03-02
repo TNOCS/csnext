@@ -48,6 +48,10 @@ export class InfoPanelSection {
 //     }
 //   }
 
+export class FeatureTypes
+{
+    [key: string]: FeatureType;
+}
 
 export class FeatureType {
     public title?: string;
@@ -68,12 +72,15 @@ export class FeatureType {
     public infoPanels?: {[key : string]:InfoPanel};
     public style?: any;    
     public _baseTypes? : FeatureType[] = [];
+    public _originalFeatureType?: FeatureType;
+    public _inheritedTypes?: string[];
 
-    public static mergeFeatureTypes(types: FeatureType[]) : FeatureType[] {
-        console.log(types.length);
-        for (const ft of types) {
-            FeatureType.initType(ft);
-            if (!ft.baseType && ft.type !== 'node') { ft.baseType = 'node'}
+       public static mergeFeatureTypes(types: FeatureTypes) : FeatureTypes {        
+        let res: FeatureTypes = {};
+        for (const type in types) {            
+            let ft = Object.assign({}, types[type]);
+            ft._originalFeatureType = types[type];
+            FeatureType.initType(ft);            
             if (ft.baseType) {
                 ft._baseTypes = [];
                 if (typeof ft.baseType === 'string') {                    
@@ -85,8 +92,9 @@ export class FeatureType {
                     }
                 }                
             }
+            res[type] = ft;
         }        
-        return types;    
+        return res;
     }
 
     public static initType(ft: FeatureType) : FeatureType
@@ -101,31 +109,76 @@ export class FeatureType {
         return ft;
     }
 
-    public static mergeBaseType(baseType: string, ft: FeatureType, types: FeatureType[]) : FeatureType[]
-    {        
-        let base = types.find(ft => ft.type === baseType);                
-        if (base)
-        {            
+    public static updateTypeInheritence(base: FeatureType, ft: FeatureType, types: FeatureTypes) {        
+        if (!base._inheritedTypes) {            
+            if (base.baseType && Array.isArray(base.baseType)) {
+                for (const bb of base.baseType) {                    
+                    let ob = types[bb];        
+                    if (ob) {
+                        FeatureType.updateTypeInheritence(ob, base, types);
+                    }                    
+                }
+            }            
+        }
+        if (!ft._inheritedTypes) {
+            ft._inheritedTypes = [];
+        }
+            if (ft.type) { ft._inheritedTypes.push(ft.type)};
+            if (base.type) { ft._inheritedTypes.push(base.type)};
+            if (base._inheritedTypes) {
+                for (const it of base._inheritedTypes) {
+                    if (!ft._inheritedTypes.includes(it)) {
+                        ft._inheritedTypes.push(it);
+                    }                    
+                }
+            }            
+        
+    }
+
+    public static mergeBaseType(baseType: string, ft: FeatureType, types: FeatureTypes) : FeatureTypes
+    {                        
+        if (types.hasOwnProperty(baseType))
+        {                        
+            let base = types[baseType];            
+            
+            // find inherited types
+            FeatureType.updateTypeInheritence(base, ft, types);
+
+            if (base.baseType && Array.isArray(base.baseType)) {
+                for (const b of base.baseType) {                    
+                        FeatureType.mergeBaseType(b, base, types);                    
+                }
+            }
+
             ft._baseTypes?.push(base);
+            if (base._inheritedTypes) {
+                for (const type of base._inheritedTypes) {
+                    if (!ft._inheritedTypes?.includes(type)) {
+                        ft._inheritedTypes?.push(type);
+                    }                    
+                }
+            }
             
             // if (!ft.properties) { ft.properties = [];}                    
             if (base.properties)
-            {
-                if (ft.type === 'weapon') {
-                    console.log(JSON.stringify(ft, null, 2));
-                }
+            {               
                 let props: PropertyType[] = Object.assign([], base.properties);
                 // ft.properties = base.properties;
                 if (ft.properties)
                 {
                     for (const p of ft.properties)
-                    {
+                    {       
+                        let i = props.findIndex(f => (f.key === p.key));                 
                         if (p.relation)
                         {
-                            props.push(p);
+                            if (i === -1) {
+                                props.push(p);
+                            } else {
+                                props[i] = p;
+                            }
                         } else
                         {
-                            let i = props.findIndex(f => (f.key === p.key));
+                            
                             if (i === -1)
                             {
                                 props.push(p);
@@ -136,7 +189,6 @@ export class FeatureType {
                         }
                     }
                     ft.properties = props;
-
                 }
                 // .filter(p => ft.properties?.findIndex(f => f._key === p._key) === -1)?.concat(ft.properties);
             }
@@ -150,12 +202,14 @@ export class FeatureType {
                         ft.infoPanels[panel] = base.infoPanels[panel];
                     } else
                     {
-                        if (!ft.infoPanels[panel].sections) { ft.infoPanels[panel].sections = []; }
-                        if (base.infoPanels[panel].sections)
-                        {
-                            ft.infoPanels[panel].sections = [...base.infoPanels[panel].sections!, ...ft.infoPanels[panel].sections!];
-                        }
-                        ft.infoPanels[panel] = { ...base.infoPanels[panel], ...ft.infoPanels[panel] };
+                        // if (!ft.infoPanels[panel].sections) { ft.infoPanels[panel].sections = []; }
+                        // if (base.infoPanels[panel].sections)
+                        // {                        
+                        //     let res = [...base.infoPanels[panel].sections!.filter(s => ft.infoPanels![panel].sections?.findIndex(t => t.title === s.title))];     
+                            
+                        //     ft.infoPanels[panel].sections = [...res, ...ft.infoPanels[panel].sections!];
+                        // }
+                        // ft.infoPanels[panel] = { ...base.infoPanels[panel], ...ft.infoPanels[panel] };
                     }
                 }
             }

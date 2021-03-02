@@ -1,5 +1,5 @@
 import { Get, Controller, Param, Post, Body, Put, Optional, Query } from '@nestjs/common';
-import { FeatureType, LayerSource } from '../classes';
+import { FeatureType, FeatureTypes, LayerSource } from '../classes';
 
 import {
   ApiTags,
@@ -21,11 +21,24 @@ export class TypesController {
 })
   @ApiResponse({
       status: 200,
-      description: 'Returns all available layer definitions.'      
+      description: 'List ofall FeatureType definitions'      
   })
   @Get()
-  public featuretypes(): FeatureType[] {
+  public featuretypes(): FeatureTypes {
       return this.layerService.getTypes();      
+  }
+
+  @ApiOperation({
+    summary: 'Get available feature types with their base types merged',
+    description: 'Returns all available feature types'
+})
+  @ApiResponse({
+      status: 200,
+      description: 'List of all FeatureType definitions'      
+  })
+  @Get('/merged')
+  public featuretypesMerged(): FeatureTypes {
+      return FeatureType.mergeFeatureTypes(this.layerService.getTypes());
   }
 
   @ApiOperation({
@@ -49,12 +62,12 @@ export class TypesController {
     type: FeatureType
   })
   @Post()
-  public postFeatureType(@Body() body: FeatureType | FeatureType[]): Promise<FeatureType | FeatureType[] | undefined> {
-    if (Array.isArray(body)) {
-      return this.layerService.updateFeatureTypes(body);
-    } else {
+  public postFeatureType(@Body() body: FeatureType | FeatureTypes): Promise<FeatureType | FeatureTypes | undefined> {
+    if (body.hasOwnProperty('type')) {
       return this.layerService.updateFeatureType(body);
-    }
+    } else {
+      return this.layerService.updateFeatureTypes(body as FeatureTypes);
+    }    
   }
 
 

@@ -9,7 +9,8 @@ import {
     LayerDefinition,
     LayerSource,
     Helpers,
-    FeatureType
+    FeatureType,
+    FeatureTypes
 } from '../classes';
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
@@ -54,7 +55,7 @@ export class LayerService extends AggregateRoot {
         super();
         this.config = {
             layers: [],
-            types: [],            
+            featureTypes: new FeatureTypes(),            
             sourcePath: './sources/',
             importPath: './import'
         };
@@ -84,6 +85,15 @@ export class LayerService extends AggregateRoot {
                         ...this.config,
                         ...JSON.parse(configString)
                     };
+
+                    // import old types field, convert them to featureTypes
+                    if (this.config.types && (!this.config.featureTypes || Object.keys(this.config.featureTypes).length===0)) {
+                        this.config.featureTypes = {};
+                        for (const ft of this.config.types) {
+                            this.config.featureTypes[ft.type] = ft;                            
+                        }
+                    }
+
                     // if no serverpath has been specified in config use this one
                     // if (!this.config.serverPath) {
                     this.config.serverPath = serverPath || this.config.serverPath;
@@ -215,29 +225,24 @@ export class LayerService extends AggregateRoot {
         this.saveServerConfig();
     }
 
-    public getTypes() : FeatureType[] {
-        return this.config.types;
+    public getTypes(complete = false) : FeatureTypes {
+        if (complete) {
+            return new FeatureTypes();
+        } else {
+            return this.config.featureTypes;
+        }
     }
 
     public updateFeatureType(ft: FeatureType) : Promise<FeatureType | undefined> {
         return new Promise((resolve, reject) => {
-            let i = this.config.types.findIndex(nd => nd.type === ft.type);
-            if (i === -1) {
-                this.config.types.push(ft);                
-            } else {
-                this.config.types[i] = ft;
-            }
+            this.config.featureTypes[ft.type] = ft;            
             resolve(ft);
         })
     }
 
-    public updateFeatureTypes(fts: FeatureType[]) : Promise<FeatureType[] | undefined> {
-        return new Promise((resolve, reject) => {
-            for (const type of fts) {
-                console.log(type.type + ' - ' + type.title);
-                
-            }
-            this.config.types = fts;    
+    public updateFeatureTypes(fts: FeatureTypes) : Promise<FeatureTypes | undefined> {
+        return new Promise((resolve, reject) => {            
+            this.config.featureTypes = fts;    
             this.saveServerConfigDelay();        
             resolve(fts);
         })
@@ -435,6 +440,24 @@ export class LayerService extends AggregateRoot {
         }
     }
 
+    public sendLayerUpdate(id: string) : Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.getLayerSourceById(id)
+                .then(s => {
+                    if (this.socket && this.socket.server) {
+                        this.socket.server.emit(
+                            'layer/' + id,
+                            JSON.stringify(s)
+                        );
+                    }
+                    resolve(true);
+                }).catch(e => {
+                    reject();
+                })
+            }
+        );
+    }
+
     /** add or update feature */
     public updateFeature(
         sourceid: string,
@@ -480,6 +503,32 @@ export class LayerService extends AggregateRoot {
                     // this.eventBus.publish(new FeatureUpdatedEvent(feature.id!, feature));                    
                 }
                 resolve(feature);
+            } catch (e) {
+                reject('Source not found');
+            }
+        });
+    }
+
+    public updateAllFeatures(sourceid: string, features: Feature[]) : Promise<LayerSource | undefined> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // console.log(`Update feature ${feature.id}`);
+                // find source
+                const source = await this.getLayerSourceById(sourceid);
+                if (source && source.features) {
+                    // source.id might be missing for GeojsonSources
+                    if (!source.id) source.id = sourceid;
+
+                    source.features = [];
+                    for (const feature of features) {
+                        source.features.push(feature);
+                        new GeojsonSource().initFeature(feature);                                                
+                    }
+
+                    await this.sendLayerUpdate(source.id);                    
+                    this.saveSource(source);                    
+                }
+                resolve(source);
             } catch (e) {
                 reject('Source not found');
             }

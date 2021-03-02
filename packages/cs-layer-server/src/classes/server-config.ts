@@ -1,6 +1,6 @@
 import { LayerDefinition, Connection } from "./.";
 import { FeatureCollection } from './feature-collection';
-import { FeatureType } from './feature-type';
+import { FeatureType, FeatureTypes } from './feature-type';
 
 /** Server Configuration File  */
 export class ServerConfig {
@@ -10,7 +10,8 @@ export class ServerConfig {
 
     /** List of available layers */
     public layers: LayerDefinition[] = [];
-    public types: FeatureType[] = [];
+    public types?: FeatureType[] = [];
+    public featureTypes: FeatureTypes = {};
     /** public url of server endpoint */
     public serverUrl?: string;
     /** root folder for this server config */
