@@ -47,10 +47,9 @@ export class DataDetails extends WidgetBase {
 
     }
 
-    public contentLoaded() {
-        
+    public contentLoaded() {        
         if (this.source) {            
-            this.busManager.subscribe(this.source.events, CsMap.FEATURE, (a: string, event: any) => {
+            this.busManager.subscribe(this.source.events, CsMap.FEATURE, (a: string, event: any) => {                
                 switch (a) {
                     case CsMap.FEATURE_SELECT:
                         if (event.feature) {
