@@ -90,6 +90,7 @@ export class PropertyType {
     public _originalType?: string;        
     @FormField({ title: 'Key', type: 'string' })
     public key?: string;
+    public attributes?: {[key: string]: string};
 
     public _values?: any[];    
 }
