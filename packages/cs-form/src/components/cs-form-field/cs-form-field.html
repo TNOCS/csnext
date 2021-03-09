@@ -340,7 +340,7 @@
         </template>
     <div v-if="field.type === 'keysobject'" class="keys-object-form-field">
         <v-layout>
-            {{ $cs.Translate(field.title) }}
+            <span v-if="!field.hideTitle">{{ $cs.Translate(field.title) }}</span>
             <v-spacer></v-spacer>
             <!-- <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)">
                 <v-icon>add</v-icon>
