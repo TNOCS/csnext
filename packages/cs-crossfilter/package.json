@@ -10,8 +10,8 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
-        "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "tsc && webpack --mode development",
+        "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "build": "webpack --mode development",
         "build:production": "webpack --mode development && tsc",
         "clean": "del-cli yarn.lock yarn-error.log dist lib node_modules"
     },
@@ -21,16 +21,19 @@
     "dependencies": {
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-core": "^0.0.131",                           
-        "dc": "4.2.0",
+        "dc": "4.2.3",
         "@csnext/cs-data": "0.0.131",
         "@csnext/cs-map": "0.0.131",
         "@mapbox/mapbox-gl-draw": "1.2.0",
         "@mapbox/mapbox-gl-geocoder": "^4.7.0",
-        "@mapbox/mapbox-gl-traffic": "1.0.2"
+        "@mapbox/mapbox-gl-traffic": "1.0.2",
+        "crossfilter2": "1.5.4",
+        "d3": "6.5.0"
         
     },
     "devDependencies": {             
-        "@types/crossfilter": "0.0.34"             
+        "@types/crossfilter": "0.0.34",
+        "@types/d3": "6.3.0"            
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }
