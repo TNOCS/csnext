@@ -27,8 +27,25 @@ export class RelationType {
     public type?: string;
     public multipe?: boolean;
     public objectType?: string;
-    public subjectType?: string;
+    public subjectType?: string;    
 
+}
+
+export enum PropertyValueType {    
+    boolean = 'boolean',
+    date = 'date',
+    datetime = 'datetime',    
+    number = 'number',    
+    string = 'string',
+    time = 'time',
+    year = 'year',
+    yearmonth = 'yearmonth',
+    relation = 'relation',
+    url = 'url',
+    options = 'options',
+    image = 'image',
+    epoch = 'epoch',
+    wkt = 'wkt'
 }
 
 export declare type PropertyCollection = PropertyType[];
@@ -64,7 +81,7 @@ export class PropertyType {
     
     public title?: string;
     public colorScheme?: string | string[];    
-    public type?: string;
+    public type?: PropertyValueType;
     public unique?: number;
     public legendStyle?: any;
     public resource?: string;
@@ -73,6 +90,7 @@ export class PropertyType {
     public hidden?: boolean;
     public readonly?: boolean;  
     public urlTemplate?: string;  
+    public attributes?: {[key: string]: string};
 
     public class?: string;
     public _initialized?: boolean = false;        
