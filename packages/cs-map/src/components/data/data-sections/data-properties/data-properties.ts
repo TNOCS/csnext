@@ -4,8 +4,8 @@ import vue from 'vue';
 import './data-properties.css';
 import simplebar from 'simplebar-vue';
 import { WidgetBase } from '@csnext/cs-client';
-import { InsightDashboardPanel, LayerLegend, InsightSection, PropertyType } from '@csnext/cs-data';
-import { Watch } from 'vue-property-decorator';
+import { InsightDashboardPanel, LayerLegend, InsightSection, PropertyType, FeatureType } from '@csnext/cs-data';
+import { Prop, Watch } from 'vue-property-decorator';
 import { IDatasource } from '@csnext/cs-core';
 import { PropertySection } from './property-section';
 import { PropertyDetails} from './property-details';
@@ -13,14 +13,15 @@ import { PropertyDetails} from './property-details';
 @Component({
     name: 'data-properties',
     components: { simplebar },
-    props: ['data', 'section', 'panel', 'feature', 'layer'],
+    props: ['data', 'section', 'panel', 'feature', 'layer', 'featureType'],
     template: require('./data-properties.html')
 } as any)
-export default class DataProperties extends WidgetBase {
+export class DataProperties extends WidgetBase {
 
     public panel?: InsightDashboardPanel;
     public data?: IDatasource;
-    public section?: InsightSection;
+    public section?: InsightSection;    
+    public featureType?: FeatureType;
     public feature?: mapboxgl.MapboxGeoJSONFeature;
     public layer?: GeojsonPlusLayer;
     public sections: PropertySection[] = [];
@@ -52,9 +53,9 @@ export default class DataProperties extends WidgetBase {
     }
 
     public updateSections() {        
-        if (!this.layer || !this.layer.id || !this.panel) { return; }        
-        if (this.section && !this.section.id) {
-            this.section.id = this.layer.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
+        // if (!this.layer || !this.layer.id || !this.panel) { return; }        
+        if (this.section?.id && this.data?.id && !this.section.id && this.panel?.sections) {
+            this.section.id = this.data.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
         }
         const defaultSection = {
             id: 'default',
@@ -76,9 +77,13 @@ export default class DataProperties extends WidgetBase {
             this.sectionsPanels.push(0);
         }
 
-        if (this.data && this.layer && this.layer._source && this.data) {
+        if (!this.featureType && this.layer?._source) {
+            this.featureType = this.layer._source.getFeatureType();
+        }
+
+        if (this.data && this.data && this.featureType) {
             /** find feature type */
-            const ft = this.layer._source.getFeatureType();
+            const ft = this.featureType;
             // this.feature = this.features[0];
 
             /** lookup all properties */
@@ -94,7 +99,7 @@ export default class DataProperties extends WidgetBase {
                     if (typeof pt === 'string') {
                         proptype = {
                             key: key,
-                            title: key,
+                            label: key,
                             type: 'string',
                             description: key
                         } as PropertyType;
@@ -112,7 +117,7 @@ export default class DataProperties extends WidgetBase {
                     let legends: LayerLegend[] = [];
 
                     // find legend
-                    if (this.layer._legends) {
+                    if (this.layer?._legends) {
                         legends = this.layer._legends.filter(
                             (l: any) => l.property === key
                         );

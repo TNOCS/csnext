@@ -4,8 +4,10 @@ import './data-info-panel.css';
 import { FeatureType, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
 import ImageSection from './../data-sections/image-section';
 import TitleSection from './../data-sections/title-section';
+import { SimpleRelationListSection } from './../data-sections/simple-relation-list-section';
+import { RelationListSections} from './../data-sections/relation-list-sections';
 import InstanceSection from './../data-sections/instance-section';
-import DataProperties from './../data-sections/data-properties/data-properties';
+import { DataProperties } from './../data-sections/data-properties/data-properties';
 // import SimpleRelationListSection from './../data-sections/simple-relation-list-section.vue';
 // import RelationListSections from './../data-sections/relation-list-sections';
 import { GraphElement } from '../../../classes/graph-element';
@@ -16,7 +18,7 @@ import simplebar from 'simplebar-vue';
 
 @Component({
     name: 'data-info-panel',
-    components: { simplebar, ImageSection, DataProperties, TitleSection, InstanceSection }, // SimpleRelationListSection, RelationListSections 
+    components: { simplebar, ImageSection, DataProperties, TitleSection, InstanceSection, SimpleRelationListSection, RelationListSections }, //  
     props: ['data', 'featureType', 'panel', 'node', 'source', 'feature', 'layer', 'features'],
     template: require('./data-info-panel.html')
 } as any)

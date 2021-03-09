@@ -7,22 +7,22 @@
             <v-expansion-panel-content>
                 <template v-if="s.type === 'big-text'">
                     <v-container>
-                        <v-row no-gutters>
-                            <v-col
-                                cols="4"
+                        <v-row no-gutters    v-for="property in s.properties"
+                        :key="property.key">
+                            <v-col                                
                                 @click="setLegend(property)"
                                 :disabled="!property.allowLegend"
-                                v-for="property in s.properties"
-                                :key="property.key"
+                             
                                 :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
                             >
-                                {{ property.type.title}}
-                                <h1>
+                                {{property.type.label}}
+                            </v-col>
+                            <v-col>
+                                
                                     <prop-value                                        
                                         :value="property.value"
                                         :proptype="property.type"
-                                    ></prop-value>
-                                </h1>
+                                    ></prop-value>                                
                             </v-col>
                         </v-row>
                     </v-container>
@@ -40,7 +40,7 @@
                                 :disabled="!property.allowLegend"
                                 :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
                             >
-                                {{ property.type.title }}
+                                {{ property.type.label }}
                             </div>
                             <div class="feature-property-value">                                                                                              
                                 <prop-value 

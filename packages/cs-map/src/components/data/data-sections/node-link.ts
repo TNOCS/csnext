@@ -1,7 +1,6 @@
-// import { GraphElement } from '../../../classes';
-import { IDatasource} from '@csnext/cs-core';
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { DataInfoPanel } from './../data-info-panel/data-info-panel';
+import { IDatasource } from '@csnext/cs-core';
+import { Component, Vue } from "vue-property-decorator";
+import { GraphElement } from '../../../classes/graph-element';
 
 @Component({
   name: 'node-link',
@@ -18,17 +17,17 @@ import { DataInfoPanel } from './../data-info-panel/data-info-panel';
 </div>`,
   components: { }
 })
-export default class NodeLink extends Vue {
+export class NodeLink extends Vue {
 
-  // private node?: GraphElement;
-  // private source?: IDatasource;
+  private node?: GraphElement;
+  private source?: IDatasource;
 
   
-  // private activate() {
-  //   if (this.node && this.source?.bus) {
-  //     this.source.bus.publish('nodelink', 'activated', this.node);
-  //   }
-  // }
+  private activate() {
+    if (this.node && this.source?.events) {
+      this.source.events.publish('nodelink', 'activated', this.node);
+    }
+  }
 
 }
 

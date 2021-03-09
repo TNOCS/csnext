@@ -38,7 +38,7 @@ export * from './events/';
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import express from 'express';
+import express, { json } from 'express';
 import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
 import { ExpressPeerServer  } from 'peer';
@@ -99,6 +99,8 @@ export class NestServer {
                     users: this.config.basicAuth.users
                 }));
             }
+
+            this.app.use(json({ limit: '50mb' }));
            
             if (this.config && this.config.cors) {
                 this.app.enableCors({ origin: true });

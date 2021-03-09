@@ -13,6 +13,8 @@ import { MapOptions } from './classes/map-options';
 import { MapboxOptions } from 'mapbox-gl';
 // import { DataChart } from './components/data-chart/data-chart';
 import { VNode } from 'vue/types/umd';
+import { PropertyValue } from './components/data/data-sections/data-properties/property-value';
+import { PropertyType } from '@csnext/cs-data';
 
 // classes
 export * from './classes/map-options';
@@ -32,7 +34,8 @@ export * from './interfaces/source';
 export * from './classes/map-style-definition';
 export * from './services/layer-server-options';
 export * from './components/data/data-sections/data-properties/property-details';
-
+export * from './components/data/data-info-panel/data-info-panel';
+export * from './components/data/data-sections/node-link';
 
 // components
 export * from './components/data/data-details/data-details';
@@ -58,6 +61,7 @@ export * from './components/data/data-details/data-details';
 export * from './components/data-insights/data-insights';
 export * from './components/data-table/data-table';
 export * from './components/data/data-sections/data-properties/property-section'
+export * from './components/data/data-sections/data-properties/property-value';
 
 // layers
 export * from './layers/base-layer';
@@ -90,24 +94,73 @@ CsMap.AddLayerExtension(new WmsTimeExtension());
 CsMap.AddLayerServiceType(new LayerServer());
 CsMap.AddLayerServiceType(new LayerServerService());
 
+// Vue.component('prop-value', {
+//     props: ['value', 'proptype', 'showUnit'],
+//   render(createElement): VNode {
+//       let pt = this.propValue.propertyType as PropertyType;
+//       let value = this.propValue.value;
+//       switch (this.proptype.type) {
+//           case 'number':              
+//               if (value) {
+//                   const i = parseInt(value);
+//                   if (i) {
+//                     let v = i.toFixed(pt?.decimals || 0);
+//                     if (this.showUnit && pt?.unit) { v+=' ' + pt.unit; }
+//                     return createElement('span', v);
+//                   }
+//               } else {
+//                   return createElement('span', value);
+//               }
+//           case 'string':
+//                 return createElement('span', value);
+//           case 'epoch':
+//               return createElement('span', new Date(value).toLocaleString());
+//           case 'date':
+//               return createElement('span', new Date(value).toLocaleString());                
+//           case 'image':
+//               return createElement('img', { class: 'info-image', attrs: { src: value}} );
+//           case 'boolean':
+//               return createElement('span', value ? $cs.Translate('YES') : $cs.Translate('NO'))
+//           case 'url':                
+//               let url = (!value.startsWith('http')) ? 'https://' + value : value;
+//               if (pt.urlTemplate) {
+//                 url = pt.urlTemplate.replace('$1', value)
+//               }
+//               return createElement('a', { attrs: { target:'_blank', href: url} }, value)
+//           default:
+//               return createElement('span', value);
+//       }
+//   }
+// });
 Vue.component('prop-value', {
     props: ['value', 'proptype', 'showUnit'],
     render(createElement): VNode {
         switch (this.proptype.type) {
             case 'number':
                 if (this.value) {
-                    let value = this.value.toFixed(this.proptype.decimals || 0);
+                    let n = parseInt(this.value);
+                    if (n) {
+                    let value = n.toFixed(this.proptype.decimals || 0);
                     if (this.showUnit && this.proptype.unit) { value+=' ' + this.proptype.unit; }
                     return createElement('span', value);
+                    }
                 } else {
                     return createElement('span','');
                 }
+                      case 'image':
+              return createElement('img', { class: 'info-image', attrs: { src: this.value}} );
+            case 'date':
+              return createElement('span', new Date(this.value).toLocaleString());                
             case 'epoch':
                 return createElement('span', new Date(this.value).toLocaleString());
             case 'boolean':
                 return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
             case 'url':                
-                return createElement('a', { attrs: { href: (!this.value.startsWith('http')) ? 'https://' + this.value : this.value } }, this.value)
+              let url = (!this.value.startsWith('http')) ? 'https://' + this.value : this.value;
+              if (this.proptype.urlTemplate) {
+                url = this.proptype.urlTemplate.replace('$1', this.value)
+              }
+              return createElement('a', { attrs: { target:'_blank', href: url} }, this.value)            
             default:
                 return createElement('span', this.value);
         }
