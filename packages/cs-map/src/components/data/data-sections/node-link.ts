@@ -1,6 +1,8 @@
 import { IDatasource } from '@csnext/cs-core';
 import { Component, Vue } from "vue-property-decorator";
 import { GraphElement } from '../../../classes/graph-element';
+import { CsMap } from '../../cs-map/cs-map';
+
 
 @Component({
   name: 'node-link',
@@ -25,7 +27,7 @@ export class NodeLink extends Vue {
   
   private activate() {
     if (this.node && this.source?.events) {
-      this.source.events.publish('nodelink', 'activated', this.node);
+      this.source.events.publish(CsMap.NODE, CsMap.NODE_SELECT, this.node);
     }
   }
 

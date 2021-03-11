@@ -155,6 +155,8 @@ Vue.component('prop-value', {
                 return createElement('span', new Date(this.value).toLocaleString());
             case 'boolean':
                 return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
+            case 'gml':
+                return createElement('span', 'location');
             case 'url':                
               let url = (!this.value.startsWith('http')) ? 'https://' + this.value : this.value;
               if (this.proptype.urlTemplate) {

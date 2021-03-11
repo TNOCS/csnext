@@ -4,6 +4,7 @@ import { NodeLink } from './node-link';
 @Component({
   name: 'simple-relation-list-section',
   components: { NodeLink },
+  props: ['source'],
   template: `<div>  
   <div class="list-section" v-if="node && node._outgoing">        
       <v-layout>

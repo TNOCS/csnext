@@ -75,6 +75,8 @@ export class CsMap extends WidgetBase {
     public static MAP = 'map';
     public static MAP_LOADED = 'loaded';
     public static SEARCH_RESULT_SELECT = 'search.select';
+    public static NODE = 'node';
+    public static NODE_SELECT = 'node.selected';
 
 
     public get manager(): MapDatasource | undefined {

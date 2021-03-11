@@ -5,6 +5,7 @@ import { SimpleRelationListSection } from './simple-relation-list-section';
 @Component({
   name: 'relation-list-sections',
   components: { SimpleRelationListSection},
+  props: [ 'source'],
   template: `<div>  
   <div class="list-section" v-if="node && node._outgoing">        
     <div v-for="(list,indx) in lists()" :key="indx">      
