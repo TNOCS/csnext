@@ -289,7 +289,7 @@ export class BaseLayer implements IMapLayer {
     }
 
     public parsePopup(f?: mapboxgl.MapboxGeoJSONFeature): string {
-        if (!f || !f.id || !this.MapControl) {
+        if (!f || f.id == undefined || !this.MapControl) {
             return '';
         }
         if (this.style && this.style.popup) {
