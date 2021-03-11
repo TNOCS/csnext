@@ -55,13 +55,20 @@ export class DatasourceManager {
               datasource.loaded = false;
               datasource.isLoading = false;
               reject(e);
+              while (datasource.requestQueue &&
+                datasource.requestQueue.length > 0) {
+                const item = datasource.requestQueue.pop();
+                if (item) {
+                  item.reject(e);
+                }
+                return;
+            }
               return;
             })
             .then(r => {
               datasource.loaded = true;
               datasource.isLoading = false;
               resolve(r);
-
               while (
                 datasource.requestQueue &&
                 datasource.requestQueue.length > 0
