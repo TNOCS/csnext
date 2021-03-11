@@ -9,7 +9,7 @@
             :sizeValue="element.size"
             :render="!element.hide"
             :sizeUnit="element.sizeUnit"
-            :expandToMin="true"
+            :expandToMin="element.expandToMin"
         >
             <cs-widget
                 v-if="element.widgetId"
@@ -32,7 +32,7 @@
                         v-if="!el.hide"
                         :render="!el.hide"
                         :sizeUnit="el.sizeUnit"
-                        :expandToMin="true"
+                        :expandToMin="element.expandToMin"
                     >
                         <cs-widget
                             v-if="el.widgetId"
@@ -56,7 +56,7 @@
                                     :render="!ell.hide"
                                     :sizeValue="ell.size"
                                     :sizeUnit="ell.sizeUnit"
-                                    :expandToMin="true"
+                                    :expandToMin="element.expandToMin"
                                 >
                                     <cs-widget
                                         v-if="ell.widgetId"
@@ -80,7 +80,7 @@
                                                 :render="!elll.hide"
                                                 :sizeValue="elll.size"
                                                 :sizeUnit="elll.sizeUnit"
-                                                :expandToMin="true"
+                                                :expandToMin="element.expandToMin"
                                             >
                                                 <cs-widget
                                                     v-if="elll.widgetId"

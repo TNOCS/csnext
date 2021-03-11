@@ -8,5 +8,6 @@ export class SplitElement {
     public dashboardId?: string;
     public splitpanel?: SplitPanelOptions;
     public hide?: boolean;
+    public expandToMin?: boolean;
 }
 
