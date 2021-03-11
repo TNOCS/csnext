@@ -1,4 +1,4 @@
-import { guidGenerator } from '@csnext/cs-core';
+import { guidGenerator, IDatasource, MessageBusService } from '@csnext/cs-core';
 import axios from 'axios';
 import { FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
 import { DataSet } from './data-set';
@@ -6,7 +6,7 @@ import { plainToClass } from 'class-transformer';
 import { DataSourceState } from './data-source-state';
 import { PropertyValueType } from './property-type';
 
-export class DataSource {
+export class DataSource implements IDatasource {
     public id?: string;
     public title?: string;
     public url?: string;
@@ -15,7 +15,8 @@ export class DataSource {
     // public featureTypes?: FeatureTypes;
     public defaultFeatureType?: string;
     public state: DataSourceState;
-    public logo?: string;
+    public logo?: string;    
+    public events = new MessageBusService();    
 
     public _meta?: FeatureTypes;
     public _data?: DataSet;
@@ -62,6 +63,10 @@ export class DataSource {
         if (!this.id) {
             this.id = guidGenerator();
         }
+    }
+
+    public get bus() : MessageBusService {
+        return this.events;
     }
 
     public refreshSource(): Promise<DataSet> {
