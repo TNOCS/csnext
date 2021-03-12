@@ -909,24 +909,7 @@ export class CsMap extends WidgetBase {
         });
     }
 
-    private getRouteOptions(): mapboxgl.MapboxOptions {
-        const options = {} as MapboxOptions;
-        const q = this.$route.query;
-        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
-            const lng = parseFloat(q.lng as string);
-            const lat = parseFloat(q.lat as string);
-            options.center = [lng, lat];
-        }
-        if (q.hasOwnProperty('z')) {
-            options.zoom = parseFloat(q.z as string);
-        }
-        if (q.hasOwnProperty('style')) {
-            const styleId = q.style as string;
-            this.options.style = styleId;
-            options.style = this.getStyleUri(styleId);
-        }
-        return options;
-    }
+    
 
     private getStyleUri(styleId: string): string {
         const style = this.styles.find(s => s.id === styleId);
@@ -980,14 +963,28 @@ export class CsMap extends WidgetBase {
         }
     }
 
+    private getRouteOptions(): mapboxgl.MapboxOptions {
+        const options = {} as MapboxOptions;
+        const q = this.$route.query;
+        if (q.hasOwnProperty('lat') && q.hasOwnProperty('lng')) {
+            const lng = parseFloat(q.lng as string);
+            const lat = parseFloat(q.lat as string);
+            options.center = [lng, lat];
+        }
+        if (q.hasOwnProperty('z')) {
+            options.zoom = parseFloat(q.z as string);
+        }
+        if (q.hasOwnProperty('style')) {
+            const styleId = q.style as string;
+            this.options.style = styleId;
+            options.style = this.getStyleUri(styleId);
+        }
+        return options;
+    }
+
     private updateUrlQueryParams() {
         const center = this.map.getCenter();
         const zoom = this.map.getZoom();
-        const combined = { ... this.$route.query, ...{ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style } };        
-        this.$router.replace({ path: this.$route.params[0], query: combined }, ()=> {
-
-        }, (err) => {
-            // console.log(err);
-        })
+        $cs.updateRouteQuery({ lat: center.lat.toFixed(5), lng: center.lng.toFixed(5), z: zoom.toFixed(3), style: this.options.style });        
     }
 }
