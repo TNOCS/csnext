@@ -14,7 +14,7 @@ import { MapboxOptions } from 'mapbox-gl';
 // import { DataChart } from './components/data-chart/data-chart';
 import { VNode } from 'vue/types/umd';
 import { PropertyValue } from './components/data/data-sections/data-properties/property-value';
-import { PropertyType } from '@csnext/cs-data';
+import { PropertyType, PropertyValueType } from '@csnext/cs-data';
 
 // classes
 export * from './classes/map-options';
@@ -135,8 +135,8 @@ CsMap.AddLayerServiceType(new LayerServerService());
 Vue.component('prop-value', {
     props: ['value', 'proptype', 'showUnit'],
     render(createElement): VNode {
-        switch (this.proptype.type) {
-            case 'number':
+        switch (this.proptype.type as PropertyValueType) {
+            case PropertyValueType.number:
                 if (this.value) {
                     let n = parseInt(this.value);
                     if (n) {
@@ -147,17 +147,21 @@ Vue.component('prop-value', {
                 } else {
                     return createElement('span','');
                 }
-                      case 'image':
+            case PropertyValueType.image:
               return createElement('img', { class: 'info-image', attrs: { src: this.value}} );
-            case 'date':
+            case PropertyValueType.date:
               return createElement('span', new Date(this.value).toLocaleString());                
-            case 'epoch':
+            case PropertyValueType.epoch:
                 return createElement('span', new Date(this.value).toLocaleString());
-            case 'boolean':
+            case PropertyValueType.boolean:
                 return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
-            case 'gml':
+            case PropertyValueType.featurecollection:
+                return createElement('span', '<feature collection>');
+            case PropertyValueType.feature:
+                return createElement('span', this.value?.geometry?.type || 'feature');
+            case PropertyValueType.wkt:
                 return createElement('span', 'location');
-            case 'url':                
+            case PropertyValueType.url:                
               let url = (!this.value.startsWith('http')) ? 'https://' + this.value : this.value;
               if (this.proptype.urlTemplate) {
                 url = this.proptype.urlTemplate.replace('$1', this.value)

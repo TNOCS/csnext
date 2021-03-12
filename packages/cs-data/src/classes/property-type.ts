@@ -16,7 +16,10 @@ export enum PropertyValueType {
     options = 'options',
     image = 'image',
     epoch = 'epoch',
-    wkt = 'wkt'
+    wkt = 'wkt',
+    feature = "feature",
+    featurecollection = "featurecollection",
+    tags = 'tags'
 }
 
 

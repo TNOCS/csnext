@@ -31,7 +31,7 @@
                     <div
                         v-for="property in s.properties"
                         class="feature-property"
-                        v-if="property.value && property.value !== undefined && property.value !== 'null'"
+                        v-if="property.value && !property.type.hide && property.value !== undefined && property.value !== 'null'"
                     >
                         <div>
                             <div
