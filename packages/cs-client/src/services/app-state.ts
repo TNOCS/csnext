@@ -105,6 +105,18 @@ export class AppState extends AppStateBase {
     this.loader = new Loader(this.bus);
   }
 
+  public updateRouteQuery(params : {[key: string]: any}) {
+    if (!this.router?.currentRoute?.query) { return; }
+    let query = this.router?.currentRoute?.query;
+    const combined = { ... query, ...params };        
+        this.router.replace({ path: this.router?.currentRoute.params[0], query: combined }, ()=> {
+
+        }, (err) => {
+            // console.log(err);
+        })
+      
+  }
+
   public initSocket() {
     if (
       this.project &&
