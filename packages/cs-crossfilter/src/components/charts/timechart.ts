@@ -113,7 +113,7 @@ export class TimeChart implements IChartType {
       options._group = options._dimension.group().reduce(
         (p: any, v: any) => {
           ++p.count;
-          p.total += CrossFilterUtils.getValue(options, v); //v[options.key!];
+          p.total += CrossFilterUtils.getValue(options, v); //v[options.key!];          
           return p;
         },
         (p: any, v: any) => {
@@ -131,7 +131,7 @@ export class TimeChart implements IChartType {
 
       let el = dc
       // .barChart('#' + options._elementId)
-      .barChart('#' + options._elementId)      
+      .lineChart('#' + options._elementId)      
       .colors(['#00890c'])
       .brushOn(options.disableFilter === false);
 
@@ -225,12 +225,16 @@ export class TimeChart implements IChartType {
         // .margins({ top: 20, right: 20, bottom: 40, left: 60 })
         .dimension(options._dimension)        
         .group(options._group)
+        .renderArea(false)
         .colors(['#00890c'])
         .yAxisLabel(options.titleY || '')        
-        .xAxisLabel(options.titleX || '')        
+        .xAxisLabel(options.titleX || '')    
+        // .brushOn(false)
+        .valueAccessor( d=> d.value.count)    
         // .xUnits(d3.timeDays)
         .elasticY(true)        
-        .renderLabel(true)
+        .renderLabel(false)
+        .renderHorizontalGridLines(true)        
         .mouseZoomable(false)                
         .on('filtered',()=>{          
           let f = this.getFilters(options);          

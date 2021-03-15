@@ -9,3 +9,7 @@
 .deselected {
     opacity: 0.25;
 }
+
+.stack-list .line {
+    fill: transparent
+}
