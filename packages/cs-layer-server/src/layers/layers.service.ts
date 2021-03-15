@@ -15,7 +15,7 @@ import {
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
-import { throttle } from 'lodash';
+import { DebouncedFunc, throttle } from 'lodash';
 import { Debounce } from 'lodash-decorators';
 
 import { Client } from 'socket.io';
@@ -47,6 +47,7 @@ export class LayerService extends AggregateRoot {
     public config: ServerConfig;
     private absoluteConfigPath!: string;
     private lock = new AsyncLock();
+    private socketSources: Record<string, LayerSource> = {};
 
     constructor(
         @Inject('DefaultWebSocketGateway')
@@ -108,7 +109,7 @@ export class LayerService extends AggregateRoot {
                     // no config found, start fresh
                 }
                 if (this.config && this.config.socketFlushInterval) {
-                    this.flushSocketQueue = this.getThrottleFnc();
+                    this.flushSocketQueues = this.getThrottleFnc();
                 }
                 await this.importLayers();
                 await this.initLayers();
@@ -383,59 +384,61 @@ export class LayerService extends AggregateRoot {
 
     public queueSocketUpdate(source: LayerSource, feature: Feature) {
         if (source) {
+            if (!this.socketSources.hasOwnProperty(source.id)) { this.socketSources[source.id] = source; }
             if (!source._socketQueue) { source._socketQueue = {}; }
-            // source._socketQueue[feature.id] = {
-            //         action: 'update',
-            //         feature
-            //     };
-
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
                     feature
                 };
             }).catch((e) => {
-                Logger.error(`Error get lock for queuing feature (${source.id} - ${feature.id})`);
+                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id})`);
             })
         }
     }
 
-    queueSocketDelete(source: LayerSource, feature: Feature) {
+    public queueSocketDelete(source: LayerSource, feature: Feature) {
         if (source) {
+            if (!this.socketSources.hasOwnProperty(source.id)) { this.socketSources[source.id] = source; }
             if (!source._socketQueue) { source._socketQueue = {}; }
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'delete',
                     feature: feature
                 };
+            }).catch((e) => {
+                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id})`);
             });
         }
     }
 
     private getThrottleFnc() {
-        const interval = (this.config && this.config.socketFlushInterval) || 5000;
-        Logger.log(`Flush socket queue every ${interval} ms`)
-        return throttle((source: LayerSource) => {
-            this._flushSocketQueue(source);
+        const interval = (this.config && this.config.socketFlushInterval) || 2000;
+        Logger.log(`Flush socket queue every ${interval} ms.`)
+        return throttle(() => {
+            this._flushSocketQueues();
         }, interval);
     }
 
-    public flushSocketQueue = this.getThrottleFnc();
+    public flushSocketQueues: null | DebouncedFunc<() => void> = null;
 
-    private _flushSocketQueue(source: LayerSource) {
-        if (source) {
-            if (source._socketQueue) {
-                this.lock.acquire(source.id, () => {
-                    if (this.socket && this.socket.server) {
-                        const address = 'layer/' + source.id + '/features';
-                        this.socket.server.emit(
-                            address,
-                            source._socketQueue
-                        );
-                        console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
-                    }
-                    source._socketQueue = {};
-                });
+    private _flushSocketQueues() {
+        for (const key in this.socketSources) {
+            const source = this.socketSources[key];
+            if (source) {
+                if (source._socketQueue && Object.keys(source._socketQueue).length > 0) {
+                    this.lock.acquire(source.id, () => {
+                        if (this.socket && this.socket.server) {
+                            const address = 'layer/' + source.id + '/features';
+                            this.socket.server.emit(
+                                address,
+                                source._socketQueue
+                            );
+                            console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
+                        }
+                        source._socketQueue = {};
+                    });
+                }
             }
         }
     }
@@ -497,7 +500,7 @@ export class LayerService extends AggregateRoot {
                     new GeojsonSource().initFeature(feature);
 
                     this.queueSocketUpdate(source, feature);
-                    this.flushSocketQueue(source);
+                    if (this.flushSocketQueues) this.flushSocketQueues();
                     this.saveSource(source);
                     // this.apply(new FeatureUpdatedEvent(sourceid, feature));
                     // this.eventBus.publish(new FeatureUpdatedEvent(feature.id!, feature));                    
@@ -586,7 +589,7 @@ export class LayerService extends AggregateRoot {
                     // send socket updates
                     deletedFeatures.forEach(f => {
                         this.queueSocketDelete(source, f);
-                        this.flushSocketQueue(source)
+                        if (this.flushSocketQueues) this.flushSocketQueues();
                     });
 
                     this.saveSource(source);
@@ -599,7 +602,7 @@ export class LayerService extends AggregateRoot {
     }
 
     /** delete all features */
-    deleteAllFeatures(sourceid: string): Promise<boolean> {
+    public deleteAllFeatures(sourceid: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             try {
                 // find source
@@ -615,7 +618,7 @@ export class LayerService extends AggregateRoot {
                     // send socket updates
                     deletedFeatures.forEach(f => {
                         this.queueSocketDelete(source, f);
-                        this.flushSocketQueue(source)
+                        if (this.flushSocketQueues) this.flushSocketQueues();
                     });
 
                     this.saveSource(source);
