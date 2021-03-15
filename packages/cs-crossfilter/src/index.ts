@@ -9,5 +9,7 @@ export { Histogram } from './components/charts/histogram';
 export { RowChart } from './components/charts/rowchart';
 export { ScatterPlot } from './components/charts/scatterplot';
 export { Stat } from './components/charts/stat';
+export { TimeChart } from './components/charts/timechart';
+export { TimeRange } from './time-range';
 
 export { CrossChart } from './components/chart/chart';

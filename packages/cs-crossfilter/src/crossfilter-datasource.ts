@@ -1,8 +1,7 @@
 import { DataPackage, DataSet, Insight, InsightView } from '@csnext/cs-data';
 import { StatsDatasource } from '@csnext/cs-map';
 import crossfilter from 'crossfilter2';
-
-
+import { TimeRange } from './time-range';
 
 export class CrossFilterDatasource extends StatsDatasource {
 
@@ -15,6 +14,7 @@ export class CrossFilterDatasource extends StatsDatasource {
     public groups: { [id: string]: crossfilter.Group<any, any, any>} = {};
 
     public ndx?: crossfilter.Crossfilter<any>;
+    public timeRange?: TimeRange;
 
     constructor() {
         super();        
@@ -29,21 +29,25 @@ export class CrossFilterDatasource extends StatsDatasource {
     }
 
     public async updateCrossfilter(dataset?: DataSet) {
-        console.log('update crossfilter');
-        console.log(dataset);
         if (!dataset) {
             dataset = this.mainLayer?._source?._data;            
         }
         if (dataset && dataset.features?.length>0) {
             this.ndx = crossfilter(dataset.features);
+            this.timeRange = new TimeRange();
+            for (const feature of dataset.features) {
+                if (feature.properties?.point_in_time) {
+                    this.timeRange.addTime(feature.properties.point_in_time)
+                }
+                
+            }
             this.events.publish(CrossFilterDatasource.CROSSFILTER, CrossFilterDatasource.CROSSFILTER_DATALOADED, this);
         }
     }
 
     public async activateInsightView(view: InsightView, insight: Insight) {
         await super.activateInsightView(view, insight);
-        this.updateCrossfilter(this.mainLayer?._source?._data);        
-        console.log(this);        
+        this.updateCrossfilter(this.mainLayer?._source?._data);                
     }    
 
     public loadPackage(uri: string) : Promise<DataPackage> 

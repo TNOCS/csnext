@@ -2,7 +2,7 @@ import { DashboardManagerBase } from '@csnext/cs-client';
 import { IDashboard, IWidget } from '@csnext/cs-core';
 import { CrossChart } from './components/chart/chart';
 import { Stat, HeatMap, Histogram, RowChart, ScatterPlot, ChartEditor } from '.';
-import { ChartOptions, IChartType } from ".";
+import { ChartOptions, IChartType, TimeChart } from ".";
 import { CrossFilterDatasource } from './crossfilter-datasource';
 import { GeoJsonFeature } from 'vega';
 import { DataSourceEvents, PropertyValueType } from '@csnext/cs-data';
@@ -19,6 +19,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
     public start(dashboard: IDashboard) {        
         this.dashboard = dashboard;
         this.chartDashboard = dashboard;        
+        this.initChartTypes();
     }
 
     private getTitle(key: string) : string | undefined {
@@ -51,8 +52,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
         let widget = {
             options: {
                 width: chartOptions.width ?? 6,
-                height: chartOptions.height ?? 2,
-                class: 'full-height',                
+                height: chartOptions.height ?? 2,                               
                 showToolbar: true,
                 title: chartOptions.title,
                 menus: [
@@ -115,22 +115,21 @@ export class CrossDashboardManager extends DashboardManagerBase {
             this.chartDashboard.widgets = this.chartDashboard.widgets.filter(r => r.id === widget.id);
         }
         this.chartDashboard.widgets.push(widget)
-
     }
 
-    public updateWidgets() {        
-        if (!this.chartDashboard || !this.source?.ndx) { return; }
-
-        this.chartDashboard.widgets = [];
-
+    public initChartTypes() {
         this.chartTypes = {};
         this.chartTypes[Histogram.type] = new Histogram();
         this.chartTypes[RowChart.type] = new RowChart();
         this.chartTypes[ScatterPlot.type] = new ScatterPlot();        
         this.chartTypes['heatmap'] = new HeatMap();
         this.chartTypes[Stat.type] = new Stat();
+        this.chartTypes[TimeChart.type] = new TimeChart();
+    }
 
-
+    public updateWidgets() {        
+        if (!this.chartDashboard || !this.source?.ndx) { return; }
+        this.chartDashboard.widgets = [];
         if (this.source.activeInsight?.dashboards?.crossfilter?.panels && this.source.activeInsight?.dashboards?.crossfilter?.panels.length>0) {
             let panel = this.source.activeInsight?.dashboards?.crossfilter?.panels[0];
             if (panel.sections) {
@@ -141,83 +140,8 @@ export class CrossDashboardManager extends DashboardManagerBase {
                         _manager: this,                        
                     }, ...section}));
                 }
-            }
-            // let section = this.source.activeInsight?.dashboards?.crossfilter?.panels
-            // let charts = this.source.activeInsight?.dashboards?.crossfilter?.charts;
+            }          
         }
-
-        // this.updateWidget(
-        //     this.createWidget({
-        //         _source: this.source,
-        //         _manager: this,
-        //         type: ScatterPlot.type,
-        //         bucketSize: 0.1,
-        //         barPadding: 5,
-        //         title: 'Average AHN',
-        //         disableFilter: false,
-        //         keyX: 'AHNsd[transform:mean]',
-        //         keyY: 'nocloudNDVIcount[transform:max]'
-
-        //     } as ChartOptions));
-        // this.updateWidget(this.createWidget({
-        //         _source: this.source,
-        //         _manager: this,
-        //         type: Histogram.type,
-        //         bucketSize: 0.1,
-        //         barPadding: 5,
-        //         title: 'Distribution AHN',
-        //         disableFilter: false,
-        //         key: 'AHNsd[transform:mean]'
-
-        //     } as ChartOptions));
-        // this.updateWidget(
-        //     this.createWidget({
-        //         _source: this.source,                        
-        //         _manager: this,
-        //         type: RowChart.type,                        
-        //         disableFilter: false,
-        //         title: 'Province distribution',
-        //         rowTimeMode: false,
-        //         top: 5,
-        //         key: 'provincieNaam'
-        //     } as ChartOptions));
-        
-
-            // this.createWidget({
-            //     id: 'histogram1',
-            //     _source: this.source,
-            //     _manager: this,
-            //     type: ScatterPlot.type,
-            //     bucketSize: 0.1,
-            //     barPadding: 5,
-            //     title: 'Lat',
-            //     disableFilter: false,
-            //     keyX: 'lat',
-            //     keyY: 'lon'
-
-            // } as ChartOptions),
-            // this.createWidget({
-            //     _source: this.source,
-            //     _manager: this,
-            //     type: Histogram.type,
-            //     bucketSize: 0.1,
-            //     barPadding: 5,
-            //     title: 'Distribution AHN',
-            //     disableFilter: false,
-            //     key: 'AHNsd[transform:mean]'
-
-            // } as ChartOptions),
-            // this.createWidget({
-            //     _source: this.source,                        
-            //     _manager: this,
-            //     type: RowChart.type,                        
-            //     disableFilter: false,
-            //     title: 'Province distribution',
-            //     rowTimeMode: false,
-            //     top: 5,
-            //     key: 'lat'
-            // } as ChartOptions)
-        
     }
 
     public addChart(options: ChartOptions) {

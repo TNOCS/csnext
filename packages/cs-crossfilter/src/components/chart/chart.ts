@@ -24,8 +24,7 @@ export class CrossChart extends WidgetBase {
     })        
   }
 
-  public updateChart() {
-    console.log('update chart');
+  public updateChart() { 
     this.options = this.widget.data.options as ChartOptions;  
     this.options._elementId  = 'chart-' + this.widget.id;
     if (this.options?.type && this.options._manager?.chartTypes?.hasOwnProperty(this.options.type))
