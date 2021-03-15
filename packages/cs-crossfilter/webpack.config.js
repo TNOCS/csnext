@@ -10,10 +10,19 @@ const config = [
         {
             '@csnext/cs-client': '@csnext/cs-client',
             '@csnext/cs-core': '@csnext/cs-core',
+            '@csnext/cs-data': '@csnext/cs-data',  
+            '@csnext/cs-map': '@csnext/cs-map',  
             vue: 'Vue',   
             Vue: 'Vue'    
         },
         'cscrossfilter'
     )
 ];
+
+config.node = {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+};
+
 module.exports = config;
