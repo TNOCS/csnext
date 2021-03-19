@@ -39,6 +39,8 @@ import { VegaWidget } from './widgets/vega/vega-widget';
 import { CardWidget } from './widgets/card/card-widget';
 import { HtmlWidget } from './widgets/html-widget/html-widget';
 
+import './components/cs-label';
+
 // export components
 export * from './components/cs-app/cs-app';
 export * from './components/cs-widget/cs-widget';
@@ -61,6 +63,9 @@ export * from './widgets/intro/intro-widget';
 export * from './widgets/intro/intro-widget-options';
 export * from './widgets/card/card-widget';
 export * from './widgets/card/card-widget-options';
+export * from './components/cs-label';
+
+
 
 export const CsNext = {
   install: (vue: VueConstructor): void => {
@@ -72,7 +77,7 @@ export const CsNext = {
     vue.component('cs-widget', CsWidget);
     vue.component('vega-widget', VegaWidget);
     vue.component('vega-widget', HtmlWidget);
-    vue.component('card-widget', CardWidget);
+    vue.component('card-widget', CardWidget);    
   }
 };
 
