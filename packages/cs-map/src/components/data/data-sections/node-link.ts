@@ -1,6 +1,6 @@
 import { IDatasource } from '@csnext/cs-core';
 import { Component, Vue } from "vue-property-decorator";
-import { GraphElement } from '../../../classes/graph-element';
+import { GraphElement } from '@csnext/cs-data';
 import { CsMap } from '../../cs-map/cs-map';
 
 

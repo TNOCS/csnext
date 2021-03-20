@@ -24,9 +24,9 @@ export class LinkInfo {
     public link?: GraphElement;
   }
 
-export class GraphElement {
-    public title?: string;
+  export class GraphElement {
     public id?: string;
+    public title?: string;    
     public type?: 'node' | 'edge' = 'node';
     public isType?= false;
     public classId?: string;
@@ -68,6 +68,15 @@ export class GraphElement {
     public _incomming?: GraphElement[];
     public _outgoing?: GraphElement[];
     public backgroundColor?: string;
+
+    // public get id() : string | undefined {
+    //     return this.properties?.id;
+    // }
+
+    // public set id(value: string | undefined) {
+    //     if (!this.properties) { this.properties = {}}
+    //     this.properties.id = value;
+    // }
 
     public static outOfRange(e: GraphElement, date: Date) {
         if (e._startDate) {
@@ -235,3 +244,4 @@ export class GraphElement {
 
     }
 }
+

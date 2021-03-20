@@ -16,5 +16,6 @@ export * from './classes/info-panel/info-template';
 export * from './classes/relation-type';
 export * from './classes/data-source-state';
 export * from './classes/feature-types';
+export * from './classes/graph-element';
 
 declare var datapackage: any;

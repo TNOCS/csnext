@@ -3,7 +3,7 @@ import './data-panel.css';
 import { InsightDashboard, InsightDashboardPanel, DataSourceEvents } from '@csnext/cs-data';
 import { StatsDatasource, GeojsonPlusLayer } from '@csnext/cs-map';
 import { WidgetBase } from '@csnext/cs-client';
-import { GraphElement } from '@/classes';
+import { GraphElement } from '@csnext/cs-data';
 
 @Component({
     name: 'data-panel',

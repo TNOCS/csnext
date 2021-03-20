@@ -1,7 +1,7 @@
 import Component from 'vue-class-component';
 import vue from 'vue';
 import './data-info-panel.css';
-import { FeatureType, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
+import { FeatureType, GraphElement, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
 import ImageSection from './../data-sections/image-section';
 import TitleSection from './../data-sections/title-section';
 import { SimpleRelationListSection } from './../data-sections/simple-relation-list-section';
@@ -10,7 +10,6 @@ import InstanceSection from './../data-sections/instance-section';
 import { DataProperties } from './../data-sections/data-properties/data-properties';
 // import SimpleRelationListSection from './../data-sections/simple-relation-list-section.vue';
 // import RelationListSections from './../data-sections/relation-list-sections';
-import { GraphElement } from '../../../classes/graph-element';
 import { IDatasource } from '@csnext/cs-core';
 import { BaseLayer } from '../../../layers/base-layer';
 import { MapboxGeoJSONFeature } from 'mapbox-gl';

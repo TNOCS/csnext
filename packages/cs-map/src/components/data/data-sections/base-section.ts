@@ -1,10 +1,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { FeatureType, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
-import { GraphElement } from '../../../classes/graph-element';
+import { GraphElement, FeatureType, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
 import { NodeLink } from './node-link';
 import { IDatasource } from '@csnext/cs-core';
-
-
 @Component({
   components: { NodeLink },
   props: ['data', 'featureType', 'section', 'panel', 'infoPanel', 'node', 'source'],
