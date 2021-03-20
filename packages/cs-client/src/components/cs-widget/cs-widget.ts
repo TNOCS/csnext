@@ -184,7 +184,7 @@ export class CsWidget extends Vue {
     }
   }
 
-  public initWidget() {
+  public initWidget() {    
     if (!this.widget) {
       return;
     }

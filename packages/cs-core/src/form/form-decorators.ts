@@ -60,6 +60,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'union'
   | 'keysobject'
   | 'datetimepicker'
+  | 'epochdatetimepicker'
   | 'datepicker'
   | 'button-trigger'
   | 'rating'

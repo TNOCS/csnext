@@ -139,6 +139,26 @@ export class CsFormField extends Vue {
         }
     }
 
+    // public get EpochDateValue(): string | undefined {
+    //     if (this.target && this.field && this.field._key) {
+    //         return this.formattedDate(this.target[this.field._key]);
+    //     } else {
+    //         return "";
+    //     }
+    // }
+
+    // public set EpochDateValue(v: string | undefined) {
+    //     if (v && this.target && this.field && this.field._key) {
+    //         const [year, month, day] = v.split('-');
+    //         let date = new Date(this.target[this.field._key]);
+    //         date.setFullYear(parseInt(year));
+    //         date.setMonth(parseInt(month) - 1);
+    //         date.setDate(parseInt(day));
+    //         this.target[this.field._key] = date.getTime();
+    //         // this.changed(this.field);
+    //     }
+    // }
+
     public get DateValue(): string | undefined {
         if (this.target && this.field && this.field._key) {
             return this.formattedDate(this.target[this.field._key]);
