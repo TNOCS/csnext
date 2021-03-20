@@ -33,6 +33,7 @@
     no-click-animation
     :persistent="dialog.persistent"
     :width="dialog.width"    
+    @click:outside="closeDialog()"
   >
     <v-card>
       <cs-widget v-if="dialog.widget" :widget="dialog.widget"></cs-widget>

@@ -178,6 +178,13 @@ export class CsApp extends Vue {
     this.rightSidebar.dashboard = n;
   }
 
+  public closeDialog() {
+    if (this.dialog.widget?._component) {
+      (this.dialog.widget._component as Vue).$destroy();
+      delete this.dialog.widget;
+    }
+  }
+
   public onResize() {
     this.$cs.windowSize = { x: window.innerWidth, y: window.innerHeight };    
   }
