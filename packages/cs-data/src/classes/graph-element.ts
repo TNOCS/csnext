@@ -1,4 +1,4 @@
-import { FeatureType } from '@csnext/cs-data';
+import { FeatureType } from '..';
 
 export class Source {
 
