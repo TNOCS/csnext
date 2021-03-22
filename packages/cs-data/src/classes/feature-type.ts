@@ -128,8 +128,8 @@ export class FeatureType {
         if (!ft._inheritedTypes) {
             ft._inheritedTypes = [];
         }
-            if (ft.type) { ft._inheritedTypes.push(ft.type)};
-            if (base.type) { ft._inheritedTypes.push(base.type)};
+            if (ft.type && !ft._inheritedTypes.includes(ft.type)) { ft._inheritedTypes.push(ft.type)};
+            if (base.type && !ft._inheritedTypes.includes(base.type)) { ft._inheritedTypes.push(base.type)};
             if (base._inheritedTypes) {
                 for (const it of base._inheritedTypes) {
                     if (!ft._inheritedTypes.includes(it)) {
