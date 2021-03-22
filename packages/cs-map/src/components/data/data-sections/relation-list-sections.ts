@@ -43,7 +43,7 @@ export class RelationListSections extends BaseSection {
       let outgoing = this.node._outgoing.filter(i => i.classId !== 'INSTANCE_OF');
       for (const o of outgoing) {
         if (res.findIndex(r => o.to && r.relation === o.classId) === -1) {
-          res.push({ sectionType: 'simple-relation-list-section', title: this.relationName(o.title ?? o.classId), relation: o.classId}); // filter: o.to!.classId })        
+          res.push({ sectionType: 'simple-relation-list-section', title: this.relationName(o._title ?? o.classId), relation: o.classId}); // filter: o.to!.classId })        
         }        
       }
     }

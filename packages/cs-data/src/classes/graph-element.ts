@@ -26,7 +26,7 @@ export class LinkInfo {
 
   export class GraphElement {
     public id?: string;
-    public title?: string;    
+    // public title?: string;    
     public type?: 'node' | 'edge' = 'node';
     public isType?= false;
     public classId?: string;
@@ -69,13 +69,13 @@ export class LinkInfo {
     public _outgoing?: GraphElement[];
     public backgroundColor?: string;
 
-    // public get id() : string | undefined {
-    //     return this.properties?.id;
+    // public get title() : string | undefined {
+    //     return this.properties?.name;
     // }
 
-    // public set id(value: string | undefined) {
+    // public set title(value: string | undefined) {
     //     if (!this.properties) { this.properties = {}}
-    //     this.properties.id = value;
+    //     this.properties.title = value;
     // }
 
     public static outOfRange(e: GraphElement, date: Date) {
@@ -131,10 +131,11 @@ export class LinkInfo {
     public static getTitle(e: GraphElement, clean = false): string {
         if (e.properties && e.properties.hasOwnProperty('name')) { return e.properties.name; }
         if (e.properties && e.properties.hasOwnProperty('title')) { return e.properties.title; }
-        if (e.title !== undefined) {
-            return (clean) ? e.title : e.title.toLowerCase().split('_').join(' ');
-        }
-        else if (e.class) {
+        // if (e.title !== undefined) {
+        //     return (clean) ? e.title : e.title.toLowerCase().split('_').join(' ');
+        // }
+        // else 
+        if (e.class) {
             return GraphElement.getTitle(e.class);
         }
         else {
