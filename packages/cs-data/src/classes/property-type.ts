@@ -72,7 +72,8 @@ export class PropertyType {
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
     public stringFormat?: string;    
     public title?: string;
-    public colorScheme?: string | string[];    
+    public colorScheme?: string | string[];  
+    public defaultLegendColor?: string;    
     @FormField({ title: 'Type', 
         required: true,
         defaultValue: 'text',
