@@ -1,4 +1,4 @@
-import { DataPackage, DataSet, Insight, InsightView } from '@csnext/cs-data';
+import { DataPackage, DataSet, FeatureType, Insight, InsightView } from '@csnext/cs-data';
 import { StatsDatasource } from '@csnext/cs-map';
 import crossfilter from 'crossfilter2';
 import { TimeRange } from './time-range';
@@ -10,9 +10,9 @@ export class CrossFilterDatasource extends StatsDatasource {
     public static UPDATE_CHART = 'update_chart';
     public static FILTER_CHANGED = 'filter-changed';
 
-    public dimensions: { [id: string] : crossfilter.Dimension<any, any>} = {};
+    public dimensions: { [id: string] : crossfilter.Dimension<any, any>[]} = {};
     public groups: { [id: string]: crossfilter.Group<any, any, any>} = {};
-
+    public featureType?: FeatureType;
     public ndx?: crossfilter.Crossfilter<any>;
     public timeRange?: TimeRange;
 
@@ -20,8 +20,9 @@ export class CrossFilterDatasource extends StatsDatasource {
         super();        
     }
 
-    public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {                
-        this.dimensions[id] = dim;
+    public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {      
+        if (!this.dimensions.hasOwnProperty(id)) { this.dimensions[id] = []}
+        this.dimensions[id].push(dim);
     }
 
     public addGroup(id: string, group: crossfilter.Group<any, any, any>) {                

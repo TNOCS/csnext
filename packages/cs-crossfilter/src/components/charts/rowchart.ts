@@ -38,10 +38,34 @@ export class RowChart implements IChartType {
           let horizontal = CrossFilterUtils.getDayString(d, options.horizontalTime);
           return horizontal;
         } else {
-          if (options.key) return CrossFilterUtils.getKeyValue(options.key, options, d);
+          if (options.key) 
+            return CrossFilterUtils.getKeyValue(options.key, options, d);
         }
       });
-      options._group = options._dimension.group(); // .reduceSum((d: any) => { return this.getValue(this.options, d) / options.bucketSize; });                     //options._dimension.group();
+      // options._group = options._dimension.group((d:any) => {
+      //   return d;
+      // }); // .reduceSum((d: any) => { return this.getValue(this.options, d) / options.bucketSize; });                     //options._dimension.group();
+
+      options._group = options._dimension.group().reduce(
+        (p: any, v: any) => {
+          p.count+=1;          
+          p.total += CrossFilterUtils.getValue(options, v, 'count'); //v[options.key!];                    
+          return p;
+        },
+        (p: any, v: any) => {
+          p.count-=1;          
+          p.total -= CrossFilterUtils.getValue(options, v, 'count'); //v[options.key!];          
+          return p;
+        },
+        () => {
+          return {
+            count: 0,
+            total: 0
+          };
+        }
+      );
+
+
       let el = dc.rowChart('#' + options._elementId);
       el
         .width(widget._size!.width)
@@ -51,6 +75,8 @@ export class RowChart implements IChartType {
         .elasticX(true)
         // .ordering(pluck(options.key!))
         .group(options._group)
+        .valueAccessor( d=> {
+          return d.value.total; })    
         .on('filtered', () => {
           let f = this.getFilters(options);
           options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
@@ -63,6 +89,7 @@ export class RowChart implements IChartType {
       }
       el.render();
       options._chart = el;
+      // console.log(options._group!.all());
       return true;
     } catch (e) {
       console.log(e);

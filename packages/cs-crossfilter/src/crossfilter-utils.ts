@@ -97,21 +97,21 @@ export class CrossFilterUtils {
         return Math.round((num + c) * p) / p;
       }
     
-      public static getValue(c: ChartOptions, d: any) {
-        
-        if (!c.key) {
+      public static getValue(c: ChartOptions, d: any, key?: string) {
+        if (!key) { key = c.key; }
+        if (!key) {
           return 0;
         }
-        if (d.hasOwnProperty('properties') && d.properties.hasOwnProperty(c.key)) {
-            return d.properties[c.key];
+        if (d.hasOwnProperty('properties') && d.properties.hasOwnProperty(key)) {
+            return d.properties[key];
         }
         if (c.enums && c.enums.length > 0) {
-          return d[c.key];
+          return d[key];
           // let index = c.enums.indexOf(d[c.key]);
           // if (index >= 0) return index; return c.enums.length;
         }
         // console.log(d[c.key]);
-        return d[c.key];
+        return d[key];
       }
       
 

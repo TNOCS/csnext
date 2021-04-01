@@ -3,6 +3,7 @@ import { WidgetBase } from '@csnext/cs-client';
 import './chart-editor.css';
 import { IFormObject, IWidget } from '@csnext/cs-core';
 import { ChartOptions, CrossFilterDatasource, CrossDashboardManager } from '../..';
+import { GeojsonPlusLayer } from '@csnext/cs-map';
 
 @Component({
   name: 'actions',
@@ -19,6 +20,7 @@ export class ChartEditor extends WidgetBase {
   static isRowChart = [ (v: any) => { return v.type && v.type === 'rowchart'}];
   static isHistogram = [ (v: any) => { return v.type && v.type === 'histogram'}];
   static isStat = [ (v: any) => { return v.type && v.type === 'stat'}];
+  static isTime = [ (v: any) => { return v.type && v.type === 'time'}];
 
   public get source(): CrossFilterDatasource | undefined {
     if (this.widget?.content) {
@@ -27,10 +29,22 @@ export class ChartEditor extends WidgetBase {
   }
 
   public get keys() : any[] {
-    
-    if (this.manager?.source?.mainLayer?._source?._featureType?.properties) {
-      return this.manager.source.mainLayer._source._featureType.properties;
+    // console.log('keys');
+    // console.log(this.options);
+    if (this.options?._source.featureType?.properties) {
+      return this.options._source.featureType.properties;
     }
+    if (this.options && this.options?.layerId && !this.options._layer) {
+      this.options._layer = this.options._source.getLayer(this.options.layerId) as GeojsonPlusLayer;
+    }
+    if (this.options?._layer?._source?._featureType?.properties) {
+      return this.options?._layer?._source?._featureType?.properties;
+    }
+    // console.log('keys');
+    // console.log(this.manager?.source)
+    // if (this.manager?.source?.mainLayer?._source?._featureType?.properties) {
+    //   return this.manager.source.mainLayer._source._featureType.properties;
+    // }
     return [];
     
   }
@@ -96,7 +110,7 @@ export class ChartEditor extends WidgetBase {
             _key: 'key',
             type: 'combobox-objects',
             options: this.keys,
-            keyText: 'title',
+            keyText: 'label',
             keyValue: 'key',
             requirements: ChartEditor.hasKey                
           },
@@ -105,7 +119,7 @@ export class ChartEditor extends WidgetBase {
             _key: 'keyX',
             type: 'combobox-objects',
             options: this.keys,
-            keyText: 'title',
+            keyText: 'label',
             keyValue: 'key',
             requirements: ChartEditor.hasXAxis
           },
@@ -114,7 +128,7 @@ export class ChartEditor extends WidgetBase {
             _key: 'keyY',
             type: 'combobox-objects',
             options: this.keys,
-            keyText: 'title',
+            keyText: 'label',
             keyValue: 'key',
             requirements: ChartEditor.hasYAxis 
           },
@@ -124,6 +138,13 @@ export class ChartEditor extends WidgetBase {
             type: 'checkbox',
             requirements: ChartEditor.isRowChart
           },
+          {
+            title: 'time aggregation',
+            _key: 'timeAggregation',
+            type: 'selection',
+            options: ['hour', 'day', 'week', 'month', 'year'],
+            requirements: ChartEditor.isTime
+          },         
           {
             title: 'top',
             _key: 'top',

@@ -5,7 +5,7 @@ import { Stat, HeatMap, Histogram, RowChart, ScatterPlot, ChartEditor } from '.'
 import { ChartOptions, IChartType, TimeChart } from ".";
 import { CrossFilterDatasource } from './crossfilter-datasource';
 import { GeoJsonFeature } from 'vega';
-import { DataSourceEvents, PropertyValueType } from '@csnext/cs-data';
+import { DataSourceEvents, FeatureType, PropertyValueType } from '@csnext/cs-data';
 
 export class CrossDashboardManager extends DashboardManagerBase {
 
@@ -14,7 +14,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
     public source?: CrossFilterDatasource;
     public chartDashboard?: IDashboard;
     public chartTypes: { [id: string]: IChartType } = {};
-    public static filterProp = 'dc_filter';    
+    public static filterProp = 'dc_filter';        
 
     public start(dashboard: IDashboard) {        
         this.dashboard = dashboard;
@@ -32,7 +32,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
         return '';
     }
 
-    public createWidget(chartOptions: ChartOptions) : IWidget {
+    public createWidget(chartOptions: ChartOptions) : IWidget {        
         if (this.source?.mainLayer?._source) {
             if (!chartOptions.title && chartOptions.key) {
                 chartOptions.title = this.getTitle(chartOptions.key);
@@ -171,21 +171,21 @@ export class CrossDashboardManager extends DashboardManagerBase {
             let filtered = this.source?.ndx?.allFiltered();            
             let mapdata = this.source?.mainLayer?._source?._data;
             if (mapdata) {
-                console.log(this.source?.mainLayer);                
+                // console.log(this.source?.mainLayer);                
                 
-                let ft = this.source?.mainLayer?._source?._featureType;
-                if (ft && !ft?.propertyMap?.hasOwnProperty(CrossDashboardManager.filterProp)) {
-                    ft?.properties?.push({key: CrossDashboardManager.filterProp, type: PropertyValueType.number, min: -1, max: Number.MAX_VALUE});
-                    this.source?.mainLayer?._source?.updateFeatureTypePropertyMap(ft);
-                    this.source?.mainLayer?.setFilter([">=",CrossDashboardManager.filterProp, 0])
-                }                
+                // let ft = this.source?.mainLayer?._source?._featureType;
+                // if (ft && !ft?.propertyMap?.hasOwnProperty(CrossDashboardManager.filterProp)) {
+                //     ft?.properties?.push({key: CrossDashboardManager.filterProp, type: PropertyValueType.number, min: -1, max: Number.MAX_VALUE});
+                //     this.source?.mainLayer?._source?.updateFeatureTypePropertyMap(ft);
+                //     this.source?.mainLayer?.setFilter([">=",CrossDashboardManager.filterProp, 0])
+                // }                
                 // ?.properties[this.filterProp]                                
-                for (const feature of mapdata.features) {
-                    if (!feature.properties) feature.properties = {};
-                    let include =  filtered?.findIndex((f:GeoJsonFeature) => f.id === feature.id);
-                    feature.properties[CrossDashboardManager.filterProp] = include;                    
-                }
-                this.source?.mainLayer?.updateGeojson(mapdata);
+                // for (const feature of mapdata.features) {
+                //     if (!feature.properties) feature.properties = {};
+                //     let include =  filtered?.findIndex((f:GeoJsonFeature) => f.id === feature.id);
+                //     feature.properties[CrossDashboardManager.filterProp] = include;                    
+                // }
+                // this.source?.mainLayer?.updateGeojson(mapdata);
                 
                                 
             }

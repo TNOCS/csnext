@@ -57,7 +57,7 @@ export class TimeChart implements IChartType {
         let value = d.properties; // CrossFilterUtils.getValue(options, d);
         switch (options.timeAggregation) {
           case 'hour':
-            return value.hour;
+            return value.hourStart;
           case 'day':
             return value.dayStart;
           case 'week':
@@ -110,21 +110,42 @@ export class TimeChart implements IChartType {
       //   }
       // });
 
+      
+
+
       options._group = options._dimension.group().reduce(
         (p: any, v: any) => {
-          ++p.count;
+          p.count+=1;          
           p.total += CrossFilterUtils.getValue(options, v); //v[options.key!];          
+          if (options.secondaryKey) {
+            let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
+            if (secValue) {
+              if (!p.secondaryCount.hasOwnProperty(secValue)) {
+                p.secondaryCount[secValue] = 1;
+              } else {
+                p.secondaryCount[secValue]+=1;
+              }
+            }
+          }
+          
           return p;
         },
         (p: any, v: any) => {
-          --p.count;
+          p.count-=1;          
           p.total -= CrossFilterUtils.getValue(options, v); //v[options.key!];
+          let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
+          if (secValue && p.secondaryCount) {
+            if (p.secondaryCount.hasOwnProperty(secValue)) {
+              p.secondaryCount[secValue]-=1;
+            }
+          }
           return p;
         },
         () => {
           return {
             count: 0,
-            total: 0
+            total: 0,
+            secondaryCount: {}
           };
         }
       );
@@ -230,12 +251,16 @@ export class TimeChart implements IChartType {
         .yAxisLabel(options.titleY || '')        
         .xAxisLabel(options.titleX || '')    
         // .brushOn(false)
-        .valueAccessor( d=> d.value.count)    
+        .valueAccessor( d=> {
+          return d.value.total; })    
         // .xUnits(d3.timeDays)
         .elasticY(true)        
         .renderLabel(false)
         .renderHorizontalGridLines(true)        
-        .mouseZoomable(false)                
+        .mouseZoomable(false) 
+        .stack(options._group, 'Hawthorne Industrial Airport', (d: any) => { 
+          // console.log(d);
+          return d.value.secondaryCount['Hawthorne Industrial Airport']; })               
         .on('filtered',()=>{          
           let f = this.getFilters(options);          
           options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          

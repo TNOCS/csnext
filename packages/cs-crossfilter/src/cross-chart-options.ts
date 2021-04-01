@@ -1,6 +1,7 @@
 import { CrossDashboardManager, CrossFilterDatasource, TimeRange } from '.';
 import * as crossfilter from 'crossfilter2';
 import * as dc from 'dc';
+import { GeojsonPlusLayer } from '@csnext/cs-map';
 
 
 // import { c} from 'd3';
@@ -17,6 +18,7 @@ export class ChartOptions
   public title?: string;
   public key?: string;
   public keys?: string[];
+  public secondaryKey?: string;
   public enums?: string[];
   public type?: string;
   public chartId?: string;
@@ -43,6 +45,8 @@ export class ChartOptions
   public disableFilter?: boolean;
   public barPadding?: number;
   public lineCurve?: string;
+  public _layer?: GeojsonPlusLayer;
+  public layerId?: string;
   
 
   public keyX?: string;

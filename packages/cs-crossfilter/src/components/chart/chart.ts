@@ -34,7 +34,17 @@ export class CrossChart extends WidgetBase {
         this.$el as any,
         this.widget,
         this.options
-      );
+      );      
+      if (this.options._dimension && this.options._source) {
+        if (this.options.key) {
+          this.options._source.addDimension(this.options.key, this.options._dimension);
+        }        
+      }
+      if (this.options._group) {
+        if (this.options.key) {
+          this.options._source.addGroup(this.options.key, this.options._group);
+        }        
+      }
     }
 
     

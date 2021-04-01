@@ -25,7 +25,7 @@
         "@csnext/cs-data": "0.0.131",
         "@csnext/cs-map": "0.0.131",        
         "crossfilter2": "1.5.4",
-        "d3": "6.5.0"
+        "d3": "6.6.1"
         
     },
     "devDependencies": {             
