@@ -23,11 +23,12 @@
         "axios": "^0.21.1",
         "simplebar-vue": "1.6.0",
         "socket.io-client": "^2.3.1",
-        "vue-i18n": "^8.22.4",
+        "vue-i18n": "^8.24.2",
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
-        "vue-router": "^3.4.9",
-        "vuetify": "2.4.2"
+        "vue-router": "^3.5.1",
+        "vuetify": "2.4.8",
+        "@vueuse/core": "4.6.2"
     },
     "devDependencies": {
         "@types/socket.io-client": "^1.4.34",

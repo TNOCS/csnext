@@ -33,7 +33,12 @@ export class CsHeader extends Vue {
 
   @Watch('rightSidebar.sidebars')
   public updateVisibleSidebars() {
-    Vue.set(this, 'visibleSidebars', this.$cs.visibleSidebars);
+    console.log('Adding sidebar');
+    // console.log(this.$cs.visibleSidebars);
+    // console.log(this.$cs)
+    console.log($cs.project!.rightSidebar!.sidebars);
+    console.log($cs.visibleSidebars);
+    Vue.set(this, 'visibleSidebars', $cs.visibleSidebars);
   }
 
   @Watch('$cs.project.menus')
