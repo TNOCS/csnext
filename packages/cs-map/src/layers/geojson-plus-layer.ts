@@ -356,7 +356,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                                 property: propdetails.key,
                                 // stops: [[0, 'blue'], [5, 'yellow'], [10, 'red']]
                                 stops: stops,
-                                default: propdetails.defaultLegendColor ?? '#e8e8e8'
+                                default: propdetails.type.defaultLegendColor ?? '#e8e8e8'
                             } as StyleFunction;
 
                             if (this.style.mapbox.fillPaint) {
