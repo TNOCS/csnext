@@ -66,7 +66,7 @@ export class PropertyType {
     public median?: number;
     @FormField({ title: 'Min', type: 'number', group: 'number', requirements: PropertyType.isNumber, optional: true })
     public min?: number;
-    public options?: { [key: string]: string };
+    public options?: string[];
     public sd?: number;    
     public section?: string;
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
@@ -89,6 +89,7 @@ export class PropertyType {
     public readonly?: boolean;  
     @FormField({ title: 'Url template', type: 'string', requirements: PropertyType.isUrl, optional: true })
     public urlTemplate?: string;  
+    public required?: boolean;
 
     public class?: string;
     public _initialized?: boolean = false;

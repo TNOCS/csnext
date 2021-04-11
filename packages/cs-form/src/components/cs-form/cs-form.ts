@@ -108,6 +108,7 @@ export class CsForm extends Vue {
     }
 
     public fieldVisible(field: IFormFieldOptions) : boolean {
+        if (field.required) { return true; }
         if (field.optional) { return false; }
         if (!field.requirements) { return true; }
 
@@ -162,7 +163,7 @@ export class CsForm extends Vue {
             // show all fields, or optionally filter only specified field
             if (!this.field || this.field === f._key) {
                 // if form supports optional items and target doesn't have property, add it to the optional list
-                if (this.Form.optionalSupport && f._key && f.title && !this.Target.hasOwnProperty(f._key)) {
+                if (this.Form.optionalSupport && !f.required && f._key && f.title && !this.Target.hasOwnProperty(f._key)) {
                     optionalFieldGroup.fields.push(f);
                 } else {
                 if (f.type === 'keysobject') {

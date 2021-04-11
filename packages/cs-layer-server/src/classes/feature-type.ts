@@ -70,7 +70,8 @@ export class FeatureType {
     /** list of parameters that e.g. can be used for import tasks */
     public attributes?: {[key: string]: any};
     public infoPanels?: {[key : string]:InfoPanel};
-    public style?: any;    
+    public style?: any;  
+    public abstract?: boolean;  
     public _baseTypes? : FeatureType[] = [];
     public _originalFeatureType?: FeatureType;
     public _inheritedTypes?: string[];

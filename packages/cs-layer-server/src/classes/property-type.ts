@@ -89,6 +89,7 @@ export class PropertyType {
     public relation?: RelationType;
     public hidden?: boolean;
     public readonly?: boolean;  
+    public required?: boolean;
     public urlTemplate?: string;  
     public attributes?: {[key: string]: string};
 

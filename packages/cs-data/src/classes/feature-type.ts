@@ -16,6 +16,8 @@ export class FeatureType {
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
     public mode?: string;    
+    @FormField({ title: 'Abstract', type: 'checkbox'})
+    public abstract?: boolean;  
     public notification?: string;
     @FormField({
         title: 'Properties',
