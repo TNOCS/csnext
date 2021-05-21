@@ -16,9 +16,10 @@ export class ChartEditor extends WidgetBase {
 
   static hasYAxis = [ (v: any) => { return v.type && ['scatter', 'heatmap'].includes(v.type)}];
   static hasXAxis = [ (v: any) => { return v.type && ['scatter', 'heatmap'].includes(v.type)}];
-  static hasKey = [ (v: any) => { return v.type && ['rowchart', 'histogram', 'stat'].includes(v.type)}];
+  static hasKey = [ (v: any) => { return v.type && ['rowchart', 'histogram', 'stat', 'time'].includes(v.type)}];
   static isRowChart = [ (v: any) => { return v.type && v.type === 'rowchart'}];
   static isHistogram = [ (v: any) => { return v.type && v.type === 'histogram'}];
+  static isLine = [ (v: any) => { return v.type === 'time'}];
   static isStat = [ (v: any) => { return v.type && v.type === 'stat'}];
   static isTime = [ (v: any) => { return v.type && v.type === 'time'}];
 
@@ -162,7 +163,14 @@ export class ChartEditor extends WidgetBase {
             _key: 'statValue',
             type: 'options',
             requirements: ChartEditor.isStat
-          }
+          },
+          {
+            title: 'line curve',
+            _key: 'lineCurve',
+            type: 'selection',
+            options: ['curve', 'linear', 'step'],
+            requirements: ChartEditor.isLine
+          },    
           
 
 
