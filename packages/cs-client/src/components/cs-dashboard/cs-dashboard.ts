@@ -109,8 +109,8 @@ export class CsDashboard extends Vue {
     }
 
     // init sub dashboards
-    if (this.dashboard && this.dashboard.dashboards) {
-      for (const d of this.dashboard.dashboards) {
+    if (dashboard && dashboard.dashboards) {
+      for (const d of dashboard.dashboards) {
         this.initDashboard(d);
       }
     }
@@ -139,7 +139,7 @@ export class CsDashboard extends Vue {
       this.$cs.activeDashboard = this.dashboard;
       this.$cs.bus.publish(AppState.DASHBOARD_MAIN, 'init', this.dashboard);
       if (dashboard.options && dashboard.options.closeRightSidebar && this.$cs.project.rightSidebar) {
-        this.$cs.project.rightSidebar.open = false;
+        this.$cs.closeRightSidebar();        
       }
       this.$cs.updateBreadCrumbs();
       this.$forceUpdate();
@@ -172,38 +172,42 @@ export class CsDashboard extends Vue {
       this.$cs
         .loadDatasource(dashboard.datasource)
         .then(d => {
-          if (!this.dashboard) {
-            return;
-          }
-          this.dashboard.content = d;
+          Vue.nextTick(() => {
 
-          // if dashboard manager availabe, trigger data loaded event
-          if (this.dashboard._manager && typeof (this.dashboard._manager.dataLoaded) === 'function') {
-            this.dashboard._manager.dataLoaded(d);
-          }
+            if (!this.dashboard) {
+              return;
+            }
 
-          // if dashboard manager availabe, trigger data loaded event
-          if (this.dashboard._manager && typeof (this.dashboard._manager.contentLoaded) === 'function') {
-            this.dashboard._manager.contentLoaded(d);
-          }
+            this.dashboard.content = d;
 
-          // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
-          if (this.dashboard.widgets) {
-            for (const w of this.dashboard.widgets) {
-              if (!w.datasource && this.dashboard && this.dashboard.content) {
-                Vue.set(w, 'content', this.dashboard.content);
-              }
+            // if dashboard manager availabe, trigger data loaded event
+            if (this.dashboard._manager && typeof (this.dashboard._manager.dataLoaded) === 'function') {
+              this.dashboard._manager.dataLoaded(d);
+            }
 
-              // if a component is available with a dataSourceUpdated function, call it
-              if (w._component && w._component.dataSourceUpdated) {
-                w._component.dataSourceUpdated(d);
-              }
+            // if dashboard manager availabe, trigger data loaded event
+            if (this.dashboard._manager && typeof (this.dashboard._manager.contentLoaded) === 'function') {
+              this.dashboard._manager.contentLoaded(d);
+            }
 
-              if (w._component && w._component.contentLoaded) {
-                w._component.contentLoaded(d);
+            // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
+            if (this.dashboard.widgets) {
+              for (const w of this.dashboard.widgets) {
+                if (!w.datasource && this.dashboard && this.dashboard.content) {
+                  Vue.set(w, 'content', this.dashboard.content);
+                }
+
+                // if a component is available with a dataSourceUpdated function, call it
+                if (w._component && w._component.dataSourceUpdated) {
+                  w._component.dataSourceUpdated(d);
+                }
+
+                if (w._component && w._component.contentLoaded) {
+                  w._component.contentLoaded(d);
+                }
               }
             }
-          }
+          })
         })
         .catch(() => {
           if (!this.dashboard) {

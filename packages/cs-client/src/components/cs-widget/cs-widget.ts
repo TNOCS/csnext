@@ -301,10 +301,12 @@ export class CsWidget extends Vue {
   }
 
   public setWidgetContent(widget: IWidget, content: any) {
-    Vue.set(widget, 'content', content);
-    if (this.$refs.component !== undefined) {
-      if ((this.$refs.component as any).contentLoaded) {
-        (this.$refs.component as any).contentLoaded(content);
+    if (this.widget?.content !== content) {
+      Vue.set(widget, 'content', content);
+      if (this.$refs.component !== undefined) {
+        if ((this.$refs.component as any).contentLoaded) {
+          (this.$refs.component as any).contentLoaded(content);
+        }
       }
     }
   }

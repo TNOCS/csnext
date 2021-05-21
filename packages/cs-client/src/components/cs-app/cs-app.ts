@@ -45,7 +45,7 @@ const i18n = new VueI18n({
 
 const vuetifyOpts = {
   icons: {
-    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
   }
   // lang: {
   //   t: (key, ...params) => i18n.t(key, params)
@@ -54,7 +54,7 @@ const vuetifyOpts = {
 
 Vue.use(Vuetify);
 
-const router = new VueRouter({ routes: [] });
+const router = AppState.Instance.router; // new VueRouter({ routes: [] });
 
 @Component({
   name: 'cs-app',
@@ -121,8 +121,9 @@ export class CsApp extends Vue {
         case 'edit':
           if (this.$cs.project.leftSidebar) {
             this.$cs.project.leftSidebar.component = CsSettings;
+            this.$cs.openLeftSidebar();
             // this.$set(this.$cs.project.rightSidebar, 'component', CsSettings);
-            this.$cs.project.leftSidebar.open = true;
+            
           }
           break;
       }
@@ -202,6 +203,7 @@ export class CsApp extends Vue {
     }
   }
 
+  
   public getAdjacentDashboard(
     direction: string,
     active: IDashboard,
@@ -261,48 +263,14 @@ export class CsApp extends Vue {
   }
 
   public mounted() {
-    this.isLoading = false;
+    this.isLoading = false;    
     document.addEventListener('deviceready', this.onDeviceReady, false);
     setTimeout(() => {
       document.addEventListener('backbutton', this.backButtonPressed, false);
-    }, 1000);
+    }, 1000);    
   }
 
-  // Add a dashboard as a route
-  public AddDashboardRoute(d: IDashboard) {
-    if (d.dashboards && d.dashboards.length > 0) {
-      for (const dash of d.dashboards) {
-        dash.parent = d;
-        this.AddDashboardRoute(dash);
-      }
-      if (d.options && d.options.toolbarOptions && d.options.toolbarOptions.navigation && d.dashboards && d.dashboards.length > 0) {
-        this.AddDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
-      }
-    } else if (d.path) {
-      const route = {
-        name: d.id,
-        path: d.path,
-        component: CsDashboard,
-        props: () => ({ dashboard: d }),
-        alias: '/' + d.title,
-        meta: d
-      } as RouteConfig;
-      router.addRoutes([route]);
-
-      // check for keyboard shortcut
-      if (d.options && d.options.shortcut && d.pathLink) {
-        const sc = d.options.shortcut;
-        if (!sc.id) { sc.id = 'dashboard-' + d.id; }
-        sc._callback = () => {
-          router.push(d.pathLink as any).catch(() => {
-            // console.log(e);
-          });
-        };
-        this.app.keyboard.register(sc);
-      }
-    }
-
-  }
+  
 
   // Make sure all dashboards are available as routes
   public InitNavigation() {
@@ -312,7 +280,7 @@ export class CsApp extends Vue {
 
     // create routes for dashboards
     for (const d of this.$cs.project.dashboards) {
-      this.AddDashboardRoute(d);
+      $cs.addDashboardRoute(d);
     }
     Logger.info('navigation', 'navigation initialized');
   }
@@ -391,7 +359,7 @@ export class CsApp extends Vue {
   public created() {
     this.onResize();
     this.InitNotifications();
-    window.addEventListener("resize", this.onResize);
+    window.addEventListener("resize", this.onResize);        
 
     this.busManager.subscribe(this.$cs.bus, AppState.DIALOG, (action: string, dialog: IDialog) => {
       switch (action) {
@@ -421,6 +389,8 @@ export class CsApp extends Vue {
       this.UpdateSideBars(this.$cs.activeDashboard);
       this.UpdateFooter(this.$cs.activeDashboard);
     }
+
+    
   }
 
   public SelectNotification(notification: INotification) {

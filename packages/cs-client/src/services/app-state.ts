@@ -16,7 +16,7 @@ import {
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, LayoutManager, DashboardManager } from '../';
-import VueRouter from 'vue-router';
+import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
 import io from 'socket.io-client';
@@ -33,6 +33,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR = 'rightsidebar';
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
+  public static RIGHTSIDEBAR_CLOSED = 'rightsidebar-closed';
   public static DASHBOARD_MAIN = 'dashboard.main';
   public static DASHBOARD_CHANGED = 'dashboard-changed';
   public static APP_STATE = 'app-state';
@@ -86,7 +87,7 @@ export class AppState extends AppStateBase {
   /** Logger */
   public logger = Logger.Instance;
   /** Vue router instance */
-  public router?: VueRouter;
+  public router?: VueRouter = new VueRouter({ routes: [] });
   public vuetify?: Framework ;
   /** Vue i18n instance */
   public i18n?: VueI18n;
@@ -103,6 +104,32 @@ export class AppState extends AppStateBase {
     this.dashboardManager = new DashboardManager();
     this.layoutManager = new LayoutManager();
     this.loader = new Loader(this.bus);
+  }
+
+  public removeRouteQueryParam(key: string) {
+    if (!this.router?.currentRoute?.query) { return; }
+    let query = Object.assign({}, this.router?.currentRoute?.query);
+    if (query && query.hasOwnProperty(key)) {
+      delete query[key];
+      this.router.replace({query}).then(()=>{}).catch(e => {});      
+    }    
+  }
+
+  public addRouteQueryParam(key: string, value: string) {
+    if (!this.router?.currentRoute?.query) { return; }
+    let query = Object.assign({}, this.router?.currentRoute?.query);
+    if (query) {
+      query[key] = value;
+      this.router.replace({query}).then(()=>{}).catch(e => {});      
+    }    
+  }
+
+  public getRouteQuery(key: string) : string | undefined {
+    if (!this.router?.currentRoute?.query) { return; }
+    if (this.router.currentRoute.query.hasOwnProperty(key)) {
+        return this.router.currentRoute.query[key] as string;
+    }
+    
   }
 
   public updateRouteQuery(params : {[key: string]: any}) {
@@ -223,6 +250,7 @@ export class AppState extends AppStateBase {
       };
     }
 
+    this.checkLeftSidebarState();
 
     // make sure all dashboards are marked as main
     if (this.project.dashboards) {
@@ -238,11 +266,55 @@ export class AppState extends AppStateBase {
     this.initSocket();
   }
 
-  public addDashboard(dashboard: IDashboard): IDashboard {
-    if (!this.project.dashboards) { this.project.dashboards = []; }
+  public addDashboard(dashboard: IDashboard, parent?: IDashboard): IDashboard {
     this.initializeDashboards([dashboard]);
-    this.project.dashboards.push(dashboard);
+    if (parent) {
+      if (!parent.dashboards) { parent.dashboards = []; }      
+      parent.dashboards.push(dashboard);
+    } else {
+      if (!this.project.dashboards) { this.project.dashboards = []; }      
+      this.project.dashboards.push(dashboard);
+    }
     return dashboard;
+    
+  }
+
+  // Add a dashboard as a route
+  public addDashboardRoute(d: IDashboard) {
+    if (!this.router) { return; }
+    if (d.dashboards && d.dashboards.length > 0) {
+      for (const dash of d.dashboards) {
+        dash.parent = d;
+        this.addDashboardRoute(dash);
+      }
+      if (d.options && d.options.toolbarOptions && d.options.toolbarOptions.navigation && d.dashboards && d.dashboards.length > 0) {
+        this.addDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
+      }
+    } else if (d.path) {
+      const route = {
+        name: d.id,
+        path: d.path,
+        component: CsDashboard,
+        props: () => ({ dashboard: d }),
+        alias: '/' + d.title,
+        meta: d
+      } as RouteConfig;
+      // router.addRoutes([route]);
+      this.router.addRoute(route);      
+
+      // check for keyboard shortcut
+      if (d.options && d.options.shortcut && d.pathLink) {
+        const sc = d.options.shortcut;
+        if (!sc.id) { sc.id = 'dashboard-' + d.id; }
+        sc._callback = () => {
+          this.router!.push(d.pathLink as any).catch(() => {
+            // console.log(e);
+          });
+        };
+        this.keyboard.register(sc);
+      }
+    }
+
   }
 
   public addDatasource<T>(datasource: IDatasource): T {
@@ -413,9 +485,10 @@ export class AppState extends AppStateBase {
     this.bus.publish(AppState.DIALOG, AppState.DIALOG_CLOSED);
   }
 
-  public triggerDialog(dialog: IDialog): Promise<string> {
+  public triggerDialog(dialog: IDialog): Promise<string | undefined> {
     return new Promise((resolve) => {
-      if (!dialog.actionCallback) {
+      dialog.input = dialog.defaultText ?? '';   
+      if (!dialog.actionCallback) {             
         dialog.actionCallback = (action: string) => {
           resolve(action);
         };
@@ -436,7 +509,7 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public triggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string> {
+  public triggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string | undefined> {
     const d = {
       fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: actions.map(a => this.Translate(a))
     } as IDialog;
@@ -446,7 +519,7 @@ export class AppState extends AppStateBase {
   public triggerInputDialog(title: string, text: string, defaultValue?: string): Promise<string> {
     return new Promise((resolve) => {    
       const d = {
-        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, persistent: true, width: 400 
+        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, defaultText: defaultValue, persistent: true, width: 400 
       } as IDialog;
       d.actionCallback = (action: string) => {
         resolve(action);
@@ -468,13 +541,39 @@ export class AppState extends AppStateBase {
         }
         this.project.rightSidebar.dashboard.widgets.shift();
       }
-      this.project.rightSidebar.open = false;
+      this.closeRightSidebar();      
+    }
+  }
+
+  public openLeftSidebar() {
+    if (this.project?.leftSidebar) {
+      this.project.leftSidebar.open = true;
+      this.addRouteQueryParam("lsb", "1");      
+    }
+  }
+
+  public closeLeftSidebar() {
+    if (this.project?.leftSidebar) {
+      this.project.leftSidebar.open = false;
+      this.addRouteQueryParam("lsb", "0");
+    }
+  }
+
+  public checkLeftSidebarState() {
+    if (this.router?.currentRoute.query.lsb) {
+      if (this.router.currentRoute.query.lsb === "0") {
+        this.closeLeftSidebar();
+      } 
+      if (this.router.currentRoute.query.lsb === "1") {
+        this.openLeftSidebar();
+      } 
     }
   }
 
   public closeRightSidebar(): boolean {
-    if (this.project.rightSidebar) {
+    if (this.project.rightSidebar) {      
       this.project.rightSidebar.open = false;
+      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_CLOSED);
       return true;
     } else {
       return false;
@@ -506,7 +605,7 @@ export class AppState extends AppStateBase {
         const widget = this.project.rightSidebar.dashboard.widgets.splice(wi, 1)[0];
         this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_REMOVED, widget);
         if (this.project.rightSidebar.dashboard.widgets.length === 0) {
-          this.project.rightSidebar.open = false;
+          this.closeRightSidebar();          
         }
         return true;
       } else {
@@ -548,12 +647,20 @@ export class AppState extends AppStateBase {
     if (key && visible.hasOwnProperty(key)) {
       const d = visible[key];
       if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
-        this.project.rightSidebar.open = !this.project.rightSidebar.open;
+        if (this.project.rightSidebar.open) {
+          this.closeRightSidebar();
+        } else {
+          this.project.rightSidebar.open = true;
+        }        
       } else {
         this.openRightSidebar(d);
       }
     } else {
-      this.project.rightSidebar.open = !this.project.rightSidebar.open;
+      if (this.project.rightSidebar.open) {
+        this.closeRightSidebar();
+      } else {
+        this.project.rightSidebar.open = true;
+      }        
     }
   }
 
@@ -590,6 +697,7 @@ export class AppState extends AppStateBase {
             this.project.rightSidebar.open = options.open;
           }
           if (options.width !== undefined) {
+            
             this.project.rightSidebar.width = options.width;
           }
         } else {

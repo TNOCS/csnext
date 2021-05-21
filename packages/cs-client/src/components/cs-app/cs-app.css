@@ -23,6 +23,11 @@ html {
   /* background-color: transparent !important; */
 }
 
+.dialog-widget {
+  height: 100%;
+  width: 100%;
+}
+
 .menu {
   background-color: red;
 }

@@ -64,7 +64,7 @@ export class CsSidebar extends Vue {
     if ($cs.isMobile && this.sideBar) {
       return '100%';
     }
-    if (this.sideBar && this.sideBar.width) {
+    if (this.sideBar?.width) {
       return this.sideBar.width.toString();
     }
     return '300px';

@@ -2,7 +2,7 @@
     <v-app-bar v-if="!$cs.project.header.hideToolbar" :floating="$cs.isFloatingHeader" :class="{'floating-toolbar': $cs.isFloatingHeader, 'compact-header': $cs.project.navigation === 'mobile-compact'}" id="main-toolbar" :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"
         :clipped-right="rightSidebar && rightSidebar.visible && rightSidebar.clipped" :flat="$cs.project.header.flat" app :dense="$cs.project.header.dense" :elevation="$cs.project.header.elevation">
         <!-- header -->
-        <v-app-bar-nav-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent && !$cs.project.header.hideMenuToggle" class="header-icon" @click="leftSidebar.open = !leftSidebar.open"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent && !$cs.project.header.hideMenuToggle" class="header-icon" @click="toggleLeftSidebar()"></v-app-bar-nav-icon>
         <!-- :style="{color:$cs.project.theme.colors.menu}" -->
         <img v-if="$cs.project.header.logo && !$cs.project.header.hideLogo" :src="$cs.project.header.logo" class="app-project-logo" />
 
@@ -145,7 +145,7 @@
         <template v-else>
         <v-btn
           v-if="rightSidebar.visible && !rightSidebar.permanent && rightSidebar.dashbard && rightSidebar.dashboard.widgets.length>0"
-          @click="rightSidebar.open=!rightSidebar.open" class="header-icon" text>
+          @click="toggleRightSidebar()" class="header-icon" text>
           <!-- <v-tooltip bottom> -->
           <v-icon v-if="rightSidebar.open">keyboard_arrow_right</v-icon>
           <!-- <span>{{$cs.Translate('CLOSE_RIGHT_SIDEBAR')}}</span> 

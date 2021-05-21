@@ -36,7 +36,7 @@
     @click:outside="closeDialog()"
   >
     <v-card>
-      <cs-widget v-if="dialog.widget" :widget="dialog.widget"></cs-widget>
+      <cs-widget class="dialog-widget" v-if="dialog.widget" :widget="dialog.widget"></cs-widget>
       <div v-else>
         <v-card-title class="headline" primary-title>
           {{ dialog.title }}
@@ -59,8 +59,8 @@
             :data="dialog.data"
           ></component>
           <div v-if="dialog.textInput">
-            <v-text-field v-model="dialogInput" required :label="dialog.text"></v-text-field>
-            <v-btn @click="actionCallback(dialogInput)">{{ $cs.Translate('OK')}}</v-btn>
+            <v-text-field v-model="dialog.input" required :label="dialog.text"></v-text-field>
+            <v-btn @click="actionCallback(dialog.input)">{{ $cs.Translate('OK')}}</v-btn>
           </div>
           <div v-else>
             <span v-if="dialog.text" v-html="dialog.text"></span>
