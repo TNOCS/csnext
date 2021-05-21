@@ -112,6 +112,7 @@ export class TimeChart implements IChartType {
 
       
 
+      const secondaryKeys : string[] = [];
 
       options._group = options._dimension.group().reduce(
         (p: any, v: any) => {
@@ -120,6 +121,7 @@ export class TimeChart implements IChartType {
           if (options.secondaryKey) {
             let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
             if (secValue) {
+              if (!secondaryKeys.includes(secValue)) { secondaryKeys.push(secValue)}
               if (!p.secondaryCount.hasOwnProperty(secValue)) {
                 p.secondaryCount[secValue] = 1;
               } else {
@@ -246,7 +248,7 @@ export class TimeChart implements IChartType {
         // .margins({ top: 20, right: 20, bottom: 40, left: 60 })
         .dimension(options._dimension)        
         .group(options._group)
-        .renderArea(false)
+        // .renderArea(false)
         .colors(['#00890c'])
         .yAxisLabel(options.titleY || '')        
         .xAxisLabel(options.titleX || '')    
@@ -257,15 +259,31 @@ export class TimeChart implements IChartType {
         .elasticY(true)        
         .renderLabel(false)
         .renderHorizontalGridLines(true)        
-        .mouseZoomable(false) 
-        .stack(options._group, 'Hawthorne Industrial Airport', (d: any) => { 
-          // console.log(d);
-          return d.value.secondaryCount['Hawthorne Industrial Airport']; })               
+        .mouseZoomable(false)         
         .on('filtered',()=>{          
           let f = this.getFilters(options);          
           options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
         })
         
+        // if (options.secondaryKey) {
+        //   for (const secKey of secondaryKeys) {
+        //     el.stack(options._group, secKey, (d: any) => { 
+        //       // console.log(d);
+        //       return d.value.secondaryCount[secKey]; })               
+            
+        //   }
+        // }
+        switch (options.lineCurve) {
+          case 'curve':
+            el.curve(d3.curveBasis);
+            break;
+          case 'linear':
+            el.curve(d3.curveLinear);
+            break;
+          default:
+            el.curve(d3.curveStepAfter);
+            break;
+        }
         // .x(d3.scaleTime());  //[meta.min, max]));      
       el.render();
       options._chart = el;
