@@ -8,16 +8,15 @@ import { SimpleRelationListSection } from './../data-sections/simple-relation-li
 import { RelationListSections} from './../data-sections/relation-list-sections';
 import InstanceSection from './../data-sections/instance-section';
 import { DataProperties } from './../data-sections/data-properties/data-properties';
-// import SimpleRelationListSection from './../data-sections/simple-relation-list-section.vue';
-// import RelationListSections from './../data-sections/relation-list-sections';
 import { IDatasource } from '@csnext/cs-core';
 import { BaseLayer } from '../../../layers/base-layer';
 import { MapboxGeoJSONFeature } from 'mapbox-gl';
 import simplebar from 'simplebar-vue';
+import { RelationLineSection } from '../data-sections/relation-line-section';
 
 @Component({
     name: 'data-info-panel',
-    components: { simplebar, ImageSection, DataProperties, TitleSection, InstanceSection, SimpleRelationListSection, RelationListSections }, //  
+    components: { simplebar, ImageSection, DataProperties, TitleSection, InstanceSection, SimpleRelationListSection, RelationLineSection, RelationListSections }, //  
     props: ['data', 'featureType', 'panel', 'node', 'source', 'feature', 'layer', 'features'],
     template: require('./data-info-panel.html')
 } as any)

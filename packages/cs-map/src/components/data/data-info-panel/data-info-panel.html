@@ -1,8 +1,7 @@
 <div v-if="data && infoPanel">
     <div v-for="(section, indx) in infoPanel.sections"
     :key="indx">    
-    <component
-        
+    <component 
         :is="section.sectionType"
         :features="features"
         :source="source"
