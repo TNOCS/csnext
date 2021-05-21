@@ -6,5 +6,6 @@ export class TabDashboardOptions extends BaseDashboardOptions {
   public centered?: boolean = false;
   public vertical?: boolean = false;
   public icons?: boolean = false;
+  public storeActive?: boolean = false;
 
 }
