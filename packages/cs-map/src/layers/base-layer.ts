@@ -285,7 +285,9 @@ export class BaseLayer implements IMapLayer {
     private interpolatePopup(template: string, params: Object) {
         const names = Object.keys(params);
         const vals = Object.values(params);
-        return new Function(...names, `return \`${template}\`;`)(...vals);
+        if (names && vals) {
+            return new Function(...names, `return \`${template}\`;`)(...vals);
+        }
     }
 
     public parsePopup(f?: mapboxgl.MapboxGeoJSONFeature): string {

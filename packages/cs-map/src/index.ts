@@ -36,6 +36,7 @@ export * from './services/layer-server-options';
 export * from './components/data/data-sections/data-properties/property-details';
 export * from './components/data/data-info-panel/data-info-panel';
 export * from './components/data/data-sections/node-link';
+export * from './components/data/data-sections/relation-line-section';
 
 // components
 export * from './components/data/data-details/data-details';
