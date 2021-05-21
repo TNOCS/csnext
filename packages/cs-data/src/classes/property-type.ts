@@ -88,7 +88,7 @@ export class PropertyType {
     public resource?: string;
     public legend?: LayerLegend;
     public relation?: RelationType;
-    public hidden?: boolean;    
+    public hidden?: boolean;
     public readonly?: boolean;  
     @FormField({ title: 'Url template', type: 'string', requirements: PropertyType.isUrl, optional: true })
     public urlTemplate?: string;  
