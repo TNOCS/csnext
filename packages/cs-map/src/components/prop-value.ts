@@ -2,7 +2,7 @@ import { PropertyValueType } from '@csnext/cs-data';
 import Vue, { VNode } from 'vue';
 
 Vue.component('prop-value', {
-    props: ['value', 'proptype', 'showUnit'],
+    props: ['value', 'proptype', 'showUnit', 'element'],
     render(createElement): VNode {
         switch (this.proptype.type as PropertyValueType) {
             case PropertyValueType.number:
@@ -29,7 +29,18 @@ Vue.component('prop-value', {
             case PropertyValueType.feature:
                 return createElement('span', this.value?.geometry?.type || '[feature]');
             case PropertyValueType.wkt:
-                return createElement('span', '[location]');
+                return createElement('span', '[location]');                            
+            case PropertyValueType.relation:
+                // find relation
+                if (this.element?._outgoing) {
+                    const rel = this.element._outgoing.find(r => r.classId === this.proptype.relation.type);
+                    if (rel) {
+                        console.log(rel);
+                        return createElement('a', { attrs: { }}, rel.to?.properties?.name);
+                    }
+                }                
+                return createElement('span', '');
+                
             case PropertyValueType.json:
                 return createElement('span', '[json]');
             case PropertyValueType.url:                
