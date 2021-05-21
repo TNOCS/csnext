@@ -11,6 +11,8 @@ export interface IDialog {
   scrollable?: boolean;
   widget?: IWidget;
   textInput?: boolean;
+  defaultText?: string;
+  input?: string;
   // toolbar?: boolean;
   data?: any;
   width?: number | string;
