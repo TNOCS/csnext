@@ -14,6 +14,7 @@ export enum PropertyValueType {
     relation = 'relation',
     url = 'url',
     options = 'options',
+    listitem = 'listitem',
     image = 'image',
     epoch = 'epoch',
     wkt = 'wkt',
@@ -41,6 +42,7 @@ export class PropertyType {
     static isNumber = [ (v: any) => { return v.type && v.type === PropertyValueType.number}];
     static isString = [ (v: any) => { return v.type && v.type === PropertyValueType.string}];
     static isOptions = [ (v: any) => { return v.type && v.type === PropertyValueType.options}];
+    static isListItem = [ (v: any) => { return v.type && v.type === PropertyValueType.listitem}];
     static isRelation = [ (v: any) => { return v.type && v.type === PropertyValueType.relation}];
     static isUrl = [ (v: any) => { return v.type && v.type === PropertyValueType.url}];
     
@@ -72,6 +74,7 @@ export class PropertyType {
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
     public stringFormat?: string;    
     public title?: string;
+    public optionsList?: string;
     public colorScheme?: string | string[];  
     public defaultLegendColor?: string;    
     @FormField({ title: 'Type', 
@@ -85,7 +88,7 @@ export class PropertyType {
     public resource?: string;
     public legend?: LayerLegend;
     public relation?: RelationType;
-    public hidden?: boolean;
+    public hidden?: boolean;    
     public readonly?: boolean;  
     @FormField({ title: 'Url template', type: 'string', requirements: PropertyType.isUrl, optional: true })
     public urlTemplate?: string;  
@@ -98,7 +101,8 @@ export class PropertyType {
     public key?: string;
     public attributes?: {[key: string]: string};
 
-    public _values?: any[];    
+    public _values?: any[]; 
+    public _visible?: boolean;   
 }
 
 export type PropertyCollection = PropertyType[];
