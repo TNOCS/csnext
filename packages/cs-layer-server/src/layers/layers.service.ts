@@ -46,7 +46,7 @@ export class LayerService extends AggregateRoot {
     }
     public config: ServerConfig;
     private absoluteConfigPath!: string;
-    private lock = new AsyncLock();
+    private lock = new AsyncLock({maxPending: 2000});
     private socketSources: Record<string, LayerSource> = {};
 
     constructor(
@@ -391,8 +391,8 @@ export class LayerService extends AggregateRoot {
                     action: 'update',
                     feature
                 };
-            }).catch((e) => {
-                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id})`);
+            }).catch((e: Error) => {
+                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id}) ${e.message}`);
             })
         }
     }
@@ -406,8 +406,8 @@ export class LayerService extends AggregateRoot {
                     action: 'delete',
                     feature: feature
                 };
-            }).catch((e) => {
-                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id})`);
+            }).catch((e: Error) => {
+                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id}) ${e.message}`);
             });
         }
     }
