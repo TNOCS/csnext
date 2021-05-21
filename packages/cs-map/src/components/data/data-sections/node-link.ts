@@ -10,7 +10,7 @@ import { CsMap } from '../../cs-map/cs-map';
   template: `<div>
   <v-tooltip transition="undefined" open-delay="100" bottom color="transparent">
       <template v-slot:activator="{ on }">
-        <span class="link-title" @click="activate()" v-on="on">{{node.title}}</span>
+        <span class="link-title" @click.stop="activate()" v-on="on">{{node.title}}</span>
       </template>
       <v-card outlined class="darker node-popup">
         <data-info-panel :data="node.properties" :node="node" :featureType="node._featureType" panel="popup"></data-info-panel>        
