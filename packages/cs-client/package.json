@@ -21,14 +21,14 @@
     "dependencies": {
         "@csnext/cs-core": "^0.0.131",
         "axios": "^0.21.1",
-        "simplebar-vue": "1.6.0",
+        "simplebar-vue": "1.6.3",
         "socket.io-client": "^2.3.1",
-        "vue-i18n": "^8.24.2",
+        "vue-i18n": "^8.24.4",
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
         "vue-router": "^3.5.1",
-        "vuetify": "2.4.8",
-        "@vueuse/core": "4.6.2"
+        "vuetify": "2.5.0",
+        "@vueuse/core": "4.11.0"
     },
     "devDependencies": {
         "@types/socket.io-client": "^1.4.34",
