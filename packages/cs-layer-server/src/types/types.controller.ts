@@ -29,6 +29,19 @@ export class TypesController {
   }
 
   @ApiOperation({
+    summary: 'Get available feature types',
+    description: 'Returns all available feature types'
+})
+  @ApiResponse({
+      status: 200,
+      description: 'List ofall FeatureType definitions'      
+  })
+  @Get()
+  public dataModel(): FeatureTypes {
+      return this.layerService.getTypes();      
+  }
+
+  @ApiOperation({
     summary: 'Get available feature types with their base types merged',
     description: 'Returns all available feature types'
 })

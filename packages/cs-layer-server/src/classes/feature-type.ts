@@ -196,6 +196,10 @@ export class FeatureType {
                 }
                 // .filter(p => ft.properties?.findIndex(f => f._key === p._key) === -1)?.concat(ft.properties);
             }
+            if (base.attributes)
+            {   
+                ft.attributes = {...base.attributes, ...ft.attributes};                                                
+            }
             if (base.infoPanels)
             {
                 if (!ft.infoPanels) { ft.infoPanels = {}; }
