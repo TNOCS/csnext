@@ -327,7 +327,7 @@ export class CsApp extends Vue {
     });
   }
 
-  public UpdateFooter(d: IDashboard) {
+  public updateFooter(d: IDashboard) {
     if (d.footer) {
       this.footer = d.footer;
       if (!this.footer.hasOwnProperty('visible')) {
@@ -381,13 +381,13 @@ export class CsApp extends Vue {
       AppState.DASHBOARD_MAIN,
       (action: string, dashboard: IDashboard) => {
         this.UpdateSideBars(dashboard);
-        this.UpdateFooter(dashboard);
+        this.updateFooter(dashboard);
       }
     );
 
     if (this.$cs.activeDashboard) {
       this.UpdateSideBars(this.$cs.activeDashboard);
-      this.UpdateFooter(this.$cs.activeDashboard);
+      this.updateFooter(this.$cs.activeDashboard);
     }
 
     
