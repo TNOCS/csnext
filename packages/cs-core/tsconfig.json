@@ -4,7 +4,8 @@
   "compilerOptions": {
     /* Basic Options */
     "outDir": "./dist",
-    "rootDir": "./src/"
+    "rootDir": "./src/",
+    "module": "ES6"    
   },
   "exclude": ["./dist"]
 }

@@ -2,6 +2,10 @@
   "name": "@csnext/cs-core",
   "version": "0.0.131",
   "description": "cscore",
+  "exports": {
+    ".": "./lib/cscore.cs.js",
+    "./module": "./lib/cscore.mjs"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "url": "https://github.com/TNOCS/csnext",
@@ -10,9 +14,10 @@
   "scripts": {
     "link": "yarn link",
     "unlink": "yarn unlink",
-    "dev": "tsc -w",
-    "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo",
-    "build": "tsc"
+    "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+    "build": "tsc && webpack --mode development",
+    "build:production": "webpack --mode development && tsc",    
+    "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"    
   },
   "publishConfig": {
     "access": "public"
