@@ -1,20 +1,10 @@
 import Papa from 'papaparse';
-import { IDatasource, guidGenerator, MessageBusService, Loader, AppStateBase } from '@csnext/cs-core';
-import { DataSet, DataSource } from '..';
+import { IDatasource, guidGenerator, MessageBusService, AppStateBase } from '@csnext/cs-core';
+import { DataSet, DataSource, DataSourceEvents, FeatureType, FeatureTypes, PropertyType } from '..';
 import { plainToClass } from 'class-transformer';
 import Axios from 'axios';
-import { FeatureType } from './feature-type';
-import { FeatureTypes } from "./feature-types";
 import { DataPackage, DataResource } from '../interfaces/datapackage';
-import { PropertyType } from './property-type';
 
-export const DataSourceEvents = {
-    DATASOURCE: 'data-source',
-    UPDATED: 'data-updated',
-    INSIGHT: 'source-insight',
-    INSIGHT_VIEW: 'source-insight-view',
-    ACTIVATED: 'activated'
-} as const;
 
 export class DataSources implements IDatasource {
     public images: { [id: string]: string } = {};

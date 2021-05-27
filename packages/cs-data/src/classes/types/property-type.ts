@@ -1,29 +1,5 @@
 import { Form, FormField } from '@csnext/cs-core';
-import { LayerLegend } from './layer-legend';
-import { RelationType } from './relation-type';
-
-export enum PropertyValueType {    
-    boolean = 'boolean',
-    date = 'date',
-    datetime = 'datetime',    
-    number = 'number',    
-    string = 'string',
-    time = 'time',
-    year = 'year',
-    yearmonth = 'yearmonth',
-    relation = 'relation',
-    url = 'url',
-    options = 'options',
-    listitem = 'listitem',
-    image = 'image',
-    epoch = 'epoch',
-    wkt = 'wkt',
-    feature = "feature",
-    featurecollection = "featurecollection",
-    tags = 'tags',
-    json = 'json'
-}
-
+import { LayerLegend, PropertyValueType, RelationType } from './../..';
 
 @Form({
     title: 'Property',

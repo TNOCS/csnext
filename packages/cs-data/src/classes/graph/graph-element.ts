@@ -1,28 +1,4 @@
-import { FeatureType } from '..';
-
-export class Source {
-
-}
-
-
-export class GraphSettings {
-    public showDataModel?= false;
-    public showInstance?= true;
-    public showReliability?= false;
-    public filterTimeline?= false;
-    public filterStep?= false;
-    public showExternal?= false;
-    public focusDate?: Date;
-    public autoFocus?= true;
-    public showAllOnMap?= true;    
-    public showAllOnTimeline?= false;    
-}
-
-export class LinkInfo {
-    public direction: "to" | "from" = "to";
-    public element?: GraphElement;
-    public link?: GraphElement;
-  }
+import { FeatureType,GraphSettings, LinkInfo } from '../..';
 
   export class GraphElement {
     public id?: string;
@@ -38,10 +14,16 @@ export class LinkInfo {
     public shape?: string;
     public from?: GraphElement;
     public aliases?: string;
-    public _alternatives?: string[] = [];
+    public sources?: GraphElement[];
     public alternatives?: string;    
     public kb_source?: string;
     public kb_time?: number;    
+    public backgroundColor?: string;
+    public properties?: {
+        [key: string]: any;
+    } = {};
+
+    public _alternatives?: string[] = [];    
     public _source?: GraphElement;
     public _included?: boolean = false;
     public _startDate?: Date;
@@ -56,27 +38,11 @@ export class LinkInfo {
     public _search?: string;
     public _group?: string;
     public _isEditting?: boolean;
-    public _featureType?: FeatureType;
-    // public _parent?: GraphElement;
-    // public relations?: GraphElement[];
+    public _featureType?: FeatureType;    
     public _derivatives?: GraphElement[];
-    public sources?: GraphElement[];
-    public properties?: {
-        [key: string]: any;
-    } = {};
-
     public _incomming?: GraphElement[];
     public _outgoing?: GraphElement[];
-    public backgroundColor?: string;
-
-    // public get title() : string | undefined {
-    //     return this.properties?.name;
-    // }
-
-    // public set title(value: string | undefined) {
-    //     if (!this.properties) { this.properties = {}}
-    //     this.properties.title = value;
-    // }
+    
 
     public static outOfRange(e: GraphElement, date: Date) {
         if (e._startDate) {

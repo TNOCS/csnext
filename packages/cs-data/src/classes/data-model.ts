@@ -1,5 +1,5 @@
-import { FeatureTypes } from '..';
-import { Lists } from './list';
+import { Lists, FeatureTypes } from '..';
+
 
 export class DataModel {
     public types? : FeatureTypes;

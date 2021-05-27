@@ -1,9 +1,5 @@
 import { Form, FormField } from '@csnext/cs-core';
-// import { LayerStyle } from './layer-style';
-import { FeatureTypes, PropertyCollection, PropertyType } from './..';
-import { InfoPanel } from './info-panel/info-panel';
-import { InfoTemplate } from './info-panel/info-template';
-import { PropertyValueType } from './property-type';
+import { InfoPanel, InfoTemplate, PropertyValueType, FeatureTypes, PropertyCollection, PropertyType } from './../..';
 
 // tslint:disable-next-line: max-classes-per-file
 @Form({ title: 'Feature', hideTitle: true })

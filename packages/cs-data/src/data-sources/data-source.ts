@@ -1,10 +1,7 @@
 import { guidGenerator, IDatasource, MessageBusService } from '@csnext/cs-core';
 import axios from 'axios';
-import { FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
-import { DataSet } from './data-set';
+import { DataSet, DataSourceState, PropertyValueType, FeatureTypes, MetaUtils, FeatureType, PropertyType } from '..';
 import { plainToClass } from 'class-transformer';
-import { DataSourceState } from './data-source-state';
-import { PropertyValueType } from './property-type';
 
 export class DataSource implements IDatasource {
     public id?: string;

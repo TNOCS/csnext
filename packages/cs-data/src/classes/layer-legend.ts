@@ -1,4 +1,4 @@
-import { PropertyType } from './property-type';
+import { PropertyType } from './..';
 
 export interface LayerLegend {
     property: string;
