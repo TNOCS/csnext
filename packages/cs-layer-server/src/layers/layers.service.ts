@@ -8,10 +8,10 @@ import {
     ServerConfig,
     LayerDefinition,
     LayerSource,
-    Helpers,
-    FeatureType,
-    FeatureTypes
+    Helpers    
 } from '../classes';
+import { FeatureType,
+    FeatureTypes} from "@csnext/cs-data";
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';

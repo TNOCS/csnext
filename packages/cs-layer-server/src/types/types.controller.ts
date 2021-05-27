@@ -1,5 +1,5 @@
 import { Get, Controller, Param, Post, Body, Put, Optional, Query } from '@nestjs/common';
-import { FeatureType, FeatureTypes, LayerSource } from '../classes';
+import { FeatureType, FeatureTypes } from '@csnext/cs-data';
 
 import {
   ApiTags,

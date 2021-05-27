@@ -24,9 +24,9 @@ export * from './server/server-basic-auth-config';
 export * from './classes/layer-definition';
 export * from './classes/mapbox-style';
 export * from './classes/layer-source';
-export * from './classes/feature-type';
-export * from './classes/feature-collection';
-export * from './classes/property-type';
+// export * from './classes/feature-type';
+// export * from './classes/feature-collection';
+// export * from './classes/property-type';
 export * from './classes/layer-meta';
 export * from './classes/layer-style';
 export * from './classes/log-definition';
@@ -43,6 +43,8 @@ import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
 import { ExpressPeerServer  } from 'peer';
 import { IPeerOptions } from './classes/peer-options';
+
+
 
 export class ServerConfig {
     public staticFolder?: string;
@@ -85,8 +87,6 @@ export class NestServer {
                 external =
                     process.env.LAYER_SERVER_EXTERNAL || 'localhost:3009';
             }
-
-            
 
             if (globalPrefix) {
                 this.app.setGlobalPrefix(globalPrefix);

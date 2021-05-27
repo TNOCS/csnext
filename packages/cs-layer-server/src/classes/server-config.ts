@@ -1,6 +1,5 @@
 import { LayerDefinition, Connection } from "./.";
-import { FeatureCollection } from './feature-collection';
-import { FeatureType, FeatureTypes } from './feature-type';
+import { FeatureType, FeatureTypes } from '@csnext/cs-data';
 
 /** Server Configuration File  */
 export class ServerConfig {

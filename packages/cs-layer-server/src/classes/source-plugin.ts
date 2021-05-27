@@ -1,6 +1,7 @@
 import { LayerSource } from "./layer-source";
-import { ServerConfig, LayerMeta } from ".";
-import { Layer } from "mapbox-gl";
+import { ServerConfig } from ".";
+import { LayerMeta } from "./layer-meta";
+// import { Layer } from "mapbox-gl";
 import { LayerDefinition } from './layer-definition';
 import { QueryOptions } from './query-options';
 

@@ -1,4 +1,5 @@
-import { LayerSource, LayerStyle, FeatureType } from './';
+import { LayerSource, LayerStyle } from './';
+import { FeatureType } from "@csnext/cs-data";
 
 export interface ILayer {
     /** layer id */

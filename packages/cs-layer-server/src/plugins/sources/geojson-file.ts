@@ -23,7 +23,7 @@ import {
     uniqueCountSorted
 } from 'simple-statistics';
 // import { createTileIndex } from '../../tiles/geojson-tiles';
-import { FeatureType, PropertyType } from '../../classes';
+import { FeatureType, PropertyType } from '@csnext/cs-data';
 import _ from 'lodash';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {

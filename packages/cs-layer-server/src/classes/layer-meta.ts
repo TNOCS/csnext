@@ -1,4 +1,4 @@
-import { FeatureType } from './feature-type';
+import { FeatureType } from '@csnext/cs-data';
 
 export class LayerMeta {
   public featureTypes?: { [id: string]: FeatureType };
