@@ -545,6 +545,11 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public toggleLeftSidebar() {
+    if (!this.project?.leftSidebar) { return; }    
+    if (this.project.leftSidebar.open) { this.closeLeftSidebar(); } else { this.openLeftSidebar(); }
+  }
+
   public openLeftSidebar() {
     if (this.project?.leftSidebar) {
       this.project.leftSidebar.open = true;

@@ -97,16 +97,6 @@ export class CsHeader extends Vue {
     this.$cs.toggleRightSidebar(key);
   }
 
-  public toggleLeftSidebar() {
-    if (!this.leftSidebar) { return; }
-    // this.leftSidebar.open != this.leftSidebar?.open;
-    if (this.leftSidebar?.open) {
-      $cs.closeLeftSidebar();
-    } else {
-      $cs.openLeftSidebar();
-    }
-  }
-
   public toggleRightSidebar() {
     if (this.rightSidebar?.open) {
       $cs.closeRightSidebar();
