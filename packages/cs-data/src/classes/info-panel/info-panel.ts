@@ -9,8 +9,11 @@ export class InfoPanel
     public title?: string;
     /** property of sub title */
     public subtitle?: string;
+    /** property with url used for showing icon */
+    public iconImageProperty?: string;
 
     public aliases?: string;
 
+    /** list of sections included in this info panel */
     public sections?: InfoPanelSection[];
 }
