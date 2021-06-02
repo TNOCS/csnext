@@ -1,0 +1,42 @@
+{
+    "name": "@csnext/cs-graph",
+    "version": "0.0.131",
+    "description": "cs-graph",
+    "main": "./lib/csgraph.cs.js",
+    "types": "./dist/src/index.d.ts",
+    "url": "https://github.com/TNOCS/csnext",
+    "bugs": "https://github.com/TNOCS/csnext/issues",
+    "license": "MIT",
+    "scripts": {
+        "link": "yarn link",
+        "unlink": "yarn unlink",
+        "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "build": "tsc && webpack --mode development",
+        "build:production": "tsc && webpack --mode development",
+        "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@csnext/cs-client": "^0.0.131",
+        "@csnext/cs-data": "^0.0.131",
+        "@csnext/cs-form": "^0.0.131",
+        "@mapbox/geojson-extent": "^1.0.0",
+        "@mapbox/polylabel": "^1.0.2",
+        "@mapbox/simplespec-to-gl-style": "^0.4.0",
+        "lodash.throttle": "4.1.1",
+        "vue-drag-drop": "1.1.4",
+        "@antv/g6": "4.2.0",
+        "vueisotope": "3.1.2",
+        "isotope-packery": "2.0.1",
+        "isotope-masonry-horizontal": "2.0.1"
+    },
+    "devDependencies": {
+        "@types/lodash.throttle": "^4.1.6",
+        "vue-loader": "15.9.6",
+        "vue-template-compiler": "2.6.12"
+    },
+    "peerDependencies": {},
+    "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
+}

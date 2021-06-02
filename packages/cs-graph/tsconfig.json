@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.settings.json",  
+  "compilerOptions": {    
+    "outDir": "./dist",
+    "importHelpers": true,    
+    "resolveJsonModule": true,    
+    "sourceMap": true,
+    "experimentalDecorators": true
+  },
+  "exclude": ["./dist"],
+  "include": ["./src/**/*.json"]
+}
