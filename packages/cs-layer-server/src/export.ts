@@ -117,6 +117,7 @@ export class NestServer {
                     const publicDirectory: string = this.config.staticFolder;
                     this.app.use(this.config.staticPath, express.static(publicDirectory));
                     Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
+                    Logger.log(`Hosting static files from '${publicDirectory}'`);
                 }
 
                 if (this.config.assetsPath) {
