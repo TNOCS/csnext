@@ -44,6 +44,11 @@
     overflow: hidden;  
     white-space: nowrap;
   }
+
+  .info-prop-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   
   .info-image {
     /* width: 28px; */

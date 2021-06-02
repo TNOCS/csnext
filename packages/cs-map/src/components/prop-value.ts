@@ -50,7 +50,7 @@ Vue.component('prop-value', {
               }
               return createElement('a', { attrs: { target:'_blank', href: url} }, this.value)            
             default:
-                return createElement('span', this.value);
+                return createElement('span', { class:'info-prop-text'}, this.value);
         }
     }
 });
