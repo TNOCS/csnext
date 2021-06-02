@@ -1,7 +1,6 @@
 import { Form, FormField } from '@csnext/cs-core';
-import { InfoPanel, InfoTemplate, PropertyValueType, FeatureTypes, PropertyCollection, PropertyType } from './../..';
+import { InfoPanel, InfoTemplate, PropertyValueType, FeatureTypes, PropertyCollection, PropertyType, GraphElement, TextEntity, TextRelation } from './../..';
 
-// tslint:disable-next-line: max-classes-per-file
 @Form({ title: 'Feature', hideTitle: true })
 export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
@@ -14,7 +13,18 @@ export class FeatureType {
     public mode?: string;    
     @FormField({ title: 'Abstract', type: 'checkbox'})
     public abstract?: boolean;  
+    public _node?: GraphElement;
+    public _nlpType?: string;
+    public _edge?: GraphElement;
+    public typeId?: string;
     public notification?: string;
+    public _entities?: TextEntity[];
+    // public featureType?: string;
+    // public _featureType?: FeatureType;
+    // public patterns?: ObservationPattern[];
+    public relations?: TextRelation[];
+    public _collapsed?: boolean;        
+
     @FormField({
         title: 'Properties',
         type: 'array',

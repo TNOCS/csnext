@@ -19,6 +19,7 @@ export * from './classes/types/feature-type';
 export * from './classes/types/relation-type';
 export * from './classes/types/feature-types';
 export * from './classes/types/property-value-type';
+export * from './classes/types/text-entity';
 
 export * from './classes/graph/graph-element';
 export * from './classes/graph/link-info';
@@ -31,5 +32,7 @@ export * from './data-sources/data-source';
 export * from './data-sources/data-source-state';
 export * from './data-sources/data-sources';
 export * from './data-sources/data-source-events';
+
+export * from './data-sources/graph-datasource';
 
 declare var datapackage: any;
