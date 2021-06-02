@@ -517,12 +517,16 @@ export class AppState extends AppStateBase {
   }
 
   public triggerInputDialog(title: string, text: string, defaultValue?: string): Promise<string> {
-    return new Promise((resolve) => {    
+    return new Promise((resolve, reject) => {    
       const d = {
         fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, defaultText: defaultValue, persistent: true, width: 400 
       } as IDialog;
-      d.actionCallback = (action: string) => {
-        resolve(action);
+      d.actionCallback = (action: string | undefined) => {
+        if (!action) {
+          reject();
+        } else {
+          resolve(action);
+        }
       };
       this.triggerDialog(d);
   });
