@@ -7,11 +7,11 @@ const config = buildConfig(
         '@csnext/cs-client': '@csnext/cs-client',
         '@csnext/cs-form': '@csnext/cs-form',
         '@csnext/cs-data': '@csnext/cs-data',
+        '@csnext/cs-map': '@csnext/cs-map',
         axios: 'axios'
     },
     'csgraph'
 );
-
 
 // config.module.rules.push({ test: /\.handlebars$/, loader: "handlebars-loader" })
 

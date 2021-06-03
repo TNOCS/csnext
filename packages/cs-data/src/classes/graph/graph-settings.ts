@@ -9,4 +9,6 @@ export class GraphSettings {
     public autoFocus?= true;
     public showAllOnMap?= true;    
     public showAllOnTimeline?= false;    
+    public nodeSpacing?: number;
+    public labelMaxLength?: number;
 }

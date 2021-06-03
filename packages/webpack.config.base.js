@@ -1,31 +1,39 @@
 const webpack = require("webpack");
 const path = require("path");
+const { VueLoaderPlugin } = require('vue-loader');
 
 const env = require("yargs").argv.env; // use --env with webpack 2
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const mod = {
-    rules: [
+
+    rules: [{
+            test: /\.vue$/,
+            loader: 'vue-loader'
+        },
         {
             test: /\.ts$/,
             exclude: [/node_modules/],
-            use: [
-                {
-                    loader: "ts-loader"
-                    // options: {
-                    //     happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
-                    // }
+
+            use: [{
+                loader: "ts-loader",
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                    appendTsxSuffixTo: [/\.vue$/]
                 }
-            ]
+                // options: {
+                //     happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+                // }
+            }]
         },
         {
             test: /\.html$/,
             loader: "html-loader"
         },
+
         {
             test: /\.css$/,
-            use: [
-                {
+            use: [{
                     loader: "vue-style-loader"
                 },
                 {
@@ -61,7 +69,7 @@ const mod = {
 
 function buildConfig(path, libraryName, entry, externals, analyzer, plugins) {
     if (!plugins) { plugins = []; }
-    
+
     let outputFile;
 
     if (env === "build") {
@@ -81,6 +89,7 @@ function buildConfig(path, libraryName, entry, externals, analyzer, plugins) {
 
     let pl = []; //new HardSourceWebpackPlugin()
     pl.push(new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]));
+    pl.push(new VueLoaderPlugin());
 
     if (analyzer) {
         const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
@@ -101,11 +110,12 @@ function buildConfig(path, libraryName, entry, externals, analyzer, plugins) {
         devtool: "source-map",
         output: output,
         module: mod,
+
         optimization: {
             minimize: false
         },
         externals: {
-            ...{
+            ... {
                 "core-js": "core-js",
                 simplebar: "simplebar",
                 vue: "Vue",

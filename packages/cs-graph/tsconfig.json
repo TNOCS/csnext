@@ -8,5 +8,5 @@
     "experimentalDecorators": true
   },
   "exclude": ["./dist"],
-  "include": ["./src/**/*.json"]
+  "include": ["./src/**/*.json", "./src/**/*.vue"]
 }
