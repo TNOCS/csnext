@@ -1361,25 +1361,3 @@ overflow-y: auto; */
   /* margin: 4px; */
 }
 </style>
-
-
-// <style lang="scss">
-// $color: red;
-// .global-drag-handle {
-//   position: absolute;
-
-//   &::after {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     width: 1rem;
-//     height: 1.25rem;
-//     content: "⠿";
-//     font-weight: 700;
-//     cursor: grab;
-//     background: #0d0d0d10;
-//     color: #0d0d0d50;
-//     border-radius: 0.25rem;
-//   }
-// }
-// </style>

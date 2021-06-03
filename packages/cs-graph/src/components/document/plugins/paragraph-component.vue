@@ -42,11 +42,10 @@ export default class ParagraphComponent extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .paragraph-component {
-  // position: relative;
+  
   display: inline;
-  // background: lightgray;
   border-radius: 6px;
   border-color: black;
   border-style: dashed;
@@ -71,7 +70,5 @@ export default class ParagraphComponent extends Vue {
 .content {
   padding: 5px;
   cursor: pointer;
-  // margin-top: 1.5rem;
-  // padding: 1rem;
 }
 </style>

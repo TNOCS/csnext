@@ -88,7 +88,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .items {
   position: relative;
   border-radius: 0.25rem;

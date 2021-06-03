@@ -37,7 +37,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .code-block {
   position: relative;
   color: red;

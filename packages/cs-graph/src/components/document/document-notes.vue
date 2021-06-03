@@ -8,9 +8,6 @@
 
 </style>
 
-<style lang="scss">
-$color: red;
-</style>
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
