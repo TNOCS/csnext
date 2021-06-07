@@ -216,7 +216,9 @@ export class FeatureType {
                 {
                     if (!ft.infoPanels.hasOwnProperty(panel))
                     {
-                        ft.infoPanels[panel] = base.infoPanels[panel];
+                        ft.infoPanels[panel] = { ...base.infoPanels[panel], ...{ _originalType: baseType }};
+
+                        
                     } else
                     {
                         // if (!ft.infoPanels[panel].sections) { ft.infoPanels[panel].sections = []; }

@@ -1,6 +1,6 @@
 import { FeatureTypeStat } from './../classes/feature-type-stat';
 import { IntelDocument } from './../classes/document/intel-document';
-import { GraphElement, TextEntity, GraphDatasource, TextRelation } from '@csnext/cs-data';
+import { GraphElement, TextEntity, GraphDatasource, TextRelation, InfoPanel } from '@csnext/cs-data';
 import Axios from 'axios';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
@@ -1016,23 +1016,34 @@ export class DocDatasource extends GraphDatasource {
             if (this.featureTypes) {   
                 let res: FeatureTypes = {};
                 for (const type of Object.keys(this.featureTypes)) {
-                    let ft = this.featureTypes[type];
-                    let f = JSON.parse(JSON.stringify(ft, (key, value) => {
-                        if (value.properties)                        
-                        {
-                            value.properties = value.properties.filter((t: any) => !t._originalType || t._originalType === value.type);                            
-                        }
-                        // if (value.properties) {
-                        //     value.properties = value.properties()
-                        // }
-                        if (key.startsWith('_')) {
-                            return undefined;
-                        }
-                        return value;
-                    }, 2));
-                    res[type] = f;
+                    let ft = this.featureTypes[type]._originalFeatureType;
+                    if (ft) {                         
+                        if (!ft.properties) { ft.properties = []; }                        
+                        let f = JSON.parse(JSON.stringify(ft, (key, value : FeatureType) => {
+                            if (value.properties)                        
+                            {
+                                value.properties = value.properties.filter((t: any) => !t._originalType || t._originalType === value.type);                            
+                            } else { 
+                                // value.properties = []; 
+                            }
+                            if (key.startsWith('_')) {
+                                return undefined;
+                            }
+                            if (key === "propertyMap") { return undefined;  }
+                            if (value.infoPanels) {
+                                const newPanels : { [key: string]: InfoPanel} = {};
+                                Object.keys(value.infoPanels).forEach(key => {
+                                    if (key && value?.infoPanels && value.infoPanels[key] && !value.infoPanels[key]._originalType) {
+                                        newPanels[key] = value.infoPanels[key];
+                                    }
+                                });
+                                value.infoPanels = newPanels;
+                            }
+                            return value;
+                        }, 2));
+                    res[type] = f;}
                 };
-                let updateJSON = JSON.stringify(res);
+                let updateJSON = JSON.stringify(res, undefined, 2);
                 // let updateJSON = JSON.stringify([...Object.values(this.featureTypes)], (key, value) => {
                 //     if (value && Array.isArray(value)) {
                 //     for (const ft of value) {

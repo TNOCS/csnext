@@ -16,4 +16,8 @@ export class InfoPanel
 
     /** list of sections included in this info panel */
     public sections?: InfoPanelSection[];
+
+    /** original type this panel was inherited from */
+    public _originalType?: string;
+    
 }

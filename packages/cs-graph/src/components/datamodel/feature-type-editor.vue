@@ -195,13 +195,8 @@ export default class FeatureTypeEditor extends WidgetBase {
   public tab = "";
 
   public search = "";
-  public headers = [
-    
-    { text: 'title', value: 'title', groupable: false},
-    // { text: "type", value: "properties" },
-    // { text: "count", value: "count", groupable: false },
-    // { text: "properties", value: "properties.length", groupable: false },
-    // { text: "relations", value: "relations.length", groupable: false },
+  public headers = [    
+    { text: 'title', value: 'title', groupable: false},    
     { text: "Actions", value: "actions", groupable: false, sortable: false }
   ];
 
@@ -263,9 +258,9 @@ export default class FeatureTypeEditor extends WidgetBase {
                 canAdd: true,
                 canDelete: true,
                 arrayFieldType: 'object',
-                arrayFilter: (v: PropertyType[]) => { 
-                  return v.filter(pt => pt._originalType === this.type?.type)
-                  },
+                // arrayFilter: (v: PropertyType[]) => { 
+                //   return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
+                //   },
                 newItem: ()=> { return new PropertyType(); },
                 keyValuesType: PropertyType,
                 type: 'array',                
@@ -407,20 +402,7 @@ export default class FeatureTypeEditor extends WidgetBase {
 
    public updateFeatureType() {    
     if (!this.isrd || !this.type) { return; }    
-    this.isrd.saveFeatureType(this.type);
-    // if (this.document.sourceId && (!this.document._source || this.document._source.id !== this.document.sourceId)) {
-      // remove existing link
-      
-
-
-      // source changed
-      // alert('source changed');
-    
-
-    
-    
-    // this.isrd.saveDocument(this.document);
-
+    this.isrd.saveFeatureType(this.type);  
   }  
 
   public addEntity() {
