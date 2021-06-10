@@ -1,4 +1,3 @@
-import { FeatureTypeStat } from './../classes/feature-type-stat';
 import { IntelDocument } from './../classes/document/intel-document';
 import { GraphElement, TextEntity, GraphDatasource, TextRelation, InfoPanel } from '@csnext/cs-data';
 import Axios from 'axios';
@@ -14,7 +13,7 @@ import { EntityRecognizer } from "../plugins/EntityRecognizer";
 // import { Relationparser } from "../plugins/relation-parser";
 import { EntityList } from '../components/document/node-entities';
 import { TimeDataSource, guidGenerator, IFormOptions, WidgetOptions } from '@csnext/cs-core';
-import { DataSet, FeatureType, FeatureTypes, PropertyValueType } from '@csnext/cs-data';
+import { DataSet, FeatureType, FeatureTypes, PropertyValueType, FeatureTypeStat } from '@csnext/cs-data';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 // import RelationEditor from "./../components/document-management/relation-editor.vue";
@@ -47,8 +46,7 @@ export class DocDatasource extends GraphDatasource {
     // public schema?: GraphSchema;
     public entityParser = new EntityParser();
     // public relationParser = new Relationparser();
-    public layers:{[type: string]: GeojsonPlusLayer} = {};  
-    public typeStats: {[key: string] : FeatureTypeStat}      = {};
+    public layers:{[type: string]: GeojsonPlusLayer} = {};      
 
     constructor(public timesourceId: string, public mapsourceId: string) {        
         super();  
@@ -69,10 +67,7 @@ export class DocDatasource extends GraphDatasource {
         }
     }
 
-    public findObservation(type: string) : FeatureType | undefined {
-        if (!this.featureTypes) { return undefined; }
-        return this.featureTypes[type] ?? undefined;
-    }
+    
 
     public async initLayer(ml: MapLayers, key: string, obs: FeatureType) : Promise<IMapLayer> {                 
         let l = await ml.addGeojsonLayer(obs.title!, undefined, {
@@ -127,23 +122,7 @@ export class DocDatasource extends GraphDatasource {
                 options: { showToolbar: false, title: featureType.title},
                 datasource: 'isrd',  data: { type: featureType}}, { open: true}, 'featuretype');
     }
-
-    public updateFeatureTypeStats() {
-        if (!this.featureTypes) { return;}
-        this.typeStats = {};
-        for (const type in this.featureTypes) {
-            this.typeStats[type] = { type: this.featureTypes[type]!, elements: [], elementCount: 0, includedCount : 0}
-        }
-        for (const element of Object.values(this.graph)) {
-            if (element._featureType?.type) {
-                const stat = this.typeStats[element._featureType.type];
-                if (stat) {
-                    stat.elementCount+=1;
-                }
-            }            
-        }
-
-    }
+    
 
     public async initLayers(defaultLayer?: string) {        
         
@@ -611,67 +590,7 @@ export class DocDatasource extends GraphDatasource {
     return form;}
 
 
-    public initElement(el: GraphElement) {
-        // find featuretype                    
-        if (el.classId && this.featureType) {
-            el._featureType = this.findObservation(el.classId); //.find(ft => ft.type === el.classId);            
-            if (!el._featureType) {                            
-                el._featureType = Object.values(this.featureType)[0];
-            }             
-        }
-
-        
-        if (el.properties) {
-
-            if (el.properties.latitude && !el.properties.lat) { el.properties.lat = el.properties.latitude; }
-            if (el.properties.longitude && !el.properties.lon) { el.properties.lon = el.properties.longitude; }
-            
-            if (el.properties.hasOwnProperty('alternatives') && el.properties.alternatives.length>0) {
-                el._alternatives = el.properties.alternatives?.split(',');                            
-            }
-            if (el.properties.hasOwnProperty('point_in_time')) {
-                let pit = el.properties['point_in_time'];
-                if (Number.isInteger(pit)) {                                
-                    let date = new Date(pit);
-                    el._startDate = date;
-                    // el.properties.start_time = date; // = `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`
-                } else {                                
-                    let date = el.properties['point_in_time'].split('T')[0].split('-');
-                    el.properties.start = `${date[2]}-${date[1]}-${date[0]}`;
-                }
-            }
-            if (el.properties.hasOwnProperty('start_time')) {
-                let date = el.properties['start_time'].split('T')[0].split('-');
-                el.properties.start = `${date[2]}-${date[1]}-${date[0]}`;
-            }
-            if (el.properties.hasOwnProperty('end_time')) {
-                let date = el.properties['end_time'].split('T')[0].split('-');
-                el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
-            }
-            if (el.properties.hasOwnProperty('location')) {
-                const values = el.properties['location'].replace('Point(', '').replace(')', '').split(' ');
-                if (values.length === 2) {
-                    el.properties['lat'] = parseFloat(values[1]);
-                    el.properties['lon'] = parseFloat(values[0]);
-                    
-                } else {
-                    // console.log(el.properties['coordinate_location']);
-                }
-            }
-            
-            if (el.properties.hasOwnProperty('coordinate location')) {
-
-                const values = el.properties['coordinate location'].replace('Point(', '').replace(')', '').split(' ');
-                if (values.length === 2) {
-                    el.properties['lat'] = values[1];
-                    el.properties['lon'] = values[0];
-                    
-                } else {
-                    // console.log(el.properties['coordinate location']);
-                }
-            }
-        }
-    }
+    
 
     public async loadGraph(url: string, clearCache = false) {
         let jsonGraph: any;
@@ -691,7 +610,7 @@ export class DocDatasource extends GraphDatasource {
             }
             $cs.loader.removeLoader('loadinggraph');
         }
-        if (jsonGraph) {
+        if (jsonGraph) {            
             for (const item of jsonGraph) {
                 if (item.type === 'node' && item.properties?.id) {
                     let el = { id: item.properties.id, classId: item.labels[0], title: item.properties.name, properties: item.properties, alternatives: item.alternatives } as GraphElement;
@@ -1651,8 +1570,8 @@ export class DocDatasource extends GraphDatasource {
             
             if (this.timesourceId) {
                 AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then(ts => {
-                    this.timesource = ts;
-                    this.initTimeDatasource();                    
+                    // this.timesource = ts;
+                    // this.initTimeDatasource();                    
                     resolve(this);
                 })
             }

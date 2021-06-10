@@ -11,8 +11,8 @@ declare module '@tiptap/core' {
             /**
              * Add a text entity
              */
-            setTextEntity: (entity?: TextEntity) => Command,
-            setTextEntityType: (entity?: FeatureType) => Command,
+            setTextEntity: (entity?: TextEntity) => any,
+            setTextEntityType: (entity?: FeatureType) => any,
         }
     }
 }
@@ -37,10 +37,7 @@ export default Node.create({
         return {
             id: { default: null },
             text: { default: '' },
-            type: { default: 'person' },
-            count: {
-                default: 0,
-            },
+            type: { default: 'person' }            
         }
     },
 
