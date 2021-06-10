@@ -20,10 +20,13 @@ export * from './classes/types/relation-type';
 export * from './classes/types/feature-types';
 export * from './classes/types/property-value-type';
 export * from './classes/types/text-entity';
+export * from './classes/types/feature-type-stat';
+
 
 export * from './classes/graph/graph-element';
 export * from './classes/graph/link-info';
 export * from './classes/graph/graph-settings';
+export * from './classes/graph/search-result';
 
 export * from './classes/list/list';
 export * from './classes/list/list-item';

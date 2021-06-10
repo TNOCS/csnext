@@ -1,9 +1,10 @@
 import { TimeDataSource, MessageBusManager, Topics } from '@csnext/cs-core';
-import { DataSource, FeatureTypes, GraphElement, GraphSettings, PropertyType, PropertyValueType } from '../';
+import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType } from '../';
 // import { DiagramAction, GraphAction, DiagramElement, ObservationTypes } from "./../classes/";
 
 // import { AppState } from '@csnext/cs-client';
 import throttle from 'lodash.throttle';
+import Fuse from 'fuse.js';
 
 
 export type GraphObject = {[key: string]: GraphElement};
@@ -31,6 +32,11 @@ export class GraphDatasource extends DataSource {
     private _nodeTypes?: GraphElement[];
     private _edgeTypes?: {[key:string]: PropertyType};
     private _availableColors: string[] = [];
+    public typeStats: {[key: string] : FeatureTypeStat}      = {};
+    public fuse?: Fuse<any>; 
+    public fuseOptions?: Fuse.IFuseOptions<any> = {};   
+
+    
     
     public get observationTypes() : FeatureTypes | undefined {
         return this.featureTypes;
@@ -44,8 +50,9 @@ export class GraphDatasource extends DataSource {
         this._meta = value;
     }
 
-    constructor() {
-        super();        
+    constructor() {        
+        super();   
+        this.fuse = new Fuse([], { ignoreLocation: true, threshold : 0.3,  keys: [ { name: 'properties.name', weight: 1}, { name: 'properties.description', weight: 0.5}, { name: 'properties.aliases', weight: 0.7}], includeScore: true } );         
     }
 
     public getColor() : string {
@@ -62,11 +69,90 @@ export class GraphDatasource extends DataSource {
 
     public nodeTypes: GraphElement[] = [
     ];
-
-    public loadData() {
-        
+   
+    public findObservation(type: string) : FeatureType | undefined {
+        if (!this.featureTypes) { return undefined; }
+        return this.featureTypes[type] ?? undefined;
     }
 
+    public updateFeatureTypeStats() {
+        if (!this.featureTypes) { return;}
+        this.typeStats = {};
+        for (const type in this.featureTypes) {
+            this.typeStats[type] = { type: this.featureTypes[type]!, elements: [], elementCount: 0, includedCount : 0}
+        }
+        for (const element of Object.values(this.graph)) {
+            if (element._featureType?.type) {
+                const stat = this.typeStats[element._featureType.type];
+                if (stat) {
+                    stat.elementCount+=1;
+                }
+            }            
+        }
+
+    }
+
+    public initElement(el: GraphElement) {
+        // find featuretype                    
+        if (el.classId && this.featureTypes) {
+            el._featureType = this.findObservation(el.classId); //.find(ft => ft.type === el.classId);            
+            if (!el._featureType) {                            
+                el._featureType = Object.values(this.featureTypes)[0];
+            }             
+        }
+        
+        if (el.properties) {
+
+            if (el.properties.latitude && !el.properties.lat) { el.properties.lat = el.properties.latitude; }
+            if (el.properties.longitude && !el.properties.lon) { el.properties.lon = el.properties.longitude; }
+            
+            if (el.properties.hasOwnProperty('alternatives') && el.properties.alternatives.length>0) {
+                el._alternatives = el.properties.alternatives?.split(',');                            
+            }
+            if (el.properties.hasOwnProperty('point_in_time')) {
+                let pit = el.properties['point_in_time'];
+                if (Number.isInteger(pit)) {                                
+                    let date = new Date(pit);
+                    el._startDate = date;
+                    // el.properties.start_time = date; // = `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`
+                } else {                                
+                    let date = el.properties['point_in_time'].split('T')[0].split('-');
+                    el.properties.start = `${date[2]}-${date[1]}-${date[0]}`;
+                }
+            }
+            if (el.properties.hasOwnProperty('start_time')) {
+                let date = el.properties['start_time'].split('T')[0].split('-');
+                el.properties.start = `${date[2]}-${date[1]}-${date[0]}`;
+            }
+            if (el.properties.hasOwnProperty('end_time')) {
+                let date = el.properties['end_time'].split('T')[0].split('-');
+                el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
+            }
+            if (el.properties.hasOwnProperty('location')) {
+                const values = el.properties['location'].replace('Point(', '').replace(')', '').split(' ');
+                if (values.length === 2) {
+                    el.properties['lat'] = parseFloat(values[1]);
+                    el.properties['lon'] = parseFloat(values[0]);
+                    
+                } else {
+                    // console.log(el.properties['coordinate_location']);
+                }
+            }
+            
+            if (el.properties.hasOwnProperty('coordinate location')) {
+
+                const values = el.properties['coordinate location'].replace('Point(', '').replace(')', '').split(' ');
+                if (values.length === 2) {
+                    el.properties['lat'] = values[1];
+                    el.properties['lon'] = values[0];
+                    
+                } else {
+                    // console.log(el.properties['coordinate location']);
+                }
+            }
+        }
+    }
+    
     public get availableEdgeTypes(): {[key:string]: PropertyType} {
         if (!this.featureTypes) { return {} }
         if (this._edgeTypes !== undefined) { return this._edgeTypes; }
@@ -179,8 +265,7 @@ export class GraphDatasource extends DataSource {
                 }));
             }
         }
-        return res;
-        
+        return res;        
     }
 
     
@@ -205,7 +290,8 @@ export class GraphDatasource extends DataSource {
             element._featureType = this.featureTypes[element.classId];
         }
 
-        res = res.addElement(element);        
+        res = res.addElement(element);  
+        if (this.fuse) { this.fuse.add(element); }        
         return this;
     }
 
@@ -373,65 +459,66 @@ export class GraphDatasource extends DataSource {
     public updateEdges(clean = false) {
 
         for (const e of Object.values(this.graph)) {
-            if (e.type === 'edge')
-                if (e.classId && !e.class) {
-                    let c = this.getElement(e.classId);                    
-                    if (!c) {
-                        this.addEdge({id: e.classId, properties: { name: e.classId}, isType: true, _visible: false})
-                    }
-                    e.class = c;                    
-                }
-
-            if (e.toId && !e.to) {
-                e.to = this.getElement(e.toId);
-                if (e.to && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                    if (!e.to._incomming) {
-                        e.to._incomming = [e];
-                    } else {
-                        // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
-                        e.to._incomming.push(e);
-                        // }
-                    }
-
-                }
-                // if (!e.to) {
-                //   let external = new GraphElement();
-                //   external.id = e.toId;
-                //   external.title = e.toId;
-                //   external.classId = 'source';
-                //   e.to = external;
-                //   this.tutorialSource.graph.push(external);
+            if (e.type === 'edge') {
+                // if (e.classId && !e.class) {
+                //     let c = this.getElement(e.classId);                    
+                //     if (!c) {
+                //         this.addEdge({id: e.classId, properties: { name: e.classId}, isType: true, _visible: false})
+                //     }
+                //     e.class = c;                    
                 // }
-            }
 
-            if (e.fromId && !e.from) {
-                e.from = this.getElement(e.fromId);
-                if (e.from && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                    if (!e.from._outgoing) {
-                        e.from._outgoing = [e];
-                    } else {
-                        // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
-                        e.from._outgoing.push(e);
-                        // }
+                if (e.toId && !e.to) {
+                    e.to = this.getElement(e.toId);
+                    if (e.to && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+                        if (!e.to._incomming) {
+                            e.to._incomming = [e];
+                        } else {
+                            // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
+                            e.to._incomming.push(e);
+                            // }
+                        }
+
+                    }
+                    // if (!e.to) {
+                    //   let external = new GraphElement();
+                    //   external.id = e.toId;
+                    //   external.title = e.toId;
+                    //   external.classId = 'source';
+                    //   e.to = external;
+                    //   this.tutorialSource.graph.push(external);
+                    // }
+                }
+
+                if (e.fromId && !e.from) {
+                    e.from = this.getElement(e.fromId);
+                    if (e.from && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+                        if (!e.from._outgoing) {
+                            e.from._outgoing = [e];
+                        } else {
+                            // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
+                            e.from._outgoing.push(e);
+                            // }
+                        }
                     }
                 }
-            }
 
-            let w = 3;
-            //   if (this.settings.showReliability) {
-            //     w = 15;
-            //     if (e.properties && e.properties.hasOwnProperty("reliability")) {
-            //       w = parseFloat(e.properties["reliability"]) * 10;
-            //     }
-            //   }
+                // let w = 3;
+                //   if (this.settings.showReliability) {
+                //     w = 15;
+                //     if (e.properties && e.properties.hasOwnProperty("reliability")) {
+                //       w = parseFloat(e.properties["reliability"]) * 10;
+                //     }
+                //   }
 
-            if (!e._title || clean) {
-                e._title = GraphElement.getTitle(e, true);
-            }
-            if (!e._search  || clean) {
-                e._search = e._title;
-                if (e.class && e.class._title) {
-                    e._search += e.class._title;
+                if (!e._title || clean) {
+                    e._title = GraphElement.getTitle(e, true);
+                }
+                if (!e._search  || clean) {
+                    e._search = e._title;
+                    if (e.class && e.class._title) {
+                        e._search += e.class._title;
+                    }
                 }
             }
         }
@@ -451,13 +538,13 @@ export class GraphDatasource extends DataSource {
             if (!e._title || clean) {
                 e._title = GraphElement.getTitle(e, clean);
             }
-            if (!e.class && e.classId) {
-                let c = this.getElement(e.classId);
-                if (!c) {
-                    this.addNode({id: e.classId, properties: {name: e.classId}, isType: true, _visible: false})
-                }
-                e.class = c;                    
-            }
+            // if (!e.class && e.classId) {
+            //     let c = this.getElement(e.classId);
+            //     if (!c) {
+            //         this.addNode({id: e.classId, properties: {name: e.classId}, isType: true, _visible: false})
+            //     }
+            //     e.class = c;                    
+            // }
         }
     }
 
@@ -465,11 +552,15 @@ export class GraphDatasource extends DataSource {
         for (const e of Object.values(this.graph)) {
            this.updateNode(e, clean);
         }
+    }
 
+    public updateSearchIndex() {
+        if (!this.fuse) { return; }
+        this.fuse?.setCollection(Object.values(this.graph));        
     }
 
     public execute(): Promise<GraphDatasource> {
-        return new Promise((resolve) => {
+        return new Promise((resolve) => {                        
             resolve(this);
         })
 
