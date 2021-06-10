@@ -41,14 +41,11 @@ export class DocDatasource extends GraphDatasource {
     public plugins?: IIntelPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
-
-    public base_url = 'http://localhost:9000';
-    // public schema?: GraphSchema;
+    
     public entityParser = new EntityParser();
-    // public relationParser = new Relationparser();
     public layers:{[type: string]: GeojsonPlusLayer} = {};      
 
-    constructor(public timesourceId: string, public mapsourceId: string) {        
+    constructor(public base_url: string, public timesourceId: string, public mapsourceId: string) {        
         super();  
     }
 
