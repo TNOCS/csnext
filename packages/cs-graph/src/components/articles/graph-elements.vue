@@ -2,7 +2,7 @@
   <div v-if="graphSource && graphSource.graph" style="padding: 3px; height: 100% !important">
     <v-container>
       <v-toolbar elevation="0">
-        <v-text-field v-model="searchFilter" label="Search" single-line></v-text-field>
+        <v-text-field v-model="searchString" label="Search" single-line></v-text-field>
 
         <v-select
           v-model="nodeFilters"
@@ -108,7 +108,7 @@ export default class GraphElements extends WidgetBase {
     }
   }
 
-  @Watch("searchFilter")
+  
   public get filteredElements(): GraphElement[] {
     if (this.graphSource && this.graphSource.graph) {      
       return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
@@ -118,8 +118,8 @@ export default class GraphElements extends WidgetBase {
           f.classId &&
           (!this.filterIncluded || f._included) &&          
           this.nodeFilters.includes(f.classId) &&
-          (this.searchFilter && this.searchFilter === "" ||
-            f._search?.toLowerCase().includes(this.searchFilter.toLowerCase()))
+          (this.searchString && this.searchString === "" ||
+            f._search?.toLowerCase().includes(this.searchString.toLowerCase()))
         );
       });
     } else {
@@ -155,7 +155,7 @@ export default class GraphElements extends WidgetBase {
   }
 
   public nodeFilters: string[] = [];
-  public searchFilter: string = "";
+  public searchString: string  = "";
 
   constructor() {
     super();
