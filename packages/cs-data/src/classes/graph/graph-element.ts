@@ -82,6 +82,9 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
                 }
             }
             return e.backgroundColor;
+        } else if (e._featureType?.color) {
+            e.backgroundColor = e._featureType.color;
+            return e.backgroundColor;
         }
         else if (e.class !== undefined) {
             return GraphElement.getBackgroundColor(e.class, activated);

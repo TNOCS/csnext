@@ -13,6 +13,7 @@ export class FeatureType {
     public mode?: string;    
     @FormField({ title: 'Abstract', type: 'checkbox'})
     public abstract?: boolean;  
+    public color?: string;
     public _node?: GraphElement;
     public _nlpType?: string;
     public _edge?: GraphElement;
