@@ -4,6 +4,7 @@ import Component from './text-entity-component.vue'
 import { TextSelection } from 'prosemirror-state'
 import { guidGenerator } from '@csnext/cs-core'
 import { FeatureType, TextEntity } from '@csnext/cs-data'
+import Text from '@tiptap/extension-text';
 
 declare module '@tiptap/core' {
     interface Commands {
@@ -22,12 +23,13 @@ function getSelection(selection: any) {
 
 }
 
-export default Node.create({
+export default Text.extend({
     name: 'text-entity',
 
     group: 'inline',
 
     draggable: true,
+    // content: 'inline*',
 
     inline: true,
 
@@ -35,9 +37,9 @@ export default Node.create({
 
     addAttributes() {
         return {
-            id: { default: null },
-            text: { default: '' },
-            type: { default: 'person' }            
+            id: { default: null },            
+            type: { default: 'person' },
+            text: { default: '' }            
         }
     },
 
@@ -64,7 +66,7 @@ export default Node.create({
                     // const text = (node.text as string).substring();
                     if (entity?.text !== text) {                        
                         tr.selection.$from.pos = tr.selection.from - 1;
-                        text = tr.doc.textBetween(tr.selection.from, tr.selection.to);                        
+                        text = tr.doc.textBetween(tr.selection.from, tr.selection.to).trim();                        
                     }
 
                     // if (entity?.text !== text) {                        
@@ -83,7 +85,8 @@ export default Node.create({
                     const type = entity?.class ?? entity?.entity_class ?? 'node';
 
                     const newEntity = this.type.create();
-                    newEntity.attrs = { id : id, text, type };
+                    newEntity.attrs = { id : id, type, text: text };
+                    newEntity.text = text;
                     tr.replaceSelectionWith(newEntity)
                     
                     // end of document

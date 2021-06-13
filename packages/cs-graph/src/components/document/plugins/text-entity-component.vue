@@ -6,75 +6,82 @@
     :style="style"
     :class="{ 'highlight' : entity && entity._highlight, 'excluded': entity && !entity._included && !entity._highlight, 'hide': !visible}"   
   >  
-    <v-menu
-      offset-y
-      v-model="openMenu"
-      :close-on-content-click="false"
-      open-delay="500"      
-    >
-      <template v-slot:activator="{ on, attrs }">        
-        <span
-          @click.stop="selectEntity()"
-          class="content"
-          v-bind="attrs"
-          v-on="on"><img v-if="icon" :src="icon" class="icon-image"></img>          
-          {{ node.attrs.text }}
-          <!-- <span v-if="entity">   
-            {{ entity._included}}      
-          </span> -->
-          <!-- <template v-if="entity">
-          <v-icon v-if="entity._included" small>remove</v-icon>
-          <v-icon v-else small>add</v-icon>
-          </template> -->
-          <!-- <v-menu top          >
-      <template v-slot:activator="{ on, attrs }">        
-          <v-icon  v-bind="attrs"
-          v-on="on" small>more_vert</v-icon>        
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in menuItems"
-          :key="index"
-          @click="item.action()"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>            -->
-        </span>              
-      </template>
-      <selection-popup
-        :editor="editor"
-        :entity="entity"
-        :isrd="source"
-        :document="document"
+    
+      <v-menu
+        offset-y
+        v-model="openMenu"
+        :close-on-content-click="false"
+        open-delay="500"      
       >
-      </selection-popup>
-      <!-- 
-        <v-card>
-          <v-card-title>{{ node.attrs.type }}</v-card-title>
-          <template v-if="element">
-          </template>
-          <span v-else>
-            no element
-          </span>
-
-          <template v-if="entity">
+        <template v-slot:activator="{ on, attrs }">        
+<!-- <drag tag="span" :transfer-data="{ node: node }"> -->
+          <span         
+            @click.stop="selectEntity()"
+            class="content"
+            v-bind="attrs"
+            v-on="on">          
+            <v-icon v-if="node.attrs.type === 'DATE'" small>date_range</v-icon>
+            <img v-if="icon" :src="icon" class="icon-image"/>
             
-            entity {{JSON.stringify(entity)}}
-          </template>
-          <span v-else>error</span>
-          <v-list>
-        <v-list-item
-          v-for="(item, index) in menuItems"
-          :key="index"
-          @click="item.action()"
+            {{ node.attrs.text }}
+            
+            <!-- <span v-if="entity">   
+              {{ entity._included}}      
+            </span> -->
+            <!-- <template v-if="entity">
+            <v-icon v-if="entity._included" small>remove</v-icon>
+            <v-icon v-else small>add</v-icon>
+            </template> -->
+            <!-- <v-menu top          >
+        <template v-slot:activator="{ on, attrs }">        
+            <v-icon  v-bind="attrs"
+            v-on="on" small>more_vert</v-icon>        
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in menuItems"
+            :key="index"
+            @click="item.action()"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>            -->
+      </span>
+          <!-- </drag>           -->
+        </template>
+        <selection-popup
+          :editor="editor"
+          :entity="entity"
+          :isrd="source"
+          :document="document"
         >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list> 
-        </v-card>        -->
-    </v-menu>
+        </selection-popup>
+        <!-- 
+          <v-card>
+            <v-card-title>{{ node.attrs.type }}</v-card-title>
+            <template v-if="element">
+            </template>
+            <span v-else>
+              no element
+            </span>
+
+            <template v-if="entity">
+              
+              entity {{JSON.stringify(entity)}}
+            </template>
+            <span v-else>error</span>
+            <v-list>
+          <v-list-item
+            v-for="(item, index) in menuItems"
+            :key="index"
+            @click="item.action()"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list> 
+          </v-card>        -->
+      </v-menu>    
   </node-view-wrapper>
 </template>
 
@@ -130,7 +137,7 @@ export default class TextEntityComponent extends Vue {
   @Watch('source.visibleViewTypes')
   @Watch('entity._included')
   updatedViewTypes() {
-    // console.log('updateviewtypes');
+    // console.log('updateviewtypes');    
     
     this.setStyle();
     // this.$forceUpdate();
@@ -154,10 +161,13 @@ export default class TextEntityComponent extends Vue {
     } as CSSStyleDeclaration;
   }
 
+  
+
   public mounted() {
     console.log('mounted text entity component');
     const editor = (this as any).editor as Editor;
     const node = (this as any).node;
+    
     this.source = (this as any).editor?.options?.editorProps?.source;
     if ((editor?.options?.editorProps as any)?.document) {
       // find document
@@ -185,7 +195,7 @@ export default class TextEntityComponent extends Vue {
           this.entity = {
             id: 'None',
             entity_idx: node.attrs.id,
-            text: node.attrs.text,
+            text: node.text,
             class: node.attrs.type ?? 'node'
           };
           this.document.entities.push(this.entity)
