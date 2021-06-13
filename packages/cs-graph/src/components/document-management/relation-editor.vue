@@ -180,7 +180,7 @@ export default class RelationEditor extends Vue {
     if (!l.element || !this.graph) {
       return;
     }
-    this.graph.bus.publish("nodelink", "activated", l.element);
+    this.graph.openElement(l.element);    
   }
 
   public async addNewObjectRelation() {
@@ -213,6 +213,8 @@ export default class RelationEditor extends Vue {
             await this.graph!.parseEntities();
             // await this.graph!.updateEntities();
             await this.graph!.updateEdges();
+
+            this.graph.openElement(n);
 
             this.$forceUpdate();
           })

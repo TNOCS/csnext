@@ -218,7 +218,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 import { GraphElement } from '@csnext/cs-data';
-import { IntelDocument } from "./../../classes/document/intel-document";
+import { GraphDocument } from "./../../classes/document/graph-document";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { EntityList, NodeEntities } from "./node-entities";
 import simplebar from "simplebar-vue";
@@ -287,7 +287,7 @@ export default class DocumentEntities extends WidgetBase {
     }
   }
 
-  public get document(): IntelDocument | undefined {
+  public get document(): GraphDocument | undefined {
     if (this.isrd && this.isrd.activeDocument) {
       return this.isrd.activeDocument;
     }

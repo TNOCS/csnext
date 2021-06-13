@@ -264,7 +264,7 @@ import SelectionPopup from "./selection-popup.vue";
 import simplebar from "simplebar-vue";
 
 import { DocDatasource } from "./../../datasources/doc-datasource";
-import { IntelDocument } from "./../../classes/document/intel-document";
+import { GraphDocument } from "./../../classes/document/graph-document";
 import { ViewType } from "./../../classes/document/view-type";
 import { defaultExtensions } from "@tiptap/starter-kit";
 import TextExtension from "./plugins/text-extension";
@@ -316,7 +316,7 @@ export default class DocumentViewer extends WidgetBase {
   public selectionTo?: number = 0;
   public isLoading?: boolean;
   public showPopup = true;
-  // public document?: IntelDocument;
+  // public document?: GraphDocument;
   public node?: Node;
   // v-if="selectionTo !== undefined && selectionFrom !== undefined"
 
@@ -439,7 +439,7 @@ export default class DocumentViewer extends WidgetBase {
     this.updateViewTypes();
   }
 
-  // public get document(): IntelDocument | undefined {
+  // public get document(): GraphDocument | undefined {
   //   if (this.isrd?.activeDocument) {
   //     return this.isrd.activeDocument;
   //   }
@@ -838,7 +838,7 @@ export default class DocumentViewer extends WidgetBase {
     // });
   }
 
-  public loadDocument(doc: IntelDocument) {
+  public loadDocument(doc: GraphDocument) {
     if (this.isrd && doc) {
       // if (this.isrd.activeDocument === doc) {
       //   return;

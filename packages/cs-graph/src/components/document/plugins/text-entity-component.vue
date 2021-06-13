@@ -96,7 +96,7 @@ import SelectionPopup from "./../selection-popup.vue";
 
 import { DocDatasource } from "../../../datasources/doc-datasource";
 import { Drag, Drop } from "vue-drag-drop";
-import { IntelDocument } from "../../../classes/document/intel-document";
+import { GraphDocument } from "../../../classes/document/graph-document";
 
 @Component({
   components: {
@@ -109,7 +109,7 @@ export default class TextEntityComponent extends Vue {
   @Prop()
   nodeViewProps: any;
 
-  public document: IntelDocument | null = null;
+  public document: GraphDocument | null = null;
   public entity?: TextEntity | null = null;
   public element?: GraphElement | null = null;
   public visible: boolean = false;

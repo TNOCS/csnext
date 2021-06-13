@@ -37,7 +37,7 @@ import { guidGenerator, IFormObject, IFormOptions} from '@csnext/cs-core';
 
 import simplebar from "simplebar-vue";
 
-import { IntelDocument } from "../../classes/document/intel-document";
+import { GraphDocument } from "../../classes/document/graph-document";
 import { FeatureType } from "@csnext/cs-data";
 
 
@@ -46,7 +46,7 @@ import { FeatureType } from "@csnext/cs-data";
 })
 export default class NewDocument extends WidgetBase {
 
- public document?: IntelDocument | null = null;
+ public document?: GraphDocument | null = null;
 
  public isrd?: DocDatasource | null = null;
 
@@ -90,7 +90,7 @@ export default class NewDocument extends WidgetBase {
     this.initDocument();
   }
 
-  public initDocument(): Promise<IntelDocument> {
+  public initDocument(): Promise<GraphDocument> {
     return new Promise((resolve, reject) => {
 
     
@@ -102,7 +102,7 @@ export default class NewDocument extends WidgetBase {
       // find featuretype
       const type = this.isrd.findObservation(document_type);
       console.log(type);
-      this.document = new IntelDocument({        
+      this.document = new GraphDocument({        
         type: 'node',
         _featureType: type,
         classId: document_type,

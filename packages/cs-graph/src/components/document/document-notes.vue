@@ -21,7 +21,7 @@ import "../../assets/sass/main.scss";
 import simplebar from "simplebar-vue";
 // import { Decoration, DecorationSet } from "prosemirror-view";
 import { DocDatasource } from "./../../datasources/doc-datasource";
-import { IntelDocument } from "./../../classes/document/intel-document";
+import { GraphDocument } from "./../../classes/document/graph-document";
 
 @Component({
   components: {
@@ -44,7 +44,7 @@ export default class DocumentNotes extends WidgetBase {
     }
   }
 
-  public get document(): IntelDocument | undefined {
+  public get document(): GraphDocument | undefined {
     if (this.isrd?.activeDocument) {
       return this.isrd.activeDocument;
     }

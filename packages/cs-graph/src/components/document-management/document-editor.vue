@@ -49,7 +49,7 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import { IFormObject} from '@csnext/cs-core';
 
 import simplebar from "simplebar-vue";
-import { IntelDocument } from "../../classes/document/intel-document";
+import { GraphDocument } from "../../classes/document/graph-document";
 import { NodeLink } from "@csnext/cs-map"
 import { GraphElement } from '@csnext/cs-data';
 
@@ -148,7 +148,7 @@ export default class DocumentEditor extends WidgetBase {
         } as IFormObject;
    }
 
-  public document?: IntelDocument | null = null;
+  public document?: GraphDocument | null = null;
 
   public get isrd(): DocDatasource | undefined {
     if (this.widget?.content) {

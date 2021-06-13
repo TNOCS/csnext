@@ -118,7 +118,7 @@ import vueDropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 
 import simplebar from "simplebar-vue";
-import { IntelDocument } from "../../classes/document/intel-document";
+import { GraphDocument } from "../../classes/document/graph-document";
 import { FeatureType } from "@csnext/cs-data";
 import { GraphElement } from '@csnext/cs-data';
 import Axios from "axios";
@@ -286,13 +286,13 @@ export default class DocumentManagement extends WidgetBase {
     // });
   }
 
-  public documentSelected(doc: IntelDocument) {
+  public documentSelected(doc: GraphDocument) {
     if (doc?.id) {
       this.openDocument(doc.id);
     }
   }
 
-  public deleteItem(doc: IntelDocument) {
+  public deleteItem(doc: GraphDocument) {
     this.isrd?.deleteDocument(doc);
   }
 
@@ -304,7 +304,7 @@ export default class DocumentManagement extends WidgetBase {
     }
   }
 
-  public getDocuments(): IntelDocument[] | undefined {
+  public getDocuments(): GraphDocument[] | undefined {
     return undefined;
   }
 

@@ -1,7 +1,7 @@
 <template>
 
 
-  <simplebar style="height: 100%; padding: 5px" v-if="isrd && document && formDef !== null">
+  <simplebar style="height: 100%; padding: 5px" v-if="isrd && document && document.properties && formDef !== null">
         <h1>{{document._featureType.title}}</h1>
     <cs-form :data="document.properties" :formdef="formDef" class="pt-2" id="detailcsform" @saved="updateDocument"></cs-form>
     
@@ -36,7 +36,7 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import { IFormOptions } from '@csnext/cs-core';
 
 import simplebar from "simplebar-vue";
-import { IntelDocument } from "../../classes/document/intel-document";
+import { GraphDocument } from "../../classes/document/graph-document";
 import { NodeLink } from "@csnext/cs-map"
 import { GraphElement } from '@csnext/cs-data';
 
@@ -138,13 +138,13 @@ export default class DocumentEditor extends WidgetBase {
         } as IFormOptions;
    }
 
-  public document?: IntelDocument | null = null;
+  public document?: GraphDocument | null = null;
 
   public get isrd(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
-    if (this.widget?.data) {
+    if (this.widget?.data?.isrd) {
       return this.widget.data.isrd as DocDatasource;
     }
   }

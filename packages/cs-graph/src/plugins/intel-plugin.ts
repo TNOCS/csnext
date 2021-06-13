@@ -1,4 +1,4 @@
-import { IntelDocument } from '../classes/document/intel-document';
+import { GraphDocument } from '../classes/document/graph-document';
 import { DocDatasource } from '../datasources/doc-datasource';
 
 export interface IIntelPlugin {
@@ -6,11 +6,11 @@ export interface IIntelPlugin {
     title: string;
     description: string;
     options: any;
-    callDocument(doc: IntelDocument, source: DocDatasource) : Promise<IIntelPluginResult>;
+    callDocument(doc: GraphDocument, source: DocDatasource) : Promise<IIntelPluginResult>;
 }
 
 export interface IIntelPluginResult {    
-    document?: IntelDocument;
+    document?: GraphDocument;
     error?: string;
 }
 

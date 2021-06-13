@@ -1,5 +1,6 @@
 import { GraphElement } from '@csnext/cs-data';
-import { IntelDocument } from '../classes/document/intel-document';
+import { GraphDocument } from '../classes/document/graph-document';
+import { ViewType } from '../classes/document/view-type';
 import { DocDatasource } from '../datasources/doc-datasource';
 import { IIntelPlugin, IIntelPluginResult } from './intel-plugin';
 
@@ -11,11 +12,11 @@ export class EntityParser implements IIntelPlugin
     public description = this.title;
     public options = {};
 
-    public callDocument(doc: IntelDocument, source: DocDatasource): Promise<IIntelPluginResult>
+    public callDocument(doc: GraphDocument, source: DocDatasource): Promise<IIntelPluginResult>
     {
         return new Promise((resolve, reject) =>
         {
-            if (doc.entities)
+            if (doc.entities && source)
             {
                 let ids : (string | undefined) [] = [];
 
@@ -24,7 +25,7 @@ export class EntityParser implements IIntelPlugin
                 let containingEntities = doc._node?._outgoing?.filter(o => o.classId === 'CONTAINS');
 
                 if (containingEntities && doc.entities) {
-                    ids = [...new Set(containingEntities!.map(o => o.toId))];
+                    ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];
                     for (const entityEdge of containingEntities) {
                         // find entity
                         const entity = doc.entities.find(i => i.node_id === entityEdge.toId);
@@ -44,22 +45,21 @@ export class EntityParser implements IIntelPlugin
                 for (const entity of doc.entities)
                 {
                     entity._included = (entity.id !== undefined) && ids.includes(entity.node_id);
-                    if (entity._node?._featureType)
+                    if (entity._node?._featureType?.type)
                     {
-                        entity.class = entity._node._featureType?.type;
-                        if (!source.viewTypes.hasOwnProperty(entity.class))
+                        entity.class = entity._node._featureType.type as string;
+                        if (source.viewTypes.hasOwnProperty(entity.class))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
-                            source.viewTypes[entity.class] = { id: entity.class, title: entity._node._featureType.title, color, _selected: true };
+                            source.viewTypes[entity.class] = { id: entity.class, title: entity._node._featureType.title, color, _selected: true } as ViewType;
                         }
                         // entity.view_class = 'doc-entity ' + entity.class + '-entity';
                         // if (entity._included)
                         // {
                         //     entity.view_class += ' ' + entity.class + '-entity-selected';
                         // }                        
-                    } else
-                    {
-                        entity.class = entity.entity_class;
+                    } else if (entity.entity_class) {
+                        entity.class = entity.entity_class as string;
                         if (entity.class && !source.viewTypes.hasOwnProperty(entity.class))
                         {
                             source.viewTypes[entity.class] = { id: entity.class, title: entity.entity_class!, color: 'lightgray', _selected: false };

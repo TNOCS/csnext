@@ -1,5 +1,5 @@
 import { TextEntity } from '@csnext/cs-data';
-import { IntelDocument } from '../classes/document/intel-document';
+import { GraphDocument } from '../classes/document/graph-document';
 import { DocDatasource } from '../datasources/doc-datasource';
 import { CacheRequest } from '../utils/cache-requests';
 import { IIntelPlugin, IIntelPluginResult } from './intel-plugin';
@@ -14,7 +14,7 @@ export class EntitySearch implements IIntelPlugin
         url: 'http://localhost:8000'
     };
 
-    public callDocument(doc: IntelDocument, source: DocDatasource): Promise<IIntelPluginResult>
+    public callDocument(doc: GraphDocument, source: DocDatasource): Promise<IIntelPluginResult>
     {
         return new Promise((resolve, reject) =>
         {

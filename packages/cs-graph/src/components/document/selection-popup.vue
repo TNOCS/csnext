@@ -279,7 +279,7 @@ import { WidgetBase } from "@csnext/cs-client";
 import { GraphElement } from "@csnext/cs-data";
 import { TextEntity } from "@csnext/cs-data";
 import { DocDatasource } from "../../datasources/doc-datasource";
-import { IntelDocument } from "../../classes/document/intel-document";
+import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
 import { DataInfoPanel } from "@csnext/cs-map";
 import { FeatureType } from "@csnext/cs-data";
@@ -301,7 +301,7 @@ export default class SelectionPopup extends WidgetBase {
   public isrd?: DocDatasource;
 
   @Prop()
-  public document?: IntelDocument;
+  public document?: GraphDocument;
 
   public tab = "observation";
 

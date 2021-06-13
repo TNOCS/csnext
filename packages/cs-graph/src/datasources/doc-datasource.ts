@@ -1,4 +1,4 @@
-import { IntelDocument } from './../classes/document/intel-document';
+import { GraphDocument } from './../classes/document/graph-document';
 import { GraphElement, TextEntity, GraphDatasource, TextRelation, InfoPanel } from '@csnext/cs-data';
 import Axios from 'axios';
 import { SearchEntity } from '../classes/document/search-entity';
@@ -16,7 +16,7 @@ import { TimeDataSource, guidGenerator, IFormOptions, WidgetOptions } from '@csn
 import { DataSet, FeatureType, FeatureTypes, PropertyValueType, FeatureTypeStat } from '@csnext/cs-data';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
-// import RelationEditor from "./../components/document-management/relation-editor.vue";
+import RelationEditor from "./../components/document-management/relation-editor.vue";
 import { Editor } from '@tiptap/vue-2';
 import { AppState, HtmlWidget } from '@csnext/cs-client';
 import FeatureTypeEditor from "./../components/datamodel/feature-type-editor.vue";
@@ -31,10 +31,10 @@ export class DocDatasource extends GraphDatasource {
     public static DOCUMENT_ENTITIES = 'document-entities';
     public static ENTITIES_UPDATED = 'entities-updated';
 
-    public activeDocument?: IntelDocument;
+    public activeDocument?: GraphDocument;
     public map?: CrossFilterDatasource;    
     public activeOperation?: GraphElement;
-    public documents: IntelDocument[] = [];
+    public documents: GraphDocument[] = [];
     public searchEntities?: SearchEntity[] = [];
     public viewTypes: { [id: string]: ViewType } = {};
     public sources?: GraphElement[] = [];
@@ -286,7 +286,7 @@ export class DocDatasource extends GraphDatasource {
         };       
     }    
 
-    public linkObservationToDocument(observation: FeatureType,doc: IntelDocument) : Promise<FeatureType> {
+    public linkObservationToDocument(observation: FeatureType,doc: GraphDocument) : Promise<FeatureType> {
         return new Promise((resolve, reject) => {
             if (!observation._node || !doc._node) { reject(); return; }            
             this.addNewEdge({ fromId: doc._node.id, toId: observation._node.id, classId: 'CONTAINS_OBSERVATION' } as GraphElement).then(async e => {                
@@ -303,7 +303,7 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public linkEntityToDocument(entity: TextEntity,doc: IntelDocument) : Promise<TextEntity> {
+    public linkEntityToDocument(entity: TextEntity,doc: GraphDocument) : Promise<TextEntity> {
         return new Promise((resolve, reject) => {
             if (!entity._node || !doc._node) { reject(); return; }            
             this.addNewEdge({ fromId: doc._node.id, toId: entity._node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                
@@ -321,7 +321,7 @@ export class DocDatasource extends GraphDatasource {
         })        
       }
 
-    public linkEntityListToDocument(entity: EntityList,doc: IntelDocument) : Promise<EntityList> {
+    public linkEntityListToDocument(entity: EntityList,doc: GraphDocument) : Promise<EntityList> {
         return new Promise((resolve, reject) => {
             if (!entity.node || !doc._node) { reject(); return; }            
             this.addNewEdge({ fromId: doc._node.id, toId: entity.node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                                
@@ -346,13 +346,13 @@ export class DocDatasource extends GraphDatasource {
           this.bus.publish(DocDatasource.DOCUMENT_ENTITIES, 'updateHighlights');
       }
 
-      public removeEntityNodeFromDocument(node: any, doc: IntelDocument) {
+      public removeEntityNodeFromDocument(node: any, doc: GraphDocument) {
           if (!this.editor) { return; }
         //   debugger;
         //   this.editor.commands.
       }
 
-      public removeEntityListFromDocument(list: EntityList,doc: IntelDocument, removeInstances = false) : Promise<EntityList> {
+      public removeEntityListFromDocument(list: EntityList,doc: GraphDocument, removeInstances = false) : Promise<EntityList> {
         return new Promise(async (resolve) => {   
             // remove all entities
 
@@ -393,7 +393,7 @@ export class DocDatasource extends GraphDatasource {
         })        
       }
 
-      public removeEntityFromDocument(entity: TextEntity,doc: IntelDocument) : Promise<TextEntity> {
+      public removeEntityFromDocument(entity: TextEntity,doc: GraphDocument) : Promise<TextEntity> {
         return new Promise((resolve, reject) => {            
             if (!entity._edge ) { resolve(entity); return; }            
             this.removeEdge(entity._edge).then(async () => {                                            
@@ -565,7 +565,7 @@ export class DocDatasource extends GraphDatasource {
                   {
                     title: pt.label!,
                     _key: pt.key,
-                    component: HtmlWidget,
+                    component: RelationEditor,
                     type: 'component',
                     data: {
                       relation: pt.relation,
@@ -639,7 +639,7 @@ export class DocDatasource extends GraphDatasource {
 
     }
 
-    public deleteDocument(doc: IntelDocument) {        
+    public deleteDocument(doc: GraphDocument) {        
         this.removeNode(doc, true).finally(() => {
             this.documents = this.documents.filter(d => d.id !== doc.id);
             this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED);
@@ -651,7 +651,7 @@ export class DocDatasource extends GraphDatasource {
         
     }
 
-    public openDocumentDetails(doc: IntelDocument, open = true) {
+    public openDocumentDetails(doc: GraphDocument, open = true) {
         // $cs.openRightSidebarWidget({
         //     component: DocumentEditor,
         //     data: {
@@ -701,7 +701,7 @@ export class DocDatasource extends GraphDatasource {
 
     }
 
-    public parseDocument(doc: IntelDocument) : Promise<IntelDocument> {
+    public parseDocument(doc: GraphDocument) : Promise<GraphDocument> {
         return new Promise(async (resolve) => {
             if (this.plugins) {
                 // doc.entities = [];                
@@ -732,7 +732,7 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public addNewDocument(makeActive: boolean = false) : Promise<IntelDocument | undefined> {
+    public addNewDocument(makeActive: boolean = false) : Promise<GraphDocument | undefined> {
         return new Promise(async (resolve) => {
             
             
@@ -748,7 +748,7 @@ export class DocDatasource extends GraphDatasource {
             // } 
             // let node = doc.getNode();
             // if (node) {
-            //     let doc = new IntelDocument(node);                 
+            //     let doc = new GraphDocument(node);                 
             //     // node._included = makeActive;
             //     await this.saveDocument(doc);
             //     await this.addNewNode(node);
@@ -759,11 +759,11 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public addNewReport(type: FeatureType) : Promise<IntelDocument | undefined> {
+    public addNewReport(type: FeatureType) : Promise<GraphDocument | undefined> {
         return new Promise(async () => {
             
             
-            // let doc = new IntelDocument(); 
+            // let doc = new GraphDocument(); 
             // doc.title = 'new document';
             // doc.id = guidGenerator();     
             // try {                   
@@ -802,7 +802,7 @@ export class DocDatasource extends GraphDatasource {
         if (docs) {
             for (const doc of docs) {     
                 if (this.documents.findIndex(d => d.id === doc.id) === -1) {
-                    let d = new IntelDocument(doc);
+                    let d = new GraphDocument(doc);
                     // d._node = doc;
                     d.id = doc.id;
                     if (!doc.properties) { doc.properties = {}}
@@ -998,9 +998,9 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public saveDocument(d: IntelDocument) : Promise<IntelDocument> {
+    public saveDocument(d: GraphDocument) : Promise<GraphDocument> {
         return new Promise((resolve, reject) => {        
-            let doc = { ...d} as IntelDocument;
+            let doc = { ...d} as GraphDocument;
             // if (!doc._node) { reject(); return; }
             if (!doc.properties) {
                 doc.properties = {};
@@ -1082,7 +1082,7 @@ export class DocDatasource extends GraphDatasource {
 
     }
 
-    public updateTextEntity(document: IntelDocument, entity: TextEntity) {
+    public updateTextEntity(document: GraphDocument, entity: TextEntity) {
         if (!entity.text || entity.text.length===0) { return; }
         if (!document.entities) { document.entities = []; }
         const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
@@ -1101,7 +1101,7 @@ export class DocDatasource extends GraphDatasource {
     
       }
 
-    public syncEntities(document: IntelDocument, content: any, triggerUpdated = false, key?: string) {
+    public syncEntities(document: GraphDocument, content: any, triggerUpdated = false, key?: string) {
         if (!document || !content || !Array.isArray(content)) { return; }
         if (!key) {
             key = guidGenerator();
@@ -1217,7 +1217,7 @@ export class DocDatasource extends GraphDatasource {
         }
     }
 
-    public activateDocument(doc?: IntelDocument) : Promise<IntelDocument> {
+    public activateDocument(doc?: GraphDocument) : Promise<GraphDocument> {
         return new Promise(async (resolve, reject) => {            
             this.activeDocument = doc;               
             if (!doc) {

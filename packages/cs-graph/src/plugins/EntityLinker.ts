@@ -1,4 +1,4 @@
-import { IntelDocument } from '../classes/document/intel-document';
+import { GraphDocument } from '../classes/document/graph-document';
 import { DocDatasource } from '../datasources/doc-datasource';
 import { IIntelPlugin, IIntelPluginResult } from './intel-plugin';
 
@@ -12,7 +12,7 @@ export class EntityLinker implements IIntelPlugin
         // url: 'http://localhost:5002'
     };
 
-    public callDocument(doc: IntelDocument, source: DocDatasource): Promise<IIntelPluginResult>
+    public callDocument(doc: GraphDocument, source: DocDatasource): Promise<IIntelPluginResult>
     {
         return new Promise((resolve, reject) =>
         {            

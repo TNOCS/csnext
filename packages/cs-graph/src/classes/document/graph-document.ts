@@ -2,7 +2,7 @@ import { FeatureType, TextEntity, TextRelation, GraphElement } from '@csnext/cs-
 import { Schema, Node as ProseMirrorNode } from 'prosemirror-model'
 import { guidGenerator } from '@csnext/cs-core';
 
-export class IntelDocument extends GraphElement {    
+export class GraphDocument extends GraphElement {    
     // public name?: string;
     
     public originalText?: string;
