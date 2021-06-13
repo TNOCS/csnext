@@ -790,7 +790,7 @@ export class DocDatasource extends GraphDatasource {
     public initPlugins() {
         this.plugins = [];
         this.plugins.push(new EntityRecognizer());
-        this.plugins.push(new EntitySearch());
+        // this.plugins.push(new EntitySearch());
         this.plugins.push(new EntityLinker());            
     }
 
@@ -1083,6 +1083,7 @@ export class DocDatasource extends GraphDatasource {
     }
 
     public updateTextEntity(document: IntelDocument, entity: TextEntity) {
+        if (!entity.text || entity.text.length===0) { return; }
         if (!document.entities) { document.entities = []; }
         const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
         if (indx === -1) {
@@ -1472,85 +1473,7 @@ export class DocDatasource extends GraphDatasource {
         }
     }
 
-    public async simulate() {
-        
-        const total_reports = 400;        
-
-        // let operation = ;
-        let operation = await this.addNewNode({ id: 'military_operation_' + new Date().getTime(), classId: 'military_operation', properties: { name: 'ISRD simulation' } } as GraphElement);
-
-        // let operation = this.getElement('military_operation-336d3db4-af93-5788-a017-48acd8313022');
-        if (!operation ) { return; }
-
-        // get airports
-        let airport_ids = ['airport-63769750-8d99-ddac-5161-6c63f2b4d67f', 'airport-1571e69c-e3b9-1316-da57-a49a5841578b', 'Q7618243', 'Q7935607', 'Q3884873', 'Q6745883'];
-        // let airport_ids = ['Q6745883'];
-        let airports: GraphElement[] = [];
-        for (const a of airport_ids) {
-            let ae = this.getElement(a) as GraphElement;    
-            if (ae) { 
-                airports.push(ae);                
-            }
-        }
-
-        let point_in_time = 1612171330000;
-        let reportTypes = ['airint_report', 'airint_report', 'imint_report' ]
-        let sources = ['Q8333', 'Q8333', 'Q8333', 'Q121194', 'Q121194', 'Q480220', 'Q480220', 'Q1097071', 'Q1032405',  ]
-        
-
-        let aircraft_ids = ['Q182617', 'Q170877', 'Q1933751', 'Q150050' ];
-        let aircrafts: GraphElement[] = [];
-        for (const a of aircraft_ids) {
-            let ae = this.getElement(a) as GraphElement;    
-            if (ae) { 
-                aircrafts.push(ae);                
-            }
-        }        
-
-        let rec_count = 0;
-
-        for (let rt = 0; rt < reportTypes.length; rt++) {
-
-            for (let i = 0; i < total_reports; i++) {
-
-                point_in_time += (14000000 + Math.floor(Math.random() * 10000));
-                
-                let report = { id: reportTypes[rt] + '_' + i, classId: reportTypes[rt], properties: { name: reportTypes[rt] + ' ' + i, text: '', point_in_time } } as GraphElement;
-                let r = await this.addNewNode(report);
-                let e = await this.addNewEdge({fromId: r.id, toId: operation!.id, classId: 'PART_OF_OPERATION'} as GraphElement)
-                this.addEdge(e);                                
-
-                // find source
-                let s = sources[Math.floor(Math.random() * sources.length)];
-                let se = await this.addNewEdge({fromId: r.id, toId: s, classId: 'HAS_SOURCE'} as GraphElement);
-                this.addEdge(se);
-
-                
-
-                for (const aircraft of aircrafts) {
-
-                    if (Math.random()>0.3) {
-
-                        for (const airport of airports) {
-                            if (Math.random() > 0.4) {
-                                rec_count+=1;                                                    
-                                let rec = await this.addNewNode({ id: 'aerial_reconnaissance_' + rec_count, classId: 'aerial_reconnaissance', properties: { point_in_time,  count: Math.floor(Math.random() * 10) } });
-                                let rece = await this.addNewEdge({fromId: report.id, toId: rec.id, classId: 'HAS_OBSERVATION'} as GraphElement);
-                                let rec_airport = await this.addNewEdge({fromId: rec.id, toId: airport.id, classId: 'AT_LOCATION'} as GraphElement);
-                                let rec_aircraft = await this.addNewEdge({fromId: rec.id, toId: aircraft.id, classId: 'HAS_OBJECT'} as GraphElement);                    
-                                this.addEdge(rece);
-                                this.addEdge(rec_airport);
-                                this.addEdge(rec_aircraft);
-                            }
-                        }       
-                    }
-                }
-            }
-        }
-        await this.updateEdges();
-        await this.parseEntities();
-    }
-
+   
     public setQueryParams() {
         if (!$cs.project.rightSidebar?.open) {
             $cs.removeRouteQueryParam('nodedetails');

@@ -44,13 +44,13 @@ export class EntityParser implements IIntelPlugin
                 for (const entity of doc.entities)
                 {
                     entity._included = (entity.id !== undefined) && ids.includes(entity.node_id);
-                    if (entity._node && entity._node.class?.id)
+                    if (entity._node?._featureType)
                     {
-                        entity.class = entity._node.class.id;
+                        entity.class = entity._node._featureType?.type;
                         if (!source.viewTypes.hasOwnProperty(entity.class))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
-                            source.viewTypes[entity.class] = { id: entity.class, title: entity._node.class._title!, color, _selected: true };
+                            source.viewTypes[entity.class] = { id: entity.class, title: entity._node._featureType.title, color, _selected: true };
                         }
                         // entity.view_class = 'doc-entity ' + entity.class + '-entity';
                         // if (entity._included)

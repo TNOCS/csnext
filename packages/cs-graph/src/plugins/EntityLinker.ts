@@ -24,9 +24,7 @@ export class EntityLinker implements IIntelPlugin
                     if (!entity.id || entity.id === 'None')
                     {
                         const t = entity.text?.toLowerCase();
-                        const node = Object.values(source.graph).find(i => i._title?.toLowerCase() === t);
-                        entity.view_class = 'doc-entity';
-
+                        const node = Object.values(source.graph).find(i => i._title?.toLowerCase() === t);                        
                         if (node)
                         {                            
                             entity.node_id = node.id;
