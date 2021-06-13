@@ -215,6 +215,9 @@
                 >
 
                 <v-btn @click="setTextEntity()">entity</v-btn>
+                <v-btn @click="setNodeParagraph()"
+                :class="{ 'is-active': editor.isActive('node-paragraph') }"
+                >paragraph</v-btn>
               </v-btn-toggle>              
             </div>
           </div>
@@ -265,6 +268,7 @@ import { IntelDocument } from "./../../classes/document/intel-document";
 import { ViewType } from "./../../classes/document/view-type";
 import { defaultExtensions } from "@tiptap/starter-kit";
 import TextExtension from "./plugins/text-extension";
+import ParagraphExtension from "./plugins/paragraph-extension";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
 // import TextParagraph from "./plugins/text-paragraph";
@@ -341,6 +345,29 @@ export default class DocumentViewer extends WidgetBase {
       this.isrd.activeDocument.doc.content,
       true
     );
+
+    // alert(this.entityBubbleSelection?.title);
+  }
+
+  public setNodeParagraph() {
+    if (
+      !this.isrd?.activeDocument ||
+      !this.editor      
+    ) {
+      return;
+    }
+
+    this.editor
+      .chain()
+      .focus()
+      .toggleNodeParagraph()
+      .run();
+    // this.syncDocumentState();
+    // this.isrd.syncEntities(
+    //   this.isrd.activeDocument,
+    //   this.isrd.activeDocument.doc.content,
+    //   true
+    // );
 
     // alert(this.entityBubbleSelection?.title);
   }
@@ -525,6 +552,21 @@ export default class DocumentViewer extends WidgetBase {
     // this.editor.commands.find("living");
   }
 
+  private dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
   public createTextEntities() {
     console.log("create text entities");
 
@@ -551,11 +593,15 @@ export default class DocumentViewer extends WidgetBase {
 
     console.log(pOffset);
 
-    for (const entity of this.isrd.activeDocument.entities.filter(
+    const entities = this.isrd.activeDocument.entities.filter(
       (e) => !e._docEntity && e.position_start && e.position_end
-    )) {
+    ).sort(this.dynamicSort('position_start'));
+
+    console.log(entities.map(r => r.position_start));
+
+    for (const entity of entities) {
       try {
-        const paragraph = pOffset.findIndex((v) => entity.position_start! < v);
+        const paragraph = 0; // (pOffset.findIndex((v) => entity.position_start! < v));
         const to = entity.position_end! - additional + paragraph;
         const from = entity.position_start! - additional + paragraph;
         console.log(`${entity.text} : ${paragraph} : ${from} + ${to}`);
@@ -572,7 +618,7 @@ export default class DocumentViewer extends WidgetBase {
       }
       additional += entity.position_end! - entity.position_start! - 1;
     }
-    chain.run();
+    chain.run();    
   }
 
   public checkDocument() {
@@ -623,6 +669,7 @@ export default class DocumentViewer extends WidgetBase {
           ...defaultExtensions(),
           // SmilieReplacer,
           TextExtension,
+          ParagraphExtension,
           Highlight,
           Placeholder,
           // BubbleMenu.configure({
@@ -918,6 +965,7 @@ export default class DocumentViewer extends WidgetBase {
       // this.refreshHighlights();
       // this.createTextEntities();
       // this.$forceUpdate();
+      this.updateViewTypes();
     });
   }
 
@@ -927,8 +975,9 @@ export default class DocumentViewer extends WidgetBase {
       for (const content of j.content) {
         if (content.hasOwnProperty("type")) {
           switch (content.type) {
+            case "node-paragraph":
             case "paragraph":
-              res += this.getText(content) + "\n";
+              res += this.getText(content) + "\n\n";
               break;
             case "text":
               res += content.text ?? "";
@@ -1009,6 +1058,7 @@ export default class DocumentViewer extends WidgetBase {
     this.isrd.activeDocument.originalText = text;
     // this.isrd.activeDocument._node.properties!.document =
     this.isrd.activeDocument.doc = json;
+    this.updateViewTypes();
   }
 
   public uploadPdf() {
