@@ -178,7 +178,7 @@ import simplebar from "simplebar-vue";
 import { SearchEntity } from "../../classes/document/search-entity";
 import { IFormObject, IWidget } from "@csnext/cs-core";
 import { FeatureType, PropertyType,PropertyValueType } from "@csnext/cs-data";
-import GraphElements from './../articles/graph-elements.vue';
+import { GraphElements } from "../..";
 
 @Component({
   components: { simplebar, GraphElements }

@@ -26,8 +26,7 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import { IMenu, MessageBusManager } from "@csnext/cs-core";
 
 import simplebar from "simplebar-vue";
-import { SearchEntity } from "../../classes/document/search-entity";
-import FeatureTypeEditor from "./feature-type-editor.vue";
+
 import G6, { Graph, GraphData } from "@antv/g6";
 import { FeatureType, RelationType } from "@csnext/cs-data";
 

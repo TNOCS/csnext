@@ -4,7 +4,7 @@
       <v-toolbar elevation="0">
         <v-text-field v-model="searchString" label="Search" single-line></v-text-field>
 
-        <v-select
+        <!-- <v-select
           v-model="nodeFilters"
           item-text="title"
           item-value="id"
@@ -32,7 +32,7 @@
               class="grey--text caption"
             >(+{{ nodeFilters.length - 2 }} others)</span>
           </template>
-        </v-select>
+        </v-select> -->
         <v-checkbox v-model="filterIncluded"></v-checkbox>
       </v-toolbar>
     </v-container>
@@ -45,35 +45,36 @@
         clientHeight="100%"
       >
         <template v-slot="{ item }">
-          <v-list-item @click="selectItem(item)">
-            <v-list-item-avatar @click.stop="toggleInclude(item)">
-              <v-avatar :color="getColor(item)" size="56" class="white--text">
-                <v-icon v-if="item._included">bookmark</v-icon>
+          <v-list-item @click="selectItem(item.item)">
+            <v-list-item-avatar @click.stop="toggleInclude(item.item)">
+              <v-avatar :color="getColor(item.item)" size="56" class="white--text">
+                <v-icon v-if="item.item._included">bookmark</v-icon>
                 <!-- {{ item.initials }} -->
               </v-avatar>
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item._title }}</v-list-item-title>
-              <v-list-item-subtitle v-if="item.class">
-                {{ item.class._title}}
-                <span v-if="item._incomming">
+              <v-list-item-title>{{ item.item._title }}</v-list-item-title>
+              {{ item.score }}
+              <v-list-item-subtitle v-if="item.item.class">
+                {{ item.item.class._title}}
+                <span v-if="item.item._incomming">
                   <v-icon small>arrow_forward</v-icon>
-                  {{ item._incomming.length}}
+                  {{ item.item._incomming.length}}
                 </span>
-                <span v-if="item._outgoing">
+                <span v-if="item.item._outgoing">
                   <v-icon small>arrow_back</v-icon>
-                  {{ item._outgoing.length}}
+                  {{ item.item._outgoing.length}}
                 </span>
               </v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>
               <v-layout>
-                <v-btn @click.stop="showInfo(item)" icon>
+                <v-btn @click.stop="showInfo(item.item)" icon>
                   <v-icon color="darken-4">info</v-icon>
                 </v-btn>
-                <v-btn @click.stop="toggleInclude(item)" icon>
+                <v-btn @click.stop="toggleInclude(item.item)" icon>
                   <v-icon color="darken-4">scatter_plot</v-icon>
                 </v-btn>
               </v-layout>
@@ -96,6 +97,8 @@
 import { Component, Watch } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 import { DocDatasource } from "../../";
+import  FuseResult  from 'fuse.js';
+import Fuse from 'fuse.js';
 import { FeatureType, GraphElement } from '@csnext/cs-data';
 
 @Component({
@@ -109,22 +112,29 @@ export default class GraphElements extends WidgetBase {
   }
 
   
-  public get filteredElements(): GraphElement[] {
-    if (this.graphSource && this.graphSource.graph) {      
-      return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
-        return (
-          f.type === "node" &&
-          !f.isType &&
-          f.classId &&
-          (!this.filterIncluded || f._included) &&          
-          this.nodeFilters.includes(f.classId) &&
-          (this.searchString && this.searchString === "" ||
-            f._search?.toLowerCase().includes(this.searchString.toLowerCase()))
-        );
-      });
-    } else {
-      return [];
+  public get filteredElements(): FuseResult<GraphElement>[] {
+    let res : FuseResult<GraphElement>[] = []
+    if (this.graphSource && this.graphSource.graph && this.graphSource.fuse) {            
+      if (!this.searchString || this.searchString.length<2) {
+        res = Object.values(this.graphSource.graph).filter(e => e.type === 'node').map(s => { return { score: 0, item: s} as any})
+      } else {
+        res = this.graphSource.fuse.search<GraphElement>(this.searchString) as any;        
+        
+      }      
+      // return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
+      //   return (
+      //     f.type === "node" &&
+      //     !f.isType &&
+      //     f.classId &&
+      //     (!this.filterIncluded || f._included) &&          
+      //     this.nodeFilters.includes(f.classId) 
+      //     // (this.searchString && this.searchString === "" ||
+      //     //   f._search?.toLowerCase().includes(this.searchString.toLowerCase())
+      //     //   )
+      //   );
+      // });
     }
+    return res; //.map(s => s.item);
   }
 
   public toggle() {
@@ -174,8 +184,9 @@ export default class GraphElements extends WidgetBase {
     // this.graphSource?.selectElement(element);
   }
 
-  public showInfo(element: GraphElement) {
-    this.graphSource?.selectElement(element, true);
+  public showInfo(element: GraphElement) {    
+    if (!this.graphSource) { return; }
+    this.graphSource.openElement(element);    
   }
 
   public selectItem(element: GraphElement) {
@@ -195,9 +206,12 @@ export default class GraphElements extends WidgetBase {
     return GraphElement.getBackgroundColor(element);
   }
 
+  public mounted() {
+    this.contentLoaded();
+  }
+
   public contentLoaded() {
-    if (this.graphSource) {
-      // debugger;
+    if (this.graphSource) {      
       if (this.widget?.data?.nodeFilters) {
         this.nodeFilters = this.widget.data.nodeFilters;
       } else {
