@@ -209,14 +209,13 @@ export default class RelationEditor extends Vue {
           classId: this.relation!.type,
         } as GraphElement)
           .then(async (e) => {
-            this.graph!.addEdge(e);
-            await this.graph!.parseEntities();
-            // await this.graph!.updateEntities();
-            await this.graph!.updateEdges();
-
-            this.graph.openElement(n);
-
-            this.$forceUpdate();
+            if (this.graph) {
+              this.graph.addEdge(e);
+              await this.graph.parseEntities();
+              await this.graph.updateEdges();
+              this.graph.openElement(n);
+              this.$forceUpdate();
+            }
           })
           .catch((e) => {})
           .finally(() => {
