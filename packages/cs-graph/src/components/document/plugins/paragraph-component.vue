@@ -2,15 +2,18 @@
   <node-view-wrapper
     class="paragraph-component"        
   >
-   <node-view-content class="content-dom" />
+   <v-layout><div class="paragraph-control">
+     <v-btn fab outlined x-small class="paragraph-button"><v-icon x-small>add</v-icon></v-btn>
+   </div>
+   <node-view-content class="paragraph-content" />
         <!-- <span          
           class="content"
           v-bind="attrs"
           v-on="on"
           >test paragraph
         </span> -->
-   
-  </node-view-wrapper>
+   </v-layout>
+  </node-view-wrapper>  
 </template>
 
 <script lang="ts">
@@ -43,32 +46,27 @@ export default class ParagraphComponent extends Vue {
 </script>
 
 <style lang="css" scoped>
-.paragraph-component {
+.paragraph-component {  
   
-  display: inline;
-  border-radius: 6px;
-  border-color: black;
-  border-style: dashed;
-  border-width: 0.5px;
-  margin-right: 2px;
 }
 
-.label {
-  margin-left: 1rem;
-  background-color: #0d0d0d;
-  font-size: 0.6rem;
-  letter-spacing: 1px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #fff;
-  position: absolute;
-  top: 0;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0 0 0.5rem 0.5rem;
+
+.paragraph-control {
+  width: 20px;     
+  margin: 5px;
+  border-color: red;
+  border-left-width: 3px;  
+  border-left-style: solid;
 }
 
-.content {
-  padding: 5px;
-  cursor: pointer;
+.paragraph-button {
+  width: 24px;
+  height: 24px;
+  transform: translateX(-12);
+  background: white;  
+}
+
+.paragraph-content {
+  padding: 5px;  
 }
 </style>
