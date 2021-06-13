@@ -556,7 +556,7 @@ export class GraphDatasource extends DataSource {
 
     public updateSearchIndex() {
         if (!this.fuse) { return; }
-        this.fuse?.setCollection(Object.values(this.graph));        
+        this.fuse?.setCollection(Object.values(this.graph).filter(e => e.type === 'node'));        
     }
 
     public execute(): Promise<GraphDatasource> {
