@@ -1,6 +1,7 @@
 export *  from "./components/data-grid/data-grid-options";
 export * from "./datasources/doc-datasource";
 export * from "./plugins/document-plugin";
+export * from "./plugins/import-plugin";
 export * from "./classes/"
 import Vue from 'vue';
 import NetworkGraph from "./components/graph/graph.vue";

@@ -1,50 +1,26 @@
 <template>
-  <div>
-    <input
-      class="d-none input-file"
-      ref="uploader"
-      type="file"
-      @change="
-        filesChange($event.target.name, $event.target.files);
-        fileCount = $event.target.files.length;
-      "
-      accept=".pdf"
-    />
+  <div>    
     <v-container v-if="startMenu">
       <div class="start-menu-title">
         {{ $cs.Translate("START_DOCUMENT_TITLE") }}
       </div>
       <v-layout justify-center class="doc-action-cards">
-        <v-hover class="doc-action-card">
+        <v-hover class="doc-action-card" v-for="ip in source.importPlugins" :key="ip.id">
           <template v-slot:default="{ hover }">
-            <v-card
-              @click="uploadPdf()"
+            <v-card              
               :elevation="hover ? 16 : 2"
               width="200"
               height="200"
+              @click="doImport(ip)"
             >
-              <v-img contain max-height="100" src="images/pdf.svg"></v-img>
+              <v-img contain max-height="100" :src="ip.image"></v-img>
               <v-btn class="doc-action-btn" text>{{
-                $cs.Translate("IMPORT_PDF")
+                $cs.Translate(ip.title)
               }}</v-btn>
             </v-card>
           </template>
         </v-hover>
-        <v-hover class="doc-action-card">
-          <template v-slot:default="{ hover }">
-            <v-card
-              @click="createEmptyDocument()"
-              :elevation="hover ? 16 : 2"
-              width="200"
-              height="200"
-            >
-              <v-img contain max-height="100" src="images/empty.svg"></v-img>
-              <v-btn class="doc-action-btn" text>{{
-                $cs.Translate("EMPTY_DOCUMENT")
-              }}</v-btn>
-            </v-card>
-          </template>
-        </v-hover>
+        <!-- 
         <v-hover class="doc-action-card">
           <template v-slot:default="{ hover }">
             <v-card
@@ -76,16 +52,16 @@
               }}</v-btn>
             </v-card>
           </template>
-        </v-hover>
+        </v-hover> -->
       </v-layout>
     </v-container>
 
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
       <div class="filter-row">
           <v-combobox
-            v-model="isrd.visibleViewTypes"
-            v-if="isrd.viewTypes"
-            :items="Object.values(isrd.viewTypes)"
+            v-model="source.visibleViewTypes"
+            v-if="source.viewTypes"
+            :items="Object.values(source.viewTypes)"
             item-text="id"
             return-object
             chips
@@ -122,7 +98,7 @@
       
           <div v-if="editor" class="editor-menu-row">
             <div class="document-title">
-              {{ isrd.activeDocument.properties.name }}
+              {{ source.activeDocument.properties.name }}
             </div>            
             <div class="editor-menu">
               <v-btn-toggle>
@@ -230,7 +206,7 @@
                 v-if="!editor.isActive('text-entity')"
                 auto-select-first
                 v-model="entityBubbleSelection"
-                :items="Object.values(isrd.featureTypes)"
+                :items="Object.values(source.featureTypes)"
                 item-text="title"
                 return-object
                 @change="setEntity(entityBubbleSelection)"
@@ -277,6 +253,7 @@ import Axios from "axios";
 // import { FeatureType } from "../../classes";
 import { Drag, Drop } from "vue-drag-drop";
 import { FeatureType } from "@csnext/cs-data";
+import { IImportPlugin } from "../..";
 
 @Component({
   components: {
@@ -289,16 +266,16 @@ import { FeatureType } from "@csnext/cs-data";
 })
 export default class DocumentViewer extends WidgetBase {
   public get editor(): Editor | undefined | null {
-    if (this.isrd) {
-      return this.isrd.editor;
+    if (this.source) {
+      return this.source.editor;
     }
   }
 
   public contextMenuitems: any[] = [];
 
   public set editor(value: Editor | undefined | null) {
-    if (this.isrd) {
-      this.isrd.editor = value;
+    if (this.source) {
+      this.source.editor = value;
     }
   }
 
@@ -321,13 +298,13 @@ export default class DocumentViewer extends WidgetBase {
   // v-if="selectionTo !== undefined && selectionFrom !== undefined"
 
   // public highlight?: Highlight;
-  public isrd: DocDatasource | undefined = undefined;
+  public source: DocDatasource | undefined = undefined;
   public entityBubbleSelection: FeatureType | null = null;
   
 
   public setEntity() {
     if (
-      !this.isrd?.activeDocument ||
+      !this.source?.activeDocument ||
       !this.editor ||
       !this.entityBubbleSelection?.type
     ) {
@@ -340,9 +317,9 @@ export default class DocumentViewer extends WidgetBase {
       .setTextEntity({ class: this.entityBubbleSelection?.type })
       .run();
     this.syncDocumentState();
-    this.isrd.syncEntities(
-      this.isrd.activeDocument,
-      this.isrd.activeDocument.doc.content,
+    this.source.syncEntities(
+      this.source.activeDocument,
+      this.source.activeDocument.doc.content,
       true
     );
 
@@ -351,7 +328,7 @@ export default class DocumentViewer extends WidgetBase {
 
   public setNodeParagraph() {
     if (
-      !this.isrd?.activeDocument ||
+      !this.source?.activeDocument ||
       !this.editor      
     ) {
       return;
@@ -363,85 +340,31 @@ export default class DocumentViewer extends WidgetBase {
       .toggleNodeParagraph()
       .run();
     // this.syncDocumentState();
-    // this.isrd.syncEntities(
-    //   this.isrd.activeDocument,
-    //   this.isrd.activeDocument.doc.content,
+    // this.source.syncEntities(
+    //   this.source.activeDocument,
+    //   this.source.activeDocument.doc.content,
     //   true
     // );
 
     // alert(this.entityBubbleSelection?.title);
   }
 
-  public filesChange(fieldName: string, fileList: any[]) {
-    // alert('upload');
-    this.startMenu = false;
-
-    // if (!this.newReportType) { return; }
-    // // handle file changes
-    const formData = new FormData();
-    if (!fileList.length) return;
-    // append the files to FormData
-
-    Array.from(Array(fileList.length).keys()).map((x) => {
-      formData.append("file", fileList[x], fileList[x].name);
-    });
-    console.log("parsing pdf");
-    this.isLoading = true;
-    $cs.loader.addLoader("pdfimport");
-    $cs.triggerNotification({
-      title: $cs.Translate("PDF_IMPORT_STARTED"),
-      color: "green",
-    });
-    Axios.post("http://localhost:5003", formData, {
-      timeout: 1000 * 60 * 5,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((r) => {
-        this.isLoading = false;
-        if (this.isrd?.activeDocument && r.data?.message) {
-          this.isrd.activeDocument.doc = undefined;
-          this.isrd.activeDocument.entities = undefined;
-          // this.isrd.activeDocument.properties!.originalText = r.data.message;
-          this.isrd.activeDocument.properties!.text = r.data.message;
-          this.updateContent();
-          // this.save();
-          // this.loadDocument(this.isrd.activeDocument);
-
-          //   this.isrd.addNewReport(this.newReportType!).then((r) => {
-          //   if (r?.id) {
-          //     this.openDocument(r.id);
-          //   }
-          // });
-
-          // create document
-        }
-      })
-      .catch((e) => {
-        this.isLoading = false;
-        console.log(e);
-      })
-      .finally(() => {
-        $cs.loader.removeLoader("pdfimport");
-      });
-  }
-
+  
   public toggleEntities() {
-    if (!this.isrd?.visibleViewTypes) {
+    if (!this.source?.visibleViewTypes) {
       return;
     }
-    if (this.isrd.visibleViewTypes!.length > 0) {
-      this.isrd.visibleViewTypes = [];
+    if (this.source.visibleViewTypes!.length > 0) {
+      this.source.visibleViewTypes = [];
     } else {
-      this.isrd.visibleViewTypes = Object.values(this.isrd!.viewTypes);
+      this.source.visibleViewTypes = Object.values(this.source!.viewTypes);
     }
     this.updateViewTypes();
   }
 
   // public get document(): GraphDocument | undefined {
-  //   if (this.isrd?.activeDocument) {
-  //     return this.isrd.activeDocument;
+  //   if (this.source?.activeDocument) {
+  //     return this.source.activeDocument;
   //   }
   // }
 
@@ -467,20 +390,20 @@ export default class DocumentViewer extends WidgetBase {
         "EMPTY_DOCUMENT_TEXT"
       )) === "YES"
     ) {
-      if (!this.isrd?.activeDocument || !this.editor) {
+      if (!this.source?.activeDocument || !this.editor) {
         return;
       }
-      if (this.isrd.activeDocument.entities) {
-        for (const entity of this.isrd.activeDocument.entities) {
-          this.isrd.removeEntityFromDocument(entity, this.isrd.activeDocument);
+      if (this.source.activeDocument.entities) {
+        for (const entity of this.source.activeDocument.entities) {
+          this.source.removeEntityFromDocument(entity, this.source.activeDocument);
         }
-        this.isrd.activeDocument.entities = [];
+        this.source.activeDocument.entities = [];
       }
       this.editor?.commands.clearContent();
       this.syncDocumentState();
-      this.isrd.syncEntities(
-        this.isrd.activeDocument,
-        this.isrd.activeDocument.doc.content,
+      this.source.syncEntities(
+        this.source.activeDocument,
+        this.source.activeDocument.doc.content,
         true
       );
       this.startMenu = true;
@@ -488,28 +411,28 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public setTextEntity() {
-    if (!this.isrd?.activeDocument || !this.editor) {
+    if (!this.source?.activeDocument || !this.editor) {
       return;
     }
 
     this.editor.chain().focus().setTextEntity().run();
     this.syncDocumentState();
-    this.isrd.syncEntities(
-      this.isrd.activeDocument,
-      this.isrd.activeDocument.doc.content,
+    this.source.syncEntities(
+      this.source.activeDocument,
+      this.source.activeDocument.doc.content,
       true
     );
   }
 
   // public setTextParagraph() {
-  //   if (!this.isrd?.activeDocument || !this.editor) {
+  //   if (!this.source?.activeDocument || !this.editor) {
   //     return;
   //   }
   //   this.editor.chain().focus().setTextParagraph().run();
   //   this.syncDocumentState();
-  //   this.isrd.syncEntities(
-  //     this.isrd.activeDocument,
-  //     this.isrd.activeDocument.doc.content,
+  //   this.source.syncEntities(
+  //     this.source.activeDocument,
+  //     this.source.activeDocument.doc.content,
   //     true
   //   );
   // }
@@ -534,16 +457,16 @@ export default class DocumentViewer extends WidgetBase {
 
   updateViewTypes() {
     console.log("update view types");
-    if (!this.isrd) {
+    if (!this.source) {
       return;
     }
 
-    for (const type in this.isrd!.viewTypes) {
-      if (this.isrd!.viewTypes.hasOwnProperty(type)) {
-        const viewType = this.isrd!.viewTypes[type];
+    for (const type in this.source!.viewTypes) {
+      if (this.source!.viewTypes.hasOwnProperty(type)) {
+        const viewType = this.source!.viewTypes[type];
         viewType._selected =
-          this.isrd.visibleViewTypes &&
-          this.isrd.visibleViewTypes.includes(viewType);
+          this.source.visibleViewTypes &&
+          this.source.visibleViewTypes.includes(viewType);
       }
     }
 
@@ -573,8 +496,8 @@ export default class DocumentViewer extends WidgetBase {
     // find all entities without node
 
     if (
-      !this.isrd?.activeDocument?.entities ||
-      !this.isrd?.activeDocument?.doc ||
+      !this.source?.activeDocument?.entities ||
+      !this.source?.activeDocument?.doc ||
       !this.editor
     ) {
       return;
@@ -593,7 +516,7 @@ export default class DocumentViewer extends WidgetBase {
 
     console.log(pOffset);
 
-    const entities = this.isrd.activeDocument.entities.filter(
+    const entities = this.source.activeDocument.entities.filter(
       (e) => !e._docEntity && e.position_start && e.position_end
     ).sort(this.dynamicSort('position_start'));
 
@@ -622,11 +545,11 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public checkDocument() {
-    if (!this.isrd?.activeDocument) {
+    if (!this.source?.activeDocument) {
       return;
     }
-    if (!this.isrd.activeDocument.doc) {
-      this.isrd.activeDocument.doc = {
+    if (!this.source.activeDocument.doc) {
+      this.source.activeDocument.doc = {
         type: "doc",
         content: [],
       };
@@ -635,32 +558,32 @@ export default class DocumentViewer extends WidgetBase {
 
   public updateEditor(destroy = true) {
     console.log("update editor");
-    if (!this.isrd?.activeDocument) {
+    if (!this.source?.activeDocument) {
       return;
     }
     this.checkDocument();
     // this.highlight = new Highlight({
     //   disableRegex: false,
-    //   // entities: this.isrd?.activeDocument?.entities
+    //   // entities: this.source?.activeDocument?.entities
     // });
 
     if (this.editor && destroy) {
       this.editor.destroy();
-      this.isrd.editor = undefined;
+      this.source.editor = undefined;
     }
 
-    this.isrd.syncEntities(
-      this.isrd.activeDocument,
-      this.isrd.activeDocument.doc.content,
+    this.source.syncEntities(
+      this.source.activeDocument,
+      this.source.activeDocument.doc.content,
       true
     );
-    // this.isrd.parseEntities();
+    // this.source.parseEntities();
     // this.createTextEntities();
 
     if (!this.editor) {
       if (
-        !this.isrd.activeDocument.properties?.text ||
-        this.isrd.activeDocument.properties.text.length === 0
+        !this.source.activeDocument.properties?.text ||
+        this.source.activeDocument.properties.text.length === 0
       ) {
         this.startMenu = true;
       }
@@ -690,7 +613,7 @@ export default class DocumentViewer extends WidgetBase {
           //   },
           //   suggestion: {
           //     items: (query:any) => {
-          //       return Object.values(this.isrd!.graph).filter(item => item._title && item._title.toLowerCase().startsWith(query.toLowerCase())).slice(0, 10)
+          //       return Object.values(this.source!.graph).filter(item => item._title && item._title.toLowerCase().startsWith(query.toLowerCase())).slice(0, 10)
           //     },
           //     render: () => {
           //       let component: any;
@@ -755,10 +678,10 @@ export default class DocumentViewer extends WidgetBase {
         //     Did you see that? That’s a Vue component. We are really living in the future.
         //   </p>
         // `,
-        content: this.isrd?.activeDocument.doc,
+        content: this.source?.activeDocument.doc,
         editorProps: {
-          document: this.isrd!.activeDocument,
-          source: this.isrd,
+          document: this.source!.activeDocument,
+          source: this.source,
           attributes: {
             spellcheck: "false",
           },
@@ -766,12 +689,12 @@ export default class DocumentViewer extends WidgetBase {
       });
     }
 
-    // this.editor.content = ; // this.isrd?.activeDocument?.originalText;
+    // this.editor.content = ; // this.source?.activeDocument?.originalText;
     // this.editor.options./ = false;
     // this.editor.on("transaction", (a: any) => {
     //   // console.log(a);
     //   const state = a.state;
-    //   if (state.selection && this.isrd?.activeDocument?.entities) {
+    //   if (state.selection && this.source?.activeDocument?.entities) {
     //     this.selection = state.selection;
     //     const from = state.selection.from;
     //     const to = state.selection.to;
@@ -785,14 +708,14 @@ export default class DocumentViewer extends WidgetBase {
     //       // console.log('head ' + this.selection?.$head?.pos);
 
     //       if (pos) {
-    //       const entity = this.isrd.activeDocument.entities.find(
+    //       const entity = this.source.activeDocument.entities.find(
     //         (e) =>
     //           e.position_start !== undefined &&
     //           e.position_end !== undefined &&
     //           e.position_end >= pos &&
     //           e.position_start <= pos
     //       );
-    //       if (this.isrd && entity) {
+    //       if (this.source && entity) {
     //         this.selectedEntity = entity;
     //         // console.log(this.selectedEntity.text);
     //         // console.log(this.selectedEntity.position_start +  ' - ' + this.selectedEntity.position_end);
@@ -805,9 +728,9 @@ export default class DocumentViewer extends WidgetBase {
     //         // this.editor!.dispatch(transaction);
 
     //         if (entity._node) {
-    //           // this.isrd.toggleElement(entity._node);
-    //           this.isrd.selectElement(entity._node, false);
-    //           // this.isrd!.selectElement(entity._node, true);
+    //           // this.source.toggleElement(entity._node);
+    //           this.source.selectElement(entity._node, false);
+    //           // this.source!.selectElement(entity._node, true);
     //         } else {
 
     //         }
@@ -815,7 +738,7 @@ export default class DocumentViewer extends WidgetBase {
     //         this.selectedEntity = undefined;
     //       }
     //       }
-    //       // const entity = this.isrd.activeDocument.entities.find(
+    //       // const entity = this.source.activeDocument.entities.find(
     //       //   (e) =>
     //       //     e.position_start !== undefined &&
     //       //     e.position_end !== undefined &&
@@ -825,7 +748,7 @@ export default class DocumentViewer extends WidgetBase {
 
     //     } else {
     //       // if (to - from < 20) {
-    //       this.selectionText = this.isrd.activeDocument.originalText!.substring(
+    //       this.selectionText = this.source.activeDocument.originalText!.substring(
     //         from - 1,
     //         to - 1
     //       );
@@ -839,19 +762,18 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public loadDocument(doc: GraphDocument) {
-    if (this.isrd && doc) {
-      // if (this.isrd.activeDocument === doc) {
+    if (this.source && doc) {
+      // if (this.source.activeDocument === doc) {
       //   return;
       // }
 
       console.log("load document");
-      this.isrd.activateDocument(doc).then(() => {
-        this.widget.options!.title = doc.name;
-        // this.isrd!.activeDocument = doc;
-        if (this.isrd?.activeDocument) {
-          this.isrd?.openDocumentDetails(this.isrd.activeDocument, false);
-          if (this.isrd.activeDocument.entities) {
-            for (const ent of this.isrd.activeDocument.entities) {
+      this.source.activateDocument(doc).then(() => {
+        this.widget.options!.title = doc.name;        
+        if (this.source?.activeDocument) {
+          // this.source?.openDocumentDetails(this.source.activeDocument, false);
+          if (this.source.activeDocument.entities) {
+            for (const ent of this.source.activeDocument.entities) {
               if (ent._node) {
                 // ent._node._included = true;
               }
@@ -860,17 +782,8 @@ export default class DocumentViewer extends WidgetBase {
 
           this.loaded = true;
 
-          this.busManager.subscribe(this.isrd!.bus, "document-entities", () => {
-            // if (a === "updateHighlights" && this.highlight) {
-            //   this.refreshHighlights();
-            //   this.$forceUpdate();
-            // } else {
-            //   this.updateContent();
-            //   this.refreshHighlights();
-            //   this.$forceUpdate();
-            // }
-          });
-          //   this.isrd?.selectElement(this.isrd?.activeDocument?._node);
+          this.busManager.subscribe(this.source!.bus, "document-entities", () => {        
+          });          
         }
       });
       this.mergeEntitites();
@@ -879,27 +792,25 @@ export default class DocumentViewer extends WidgetBase {
 
   createKG() {
     // debugger;
-    if (this.isrd?.activeDocument) {
-      this.isrd.createKGView([this.isrd?.activeDocument], true);
+    if (this.source?.activeDocument) {
+      this.source.createKGView([this.source?.activeDocument], true);
     }
   }
 
   updateContent() {
     Vue.nextTick(() => {
       console.log("update content");
-      if (!this.isrd?.activeDocument) {
+      if (!this.source?.activeDocument) {
         return;
       }
 
       this.checkDocument();
 
       if (
-        this.isrd.activeDocument.doc.content &&
-        this.isrd.activeDocument.doc.content.length === 0
-      ) {
-        //   this.isrd.activeDocument.doc = JSON.parse(this.isrd.activeDocument?._node.properties?.document); // this.editor?.commands.setContent(html, true);
-        // } else {
-        let paragraphs = this.isrd.activeDocument!.properties?.text?.split(
+        this.source.activeDocument.doc.content &&
+        this.source.activeDocument.doc.content.length === 0
+      ) {        
+        let paragraphs = this.source.activeDocument!.properties?.text?.split(
           "\n\n"
         );
         for (const par of paragraphs) {
@@ -916,13 +827,13 @@ export default class DocumentViewer extends WidgetBase {
               }
             }
           }
-          this.isrd.activeDocument.doc.content.push(n);
+          this.source.activeDocument.doc.content.push(n);
         }
       }
 
-      this.isrd.syncEntities(
-        this.isrd.activeDocument,
-        this.isrd.activeDocument.doc.content
+      this.source.syncEntities(
+        this.source.activeDocument,
+        this.source.activeDocument.doc.content
       );
       if (!this.editor) {
         this.updateEditor();
@@ -931,40 +842,8 @@ export default class DocumentViewer extends WidgetBase {
       this.editor
         ?.chain()
         .clearContent()
-        .setContent(this.isrd.activeDocument.doc, false)
-        .run();
-
-      // this.editor.setContent(document, true); //  = document; // this.isrd.activeDocument!.originalText; //document; // setContent(document, true);
-
-      // console.log('document');
-      //         console.log(document);
-
-      // this.editor.setContent(
-      //   {
-      //     type: "doc",
-      //     content: [
-      //       {
-      //         type: "paragraph",
-      //         content: [
-      //           {
-      //             type: "text",
-      //             text: this.isrd.activeDocument!.originalText,
-      //           }
-      //         ],
-      //       }
-      //     ],
-      //   },
-      //   true
-      // );
-
-      // const view = this.editor.view;
-      // const state = this.editor.view.state;
-      // this.highlight!.options.entities = this.isrd.activeDocument!.entities;
-      // this.highlight!.options.isrd = this.isrd;
-      // this.updateCssClasses();
-      // this.refreshHighlights();
-      // this.createTextEntities();
-      // this.$forceUpdate();
+        .setContent(this.source.activeDocument.doc, false)
+        .run();     
       this.updateViewTypes();
     });
   }
@@ -998,11 +877,11 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public removeViewType(type: ViewType) {
-    if (this.isrd && this.isrd.visibleViewTypes) {
+    if (this.source && this.source.visibleViewTypes) {
       Vue.set(
         this,
         "visibleViewTypes",
-        this.isrd.visibleViewTypes.filter((vt) => vt.id !== type.id)
+        this.source.visibleViewTypes.filter((vt) => vt.id !== type.id)
       );
       this.updateViewTypes();
     }
@@ -1010,17 +889,17 @@ export default class DocumentViewer extends WidgetBase {
 
   public async refresh(ignorePopup = false) {
     console.log("refresh");
-    if (!this.isrd) {
+    if (!this.source) {
       this.contentLoaded(this.widget.content);
-      this.isrd = this.widget.content;
+      this.source = this.widget.content;
     }
-    if (!this.isrd || !this.isrd.activeDocument || !this.editor) {
+    if (!this.source || !this.source.activeDocument || !this.editor) {
       return;
     }
 
     if (
-      !this.isrd.activeDocument.entities ||
-      this.isrd.activeDocument.entities.length === 0 ||
+      !this.source.activeDocument.entities ||
+      this.source.activeDocument.entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog(
         "Update entities",
         "This will reset all existing entities"
@@ -1028,18 +907,18 @@ export default class DocumentViewer extends WidgetBase {
     ) {
       const json = this.editor.getJSON();
       const text = this.getText(json);
-      this.isrd.activeDocument.entities = [];
-      this.isrd.activeDocument.originalText = text;
-      this.isrd.activeDocument.doc = json;
+      this.source.activeDocument.entities = [];
+      this.source.activeDocument.originalText = text;
+      this.source.activeDocument.doc = json;
       // console.log(text);
-      // this.isrd.activeDocument.originalText = this.content;
-      this.isrd.parseDocument(this.isrd.activeDocument).then(() => {
+      // this.source.activeDocument.originalText = this.content;
+      this.source.parseDocument(this.source.activeDocument).then(() => {
         // this.updateContent();
         this.createTextEntities();
         this.syncDocumentState();
-        this.isrd!.syncEntities(
-          this.isrd!.activeDocument!,
-          this.isrd!.activeDocument!.doc.content,
+        this.source!.syncEntities(
+          this.source!.activeDocument!,
+          this.source!.activeDocument!.doc.content,
           true
         );
 
@@ -1050,136 +929,88 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public syncDocumentState() {
-    if (!this.isrd?.activeDocument || !this.editor) {
+    if (!this.source?.activeDocument || !this.editor) {
       return;
     }
     const json = this.editor.getJSON();
     const text = this.getText(json);
-    this.isrd.activeDocument.originalText = text;
-    // this.isrd.activeDocument._node.properties!.document =
-    this.isrd.activeDocument.doc = json;
+    this.source.activeDocument.originalText = text;
+    // this.source.activeDocument._node.properties!.document =
+    this.source.activeDocument.doc = json;
     this.updateViewTypes();
   }
 
-  public uploadPdf() {
-    this.uploader.click();
-  }
+  public doImport(plugin: IImportPlugin) {
+    if (!this.source?.activeDocument)  { return; }
+    plugin.callImport(this.source.activeDocument, this.source).then(r => {
+      alert('done import');
+      this.updateContent();
 
-  public createEmptyDocument() {
-    this.startMenu = false;
-  }
 
-  public createTemplate() {
-    this.startMenu = false;
+    }).catch(e => {
+
+    }).finally(()=> {
+      this.startMenu = false;
+    })    
   }
+  
 
   public save() {
     console.log("save");
-    if (!this.isrd || !this.isrd.activeDocument || !this.editor) {
+    if (!this.source || !this.source.activeDocument || !this.editor) {
       return;
     }
 
     this.syncDocumentState();
-    console.log(JSON.stringify(this.isrd?.activeDocument?.doc));
-    this.isrd.saveDocument(this.isrd.activeDocument);
-    // this.updateEditor();
-
-    // console.log(text);
-    // // this.isrd.activeDocument.originalText = this.content;
-    // this.isrd.parseDocument(this.isrd.activeDocument).then(r=> {
-    //   this.contentLoaded();
-    // })
+    console.log(JSON.stringify(this.source?.activeDocument?.doc));
+    this.source.saveDocument(this.source.activeDocument);    
   }
 
-  // public async refreshEntities() {
-  //   if (!this.isrd || !this.document) {
-  //     return;
-  //   }
 
-  //   // const data = this.editor!.getJSON();
-  //   if (this.doc) {
-  //     const text = this.doc;
-  //     if (text.length > 0) {
-  //       this.document.originalText = text;
-  //       await this.isrd.callEntityRecognize(this.isrd.activeDocument);
-
-  //     }
-  //   }
-
-  //   // this.isrd.activeDocument.originalText = this.editor!.getHTML();
-  // }
-
-  public contentLoaded(isrd: DocDatasource) {
-    if (this.isrd !== undefined || !isrd) {
+  public contentLoaded(source: DocDatasource) {
+    if (this.source !== undefined || !source) {
       return;
     }
-    this.isrd = isrd;
+    this.source = source;
     this.updateContextMenu();
-    console.log("content loaded");
-    // console.log(isrd);
+    console.log("content loaded");    
     this.busManager.subscribe(
-      this.isrd!.bus,
+      this.source!.bus,
       "document",
-      (a: string, d: any) => {
-        // alert('document loaded');
-        // this.document = d;
-        // this.checkDocumentIdQuery();
+      (a: string, d: any) => {        
         this.updateEditor();
-        this.updateContent();
-        // console.log('init report');
-        // console.log(this.document);
+        this.updateContent();        
       }
-    );
-    // this.busManager.subscribe(
-    //   isrd.bus,
-    //   GraphDatasource.GRAPH_EVENTS,
-    //   (a: string) => {
-    //     if (a === GraphDatasource.GRAPH_LOADED) {
-    //       console.log("Graph Loaded");
-    //       this.checkDocumentIdQuery();
-    //     }
-    //   }
-    // );
+    );    
     this.checkDocumentIdQuery();
-
-    // this.updateEditor();
-    // this.updateContent();
   }
 
   private checkDocumentIdQuery() {
     console.log("check document query");
-    if (!$cs.router || !this.isrd) {
+    if (!$cs.router || !this.source) {
       return;
     }
 
-    // alert('checking docs:' + this.isrd?.documents?.length);
     if ($cs.router.currentRoute?.query?.id) {
       if (
-        this.isrd.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
+        this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
       ) {
-        const doc = this.isrd.documents.find(
+        const doc = this.source.documents.find(
           (d) => d.id === $cs.router!.currentRoute?.query?.id
         );
         if (doc) {
           this.loadDocument(doc);
         }
-      } else {
-        // this.document = this.isrd.activeDocument;
-        this.loadDocument(this.isrd.activeDocument);
-        // this.updateEditor();
-        // this.$forceUpdate();
-        // alert('jop')
-        // this.document = this.isrd.activeDocument;
-        // this.updateEditor();
-        // this.loadDocument(this.isrd.activeDocument);
+      } else {        
+        this.loadDocument(this.source.activeDocument);        
       }
     } else {
-      if (this.isrd.activeDocument) {
-        this.loadDocument(this.isrd.activeDocument);
+      if (this.source.activeDocument) {
+        this.loadDocument(this.source.activeDocument);
 
         const combined = {
           ...$cs.router!.currentRoute.query,
-          ...{ id: this.isrd.activeDocument.id },
+          ...{ id: this.source.activeDocument.id },
         };
         $cs.router.replace(
           { path: $cs.router!.currentRoute.params[0], query: combined },
@@ -1188,26 +1019,15 @@ export default class DocumentViewer extends WidgetBase {
             // console.log(err);
           }
         );
-      }
-      // this.$router.currentRoute?.query?.id
+      }      
     }
   }
 
   public mounted() {
-    console.log("mounted");
-    // this.updateEditor();
-
-    // console.log("isrd");
-    // console.log(this.isrd);
-    // this.checkDocumentIdQuery();
-
-    // if (this.isrd?.activeDocument) {
-    //   this.loadDocument(this.isrd.activeDocument);
-    // }
-    if (!this.isrd) {
+    console.log("mounted");    
+    if (!this.source) {
       this.contentLoaded(this.widget.content);
-    }
-    // this.refresh();
+    }    
   }
 }
 </script>

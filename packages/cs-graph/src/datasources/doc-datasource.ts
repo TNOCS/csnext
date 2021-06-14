@@ -16,6 +16,8 @@ import { Editor } from '@tiptap/vue-2';
 import { AppState, HtmlWidget } from '@csnext/cs-client';
 import FeatureTypeEditor from "./../components/datamodel/feature-type-editor.vue";
 import { CrossFilterDatasource } from "@csnext/cs-crossfilter";
+import { IImportPlugin } from '../plugins/import-plugin';
+import { EmptyDocumentImport } from '../plugins/empty-document-import';
 
 export class DocDatasource extends GraphDatasource {
     
@@ -34,6 +36,7 @@ export class DocDatasource extends GraphDatasource {
     public viewTypes: { [id: string]: ViewType } = {};
     public sources?: GraphElement[] = [];
     public documentPlugins?: IDocumentPlugin[] = [];
+    public importPlugins?: IImportPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
     
@@ -44,8 +47,7 @@ export class DocDatasource extends GraphDatasource {
         super();  
     }
 
-    public reset() {
-        // super.reset();     
+    public reset() {        
         this.documents = [];
         this.activeDocument = undefined;        
         this.activeElement = undefined;
@@ -58,8 +60,6 @@ export class DocDatasource extends GraphDatasource {
             return this.getObservation('node');
         }
     }
-
-    
 
     public async initLayer(ml: MapLayers, key: string, obs: FeatureType) : Promise<IMapLayer> {                 
         let l = await ml.addGeojsonLayer(obs.title!, undefined, {
@@ -217,9 +217,7 @@ export class DocDatasource extends GraphDatasource {
                     layer.updateLayer();
                     
                 }
-            }        
-            // this.layer._source!._data = layer;
-            // this.layer.updateLayer();
+            }                    
         }
 
     }
@@ -444,8 +442,7 @@ export class DocDatasource extends GraphDatasource {
             }).finally(()=>{
                 $cs.loader.removeLoader('schema');
             })            
-        })
-        
+        })        
     }
 
     public elementEditorForm(node: GraphElement ) : IFormOptions {
@@ -581,9 +578,6 @@ export class DocDatasource extends GraphDatasource {
     }
     return form;}
 
-
-    
-
     public async loadGraph(url: string, clearCache = false) {
         let jsonGraph: any;
         const local = undefined;// localStorage.getItem(url);
@@ -641,27 +635,8 @@ export class DocDatasource extends GraphDatasource {
             if (this.activeDocument?.id === doc.id) {
                 this.activateDocument(undefined);
             }            
-        })
-        
-        
-    }
-
-    public openDocumentDetails(doc: GraphDocument, open = true) {
-        // $cs.openRightSidebarWidget({
-        //     component: DocumentEditor,
-        //     data: {
-        //         isrd: this,
-        //         document: doc
-        //     },
-        //     options: {
-        //         showToolbar: true,
-        //         toolbarOptions: {
-        //             dense: true,
-        //             backgroundColor: 'primary'
-        //         }
-        //     }
-        // }, { open }, 'document')
-    }
+        })            
+    }   
 
     public openEntityEditor(entity: SearchEntity) {
         $cs.openRightSidebarWidget({
@@ -1465,7 +1440,6 @@ export class DocDatasource extends GraphDatasource {
         }
     }
 
-   
     public setQueryParams() {
         if (!$cs.project.rightSidebar?.open) {
             $cs.removeRouteQueryParam('nodedetails');
@@ -1474,11 +1448,12 @@ export class DocDatasource extends GraphDatasource {
 
 
     public execute(): Promise<DocDatasource> {
-        return new Promise(async (resolve, reject) => {
-            // await this.execute();
+        return new Promise(async (resolve, reject) => {            
             await this.refresh(true);            
 
             this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;            
+            
+            this.importPlugins.push(new EmptyDocumentImport());
             
             if (this.timesourceId) {
                 AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then(ts => {
