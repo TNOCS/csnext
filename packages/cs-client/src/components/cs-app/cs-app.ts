@@ -14,7 +14,7 @@ import {
   MessageBusManager,
   Topics
 } from '@csnext/cs-core';
-import { Watch } from 'vue-property-decorator';
+import { Ref, Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsDashboard, CsSettings } from '../../';
 
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
@@ -87,6 +87,9 @@ export class CsApp extends Vue {
   public isLoading: boolean = true;
   private busManager = new MessageBusManager();
   public dialogInput: string = '';
+  private fileUploadCallback?: Function; 
+  @Ref()
+  public uploader!: HTMLElement;
 
   constructor() {
     super();        
@@ -133,6 +136,31 @@ export class CsApp extends Vue {
   public beforeDestroy() {
     this.busManager.stop();
     document.removeEventListener('backbutton', this.backButtonPressed);
+  }
+
+  public filesChange(fieldName: string, fileList: any[]) {
+    if (this.fileUploadCallback) {
+      // handle file changes
+      const formData = new FormData();
+      if (!fileList.length) return;
+      // append the files to FormData
+
+      Array.from(Array(fileList.length).keys()).map((x) => {
+        formData.append("file", fileList[x], fileList[x].name);
+      });
+
+      this.fileUploadCallback(formData);
+    }
+    
+    
+    console.log("parsing pdf");
+    this.isLoading = true;
+    $cs.loader.addLoader("pdfimport");
+    $cs.triggerNotification({
+      title: $cs.Translate("PDF_IMPORT_STARTED"),
+      color: "green",
+    });
+    
   }
 
   @Watch('app.project.dashboards')
@@ -383,6 +411,14 @@ export class CsApp extends Vue {
         this.UpdateSideBars(dashboard);
         this.updateFooter(dashboard);
       }
+    );
+
+    this.busManager.subscribe(this.$cs.bus,
+      AppState.FILE_UPLOAD,
+      (action: string, data) => {
+        this.fileUploadCallback = data.callback;
+        this.uploader.click();
+      }      
     );
 
     if (this.$cs.activeDashboard) {

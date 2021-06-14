@@ -49,6 +49,8 @@ export class AppState extends AppStateBase {
   public static NOTIFICATION = 'notification';
   public static NOTIFICATION_ADDED = 'new';
   public static NOTIFICATION_CLEARED = 'clear-all'
+  public static FILE_UPLOAD = 'file-upload';
+  public static FILE_UPLOAD_START = 'file-upload-start';
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -530,6 +532,14 @@ export class AppState extends AppStateBase {
       };
       this.triggerDialog(d);
   });
+  }
+
+  public triggerFileUpload(acceptTypes: string): Promise<FormData | undefined> {
+    return new Promise((resolve, reject) => {    
+      this.bus.publish(AppState.FILE_UPLOAD, AppState.FILE_UPLOAD_START, { types: acceptTypes, callback: (r) => {        
+        resolve(r as FormData);
+      }});
+    });
   }
 
   /** if rightsidebar exists, clear component and close */
