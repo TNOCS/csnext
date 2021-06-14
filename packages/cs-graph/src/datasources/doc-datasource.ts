@@ -3,14 +3,9 @@ import { GraphElement, TextEntity, GraphDatasource, TextRelation, InfoPanel } fr
 import Axios from 'axios';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
-// import { ObservationType } from "../classes";
 import { ViewType } from '../classes/document/view-type';
-import { IIntelPlugin } from '../plugins/intel-plugin';
-import { EntitySearch } from "../plugins/EntitySearch";
-import { EntityLinker } from "../plugins/EntityLinker";
+import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from "../plugins/EntityParser";
-import { EntityRecognizer } from "../plugins/EntityRecognizer";
-// import { Relationparser } from "../plugins/relation-parser";
 import { EntityList } from '../components/document/node-entities';
 import { TimeDataSource, guidGenerator, IFormOptions, WidgetOptions } from '@csnext/cs-core';
 import { DataSet, FeatureType, FeatureTypes, PropertyValueType, FeatureTypeStat } from '@csnext/cs-data';
@@ -38,7 +33,7 @@ export class DocDatasource extends GraphDatasource {
     public searchEntities?: SearchEntity[] = [];
     public viewTypes: { [id: string]: ViewType } = {};
     public sources?: GraphElement[] = [];
-    public plugins?: IIntelPlugin[] = [];
+    public documentPlugins?: IDocumentPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
     
@@ -703,9 +698,9 @@ export class DocDatasource extends GraphDatasource {
 
     public parseDocument(doc: GraphDocument) : Promise<GraphDocument> {
         return new Promise(async (resolve) => {
-            if (this.plugins) {
+            if (this.documentPlugins) {
                 // doc.entities = [];                
-                for (const plugin of this.plugins.filter(p => typeof p.callDocument === 'function')) {
+                for (const plugin of this.documentPlugins.filter(p => typeof p.callDocument === 'function')) {
                     try {      
                         $cs.triggerNotification({ id:plugin.id, title: plugin.title});
                         console.log(`Plugin: ${plugin.title}, Output: `);
@@ -787,11 +782,8 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public initPlugins() {
-        this.plugins = [];
-        this.plugins.push(new EntityRecognizer());
-        // this.plugins.push(new EntitySearch());
-        this.plugins.push(new EntityLinker());            
+    public initDocumentPlugins() {
+        this.documentPlugins = [];        
     }
 
     
@@ -901,7 +893,7 @@ export class DocDatasource extends GraphDatasource {
             } else {
             try {                
                 this.reset();
-                this.initPlugins();                                
+                this.initDocumentPlugins();                                
                 await this.loadTypes();                                            
                 this.mergeFeatureTypes();
                 try {

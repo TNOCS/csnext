@@ -121,8 +121,10 @@ export class NestServer {
                 }
 
                 if (this.config.assetsPath) {
-                    const publicDirectory: string = path.join(this.config.staticFolder, this.config.assetsPath);
-                    this.app.use(this.config.assetsPath, express.static(publicDirectory));
+                    const assetsDirectory: string = path.join(this.config.staticFolder, this.config.assetsPath);
+                    this.app.use(this.config.assetsPath, express.static(assetsDirectory));
+                    Logger.log(`Asset hosting is available at '${host}:${port}${this.config.assetsPath}'.`);
+                    Logger.log(`Hosting static files from '${assetsDirectory}'`);
                 }
 
                 if (this.config.hbsViewFolder) {

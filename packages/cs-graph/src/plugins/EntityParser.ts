@@ -2,17 +2,17 @@ import { GraphElement } from '@csnext/cs-data';
 import { GraphDocument } from '../classes/document/graph-document';
 import { ViewType } from '../classes/document/view-type';
 import { DocDatasource } from '../datasources/doc-datasource';
-import { IIntelPlugin, IIntelPluginResult } from './intel-plugin';
+import { IDocumentPlugin, IDocumentPluginResult } from './document-plugin';
 
 
-export class EntityParser implements IIntelPlugin
+export class EntityParser implements IDocumentPlugin
 {
     public id = 'EntityParser';
     public title = 'Entity Parser';
     public description = this.title;
     public options = {};
 
-    public callDocument(doc: GraphDocument, source: DocDatasource): Promise<IIntelPluginResult>
+    public callDocument(doc: GraphDocument, source: DocDatasource): Promise<IDocumentPluginResult>
     {
         return new Promise((resolve, reject) =>
         {
