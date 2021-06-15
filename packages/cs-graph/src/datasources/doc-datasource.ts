@@ -35,8 +35,8 @@ export class DocDatasource extends GraphDatasource {
     public searchEntities?: SearchEntity[] = [];
     public viewTypes: { [id: string]: ViewType } = {};
     public sources?: GraphElement[] = [];
-    public documentPlugins?: IDocumentPlugin[] = [];
-    public importPlugins?: IImportPlugin[] = [];
+    public documentPlugins: IDocumentPlugin[] = [];
+    public importPlugins: IImportPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
     
@@ -1452,7 +1452,7 @@ export class DocDatasource extends GraphDatasource {
             await this.refresh(true);            
 
             this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;            
-            
+
             this.importPlugins.push(new EmptyDocumentImport());
             
             if (this.timesourceId) {
