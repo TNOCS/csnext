@@ -213,7 +213,12 @@ export class GraphDatasource extends DataSource {
         return;
     }
 
-    public getClassElements(classId: string, traversal?: boolean, filter?: GraphFilter): GraphElement[] | undefined {
+    public getTitleElements(classId: string): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => GraphElement.getTitle(c) === classId);
+        return res;
+    }
+
+    public getClassElements(classId: string, traversal?: boolean, filter?: GraphFilter): GraphElement[] {
         let res: GraphElement[] = [];
         if (traversal) {
             res = Object.values(this.graph).filter(c => c._featureType?._inheritedTypes?.includes(classId));
