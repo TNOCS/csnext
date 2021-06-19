@@ -1,7 +1,6 @@
 <v-app v-resize="onResize" v-if="$cs.isInitialized" :dark="$cs.project.theme.dark" :light="!$cs.project.theme.dark">
     <input class="d-none input-file" ref="uploader" type="file" @change="
-        filesChange($event.target.name, $event.target.files);
-        fileCount = $event.target.files.length;
+        filesChange($event.target.name, $event.target.files);        
       " accept="*.*" />
     <!--  -->
     <!-- <cs-loading></cs-loading> -->

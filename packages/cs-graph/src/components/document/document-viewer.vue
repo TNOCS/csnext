@@ -942,11 +942,8 @@ export default class DocumentViewer extends WidgetBase {
 
   public doImport(plugin: IImportPlugin) {
     if (!this.source?.activeDocument)  { return; }
-    plugin.callImport(this.source.activeDocument, this.source).then(r => {
-      alert('done import');
+    plugin.callImport(this.source.activeDocument, this.source).then(r => {      
       this.updateContent();
-
-
     }).catch(e => {
 
     }).finally(()=> {

@@ -152,10 +152,7 @@ export class CsApp extends Vue {
       this.fileUploadCallback(formData);
     }
     
-    
-    console.log("parsing pdf");
-    this.isLoading = true;
-    $cs.loader.addLoader("pdfimport");
+    this.isLoading = true;    
     $cs.triggerNotification({
       title: $cs.Translate("PDF_IMPORT_STARTED"),
       color: "green",
