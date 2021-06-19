@@ -527,7 +527,7 @@ export default class DocumentViewer extends WidgetBase {
         const paragraph = 0; // (pOffset.findIndex((v) => entity.position_start! < v));
         const to = entity.position_end! - additional + paragraph;
         const from = entity.position_start! - additional + paragraph;
-        console.log(`${entity.text} : ${paragraph} : ${from} + ${to}`);
+        // console.log(`${entity.text} : ${paragraph} : ${from} + ${to}`);
         // const docent = { id: entity.entity_idx, text: entity.text, type: 'city' };
         chain.setTextSelection({ from, to }).setTextEntity(entity);
         // this.editor.commands.replaceRange({

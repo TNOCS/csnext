@@ -10,8 +10,8 @@
         "link": "yarn link",
         "unlink": "yarn unlink",
         "typescript": "concurrently \"cpx \"src/**/*.{html,png,jpg,css}\" dist --watch\"  \"tsc -w\"",
-        "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-        "build": "webpack --mode development",
+        "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "build": "tsc && webpack --mode development",
         "build:production": "webpack --mode development",
         "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
     },
@@ -27,8 +27,9 @@
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
         "vue-router": "^3.5.1",
-        "vuetify": "2.5.3",
-        "@vueuse/core": "4.11.1"
+        "vuetify": "2.5.4",
+        "v-snackbars": "3.2.4",
+        "@vueuse/core": "5.0.3"
     },
     "devDependencies": {
         "@types/socket.io-client": "^1.4.34",

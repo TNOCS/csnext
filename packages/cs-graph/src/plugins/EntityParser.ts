@@ -48,7 +48,7 @@ export class EntityParser implements IDocumentPlugin
                     if (entity._node?._featureType?.type)
                     {
                         entity.class = entity._node._featureType.type as string;
-                        if (source.viewTypes.hasOwnProperty(entity.class))
+                        if (!source.viewTypes.hasOwnProperty(entity.class))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
                             source.viewTypes[entity.class] = { id: entity.class, title: entity._node._featureType.title, color, _selected: true } as ViewType;
