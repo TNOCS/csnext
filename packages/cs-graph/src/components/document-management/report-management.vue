@@ -114,8 +114,6 @@ import { Component, Ref } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import NewDocument from "./new-document.vue";
-import vueDropzone from "vue2-dropzone";
-import "vue2-dropzone/dist/vue2Dropzone.min.css";
 
 import simplebar from "simplebar-vue";
 import { GraphDocument } from "../../classes/document/graph-document";
@@ -125,7 +123,7 @@ import Axios from "axios";
 import { WidgetOptions } from "@csnext/cs-core";
 
 @Component({
-  components: { simplebar, vueDropzone },
+  components: { simplebar },
 })
 export default class DocumentManagement extends WidgetBase {
   @Ref()
@@ -314,7 +312,7 @@ export default class DocumentManagement extends WidgetBase {
 
   public contentLoaded() {
     if (this.isrd?.events) {
-      this.busManager.subscribe(this.isrd.events, IsrdDatasource.DOCUMENT, (a: string, d: any) => {        
+      this.busManager.subscribe(this.isrd.events, DocDatasource.DOCUMENT, (a: string, d: any) => {        
         // this.updateReports();
         this.$forceUpdate();
       })      

@@ -18,7 +18,15 @@ import ReportEditor from './components/document-management/report-editor.vue';
 import VueDragDrop from 'vue-drag-drop';
 export { ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
 
-
+// export GraphElements from "./components/entity-management/graph-elements.vue";
+// export ElementDataGrid  from "./components/data-grid/element-data-grid.vue"
+// export ClassOverview from "./components/datamodel/class-overview.vue";
+// export ClassViewer from "./components/datamodel/class-viewer.vue";
+// export ElementInfo from "./components/element/element-info.vue";
+// export DocumentViewer from './components/document/document-viewer.vue';
+// export DocumentEditor from './components/document-management/document-editor.vue';
+// export DocumentEntities from './components/document/document-entities.vue';
+// export ReportEditor from './components/document-management/report-editor.vue';
 
 Vue.use(VueDragDrop);
 

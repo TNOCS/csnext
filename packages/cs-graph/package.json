@@ -10,7 +10,7 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
-        "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "tsc && webpack --mode development",
         "build:production": "tsc && webpack --mode development",
         "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
@@ -30,14 +30,14 @@
         "vueisotope": "3.1.2",
         "isotope-packery": "2.0.1",
         "isotope-masonry-horizontal": "2.0.1",
-        "@tiptap/vue-2": "2.0.0-beta.35",
-        "@tiptap/starter-kit": "2.0.0-beta.77",
+        "@tiptap/vue-2": "2.0.0-beta.38",
+        "@tiptap/starter-kit": "2.0.0-beta.79",
         "@tiptap/extension-highlight": "2.0.0-beta.14",
-        "@tiptap/extension-bubble-menu": "2.0.0-beta.20",
+        "@tiptap/extension-bubble-menu": "2.0.0-beta.23",
         "@tiptap/suggestion": "2.0.0-beta.57",
         "tippy.js": "6.3.1",
         "@tiptap/extension-code-block-lowlight": "2.0.0-beta.29",
-        "@tiptap/extension-placeholder": "2.0.0-beta.21"
+        "@tiptap/extension-placeholder": "2.0.0-beta.23"
     },
     "devDependencies": {
         "@types/lodash.throttle": "^4.1.6",
