@@ -34,7 +34,12 @@ export * from './classes/log-item';
 export * from './classes/log-source';
 export * from './classes/query-options';
 export * from './log-items/log-items-controller';
+export * from './classes/file';
+export * from './files/files.service';
+export * from './files/files.controller';
 export * from './events/';
+export * from './classes/file-server-options';
+
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -43,6 +48,7 @@ import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
 import { ExpressPeerServer  } from 'peer';
 import { IPeerOptions } from './classes/peer-options';
+import { IFileServerOptions } from './classes/file-server-options';
 
 
 
@@ -55,6 +61,7 @@ export class ServerConfig {
     public cors: boolean = true;
     public basicAuth?: ServerBasicAuthConfig;
     public peerOptions?: IPeerOptions;
+    public fileServerOptions?: IFileServerOptions;
 }
 
 // tslint:disable-next-line: max-classes-per-file
@@ -64,7 +71,7 @@ export class NestServer {
     public swaggerConfig!: any;
     public config?: ServerConfig;
     public openAPI?: OpenAPIObject;
-    public peerServer?: any;    
+    public peerServer?: any;        
 
     public bootstrap(
         moduleType: any,
