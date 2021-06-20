@@ -75,10 +75,10 @@
           <div v-if="activeElement && activeElement.type === 'node'" class="element-info-facts">
             <div v-for="link in getLinks(activeElement)" :key="link.id" >
               <v-layout v-if="link && link.element" style="max-height: 30px">
-                <v-checkbox
+                <!-- <v-checkbox
                   v-model="link.element.properties.verified"
                   color="getColor(link.element)}"
-                ></v-checkbox>
+                ></v-checkbox> -->
                 <!-- <div class="link-avatar" :style="{'background': getColor(link.element)}"></div> -->
                 <div v-if="link.direction === 'from'">
                   <!-- <span class="from-tag">{{ element._title }}</span>&nbsp; -->
@@ -86,7 +86,7 @@
                     class="ei-link rel-tag"
                     v-if="link.link"
                     @click="selectElement(link.link)"
-                  >{{link.link._title }}</a>&nbsp;
+                  >{{link.link.classId }}</a>&nbsp;
                   <a
                     class="ei-link rel-tag"
                     v-if="link.element"
@@ -106,7 +106,7 @@
                     class="ei-link to-tag"
                     v-if="link.element"
                     @click="selectElement(link.element)"
-                  >{{link.element._title}}</a>
+                  >{{link.element.classId}}</a>
                   <a
                     class="ei-link rel-tag"
                     v-if="link.element.properties && link.element.properties.external"
