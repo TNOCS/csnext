@@ -236,7 +236,6 @@ import { WidgetBase } from "@csnext/cs-client";
 import { TextEntity } from "@csnext/cs-data";
 import { Editor, EditorContent, Node, BubbleMenu } from "@tiptap/vue-2";
 import SelectionPopup from "./selection-popup.vue";
-// import "../../assets/sass/main.scss";
 import simplebar from "simplebar-vue";
 
 import { DocDatasource } from "./../../datasources/doc-datasource";
@@ -247,13 +246,10 @@ import TextExtension from "./plugins/text-extension";
 import ParagraphExtension from "./plugins/paragraph-extension";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
-// import TextParagraph from "./plugins/text-paragraph";
-// import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Axios from "axios";
-// import { FeatureType } from "../../classes";
-import { Drag, Drop } from "vue-drag-drop";
 import { FeatureType } from "@csnext/cs-data";
 import { IImportPlugin } from "../..";
+import interact from 'interactjs';
 
 @Component({
   components: {
@@ -558,7 +554,7 @@ export default class DocumentViewer extends WidgetBase {
 
   public updateEditor(destroy = true) {
     console.log("update editor");
-    if (!this.source?.activeDocument) {
+    if (!this.source || !this.source?.activeDocument) {
       return;
     }
     this.checkDocument();
@@ -805,6 +801,7 @@ export default class DocumentViewer extends WidgetBase {
       }
 
       this.checkDocument();
+      // this.checkOriginal();
 
       if (
         this.source.activeDocument.doc.content &&
@@ -1020,8 +1017,85 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+   private dragMoveListener (event) {
+    var target = event.target
+    // keep the dragged position in the data-x/data-y attributes
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+    // translate the element
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+
+  private initializeDragDrop() {
+    const position = { x: 0, y: 0 };
+     interact('.entity-drag').draggable({
+       manualStart: true,
+        listeners: {
+          start(event) {
+            const { currentTarget, interaction } = event;
+    let element = currentTarget;
+    var clientRect = element.getBoundingClientRect();
+            position.x = clientRect.left + document.body.scrollLeft;
+            position.y = clientRect.top + document.body.scrollTop;
+          },
+      move(event) {
+        position.x += event.dx;
+        position.y += event.dy;
+        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      }
+    }
+      }).on("move", (event) => {        
+    const { currentTarget, interaction } = event;
+    let element = currentTarget;
+
+    // If we are dragging an item from the sidebar, its transform value will be ''
+    // We need to clone it, and then start moving the clone
+    if (
+      interaction.pointerIsDown &&
+      !interaction.interacting() &&
+      currentTarget.style.transform === ""
+    ) {
+      element = currentTarget.cloneNode(true);
+      var clientRect = element.getBoundingClientRect();
+
+      // Add absolute positioning so that cloned object lives
+      // right on top of the original object
+      element.style.position = "absolute";
+      element.style.left = 0;
+      element.style.top = 0;
+
+      // Add the cloned object to the document
+      const container = document.querySelector(".document-editor");
+      container && container.appendChild(element);
+
+      const { offsetTop, offsetLeft } = currentTarget;
+      position.x = offsetLeft;
+      position.y = offsetTop;
+
+      // If we are moving an already existing item, we need to make sure
+      // the position object has the correct values before we start dragging it
+    } else if (interaction.pointerIsDown && !interaction.interacting()) {
+      const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+      const transform = regex.exec(currentTarget.style.transform);
+
+      if (transform && transform.length > 1) {
+        position.x = Number(transform[1]);
+        position.y = Number(transform[2]);
+      }
+    }
+
+    // Start the drag event
+    interaction.start({ name: "drag" }, event.interactable, element);
+  });
+  }
+
   public mounted() {
-    console.log("mounted");    
+    console.log("mounted");
     if (!this.source) {
       this.contentLoaded(this.widget.content);
     }    
