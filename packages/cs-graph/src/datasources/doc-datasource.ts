@@ -18,6 +18,7 @@ import FeatureTypeEditor from "./../components/datamodel/feature-type-editor.vue
 import { CrossFilterDatasource } from "@csnext/cs-crossfilter";
 import { IImportPlugin } from '../plugins/import-plugin';
 import { EmptyDocumentImport } from '../plugins/empty-document-import';
+import { IDocumentViewerPlugin } from '../plugins/viewer-plugin';
 
 export class DocDatasource extends GraphDatasource {
     
@@ -37,6 +38,7 @@ export class DocDatasource extends GraphDatasource {
     public sources?: GraphElement[] = [];
     public documentPlugins: IDocumentPlugin[] = [];
     public importPlugins: IImportPlugin[] = [];
+    public viewerPlugins: IDocumentViewerPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
     
@@ -113,6 +115,12 @@ export class DocDatasource extends GraphDatasource {
             { component: FeatureTypeEditor, 
                 options: { showToolbar: false, title: featureType.title},
                 datasource: 'isrd',  data: { type: featureType}}, { open: true}, 'featuretype');
+    }
+
+    public openOriginal(original: GraphElement) {
+        if (original.properties?.format) {
+            alert('open original');
+        }
     }
     
 
@@ -455,11 +463,12 @@ export class DocDatasource extends GraphDatasource {
       };
       // this.formDef = this.formDef2;    
       if (node?._featureType) {
-        const ft = node?._featureType;      
-        console.log(ft);        
+        const ft = node?._featureType;            
         
         if (ft?.properties) {
           for (const pt of ft.properties) { 
+              let required = pt.required;
+
             
             switch (pt.type) {
               case PropertyValueType.datetime:              
@@ -469,7 +478,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'datetimepicker',
                     readonly: pt.readonly,
-                    required: pt.required          
+                    required          
                   }
                 )
                 break;
@@ -480,7 +489,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'string',
                     readonly: pt.readonly,
-                    required: pt.required
+                    required
                   }
                 )
                 break;
@@ -491,7 +500,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'string',
                     readonly: pt.readonly,
-                    required: pt.required
+                    required
                   }
                 )
                 break;
@@ -502,7 +511,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'string',
                     readonly: pt.readonly,
-                    required: pt.required
+                    required
                   }
                 )
                 break;
@@ -513,7 +522,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'checkbox',                    
                     readonly: pt.readonly,
-                    required: pt.required               
+                    required               
                   }
                 )
                 break;
@@ -526,7 +535,7 @@ export class DocDatasource extends GraphDatasource {
                     min: pt.min,
                     max: pt.max,
                     readonly: pt.readonly,
-                    required: pt.required               
+                    required               
                   }
                 )
                 break;
@@ -537,7 +546,7 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'chips',                    
                     readonly: pt.readonly,
-                    required: pt.required               
+                    required               
                   }
                 )
                 break;
@@ -548,11 +557,12 @@ export class DocDatasource extends GraphDatasource {
                     _key: pt.key,
                     type: 'epochdatetimepicker',                    
                     readonly: pt.readonly,
-                    required: pt.required               
+                    required               
                   }
                 )
                 break;
-              case PropertyValueType.relation:                
+              case PropertyValueType.relation:
+                
                 form.fields?.push(
                   {
                     title: pt.label!,
@@ -567,7 +577,7 @@ export class DocDatasource extends GraphDatasource {
                     readonly: pt.readonly,
                     keyText: 'title',
                     keyValue: 'id',
-                    required: pt.required                  
+                    required: required || (node._outgoing && node._outgoing.findIndex(r => r.classId === pt.relation?.type) !== -1)                  
                   }
                 )
                 break;
@@ -761,6 +771,39 @@ export class DocDatasource extends GraphDatasource {
         this.documentPlugins = [];        
     }
 
+    public initDocument(doc: GraphElement) : GraphDocument {
+        let d = new GraphDocument(doc);        
+        d.id = doc.id;
+        if (!doc.properties) { doc.properties = {}}
+        d.credibility = doc.properties?.credibility;
+        if (!doc.properties.text) { doc.properties.text = ''; }
+        d.originalText = doc.properties?.text;
+        d.reliability = doc.properties?.reliability;
+        if (doc.properties?.doc) {
+            d.doc = JSON.parse(doc.properties?.doc);
+        } else {
+            d.doc =  {
+                type: "doc",
+                content: [ ] }                
+        }
+        d._source = doc._outgoing?.find(e => e.classId === 'FROM_SOURCE');
+        d.sourceId = d._source?.id;                
+        if (doc.properties?.notes) {
+            d.notes = JSON.parse(doc.properties.notes);
+        }
+        if (doc.properties?.entities) {                                        
+            d.entities = JSON.parse(doc.properties.entities);
+            if (d.entities && typeof Array.isArray(d.entities))
+            {
+                for (const e of d.entities) {
+                    if (e.node_id) {
+                        e._node = this.getElement(e.node_id);
+                    }                        
+                }                                                
+            }
+        }      
+        return d;
+    }
     
 
     public parseDocuments() {
@@ -769,52 +812,10 @@ export class DocDatasource extends GraphDatasource {
         if (docs) {
             for (const doc of docs) {     
                 if (this.documents.findIndex(d => d.id === doc.id) === -1) {
-                    let d = new GraphDocument(doc);
-                    // d._node = doc;
-                    d.id = doc.id;
-                    if (!doc.properties) { doc.properties = {}}
-                    // d.name = doc.properties?.title;
-                    // d.sourceId = doc.properties?.sourceId;
-                    d.credibility = doc.properties?.credibility;
-                    if (!doc.properties.text) { doc.properties.text = ''; }
-                    d.originalText = doc.properties?.text;
-                    d.reliability = doc.properties?.reliability;
-                    if (doc.properties?.doc) {
-                        d.doc = JSON.parse(doc.properties?.doc);
-                    } else {
-                        d.doc =  {
-                            type: "doc",
-                            content: [ ] }                
-                    }
-                    d._source = doc._outgoing?.find(e => e.classId === 'FROM_SOURCE');
-                    d.sourceId = d._source?.id;                
-                    if (doc.properties?.notes) {
-                        d.notes = JSON.parse(doc.properties.notes);
-                    }
-                    if (doc.properties?.entities) {                                        
-                        d.entities = JSON.parse(doc.properties.entities);
-                        if (d.entities && typeof Array.isArray(d.entities))
-                        {
-                            for (const e of d.entities) {
-                                if (e.node_id) {
-                                    e._node = this.getElement(e.node_id);
-                                }                        
-                            }                                                
-                        }
-                    }
-                    if (doc.properties?.relations) {                    
-                        d.relations = JSON.parse(doc.properties.relations);
-                        // if (d.entities && typeof Array.isArray(d.entities))
-                        // {
-                        //     for (const e of d.entities) {
-                        //         if (e.node_id) {
-                        //             e._node = this.getElement(e.node_id);
-                        //         }                        
-                        //     }                                                
-                        // }
-                    }
+                    this.initDocument(doc);
+                    
                     // this.includeElement(doc);
-                    this.documents.push(d);
+                    this.documents.push(doc as GraphDocument);
                 }
             }
         }  
@@ -1203,17 +1204,18 @@ export class DocDatasource extends GraphDatasource {
 
     public removeEdge(edge: GraphElement): Promise<boolean> {
         return new Promise((resolve) => {
-            $cs.loader.addLoader(`unlink-${edge.id}`);            
-            if (edge.from?._outgoing) {
-                edge.from._outgoing = edge.from._outgoing?.filter(e => e.id !== edge.id);
-            }
-            if (edge.to?._incomming) {
-                edge.to._incomming = edge.to._incomming?.filter(e => e.id !== edge.id);
-            }
+            $cs.loader.addLoader(`unlink-${edge.id}`);                        
             Axios.post(`${this.base_url}/unlinkId`, undefined, { params: {
                 id: edge.id
             }
             }).then(r => {
+                // remove incoming/outgoing from all related entities
+                if (edge.from?._outgoing) {
+                    edge.from._outgoing = edge.from._outgoing?.filter(e => e.id !== edge.id);
+                }
+                if (edge.to?._incomming) {
+                    edge.to._incomming = edge.to._incomming?.filter(e => e.id !== edge.id);
+                }
                 if (edge.id && this.graph.hasOwnProperty(edge.id)) {
                     delete this.graph[edge.id];
                 }
@@ -1237,6 +1239,7 @@ export class DocDatasource extends GraphDatasource {
                 classId: edge.classId
             }
             }).then(r => {
+                this.addEdge(edge);
                 console.log(r);
                 resolve(edge);
             }).catch(e => {
@@ -1345,19 +1348,11 @@ export class DocDatasource extends GraphDatasource {
         if (elements) {
             for (const el of elements) {
                 el._included = true;
-                if (expand && el._outgoing) {
-                    for (const o of el._outgoing) {
-                        o._included = true;                        
-                    }
-                }
-                if (expand && el._incomming) {
-                    for (const i of el._incomming) {
-                        i._included = true;                        
-                    }
-                }
+                this.addElementToGraph(el);               
             }            
+            this.triggerUpdateGraph();
         }                
-        this.triggerUpdateGraph();    
+          
     }
 
     
