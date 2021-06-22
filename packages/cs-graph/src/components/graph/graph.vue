@@ -291,7 +291,7 @@ export default class NetworkGraph extends WidgetBase {
         refY: 10,
       },
       hidden: this.source.getHidden(e, this.settings),
-      label: this.labelFormatter(e._title!, 30),
+      label: this.labelFormatter(e.classId!, 30),
       arrows: "to",
     } as any;
     if (!existing) {
@@ -366,22 +366,22 @@ export default class NetworkGraph extends WidgetBase {
       this.data = { nodes: [], edges: [] };
       this.graph.data(this.data);
     }
-    for (const e of Object.values(graph)) {
-      if (e.type === "node" && e.classId !== "instance")
-        if (e.id) {
-          if (e.classId && !e.class) {
-            e.class = this.source.getElement(e.classId); // graph.find(el => el.id === e.classId);
-          }
-          this.updateNode(e);
-          if (e.class) {
-            this.updateEdge({
-              source: e.id,
-              target: e.class.id,
-              label: "is",
-            } as any);
-          }
-        }
-    }
+    for (const e of Object.values(graph).filter(n => n.type === "node" && n._included && n.id)) {
+      this.updateNode(e);
+    };
+          // if (e.classId && !e.class) {
+          //   e.class = this.source.getElement(e.classId); // graph.find(el => el.id === e.classId);
+          // }
+          
+          // if (e.class) {
+          //   this.updateEdge({
+          //     source: e.id,
+          //     target: e.class.id,
+          //     label: "is",
+          //   } as any);
+          // }
+    //     }
+    // }
 
     for (const node of this.data.nodes!) {
       const el = this.source.getElement(node.id.toString());
@@ -897,8 +897,9 @@ export default class NetworkGraph extends WidgetBase {
           }
           this.data = { nodes: [], edges: [], combos: [] };
           this.graph.data(this.data);
+          this.updateGraph(this.source.graph, true);
           // this.updateGraph(this.source!.graph);
-          this.graph?.render();
+          // this.graph?.render();
         }
       },
     });
