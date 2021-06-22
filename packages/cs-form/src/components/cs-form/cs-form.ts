@@ -107,9 +107,14 @@ export class CsForm extends Vue {
         console.log('Closing form');
     }
 
-    public fieldVisible(field: IFormFieldOptions) : boolean {
+    public fieldVisible(field: IFormFieldOptions) : boolean {        
         if (field.required) { return true; }
-        if (field.optional) { return false; }
+        if (field.optional) {
+            
+            if (!this.Target.hasOwnProperty(field._key)) {
+                return false;
+            }
+        }
         if (!field.requirements) { return true; }
 
         for (const req of field.requirements) {
