@@ -21,6 +21,8 @@ export class GraphDocument extends GraphElement {
         ],
       };
     public notes?: DocumentNote[];
+
+    public originals?: GraphElement[];
     // public _node?: GraphElement;
     // public _source?: GraphElement;
 
@@ -45,6 +47,11 @@ export class GraphDocument extends GraphElement {
 
     public get _node() : GraphElement {
         return this;
+    }
+
+    public updateOriginals() {
+        if (!this._outgoing) { return; }
+        this.originals = this._outgoing!.filter(r => r.classId === 'HAS_ORIGINAL').map(r => r.to);
     }
         
 
