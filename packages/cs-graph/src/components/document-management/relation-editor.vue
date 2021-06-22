@@ -7,9 +7,9 @@
           ><v-icon>add</v-icon></v-btn
         ></v-layout
       >
-      <v-layout class="flex-wrap">
+      <v-layout class="flex-wrap" v-if="links">
         <v-card
-          v-for="(link, indx) in getLinks()"
+          v-for="(link, indx) in links"
           :key="indx"
           outlined
           class="relation-card"
@@ -148,6 +148,9 @@ import { LinkInfo, GraphElement } from '@csnext/cs-data';
   components: { simplebar, NodeLink, DataInfoPanel },
 })
 export default class RelationEditor extends Vue {
+
+  public links : LinkInfo[] | null = null;
+
   public getItems() {
     if (this.graph && this.relation?.objectType) {
       console.log("Get items---");
@@ -233,12 +236,14 @@ export default class RelationEditor extends Vue {
     await this.graph.removeEdge(l.link).then((r) => {
       this.graph!.updateEdges();
       this.graph!.parseEntities();
+      this.setLinks();
       this.$forceUpdate();
     });
   }
 
-  public getLinks(): LinkInfo[] | undefined {
+  public setLinks() {
     if (!this.node?._outgoing || !this.relation) {
+      this.links = null;
       return;
     }
     let res: LinkInfo[] = [];
@@ -247,7 +252,7 @@ export default class RelationEditor extends Vue {
         res.push({ direction: "to", element: link.to, link });
       }
     }
-    return res;
+    this.links= res;
   }
 
   public formDef: IFormOptions | null = null;
@@ -272,11 +277,13 @@ export default class RelationEditor extends Vue {
       .then(async (e) => {
         this.graph!.addEdge(e);
         await this.graph!.updateEdges();
-        await this.graph!.parseEntities();
+        await this.graph!.parseEntities();        
       })
       .catch((e) => {})
       .finally(() => {
         this.newRelation = undefined;
+        this.setLinks();
+        this.$forceUpdate();
       });
   }
 
@@ -315,7 +322,8 @@ export default class RelationEditor extends Vue {
         this.getActiveRelation();
       })
       .catch((e) => {})
-      .finally(() => {        
+      .finally(() => {   
+        this.setLinks();     
       });
 
     // alert('update relation');
@@ -323,6 +331,7 @@ export default class RelationEditor extends Vue {
 
   mounted() {
     this.getActiveRelation();
+    this.setLinks();
     console.log("relation graph");
     if (this.field) {
       console.log(this.field);
