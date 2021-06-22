@@ -1,6 +1,7 @@
-import { Get, Controller, Param, Post, Body, Query, Put, Delete, Header } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Query, Put, Delete, Header, Res } from '@nestjs/common';
 import { FileDefinitionList, FileDefinition } from './../classes/file';
 import { FilesService } from './files.service';
+import { Response } from 'express';
 import { UseInterceptors, NestInterceptor, UploadedFile } from  '@nestjs/common';
 import { diskStorage } from  'multer';
 
@@ -42,9 +43,10 @@ export class FilesController {
         type: Buffer
     })
     @Get(':id')
-    @Header('Content-Type', 'application/image')
-    public file(@Param('id') id: string): Promise<Buffer | undefined> {
-        return this.filesService.getFile(id);        
+    @Header('Content-Type', 'image/png')
+    public async file(@Param('id') id: string, @Res() response: Response )  {
+        const file = await this.filesService.getFile(id);
+        response.send(file);        
     }
 
     
