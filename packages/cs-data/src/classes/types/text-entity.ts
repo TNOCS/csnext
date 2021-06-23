@@ -38,4 +38,5 @@ export class TextEntity {
     public _relations?: TextRelation[];
     public _docEntity?: any;
     public _location?: string;
+    public _date?: string;
 }

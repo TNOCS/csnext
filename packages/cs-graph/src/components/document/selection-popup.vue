@@ -4,11 +4,11 @@
       <v-tab>
         <v-icon left> playlist_add_check </v-icon>
       </v-tab>
-      <v-tab>
+      <v-tab :disabled="!entity._location">
         <v-icon left> place </v-icon>
       </v-tab>
-      <v-tab>
-        <v-icon left> note </v-icon>
+      <v-tab :disabled="!entity._date">
+        <v-icon left> date_range </v-icon>
       </v-tab>
 
       <v-tab-item>
@@ -105,7 +105,7 @@
       <v-tab-item>
         <v-card flat>
           <v-card-text>
-            <p></p>
+            {{ entity._date }}
           </v-card-text>
         </v-card>
       </v-tab-item>

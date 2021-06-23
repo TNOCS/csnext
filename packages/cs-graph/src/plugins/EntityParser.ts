@@ -71,12 +71,16 @@ export class EntityParser implements IDocumentPlugin
                         entity._location = entity._node.properties.location;                        
                       } else if (entity.entity_class === 'location' && entity.converted) {
                           entity._location = entity.converted;
-                      }
-                    //   return node.attrs.type === 'location';
-
+                      }                    
                     
+
+                    if (entity._node?.properties?.point_in_time) {
+                        entity._date = entity._node.properties.point_in_time;                        
+                      } else if (entity.entity_class === 'DATE' && entity.converted) {
+                          entity._date = entity.converted;
+                      }                    
+                    }
                 
-                }
             }
             // if (doc.relations && doc.entities)
             // {
