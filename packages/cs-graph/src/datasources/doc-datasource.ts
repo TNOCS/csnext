@@ -833,6 +833,7 @@ export class DocDatasource extends GraphDatasource {
         if (docs) {
             for (const doc of docs) {     
                 this.initDocument(doc);             
+                this.updateDocumentOriginals(doc);
                 // doc.updateOriginals();
             }
         }          
@@ -1073,6 +1074,11 @@ export class DocDatasource extends GraphDatasource {
         } else {
             document.entities[indx] = entity;
         }
+    }
+
+    public updateDocumentOriginals(doc: GraphDocument) {
+        if (!doc._outgoing) { return; }
+        doc.originals = doc._outgoing!.filter(r => r.classId === 'HAS_ORIGINAL').map(r => r.to);
     }
 
     public refreshViewTypes() {

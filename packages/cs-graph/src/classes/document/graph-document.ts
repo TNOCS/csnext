@@ -49,11 +49,7 @@ export class GraphDocument extends GraphElement {
         return this;
     }
 
-    public updateOriginals() {
-        if (!this._outgoing) { return; }
-        this.originals = this._outgoing!.filter(r => r.classId === 'HAS_ORIGINAL').map(r => r.to);
-    }
-        
+            
 
     public getNode(): GraphElement {
         return {

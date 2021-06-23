@@ -217,44 +217,31 @@ export default class DocumentEditor extends WidgetBase {
   }
 
   public updateForm() {
-    if (this.source && this.document?._featureType) {
-      const form = this.source.elementEditorForm(this.document);
-      Vue.set(this, "formDef", form);
-    }
-  }
-
-  constructor() {
-    super();
+    if (!this.source || !this.document) { return; }
+    this.source.updateDocumentOriginals(this.document);    
+    const form = this.source.elementEditorForm(this.document);
+    Vue.set(this, "formDef", form);
+    
   }
 
   public contentLoaded() {
-    if (!this.source?.activeDocument) {
+    if (!this.source) {
       return;
     }
     this.document = this.source.activeDocument;
-    // this.document.updateOriginals();
     this.updateForm();
-    this.$forceUpdate();
+
+    // this.document.updateOriginals();
+    
     this.busManager.subscribe(
       this.source!.bus,
-      "document",
-      (a: string, d: any) => {
-        // alert('document loaded');
-        this.document = d;
-        console.log("init report");
-        console.log(this.document);
-        this.updateForm();
-        // this.updateContent();
+      DocDatasource.DOCUMENT,
+      (a: string, d: any) => {        
+        this.document = d;        
+        this.updateForm();        
         this.$forceUpdate();
       }
-    );
-    if (this.widget.options) {
-      // let selectionSizePlugin = new Plugin({
-      //   view(editorView) {
-      //     return new SelectionSizeTooltip(editorView);
-      //   }
-      // });
-    }
+    );        
   }
 
   mounted() {
