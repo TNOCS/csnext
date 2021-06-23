@@ -6,6 +6,8 @@ import throttle from 'lodash.throttle';
 import Fuse from 'fuse.js';
 
 export type GraphObject = { [key: string]: GraphElement };
+export type ValueOperatorType = ">" | ">=" | "<" | "<=" | "==" | "!=";
+
 export class GraphFilter {
     public hasIncomingTypeRelation?: any;
     public hasObjectTypeRelation?: any;
@@ -213,8 +215,41 @@ export class GraphDatasource extends DataSource {
         return;
     }
 
-    public getTitleElements(classId: string): GraphElement[] {
-        let res: GraphElement[] = Object.values(this.graph).filter(c => GraphElement.getTitle(c) === classId);
+    public getElementsByTitle(title: string): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => GraphElement.getTitle(c) === title);
+        return res;
+    }
+
+    public getElementsByProperty(property: string, value: any): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => {
+            let propVal = (c.properties && c.properties[property]) || c[property];
+            if (propVal != undefined) return propVal == value;
+        });
+        return res;
+    }
+
+    public getElementsByPropertyAndOperator(property: string, searchValue: any, operator: ValueOperatorType): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => {
+            let propVal = (c.properties && c.properties[property]) || c[property];
+            if (propVal != undefined) {
+                switch (operator) {
+                    case '==':
+                        return propVal == searchValue;
+                    case '>=':
+                        return propVal >= searchValue;
+                    case '>':
+                        return propVal > searchValue;
+                    case '<=':
+                        return propVal <= searchValue;
+                    case '<':
+                        return propVal < searchValue;
+                    case '!=':
+                        return propVal != searchValue;
+                    default:
+                        break;
+                }
+            }
+        });
         return res;
     }
 
@@ -267,7 +302,9 @@ export class GraphDatasource extends DataSource {
 
     public addNode(element: GraphElement, classId?: string) {
         let res = this;
-        if (!element.id) { element.id = element._title; }
+        if (!element.id) {
+            element.id = element._title;
+        }
         if (!element._title && element.properties?.name) { element._title = element.properties.name; }
         if (!element._title && element.id) { element._title = element.id; }
         element.type = 'node';
