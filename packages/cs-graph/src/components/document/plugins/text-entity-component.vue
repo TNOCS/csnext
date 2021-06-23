@@ -22,7 +22,7 @@
             v-bind="attrs"
             v-on="on">          
             <v-icon v-if="node.attrs.type === 'DATE'" small>date_range</v-icon>
-            <v-icon v-if="isLocation(node)" small>place</v-icon>
+            <v-icon v-if="entity && entity._location" small>place</v-icon>
             <img v-if="icon" :src="icon" class="icon-image"/>
             
             {{ node.attrs.text }}
@@ -55,7 +55,7 @@
         <selection-popup
           :editor="editor"
           :entity="entity"
-          :isrd="source"
+          :source="source"
           :document="document"
         >
         </selection-popup>

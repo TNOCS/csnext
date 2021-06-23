@@ -54,7 +54,7 @@ export default Paragraph.extend({
                 return commands.toggleNode('node-paragraph', 'paragraph', attributes)
               },       
             setNodeParagraph: (entity?: GraphElement) => ({ tr, dispatch }) => {
-                debugger;
+                // debugger;
                 if (dispatch) {                    
                     
                 // } else {

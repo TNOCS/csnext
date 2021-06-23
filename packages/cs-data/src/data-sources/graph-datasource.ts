@@ -1,5 +1,5 @@
 import { TimeDataSource, MessageBusManager, Topics } from '@csnext/cs-core';
-import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType } from '../';
+import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType, WktUtils } from '../';
 // import { DiagramAction, GraphAction, DiagramElement, ObservationTypes } from "./../classes/";
 // import { AppState } from '@csnext/cs-client';
 import throttle from 'lodash.throttle';
@@ -124,10 +124,10 @@ export class GraphDatasource extends DataSource {
                 el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
             }
             if (el.properties.hasOwnProperty('location')) {
-                const values = el.properties['location'].replace('Point(', '').replace(')', '').split(' ');
-                if (values.length === 2) {
-                    el.properties['lat'] = parseFloat(values[1]);
-                    el.properties['lon'] = parseFloat(values[0]);
+                const values = WktUtils.PointParser(el.properties['location']);                
+                if (values && values.length === 2) {
+                    el.properties['lat'] = values[0];
+                    el.properties['lon'] = values[1];
 
                 } else {
                     // console.log(el.properties['coordinate_location']);

@@ -1066,10 +1066,7 @@ export class DocDatasource extends GraphDatasource {
 
     public updateTextEntity(document: GraphDocument, entity: TextEntity) {
         if (!entity.text || entity.text.length===0) { return; }
-        if (!document.entities) { document.entities = []; }
-        if (entity.entity_class === 'location') {
-            debugger;
-        }
+        if (!document.entities) { document.entities = []; }        
         const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
         if (indx === -1) {
             document.entities.push(entity);

@@ -1,4 +1,5 @@
 export * from './utils/meta-utils';
+export * from './utils/wkt';
 export * from './interfaces/datapackage';
 export * from './interfaces/tableschema';
 export * from './interfaces/insight';

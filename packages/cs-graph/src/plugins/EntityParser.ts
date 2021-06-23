@@ -66,6 +66,15 @@ export class EntityParser implements IDocumentPlugin
                         }
                         // entity.view_class = 'doc-entity rec-entity ' + entity.class + '-entity';
                     }
+
+                    if (entity._node?.properties?.location) {
+                        entity._location = entity._node.properties.location;                        
+                      } else if (entity.entity_class === 'location' && entity.converted) {
+                          entity._location = entity.converted;
+                      }
+                    //   return node.attrs.type === 'location';
+
+                    
                 
                 }
             }

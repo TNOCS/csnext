@@ -37,4 +37,5 @@ export class TextEntity {
     public _approved?: boolean;    
     public _relations?: TextRelation[];
     public _docEntity?: any;
+    public _location?: string;
 }
