@@ -305,6 +305,7 @@ export default class RelationEditor extends Vue {
 
     if (this.oldRelation) {
       await this.graph.removeEdge(this.oldRelation);
+      delete this.oldRelation;
     }
     
     // if (this.node._outgoing)

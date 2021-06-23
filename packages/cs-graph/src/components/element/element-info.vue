@@ -167,9 +167,9 @@
             <div>
               <a @click="selectElement(activeElement.from)">{{ activeElement.from._title }}</a>&nbsp;
               <span v-if="activeElement.class">
-                <a @click="selectElement(activeElement.class)">{{ activeElement._title }}</a>
+                <a @click="selectElement(activeElement.class)">{{ activeElement.class }}</a>
               </span>
-              <span v-else>{{ activeElement._title }}</span>&nbsp;
+              <span class="short-title" v-else>{{ activeElement._title }}</span>&nbsp;
               <a @click="selectElement(activeElement.to)">{{ activeElement.to._title }}</a>
             </div>
           </div>
@@ -245,6 +245,13 @@
 }
 .element-data-info-panel {
   margin: 4px;
+}
+
+.short-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 .link-avatar {

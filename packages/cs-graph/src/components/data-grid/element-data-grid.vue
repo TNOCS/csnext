@@ -646,7 +646,7 @@ export default class ElementDataGrid extends WidgetBase {
   public clickCalendarItem(e: any) {
     if (!this.source) { return; }
     if (e.event) {
-      this.source.selectElement(e.event);
+      this.source.openElement(e.event);
     }
 
   }
@@ -714,7 +714,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source) {
       return;
     }
-    this.source.selectElement(item);
+    this.source.openElement(item);
   }
 
   public prev () {
@@ -815,7 +815,7 @@ export default class ElementDataGrid extends WidgetBase {
               if (this.options.onAfterAdded) {
                 await this.options.onAfterAdded(e);
               } else {
-                this.source?.selectElement(e);
+                this.source?.openElement(e);
               }
               return e;
               
@@ -866,7 +866,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public editEntity(element: GraphElement) {
-    this.source?.selectElement(element);
+    this.source?.openElement(element);
   }
 
   public removeEntity(entity: GraphElement) {

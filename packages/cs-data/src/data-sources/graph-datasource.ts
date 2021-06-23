@@ -330,8 +330,9 @@ export class GraphDatasource extends DataSource {
                 this.addEdge({ ...element, ...{ toId: toId } }, classId);
             }
             return;
-        } else {
+        } else {            
             element = this.createEdge(element, classId);
+            this.updateElementEdges(element);
             return this.addElement(element);
         }
     }
@@ -421,66 +422,46 @@ export class GraphDatasource extends DataSource {
         });
     }
 
-    public updateEdges(clean = false) {
-        for (const e of Object.values(this.graph)) {
-            if (e.type === 'edge') {
-                // if (e.classId && !e.class) {
-                //     let c = this.getElement(e.classId);                    
-                //     if (!c) {
-                //         this.addEdge({id: e.classId, properties: { name: e.classId}, isType: true, _visible: false})
-                //     }
-                //     e.class = c;                    
-                // }
-                if (e.toId && !e.to) {
-                    e.to = this.getElement(e.toId);
-                    if (e.to && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                        if (!e.to._incomming) {
-                            e.to._incomming = [e];
-                        } else {
-                            // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
-                            e.to._incomming.push(e);
-                            // }
-                        }
-
-                    }
-                    // if (!e.to) {
-                    //   let external = new GraphElement();
-                    //   external.id = e.toId;
-                    //   external.title = e.toId;
-                    //   external.classId = 'source';
-                    //   e.to = external;
-                    //   this.tutorialSource.graph.push(external);
+    public updateElementEdges(e: GraphElement, clean = false) {
+        if (e.toId && !e.to) {
+            e.to = this.getElement(e.toId);
+            if (e.to && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+                if (!e.to._incomming) {
+                    e.to._incomming = [e];
+                } else {
+                    // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
+                    e.to._incomming.push(e);
                     // }
                 }
-                if (e.fromId && !e.from) {
-                    e.from = this.getElement(e.fromId);
-                    if (e.from && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                        if (!e.from._outgoing) {
-                            e.from._outgoing = [e];
-                        } else {
-                            // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
-                            e.from._outgoing.push(e);
-                            // }
-                        }
-                    }
-                }
-                // let w = 3;
-                //   if (this.settings.showReliability) {
-                //     w = 15;
-                //     if (e.properties && e.properties.hasOwnProperty("reliability")) {
-                //       w = parseFloat(e.properties["reliability"]) * 10;
-                //     }
-                //   }
-                if (!e._title || clean) {
-                    e._title = GraphElement.getTitle(e, true);
-                }
-                if (!e._search || clean) {
-                    e._search = e._title;
-                    if (e.class && e.class._title) {
-                        e._search += e.class._title;
-                    }
+
+            }                    
+        }
+        if (e.fromId && !e.from) {
+            e.from = this.getElement(e.fromId);
+            if (e.from && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+                if (!e.from._outgoing) {
+                    e.from._outgoing = [e];
+                } else {
+                    // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
+                    e.from._outgoing.push(e);
+                    // }
                 }
             }
+        }                
+        if (!e._title || clean) {
+            e._title = GraphElement.getTitle(e, true);
+        }
+        if (!e._search || clean) {
+            e._search = e._title;
+            if (e.class && e.class._title) {
+                e._search += e.class._title;
+            }
+        }
+    }
+
+    public updateEdges(clean = false) {
+        for (const e of Object.values(this.graph).filter(g => g.type === 'edge')) {            
+            this.updateElementEdges(e);            
         }
     }
 

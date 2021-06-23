@@ -32,7 +32,7 @@ export class DocDatasource extends GraphDatasource {
     public activeDocument?: GraphDocument;
     public map?: CrossFilterDatasource;    
     public activeOperation?: GraphElement;
-    public documents: GraphDocument[] = [];
+    // public documents: GraphDocument[] = [];
     public searchEntities?: SearchEntity[] = [];
     public viewTypes: { [id: string]: ViewType } = {};
     public sources?: GraphElement[] = [];
@@ -49,8 +49,7 @@ export class DocDatasource extends GraphDatasource {
         super();  
     }
 
-    public reset() {        
-        this.documents = [];
+    public reset() {                
         this.activeDocument = undefined;        
         this.activeElement = undefined;
     }
@@ -289,11 +288,11 @@ export class DocDatasource extends GraphDatasource {
 
     public linkObservationToDocument(observation: FeatureType,doc: GraphDocument) : Promise<FeatureType> {
         return new Promise((resolve, reject) => {
-            if (!observation._node || !doc._node) { reject(); return; }            
-            this.addNewEdge({ fromId: doc._node.id, toId: observation._node.id, classId: 'CONTAINS_OBSERVATION' } as GraphElement).then(async e => {                
+            if (!observation._node || !doc) { reject(); return; }            
+            this.addNewEdge({ fromId: doc.id, toId: observation._node.id, classId: 'CONTAINS_OBSERVATION' } as GraphElement).then(async e => {                
                 observation._edge = e;
                 e.to = observation._node;
-                e.from = doc._node;                
+                e.from = doc;                
                 this.addEdge(e);    
                 await this.saveDocument(doc);            
                 resolve(observation);
@@ -306,11 +305,11 @@ export class DocDatasource extends GraphDatasource {
 
     public linkEntityToDocument(entity: TextEntity,doc: GraphDocument) : Promise<TextEntity> {
         return new Promise((resolve, reject) => {
-            if (!entity._node || !doc._node) { reject(); return; }            
-            this.addNewEdge({ fromId: doc._node.id, toId: entity._node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                
+            if (!entity._node || !doc) { reject(); return; }            
+            this.addNewEdge({ fromId: doc.id, toId: entity._node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                
                 entity._edge = e;
                 e.to = entity._node;
-                e.from = doc._node;                
+                e.from = doc;                
                 this.addEdge(e);
                 await this.parseEntities();                
                 // await this.updateEdges();
@@ -324,11 +323,11 @@ export class DocDatasource extends GraphDatasource {
 
     public linkEntityListToDocument(entity: EntityList,doc: GraphDocument) : Promise<EntityList> {
         return new Promise((resolve, reject) => {
-            if (!entity.node || !doc._node) { reject(); return; }            
-            this.addNewEdge({ fromId: doc._node.id, toId: entity.node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                                
+            if (!entity.node || !doc) { reject(); return; }            
+            this.addNewEdge({ fromId: doc.id, toId: entity.node.id, classId: 'CONTAINS' } as GraphElement).then(async e => {                                
                 entity.edge = e;
                 e.to = entity.node;
-                e.from = doc._node;              
+                e.from = doc;              
                 this.addEdge(e);
                 await this.saveDocument(doc);
                 await this.parseEntities();                
@@ -369,7 +368,7 @@ export class DocDatasource extends GraphDatasource {
             }
             
             // remove edge is exists
-            if (list.edge && doc._node) { 
+            if (list.edge && doc) { 
                 try {
                     await this.removeEdge(list.edge)
                 }
@@ -607,15 +606,33 @@ export class DocDatasource extends GraphDatasource {
             $cs.loader.removeLoader('loadinggraph');
         }
         if (jsonGraph) {            
+            // get all document types
+            let inputTypes : string[] | undefined;
+            if (this._meta) {
+                inputTypes = Object.values(this._meta).filter(ft => ft._inheritedTypes && ft._inheritedTypes.includes('input')).map(ft => ft.type);
+            }
             for (const item of jsonGraph) {
                 if (item.type === 'node' && item.properties?.id) {
-                    let el = { id: item.properties.id, classId: item.labels[0], title: item.properties.name, properties: item.properties, alternatives: item.alternatives } as GraphElement;
+                    const classId = item.labels[0];
+                    // get all inputs
 
-                    this.initElement(el);
+                    if (inputTypes && inputTypes.includes(classId)) {
+                        let el = {... new GraphDocument(), ...{ id: item.properties.id, classId: item.labels[0], title: item.properties.name, properties: item.properties, alternatives: item.alternatives }} as GraphElement;
+                        this.initElement(el);
+                        this.addNode(el);
+                        // this.initDocument(el);
+                    } else {
+                        let el = {... new GraphElement(), ...{ id: item.properties.id, classId: item.labels[0], title: item.properties.name, properties: item.properties, alternatives: item.alternatives }} as GraphElement;
+                        this.initElement(el);                        
+                        this.addNode(el);
+
+                    }
+
+                    
 
                     
                     // if (el.classId === 'instance') { el.isType = true}
-                    this.addNode(el);
+                    
                 }
                 if (item.type === 'relationship') {
                     if (item.properties && item.properties.hasOwnProperty('from') && item.properties.hasOwnProperty('to')) {
@@ -633,14 +650,14 @@ export class DocDatasource extends GraphDatasource {
         // this.importCase();
         this.updateNodes();
         this.updateEdges();  
-        this.updateFeatureTypeStats();         
+        this.updateFeatureTypeStats(); 
+        this.parseDocuments();        
         // this.updateSources();
 
     }
 
     public deleteDocument(doc: GraphDocument) {        
-        this.removeNode(doc, true).finally(() => {
-            this.documents = this.documents.filter(d => d.id !== doc.id);
+        this.removeNode(doc, true).finally(() => {            
             this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED);
             if (this.activeDocument?.id === doc.id) {
                 this.activateDocument(undefined);
@@ -703,6 +720,7 @@ export class DocDatasource extends GraphDatasource {
                         console.log(e);
                     }                    
                 }
+                this.linkDocumentEntities(doc);
                 this.entityParser.callDocument(doc, this);
                 // this.relationParser.callDocument(doc, this);
                 // save document node
@@ -756,7 +774,7 @@ export class DocDatasource extends GraphDatasource {
             // } 
             // let node = doc.getNode();
             // if (node) {
-            //     doc._node = node;
+            //     doc = node;
             //     // node._included = makeActive;
             //     await this.saveDocument(doc);
             //     await this.addNewNode(node);
@@ -771,57 +789,53 @@ export class DocDatasource extends GraphDatasource {
         this.documentPlugins = [];        
     }
 
-    public initDocument(doc: GraphElement) : GraphDocument {
-        let d = new GraphDocument(doc);        
-        d.id = doc.id;
+    public linkDocumentEntities(doc: GraphDocument) {
+        if (doc.entities && typeof Array.isArray(doc.entities))
+        {
+            for (const e of doc.entities) {
+                if (e.node_id && !e._node) {
+                    e._node = this.getElement(e.node_id);
+                    if (!e._node) {
+                        delete e.node_id;
+                    }
+                }                        
+            }                                                
+        }
+    }
+
+    public initDocument(doc: GraphDocument) : GraphDocument {                
         if (!doc.properties) { doc.properties = {}}
-        d.credibility = doc.properties?.credibility;
+        
         if (!doc.properties.text) { doc.properties.text = ''; }
-        d.originalText = doc.properties?.text;
-        d.reliability = doc.properties?.reliability;
         if (doc.properties?.doc) {
-            d.doc = JSON.parse(doc.properties?.doc);
+            doc.doc = JSON.parse(doc.properties?.doc);
         } else {
-            d.doc =  {
+            doc.doc =  {
                 type: "doc",
                 content: [ ] }                
         }
-        d._source = doc._outgoing?.find(e => e.classId === 'FROM_SOURCE');
-        d.sourceId = d._source?.id;                
+        doc._source = doc._outgoing?.find(e => e.classId === 'FROM_SOURCE');
+        doc.sourceId = doc._source?.id;                
         if (doc.properties?.notes) {
-            d.notes = JSON.parse(doc.properties.notes);
+            doc.notes = JSON.parse(doc.properties.notes);
         }
         if (doc.properties?.entities) {                                        
-            d.entities = JSON.parse(doc.properties.entities);
-            if (d.entities && typeof Array.isArray(d.entities))
-            {
-                for (const e of d.entities) {
-                    if (e.node_id) {
-                        e._node = this.getElement(e.node_id);
-                    }                        
-                }                                                
-            }
-        }      
-        return d;
+            doc.entities = JSON.parse(doc.properties.entities);
+            this.linkDocumentEntities(doc);
+        }          
+        return doc;
     }
     
 
     public parseDocuments() {
         if (!this.graph) { return;}        
-        const docs = this.getClassElements('input', true);
+        const docs = this.getClassElements('input', true) as GraphDocument[]
         if (docs) {
             for (const doc of docs) {     
-                if (this.documents.findIndex(d => d.id === doc.id) === -1) {
-                    this.initDocument(doc);
-                    
-                    // this.includeElement(doc);
-                    this.documents.push(doc as GraphDocument);
-                }
+                this.initDocument(doc);             
+                // doc.updateOriginals();
             }
-        }  
-        if (this.documents.length>0) {
-            // this.activateDocument(this.documents[0]);
-        }        
+        }          
     }
 
     public initFeatureType(ft: FeatureType) {
@@ -969,15 +983,15 @@ export class DocDatasource extends GraphDatasource {
     public saveDocument(d: GraphDocument) : Promise<GraphDocument> {
         return new Promise((resolve, reject) => {        
             let doc = { ...d} as GraphDocument;
-            // if (!doc._node) { reject(); return; }
+            // if (!doc) { reject(); return; }
             if (!doc.properties) {
                 doc.properties = {};
             }
             if (doc.id) { doc.properties.id = doc.id; }
-            doc.properties.text = doc.originalText;
+            // doc.properties.text = doc.originalText;
             doc.properties.doc = JSON.stringify(doc.doc);
-            // doc.name = doc._node.properties.title;
-            // doc._node.properties.title = doc.title;
+            // doc.name = doc.properties.title;
+            // doc.properties.title = doc.title;
             doc.properties.sourceId = doc.sourceId;
             doc.properties.notes = doc.notes;
             // doc.title = doc.name;
@@ -1022,8 +1036,8 @@ export class DocDatasource extends GraphDatasource {
             this.saveNode(doc).then(async () => {
                 this.updateNodes(true);
                 await this.updateEdges(true);
-                this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, doc);
-                resolve(doc);
+                this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, d);
+                resolve(d);
             }).catch((e) => {
                 console.log(e);
                 reject();
@@ -1053,6 +1067,9 @@ export class DocDatasource extends GraphDatasource {
     public updateTextEntity(document: GraphDocument, entity: TextEntity) {
         if (!entity.text || entity.text.length===0) { return; }
         if (!document.entities) { document.entities = []; }
+        if (entity.entity_class === 'location') {
+            debugger;
+        }
         const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
         if (indx === -1) {
             document.entities.push(entity);

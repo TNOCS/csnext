@@ -22,7 +22,7 @@ export class EntityParser implements IDocumentPlugin
 
                 source.viewTypes = {};
 
-                let containingEntities = doc._node?._outgoing?.filter(o => o.classId === 'CONTAINS');
+                let containingEntities = doc._outgoing?.filter(o => o.classId === 'CONTAINS');
 
                 if (containingEntities && doc.entities) {
                     ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];

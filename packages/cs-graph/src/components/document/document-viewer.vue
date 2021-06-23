@@ -989,9 +989,8 @@ export default class DocumentViewer extends WidgetBase {
       if (
         this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
       ) {
-        const doc = this.source.documents.find(
-          (d) => d.id === $cs.router!.currentRoute?.query?.id
-        );
+        
+        const doc = this.source.getElement($cs.router.currentRoute.query.id as string) as GraphDocument        
         if (doc) {
           this.loadDocument(doc);
         }

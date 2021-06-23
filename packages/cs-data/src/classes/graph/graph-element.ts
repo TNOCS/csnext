@@ -179,18 +179,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
         }
 
         if (filters) {
-            if (e.classId) {
-                if (e.classId === 'instance' && !filters.showInstance) {
-                    return false;
-                }
-
-                if (e.classId === 'INSTANCE_OF' && !filters.showInstance) {
-                    return false;
-                }
-            }
-            if (!filters.showExternal && e.properties && e.properties.external) {
-                return false;
-            }
+                        
             if (filters.filterTimeline && filters.focusDate) {
                 if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
                     return false;
@@ -204,10 +193,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
         }
         if (e._visible !== undefined && e._visible === false) {
             return false;
-        }
-        if (e.class) {
-            return GraphElement.getVisibility(e.class, filters);
-        }
+        }        
         if (e._visible === undefined) {
             return true;
         } else return e._visible;

@@ -309,7 +309,7 @@ export default class DocumentEntities extends WidgetBase {
 
   public selectNodeInfo(entity: GraphElement) {
     if (entity?.id) {
-      this.isrd?.selectElementId(entity.id);
+      this.isrd?.openElement(entity);
     }
   }
 

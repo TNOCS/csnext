@@ -1,11 +1,11 @@
 <template>
   <v-card class="selection-popup">
-    <v-tabs vertical>
+    <v-tabs vertical :value="viewtab">
       <v-tab>
         <v-icon left> playlist_add_check </v-icon>
       </v-tab>
       <v-tab>
-        <v-icon left> camera_enhance </v-icon>
+        <v-icon left> place </v-icon>
       </v-tab>
       <v-tab>
         <v-icon left> note </v-icon>
@@ -91,7 +91,7 @@
       <v-tab-item>
         <v-card flat>
           <v-card-text>
-            <p></p>
+            <p>locations</p>            
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -304,6 +304,8 @@ export default class SelectionPopup extends WidgetBase {
   public document?: GraphDocument;
 
   public tab = "observation";
+
+  public viewtab = 0;
 
   public searchNode = false;
 
@@ -575,6 +577,9 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   mounted() {    
+    if (this.entity?.class === 'location') {
+      this.viewtab = 1;
+    }
     this.updatePotentialTypes();
   }
 }
