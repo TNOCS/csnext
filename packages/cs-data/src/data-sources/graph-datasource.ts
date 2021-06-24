@@ -228,29 +228,59 @@ export class GraphDatasource extends DataSource {
         return res;
     }
 
-    public getElementsByPropertyAndOperator(property: string, searchValue: any, operator: ValueOperatorType): GraphElement[] {
+    public getElementsByPropertyAndOperator(property: string, searchValue: any, operator: ValueOperatorType, skipRelations: boolean = false): GraphElement[] {
+        let relationVals: GraphElement[] = [];
         let res: GraphElement[] = Object.values(this.graph).filter(c => {
-            let propVal = (c.properties && c.properties[property]) || c[property];
+            let propVal = this.getValueFromElement(property, c);
             if (propVal != undefined) {
-                switch (operator) {
-                    case '==':
-                        return propVal == searchValue;
-                    case '>=':
-                        return propVal >= searchValue;
-                    case '>':
-                        return propVal > searchValue;
-                    case '<=':
-                        return propVal <= searchValue;
-                    case '<':
-                        return propVal < searchValue;
-                    case '!=':
-                        return propVal != searchValue;
-                    default:
-                        break;
-                }
+                return this.compareOperator(propVal, searchValue, operator);
             }
+            if (!skipRelations) {
+                relationVals = relationVals.concat((c._incomming?.filter(i => {
+                    if (i.classId === property) {
+                        let propVal = this.getValueFromElement('title', i.to);
+                        return this.compareOperator(propVal, searchValue, operator);
+                    }
+                }) || []).map(e => e.from!));
+                relationVals = relationVals.concat((c._outgoing?.filter(i => {
+                    if (i.classId === property) {
+                        let propVal = this.getValueFromElement('title', i.to);
+                        return this.compareOperator(propVal, searchValue, operator);
+                    }
+                }) || []).map(e => e.from!));
+            }
+            return false;
         });
-        return res;
+        if (relationVals.length > 0) {
+            return res.concat(relationVals);
+        } else {
+            return res;
+        }
+    }
+
+    private getValueFromElement(property: string, c?: GraphElement) {
+        if (!c) return undefined;
+        return (c.properties && c.properties[property]) || c[property];
+    }
+
+    private compareOperator(propVal: any, searchValue: any, operator: ValueOperatorType): boolean {
+        switch (operator) {
+            case '==':
+                return propVal == searchValue;
+            case '>=':
+                return propVal >= searchValue;
+            case '>':
+                return propVal > searchValue;
+            case '<=':
+                return propVal <= searchValue;
+            case '<':
+                return propVal < searchValue;
+            case '!=':
+                return propVal != searchValue;
+            default:
+                console.log(`Unknown ValueOperatorType ${operator}`);
+                return false;
+        }
     }
 
     public getClassElements(classId: string, traversal?: boolean, filter?: GraphFilter): GraphElement[] {
