@@ -1504,8 +1504,9 @@ export class DocDatasource extends GraphDatasource {
 
 
     public openElement(node: GraphElement | string) {
-        if (typeof node === 'string') {
-            node = this.getElement(node);
+        if (typeof(node) === 'string') {
+            const n  = this.getElement(node);
+            if (!n) { return; } else {node = n; }
         }
         if (!node?.id) { return; }
         this.activeElement = node;
@@ -1575,6 +1576,7 @@ export class DocDatasource extends GraphDatasource {
     }
 
     public saveElementHistory() {
+        if (!this.elementHistory) { return; }
         const history = this.elementHistory.join(',');
         localStorage.setItem('element-history', history);
     }

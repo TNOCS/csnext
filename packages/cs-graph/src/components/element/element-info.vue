@@ -460,11 +460,10 @@ export default class ElementInfo extends WidgetBase {
     if (!this.dataSource || !this.activeElement) {
       return;
     }    
-    this.formDef = undefined;
+    this.formDef = null;
     const form = this.dataSource.elementEditorForm(this.activeElement);
     Vue.nextTick(()=> {      
-      this.formDef = form;
-      this.$forceUpdate();
+      this.formDef = form;      
     })
     // Vue.set(this, "formDef", form);
   }
