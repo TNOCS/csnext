@@ -16,9 +16,7 @@ export class FilesService extends AggregateRoot {
         this.options = options;        
         this.absolutePath = this.options.path;
         Logger.log('File server initialized', 'file-server');
-        Logger.log(`File server path: ${this.absolutePath}`, 'file-server');
-        
-
+        Logger.log(`File server path: ${this.absolutePath}`, 'file-server');        
     }
 
     public saveFile(file?: Express.Multer.File) : Promise<FileDefinition | undefined> {

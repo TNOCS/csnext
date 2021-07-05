@@ -51,10 +51,11 @@
         "socket.io": "^2.3.0",
         "swagger-ui-express": "^4.1.6",
         "uuid": "^7.0.3",
-        "wkx": "^0.5.0"
+        "wkx": "^0.5.0",
+        "website-scraper": "4.2.3"
     },
     "devDependencies": {
-        "@types/async-lock": "^1.1.2",
+        "@types/async-lock": "^1.1.2",        
         "@types/express": "^4.17.11",
         "@types/lockfile": "^1.0.1",
         "@types/lodash": "^4.14.168",
