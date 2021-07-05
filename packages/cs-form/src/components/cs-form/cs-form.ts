@@ -71,12 +71,14 @@ export class CsForm extends Vue {
     @Watch('data')
     private dataChanged() {
         this.init();
+        this.$forceUpdate();
     }
 
     @Watch('widget.content')
     @Watch('formdef')
     private datasourceChanged() {
         this.init();
+        this.$forceUpdate();
     }
 
     @Prop()
@@ -270,8 +272,7 @@ export class CsForm extends Vue {
         if (field._key) {
             this.Target[field._key] = field.defaultValue || '';
             this.initGroups();
-        }
-        
+        }        
     }
 
     public get Target(): any {
