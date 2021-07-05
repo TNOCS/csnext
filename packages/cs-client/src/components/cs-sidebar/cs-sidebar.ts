@@ -30,12 +30,6 @@ export class CsSidebar extends Vue {
           this.dashboard = this.sideBar?.dashboard;
         })
 
-        
-        // if (this.sideBar.dashboard && this.sideBar.dashboard.widgets) {
-        //   this.sideBar.dashboard.layout = n.layout;
-        //   this.sideBar.dashboard.widgets[0] = n.widgets[0];
-        // }
-
         if (!this.sideBar.width) {
           this.sideBar.width = 300;
         }

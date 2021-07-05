@@ -7,5 +7,5 @@ export class TabDashboardOptions extends BaseDashboardOptions {
   public vertical?: boolean = false;
   public icons?: boolean = false;
   public storeActive?: boolean = false;
-
+  public toolBarTabs?: boolean = false;
 }
