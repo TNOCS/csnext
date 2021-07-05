@@ -5,5 +5,6 @@ export class SplitPanelOptions extends BaseDashboardOptions {
   public title?: string;
   public direction: 'horizontal' | 'vertical' = 'horizontal';
   public elements: SplitElement[] = [];
+  public gutterSize?: number = 5;
   public disableVerticalScroll = false;
 }

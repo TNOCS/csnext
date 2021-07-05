@@ -1,7 +1,9 @@
 <SplitGrid
     class="split-grid-comp"
     v-if="options && options.elements"
+    v-bind="splitGridOptions"
     :direction="getDirection(options.direction)"
+
 >
     <template v-for="(element, idx) in options.elements">
         <SplitGridArea
