@@ -16,22 +16,31 @@ export class CsSidebar extends Vue {
   public app = AppState.Instance;
   public menu = false;
 
+  public dashboard?: IDashboard | null = null;
+
   @Prop() public sideBar?: ISidebarOptions;
   private dashboardChangedHandle?: MessageBusHandle;
 
   @Watch('sideBar.dashboard')
-  public sideBarChanged(n: any, o: any) {
-    Vue.nextTick(() => {
-      if (this.sideBar) {
-        if (this.sideBar.dashboard && this.sideBar.dashboard.widgets) {
-          this.sideBar.dashboard.widgets[0] = n.widgets[0];
-        }
+  public sideBarChanged(n: IDashboard, o: any) {
+    
+      if (this.sideBar?.dashboard) {       
+        this.dashboard = null;
+        Vue.nextTick(()=> {
+          this.dashboard = this.sideBar?.dashboard;
+        })
+
+        
+        // if (this.sideBar.dashboard && this.sideBar.dashboard.widgets) {
+        //   this.sideBar.dashboard.layout = n.layout;
+        //   this.sideBar.dashboard.widgets[0] = n.widgets[0];
+        // }
 
         if (!this.sideBar.width) {
           this.sideBar.width = 300;
         }
       }
-    });
+    
   }
 
   @Watch('sideBar.canResize')
