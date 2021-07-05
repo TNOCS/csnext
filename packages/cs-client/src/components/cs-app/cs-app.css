@@ -89,6 +89,10 @@ html {
   margin: 4px;
 }
 
+.invert-logo {
+  filter: invert(1);
+}
+
 .content {
   height: 100%;
   padding: 0;
