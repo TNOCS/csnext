@@ -3,8 +3,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
   export class GraphElement {
     public id?: string;
     // public title?: string;    
-    public type?: 'node' | 'edge' = 'node';
-    public isType?= false;
+    public type?: 'node' | 'edge' = 'node';    
     public classId?: string;
     public class?: GraphElement;
     public toId?: string;
@@ -25,6 +24,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
 
     public _alternatives?: string[] = [];    
     public _source?: GraphElement;
+    public _originals?: GraphElement[];
     public _included?: boolean = false;
     public _startDate?: Date;
     public _endDate?: Date;    
@@ -70,6 +70,12 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
             } else {                
                 return undefined;
             }
+        }
+    }
+
+    public static updateOriginals(e: GraphElement) {
+        if (e._outgoing) {
+            e._originals = e._outgoing!.filter(r => r ?.to && r.classId === 'HAS_ORIGINAL').map(r => r.to!);
         }
     }
 
@@ -124,7 +130,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
         checked.push(element.id);
         if (element._outgoing) {
             for (const outRel of element._outgoing) {
-                if (outRel.id && !outRel.isType && (classId === undefined || (outRel.classId && classId.indexOf(outRel.classId) >= 0)) && outRel.to) {
+                if (outRel.id && (classId === undefined || (outRel.classId && classId.indexOf(outRel.classId) >= 0)) && outRel.to) {
                     // let id = outRel.id + element.id;
                     // if (res.findIndex(e => e.id === id) === -1) {
                     if (depth >= 0 && (outRel.classId === 'locatedIn' || outRel.classId === 'writtenBy' || outRel.classId === 'recognized' || outRel.classId === 'leaderOf' || outRel.classId === 'contains')) {
@@ -145,7 +151,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
 
         if (element._incomming) {
             for (const inRel of element._incomming) {
-                if (!inRel.isType && (classId === undefined || (inRel.classId && classId.indexOf(inRel.classId) >= 0)) && inRel.to) {
+                if ((classId === undefined || (inRel.classId && classId.indexOf(inRel.classId) >= 0)) && inRel.to) {
                     // let id = inRel.id + element.id;
                     // if (res.findIndex(e => e.id === id) === -1) {
                     if (depth >= 0 && (inRel.classId === 'recognized' || inRel.classId === 'participantOf' || inRel.classId === 'detectedEvent')) {

@@ -3,10 +3,10 @@ import { WidgetOptions } from "@csnext/cs-core";
 import { GraphElement, GraphFilter } from "@csnext/cs-data";
 
 export enum GridView {
-    table,
-    cards,    
-    calendar,
-    tree    
+    table = 'table',
+    cards = 'cards',    
+    calendar = 'calendar',
+    tree ='tree'   
 }
 
 export class NewRelation {

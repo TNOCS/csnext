@@ -1,6 +1,10 @@
+
 import { FeatureType, TextEntity, TextRelation, GraphElement } from '@csnext/cs-data';
 import { Schema, Node as ProseMirrorNode } from 'prosemirror-model'
 import { guidGenerator } from '@csnext/cs-core';
+import { Observation } from '..';
+
+
 
 export class GraphDocument extends GraphElement {    
     // public name?: string;
@@ -9,7 +13,7 @@ export class GraphDocument extends GraphElement {
     public editedText?: string;
     public entities?: TextEntity[];
     public relations?: TextRelation[];
-    public observations?: FeatureType[];
+    public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
     public reliability?: string;
     public credibility?: string;
@@ -21,8 +25,7 @@ export class GraphDocument extends GraphElement {
         ],
       };
     public notes?: DocumentNote[];
-
-    public originals?: GraphElement[];
+    
     // public _node?: GraphElement;
     // public _source?: GraphElement;
 

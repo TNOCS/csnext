@@ -113,7 +113,6 @@
 <script lang="ts">
 import { Component, Watch } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
-// import { Network } from "vis-network/esnext";
 import { GraphDatasource, GraphSettings, GraphObject, GraphElement, PropertyValueType } from "@csnext/cs-data";
 import dateFormat from "dateformat";
 import { IMenu } from "@csnext/cs-core";
@@ -234,12 +233,12 @@ export default class NetworkGraph extends WidgetBase {
 
         e._group = GraphElement.getGroup(e);
 
-        if (!e._group && e.isType) {
-          e._group = "type";
-        }
-        if (e._group) {
-          node.group = e._group;
-        }
+        // if (!e._group && e.isType) {
+        //   e._group = "type";
+        // }
+        // if (e._group) {
+        //   node.group = e._group;
+        // }
 
         this.data?.nodes?.push(node);
         if (e._outgoing) {
@@ -590,8 +589,6 @@ export default class NetworkGraph extends WidgetBase {
                     .then((e) => {
                       this.source?.addElementToGraph(e);
                       this.source?.selectElement(e);
-
-                      // this.isrd?.startEditElement(e);
                     })
                     .catch((e) => {
                       alert("error creating entity");

@@ -1,6 +1,6 @@
 <template>
-  <div style="height: 100%; padding: 5px" v-if="isrd">
-    <v-data-table :headers="headers" :search="search" :items="isrd.searchEntities" item-key="id" class="elevation-1">
+  <div style="height: 100%; padding: 5px" v-if="source">
+    <v-data-table :headers="headers" :search="search" :items="source.searchEntities" item-key="id" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>{{$cs.Translate('ENTITIES')}}</v-toolbar-title>
@@ -78,7 +78,7 @@ export default class SourceManagement extends WidgetBase {
     { text: "Actions", value: "actions", sortable: false }
   ];
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
@@ -86,13 +86,13 @@ export default class SourceManagement extends WidgetBase {
 
   public addEntity() {
     const newEntity = { id: 'new entity', entity: 'new entity', ent_class: 'WEAPONS', aka: []};
-    this.isrd?.searchEntities?.push(newEntity)
-    this.isrd?.openEntityEditor(newEntity);
+    this.source?.searchEntities?.push(newEntity)
+    this.source?.openEntityEditor(newEntity);
   }
 
   public editEntity(entity: SearchEntity) {
     console.log(entity);
-    this.isrd?.openEntityEditor(entity);
+    this.source?.openEntityEditor(entity);
   }
 
   public deleteEntity(entity: SearchEntity) {

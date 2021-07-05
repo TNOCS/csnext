@@ -1,6 +1,6 @@
 import { BaseSection } from './base-section';
 import { Component } from "vue-property-decorator";
-import { InfoPanelSection } from '@csnext/cs-data';
+import { FeatureType, InfoPanelSection, PropertyType } from '@csnext/cs-data';
 import { SimpleRelationListSection } from './simple-relation-list-section';
 @Component({
   name: 'relation-list-sections',
@@ -26,24 +26,31 @@ export class RelationListSections extends BaseSection {
     return n.toLowerCase();
   }
 
+  private findRelationPropertyType(featureType: FeatureType, classId: string) : PropertyType | undefined {
+    if (!featureType.properties) { return; }
+    return featureType.properties.find(p => p.relation?.type === classId);    
+  }
+
   private lists() {
-    if (!this.node) { return []; }
+    if (!this.node?._featureType) { return []; }
     let res: InfoPanelSection[] = [];
     
     if (this.node._incomming) {
-      let outgoing = this.node._incomming.filter(i => i.classId !== 'INSTANCE_OF');
-      for (const o of outgoing) {
-        if (res.findIndex(r => o.from && r.filter === o.from.classId) === -1) {
-          res.push({ sectionType: 'simple-relation-list-section', title: `${o.from!.classId}`, filter: o.from!.classId })        
+      let incomming = this.node._incomming.filter(i => i.classId !== 'INSTANCE_OF');      
+      for (const i of incomming) {
+        const pt = this.findRelationPropertyType(this.node._featureType, i.classId);
+        if (pt && res.findIndex(r => i.from && r.filter === i.from.classId) === -1) {
+          res.push({ sectionType: 'simple-relation-list-section', title: pt.label || `${i.from!.classId}`, filter: i.from!.classId })        
         }        
       }
     }
 
     if (this.node._outgoing) {
-      let outgoing = this.node._outgoing.filter(i => i.classId !== 'INSTANCE_OF');
+      let outgoing = this.node._outgoing.filter(i => i.classId && i.classId !== 'INSTANCE_OF');
       for (const o of outgoing) {
-        if (res.findIndex(r => o.to && r.relation === o.classId) === -1) {
-          res.push({ sectionType: 'simple-relation-list-section', title: this.relationName(o.classId ?? o._title ), relation: o.classId}); // filter: o.to!.classId })        
+        const pt = this.findRelationPropertyType(this.node._featureType, o.classId);
+        if (pt && res.findIndex(r => o.to && r.relation === o.classId) === -1) {
+          res.push({ sectionType: 'simple-relation-list-section', title: pt.label ?? o.classId, relation: o.classId}); // filter: o.to!.classId })        
         }        
       }
     }

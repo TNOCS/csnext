@@ -7,7 +7,7 @@ export interface IDocumentViewerPlugin {
     formats: string[];
     description: string;
     options: any;
-    call(element: GraphElement, doc: GraphDocument, source: DocDatasource);
+    call(element: GraphElement, doc: GraphElement, source: DocDatasource);
 }
 
 

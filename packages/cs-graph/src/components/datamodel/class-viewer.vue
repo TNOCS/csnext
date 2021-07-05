@@ -342,14 +342,7 @@ public updateGraph() {
         let type = this.graphSource?.findObservation(e.item._cfg.id);
         if (type) {
           this.graphSource?.openFeatureTypeEditor(type);
-        }
-        // $cs.openRightSidebarWidget({ component: FeatureTypeEditor, datasource: 'isrd',  data: { type: e.item._cfg.id}}, { open: true}, 'featuretype');
-        
-        // find node
-        // const node = this.graphSource?.getElement(e.item._cfg.id);
-        // if (node) {
-        //   this.graphSource!.selectElement(node)
-        // }        
+        }              
       }
       
 

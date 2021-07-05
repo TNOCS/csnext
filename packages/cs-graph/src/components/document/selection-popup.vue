@@ -4,6 +4,9 @@
       <v-tab>
         <v-icon left> playlist_add_check </v-icon>
       </v-tab>
+      <v-tab>
+        <v-icon left> search </v-icon>
+      </v-tab>
       <v-tab :disabled="!entity._location">
         <v-icon left> place </v-icon>
       </v-tab>
@@ -94,12 +97,31 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-text>
+          <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title>
+          <v-card-text v-if="suggestions">
+            <div v-for="(s, i) in suggestions" :key="i">
+              <v-layout
+                >{{ s.properties.name
+                }}<v-btn v-if="!entity._node" icon @click="useSuggestion(s)"
+                  ><v-icon>link</v-icon></v-btn
+                ></v-layout
+              >
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-layout class="ma-4">
             <v-btn outlined @click="locateOnMap()">
               <v-icon large>place</v-icon>
               {{ $cs.Translate("LOCATE_ON_MAP") }}</v-btn
             >
-          </v-card-text>
+            <v-btn outlined @click="nearby()">
+              <v-icon large>place</v-icon>
+              {{ $cs.Translate("NEARBY") }}</v-btn
+            >
+          </v-layout>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -288,6 +310,8 @@ import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
 import { DataInfoPanel } from "@csnext/cs-map";
 import { FeatureType } from "@csnext/cs-data";
+// import turf from "@turf/turf";
+// import distance from "@turf/distance";
 
 @Component({
   components: { DataInfoPanel },
@@ -335,6 +359,8 @@ export default class SelectionPopup extends WidgetBase {
 
   public newEntityNode: GraphElement = { _title: "" };
 
+  public suggestions: GraphElement[] | null = null;
+
   constructor() {
     super();
   }
@@ -363,6 +389,14 @@ export default class SelectionPopup extends WidgetBase {
     // await this.source.callEntitySearch(this.document);
   }
 
+  public updateSuggestions() {
+    if (this.entity?.text && this.source?.fuse) {
+      this.suggestions = this.source.fuse
+        .search(this.entity.text)
+        .map((r) => r.item);
+    }
+  }
+
   public async createNewNode(ft: FeatureType) {
     if (!this.entity) {
       return;
@@ -379,6 +413,9 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public locateOnMap() {
+    if (!this.source?.map?.MapControl) {
+      return;
+    }
     if (this.entity?._location && this.source?.map) {
       const location = WktUtils.PointParser(this.entity._location);
       if (location) {
@@ -388,6 +425,21 @@ export default class SelectionPopup extends WidgetBase {
         });
       }
     }
+  }
+
+  public nearby() {
+    if (!this.source || !this.entity?._location) {
+      return;
+    }
+    // const location = WktUtils.PointParser(this.entity._location);
+    // const point = turf.point([location[0], location[1]]);
+    // const pois = this.source.getClassElements("poi", true);
+    // for (const p of pois) {
+    //   if (p.properties?.lat && p.properties.lon) {
+    //     // const distance = turf.distance(point, turf.point([p.properties.lat, p.properties.lon]));
+    //     // console.log(p.properties.name + ' - ' + distance);
+    //   }
+    // }
   }
 
   public async unlinkEntity() {
@@ -418,6 +470,22 @@ export default class SelectionPopup extends WidgetBase {
       return;
     }
     await this.source.removeEntityFromDocument(this.entity, this.document);
+    this.publishChanges();
+  }
+
+  public async useSuggestion(target: GraphElement) {
+    if (!this.source || !this.entity || !this.document) {
+      return;
+    }
+    this.entity.node_id = target.id;
+    this.entity._node = target;
+    this.entity._node._included = true;
+    if (!this.entity._node._alternatives) {
+      this.entity._node._alternatives = [];
+    }
+    this.entity._node._alternatives?.push(this.entity.text!);
+    await this.source.saveNode(this.entity._node);
+    await this.source.linkEntityToDocument(this.entity, this.document);
     this.publishChanges();
   }
 
@@ -591,13 +659,16 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   private updatePotentialTypes() {
+    if (!this.source) {
+      return;
+    }
     if (this.source?.featureTypes && this.entity?.entity_class) {
       if (this.entity.entity_class === "location") {
         this.potentialTypes = Object.values(this.source.featureTypes).filter(
           (ft) => ft._inheritedTypes && ft._inheritedTypes.includes("location")
         );
       }
-    } else {
+    } else if (this.source.featureTypes) {
       this.potentialTypes = Object.values(this.source.featureTypes).filter(
         (ft) =>
           ft.attributes &&
@@ -617,6 +688,7 @@ export default class SelectionPopup extends WidgetBase {
       this.viewtab = 1;
     }
     this.updatePotentialTypes();
+    this.updateSuggestions();
   }
 }
 </script>

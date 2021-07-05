@@ -1,8 +1,7 @@
 <template>
-  
-  <v-card flat v-if="type" style="height:100%">
+  <v-card flat v-if="type" style="height: 100%">
     <v-toolbar color="cyan" dark flat>
-      <v-toolbar-title>{{type.title}}</v-toolbar-title>
+      <v-toolbar-title>{{ type.title }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -34,28 +33,57 @@
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab href="#tab-editor">{{ $cs.Translate('EDITOR') }}</v-tab>
-          <v-tab href="#tab-items">{{ $cs.Translate('ENTITIES') }}</v-tab>
+          <v-tab href="#tab-editor">{{ $cs.Translate("EDITOR") }}</v-tab>
+          <v-tab href="#tab-items">{{ $cs.Translate("ENTITIES") }}</v-tab>
+          <v-tab href="#tab-template">{{ $cs.Translate("TEMPLATES") }}</v-tab>
           <!-- <v-tab href="#tab-instances">{{ $cs.Translate('INSTANCES') }}</v-tab> -->
           <!-- <v-tab href="#tab-documents">{{ $cs.Translate('DOCUMENTS') }}</v-tab> -->
         </v-tabs>
       </template>
     </v-toolbar>
 
-    
-      <v-tabs-items v-model="tab" class="full-height">
-        <v-tab-item value="tab-editor">
-          <simplebar style="height: 65em">
-            <cs-form :data="type" :formdef="formDef" class="pt-2 pa-3" style="padding-bottom: 300px; height: 100%" id="detailcsform" @saved="updateFeatureType"></cs-form>
-          </simplebar>
-        </v-tab-item>
-        <v-tab-item value="tab-items">          
-          <simplebar  style="background:red !important; height: 100%">
-            <cs-widget :widget="elementsWidget" style="height: calc(100em - 465px)"></cs-widget>
-          </simplebar>
-        </v-tab-item>
-      </v-tabs-items>
-    
+    <v-tabs-items v-model="tab" class="full-height">
+      <v-tab-item value="tab-editor">
+        <simplebar style="height: 65em">
+          <cs-form
+            :data="type"
+            :formdef="formDef"
+            class="pt-2 pa-3"
+            style="padding-bottom: 300px; height: 100%"
+            id="detailcsform"
+            @saved="updateFeatureType"
+          ></cs-form>
+        </simplebar>
+      </v-tab-item>
+      <v-tab-item value="tab-items">
+        <simplebar style="background: red !important; height: 100%">
+          <cs-widget
+            :widget="elementsWidget"
+            style="height: calc(100em - 465px)"
+          ></cs-widget>
+        </simplebar>
+      </v-tab-item>
+      <v-tab-item value="tab-template">
+        <simplebar style="height: 100%">
+          <h2>Keywords</h2>
+          <v-combobox multiple small-chips v-model="type.attributes.keywords"></v-combobox>
+
+          <h2>Relations</h2>
+
+          <div v-for="prop in type.properties" :key="prop.key">
+            <h3>{{ prop.key }}</h3>
+
+            <div v-if="prop.attributes && prop.attributes.keywords">
+              <v-combobox
+                multiple
+                small-chips
+                v-model="prop.attributes.keywords"
+              ></v-combobox>
+            </div>
+          </div>
+        </simplebar>
+      </v-tab-item>
+    </v-tabs-items>
 
     <!-- <v-card-actions>
         <v-btn color="orange" text>Share</v-btn>
@@ -98,7 +126,6 @@
         </div>
     </div>-->
   </v-card>
-
 </template>
 
 <style>
@@ -109,7 +136,7 @@
   /* cursor: pointer; */
 }
 
-.model-elements-widget {  
+.model-elements-widget {
   height: calc(100em -200px);
   background: blue;
 }
@@ -158,8 +185,8 @@
 }
 
 .prop-value {
-  text-overflow: ellipsis; 
-  overflow: hidden;  
+  text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
 }
 
@@ -167,7 +194,6 @@
   /* width: 28px; */
   height: 28px;
 }
-
 </style>
 
 <script lang="ts">
@@ -177,263 +203,284 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import simplebar from "simplebar-vue";
 import { SearchEntity } from "../../classes/document/search-entity";
 import { IFormObject, IWidget } from "@csnext/cs-core";
-import { FeatureType, PropertyType,PropertyValueType } from "@csnext/cs-data";
+import { FeatureType, PropertyType, PropertyValueType } from "@csnext/cs-data";
 import { GraphElements } from "../..";
 
 @Component({
-  components: { simplebar, GraphElements }
+  components: { simplebar, GraphElements },
 })
 export default class FeatureTypeEditor extends WidgetBase {
   public elementsWidget = {
     component: GraphElements,
-    datasource: 'isrd',    
+    datasource: this.widget?.datasource,
     data: {
-      nodeFilters: 'document'
-    }
+      nodeFilters: "document",
+    },
   } as IWidget;
 
   public tab = "";
 
   public search = "";
-  public headers = [    
-    { text: 'title', value: 'title', groupable: false},    
-    { text: "Actions", value: "actions", groupable: false, sortable: false }
+  public headers = [
+    { text: "title", value: "title", groupable: false },
+    { text: "Actions", value: "actions", groupable: false, sortable: false },
   ];
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
   }
 
-  public get type(): FeatureType | undefined {    
+  public get type(): FeatureType | undefined {
     return this.widget.data.type._originalFeatureType;
   }
 
   public propertyForm = { ...(new PropertyType() as any)._form };
 
   public createInstance() {
-    if (this.type && this.isrd) {
-    this.isrd?.addNewNode(
-      { classId: this.type.type}).then(e => {
-        this.isrd?.startEditElement(e);
-      }).catch(e => {
-        alert('error creating entity')
-      })        
+    if (this.type && this.source) {
+      this.source
+        ?.addNewNode({ classId: this.type.type })
+        .then((e) => {
+          this.source?.startEditElement(e);
+        })
+        .catch((e) => {
+          alert("error creating entity");
+        });
     }
   }
-  
 
-   public get formDef(): IFormObject {
-        return {                            
+  public get formDef(): IFormObject {
+    return {
+      hideTitle: true,
+      isPanel: false,
+
+      fields: [
+        {
+          title: "TYPE",
+          _key: "type",
+          type: "string",
+          readonly: true,
+        },
+        {
+          title: "TITLE",
+          _key: "title",
+          type: "string",
+        },
+        {
+          title: "ICON",
+          _key: "icon",
+          type: "string",
+        },
+        {
+          title: "BASETYPES",
+          _key: "baseType",
+          type: "chips",
+          options: () => {
+            return this.source?.featureTypes
+              ? Object.keys(this.source.featureTypes)
+              : [];
+          },
+        },
+        {
+          title: "PROPERTIES",
+          _key: "properties",
+          canAdd: true,
+          canDelete: true,
+          arrayFieldType: "object",
+          // arrayFilter: (v: PropertyType[]) => {
+          //   return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
+          //   },
+          newItem: () => {
+            return new PropertyType();
+          },
+          keyValuesType: PropertyType,
+          type: "array",
+          arrayType2: this.propertyForm,
+          arrayType: {
+            showToolbar: false,
             hideTitle: true,
             isPanel: false,
-
+            canAdd: true,
+            canDelete: true,
             fields: [
-               {
-                title: 'TYPE',
-                _key: 'type',
-                type: 'string',
-                readonly: true                
+              {
+                title: "key",
+                _key: "key",
+                type: "string",
+                group: "label",
               },
               {
-                title: 'TITLE',
-                _key: 'title',
-                type: 'string'                
+                title: "label",
+                _key: "label",
+                type: "string",
+                group: "label",
               },
               {
-                title: 'ICON',
-                _key: 'icon',
-                type: 'string'                
+                title: "type",
+                _key: "type",
+                type: "selection",
+                group: "label",
+                optional: false,
+                options: () => {
+                  return Object.keys(PropertyValueType);
+                }, // [ 'string', 'number', 'boolean', 'url', 'date', 'relation']
               },
               {
-                title: 'BASETYPES',
-                _key: 'baseType',
-                type: 'chips',
-                options: ()=> { return (this.isrd?.featureTypes) ? Object.keys(this.isrd.featureTypes) : []; },
+                title: "min",
+                _key: "min",
+                type: "number",
+                group: "number",
+                optional: false,
+                requirements: PropertyType.isNumber,
               },
               {
-                title: 'PROPERTIES',
-                _key: 'properties',
-                canAdd: true,
-                canDelete: true,
-                arrayFieldType: 'object',
-                // arrayFilter: (v: PropertyType[]) => { 
-                //   return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
-                //   },
-                newItem: ()=> { return new PropertyType(); },
-                keyValuesType: PropertyType,
-                type: 'array',                
-                arrayType2: this.propertyForm,                
-                arrayType: {
-                showToolbar: false,
-                hideTitle: true,
-                isPanel: false,
-                canAdd: true,
-                canDelete: true,
+                title: "max",
+                _key: "max",
+                type: "number",
+                group: "number",
+                optional: false,
+                requirements: PropertyType.isNumber,
+              },
+              {
+                title: "unit",
+                _key: "unit",
+                type: "string",
+                group: "number",
+                optional: false,
+                requirements: PropertyType.isNumber,
+              },
+              {
+                title: "url template",
+                _key: "urlTemplate",
+                type: "string",
+                group: "url",
+                optional: false,
+                requirements: PropertyType.isUrl,
+              },
+              {
+                title: "required",
+                _key: "required",
+                type: "boolean",
+                group: "label",
+                optional: false,
+              },
+              {
+                requirements: PropertyType.isRelation,
+                title: "RELATION",
+                _key: "relation",
+                type: "object",
+                form: {
+                  hideTitle: true,
+                  isPanel: true,
                   fields: [
-                     {
-                      title: 'key',
-                      _key: 'key',
-                      type: 'string',
-                      group: 'label'
+                    {
+                      _key: "type",
+                      type: "string",
+                      title: "type",
+                      group: "relation-def",
                     },
                     {
-                      title: 'label',
-                      _key: 'label',
-                      type: 'string',
-                      group: 'label'
+                      _key: "objectType",
+                      type: "selection",
+                      title: "object type",
+                      group: "relation-def",
+                      options: () => {
+                        return this.source?.featureTypes
+                          ? Object.keys(this.source.featureTypes)
+                          : [];
+                      },
                     },
                     {
-                      title: 'type',
-                      _key: 'type',
-                      type: 'selection',
-                      group: 'label',
-                      optional: false,
-                      options: ()=> { return Object.keys(PropertyValueType)} // [ 'string', 'number', 'boolean', 'url', 'date', 'relation']                
+                      _key: "multiple",
+                      type: "boolean",
+                      title: "multiple",
+                      group: "relation-def",
                     },
-                    {
-                      title: 'min',
-                      _key: 'min',
-                      type: 'number',
-                      group: 'number',
-                      optional: false,
-                      requirements: PropertyType.isNumber                      
-                    },
-                    {
-                      title: 'max',
-                      _key: 'max',
-                      type: 'number',
-                      group: 'number',
-                      optional: false,
-                      requirements: PropertyType.isNumber                      
-                    },
-                    {
-                      title: 'unit',
-                      _key: 'unit',
-                      type: 'string',
-                      group: 'number',
-                      optional: false,
-                      requirements: PropertyType.isNumber                      
-                    },
-                     {
-                      title: 'url template',
-                      _key: 'urlTemplate',
-                      type: 'string',
-                      group: 'url',
-                      optional: false,
-                      requirements: PropertyType.isUrl                      
-                    },
-                    {
-                      title: 'required',
-                      _key: 'required',
-                      type: 'boolean',                      
-                      group: 'label',
-                      optional: false
-                    },                    
-                     {
-                      requirements: PropertyType.isRelation,
-                      title: 'RELATION',
-                      _key: 'relation',                                            
-                      type: 'object',
-                      form: {                        
-                        hideTitle: true,
-                        isPanel: true,
-                        fields: [
-                          {
-                            _key: 'type',
-                            type: 'string',
-                            title: 'type',
-                            group: 'relation-def'
-                          },
-                          {
-                            _key: 'objectType',
-                            type: 'selection',
-                            title: 'object type',
-                            group: 'relation-def',
-                            options: ()=> { return (this.isrd?.featureTypes) ? Object.keys(this.isrd.featureTypes) : []; }
-                          },
-                          {
-                            _key: 'multiple',
-                            type: 'boolean',
-                            title: 'multiple',
-                            group: 'relation-def'
-                          },
-                        ]
-                      }                      
-                    },
-                    {
-                      // requirements: PropertyType.isOptions,
-                      title: 'OPTIONS',
-                      _key: 'options',
-                      requirements: PropertyType.isOptions,
-                      // canAdd: true,
-                      // canDelete: true,
-                      newItem: ()=> { return ''; },                      
-                      arrayFieldType: 'string',
-                      type: 'chips'
-                    },
-                    {
-                      // requirements: PropertyType.isOptions,
-                      title: 'LIST',
-                      _key: 'optionsList',
-                      requirements: PropertyType.isListItem,
-                      // canAdd: true,
-                      // canDelete: true,
-                      // newItem: ()=> { return ''; },                                            
-                      type: 'selection'
-                    }
-                  ]
-                }
+                  ],
+                },
               },
               {
-                showToolbar: false,
-                hideTitle: true,
-                isPanel: false,
-                title: 'ATTRIBUTES',
-                _key: 'attributes',   
-                canEditKey: true,             
-                keyValuesType: String,
-                type: 'keysobject'                
-              }                   
-            ]
-        } as IFormObject;
-   }
+                // requirements: PropertyType.isOptions,
+                title: "OPTIONS",
+                _key: "options",
+                requirements: PropertyType.isOptions,
+                // canAdd: true,
+                // canDelete: true,
+                newItem: () => {
+                  return "";
+                },
+                arrayFieldType: "string",
+                type: "chips",
+              },
+              {
+                // requirements: PropertyType.isOptions,
+                title: "LIST",
+                _key: "optionsList",
+                requirements: PropertyType.isListItem,
+                // canAdd: true,
+                // canDelete: true,
+                // newItem: ()=> { return ''; },
+                type: "selection",
+              },
+            ],
+          },
+        },
+        {
+          showToolbar: false,
+          hideTitle: true,
+          isPanel: false,
+          title: "ATTRIBUTES",
+          _key: "attributes",
+          canEditKey: true,
+          keyValuesType: String,
+          type: "keysobject",
+        },
+      ],
+    } as IFormObject;
+  }
 
-   public updateFeatureType() {    
-    if (!this.isrd || !this.type) { return; }    
-    this.isrd.saveFeatureType(this.type);  
-  }  
+  public updateFeatureType() {
+    if (!this.source || !this.type) {
+      return;
+    }
+    this.source.saveFeatureType(this.type);
+  }
 
   public addEntity() {
-    const newEntity = { id: 'new entity', entity: 'new entity', ent_class: 'WEAPONS', aka: []};
-    this.isrd?.searchEntities?.push(newEntity)
-    this.isrd?.openEntityEditor(newEntity);
+    const newEntity = {
+      id: "new entity",
+      entity: "new entity",
+      ent_class: "WEAPONS",
+      aka: [],
+    };
+    this.source?.searchEntities?.push(newEntity);
+    this.source?.openEntityEditor(newEntity);
   }
 
   public editEntity(entity: SearchEntity) {
     console.log(entity);
-    this.isrd?.openEntityEditor(entity);
+    this.source?.openEntityEditor(entity);
   }
 
   public deleteEntity(entity: SearchEntity) {
-    alert('delete');
+    alert("delete");
   }
 
   constructor() {
     super();
   }
 
-  public contentLoaded() {    
-    this.$forceUpdate();  
+  public contentLoaded() {
+    this.$forceUpdate();
     if (this.type) {
       this.elementsWidget.data.nodeFilters = this.type.type;
     }
-    
   }
 
   mounted() {
-    console.log(' value types');
+    console.log(" value types");
     // console.log(Object.keys(PropertyValueType));
   }
 }

@@ -1,7 +1,7 @@
 <template>
     <!-- <h1>Document Editor</h1> -->
-  <simplebar style="height: 100%; padding: 5px" v-if="isrd && isrd.activeDocument">
-    <cs-form :data="isrd.activeDocument" :formdef="formDef" class="pt-2" id="detailcsform" @saved="updateDocument"></cs-form>
+  <simplebar style="height: 100%; padding: 5px" v-if="source && source.activeDocument">
+    <cs-form :data="source.activeDocument" :formdef="formDef" class="pt-2" id="detailcsform" @saved="updateDocument"></cs-form>
     <!-- <h3>Notes</h3> -->
     <v-layout>
       </v-layout>
@@ -9,15 +9,15 @@
     <v-container class="elevation-0"><v-row><v-col cols="2" v-for="(element, indx) in approvedElements()" :key="indx">
       <v-card :style="{'border-color': getEntityColor(element)}"  @click="openEntity(element)" class="entity-card">
         <!-- <div class="overline card-class-title">{{element.class._title}}</div> -->
-        <node-link class="entity-link" :source="isrd" :node="element" >{{element._title}}</node-link>
+        <node-link class="entity-link" :source="source" :node="element" >{{element._title}}</node-link>
         
         </v-card>
         </v-col></v-row></v-container>
     <h3>Observations</h3>
     <v-container class="elevation-0"><v-row><v-col cols="2" v-for="(element, indx) in approvedObservations()" :key="indx">
       <v-card :style="{'border-color': getEntityColor(element)}" @click="openEntity(element)" class="entity-card">        
-        <node-link class="entity-link" :source="isrd" :node="element" >{{element._title}}</node-link></v-card></v-col></v-row></v-container>
-    <!-- <v-layout><node-link class="entity-link" v-for="(element, indx) in approvedObservations()" :source="isrd" :node="element" :key="indx">{{element._title}}</node-link></v-layout> -->
+        <node-link class="entity-link" :source="source" :node="element" >{{element._title}}</node-link></v-card></v-col></v-row></v-container>
+    <!-- <v-layout><node-link class="entity-link" v-for="(element, indx) in approvedObservations()" :source="source" :node="element" :key="indx">{{element._title}}</node-link></v-layout> -->
   </simplebar>
 </template>
 
@@ -59,8 +59,8 @@ import { GraphElement } from '@csnext/cs-data';
 export default class DocumentEditor extends WidgetBase {
 
   public openEntity(entity: GraphElement) {
-    if (this.isrd) {
-      this.isrd.selectElement(entity);
+    if (this.source) {
+      this.source.selectElement(entity);
     }
   }
 
@@ -74,7 +74,7 @@ export default class DocumentEditor extends WidgetBase {
 
   public updateDocument() {
     
-    if (!this.isrd || !this.document) { return; }    
+    if (!this.source || !this.document) { return; }    
     if (this.document.sourceId && (!this.document._source || this.document._source.id !== this.document.sourceId)) {
       // remove existing link
       
@@ -86,18 +86,18 @@ export default class DocumentEditor extends WidgetBase {
 
     
     
-    this.isrd.saveDocument(this.document);
+    this.source.saveDocument(this.document);
 
   }  
 
   public approvedObservations() {
-    if (!this.isrd || !this.isrd.activeDocument?._node?._outgoing) { return; }
-    return this.isrd.activeDocument._node._outgoing.filter(o => o.classId === 'CONTAINS_OBSERVATION' && o.to).map(o => o.to);
+    if (!this.source || !this.source.activeDocument?._node?._outgoing) { return; }
+    return this.source.activeDocument._node._outgoing.filter(o => o.classId === 'CONTAINS_OBSERVATION' && o.to).map(o => o.to);
   }
 
   public approvedElements() {
-    if (!this.isrd || !this.isrd.activeDocument?._node?._outgoing) { return; }
-    return this.isrd.activeDocument._node._outgoing.filter(o => o.classId === 'CONTAINS' && o.to).map(o => o.to);
+    if (!this.source || !this.source.activeDocument?._node?._outgoing) { return; }
+    return this.source.activeDocument._node._outgoing.filter(o => o.classId === 'CONTAINS' && o.to).map(o => o.to);
   }
 
    public get formDef(): IFormObject {
@@ -128,7 +128,7 @@ export default class DocumentEditor extends WidgetBase {
                 type: 'combobox-objects',
                 keyText: 'title',
                 keyValue: 'id',
-                options: this.isrd!.sources             
+                options: this.source!.sources             
               },
               {
                 title: 'RELIABILITY',
@@ -150,12 +150,12 @@ export default class DocumentEditor extends WidgetBase {
 
   public document?: GraphDocument | null = null;
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
     if (this.widget?.data) {
-      return this.widget.data.isrd as DocDatasource;
+      return this.widget.data.source as DocDatasource;
     }
   }
 
@@ -165,7 +165,7 @@ export default class DocumentEditor extends WidgetBase {
 
   public contentLoaded() {
     this.$forceUpdate();
-    this.busManager.subscribe(this.isrd!.bus, 'document', (a: string, d:any) => {
+    this.busManager.subscribe(this.source!.bus, 'document', (a: string, d:any) => {
         // alert('document loaded');
         this.document = d;      
         // this.updateContent();

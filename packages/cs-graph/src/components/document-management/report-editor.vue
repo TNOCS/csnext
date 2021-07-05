@@ -4,9 +4,9 @@
     v-if="source && document && document.properties && formDef !== null"
   >
     <h1>{{ document._featureType.title }}</h1>
-    <v-layout v-if="document.originals">
+    <v-layout v-if="document._originals">
       <v-card
-        v-for="original in document.originals"
+        v-for="original in document._originals"
         :key="original.id"
         max-width="344"
         outlined
@@ -31,7 +31,7 @@
         </v-card-actions>
       </v-card>
 
-      <!-- <v-card @click="openViewer(original)" v-for="original in document.originals" :key="original.id">
+      <!-- <v-card @click="openViewer(original)" v-for="original in document._originals" :key="original.id">
             <v-card-title>{{original.properties.id}}</v-card-title>
             <v-card-title>{{original.properties.format}}</v-card-title>
           </v-card> -->
@@ -97,9 +97,10 @@ export default class DocumentEditor extends WidgetBase {
   }
 
   public openViewer(element: GraphDocument) {
+    if (!this.source || !this.document) { return; }
     if (element.properties?.format && this.source?.viewerPlugins) {
       const viewer = this.source.viewerPlugins.find(
-        (v) => v.formats && v.formats.includes(element.properties.format)
+        (v) => v.formats && v.formats.includes(element.properties!.format)
       );
       if (viewer) {
         viewer.call(element, this.document, this.source);

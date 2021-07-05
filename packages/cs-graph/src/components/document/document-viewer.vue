@@ -578,8 +578,8 @@ export default class DocumentViewer extends WidgetBase {
 
     if (!this.editor) {
       if (
-        !this.source.activeDocument.properties?.text ||
-        this.source.activeDocument.properties.text.length === 0
+        !this.source.activeDocument.properties?.originalText ||
+        this.source.activeDocument.properties.originalText.length === 0
       ) {
         this.startMenu = true;
       }
@@ -904,13 +904,10 @@ export default class DocumentViewer extends WidgetBase {
     ) {
       const json = this.editor.getJSON();
       const text = this.getText(json);
-      this.source.activeDocument.entities = [];
-      this.source.activeDocument.originalText = text;
+      this.source.activeDocument.entities = [];      
+      this.source.activeDocument.properties!.originalText = text;
       this.source.activeDocument.doc = json;
-      // console.log(text);
-      // this.source.activeDocument.originalText = this.content;
-      this.source.parseDocument(this.source.activeDocument).then(() => {
-        // this.updateContent();
+      this.source.parseDocument(this.source.activeDocument).then(() => {        
         this.createTextEntities();
         this.syncDocumentState();
         this.source!.syncEntities(
@@ -918,9 +915,6 @@ export default class DocumentViewer extends WidgetBase {
           this.source!.activeDocument!.doc.content,
           true
         );
-
-        // this.$forceUpdate();
-        // this.contentLoaded();
       });
     }
   }
@@ -931,8 +925,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     const json = this.editor.getJSON();
     const text = this.getText(json);
-    this.source.activeDocument.originalText = text;
-    // this.source.activeDocument._node.properties!.document =
+    this.source.activeDocument.properties!.originalText = text;    
     this.source.activeDocument.doc = json;
     this.updateViewTypes();
   }

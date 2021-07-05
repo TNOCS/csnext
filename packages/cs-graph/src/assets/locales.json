@@ -1,6 +1,9 @@
 {
-    "en": {},
+    "en": {
+        "NODE_SAVED": "Item saved"
+    },
     "nl": {
+        "NODE_SAVED": "Item opgeslagen"
 
     }
 }

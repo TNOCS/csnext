@@ -1,6 +1,6 @@
 <template>
   <simplebar class="new-element-form">
-    <v-container v-if="isrd !== null && document !== null">
+    <v-container v-if="source !== null && document !== null">
       <h1>
         <cs-label label="NEW_REPORT"></cs-label> -
         {{ document._featureType.title }}
@@ -64,10 +64,10 @@ import { FeatureType } from "@csnext/cs-data";
 export default class NewElement extends WidgetBase {
   public document?: GraphDocument | null = null;
 
-  public isrd?: DocDatasource | null = null;
+  public source?: DocDatasource | null = null;
 
   public updateDocument() {
-    if (!this.isrd || !this.document) {
+    if (!this.source || !this.document) {
       return;
     }
     if (
@@ -80,14 +80,14 @@ export default class NewElement extends WidgetBase {
       // alert('source changed');
     }
 
-    this.isrd.saveDocument(this.document);
+    this.source.saveDocument(this.document);
   }
 
   public get formDef(): IFormOptions {
-    if (!this.isrd || !this.document) {
+    if (!this.source || !this.document) {
       return {};
     }
-    return this.isrd.elementEditorForm(this.document);
+    return this.source.elementEditorForm(this.document);
   }
 
   constructor() {
@@ -95,7 +95,7 @@ export default class NewElement extends WidgetBase {
   }
 
   public contentLoaded(d: DocDatasource) {
-    this.isrd = d;
+    this.source = d;
     console.log("content loaded");
     console.log(d);
     this.initDocument();
@@ -103,7 +103,7 @@ export default class NewElement extends WidgetBase {
 
   public initDocument(): Promise<GraphDocument> {
     return new Promise((resolve, reject) => {
-      if (!this.isrd) {
+      if (!this.source) {
         reject();
         return;
       }
@@ -111,7 +111,7 @@ export default class NewElement extends WidgetBase {
 
       if (!this.document) {
         // find featuretype
-        const type = this.isrd.findObservation(document_type);
+        const type = this.source.findObservation(document_type);
         console.log(type);
         this.document = new GraphDocument({
           type: "node",
@@ -123,8 +123,8 @@ export default class NewElement extends WidgetBase {
             classId: document_type,
           },
         });
-        this.isrd.addNode(this.document);
-        return this.isrd.saveDocument(this.document);
+        this.source.addNode(this.document);
+        return this.source.saveDocument(this.document);
       }
     });
   }
