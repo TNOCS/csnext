@@ -34,7 +34,8 @@
         "rebuild": "yarn run clean && yarn install && yarn run build",
         "test": "lerna run test",
         "lerna:version": "lerna version --conventional-graduate --preid patch",
-        "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch"
+        "lerna:publish": "lerna publish --npm-client yarn --dist-tag patch",
+        "build:pack": "lerna run build:pack"
     },
     "devDependencies": {
         "@types/node": "^14.14.10",

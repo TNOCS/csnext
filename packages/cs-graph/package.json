@@ -10,6 +10,7 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
+        "build:pack": "yarn pack --filename ../../dist/cs-graph.tgz",
         "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "tsc && webpack --mode development",
         "build:production": "tsc && webpack --mode development",
