@@ -739,10 +739,10 @@ export class DocDatasource extends GraphDatasource {
                 // doc.entities = [];                
                 for (const plugin of this.documentPlugins.filter(p => typeof p.callDocument === 'function')) {
                     try {
-                        $cs.triggerNotification({ id: plugin.id, title: plugin.title });
+                        
                         console.log(`Plugin: ${plugin.title}, Output: `);
 
-                        if (doc.originalText && doc.originalText.length > 0) {
+                        if (doc.properties?.text && doc.properties?.text.length > 0) {
                             let res = await plugin.callDocument(doc, this);
                             if (!res.error && res.document) {
                                 // doc = res.document;
@@ -1089,14 +1089,10 @@ export class DocDatasource extends GraphDatasource {
             if (!doc.properties) {
                 doc.properties = {};
             }
-            if (doc.id) { doc.properties.id = doc.id; }
-            // doc.properties.text = doc.originalText;
-            doc.properties.doc = JSON.stringify(doc.doc);
-            // doc.name = doc.properties.title;
-            // doc.properties.title = doc.title;
+            if (doc.id) { doc.properties.id = doc.id; }            
+            doc.properties.doc = JSON.stringify(doc.doc);            
             doc.properties.sourceId = doc.sourceId;
-            doc.properties.notes = doc.notes;
-            // doc.title = doc.name;
+            doc.properties.notes = doc.notes;            
             doc.properties.credibility = doc.credibility;
             doc.properties.reliability = doc.reliability;
             
@@ -1110,26 +1106,9 @@ export class DocDatasource extends GraphDatasource {
             }
 
             delete doc.doc;
-
-            if (doc.observations) {
-                let observations: [] = [];
+            if (doc.observations) {             
                 doc.properties.observations = JSON.stringify(this.getSimplifiedObservations(doc));
             }
-
-            // if (doc.relations) {
-            //     let relations : TextRelation[] = [];
-
-            //     for (const ent of doc.relations) {
-            //         let entity = Object.assign({}, ent);                
-            //         for (const key of Object.keys(entity)) {
-            //             if (key.startsWith('_') && entity.hasOwnProperty(key)) {
-            //                 delete (entity as any)[key];
-            //             }
-            //         }                    
-            //         relations.push(entity);                
-            //     }
-            //     doc.properties.relations = JSON.stringify(relations);
-            // }
             this.saveNode(doc).then(async () => {
                 this.updateNodes(true);
                 await this.updateEdges(true);

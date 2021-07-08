@@ -58,6 +58,7 @@
 
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
       <div class="filter-row">
+        <v-layout>
           <v-combobox
             v-model="source.visibleViewTypes"
             v-if="source.viewTypes"
@@ -94,6 +95,13 @@
               </v-chip>
             </template>
           </v-combobox>
+          <v-tooltip>
+          <template v-slot:activator="{ on }">
+          <v-btn icon @click="toggleEntities()"><v-icon>done_all</v-icon></v-btn>
+          </template>
+          {{$cs.Translate('TOGGLE_ENTITIES')}}
+          </v-tooltip>
+        </v-layout>
       </div>
       
           <div v-if="editor" class="editor-menu-row">
@@ -101,7 +109,7 @@
               {{ source.activeDocument.properties.name }}
             </div>            
             <div class="editor-menu">
-              <v-btn-toggle>
+              <v-btn-toggle dense>
                 
                 <v-btn
                   @click="editor.chain().focus().toggleBold().run()"
@@ -190,10 +198,10 @@
                   ><v-icon>redo</v-icon></v-btn
                 >
 
-                <v-btn @click="setTextEntity()">entity</v-btn>
+                <v-btn @click="setTextEntity()"><v-icon>label</v-icon></v-btn>
                 <v-btn @click="setNodeParagraph()"
                 :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                >paragraph</v-btn>
+                ><v-icon>description</v-icon></v-btn>
               </v-btn-toggle>              
             </div>
           </div>
@@ -578,8 +586,8 @@ export default class DocumentViewer extends WidgetBase {
 
     if (!this.editor) {
       if (
-        !this.source.activeDocument.properties?.originalText ||
-        this.source.activeDocument.properties.originalText.length === 0
+        !this.source.activeDocument.properties?.text ||
+        this.source.activeDocument.properties.text.length === 0
       ) {
         this.startMenu = true;
       }
@@ -905,7 +913,7 @@ export default class DocumentViewer extends WidgetBase {
       const json = this.editor.getJSON();
       const text = this.getText(json);
       this.source.activeDocument.entities = [];      
-      this.source.activeDocument.properties!.originalText = text;
+      this.source.activeDocument.properties!.text = text;
       this.source.activeDocument.doc = json;
       this.source.parseDocument(this.source.activeDocument).then(() => {        
         this.createTextEntities();
@@ -925,7 +933,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     const json = this.editor.getJSON();
     const text = this.getText(json);
-    this.source.activeDocument.properties!.originalText = text;    
+    this.source.activeDocument.properties!.text = text;    
     this.source.activeDocument.doc = json;
     this.updateViewTypes();
   }
@@ -1216,7 +1224,7 @@ overflow-y: auto; */
 }
 
 .document-title {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -1291,6 +1299,9 @@ overflow-y: auto; */
 
 .editor-menu .v-btn {
   background: lightgrey;
+  max-width: 30px !important;
   /* margin: 4px; */
 }
+
+
 </style>

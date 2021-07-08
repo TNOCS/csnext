@@ -28,7 +28,7 @@ export class FilesController {
         description: 'Returns all available files.',
         type: FileDefinitionList
     })
-    @Get()
+    @Get('/')
     public files(): Promise<FileDefinitionList> {
         return this.filesService.getFiles();        
     }
@@ -43,8 +43,21 @@ export class FilesController {
         type: Buffer
     })
     @Get(':id')
-    @Header('Content-Type', 'image/png')
-    public async file(@Param('id') id: string, @Res() response: Response )  {
+    @Header('Content-Type', 'image/jpg')
+    public async file(@Param('id') id: string, @Query('url') url: string, @Res() response: Response )  {
+        if (url) {
+            console.log(url);
+            id = FilesService.getFileId(url);
+        }
+        const file = await this.filesService.getFile(id);
+        response.send(file);        
+    }
+
+    @Get('/image')
+    @Header('Content-Type', 'image/jpg')
+    public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
+        const id = FilesService.getFileId(url);
+        console.log(id);
         const file = await this.filesService.getFile(id);
         response.send(file);        
     }

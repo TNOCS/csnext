@@ -9,7 +9,7 @@
         </template>
         <v-list>
           <template v-for="elementId in dataSource.elementHistory">
-          <v-list-item v-if="elementId!==activeElement.id" :key="elementId" @click="dataSource.openElement(elementId)">
+          <v-list-item v-if="elementId!==activeElement.id && dataSource.graph.hasOwnProperty(elementId)" :key="elementId" @click="dataSource.openElement(elementId)">
             {{ dataSource.graph[elementId].properties.name }}
           </v-list-item>
           </template>

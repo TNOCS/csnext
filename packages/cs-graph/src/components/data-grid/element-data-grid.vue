@@ -1,5 +1,5 @@
 <template>
-  <div v-if="featureType" @keydown.native.alt.78="addEntity(classTypes[0])">
+  <div v-if="featureType">
     <div class="data-grid-title">{{ options.title }}</div>
     <v-layout class="ma-2">      
       <v-btn-toggle dense v-model="options.defaultView" mandatory >        
@@ -19,9 +19,9 @@
           <v-icon>account_tree</v-icon>
         </v-btn>
       </v-btn-toggle>
-      <v-menu offset-y v-if="classTypes.length>1">
+      <v-menu offset-y v-if="classTypes.length>1" >
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
+          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])" >
             <v-icon>add</v-icon>
             {{ $cs.Translate("NEW_ITEM") }}
           </v-btn>
@@ -36,7 +36,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn @click="addEntity(classTypes[0])" v-else color="primary" v-bind="attrs" class="ml-2" elevation="0" >
+      <v-btn @keydown.native.alt.78="addEntity(classTypes[0])" @click="addEntity(classTypes[0])" v-else color="primary" v-bind="attrs" class="ml-2" elevation="0" >
             <v-icon>add</v-icon>
             
             {{ $cs.Translate("NEW_ITEM") }}

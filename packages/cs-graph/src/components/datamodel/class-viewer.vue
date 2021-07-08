@@ -371,20 +371,6 @@ public updateGraph() {
   mounted() {
     this.initGraph();
     this.contentLoaded();
-
-       this.updateMenu({
-      id: "clear",
-      type: "icon",
-      icon: "delete",
-      action: (m) => {
-        if (this.graphSource) {
-          for (const el of Object.values(this.graphSource.graph)) {
-            el._included = false;
-          }
-          this.graphSource.triggerUpdateGraph();
-        }
-      },
-    });
   }
 }
 </script>

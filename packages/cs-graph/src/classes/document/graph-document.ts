@@ -9,7 +9,7 @@ import { Observation } from '..';
 export class GraphDocument extends GraphElement {    
     // public name?: string;
     
-    public originalText?: string;
+    // public originalText?: string;
     public editedText?: string;
     public entities?: TextEntity[];
     public relations?: TextRelation[];
@@ -58,7 +58,7 @@ export class GraphDocument extends GraphElement {
         return {
             id: this.id, type: 'node', title: this.name, _title: this.name, classId: 'input', properties: {
                 name: this.name,
-                text: this.originalText,
+                // text: this.originalText,
                 reliability: this.reliability,
                 credibility: this.credibility,                
                 start: '01-03-2019'
