@@ -2,7 +2,7 @@
     <input class="d-none input-file" ref="uploader" type="file" @change="
         filesChange($event.target.name, $event.target.files);        
       " accept="*.*" />
-    
+
     <cs-header :leftSidebar="leftSidebar" :rightSidebar="rightSidebar" v-if="$cs.project.navigation.style !== 'bottom'"></cs-header>
 
     <!-- side bars -->
@@ -66,7 +66,7 @@
             <span class="notification-title">
         {{ $cs.Translate(lastNotification.title) }}
       </span>
-            <v-btn text @click.native="clickNotification()">
+            <v-btn text @click="clickNotification()">
                 {{ $cs.Translate(lastNotification.buttonText) }}</v-btn>
         </v-layout>
     </v-snackbar>
