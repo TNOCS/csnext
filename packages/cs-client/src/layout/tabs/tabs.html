@@ -1,5 +1,48 @@
 <div class="tabs-manager">
+  <v-toolbar v-if="options.toolbarTabs" :dark="!$cs.project.theme.dark" :color="options.background ?? 'primary'" flat>    
+      <v-toolbar-title>{{dashboard.title}}</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+<!-- 
+      <v-btn v-if="activeElement._originals && activeElement._originals.length>0" icon @click="openOriginal()">
+        <v-icon>image</v-icon>
+      </v-btn>
+
+      <v-btn v-if="isDocument" icon @click="openDocument(activeElement.id)">
+        <v-icon>folder_open</v-icon>
+      </v-btn>
+
+
+      <v-menu :close-on-content-click="false" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-on="on">
+            <v-icon>add</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-group>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>follow</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item>              
+          </v-list-group>
+        </v-list>
+      </v-menu> -->
+
+      <template v-slot:extension>
+        <v-tabs v-model="tab" class="elevation-0">
+          <v-tabs-slider></v-tabs-slider>
+          <v-tab v-for="(widget, indx) in dashboard.widgets" :key="widget.title">
+            {{ widget.title }}</v-tab
+          >
+        </v-tabs>
+      </template>    
+  </v-toolbar>
   <v-tabs
+    v-else
     :right="options.right"
     v-model="tab"
     :grow="options.grow"

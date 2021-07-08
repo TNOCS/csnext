@@ -11,14 +11,15 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
+        "build:pack": "yarn pack --filename ../../dist/cs-layer-server.tgz",
         "dev:compile": "tsc -w",
         "dev": "tsc -w",
         "clean": "del-cli package-lock.json dist lib node_modules",
         "build": "tsc"
     },
-    "dependencies": {     
+    "dependencies": {
         "@csnext/cs-core": "0.0.131",
-        "@csnext/cs-data": "0.0.131",   
+        "@csnext/cs-data": "0.0.131",
         "@macrostrat/dbgeo-stream": "^1.0.0",
         "@mapbox/togeojson": "^0.16.0",
         "@nestjs/common": "^7.6.5",
@@ -51,7 +52,8 @@
         "socket.io": "^2.3.0",
         "swagger-ui-express": "^4.1.6",
         "uuid": "^7.0.3",
-        "wkx": "^0.5.0"
+        "wkx": "^0.5.0",
+        "website-scraper": "4.2.3"
     },
     "devDependencies": {
         "@types/async-lock": "^1.1.2",
@@ -59,6 +61,7 @@
         "@types/lockfile": "^1.0.1",
         "@types/lodash": "^4.14.168",
         "@types/mapbox-gl": "^1.13.0",
+        "@types/multer": "1.4.6",
         "@types/node": "^14.14.33",
         "@types/pg": "^7.14.11",
         "@types/socket.io": "^2.1.13",

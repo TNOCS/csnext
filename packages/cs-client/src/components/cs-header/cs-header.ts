@@ -150,8 +150,14 @@ export class CsHeader extends Vue {
       this.InitMenus();
     });
 
-    if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
-      this.busManager.subscribe(this.$cs.bus, Loader.LOADERS, () => {
+    if (this.$cs.project.header) {
+      this.busManager.subscribe(this.$cs.bus, Loader.LOADERS, (a: string, loader: any) => {
+        if (a === Loader.LOADER_ADDED && loader.notification) {
+          $cs.triggerNotification({title: loader.title, id: loader.id})
+        }
+        if (a === Loader.LOADER_REMOVED && loader.notification && loader.id) {
+          $cs.removeNotification(loader.id);
+        }
         if (this.loadingMenuIcon) {
           this.loadingMenuIcon.hide = Object.keys(this.$cs.loader.getLoaders()).length === 0;
         }

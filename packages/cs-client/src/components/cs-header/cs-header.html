@@ -4,7 +4,7 @@
         <!-- header -->
         <v-app-bar-nav-icon v-if="leftSidebar && leftSidebar.visible && !leftSidebar.permanent && !$cs.project.header.hideMenuToggle" class="header-icon" @click="$cs.toggleLeftSidebar()"></v-app-bar-nav-icon>
         <!-- :style="{color:$cs.project.theme.colors.menu}" -->
-        <img v-if="$cs.project.header.logo && !$cs.project.header.hideLogo" :src="$cs.project.header.logo" class="app-project-logo" />
+        <img v-if="$cs.project.header.logo && !$cs.project.header.hideLogo" :src="$cs.project.header.logo" class="app-project-logo" :class="{'invert-logo': $cs.project.theme.dark && $cs.project.theme.invertLogoInDarkMode}" />
 
         <div>
             <v-menu open-on-hover bottom class="header-title-menu">

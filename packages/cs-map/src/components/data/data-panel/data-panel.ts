@@ -1,9 +1,9 @@
 import Component from 'vue-class-component';
 import './data-panel.css';
 import { InsightDashboard, InsightDashboardPanel, DataSourceEvents } from '@csnext/cs-data';
-import { StatsDatasource, GeojsonPlusLayer } from '@csnext/cs-map';
 import { WidgetBase } from '@csnext/cs-client';
 import { GraphElement } from '@csnext/cs-data';
+import { GeojsonPlusLayer, StatsDatasource } from '../../..';
 
 @Component({
     name: 'data-panel',

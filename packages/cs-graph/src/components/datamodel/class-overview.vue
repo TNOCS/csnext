@@ -1,6 +1,6 @@
 <template>
-  <simplebar class="full-page" v-if="isrd">
-    <v-data-table :headers="headers" sort-by="count" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(isrd.featureTypes)" item-key="type" class="elevation-1">
+  <simplebar class="full-page" v-if="source">
+    <v-data-table :headers="headers" sort-by="count" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>{{$cs.Translate('FEATURE_TYPES')}}</v-toolbar-title>
@@ -71,23 +71,23 @@ export default class ClassOverview extends WidgetBase {
     { text: "Actions", value: "actions", groupable: false, sortable: false }
   ];
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
   }
 
   public addEntity(type: FeatureType) {
-    this.isrd?.addNewNode(
+    this.source?.addNewNode(
       { id: 'new entity', classId: type.type}).then(e => {
-        this.isrd?.startEditElement(e);
+        this.source?.startEditElement(e);
       }).catch(e => {
         alert('error creating entity')
       })    
   }
 
   public editEntity(type: FeatureType) {    
-    this.isrd?.openFeatureTypeEditor(type);
+    this.source?.openFeatureTypeEditor(type);
   }
 
   public deleteEntity(entity: SearchEntity) {
@@ -96,15 +96,15 @@ export default class ClassOverview extends WidgetBase {
 
   public addType() {
     $cs.triggerInputDialog('NEW_TYPE','TYPE_ID').then(v => {
-      if (v && this.isrd?.featureTypes && !this.isrd?.featureTypes?.hasOwnProperty(v)) {
+      if (v && this.source?.featureTypes && !this.source?.featureTypes?.hasOwnProperty(v)) {
         let newType = {
           type: v,
           title: v,
           properties: [],
           baseType: ['node']
         } as FeatureType;
-        this.isrd.featureTypes[v] = newType;
-        this.isrd.saveFeatureType(newType);
+        this.source.featureTypes[v] = newType;
+        this.source.saveFeatureType(newType);
       }
       
       // alert('add type');

@@ -17,10 +17,12 @@
 <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
           <span         
             @click.stop="selectEntity()"
-            class="content"
+            class="content entity-drag"
+            :id="'drag-' + node.attrs.id"
             v-bind="attrs"
             v-on="on">          
             <v-icon v-if="node.attrs.type === 'DATE'" small>date_range</v-icon>
+            <v-icon v-if="entity && entity._location" small>place</v-icon>
             <img v-if="icon" :src="icon" class="icon-image"/>
             
             {{ node.attrs.text }}
@@ -53,7 +55,7 @@
         <selection-popup
           :editor="editor"
           :entity="entity"
-          :isrd="source"
+          :source="source"
           :document="document"
         >
         </selection-popup>
@@ -95,14 +97,13 @@ import { GraphElement, TextEntity } from "@csnext/cs-data";
 import SelectionPopup from "./../selection-popup.vue";
 
 import { DocDatasource } from "../../../datasources/doc-datasource";
-import { Drag, Drop } from "vue-drag-drop";
 import { GraphDocument } from "../../../classes/document/graph-document";
+
 
 @Component({
   components: {
     NodeViewWrapper,
-    SelectionPopup,
-    Drag
+    SelectionPopup
   },
 })
 export default class TextEntityComponent extends Vue {
@@ -120,7 +121,7 @@ export default class TextEntityComponent extends Vue {
   public text?: string;
   public icon?: string | null = null;
   public style?: CSSStyleDeclaration | null = null;
-  // public node?: any;
+  public node?: any;
 
   public menuItems: any[] = [];
 
@@ -143,6 +144,13 @@ export default class TextEntityComponent extends Vue {
     // this.$forceUpdate();
   }
 
+  public isLocation(node: any) {
+    if (this.element?.properties?.location) {
+      return true;      
+    }
+    return node.attrs.type === 'location';
+  }
+
   public setStyle() {
     if (!this.source) { return {} as CSSStyleDeclaration}    
     if (!this.element) {
@@ -162,18 +170,20 @@ export default class TextEntityComponent extends Vue {
   }
 
   
+ 
 
-  public mounted() {
-    console.log('mounted text entity component');
+  public mounted() {    
     const editor = (this as any).editor as Editor;
     const node = (this as any).node;
-    
+
     this.source = (this as any).editor?.options?.editorProps?.source;
     if ((editor?.options?.editorProps as any)?.document) {
       // find document
       if (!node?.attrs) {
         return;
       }
+
+
       if (!node.attrs.type) {
         node.attrs.type = "person";
       }

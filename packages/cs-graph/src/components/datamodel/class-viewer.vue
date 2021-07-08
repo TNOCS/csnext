@@ -342,14 +342,7 @@ public updateGraph() {
         let type = this.graphSource?.findObservation(e.item._cfg.id);
         if (type) {
           this.graphSource?.openFeatureTypeEditor(type);
-        }
-        // $cs.openRightSidebarWidget({ component: FeatureTypeEditor, datasource: 'isrd',  data: { type: e.item._cfg.id}}, { open: true}, 'featuretype');
-        
-        // find node
-        // const node = this.graphSource?.getElement(e.item._cfg.id);
-        // if (node) {
-        //   this.graphSource!.selectElement(node)
-        // }        
+        }              
       }
       
 
@@ -378,20 +371,6 @@ public updateGraph() {
   mounted() {
     this.initGraph();
     this.contentLoaded();
-
-       this.updateMenu({
-      id: "clear",
-      type: "icon",
-      icon: "delete",
-      action: (m) => {
-        if (this.graphSource) {
-          for (const el of Object.values(this.graphSource.graph)) {
-            el._included = false;
-          }
-          this.graphSource.triggerUpdateGraph();
-        }
-      },
-    });
   }
 }
 </script>

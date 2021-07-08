@@ -1,10 +1,8 @@
-<v-app v-resize="onResize" v-if="$cs.isInitialized" :dark="$cs.project.theme.dark" :light="!$cs.project.theme.dark">
+<v-app v-resize="onResize" v-if="$cs.isInitialized" :dark="$cs.project.theme.dark" :light="!$cs.project.theme.dark" @keydown.esc="$cs.closeRightSidebar()">
     <input class="d-none input-file" ref="uploader" type="file" @change="
-        filesChange($event.target.name, $event.target.files);
-        fileCount = $event.target.files.length;
+        filesChange($event.target.name, $event.target.files);        
       " accept="*.*" />
-    <!--  -->
-    <!-- <cs-loading></cs-loading> -->
+
     <cs-header :leftSidebar="leftSidebar" :rightSidebar="rightSidebar" v-if="$cs.project.navigation.style !== 'bottom'"></cs-header>
 
     <!-- side bars -->
@@ -12,28 +10,17 @@
     <cs-sidebar v-if="rightSidebar.visible" id="right-sidebar" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
 
     <!-- dialogs -->
-    <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" no-click-animation :persistent="dialog.persistent" :width="dialog.width" @click:outside="closeDialog()">
+    <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" no-click-animation :persistent="dialog.persistent" @keydown.esc="dialog=false" :width="dialog.width" @click:outside="closeDialog()">
         <v-card>
             <cs-widget class="dialog-widget" v-if="dialog.widget" :widget="dialog.widget"></cs-widget>
             <div v-else>
                 <v-card-title class="headline" primary-title>
                     {{ dialog.title }}
                 </v-card-title>
-                <!-- <v-toolbar card color="primary" v-if="dialog.toolbar">
-        <v-btn
-          v-if="!dialog.persistent"
-          icon          
-          @click.native="dialog.visible = false"
-        >
-          <v-icon>close</v-icon>
-        </v-btn>
-        <v-toolbar-title>{{ dialog.title }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-      </v-toolbar> -->
                 <v-card-text>
                     <component v-if="dialog.component" :is="dialog.component" :data="dialog.data"></component>
                     <div v-if="dialog.textInput">
-                        <v-text-field v-model="dialog.input" required :label="dialog.text"></v-text-field>
+                        <v-text-field v-model="dialog.input" :placeholder="dialog.placeholder" required autofocus :label="dialog.text" @keydown.enter="actionCallback(dialog.input)"></v-text-field>
                         <v-layout>
                             <v-btn class="error" @click="actionCallback(undefined)">{{ $cs.Translate('CANCEL')}}</v-btn>
                             <v-spacer></v-spacer>
@@ -79,8 +66,27 @@
             <span class="notification-title">
         {{ $cs.Translate(lastNotification.title) }}
       </span>
-            <v-btn text @click.native="clickNotification()">
+            <v-btn text @click="clickNotification()">
                 {{ $cs.Translate(lastNotification.buttonText) }}</v-btn>
         </v-layout>
     </v-snackbar>
+    <v-snackbars :messages.sync="$cs.notifications" :timeout="5000" bottom right>
+        <template v-slot:default="{ message }">
+            <h3 class="mb-2">{{ message.title}}</h3>
+            {{ message.text }}
+          </template>
+        <template v-slot:action="{ close, message }">
+            <div
+              style="width: 76px"
+              class="text-center"              
+            >
+              <!-- <v-progress-circular
+                indeterminate
+                :width="2"
+                :size="25"
+              ></v-progress-circular> -->
+            </div>
+            <v-btn text @click="close()">Close</v-btn>
+          </template>
+    </v-snackbars>
 </v-app>

@@ -1,8 +1,10 @@
 export *  from "./components/data-grid/data-grid-options";
+export * from "./components/document/node-entities";
 export * from "./datasources/doc-datasource";
 export * from "./plugins/document-plugin";
 export * from "./plugins/import-plugin";
-export * from "./classes/"
+export * from "./plugins/viewer-plugin";
+export * from "./classes/";
 import Vue from 'vue';
 import NetworkGraph from "./components/graph/graph.vue";
 import GraphElements from "./components/entity-management/graph-elements.vue";
@@ -14,25 +16,16 @@ import DocumentViewer from './components/document/document-viewer.vue';
 import DocumentEditor from './components/document-management/document-editor.vue';
 import DocumentEntities from './components/document/document-entities.vue';
 import ReportEditor from './components/document-management/report-editor.vue';
-// export * from "./classes";
-import VueDragDrop from 'vue-drag-drop';
+import { AppState } from '@csnext/cs-client';
+
+const locales = require('./assets/locales.json');
+
+for (const lang in locales) {
+    if (locales.hasOwnProperty(lang) && AppState.Instance.i18n) {
+        const messages = locales[lang];
+        AppState.Instance.i18n.mergeLocaleMessage(lang, messages);
+    }
+}
+
+
 export { ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
-
-
-
-Vue.use(VueDragDrop);
-
-// export default {
-//     components: {
-//         ElementDataGrid,
-//         NetworkGraph
-//     }
-// }
-
-// export * from "./components";
-// import "./components/data-grid/element-data-grid.vue";
-
-// 
-
-
-// export ElementDataGrid;

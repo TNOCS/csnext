@@ -7,6 +7,8 @@ declare global {
     }
 }
 
+declare module 'interactjs';
+
 declare module '@tiptap/core' {
     interface Commands {
       textParagraph: {

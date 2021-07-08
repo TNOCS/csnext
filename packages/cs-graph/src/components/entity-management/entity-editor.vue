@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%; padding: 5px" v-if="isrd">
+  <div style="height: 100%; padding: 5px" v-if="source">
     <h1>Entity Editor</h1>
     <cs-form :data="entity" :formdef="formDef" class="pt-2" id="detailcsform" @saved="updateEntity(entity)"></cs-form>
   </div>
@@ -24,7 +24,7 @@ export default class EntityEditor extends WidgetBase {
 
   public updateEntity(entity: SearchEntity) {
     console.log(this.updateEntity);
-    // this.isrd?.
+    // this.source?.
   }
 
    public get formDef(): IFormObject {
@@ -68,9 +68,9 @@ export default class EntityEditor extends WidgetBase {
     }
   }
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.data) {
-      return this.widget.data.isrd as DocDatasource;
+      return this.widget.data.source as DocDatasource;
     }
   }
 

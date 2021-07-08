@@ -41,6 +41,15 @@ export class CsDashboard extends Vue {
     this.$cs.bus.publish('menus', 'changed');
   }
 
+  @Watch('dashboard.layout', { immediate: true })
+  public layoutChanged() {
+    if (!this.dashboard) { return; }
+    this.initDashboard(this.dashboard);
+    this.$forceUpdate();
+  }
+
+  
+
   @Watch('dashboard.widgets', { immediate: true })
   public widgetsChanged(n: IWidget[]) {
     if (n && n.length > 0) {
@@ -226,10 +235,9 @@ export class CsDashboard extends Vue {
       return;
     }
     this.initDashboard(this.dashboard);
-
   }
 
-  public beforeMount() {
+  public startManager() {
     if (!this.dashboard) { return; }
     if (this.dashboard && this.dashboard._manager) {
       // start manager
@@ -241,16 +249,24 @@ export class CsDashboard extends Vue {
     if (this.dashboard._manager && typeof (this.dashboard._manager.dashboardLoaded) === 'function') {
       this.dashboard._manager.dashboardLoaded();
     }
+  }
+
+  public beforeMount() {
+    this.startManager();
   };
 
-  /** dashboard will be closed. */
-  public beforeDestroy() {
+  public stopManager() {
     // call stop function for manager
     if (this.dashboard && this.dashboard._manager) {
       if (typeof (this.dashboard._manager.stop) === 'function') {
         this.dashboard._manager.stop(this.dashboard);
       }
     }
+  }
+
+  /** dashboard will be closed. */
+  public beforeDestroy() {
+    this.stopManager();
   }
 
   public get component(): Vue {

@@ -51,6 +51,7 @@ export class AppState extends AppStateBase {
   public static NOTIFICATION_CLEARED = 'clear-all'
   public static FILE_UPLOAD = 'file-upload';
   public static FILE_UPLOAD_START = 'file-upload-start';
+  public static LEFT_SIDEBAR_STATE = 'lsb';
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -451,6 +452,15 @@ export class AppState extends AppStateBase {
 
   public TriggerNotification = this.triggerNotification;
 
+  public removeNotification(id: string) {
+    if (this.notifications) {
+      const index = this.notifications.findIndex(n => n.id === id);
+      if (index>=0) {
+        this.notifications.splice(index, 1);
+      }      
+    }
+  }
+
   /** Triggers notification */
   public triggerNotification(notification: INotification) {
     notification = {
@@ -518,10 +528,10 @@ export class AppState extends AppStateBase {
     return this.triggerDialog(d);
   }
 
-  public triggerInputDialog(title: string, text: string, defaultValue?: string): Promise<string> {
+  public triggerInputDialog(title: string, text: string, defaultValue?: string, placeholder?: string): Promise<string> {
     return new Promise((resolve, reject) => {    
       const d = {
-        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, defaultText: defaultValue, persistent: true, width: 400 
+        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, defaultText: defaultValue, placeholder: placeholder, persistent: true, width: 400 
       } as IDialog;
       d.actionCallback = (action: string | undefined) => {
         if (!action) {
@@ -567,23 +577,23 @@ export class AppState extends AppStateBase {
   public openLeftSidebar() {
     if (this.project?.leftSidebar) {
       this.project.leftSidebar.open = true;
-      this.addRouteQueryParam("lsb", "1");      
+      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "1");      
     }
   }
 
   public closeLeftSidebar() {
     if (this.project?.leftSidebar) {
       this.project.leftSidebar.open = false;
-      this.addRouteQueryParam("lsb", "0");
+      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "0");
     }
   }
 
   public checkLeftSidebarState() {
-    if (this.router?.currentRoute.query.lsb) {
-      if (this.router.currentRoute.query.lsb === "0") {
+    if (this.router?.currentRoute.query[AppState.LEFT_SIDEBAR_STATE]) {
+      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE]=== "0") {
         this.closeLeftSidebar();
       } 
-      if (this.router.currentRoute.query.lsb === "1") {
+      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE] === "1") {
         this.openLeftSidebar();
       } 
     }

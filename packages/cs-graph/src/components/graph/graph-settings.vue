@@ -60,7 +60,7 @@
 import { Component } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 import { GraphElement, GraphSettings, GraphDatasource } from "@csnext/cs-data";
-import { DocDatasource } from "@/datasources/doc-datasource";
+import { DocDatasource } from "../../datasources/doc-datasource";
 
 @Component({
   components: {}

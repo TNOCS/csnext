@@ -1,27 +1,28 @@
 <template>
-  <v-card class="selection-popup">
-    <v-tabs vertical>
+  <v-card class="selection-popup" v-if="source">
+    <v-tabs vertical :value="viewtab">
       <v-tab>
         <v-icon left> playlist_add_check </v-icon>
       </v-tab>
       <v-tab>
-        <v-icon left> camera_enhance </v-icon>
+        <v-icon left> search </v-icon>
       </v-tab>
-      <v-tab>
-        <v-icon left> note </v-icon>
+      <v-tab :disabled="!entity._location">
+        <v-icon left> place </v-icon>
+      </v-tab>
+      <v-tab :disabled="!entity._date">
+        <v-icon left> date_range </v-icon>
       </v-tab>
 
-      <v-tab-item >        
+      <v-tab-item>
         <template v-if="entity">
           <div v-if="entity._node" class="entity-node">
-   
             <data-info-panel
               :data="entity._node.properties"
               :featureType="entity._node._featureType"
               panel="popup"
             ></data-info-panel>
 
-   
             <div class="entity-node-actions">
               <v-btn icon @click="graphNode(entity)"
                 ><v-icon>scatter_plot</v-icon></v-btn
@@ -32,7 +33,6 @@
               <v-btn icon @click="deleteEntity()"
                 ><v-icon>delete</v-icon></v-btn
               >
-   
 
               <v-tooltip bottom v-if="entity._included">
                 <template v-slot:activator="{ on }">
@@ -55,7 +55,16 @@
           <div v-else>
             <v-card-title>{{ entity.text }}</v-card-title>
             <v-card-subtitle>{{ entity.entity_class }}</v-card-subtitle>
-            <span v-if="potentialTypes.length>0">Add new:<v-chip small outlined v-for="ft in potentialTypes" :key="ft.type" @click="createNewNode(ft)">{{ft.title}}</v-chip></span>
+            <span v-if="potentialTypes.length > 0"
+              >Add new:<v-chip
+                small
+                outlined
+                v-for="ft in potentialTypes"
+                :key="ft.type"
+                @click="createNewNode(ft)"
+                >{{ ft.title }}</v-chip
+              ></span
+            >
             <v-layout class="ma-3">
               <v-radio-group v-model="searchMode" class="add-node-mode">
                 <v-radio label="Existing" value="KG"></v-radio>
@@ -64,7 +73,7 @@
 
               <v-combobox
                 v-if="searchMode === 'KG'"
-                :items="Object.values(isrd.graph)"
+                :items="Object.values(source.graph)"
                 v-model="newEntityNode"
                 item-text="_title"
                 label="node"
@@ -72,7 +81,7 @@
               ></v-combobox>
               <v-combobox
                 v-model="newCategory"
-                :items="Object.values(isrd.featureTypes)"
+                :items="Object.values(source.featureTypes)"
                 item-text="title"
                 return-object
                 v-if="searchMode === 'new'"
@@ -84,23 +93,41 @@
             </v-layout>
           </div>
         </template>
-        <template v-else>
-          no entity
-        </template>
+        <template v-else> no entity </template>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-text>
-            <p></p>
+          <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title>
+          <v-card-text v-if="suggestions">
+            <div v-for="(s, i) in suggestions" :key="i">
+              <v-layout
+                >{{ s.properties.name
+                }}<v-btn v-if="!entity._node" icon @click="useSuggestion(s)"
+                  ><v-icon>link</v-icon></v-btn
+                ></v-layout
+              >
+            </div>
           </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
+          <v-layout class="ma-4">
+            <v-btn outlined @click="locateOnMap()">
+              <v-icon large>place</v-icon>
+              {{ $cs.Translate("LOCATE_ON_MAP") }}</v-btn
+            >
+            <v-btn outlined @click="nearby()">
+              <v-icon large>place</v-icon>
+              {{ $cs.Translate("NEARBY") }}</v-btn
+            >
+          </v-layout>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
           <v-card-text>
-            <p>
-              
-            </p>
+            {{ entity._date }}
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -131,7 +158,7 @@
         <v-layout>
           <v-combobox
             v-if="searchMode === 'KG'"
-            :items="Object.values(isrd.graph)"
+            :items="Object.values(source.graph)"
             v-model="newEntityNode"
             item-text="_title"
             label="node"
@@ -139,7 +166,7 @@
           ></v-combobox>
           <v-combobox
             v-model="newCategory"
-            :items="isrd.availableNodeTypes"
+            :items="source.availableNodeTypes"
             item-text="_title"
             return-object
             v-if="searchMode=== 'new'"
@@ -147,7 +174,7 @@
           ></v-combobox>
           <v-combobox
             v-if="searchMode === 'online'"
-            :items="Object.values(isrd.graph)"
+            :items="Object.values(source.graph)"
             v-model="searchOnline"
             item-text="_title"
             label="node"
@@ -178,14 +205,14 @@
         <h2>indicator</h2>
         <v-combobox
             v-model="newNoteSource"
-            :items="isrd.getClassElements('source', true)"
+            :items="source.getClassElements('source', true)"
             item-text="_title"
             return-object            
             label="source"
           ></v-combobox>
           <v-combobox
             v-model="newNoteEEI"
-            :items="isrd.getClassElements('eei', true)"
+            :items="source.getClassElements('eei', true)"
             item-text="_title"
             return-object            
             label="EEI"
@@ -206,7 +233,7 @@
         <v-layout>
           <v-combobox
             v-if="searchMode === 'KG'"
-            :items="Object.values(isrd.graph)"
+            :items="Object.values(source.graph)"
             v-model="newEntityNode"
             item-text="_title"
             label="node"
@@ -214,7 +241,7 @@
           ></v-combobox>
           <v-combobox
             v-model="newCategory"
-            :items="isrd.availableNodeTypes"
+            :items="source.availableNodeTypes"
             item-text="_title"
             return-object
             v-if="searchMode=== 'new'"
@@ -222,7 +249,7 @@
           ></v-combobox>
           <v-combobox
             v-if="searchMode === 'online'"
-            :items="Object.values(isrd.graph)"
+            :items="Object.values(source.graph)"
             v-model="searchOnline"
             item-text="_title"
             label="node"
@@ -276,13 +303,15 @@
 <script lang="ts">
 import { Component, Watch, Prop } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
-import { GraphElement } from "@csnext/cs-data";
+import { GraphElement, WktUtils } from "@csnext/cs-data";
 import { TextEntity } from "@csnext/cs-data";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
 import { DataInfoPanel } from "@csnext/cs-map";
 import { FeatureType } from "@csnext/cs-data";
+// import turf from "@turf/turf";
+// import distance from "@turf/distance";
 
 @Component({
   components: { DataInfoPanel },
@@ -298,12 +327,14 @@ export default class SelectionPopup extends WidgetBase {
   public text?: any;
 
   @Prop()
-  public isrd?: DocDatasource;
+  public source?: DocDatasource;
 
   @Prop()
   public document?: GraphDocument;
 
   public tab = "observation";
+
+  public viewtab = 0;
 
   public searchNode = false;
 
@@ -328,6 +359,8 @@ export default class SelectionPopup extends WidgetBase {
 
   public newEntityNode: GraphElement = { _title: "" };
 
+  public suggestions: GraphElement[] | null = null;
+
   constructor() {
     super();
   }
@@ -342,33 +375,75 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public async createEntity() {
-    if (!this.isrd || !this.isrd.searchEntities || !this.document) {
+    if (!this.source || !this.source.searchEntities || !this.document) {
       return;
     }
 
-    this.isrd.searchEntities.push({
+    this.source.searchEntities.push({
       entity: this.text,
       private: true,
       ent_class: "UNKNOWN",
       id: guidGenerator(),
       aka: [this.text],
     });
-    // await this.isrd.callEntitySearch(this.document);
+    // await this.source.callEntitySearch(this.document);
+  }
+
+  public updateSuggestions() {
+    if (this.entity?.text && this.source?.fuse) {
+      this.suggestions = this.source.fuse
+        .search(this.entity.text)
+        .map((r) => r.item);
+    }
   }
 
   public async createNewNode(ft: FeatureType) {
-    if (!this.entity) { return; }
-    this.addEntityAsClass(this.entity, ft);    
+    if (!this.entity) {
+      return;
+    }
+    this.addEntityAsClass(this.entity, ft);
   }
 
   public graphNode(entity: TextEntity) {
-    if (!this.isrd || !entity._node) { return; }
+    if (!this.source || !entity._node) {
+      return;
+    }
     entity._node._included = true;
-    this.isrd.triggerUpdateGraph();    
+    this.source.triggerUpdateGraph();
+  }
+
+  public locateOnMap() {
+    if (!this.source?.map?.MapControl) {
+      return;
+    }
+    if (this.entity?._location && this.source?.map) {
+      const location = WktUtils.PointParser(this.entity._location);
+      if (location) {
+        this.source?.map.MapControl.flyTo({
+          zoom: 10,
+          center: { lat: location[1], lng: location[0] },
+        });
+      }
+    }
+  }
+
+  public nearby() {
+    if (!this.source || !this.entity?._location) {
+      return;
+    }
+    // const location = WktUtils.PointParser(this.entity._location);
+    // const point = turf.point([location[0], location[1]]);
+    // const pois = this.source.getClassElements("poi", true);
+    // for (const p of pois) {
+    //   if (p.properties?.lat && p.properties.lon) {
+    //     // const distance = turf.distance(point, turf.point([p.properties.lat, p.properties.lon]));
+    //     // console.log(p.properties.name + ' - ' + distance);
+    //   }
+    // }
   }
 
   public async unlinkEntity() {
-    if (!this.entity || !this.isrd || !this.document) {
+    if (!this.entity || !this.source || !this.document) {
       return;
     }
     try {
@@ -383,23 +458,39 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public async includeEntity() {
-    if (!this.isrd || !this.document || !this.entity) {
+    if (!this.source || !this.document || !this.entity) {
       return;
     }
-    await this.isrd.linkEntityToDocument(this.entity, this.document);
-    this.publishChanges();    
+    await this.source.linkEntityToDocument(this.entity, this.document);
+    this.publishChanges();
   }
 
   public async excludeEntity() {
-    if (!this.isrd || !this.document || !this.entity) {
+    if (!this.source || !this.document || !this.entity) {
       return;
     }
-    await this.isrd.removeEntityFromDocument(this.entity, this.document);
+    await this.source.removeEntityFromDocument(this.entity, this.document);
+    this.publishChanges();
+  }
+
+  public async useSuggestion(target: GraphElement) {
+    if (!this.source || !this.entity || !this.document) {
+      return;
+    }
+    this.entity.node_id = target.id;
+    this.entity._node = target;
+    this.entity._node._included = true;
+    if (!this.entity._node._alternatives) {
+      this.entity._node._alternatives = [];
+    }
+    this.entity._node._alternatives?.push(this.entity.text!);
+    await this.source.saveNode(this.entity._node);
+    await this.source.linkEntityToDocument(this.entity, this.document);
     this.publishChanges();
   }
 
   public async createNode() {
-    if (!this.document || !this.isrd) {
+    if (!this.document || !this.source) {
       return;
     }
     if (!this.entity) {
@@ -413,7 +504,7 @@ export default class SelectionPopup extends WidgetBase {
     }
     switch (this.searchMode) {
       case "KG":
-        if (this.newEntityNode && this.isrd) {
+        if (this.newEntityNode && this.source) {
           (this.entity.node_id = this.newEntityNode.id),
             (this.entity._node = this.newEntityNode);
           this.entity._node._included = true;
@@ -421,37 +512,40 @@ export default class SelectionPopup extends WidgetBase {
             this.entity._node._alternatives = [];
           }
           this.entity._node._alternatives?.push(this.entity.text!);
-          await this.isrd.saveNode(this.entity._node);
-          await this.isrd.linkEntityToDocument(this.entity, this.document);
+          await this.source.saveNode(this.entity._node);
+          await this.source.linkEntityToDocument(this.entity, this.document);
           this.publishChanges();
         }
         break;
       case "new":
         if (this.newCategory) {
-          await this.addEntityAsClass(this.entity, this.newCategory);          
+          await this.addEntityAsClass(this.entity, this.newCategory);
         }
         break;
     }
   }
 
   public async addEntityAsClass(entity: TextEntity, category: FeatureType) {
-    if (!this.document || !this.isrd) { return; }
+    if (!this.document || !this.source) {
+      return;
+    }
     const node = {
       classId: category.type,
-      id: guidGenerator(),            
+      id: guidGenerator(),
       properties: {
         name: entity.text,
         description: entity.text,
+        location: entity._location,
       },
       _included: true,
     };
     entity._node = node;
     entity.node_id = node.id;
-    this.isrd.addNode(node);
-    await this.isrd.saveNode(node);
-    this.isrd.updateNode(node);
-    await this.isrd.linkEntityToDocument(entity, this.document);
-    await this.isrd.parseEntities();
+    this.source.addNode(node);
+    await this.source.saveNode(node);
+    this.source.updateNode(node);
+    await this.source.linkEntityToDocument(entity, this.document);
+    await this.source.parseEntities();
     this.publishChanges();
   }
 
@@ -463,7 +557,7 @@ export default class SelectionPopup extends WidgetBase {
       case "KG":
         if (
           this.newEntityNode &&
-          this.isrd &&
+          this.source &&
           this.entity.text &&
           this.document
         ) {
@@ -480,11 +574,11 @@ export default class SelectionPopup extends WidgetBase {
           }
           if (!this.entity._node._alternatives.includes(this.entity.text)) {
             this.entity._node._alternatives?.push(this.entity.text!);
-            await this.isrd.saveNode(this.entity._node);
+            await this.source.saveNode(this.entity._node);
           }
           try {
-            await this.isrd.linkEntityToDocument(this.entity, this.document);
-            await this.isrd.saveDocument(this.document);
+            await this.source.linkEntityToDocument(this.entity, this.document);
+            await this.source.saveDocument(this.document);
             console.log("document");
             console.log(this.document);
             this.publishChanges();
@@ -492,7 +586,7 @@ export default class SelectionPopup extends WidgetBase {
         }
         break;
       case "new":
-        if (this.newCategory && this.isrd && this.isrd.activeDocument) {
+        if (this.newCategory && this.source && this.source.activeDocument) {
           const node = {
             classId: this.newCategory.type,
             title: this.entity?.text ?? this.text,
@@ -501,15 +595,15 @@ export default class SelectionPopup extends WidgetBase {
             },
             _included: true,
           };
-          this.isrd.addNode(node);
+          this.source.addNode(node);
           this.entity._node = node;
           // this.openNode(this.entity);
-          await this.isrd.saveNode(node);
-          await this.isrd.linkEntityToDocument(
+          await this.source.saveNode(node);
+          await this.source.linkEntityToDocument(
             this.entity,
-            this.isrd.activeDocument
+            this.source.activeDocument
           );
-          await this.isrd.saveDocument(this.isrd.activeDocument);
+          await this.source.saveDocument(this.source.activeDocument);
           this.publishChanges();
           this.$forceUpdate();
         }
@@ -519,28 +613,34 @@ export default class SelectionPopup extends WidgetBase {
 
   public openNode(entity: TextEntity) {
     if (entity._node && entity._node.id) {
-      this.isrd!.selectElementId(entity._node.id, true);
+      this.source!.selectElementId(entity._node.id, true);
     }
   }
 
   public publishChanges() {
-    // this.isrd!.bus.publish("document-entities", "updated");
-    if (!this.isrd?.activeDocument) { return; }    
-    this.isrd.syncEntities(this.isrd.activeDocument, this.isrd.activeDocument.doc.content, true);
+    // this.source!.bus.publish("document-entities", "updated");
+    if (!this.source?.activeDocument) {
+      return;
+    }
+    this.source.syncEntities(
+      this.source.activeDocument,
+      this.source.activeDocument.doc.content,
+      true
+    );
     this.$forceUpdate();
   }
 
   public async deleteEntity() {
-    if (this.isrd && this.entity && this.document && this.document.entities) {
+    if (this.source && this.entity && this.document && this.document.entities) {
       this.document.entities = this.document.entities.filter(
         (e) => e !== this.entity
       );
       try {
-        await this.isrd.removeEntityFromDocument(this.entity, this.document);
+        await this.source.removeEntityFromDocument(this.entity, this.document);
       } catch (e) {
         console.log(e);
       }
-      this.isrd.saveDocument(this.document);
+      this.source.saveDocument(this.document);
       this.publishChanges();
 
       // const index = this.document.entities!.findIndex(e => e.id === this.entity!.id);
@@ -559,8 +659,17 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   private updatePotentialTypes() {
-    if (this.isrd?.featureTypes && this.entity?.entity_class) {
-      this.potentialTypes = Object.values(this.isrd.featureTypes).filter(
+    if (!this.source) {
+      return;
+    }
+    if (this.source?.featureTypes && this.entity?.entity_class) {
+      if (this.entity.entity_class === "location") {
+        this.potentialTypes = Object.values(this.source.featureTypes).filter(
+          (ft) => ft._inheritedTypes && ft._inheritedTypes.includes("location")
+        );
+      }
+    } else if (this.source.featureTypes) {
+      this.potentialTypes = Object.values(this.source.featureTypes).filter(
         (ft) =>
           ft.attributes &&
           ft.attributes.hasOwnProperty("nlp:entity_class") &&
@@ -569,13 +678,17 @@ export default class SelectionPopup extends WidgetBase {
       if (this.potentialTypes && this.potentialTypes.length > 0) {
         this.newCategory = this.potentialTypes[0];
       } else {
-        this.newCategory = Object.values(this.isrd.featureTypes)[0];
+        this.newCategory = Object.values(this.source.featureTypes)[0];
       }
     }
   }
 
-  mounted() {    
+  mounted() {
+    if (this.entity?.class === "location") {
+      this.viewtab = 1;
+    }
     this.updatePotentialTypes();
+    this.updateSuggestions();
   }
 }
 </script>

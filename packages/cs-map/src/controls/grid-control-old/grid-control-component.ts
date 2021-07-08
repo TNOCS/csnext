@@ -4,7 +4,7 @@ import { IWidget, MessageBusHandle } from '@csnext/cs-core';
 import { guidGenerator } from '@csnext/cs-core';
 import './grid-control-component.css';
 import { Vue } from 'vue-property-decorator';
-import { MapDatasource, IMapLayer, FeatureType, GridLayer, LayerSource } from '../..';
+import { MapDatasource, GridLayer, LayerSource } from '../..';
 
 @Component({
     name: 'grid-control-component',
@@ -43,7 +43,7 @@ export class GridControlComponent extends Vue {
         this.layer.filter = ['>=', ['zoom'], ['number', ['get', 'level']]];
         this.layer.id = 'map-grid';
         this.layer.tags = ['map'];
-        this.layer.source = new LayerSource({ type: 'FeatureCollection', features: [] });
+        this.layer.source = new LayerSource();
         this.layer.source._loaded = true;
         this.layer.source.id = guidGenerator();
 

@@ -69,6 +69,7 @@ export * from './extensions/wms-time-extension';
 export * from './utils/conversion';
 
 import './components/prop-value';
+import './assets/styles.css';
 
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
