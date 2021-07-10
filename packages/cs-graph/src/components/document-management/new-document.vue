@@ -1,5 +1,5 @@
 <template>
-<v-container v-if="isrd !== null && document!==null">
+<v-container v-if="source !== null && document!==null">
     <h1><cs-label label="NEW_REPORT"></cs-label> - {{ document._featureType.title }} </h1>
   <simplebar style="height: 100%; padding: 5px" >
     <cs-form :data="document.properties" :formdef="formDef" class="pt-2" id="detailcsform" @saved="updateDocument"></cs-form>
@@ -48,12 +48,12 @@ export default class NewDocument extends WidgetBase {
 
  public document?: GraphDocument | null = null;
 
- public isrd?: DocDatasource | null = null;
+ public source?: DocDatasource | null = null;
 
 
   public updateDocument() {
     
-    if (!this.isrd || !this.document) { return; }    
+    if (!this.source || !this.document) { return; }    
     if (this.document.sourceId && (!this.document._source || this.document._source.id !== this.document.sourceId)) {
       // remove existing link
       
@@ -65,15 +65,15 @@ export default class NewDocument extends WidgetBase {
 
     
     
-    this.isrd.saveDocument(this.document);
+    this.source.saveDocument(this.document);
 
   }  
 
   
 
    public get formDef(): IFormOptions {
-      if (!this.isrd || !this.document) { return {}; }
-      return this.isrd.elementEditorForm(this.document);
+      if (!this.source || !this.document) { return {}; }
+      return this.source.elementEditorForm(this.document);
 
    }
 
@@ -84,7 +84,7 @@ export default class NewDocument extends WidgetBase {
   }
 
   public contentLoaded(d: DocDatasource) {
-    this.isrd = d;
+    this.source = d;
     console.log('content loaded');
     console.log(d);
     this.initDocument();
@@ -95,12 +95,12 @@ export default class NewDocument extends WidgetBase {
 
     
 
-    if (!this.isrd) { reject(); return; }
+    if (!this.source) { reject(); return; }
     const document_type = this.widget.data?.document_type ?? 'input';
         
     if (!this.document) {
       // find featuretype
-      const type = this.isrd.findObservation(document_type);
+      const type = this.source.findObservation(document_type);
       console.log(type);
       this.document = new GraphDocument({        
         type: 'node',
@@ -112,8 +112,8 @@ export default class NewDocument extends WidgetBase {
           classId: document_type
         }
       })
-      this.isrd.addNode(this.document);
-      return this.isrd.saveDocument(this.document);      
+      this.source.addNode(this.document);
+      return this.source.saveDocument(this.document);      
     }
     })
   }

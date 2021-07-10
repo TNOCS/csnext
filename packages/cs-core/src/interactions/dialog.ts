@@ -12,6 +12,7 @@ export interface IDialog {
   widget?: IWidget;
   textInput?: boolean;
   defaultText?: string;
+  placeholder?: string;
   input?: string;
   // toolbar?: boolean;
   data?: any;

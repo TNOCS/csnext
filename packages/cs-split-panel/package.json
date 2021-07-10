@@ -1,26 +1,27 @@
 {
-  "name": "@csnext/cs-split-panel",
-  "version": "0.0.131",
-  "description": "cs-split-panel",
-  "main": "./lib/cssplitpanel.cs.js",
-  "types": "./dist/src/index.d.ts",
-  "url": "https://github.com/TNOCS/cs-split-panel",
-  "bugs": "https://github.com/TNOCS/csnext/issues",
-  "license": "MIT",
-  "scripts": {
-    "link": "yarn link",
-    "unlink": "yarn unlink",
-    "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
-    "build": "webpack --mode development && tsc",
-    "build:production": "webpack --mode development && tsc",
-    "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@csnext/cs-client": "^0.0.131",
-    "vue-split-grid": "0.8.0"
-  },
-  "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
+    "name": "@csnext/cs-split-panel",
+    "version": "0.0.131",
+    "description": "cs-split-panel",
+    "main": "./lib/cssplitpanel.cs.js",
+    "types": "./dist/src/index.d.ts",
+    "url": "https://github.com/TNOCS/cs-split-panel",
+    "bugs": "https://github.com/TNOCS/csnext/issues",
+    "license": "MIT",
+    "scripts": {
+        "link": "yarn link",
+        "unlink": "yarn unlink",
+        "build:pack": "yarn pack --filename ../../dist/cs-split-panel.tgz",
+        "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
+        "build": "webpack --mode development && tsc",
+        "build:production": "webpack --mode development && tsc",
+        "clean": "del-cli  yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@csnext/cs-client": "^0.0.131",
+        "vue-split-grid": "0.8.0"
+    },
+    "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

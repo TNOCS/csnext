@@ -113,7 +113,6 @@
 <script lang="ts">
 import { Component, Watch } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
-// import { Network } from "vis-network/esnext";
 import { GraphDatasource, GraphSettings, GraphObject, GraphElement, PropertyValueType } from "@csnext/cs-data";
 import dateFormat from "dateformat";
 import { IMenu } from "@csnext/cs-core";
@@ -234,12 +233,12 @@ export default class NetworkGraph extends WidgetBase {
 
         e._group = GraphElement.getGroup(e);
 
-        if (!e._group && e.isType) {
-          e._group = "type";
-        }
-        if (e._group) {
-          node.group = e._group;
-        }
+        // if (!e._group && e.isType) {
+        //   e._group = "type";
+        // }
+        // if (e._group) {
+        //   node.group = e._group;
+        // }
 
         this.data?.nodes?.push(node);
         if (e._outgoing) {
@@ -291,7 +290,7 @@ export default class NetworkGraph extends WidgetBase {
         refY: 10,
       },
       hidden: this.source.getHidden(e, this.settings),
-      label: this.labelFormatter(e._title!, 30),
+      label: this.labelFormatter(e.classId!, 30),
       arrows: "to",
     } as any;
     if (!existing) {
@@ -366,22 +365,22 @@ export default class NetworkGraph extends WidgetBase {
       this.data = { nodes: [], edges: [] };
       this.graph.data(this.data);
     }
-    for (const e of Object.values(graph)) {
-      if (e.type === "node" && e.classId !== "instance")
-        if (e.id) {
-          if (e.classId && !e.class) {
-            e.class = this.source.getElement(e.classId); // graph.find(el => el.id === e.classId);
-          }
-          this.updateNode(e);
-          if (e.class) {
-            this.updateEdge({
-              source: e.id,
-              target: e.class.id,
-              label: "is",
-            } as any);
-          }
-        }
-    }
+    for (const e of Object.values(graph).filter(n => n.type === "node" && n._included && n.id)) {
+      this.updateNode(e);
+    };
+          // if (e.classId && !e.class) {
+          //   e.class = this.source.getElement(e.classId); // graph.find(el => el.id === e.classId);
+          // }
+          
+          // if (e.class) {
+          //   this.updateEdge({
+          //     source: e.id,
+          //     target: e.class.id,
+          //     label: "is",
+          //   } as any);
+          // }
+    //     }
+    // }
 
     for (const node of this.data.nodes!) {
       const el = this.source.getElement(node.id.toString());
@@ -459,7 +458,7 @@ export default class NetworkGraph extends WidgetBase {
             if (d) {
               this.updateNode(d);
               if (d._outgoing && this.source?.availableEdgeTypes) {
-                for (const outgoing of d._outgoing) {
+                for (const outgoing of d._outgoing.filter(o => o.to)) {
                   if (
                     outgoing.classId &&
                     this.source.availableEdgeTypes.hasOwnProperty(
@@ -475,7 +474,7 @@ export default class NetworkGraph extends WidgetBase {
                 }
               }
               if (d._incomming && this.source?.availableEdgeTypes) {
-                for (const incomming of d._incomming) {
+                for (const incomming of d._incomming.filter(i => i.from)) {
                   if (
                     incomming.classId &&
                     this.source.availableEdgeTypes.hasOwnProperty(
@@ -590,8 +589,6 @@ export default class NetworkGraph extends WidgetBase {
                     .then((e) => {
                       this.source?.addElementToGraph(e);
                       this.source?.selectElement(e);
-
-                      // this.isrd?.startEditElement(e);
                     })
                     .catch((e) => {
                       alert("error creating entity");
@@ -603,15 +600,14 @@ export default class NetworkGraph extends WidgetBase {
 
           if (element._incomming) {
             for (const relation of element._incomming.filter(
-              (i) => !i.from?._included
+              (i) => i.from && !i.from?._included
             )) {
-              if (
-                incommingMenu.items.findIndex(
-                  (r) => r.title === relation.classId
-                ) === -1
-              ) {
+              
+                const items = incommingMenu.items.filter((r) => r.title === relation.classId);
+               if (items.length>0) {
                 // find prop
                 let relationtitle = relation.classId;
+                
                 incommingMenu.items.push({
                   title: relationtitle!,
                   action: () => {
@@ -629,7 +625,7 @@ export default class NetworkGraph extends WidgetBase {
 
           if (element._outgoing) {
             for (const relation of element._outgoing.filter(
-              (i) => !i.to?._included
+              (i) => i.to && !i.to?._included
             )) {
               if (
                 outgoingMenu.items.findIndex(
@@ -897,8 +893,9 @@ export default class NetworkGraph extends WidgetBase {
           }
           this.data = { nodes: [], edges: [], combos: [] };
           this.graph.data(this.data);
+          this.updateGraph(this.source.graph, true);
           // this.updateGraph(this.source!.graph);
-          this.graph?.render();
+          // this.graph?.render();
         }
       },
     });

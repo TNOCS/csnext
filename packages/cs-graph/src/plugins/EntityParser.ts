@@ -22,7 +22,7 @@ export class EntityParser implements IDocumentPlugin
 
                 source.viewTypes = {};
 
-                let containingEntities = doc._node?._outgoing?.filter(o => o.classId === 'CONTAINS');
+                let containingEntities = doc._outgoing?.filter(o => o.classId === 'CONTAINS');
 
                 if (containingEntities && doc.entities) {
                     ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];
@@ -66,8 +66,21 @@ export class EntityParser implements IDocumentPlugin
                         }
                         // entity.view_class = 'doc-entity rec-entity ' + entity.class + '-entity';
                     }
+
+                    if (entity._node?.properties?.location) {
+                        entity._location = entity._node.properties.location;                        
+                      } else if (entity.entity_class === 'location' && entity.converted) {
+                          entity._location = entity.converted;
+                      }                    
+                    
+
+                    if (entity._node?.properties?.point_in_time) {
+                        entity._date = entity._node.properties.point_in_time;                        
+                      } else if (entity.entity_class === 'DATE' && entity.converted) {
+                          entity._date = entity.converted;
+                      }                    
+                    }
                 
-                }
             }
             // if (doc.relations && doc.entities)
             // {

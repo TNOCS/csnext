@@ -14,7 +14,7 @@ import { NodeLink } from './node-link';
         <v-btn v-else @click="toggleExpand()" icon><v-icon>expand_less</v-icon></v-btn>
       </v-layout>
       <div class="d-flex flex-wrap" v-if="expanded">
-        <node-link class="mr-2 list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-link>
+        <node-link class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-link>
         <v-btn v-if="total>10" text class="mr-2 list-item" @click="showMore = !showMore"><span v-if="showMore">show less</span><span v-else>show more</span></v-btn>
       </div>
       

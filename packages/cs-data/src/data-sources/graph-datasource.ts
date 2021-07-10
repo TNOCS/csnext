@@ -1,11 +1,13 @@
-import { TimeDataSource, MessageBusManager, Topics } from '@csnext/cs-core';
-import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType } from '../';
+import { TimeDataSource, MessageBusManager, Topics, guidGenerator, IFormOptions } from '@csnext/cs-core';
+import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType, WktUtils } from '../';
 // import { DiagramAction, GraphAction, DiagramElement, ObservationTypes } from "./../classes/";
 // import { AppState } from '@csnext/cs-client';
 import throttle from 'lodash.throttle';
 import Fuse from 'fuse.js';
 
 export type GraphObject = { [key: string]: GraphElement };
+export type ValueOperatorType = ">" | ">=" | "<" | "<=" | "==" | "!=";
+
 export class GraphFilter {
     public hasIncomingTypeRelation?: any;
     public hasObjectTypeRelation?: any;
@@ -19,14 +21,11 @@ export class GraphDatasource extends DataSource {
     public static ELEMENT_UPDATED = 'element-updated';
 
     public activeId = '';
-    public graph: GraphObject = {};
-    // public diagram: DiagramElement[] = [];
+    public graph: GraphObject = {};    
     public activeElement?: GraphElement;
     public graphSettings: GraphSettings = new GraphSettings();
     public timesource?: TimeDataSource;
-    public busManager = new MessageBusManager();
-    // public featureTypes: FeatureTypes = {};
-    // public observationTypes: ObservationTypes = {};
+    public busManager = new MessageBusManager();    
     private _nodeTypes?: GraphElement[];
     private _edgeTypes?: { [key: string]: PropertyType };
     private _availableColors: string[] = [];
@@ -71,6 +70,28 @@ export class GraphDatasource extends DataSource {
         return this.featureTypes[type] ?? undefined;
     }
 
+    public initFeatureType(ft: FeatureType) {
+        if (!ft.attributes) { ft.attributes = {} }
+        if (!ft.attributes.color) {
+            ft.attributes.color = this.getColor();
+        }
+    }
+
+    public mergeFeatureTypes() {
+        if (this.featureTypes) {
+            FeatureType.initFeatureTypes(this.featureTypes);
+            for (const ft of Object.values(this.featureTypes)) {
+                this.initFeatureType(ft);
+            }
+            this.featureTypes = FeatureType.mergeFeatureTypes(this.featureTypes) as FeatureTypes;                      
+            for (const type of Object.values(this.featureTypes)) {
+                this.updateFeatureTypePropertyMap(type);
+            }            
+        } else {
+            // this.observationTypes = {};
+        }
+    }
+
     public updateFeatureTypeStats() {
         if (!this.featureTypes) { return; }
         this.typeStats = {};
@@ -78,15 +99,15 @@ export class GraphDatasource extends DataSource {
             this.typeStats[type] = { type: this.featureTypes[type]!, elements: [], elementCount: 0, includedCount: 0 }
         }
         for (const element of Object.values(this.graph)) {
-            if (element._featureType?.type) {
+            if (element._featureType ?.type) {
                 const stat = this.typeStats[element._featureType.type];
                 if (stat) {
                     stat.elementCount += 1;
                 }
             }
         }
-
     }
+
 
     public initElement(el: GraphElement) {
         // find featuretype                    
@@ -102,7 +123,7 @@ export class GraphDatasource extends DataSource {
             if (el.properties.longitude && !el.properties.lon) { el.properties.lon = el.properties.longitude; }
 
             if (el.properties.hasOwnProperty('alternatives') && el.properties.alternatives.length > 0) {
-                el._alternatives = el.properties.alternatives?.split(',');
+                el._alternatives = el.properties.alternatives ?.split(',');
             }
             if (el.properties.hasOwnProperty('point_in_time')) {
                 let pit = el.properties['point_in_time'];
@@ -124,10 +145,10 @@ export class GraphDatasource extends DataSource {
                 el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
             }
             if (el.properties.hasOwnProperty('location')) {
-                const values = el.properties['location'].replace('Point(', '').replace(')', '').split(' ');
-                if (values.length === 2) {
-                    el.properties['lat'] = parseFloat(values[1]);
-                    el.properties['lon'] = parseFloat(values[0]);
+                const values = WktUtils.PointParser(el.properties['location']);
+                if (values && values.length === 2) {
+                    el.properties['lat'] = values[0];
+                    el.properties['lon'] = values[1];
 
                 } else {
                     // console.log(el.properties['coordinate_location']);
@@ -153,8 +174,8 @@ export class GraphDatasource extends DataSource {
         let res: { [key: string]: PropertyType } = {};
         for (const type of Object.values(this.featureTypes)) {
             if (type.properties) {
-                for (const prop of type.properties?.filter(t => (t.type === PropertyValueType.relation && t.relation?.type))) {
-                    if (!res.hasOwnProperty(prop.relation?.type!)) {
+                for (const prop of type.properties ?.filter(t => (t.type === PropertyValueType.relation && t.relation ?.type))) {
+                    if (!res.hasOwnProperty(prop.relation ?.type!)) {
                         res[prop.relation!.type!] = { ...prop }; //, ...{_visible: false}};
                         res[prop.relation!.type!]._visible = true;
 
@@ -191,7 +212,7 @@ export class GraphDatasource extends DataSource {
                 const el = this.graph[key];
                 el._hidden = this.getHidden(el);
                 el._visible = true;
-                if (el.isType && el.type === "node" && (res.findIndex(e => e.id === el.id) === -1)) {
+                if (el.type === "node" && (res.findIndex(e => e.id === el.id) === -1)) {
                     res.push(el);
                 }
             }
@@ -213,25 +234,88 @@ export class GraphDatasource extends DataSource {
         return;
     }
 
-    public getTitleElements(classId: string): GraphElement[] {
-        let res: GraphElement[] = Object.values(this.graph).filter(c => GraphElement.getTitle(c) === classId);
+    public getElementsByTitle(title: string): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => GraphElement.getTitle(c) === title);
         return res;
+    }
+
+    public getElementsByProperty(property: string, value: any): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => {
+            let propVal = (c.properties && c.properties[property]) || c[property];
+            if (propVal != undefined) return propVal == value;
+        });
+        return res;
+    }
+
+    public getElementsByPropertyAndOperator(property: string, searchValue: any, operator: ValueOperatorType, skipRelations: boolean = false): GraphElement[] {
+        let relationVals: GraphElement[] = [];
+        let res: GraphElement[] = Object.values(this.graph).filter(c => {
+            let propVal = this.getValueFromElement(property, c);
+            if (propVal != undefined) {
+                return this.compareOperator(propVal, searchValue, operator);
+            }
+            if (!skipRelations) {
+                relationVals = relationVals.concat((c._incomming?.filter(i => {
+                    if (i.classId === property) {
+                        let propVal = this.getValueFromElement('title', i.to);
+                        return this.compareOperator(propVal, searchValue, operator);
+                    }
+                }) || []).map(e => e.from!));
+                relationVals = relationVals.concat((c._outgoing?.filter(i => {
+                    if (i.classId === property) {
+                        let propVal = this.getValueFromElement('title', i.to);
+                        return this.compareOperator(propVal, searchValue, operator);
+                    }
+                }) || []).map(e => e.from!));
+            }
+            return false;
+        });
+        if (relationVals.length > 0) {
+            return res.concat(relationVals);
+        } else {
+            return res;
+        }
+    }
+
+    private getValueFromElement(property: string, c?: GraphElement) {
+        if (!c) return undefined;
+        return (c.properties && c.properties[property]) || c[property];
+    }
+
+    private compareOperator(propVal: any, searchValue: any, operator: ValueOperatorType): boolean {
+        switch (operator) {
+            case '==':
+                return propVal == searchValue;
+            case '>=':
+                return propVal >= searchValue;
+            case '>':
+                return propVal > searchValue;
+            case '<=':
+                return propVal <= searchValue;
+            case '<':
+                return propVal < searchValue;
+            case '!=':
+                return propVal != searchValue;
+            default:
+                console.log(`Unknown ValueOperatorType ${operator}`);
+                return false;
+        }
     }
 
     public getClassElements(classId: string, traversal?: boolean, filter?: GraphFilter): GraphElement[] {
         let res: GraphElement[] = [];
         if (traversal) {
-            res = Object.values(this.graph).filter(c => c._featureType?._inheritedTypes?.includes(classId));
+            res = Object.values(this.graph).filter(c => c._featureType ?._inheritedTypes ?.includes(classId));
         } else {
             res = Object.values(this.graph).filter(c => c.classId === classId);
         }
         if (filter) {
             if (filter.hasObjectTypeRelation) {
-                res = res.filter(o => o._outgoing && o._outgoing?.find(r => {
+                res = res.filter(o => o._outgoing && o._outgoing ?.find(r => {
                     for (const field in filter.hasObjectTypeRelation) {
                         if (Object.prototype.hasOwnProperty.call(filter.hasObjectTypeRelation, field)) {
                             const value = filter.hasObjectTypeRelation[field];
-                            if (r.classId === field && r.to?.id === value) {
+                            if (r.classId === field && r.to ?.id === value) {
                                 return true;
                             }
                         }
@@ -239,12 +323,12 @@ export class GraphDatasource extends DataSource {
                     return false;
                 }));
             } else if (filter.hasIncomingTypeRelation) {
-                res = res.filter(o => o._incomming && o._incomming?.find(r => {
+                res = res.filter(o => o._incomming && o._incomming ?.find(r => {
                     for (const field in filter.hasIncomingTypeRelation) {
                         if (Object.prototype.hasOwnProperty.call(filter.hasIncomingTypeRelation, field)) {
                             const value = filter.hasIncomingTypeRelation[field];
                             const v = (typeof value === 'function') ? value() : value;
-                            if (r.classId === field && r.from?.id === v) {
+                            if (r.classId === field && r.from ?.id === v) {
                                 return true;
                             }
                         }
@@ -253,8 +337,8 @@ export class GraphDatasource extends DataSource {
                 }));
             }
             else if (filter.hasObjectRelation) {
-                res = res.filter(o => o._outgoing && o._outgoing?.find(r => {
-                    if (r.to?.id === filter.hasObjectRelation) {
+                res = res.filter(o => o._outgoing && o._outgoing ?.find(r => {
+                    if (r.to ?.id === filter.hasObjectRelation) {
                         return true;
                     }
 
@@ -268,7 +352,7 @@ export class GraphDatasource extends DataSource {
     public addNode(element: GraphElement, classId?: string) {
         let res = this;
         if (!element.id) { element.id = element._title; }
-        if (!element._title && element.properties?.name) { element._title = element.properties.name; }
+        if (!element._title && element.properties ?.name) { element._title = element.properties.name; }
         if (!element._title && element.id) { element._title = element.id; }
         element.type = 'node';
         if (classId) { element.classId = classId; }
@@ -290,50 +374,79 @@ export class GraphDatasource extends DataSource {
         element.type = 'edge';
         if (!element.properties) {
             element.properties = {};
-        }
-        if (!element.properties.hasOwnProperty('verified')) {
-            element.properties.verified = true;
-        }
-        if (!element.id) {
-            element.id = 'edge-' + element.fromId + '-' + element.toId + '-' + element.classId + '-' + element._title;
-        }
-        element.properties.id = element.id;
+        }        
         if (element.classId === undefined) {
             element.classId = classId;
         }
-        // if (element.toId && !element.to) {
-        //     element.to = this.getElement(element.toId);
-        // }
+        element.properties.classId = element.classId;
+
+        if (!element.id) {
+            element.id = 'edge-' + guidGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
+        }
+        element.properties.id = element.id;
+        if (element.toId && !element.to) {
+            element.to = this.getElement(element.toId);
+        }
         if (element.to && !element.to._incomming) {
             element.to._incomming = [];
         }
-        if (element.to?._incomming && !element.to._incomming.includes(element)) {
+        if (element.to ?._incomming && !element.to._incomming.includes(element)) {
             element.to._incomming.push(element);
         }
-        // if (element.fromId && !element.from) {
-        //     element.from = this.getElement(element.fromId);
-        // }
+        if (element.fromId && !element.from) {
+            element.from = this.getElement(element.fromId);
+        }
         if (element.from && !element.from._outgoing) {
             element.from._outgoing = [];
         }
-        if (element.from?._outgoing && !element.from._outgoing.includes(element)) {
+        if (element.from ?._outgoing && !element.from._outgoing.includes(element)) {
             element.from._outgoing.push(element);
         }
         return element;
     }
 
-    public addEdge(element: GraphElement, classId?: string) {
-        if (element.toId && element.toId.indexOf(',') !== -1) {
-            let tos = element.toId.split(',');
-            for (const to of tos) {
-                let toId = to.trim();
-                this.addEdge({ ...element, ...{ toId: toId } }, classId);
+    public addEdge(element: GraphElement, classId?: string) : Promise<boolean> {
+        return new Promise(async (resolve, reject) => {            
+            if (element.toId && element.fromId) {                
+                element = this.createEdge(element, classId);
+                this.updateElementEdges(element);
+                this.addElement(element);
+                resolve(true);
+            } else {
+                reject('edge is missing to/from ids');
             }
-            return;
+        });
+    }
+
+    public removeNodeById(id: string, relations = false): Promise<boolean> {
+        if (this.graph && this.graph.hasOwnProperty(id)) {
+            delete this.graph[id];
+            return Promise.resolve(true);
         } else {
-            element = this.createEdge(element, classId);
-            return this.addElement(element);
+            return Promise.reject('element not found');
         }
+    }
+
+    public removeEdge(edge: GraphElement): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            // remove incoming/outgoing from all related entities
+            if (edge.from ?._outgoing) {
+                edge.from._outgoing = edge.from._outgoing ?.filter(e => e.id !== edge.id);
+            }
+            if (edge.to ?._incomming) {
+                edge.to._incomming = edge.to._incomming ?.filter(e => e.id !== edge.id);
+            }
+            if (edge.id && this.graph.hasOwnProperty(edge.id)) {
+                delete this.graph[edge.id];
+            }
+            resolve(true);
+        })
+    }
+
+    public removeEdgeById(id: string): Promise<boolean> {
+        const edge = this.getElement(id);
+        if (!edge) { return Promise.reject(`edge ${id} not found`) }
+        return this.removeEdge(edge);
     }
 
     private stringToDate(_date: string, _format: string, _delimiter: string): Date {
@@ -350,7 +463,7 @@ export class GraphDatasource extends DataSource {
     }
 
     public updateStartEnd(element: GraphElement, force = false) {
-        if ((!element._startDate || force) && element.properties?.hasOwnProperty('start')) {
+        if ((!element._startDate || force) && element.properties ?.hasOwnProperty('start')) {
             if (typeof element.properties.start === 'string') {
                 element._startDate = this.stringToDate(element.properties!.start, 'dd-mm-yyyy', '-');
             }
@@ -358,7 +471,7 @@ export class GraphDatasource extends DataSource {
                 element._startDate = new Date(element.properties.start);
             }
         }
-        if ((!element._endDate || force) && element.properties?.hasOwnProperty('end')) {
+        if ((!element._endDate || force) && element.properties ?.hasOwnProperty('end')) {
             if (typeof element.properties.end === 'string') {
                 element._endDate = this.stringToDate(element.properties!.end, 'dd-mm-yyyy', '-');
             }
@@ -375,22 +488,21 @@ export class GraphDatasource extends DataSource {
         //     element.properties!.source = source;
         // }
         this.updateStartEnd(element);
-        if (element.isType && !element.backgroundColor) {
-            element.backgroundColor = this.getColor();
-        }
+        // if (!element.backgroundColor) {
+        //     element.backgroundColor = this.getColor();
+        // }
         if (element.id) {
             this.graph[element.id] = element;
         }
         return this;
     }
 
-    public reset() {
-        if (this.graph) {
-            for (const el of Object.values(this.graph)) {
-                el._derivatives = [];
-            }
-        }
-        this.graph = {};
+    public reset() : Promise<boolean> {        
+        return new Promise((resolve, reject) => {
+            this.graph = {};
+            resolve(true);
+        })
+        
     }
 
     public triggerUpdateGraph(element?: GraphElement) {
@@ -421,67 +533,51 @@ export class GraphDatasource extends DataSource {
         });
     }
 
-    public updateEdges(clean = false) {
-        for (const e of Object.values(this.graph)) {
-            if (e.type === 'edge') {
-                // if (e.classId && !e.class) {
-                //     let c = this.getElement(e.classId);                    
-                //     if (!c) {
-                //         this.addEdge({id: e.classId, properties: { name: e.classId}, isType: true, _visible: false})
-                //     }
-                //     e.class = c;                    
-                // }
-                if (e.toId && !e.to) {
-                    e.to = this.getElement(e.toId);
-                    if (e.to && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                        if (!e.to._incomming) {
-                            e.to._incomming = [e];
-                        } else {
-                            // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
-                            e.to._incomming.push(e);
-                            // }
-                        }
-
-                    }
-                    // if (!e.to) {
-                    //   let external = new GraphElement();
-                    //   external.id = e.toId;
-                    //   external.title = e.toId;
-                    //   external.classId = 'source';
-                    //   e.to = external;
-                    //   this.tutorialSource.graph.push(external);
+    public updateElementEdges(e: GraphElement, clean = false) {        
+        if (e.toId && !e.to) {
+            e.to = this.graph[e.toId];
+            if (e.to) {
+                if (!e.to._incomming) {
+                    e.to._incomming = [e];
+                } else {
+                    // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
+                    e.to._incomming.push(e);
                     // }
                 }
-                if (e.fromId && !e.from) {
-                    e.from = this.getElement(e.fromId);
-                    if (e.from && !e.isType && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
-                        if (!e.from._outgoing) {
-                            e.from._outgoing = [e];
-                        } else {
-                            // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
-                            e.from._outgoing.push(e);
-                            // }
-                        }
-                    }
-                }
-                // let w = 3;
-                //   if (this.settings.showReliability) {
-                //     w = 15;
-                //     if (e.properties && e.properties.hasOwnProperty("reliability")) {
-                //       w = parseFloat(e.properties["reliability"]) * 10;
-                //     }
-                //   }
-                if (!e._title || clean) {
-                    e._title = GraphElement.getTitle(e, true);
-                }
-                if (!e._search || clean) {
-                    e._search = e._title;
-                    if (e.class && e.class._title) {
-                        e._search += e.class._title;
-                    }
+            } else {
+                
+            }
+        }
+        if (e.fromId && !e.from) {
+            e.from = this.getElement(e.fromId);
+            if (e.from) {
+                if (!e.from._outgoing) {
+                    e.from._outgoing = [e];
+                } else {
+                    // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
+                    e.from._outgoing.push(e);
+                    // }
                 }
             }
         }
+        if (!e._title || clean) {
+            e._title = GraphElement.getTitle(e, true);
+        }
+        if (!e._search || clean) {
+            e._search = e._title;
+            if (e.class && e.class._title) {
+                e._search += e.class._title;
+            }
+        }
+    }
+
+    public updateEdges(clean = false) {
+        for (const e of Object.values(this.graph).filter(g => g.type === 'edge')) {            
+            this.updateElementEdges(e);
+        }
+        for (const e of Object.values(this.graph).filter(g => g.type === 'node')) {
+            GraphElement.updateOriginals(e);
+        }        
     }
 
     public emptyGraph(trigger = true) {
@@ -497,14 +593,7 @@ export class GraphDatasource extends DataSource {
         if (e.type === 'node') {
             if (!e._title || clean) {
                 e._title = GraphElement.getTitle(e, clean);
-            }
-            // if (!e.class && e.classId) {
-            //     let c = this.getElement(e.classId);
-            //     if (!c) {
-            //         this.addNode({id: e.classId, properties: {name: e.classId}, isType: true, _visible: false})
-            //     }
-            //     e.class = c;                    
-            // }
+            }                       
         }
     }
 
@@ -516,7 +605,7 @@ export class GraphDatasource extends DataSource {
 
     public updateSearchIndex() {
         if (!this.fuse) { return; }
-        this.fuse?.setCollection(Object.values(this.graph).filter(e => e.type === 'node'));
+        this.fuse ?.setCollection(Object.values(this.graph).filter(e => e.type === 'node'));
     }
 
     public execute(): Promise<GraphDatasource> {

@@ -24,6 +24,10 @@ export class SplitComp extends Vue {
         console.log(this.options);
     }
 
+    public splitGridOptions = {
+        gutterSize: 3
+      };
+
     public getSplitpanel(panelElm: SplitElement) {
         console.log(panelElm);
         return panelElm && panelElm.splitpanel ? panelElm.splitpanel : undefined;

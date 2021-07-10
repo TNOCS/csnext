@@ -55,7 +55,7 @@
 
             <v-list-item-content>
               <v-list-item-title>{{ item.item._title }}</v-list-item-title>
-              {{ item.score }}
+              <!-- {{ item.score }} -->
               <v-list-item-subtitle v-if="item.item.class">
                 {{ item.item.class._title}}
                 <span v-if="item.item._incomming">

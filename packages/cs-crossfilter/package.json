@@ -10,6 +10,7 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
+        "build:pack": "yarn pack --filename ../../dist/cs-crossfilter.tgz",
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "webpack --mode development",
         "build:production": "webpack --mode development && tsc",
@@ -20,17 +21,17 @@
     },
     "dependencies": {
         "@csnext/cs-client": "^0.0.131",
-        "@csnext/cs-core": "^0.0.131",                           
+        "@csnext/cs-core": "^0.0.131",
         "dc": "4.2.7",
         "@csnext/cs-data": "0.0.131",
-        "@csnext/cs-map": "0.0.131",        
+        "@csnext/cs-map": "0.0.131",
         "crossfilter2": "1.5.4",
         "d3": "6.6.2"
-        
+
     },
-    "devDependencies": {             
+    "devDependencies": {
         "@types/crossfilter": "0.0.34",
-        "@types/d3": "6.3.0"            
+        "@types/d3": "6.3.0"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

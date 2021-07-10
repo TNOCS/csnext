@@ -37,6 +37,8 @@ export * from './log-items/log-items-controller';
 export * from './classes/file';
 export * from './files/files.service';
 export * from './files/files.controller';
+export * from './offline/offline.controller';
+export * from './offline/offline.service';
 export * from './events/';
 export * from './classes/file-server-options';
 

@@ -1,6 +1,7 @@
-import { Get, Controller, Param, Post, Body, Query, Put, Delete, Header } from '@nestjs/common';
+import { Get, Controller, Param, Post, Body, Query, Put, Delete, Header, Res } from '@nestjs/common';
 import { FileDefinitionList, FileDefinition } from './../classes/file';
 import { FilesService } from './files.service';
+import { Response } from 'express';
 import { UseInterceptors, NestInterceptor, UploadedFile } from  '@nestjs/common';
 import { diskStorage } from  'multer';
 
@@ -27,7 +28,7 @@ export class FilesController {
         description: 'Returns all available files.',
         type: FileDefinitionList
     })
-    @Get()
+    @Get('/')
     public files(): Promise<FileDefinitionList> {
         return this.filesService.getFiles();        
     }
@@ -41,13 +42,36 @@ export class FilesController {
         description: 'Returns all available files.',
         type: Buffer
     })
-    @Get(':id')
-    @Header('Content-Type', 'application/image')
-    public file(@Param('id') id: string): Promise<Buffer | undefined> {
-        return this.filesService.getFile(id);        
+    @Get(':id')    
+    public async file(@Param('id') id: string, @Query('url') url: string, @Res() response: Response )  {
+        if (url) {
+            console.log(url);
+            id = FilesService.getFileId(url);
+        }
+        try {
+        const file = await this.filesService.getFile(id);        
+        if (id.endsWith('.svg')) {
+            response.type('image/svg+xml')
+        } else if (id.endsWith('.png')) {
+            response.type('image/png') 
+        } else if (id.endsWith('.pdf')) {
+            response.type('application/pdf')
+        }        
+        response.send(file);        
+    } catch(e) {
+        response.send(undefined);
+    }
     }
 
-    
+    @Get('/image')
+    @Header('Content-Type', 'image/svg+xml')
+    public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
+        const id = FilesService.getFileId(url);
+        console.log(id);
+        console.log('image');
+        const file = await this.filesService.getFile(id);
+        response.send(file);        
+    }
 
     @ApiOperation({
         summary: 'Add or update layer definition',

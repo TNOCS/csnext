@@ -71,12 +71,14 @@ export class CsForm extends Vue {
     @Watch('data')
     private dataChanged() {
         this.init();
+        this.$forceUpdate();
     }
 
     @Watch('widget.content')
     @Watch('formdef')
     private datasourceChanged() {
         this.init();
+        this.$forceUpdate();
     }
 
     @Prop()
@@ -107,9 +109,14 @@ export class CsForm extends Vue {
         console.log('Closing form');
     }
 
-    public fieldVisible(field: IFormFieldOptions) : boolean {
+    public fieldVisible(field: IFormFieldOptions) : boolean {        
         if (field.required) { return true; }
-        if (field.optional) { return false; }
+        if (field.optional) {
+            
+            if (!this.Target.hasOwnProperty(field._key)) {
+                return false;
+            }
+        }
         if (!field.requirements) { return true; }
 
         for (const req of field.requirements) {
@@ -265,8 +272,7 @@ export class CsForm extends Vue {
         if (field._key) {
             this.Target[field._key] = field.defaultValue || '';
             this.initGroups();
-        }
-        
+        }        
     }
 
     public get Target(): any {

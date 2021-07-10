@@ -13,7 +13,8 @@
         "dev": "tsc && nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "tsc && webpack --mode development",
         "build:production": "webpack --mode development",
-        "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo"
+        "clean": "del-cli  package-lock.json yarn.lock yarn-error.log dist lib node_modules tsconfig.tsbuildinfo",
+        "build:pack": "yarn pack --filename ../../dist/cs-client.tgz"
     },
     "publishConfig": {
         "access": "public"

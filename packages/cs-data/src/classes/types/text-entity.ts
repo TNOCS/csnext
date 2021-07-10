@@ -26,6 +26,8 @@ export class TextEntity {
     public class?: string;
     public view_class?: string;
     public node_id?: string;    
+    public projection?: string;
+    public converted?: string;
     public _highlight?: boolean;
     public _node?: GraphElement;
     public _edge?: GraphElement;
@@ -35,4 +37,6 @@ export class TextEntity {
     public _approved?: boolean;    
     public _relations?: TextRelation[];
     public _docEntity?: any;
+    public _location?: string;
+    public _date?: string;
 }

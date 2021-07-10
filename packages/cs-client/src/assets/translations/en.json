@@ -12,5 +12,6 @@
   "ABOUT": "About",
   "GROUP_VISIBILITY": "Group visibility",
   "SELECT_FEATURE": "Select a feature",
-  "SELECT_POINT": "Select a point on the map"
+  "SELECT_POINT": "Select a point on the map",
+  "DARK_MODE": "Dark mode"
 }

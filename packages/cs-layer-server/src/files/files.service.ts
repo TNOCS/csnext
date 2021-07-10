@@ -5,6 +5,7 @@ import { FileDefinition, FileDefinitionList } from '../classes/file';
 import { IFileServerOptions } from '../classes/file-server-options';
 import { join } from 'path';
 import fs from 'fs';
+import axios from 'axios';
 
 @Injectable()
 export class FilesService extends AggregateRoot {
@@ -16,8 +17,51 @@ export class FilesService extends AggregateRoot {
         this.options = options;        
         this.absolutePath = this.options.path;
         Logger.log('File server initialized', 'file-server');
-        Logger.log(`File server path: ${this.absolutePath}`, 'file-server');
-        
+        Logger.log(`File server path: ${this.absolutePath}`, 'file-server');        
+    }
+
+    public static getFileId(url: string) {
+        let id = encodeURIComponent(url).split('%25').join('').split('%20').join('').split('-').join('').split('%').join('');
+        if (id.length>120) {
+            id = id.substr(id.length - 120, 120);
+        }
+        return(id);
+    }
+
+    
+    public loadImage(url: string) : Promise<FileDefinition | undefined> {
+
+        return new Promise((resolve, reject) => {
+            const id = FilesService.getFileId(url);    
+            const path = join(this.absolutePath, id);                
+            if (fs.existsSync(path)) {                
+                resolve({id: id, name: id});                
+            } else {
+                try {
+                const writer = fs.createWriteStream(path);            
+                
+                const response = axios({
+                    url,
+                    method: 'GET',
+                    responseType: 'stream'
+                }).then(r => {
+                    try {
+                    r.data.pipe(writer);                
+                    writer.on('finish', ()=> { resolve({ id: id, name: id}) })
+                    writer.on('error', () => resolve({ id: '', name: '' }))
+                    } catch (e) {
+                        resolve({ id: '', name: ''})
+                    }
+                    
+                }).catch(e => {
+                    resolve({ id: '', name: '' })
+                })
+            }
+            catch(e) {
+                resolve({ id: '', name: ''});
+            }                                
+            }
+        })            
 
     }
 
@@ -39,9 +83,11 @@ export class FilesService extends AggregateRoot {
         })
     }
 
-    public getFile(id: string) : Promise<Buffer | undefined> {
+    public getFile(fid: string) : Promise<Buffer | undefined> {
         return new Promise((resolve, reject) => {            
-            const fp = join(this.absolutePath, id);
+            console.log(fid);
+            const fp = join(this.absolutePath, fid);            
+            console.log(fp);
             if (fs.existsSync(fp)) {
                 try {
                     Logger.log(`Returning file: ${fp}`);
@@ -52,6 +98,7 @@ export class FilesService extends AggregateRoot {
                     reject();
                 }
             } else {
+                Logger.error('file does not exist');
                 resolve(undefined);
             }            
         })

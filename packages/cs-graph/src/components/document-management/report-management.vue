@@ -1,7 +1,7 @@
 <template>
   <simplebar class="full-page">
     <v-data-table
-      v-if="isrd"
+      v-if="source"
       :search="search"
       :headers="headers"
       :disable-pagination="true"
@@ -80,7 +80,7 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn @click="isrd.simulate()">simulate</v-btn>
+          <v-btn @click="source.simulate()">simulate</v-btn>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -135,7 +135,7 @@ export default class DocumentManagement extends WidgetBase {
   public isLoading = false;
   public headers = [
     { text: "name", value: "properties.name" },
-    { text: "type", value: "properties.classId", groupable: true },
+    { text: "type", value: "classId", groupable: true },
     { text: "source", value: "_source._title", groupable: true },
     { text: "reliability", value: "reliability", groupable: true },
     { text: "credibility", value: "credibility", groupable: true },    
@@ -151,15 +151,15 @@ export default class DocumentManagement extends WidgetBase {
   };
   public newReportType?: FeatureType;
 
-  public get isrd(): DocDatasource | undefined {
+  public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
     }
   }
 
   public get reportTypes(): FeatureType[] | undefined {
-    if (this.isrd?.featureTypes) {
-      return Object.values(this.isrd.featureTypes).filter((ft) =>
+    if (this.source?.featureTypes) {
+      return Object.values(this.source.featureTypes).filter((ft) =>
         ft.baseType?.includes("report")
       );
     }
@@ -170,14 +170,14 @@ export default class DocumentManagement extends WidgetBase {
   public get reports() : GraphElement[] | null {
 
     
-    if (!this.isrd) {
+    if (!this.source) {
       return null;
     }
 
     console.log('get reports');
 
     if (this.widget?.data?.operation) {
-      const reports = this.isrd.getClassElements("document", true, {
+      const reports = this.source.getClassElements("document", true, {
         hasObjectTypeRelation: {
           PART_OF_OPERATION: this.widget.data.operation,
         },
@@ -185,7 +185,7 @@ export default class DocumentManagement extends WidgetBase {
       return reports;
       // alert(this.widget.data.operation);      
     } else {      
-      const reports = this.isrd.getClassElements("document", true) ?? null;
+      const reports = this.source.getClassElements("document", true) ?? null;
       return reports;
     }
   }
@@ -218,8 +218,8 @@ export default class DocumentManagement extends WidgetBase {
     })
       .then((r) => {
         this.isLoading = false;
-        if (this.isrd && r.data?.message) {
-          this.isrd.addNewReport(this.newReportType!).then((r) => {
+        if (this.source && r.data?.message) {
+          this.source.addNewReport(this.newReportType!).then((r) => {
           if (r?.id) {
             this.openDocument(r.id);
           }
@@ -237,7 +237,7 @@ export default class DocumentManagement extends WidgetBase {
   public async addDocument() {
    
             
-    this.isrd?.addNewDocument(true).then((r) => {
+    this.source?.addNewDocument(true).then((r) => {
       if (r?.id) {
         this.openDocument(r.id);
       }
@@ -265,7 +265,7 @@ export default class DocumentManagement extends WidgetBase {
                             { icon: 'add', ddAction: 'event', eventId: 'include', title: 'ADD_LAYER' }
                         ], sortProperties: ['title'],
                     } as unknown as WidgetOptions,
-                    datasource: 'isrd',
+                    datasource: 'source',
                     data: {
                       document_type: this.newReportType?.type
                     }
@@ -277,7 +277,7 @@ export default class DocumentManagement extends WidgetBase {
             }).then(r => {
                 alert('add report');
             })
-    // this.isrd!.addNewReport(type).then((r) => {
+    // this.source!.addNewReport(type).then((r) => {
     //   if (r?.id) {
     //     this.openDocument(r.id);
     //   }
@@ -291,14 +291,14 @@ export default class DocumentManagement extends WidgetBase {
   }
 
   public deleteItem(doc: GraphDocument) {
-    this.isrd?.deleteDocument(doc);
+    this.source?.deleteDocument(doc);
   }
 
   public editDocument(doc: GraphElement) {
-    // this.isrd?.activateDocument(doc);
-    // this.isrd?.openDocumentDetails(doc);
-    if (doc && this.isrd) {
-      this.isrd?.selectElement(doc, true);
+    // this.source?.activateDocument(doc);
+    // this.source?.openDocumentDetails(doc);
+    if (doc && this.source) {
+      this.source?.selectElement(doc, true);
     }
   }
 
@@ -311,8 +311,8 @@ export default class DocumentManagement extends WidgetBase {
   }
 
   public contentLoaded() {
-    if (this.isrd?.events) {
-      this.busManager.subscribe(this.isrd.events, DocDatasource.DOCUMENT, (a: string, d: any) => {        
+    if (this.source?.events) {
+      this.busManager.subscribe(this.source.events, DocDatasource.DOCUMENT, (a: string, d: any) => {        
         // this.updateReports();
         this.$forceUpdate();
       })      

@@ -11,6 +11,7 @@
     "scripts": {
         "link": "yarn link",
         "unlink": "yarn unlink",
+        "build:pack": "yarn pack --filename ../../dist/cs-layer-server.tgz",
         "dev:compile": "tsc -w",
         "dev": "tsc -w",
         "clean": "del-cli package-lock.json dist lib node_modules",
@@ -51,7 +52,8 @@
         "socket.io": "^2.3.0",
         "swagger-ui-express": "^4.1.6",
         "uuid": "^7.0.3",
-        "wkx": "^0.5.0"
+        "wkx": "^0.5.0",
+        "website-scraper": "4.2.3"
     },
     "devDependencies": {
         "@types/async-lock": "^1.1.2",

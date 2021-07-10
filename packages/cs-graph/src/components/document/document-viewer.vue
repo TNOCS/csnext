@@ -58,6 +58,7 @@
 
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
       <div class="filter-row">
+        <v-layout>
           <v-combobox
             v-model="source.visibleViewTypes"
             v-if="source.viewTypes"
@@ -94,6 +95,13 @@
               </v-chip>
             </template>
           </v-combobox>
+          <v-tooltip>
+          <template v-slot:activator="{ on }">
+          <v-btn icon @click="toggleEntities()"><v-icon>done_all</v-icon></v-btn>
+          </template>
+          {{$cs.Translate('TOGGLE_ENTITIES')}}
+          </v-tooltip>
+        </v-layout>
       </div>
       
           <div v-if="editor" class="editor-menu-row">
@@ -101,7 +109,7 @@
               {{ source.activeDocument.properties.name }}
             </div>            
             <div class="editor-menu">
-              <v-btn-toggle>
+              <v-btn-toggle dense>
                 
                 <v-btn
                   @click="editor.chain().focus().toggleBold().run()"
@@ -190,10 +198,10 @@
                   ><v-icon>redo</v-icon></v-btn
                 >
 
-                <v-btn @click="setTextEntity()">entity</v-btn>
+                <v-btn @click="setTextEntity()"><v-icon>label</v-icon></v-btn>
                 <v-btn @click="setNodeParagraph()"
                 :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                >paragraph</v-btn>
+                ><v-icon>description</v-icon></v-btn>
               </v-btn-toggle>              
             </div>
           </div>
@@ -236,7 +244,6 @@ import { WidgetBase } from "@csnext/cs-client";
 import { TextEntity } from "@csnext/cs-data";
 import { Editor, EditorContent, Node, BubbleMenu } from "@tiptap/vue-2";
 import SelectionPopup from "./selection-popup.vue";
-// import "../../assets/sass/main.scss";
 import simplebar from "simplebar-vue";
 
 import { DocDatasource } from "./../../datasources/doc-datasource";
@@ -247,13 +254,10 @@ import TextExtension from "./plugins/text-extension";
 import ParagraphExtension from "./plugins/paragraph-extension";
 import Highlight from "@tiptap/extension-highlight";
 import Placeholder from "@tiptap/extension-placeholder";
-// import TextParagraph from "./plugins/text-paragraph";
-// import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Axios from "axios";
-// import { FeatureType } from "../../classes";
-import { Drag, Drop } from "vue-drag-drop";
 import { FeatureType } from "@csnext/cs-data";
 import { IImportPlugin } from "../..";
+import interact from 'interactjs';
 
 @Component({
   components: {
@@ -558,7 +562,7 @@ export default class DocumentViewer extends WidgetBase {
 
   public updateEditor(destroy = true) {
     console.log("update editor");
-    if (!this.source?.activeDocument) {
+    if (!this.source || !this.source?.activeDocument) {
       return;
     }
     this.checkDocument();
@@ -805,6 +809,7 @@ export default class DocumentViewer extends WidgetBase {
       }
 
       this.checkDocument();
+      // this.checkOriginal();
 
       if (
         this.source.activeDocument.doc.content &&
@@ -897,33 +902,32 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    if (
-      !this.source.activeDocument.entities ||
+    if (this.source.activeDocument.entities && this.source.activeDocument.entities.length>0) {
+      $cs.triggerNotification({title: 'currently re-running the pipeline is not supported'});
+      return;
+    } else if (!this.source.activeDocument.entities ||
       this.source.activeDocument.entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog(
         "Update entities",
-        "This will reset all existing entities"
-      )) === "YES"
-    ) {
+        "This will reset all existing entities (currently not supported!!!)"
+      )) === "YES")
+     {
       const json = this.editor.getJSON();
       const text = this.getText(json);
-      this.source.activeDocument.entities = [];
-      this.source.activeDocument.originalText = text;
+      this.source.activeDocument.entities = [];      
+      this.source.activeDocument.properties!.text = text;
       this.source.activeDocument.doc = json;
-      // console.log(text);
-      // this.source.activeDocument.originalText = this.content;
-      this.source.parseDocument(this.source.activeDocument).then(() => {
-        // this.updateContent();
+      this.source.parseDocument(this.source.activeDocument).then(() => {        
         this.createTextEntities();
-        this.syncDocumentState();
+        this.source!.refreshViewTypes();
+        this.syncDocumentState();        
+        
+        this.updateContent();
         this.source!.syncEntities(
           this.source!.activeDocument!,
           this.source!.activeDocument!.doc.content,
           true
         );
-
-        // this.$forceUpdate();
-        // this.contentLoaded();
       });
     }
   }
@@ -934,8 +938,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     const json = this.editor.getJSON();
     const text = this.getText(json);
-    this.source.activeDocument.originalText = text;
-    // this.source.activeDocument._node.properties!.document =
+    this.source.activeDocument.properties!.text = text;    
     this.source.activeDocument.doc = json;
     this.updateViewTypes();
   }
@@ -992,9 +995,8 @@ export default class DocumentViewer extends WidgetBase {
       if (
         this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
       ) {
-        const doc = this.source.documents.find(
-          (d) => d.id === $cs.router!.currentRoute?.query?.id
-        );
+        
+        const doc = this.source.getElement($cs.router.currentRoute.query.id as string) as GraphDocument        
         if (doc) {
           this.loadDocument(doc);
         }
@@ -1020,8 +1022,85 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+   private dragMoveListener (event) {
+    var target = event.target
+    // keep the dragged position in the data-x/data-y attributes
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+
+    // translate the element
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x)
+    target.setAttribute('data-y', y)
+  }
+
+  private initializeDragDrop() {
+    const position = { x: 0, y: 0 };
+     interact('.entity-drag').draggable({
+       manualStart: true,
+        listeners: {
+          start(event) {
+            const { currentTarget, interaction } = event;
+    let element = currentTarget;
+    var clientRect = element.getBoundingClientRect();
+            position.x = clientRect.left + document.body.scrollLeft;
+            position.y = clientRect.top + document.body.scrollTop;
+          },
+      move(event) {
+        position.x += event.dx;
+        position.y += event.dy;
+        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+      }
+    }
+      }).on("move", (event) => {        
+    const { currentTarget, interaction } = event;
+    let element = currentTarget;
+
+    // If we are dragging an item from the sidebar, its transform value will be ''
+    // We need to clone it, and then start moving the clone
+    if (
+      interaction.pointerIsDown &&
+      !interaction.interacting() &&
+      currentTarget.style.transform === ""
+    ) {
+      element = currentTarget.cloneNode(true);
+      var clientRect = element.getBoundingClientRect();
+
+      // Add absolute positioning so that cloned object lives
+      // right on top of the original object
+      element.style.position = "absolute";
+      element.style.left = 0;
+      element.style.top = 0;
+
+      // Add the cloned object to the document
+      const container = document.querySelector(".document-editor");
+      container && container.appendChild(element);
+
+      const { offsetTop, offsetLeft } = currentTarget;
+      position.x = offsetLeft;
+      position.y = offsetTop;
+
+      // If we are moving an already existing item, we need to make sure
+      // the position object has the correct values before we start dragging it
+    } else if (interaction.pointerIsDown && !interaction.interacting()) {
+      const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+      const transform = regex.exec(currentTarget.style.transform);
+
+      if (transform && transform.length > 1) {
+        position.x = Number(transform[1]);
+        position.y = Number(transform[2]);
+      }
+    }
+
+    // Start the drag event
+    interaction.start({ name: "drag" }, event.interactable, element);
+  });
+  }
+
   public mounted() {
-    console.log("mounted");    
+    console.log("mounted");
     if (!this.source) {
       this.contentLoaded(this.widget.content);
     }    
@@ -1150,7 +1229,7 @@ overflow-y: auto; */
 }
 
 .document-title {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -1225,6 +1304,10 @@ overflow-y: auto; */
 
 .editor-menu .v-btn {
   background: lightgrey;
+  max-width: 36px !important;
+  min-width: 36px !important;
   /* margin: 4px; */
 }
+
+
 </style>

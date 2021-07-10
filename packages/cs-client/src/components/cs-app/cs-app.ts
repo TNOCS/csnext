@@ -5,6 +5,7 @@ import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
 import VueRouter, { RouteConfig } from 'vue-router';
+import VSnackbars from "v-snackbars";
 import {
   IDashboard,
   INotification,
@@ -65,14 +66,14 @@ const router = AppState.Instance.router; // new VueRouter({ routes: [] });
   components: {
     'cs-sidebar': CsSidebar,
     'cs-footer': CsFooter,
-    'cs-header': CsHeader,
-    'cs-loading': CsLoader
+    'cs-header': CsHeader,    
+    "v-snackbars": VSnackbars
   }
 } as any)
 export class CsApp extends Vue {
   public static LANGUAGE_SWITCH_ID = 'switch_language';
   public static LOADING_MENU_ID = 'loading_menu';
-  public app = AppState.Instance;
+  public app = AppState.Instance;  
 
   public settingsDialog = false;
   public active = null;
@@ -487,15 +488,20 @@ export class CsApp extends Vue {
 
   public InitNotifications() {
     if (this.$cs.bus) {
+
+      // snackbars
+      $cs.notifications = [];
+
       this.busManager.subscribe(this.$cs.bus,
         AppState.NOTIFICATION,
         (action: string, notification: INotification) => {
-          if (action === AppState.NOTIFICATION_ADDED) {
+          if (action === AppState.NOTIFICATION_ADDED) {            
             if (this.lastNotification.clickCallback) {
               // Call callback of previous notification before closing it
               // this.lastNotification.clickCallback();
             }
-            this.lastNotification = notification;
+            // this.lastNotification = notification;
+            $cs.notifications.push(notification);
             this.UpdateNotifications();
           } else if (action === AppState.NOTIFICATION_CLEARED) {
             if (this.lastNotification && this.lastNotification.clickCallback) {

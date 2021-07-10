@@ -8,7 +8,7 @@ import './cs-form-field.css';
 import { CsForm } from '../..';
 const debounce = require('lodash.debounce');
 
-import { Emit, Prop } from 'vue-property-decorator';
+import { Emit, Prop, Watch } from 'vue-property-decorator';
 import format from 'date-fns/format';
 @Component({
     name: 'cs-formfield',
@@ -29,6 +29,11 @@ export class CsFormField extends Vue {
     public dateMenu = false;
     public timeMenu = false;
     public items: any[] = [];
+
+    @Watch('target')
+    private targetChanged() {
+        this.updateOptions();
+    }
 
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
 
@@ -52,18 +57,23 @@ export class CsFormField extends Vue {
     @Emit()
     public triggered(field: IFormFieldOptions) { }
 
-    public async mounted() {        
-        if (!this.field?.options) { return; }
+    public async updateOptions() {
+        if (!this.field?.options) { return; }        
         if (typeof this.field.options === 'function') {
             let res = this.field.options();
-            if (Promise.resolve(res) == res) {
+            if (Promise.resolve(res) === res) {
                 Vue.set(this, 'items', await this.field.options());                
             } else {
-                this.items = this.field.options() as any[];
+                Vue.set(this, 'items', res);                
             }                        
         } else {
-            return this.items = this.field.options;                        
+            Vue.set(this, 'items', this.field.options);                         
         }
+    }
+
+    public async mounted() {        
+        
+        this.updateOptions();
     }
 
     public triggerClick(field: IFormFieldOptions) {
