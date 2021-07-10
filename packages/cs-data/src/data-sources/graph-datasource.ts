@@ -384,18 +384,18 @@ export class GraphDatasource extends DataSource {
             element.id = 'edge-' + guidGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
         }
         element.properties.id = element.id;
-        // if (element.toId && !element.to) {
-        //     element.to = this.getElement(element.toId);
-        // }
+        if (element.toId && !element.to) {
+            element.to = this.getElement(element.toId);
+        }
         if (element.to && !element.to._incomming) {
             element.to._incomming = [];
         }
         if (element.to ?._incomming && !element.to._incomming.includes(element)) {
             element.to._incomming.push(element);
         }
-        // if (element.fromId && !element.from) {
-        //     element.from = this.getElement(element.fromId);
-        // }
+        if (element.fromId && !element.from) {
+            element.from = this.getElement(element.fromId);
+        }
         if (element.from && !element.from._outgoing) {
             element.from._outgoing = [];
         }
@@ -445,7 +445,7 @@ export class GraphDatasource extends DataSource {
 
     public removeEdgeById(id: string): Promise<boolean> {
         const edge = this.getElement(id);
-        if (!edge) { return Promise.reject('edge not found') }
+        if (!edge) { return Promise.reject(`edge ${id} not found`) }
         return this.removeEdge(edge);
     }
 
@@ -533,10 +533,10 @@ export class GraphDatasource extends DataSource {
         });
     }
 
-    public updateElementEdges(e: GraphElement, clean = false) {
+    public updateElementEdges(e: GraphElement, clean = false) {        
         if (e.toId && !e.to) {
-            e.to = this.getElement(e.toId);
-            if (e.to && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+            e.to = this.graph[e.toId];
+            if (e.to) {
                 if (!e.to._incomming) {
                     e.to._incomming = [e];
                 } else {
@@ -544,12 +544,13 @@ export class GraphDatasource extends DataSource {
                     e.to._incomming.push(e);
                     // }
                 }
-
+            } else {
+                
             }
         }
         if (e.fromId && !e.from) {
             e.from = this.getElement(e.fromId);
-            if (e.from && e.classId !== 'is' && e.classId !== 'source' && e.classId !== 'hasSource') {
+            if (e.from) {
                 if (!e.from._outgoing) {
                     e.from._outgoing = [e];
                 } else {
@@ -574,6 +575,9 @@ export class GraphDatasource extends DataSource {
         for (const e of Object.values(this.graph).filter(g => g.type === 'edge')) {            
             this.updateElementEdges(e);
         }
+        for (const e of Object.values(this.graph).filter(g => g.type === 'node')) {
+            GraphElement.updateOriginals(e);
+        }        
     }
 
     public emptyGraph(trigger = true) {
@@ -589,8 +593,7 @@ export class GraphDatasource extends DataSource {
         if (e.type === 'node') {
             if (!e._title || clean) {
                 e._title = GraphElement.getTitle(e, clean);
-            }
-            GraphElement.updateOriginals(e);           
+            }                       
         }
     }
 
