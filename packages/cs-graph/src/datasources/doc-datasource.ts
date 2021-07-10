@@ -28,6 +28,9 @@ export class DocDatasource extends GraphDatasource {
     public static DOCUMENT_UPDATED = 'document_updated';
     public static DOCUMENT_ENTITIES = 'document-entities';
     public static ENTITIES_UPDATED = 'entities-updated';
+    public static FEATURE_TYPES = 'feature-types';
+    public static FEATURE_TYPE_SELECTED = 'feature-type-selected';
+
 
     public activeDocument?: GraphDocument;
     public map?: CrossFilterDatasource;
@@ -651,9 +654,9 @@ export class DocDatasource extends GraphDatasource {
             if (this._meta) {
                 inputTypes = Object.values(this._meta).filter(ft => ft._inheritedTypes && ft.type && ft._inheritedTypes.includes('input')).map(ft => ft.type!);
             }
-            for (const item of jsonGraph) {                
+            for (const item of jsonGraph.filter(i => i.type === 'node')) {                
                 if (item.properties && !item.properties.id && item.id) { item.properties.id = item.id; }
-                if (item.type === 'node' && item.id && item.classId) {
+                if (item.id && item.classId) {
                     const classId = item.classId; // item.labels[0];
                     // get all inputs
 
@@ -670,23 +673,26 @@ export class DocDatasource extends GraphDatasource {
                     }
 
                 }
-                if (item.type === 'edge') {
+            }
+            for (const item of jsonGraph.filter(i => i.type === 'edge')) {                   
                     if (item.properties && item.hasOwnProperty('from') && item.hasOwnProperty('to')) {
                         await this.addEdge({
+                            id: item.id,
                             toId: item.to,
                             fromId: item.from,
-                            classId: item.classId
+                            classId: item.classId,
+                            properties: item.properties
                         })
-                    }
-                }
+                    }                
             };
-        }
-
-        // this.importCase();
+            // this.importCase();
         this.updateNodes();
         this.updateEdges();
         this.updateFeatureTypeStats();
         this.parseDocuments();
+        }
+
+        
         // this.updateSources();
 
     }
@@ -756,7 +762,14 @@ export class DocDatasource extends GraphDatasource {
                     }
                 }
                 this.linkDocumentEntities(doc);
-                this.entityParser.callDocument(doc, this);
+                try {                
+                    await this.entityParser.callDocument(doc, this);
+                }
+                catch(e) {
+                    console.log('Error parsing entities');
+                    console.log(e);
+                    resolve(doc);
+                }
                 // this.relationParser.callDocument(doc, this);
                 // save document node
                 // this.saveDocument(doc);                

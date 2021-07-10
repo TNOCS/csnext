@@ -458,7 +458,7 @@ export default class NetworkGraph extends WidgetBase {
             if (d) {
               this.updateNode(d);
               if (d._outgoing && this.source?.availableEdgeTypes) {
-                for (const outgoing of d._outgoing) {
+                for (const outgoing of d._outgoing.filter(o => o.to)) {
                   if (
                     outgoing.classId &&
                     this.source.availableEdgeTypes.hasOwnProperty(
@@ -474,7 +474,7 @@ export default class NetworkGraph extends WidgetBase {
                 }
               }
               if (d._incomming && this.source?.availableEdgeTypes) {
-                for (const incomming of d._incomming) {
+                for (const incomming of d._incomming.filter(i => i.from)) {
                   if (
                     incomming.classId &&
                     this.source.availableEdgeTypes.hasOwnProperty(
@@ -600,15 +600,14 @@ export default class NetworkGraph extends WidgetBase {
 
           if (element._incomming) {
             for (const relation of element._incomming.filter(
-              (i) => !i.from?._included
+              (i) => i.from && !i.from?._included
             )) {
-              if (
-                incommingMenu.items.findIndex(
-                  (r) => r.title === relation.classId
-                ) === -1
-              ) {
+              
+                const items = incommingMenu.items.filter((r) => r.title === relation.classId);
+               if (items.length>0) {
                 // find prop
                 let relationtitle = relation.classId;
+                
                 incommingMenu.items.push({
                   title: relationtitle!,
                   action: () => {
@@ -626,7 +625,7 @@ export default class NetworkGraph extends WidgetBase {
 
           if (element._outgoing) {
             for (const relation of element._outgoing.filter(
-              (i) => !i.to?._included
+              (i) => i.to && !i.to?._included
             )) {
               if (
                 outgoingMenu.items.findIndex(
