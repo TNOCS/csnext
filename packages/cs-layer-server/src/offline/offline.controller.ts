@@ -29,6 +29,9 @@ export class OfflineController {
     })
     @Get('/store')    
     public async file(@Query('url') url: string, @Res() response: Response )  {
+        if (url.indexOf(',') !== -1) {
+            url = url.split(',')[0];
+        }
         const file = await this.offlineService.store(url);
         response.send(file);        
     }

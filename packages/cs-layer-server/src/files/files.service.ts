@@ -21,46 +21,47 @@ export class FilesService extends AggregateRoot {
     }
 
     public static getFileId(url: string) {
-        const id = encodeURIComponent(url).split('%25').join('').split('%20').join('').split('-').join('').split('%').join('');
+        let id = encodeURIComponent(url).split('%25').join('').split('%20').join('').split('-').join('').split('%').join('');
+        if (id.length>120) {
+            id = id.substr(id.length - 120, 120);
+        }
         return(id);
     }
 
     
-    public async loadImage(url: string) : Promise<FileDefinition | undefined> {
+    public loadImage(url: string) : Promise<FileDefinition | undefined> {
 
-            const id = FilesService.getFileId(url);
-
+        return new Promise((resolve, reject) => {
+            const id = FilesService.getFileId(url);    
             const path = join(this.absolutePath, id);                
-            const writer = fs.createWriteStream(path)
-              
-            const response = await axios({
-                url,
-                method: 'GET',
-                responseType: 'stream'
-            })
-            
-            response.data.pipe(writer)
-            
-            return new Promise((resolve, reject) => {
-                writer.on('finish', resolve)
-                writer.on('error', reject)
-            })
-            
-
-            
-            // if (!fs.existsSync(fp)) {
-            //     axios.get(url).then(r => {
-            //         if (r.data) {
-            //             fs.writeFileSync(fp, r.data);
-            //             resolve({id: id, name: url});    
-            //         }
-            //     }).catch(e => {
-            //         Logger.error(e);
-            //         reject(e);
-            //     })
-            // } else {
-            //     resolve({id: id, name: id});
-            // }            
+            if (fs.existsSync(path)) {                
+                resolve({id: id, name: id});                
+            } else {
+                try {
+                const writer = fs.createWriteStream(path);            
+                
+                const response = axios({
+                    url,
+                    method: 'GET',
+                    responseType: 'stream'
+                }).then(r => {
+                    try {
+                    r.data.pipe(writer);                
+                    writer.on('finish', ()=> { resolve({ id: id, name: id}) })
+                    writer.on('error', () => resolve({ id: '', name: '' }))
+                    } catch (e) {
+                        resolve({ id: '', name: ''})
+                    }
+                    
+                }).catch(e => {
+                    resolve({ id: '', name: '' })
+                })
+            }
+            catch(e) {
+                resolve({ id: '', name: ''});
+            }                                
+            }
+        })            
 
     }
 
