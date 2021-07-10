@@ -1,6 +1,6 @@
 <template>
   <simplebar class="full-page" v-if="source">
-    <v-data-table :headers="headers" sort-by="count" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
+    <v-data-table :headers="headers" sort-by="count" @click:row="editEntity()" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>{{$cs.Translate('FEATURE_TYPES')}}</v-toolbar-title>
@@ -13,7 +13,7 @@
             single-line
             hide-details
           ></v-text-field>
-           <v-btn @click="addType()">
+           <v-btn @click.stop="addType()">
             <v-icon>add</v-icon>
             <!-- {{$cs.Translate('ADD_TYPE')}} -->
           </v-btn>
@@ -24,10 +24,10 @@
       <template v-slot:item.actions="{ item }">
       <v-icon
         small
-        class="mr-2"
-        @click="editEntity(item)"
+        class="mr-3"
+        @click.stop="editEntity(item)"
       >
-        mdi-pencil
+        edit
       </v-icon>
       <v-icon
         small
@@ -87,6 +87,8 @@ export default class ClassOverview extends WidgetBase {
   }
 
   public editEntity(type: FeatureType) {    
+    if (!this.source?.events) { return; }
+    this.source.events.publish(DocDatasource.FEATURE_TYPES, DocDatasource.FEATURE_TYPE_SELECTED, type);
     this.source?.openFeatureTypeEditor(type);
   }
 
