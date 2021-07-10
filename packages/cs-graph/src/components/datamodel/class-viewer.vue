@@ -352,7 +352,14 @@ public updateGraph() {
   public contentLoaded() {
     if (this.graphSource) {
       // this.tutorialSource.goToId(this.tutorialSource.activeId);
-      this.updateGraph();      
+      this.updateGraph();   
+      if (this.graphSource.events) {
+        this.busManager.subscribe(this.graphSource.events, DocDatasource.FEATURE_TYPES, (a: string, b: FeatureType) => {
+          if (a === DocDatasource.FEATURE_TYPE_SELECTED && this.graph && b?.type) {
+            this.graph.focusItem(b.type, true);
+          }
+        })
+      }
 
     }
   }

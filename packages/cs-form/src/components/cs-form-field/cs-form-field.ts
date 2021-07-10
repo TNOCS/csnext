@@ -64,7 +64,7 @@ export class CsFormField extends Vue {
             if (Promise.resolve(res) === res) {
                 Vue.set(this, 'items', await this.field.options());                
             } else {
-                Vue.set(this, 'items', this.field.options);                
+                Vue.set(this, 'items', res);                
             }                        
         } else {
             Vue.set(this, 'items', this.field.options);                         

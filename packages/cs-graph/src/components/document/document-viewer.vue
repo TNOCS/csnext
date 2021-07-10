@@ -902,14 +902,16 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    if (
-      !this.source.activeDocument.entities ||
+    if (this.source.activeDocument.entities && this.source.activeDocument.entities.length>0) {
+      $cs.triggerNotification({title: 'currently re-running the pipeline is not supported'});
+      return;
+    } else if (!this.source.activeDocument.entities ||
       this.source.activeDocument.entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog(
         "Update entities",
-        "This will reset all existing entities"
-      )) === "YES"
-    ) {
+        "This will reset all existing entities (currently not supported!!!)"
+      )) === "YES")
+     {
       const json = this.editor.getJSON();
       const text = this.getText(json);
       this.source.activeDocument.entities = [];      
@@ -917,7 +919,10 @@ export default class DocumentViewer extends WidgetBase {
       this.source.activeDocument.doc = json;
       this.source.parseDocument(this.source.activeDocument).then(() => {        
         this.createTextEntities();
-        this.syncDocumentState();
+        this.source!.refreshViewTypes();
+        this.syncDocumentState();        
+        
+        this.updateContent();
         this.source!.syncEntities(
           this.source!.activeDocument!,
           this.source!.activeDocument!.doc.content,
@@ -1299,7 +1304,8 @@ overflow-y: auto; */
 
 .editor-menu .v-btn {
   background: lightgrey;
-  max-width: 30px !important;
+  max-width: 36px !important;
+  min-width: 36px !important;
   /* margin: 4px; */
 }
 

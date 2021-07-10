@@ -34,22 +34,23 @@ export class RelationListSections extends BaseSection {
   private lists() {
     if (!this.node?._featureType) { return []; }
     let res: InfoPanelSection[] = [];
+    console.log('Get lists');
     
     if (this.node._incomming) {
-      let incomming = this.node._incomming.filter(i => i.classId !== 'INSTANCE_OF');      
+      let incomming = this.node._incomming.filter(i => i.classId && i.from);      
       for (const i of incomming) {
         const pt = this.findRelationPropertyType(this.node._featureType!, i.classId!);
-        if (pt && res.findIndex(r => i.from && r.filter === i.from.classId) === -1) {
-          res.push({ sectionType: 'simple-relation-list-section', title: pt.label || `${i.from!.classId}`, filter: i.from!.classId })        
+        if (pt && res.findIndex(r => r.filter === i.from.classId) === -1) {
+          res.push({ sectionType: 'simple-relation-list-section', title: pt.label || `${i.from.classId}`, filter: i.from.classId })        
         }        
       }
     }
 
     if (this.node._outgoing) {
-      let outgoing = this.node._outgoing.filter(i => i.classId && i.classId !== 'INSTANCE_OF');
+      let outgoing = this.node._outgoing.filter(i => i.classId && i.to);
       for (const o of outgoing) {
         const pt = this.findRelationPropertyType(this.node._featureType, o.classId!);
-        if (pt && res.findIndex(r => o.to && r.relation === o.classId) === -1) {
+        if (pt && res.findIndex(r => r.relation === o.classId) === -1) {
           res.push({ sectionType: 'simple-relation-list-section', title: pt.label ?? o.classId, relation: o.classId}); // filter: o.to!.classId })        
         }        
       }

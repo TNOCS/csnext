@@ -3,3 +3,7 @@
     max-width: 350px;
     /* background-color: red !important; */
 }
+
+.simple-list-item {
+    text-decoration: underline;
+}

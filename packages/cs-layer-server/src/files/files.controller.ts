@@ -42,27 +42,36 @@ export class FilesController {
         description: 'Returns all available files.',
         type: Buffer
     })
-    @Get(':id')
-    @Header('Content-Type', 'image/jpg')
+    @Get(':id')    
     public async file(@Param('id') id: string, @Query('url') url: string, @Res() response: Response )  {
         if (url) {
             console.log(url);
             id = FilesService.getFileId(url);
         }
-        const file = await this.filesService.getFile(id);
+        try {
+        const file = await this.filesService.getFile(id);        
+        if (id.endsWith('.svg')) {
+            response.type('image/svg+xml')
+        } else if (id.endsWith('.png')) {
+            response.type('image/png') 
+        } else if (id.endsWith('.pdf')) {
+            response.type('application/pdf')
+        }        
         response.send(file);        
+    } catch(e) {
+        response.send(undefined);
+    }
     }
 
     @Get('/image')
-    @Header('Content-Type', 'image/jpg')
+    @Header('Content-Type', 'image/svg+xml')
     public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
         const id = FilesService.getFileId(url);
         console.log(id);
+        console.log('image');
         const file = await this.filesService.getFile(id);
         response.send(file);        
     }
-
-    
 
     @ApiOperation({
         summary: 'Add or update layer definition',
