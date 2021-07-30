@@ -1,6 +1,12 @@
-import { ClusterSettings } from 'cluster';
 import { CircleLayout, CirclePaint, FillLayout, FillPaint, LineLayout, LinePaint, SymbolLayout, SymbolPaint } from 'mapbox-gl';
 
+interface ClusterSettings {
+    cluster?: number | boolean;
+    clusterRadius?: number;
+    clusterMaxZoom?: number;
+    clusterProperties?: object;
+    paint?: CirclePaint;
+}
 
 // export class LayerStyle {
 //     /*** feature types available in layer (fill, line, point, .etc)*/
