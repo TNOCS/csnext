@@ -1,105 +1,110 @@
 .cstabs {
-  margin-top: 0px;
+    margin-top: 0px;
 }
 
 html {
-  /* overflow-y: hidden !important; */
+    /* overflow-y: hidden !important; */
 }
 
 .v-toolbar--clipped {
-  z-index: 4 !important;
+    z-index: 4 !important;
 }
 
 .cs-navigation-tabbar {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 .cs-navigation-tabbar .v-tabs__div {
-  font-size: 20px;
-  font-weight: 800;
+    font-size: 20px;
+    font-weight: 800;
 }
 
 .cs-navigation-tabbar .tabs__bar {
-  /* background-color: transparent !important; */
+    /* background-color: transparent !important; */
+}
+
+.input-file {
+    position: fixed;
+    top: -100em;
 }
 
 .dialog-widget {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .menu {
-  background-color: red;
+    background-color: red;
 }
 
 .app-menu {
-  color: red !important;
-  /** margin-left:5px; */
+    color: red !important;
+    /** margin-left:5px; */
 }
 
 @media only screen and (max-width: 480px) {
-  .header-breadcrumbs {
-    display: none !important;
-  }
+    .header-breadcrumbs {
+        display: none !important;
+    }
 }
 
 .notification-title {
-  align-self: center;
-  margin-left: 10px;
+    align-self: center;
+    margin-left: 10px;
 }
 
 .sidebar {
-  /* z-index:200 !important; */
+    /* z-index:200 !important; */
 }
 
 .right-sidebar-title {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .header-breadcrumbs {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
-.header-breadcrumbs > li {
-  padding: 0 !important;
+.header-breadcrumbs>li {
+    padding: 0 !important;
 }
 
 .floating {
-  margin-top: -64px !important;
+    margin-top: -64px !important;
 }
 
 .leftsidebar-pin {
-  float: right;
-  margin: 4px;
+    float: right;
+    margin: 4px;
 }
 
 .leftsidebar-minify {
-  position: absolute;
-  right: 4px;
-  bottom: 5px;
-  z-index: 300;
+    position: absolute;
+    right: 4px;
+    bottom: 5px;
+    z-index: 300;
 }
 
 .content--wrap {
-  height: 100%;
+    height: 100%;
 }
 
 .app-project-logo {
-  height: 40px;
-  margin: 4px;
+    height: 40px;
+    margin: 4px;
 }
 
 .invert-logo {
-  filter: invert(1);
+    filter: invert(1);
 }
 
 .content {
-  height: 100%;
-  padding: 0;
+    height: 100%;
+    padding: 0;
 }
 
 .rightsidebar-toggle {
-  width: 20px;
-  height: 20px;
-  position: absolute;
+    width: 20px;
+    height: 20px;
+    position: absolute;
 }

@@ -154,10 +154,10 @@ export class CsApp extends Vue {
     }
     
     this.isLoading = true;    
-    $cs.triggerNotification({
-      title: $cs.Translate("PDF_IMPORT_STARTED"),
-      color: "green",
-    });
+    // $cs.triggerNotification({
+    //   title: $cs.Translate("PDF_IMPORT_STARTED"),
+    //   color: "green",
+    // });
     
   }
 
