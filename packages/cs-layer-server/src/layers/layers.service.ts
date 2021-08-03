@@ -18,9 +18,9 @@ import { Feature } from 'geojson';
 import { DebouncedFunc, throttle } from 'lodash';
 import { Debounce } from 'lodash-decorators';
 
-import { Client } from 'socket.io';
+import { Socket } from 'socket.io';
 import { PostGisSource } from '../plugins/sources/postgis';
-import { ArangoDBSource } from '../plugins/sources/arangodb';
+// import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
 import { v1 as uuidv1} from 'uuid';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
@@ -63,7 +63,7 @@ export class LayerService extends AggregateRoot {
         this.initPlugins();
     }
 
-    public handleConnection(d: Client) {
+    public handleConnection(d: Socket) {
         // this.server.emit('buttonCount',AppService.buttonCount);
         Logger.log(`Connection received from ${d.id}`);
     }
@@ -932,7 +932,7 @@ export class LayerService extends AggregateRoot {
         LayerService.AddSourcePlugin(new KmlFileSource());
         LayerService.AddSourcePlugin(new GeojsonSource());
         LayerService.AddSourcePlugin(new PostGisSource());
-        LayerService.AddSourcePlugin(new ArangoDBSource());
+        // LayerService.AddSourcePlugin(new ArangoDBSource());
     }
 
     private findColor(content: GeoJSON.FeatureCollection): string {

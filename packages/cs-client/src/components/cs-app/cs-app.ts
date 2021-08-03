@@ -46,7 +46,7 @@ const i18n = new VueI18n({
 
 const vuetifyOpts = {
   icons: {
-    iconfont: 'md' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
+    iconfont: 'mdi' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
   }
   // lang: {
   //   t: (key, ...params) => i18n.t(key, params)
