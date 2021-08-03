@@ -1,6 +1,6 @@
 <template>
   <simplebar class="full-page" v-if="source">
-    <v-data-table :headers="headers" sort-by="count" @click:row="editEntity()" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
+    <v-data-table :headers="headers" sort-by="count" @click:row="editEntity" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>{{$cs.Translate('FEATURE_TYPES')}}</v-toolbar-title>

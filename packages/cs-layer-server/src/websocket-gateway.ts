@@ -8,14 +8,14 @@ import {
     OnGatewayInit
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
-import { Client, Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway()
 export class DefaultWebSocketGateway
     implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
 
     @WebSocketServer() public server: Server;
-    public wsClients: Client[] = [];
+    public wsClients: Socket[] = [];
 
     constructor() {
         Logger.log('---------- init default web socket gateway -------------');
@@ -25,7 +25,7 @@ export class DefaultWebSocketGateway
         Logger.log('------ init -------');
     }
 
-    public handleConnection(client: Client) {
+    public handleConnection(client: Socket) {
         Logger.log(`New connection from: ${client.id}`);
         this.wsClients.push(client);
     }

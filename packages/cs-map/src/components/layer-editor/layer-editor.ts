@@ -10,7 +10,7 @@ import simplebar from 'simplebar-vue';
 @Component({
     name: 'layer-editor',
     props: { widget: null, manager: null },
-    components: { 'cs-form': CsForm, simplebar },
+    components: { CsForm, simplebar },
     template: require('./layer-editor.html')
 } as any)
 export class LayerEditor extends Vue {

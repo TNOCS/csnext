@@ -36,7 +36,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn @keydown.native.alt.78="addEntity(classTypes[0])" @click="addEntity(classTypes[0])" v-else color="primary" v-bind="attrs" class="ml-2" elevation="0" >
+      <v-btn @keydown.native.alt.78="addEntity(classTypes[0])" @click="addEntity(classTypes[0])" v-else color="primary"  class="ml-2" elevation="0" >
             <v-icon>add</v-icon>
             
             {{ $cs.Translate("NEW_ITEM") }}

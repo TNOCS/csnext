@@ -27,7 +27,7 @@
         "typescript-collections": "^1.3.3"
     },
     "devDependencies": {
-        "@types/socket.io-client": "^1.4.34"
+        "@types/socket.io-client": "^1.4.36"
     },
     "gitHead": "7068e77f606a1134679f7716b100e19204f50296"
 }

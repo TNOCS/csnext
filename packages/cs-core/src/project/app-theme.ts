@@ -13,7 +13,7 @@ export class AppTheme {
 
   @FormField({ title: 'Dark mode', type: 'checkbox' })
   public dark?: boolean;
-  public invertLogoInDarkMode?: boolean;
+  public invertLogoInDarkMode?: boolean;  
   public colors?: ThemeColors = {};
   @FormField({
     title: 'Light Colors',
