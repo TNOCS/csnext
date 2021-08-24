@@ -74,6 +74,9 @@ export class CsSidebar extends Vue {
   }
 
   public mounted() {
+    if (this.sideBar?.dashboard) {
+      this.sideBarChanged(this.sideBar.dashboard, undefined);
+    }
     this.dashboardChangedHandle = AppState.Instance.bus.subscribe('dashboards', (a, e) => {
       if (a === AppState.DASHBOARD_CHANGED) {
         this.$forceUpdate();

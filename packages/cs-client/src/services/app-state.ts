@@ -575,15 +575,15 @@ export class AppState extends AppStateBase {
   }
 
   public openLeftSidebar() {
-    if (this.project?.leftSidebar) {
-      this.project.leftSidebar.open = true;
+    if (this.project?.leftSidebar) {      
+      Vue.set(this.project.leftSidebar, 'open', true);
       this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "1");      
     }
   }
 
   public closeLeftSidebar() {
     if (this.project?.leftSidebar) {
-      this.project.leftSidebar.open = false;
+      Vue.set(this.project.leftSidebar, 'open', false);      
       this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "0");
     }
   }
