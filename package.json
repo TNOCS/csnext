@@ -15,6 +15,7 @@
     "scripts": {
         "postinstall": "lerna bootstrap && yarn run link",
         "dev": "lerna run --parallel dev",
+        "dev:minimal": "lerna run --ignore {cs-billboard,cs-docs,cs-log,cs-markdown} --parallel dev ",
         "clean": "lerna run clean & del-cli  node_modules yarn.lock yarn-error.log package-lock.json",
         "link": "lerna run link",
         "build": "lerna run build",
