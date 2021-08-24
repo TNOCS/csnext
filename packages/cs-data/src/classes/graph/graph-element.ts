@@ -1,4 +1,4 @@
-import { FeatureType,GraphSettings, LinkInfo } from '../..';
+import { FeatureType,GraphPreset, LinkInfo } from '../..';
 
   export class GraphElement {
     public id?: string;
@@ -179,7 +179,7 @@ import { FeatureType,GraphSettings, LinkInfo } from '../..';
         console.log('Update derivatives');
     }
 
-    public static getVisibility(e: GraphElement, filters?: GraphSettings): boolean {
+    public static getVisibility(e: GraphElement, filters?: GraphPreset): boolean {
         if (e._included) {
             return true;
         }

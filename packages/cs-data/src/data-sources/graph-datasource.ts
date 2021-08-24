@@ -1,5 +1,6 @@
-import { TimeDataSource, MessageBusManager, Topics, guidGenerator, IFormOptions } from '@csnext/cs-core';
-import { DataSource, FeatureType, FeatureTypes, FeatureTypeStat, GraphElement, GraphSettings, PropertyType, PropertyValueType, WktUtils } from '../';
+import Vue from 'vue';
+import { TimeDataSource, MessageBusManager, Topics, guidGenerator, IFormOptions, AppStateBase } from '@csnext/cs-core';
+import { DataSource, FeatureType, FeatureTypes, GraphPreset, FeatureTypeStat, GraphElement, PropertyType, PropertyValueType, WktUtils } from '../';
 // import { DiagramAction, GraphAction, DiagramElement, ObservationTypes } from "./../classes/";
 // import { AppState } from '@csnext/cs-client';
 import throttle from 'lodash.throttle';
@@ -19,11 +20,15 @@ export class GraphDatasource extends DataSource {
     public static GRAPH_UPDATED = 'graph-updated';
     public static GRAPH_LOADED = 'graph-loaded';
     public static ELEMENT_UPDATED = 'element-updated';
+    public static PRESET_EVENTS = 'preset-events';
+    public static PRESET_ELEMENT_ADDED = 'preset-element-added';
+    public static PRESET_ACTIVATED = 'preset-activated';
+    public static PRESET_CHANGED = 'preset-changed';
 
     public activeId = '';
     public graph: GraphObject = {};    
     public activeElement?: GraphElement;
-    public graphSettings: GraphSettings = new GraphSettings();
+    // public graphSettings: GraphSettings = new GraphSettings();
     public timesource?: TimeDataSource;
     public busManager = new MessageBusManager();    
     private _nodeTypes?: GraphElement[];
@@ -32,6 +37,8 @@ export class GraphDatasource extends DataSource {
     public typeStats: { [key: string]: FeatureTypeStat } = {};
     public fuse?: Fuse<any>;
     public fuseOptions?: Fuse.IFuseOptions<any> = {};
+    public graphPresets: GraphPreset[] = [];
+    public activeGraphPreset?: GraphPreset;
 
     public get observationTypes(): FeatureTypes | undefined {
         return this.featureTypes;
@@ -221,7 +228,7 @@ export class GraphDatasource extends DataSource {
         return res;
     }
 
-    public getHidden(e: GraphElement, filters?: GraphSettings): boolean {
+    public getHidden(e: GraphElement, filters?: GraphPreset): boolean {
         if (!filters || !e.classId) { return false; }
         if (e.class) {
             if (!e.class._visible) { e.class._visible = true; }
@@ -523,10 +530,10 @@ export class GraphDatasource extends DataSource {
         this.busManager.subscribe(this.timesource.events, Topics.TIME_TOPIC, (a, e) => {
             switch (a) {
                 case Topics.TIMELINE_MOVING:
-                    this.graphSettings.focusDate = e;
+                    // this.graphSettings.focusDate = e;
                     this.debounceUpdateTimeGraph(); break;
                 case Topics.TIMELINE_MOVED:
-                    this.graphSettings.focusDate = e;
+                    // this.graphSettings.focusDate = e;
                     this.updateTimeGraph();
                     break;
             }
@@ -603,13 +610,53 @@ export class GraphDatasource extends DataSource {
         }
     }
 
+    public saveGraphPresets() {
+        if (!this.graphPresets) { return; }        
+        localStorage.setItem('graph-presets', JSON.stringify(this.graphPresets.map(p => GraphPreset.export(p))));
+    }
+
+    public loadGraphPresets() {
+        this.graphPresets = [];
+        const presets = localStorage.getItem('graph-presets');
+        if (presets) {            
+            const pConfig = JSON.parse(presets) as string[];
+            for (const config of pConfig) {
+                this.graphPresets.push(GraphPreset.import(config, this));                
+            }
+            if (this.graphPresets.length>0) {
+                this.applyGraphPreset(this.graphPresets[0]);                
+            }
+        } else {
+            const defaultPreset = { ...new GraphPreset(), ...{title: 'new preset', layout: 'fruchterman', gravity: 2, nodeSize: 50}};
+            this.addGraphPreset(defaultPreset);
+        }
+    }
+
+    public addGraphPreset(preset?: GraphPreset, activate = true) {
+        if (!preset) {
+            preset = { ...new GraphPreset(), ...{title: 'new preset'}};
+        }
+        this.graphPresets.push(preset);
+        if (activate) {
+            this.applyGraphPreset(preset)
+        }
+        
+    }
+
+    public applyGraphPreset(preset: GraphPreset) {
+        Vue.set(this, 'activeGraphPreset', preset);
+        // this.activeGraphPreset = preset;        
+        Object.values(this.graph).filter(e => e._included).forEach(e =>  {e._included = false });
+        this.events.publish(GraphDatasource.PRESET_EVENTS, GraphDatasource.PRESET_ACTIVATED, preset);
+    }
+
     public updateSearchIndex() {
         if (!this.fuse) { return; }
         this.fuse ?.setCollection(Object.values(this.graph).filter(e => e.type === 'node'));
     }
 
     public execute(): Promise<GraphDatasource> {
-        return new Promise((resolve) => {
+        return new Promise((resolve) => {            
             resolve(this);
         })
     }
