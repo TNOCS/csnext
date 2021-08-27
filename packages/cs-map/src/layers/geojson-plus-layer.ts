@@ -9,7 +9,8 @@ import extent from '@mapbox/geojson-extent';
 import {
     LngLatBounds,
     StyleFunction,
-    LngLatLike
+    LngLatLike,
+    MapboxGeoJSONFeature
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import { PropertyType, MetaUtils, FeatureTypes, LayerLegend } from '@csnext/cs-data';
@@ -19,7 +20,7 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
 import { LayerStyle } from '../classes/layer-style';
 import { CsWidget } from '@csnext/cs-client';
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
@@ -35,7 +36,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             BrBg: [['#d8b365', '#5ab4ac'], ['#d8b365', '#f5f5f5', '#5ab4ac'], ['#a6611a', '#dfc27d', '#80cdc1', '#018571'], ['#a6611a', '#dfc27d', '#f5f5f5', '#80cdc1', '#018571'], ['#8c510a', '#d8b365', '#f6e8c3', '#c7eae5', '#5ab4ac', '#01665e']],
             PuOr: [['#f1a340', '#998ec3'], ['#f1a340', '#f7f7f7', '#998ec3'], ['#e66101', '#fdb863', '#b2abd2', '#5e3c99'], ['#e66101', '#fdb863', '#f7f7f7', '#b2abd2', '#5e3c99'], ['#b35806', '#f1a340', '#fee0b6', '#d8daeb', '#998ec3', '#542788']],
             Spectral: [['#fc8d59', '#99d594'], ['#fc8d59', '#ffffbf', '#99d594'], ['#d7191c', '#fdae61', '#abdda4', '#2b83ba'], ['#d7191c', '#fdae61', '#ffffbf', '#abdda4', '#2b83ba'], ['#d53e4f', '#fc8d59', '#fee08b', '#e6f598', '#99d594', '#3288bd']]
-
         }
     public iconZoomLevel?: number;
     public isEditable?: boolean;
@@ -51,6 +51,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private enterEvent = this.onEnter.bind(this);
     private leaveEvent = this.onLeave.bind(this);
     private moveEvent = this.onMove.bind(this);
+    private renderEvent = this.onRender.bind(this);
     private mapEventsRegistered = false;
     private symbolLayer?: mapboxgl.Layer;
     private clusterLayer?: mapboxgl.Layer;
@@ -59,6 +60,12 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         closeButton: false
     });
     private hoveredStateId: any = null;
+
+    // CLuster props
+    private markers: any = {};
+    private markersOnScreen: any = {};
+    private pointCounts: number[] = [];
+    private totals: number[] = [];
 
     constructor(init?: Partial<IMapLayer>) {
         super(init);
@@ -82,7 +89,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         this.addSupportLayer(this.symbolLayer as mapboxgl.AnyLayer);
     }
 
-    public addClusterLayer() {
+    public addDefaultClusterLayer() {
         this.clusterLayer = {
             id: 'clusters',
             type: 'circle',
@@ -129,6 +136,146 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         });
     }
 
+    private addCustomClusterLayer() {
+        this.clusterLayer = {
+            id: 'clusters',
+            type: 'circle',
+            source: this._source?.id,
+            filter: ['has', 'point_count'],
+            paint: this.style?.clusterSettings?.paint ?? {
+                'circle-radius': 1
+            }
+        };
+        this.addSupportLayer(this.clusterLayer as mapboxgl.AnyLayer);
+
+        this.addSupportLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: this._source?.id,
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+            }
+        });
+    }
+
+    private updateMarkers() {
+        //https://docs.mapbox.com/mapbox-gl-js/example/cluster-html/
+        if (!this.source || !this._source || !this.MapControl) return;
+        // keep track of new markers
+        let newMarkers = {};
+        // get the features whether or not they are visible (https://docs.mapbox.com/mapbox-gl-js/api/#map#queryrenderedfeatures)
+        const features = this.MapControl?.querySourceFeatures(this._source?.id!);
+        this.totals = this.getPointCount(features);
+        // loop through each feature
+        features.forEach((feature: MapboxGeoJSONFeature) => {
+          const coordinates = (feature.geometry as Point).coordinates as [number, number];
+          // get our properties, which include our clustered properties
+          const props = feature.properties;
+          // continue only if the point is part of a cluster
+          if (!props || !props.cluster) {
+            return;
+          };
+          // if yes, get the cluster_id
+          const id = props.cluster_id;
+          // create a marker object with the cluster_id as a key
+          let marker = this.markers[id];
+          // if that marker doesn't exist yet, create it
+          if (!marker) {
+            // create an html element (more on this later)
+            const el = this.createDonutChart(props);
+            // create the marker object passing the html element and the coordinates
+            marker = this.markers[id] = new mapboxgl.Marker({
+              element: el
+            }).setLngLat(coordinates);
+          }
+          
+          // create an object in our newMarkers object with our current marker representing the current cluster
+          newMarkers[id] = marker;
+          
+          // if the marker isn't already on screen then add it to the map
+          if (!this.markersOnScreen[id]) {
+            marker.addTo(this.MapControl);
+          }
+        });
+        
+        // check if the marker with the cluster_id is already on the screen by iterating through our markersOnScreen object, which keeps track of that
+        for (let id in this.markersOnScreen) {
+          // if there isn't a new marker with that id, then it's not visible, therefore remove it. 
+          if (!newMarkers[id]) {
+            this.markersOnScreen[id].remove();
+          }
+        }
+        // otherwise, it is visible and we need to add it to our markersOnScreen object
+          this.markersOnScreen = newMarkers;
+    }
+
+    private getPointCount(features: MapboxGeoJSONFeature[]) {
+        features.forEach(f => {
+            if (f.properties?.cluster) {
+                this.pointCounts.push(f.properties.point_count)
+            }
+        })
+        return this.pointCounts;
+    }
+      
+    private createDonutChart(props: any) {
+        if (!this.style?.clusterSettings?.clusterProperties) return;
+        const offsets: number[] = [];
+        const colors = this.style?.clusterColors;
+        const data = Object.keys(this.style.clusterSettings.clusterProperties).map((key, index) => {
+            return { type: key, count: props[key], color: colors && colors[key] ? colors[key] : this.colorSchemes.GnBu[4][index % 5] };
+        });
+        console.log(data);
+        let total = 0;
+        for (const d of data) {
+            offsets.push(total);
+            total += d.count;
+        }
+        const fontSize =
+            total >= 500 ? 22 : total >= 100 ? 21 : total >= 20 ? 20 : 18;
+        const r =
+            total >= 500 ? 56 : total >= 100 ? 48 : total >= 20 ? 36 : 28;
+        const r0 = Math.round(r * 0.6);
+        const w = r * 2;
+
+        let html = `<div>
+        <svg width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
+ 
+        for (let i = 0; i < data.length; i++) {
+            html += this.donutSegment(offsets[i] / total, (offsets[i] + data[i].count) / total, r, r0, data[i].color);
+        }
+        html += `<circle cx="${r}" cy="${r}" r="${r0}" fill="rgba(255,255,255,0.6)" />
+        <text dominant-baseline="central" transform="translate(${r}, ${r})">
+        ${total.toLocaleString()}
+        </text>
+        </svg>
+        </div>`;
+
+        const el = document.createElement('div');
+        el.innerHTML = html;
+        return el.firstChild as HTMLElement;
+    }
+
+    private donutSegment(start: number, end: number, r: number, r0: number, color: string) {
+        if (end - start === 1) end -= 0.00001;
+        const a0 = 2 * Math.PI * (start - 0.25);
+        const a1 = 2 * Math.PI * (end - 0.25);
+        const x0 = Math.cos(a0),
+            y0 = Math.sin(a0);
+        const x1 = Math.cos(a1),
+            y1 = Math.sin(a1);
+        const largeArc = end - start > 0.5 ? 1 : 0;
+
+        // draw an SVG path
+        return `<path d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
+            } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${r + r0 * x1
+            } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${r + r0 * y0
+            }" fill="${color}" />`;
+    }
+
     public toggleBookmark(bookmark: mapboxgl.MapboxGeoJSONFeature): boolean {
         if (this.bookmarks.includes(bookmark)) {
             return this.removeBookmark(bookmark);
@@ -160,7 +307,11 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         this.updateImages();
         this.addCircleSymbol();
         if (this.style?.clusterSettings?.cluster) {
-            this.addClusterLayer();
+            if (this.style?.clusterSettings?.clusterProperties) {
+                this.addCustomClusterLayer();
+            } else {
+                this.addDefaultClusterLayer();
+            }
         }
     }
 
@@ -516,6 +667,9 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             map.on('mousemove', id, this.moveEvent);
             map.on('mouseenter', id, this.enterEvent);
             map.on('mouseleave', id, this.leaveEvent);
+            if (this.style?.clusterSettings?.clusterProperties) {
+                map.on('render', this.renderEvent);
+            }
             this.mapEventsRegistered = true;
         }
     }
@@ -529,6 +683,9 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             map.off('mouseenter', id, this.enterEvent);
             map.off('mouseleave', id, this.leaveEvent);
             map.off('mousemove', id, this.moveEvent);
+            if (this.style?.clusterSettings?.clusterProperties) {
+                map.off('render', this.renderEvent);
+            }
         }
         this.mapEventsRegistered = false;
     }
@@ -613,4 +770,9 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             }
         }
     }
+
+    private onRender(e) {
+        if (!this.MapControl || !this._source?.id || !this.MapControl.isSourceLoaded(this._source.id)) return;
+        this.updateMarkers();
+    };
 }

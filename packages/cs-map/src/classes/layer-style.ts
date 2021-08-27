@@ -437,6 +437,7 @@ export class LayerStyle implements ILayerStyle {
     public hoverOpacity?: number = 75;
     public showSymbol?: boolean;
     public clusterSettings?: ClusterSettings;
+    public clusterColors?: Record<string, string>;
     public _opacity?: number;
     public _originalMapbox?: MapboxStyles;
 }

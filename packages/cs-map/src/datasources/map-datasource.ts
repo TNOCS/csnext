@@ -258,7 +258,7 @@ export class MapDatasource extends DataSources {
                     .then(m => resolve(m))
                     .catch(e => reject(e));
             }
-            this.events.publish('layer', 'added', layer);
+            this.events.publish(CsMap.LAYER, CsMap.LAYER_ADDED, layer);
         });
     }
 

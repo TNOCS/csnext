@@ -61,6 +61,7 @@ export class CsMap extends WidgetBase {
     public static LAYER_UPDATED = 'layer.updated';
     public static LAYER_ACTIVATED = 'layer.activated';
     public static LAYER_DISABLED = 'layer.disabled';
+    public static LAYER_ADDED = 'added';
     public static LAYER = 'layer';
     public static SOURCE = 'source';
     public static SOURCE_UPDATED = 'updated';
@@ -179,7 +180,7 @@ export class CsMap extends WidgetBase {
         }
     }
 
-    public addSource(source: LayerSource, clusterSettings?: ClusterSettings) {
+    public addSource(source: LayerSource, clusterSettings?: ClusterSettings, clusterColors?: Record<string, string>) {
         if (source.id) {
             const original = this.map.getSource(source.id);
             if (original !== undefined) {
@@ -248,11 +249,11 @@ export class CsMap extends WidgetBase {
         }
     }
 
-    public initLayerSource(source: LayerSource, clusterSettings?: ClusterSettings): any {
+    public initLayerSource(source: LayerSource, clusterSettings?: ClusterSettings, clusterColors?: Record<string, string>): any {
         // load datasource
         if (source.id && source._data) {
             if (!this.map.isSourceLoaded(source.id)) {
-                this.addSource(source, clusterSettings);
+                this.addSource(source, clusterSettings, clusterColors);
             }
         }
     }
@@ -678,7 +679,7 @@ export class CsMap extends WidgetBase {
                 layer._source.loadSource(layer.featureTypes).then(() => {
                     if (layer.id && layer._source && layer._source.id) {
                         // load source in memory
-                        this.addSource(layer._source, layer.style?.clusterSettings);
+                        this.addSource(layer._source, layer.style?.clusterSettings, layer.style?.clusterColors);
 
                         // check if layer handler has an addlayer function, if so call it
                         if (typeof layer.addLayer === 'function') {
@@ -686,7 +687,7 @@ export class CsMap extends WidgetBase {
                         }
 
                         if (this.manager && this.manager.events) {
-                            this.manager.events.publish('layer', 'added', layer);
+                            this.manager.events.publish(CsMap.LAYER, CsMap.LAYER_ADDED, layer);
                             if (layer._events) {
                                 layer._events.publish(CsMap.LAYER, CsMap.LAYER_ACTIVATED);
                             }

@@ -10,9 +10,12 @@ export type ClusterSettings = {
 
     clusterProperties?: object;
 
+    clusterColors?: object;
+
     paint?: CirclePaint;
 }
 
 export class LayerSource extends DataSource {
     public clusterSettings?: ClusterSettings;
+    public clusterColors?: Record<string, string>;
 }
