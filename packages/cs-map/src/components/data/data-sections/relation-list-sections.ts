@@ -7,7 +7,7 @@ import { SimpleRelationListSection } from "./simple-relation-list-section";
     components: { SimpleRelationListSection },
     props: ["source"],
     template: `<div>  
-  <div class="list-section" v-if="node && node._outgoing">        
+  <div class="list-section" v-if="node">        
     <div v-for="(list,indx) in lists()" :key="indx">      
       <simple-relation-list-section  :source="source" :data="data" :node="node" :section="list" :featureType="featureType" :infoPanel="infoPanel"></simple-relation-list-section>
     </div>
@@ -46,11 +46,11 @@ export class RelationListSections extends BaseSection {
 
         if (this.node._incomming) {
             let incoming = this.node._incomming.filter(
-                i => i.classId && i.from
+                i => i.classId && i.from?._featureType
             );
             for (const i of incoming) {
                 const pt = this.findRelationPropertyType(
-                    this.node._featureType!,
+                    i.from!._featureType!,
                     i.classId!
                 );
                 if (
@@ -60,7 +60,7 @@ export class RelationListSections extends BaseSection {
                 ) {
                     res.push({
                         sectionType: "simple-relation-list-section",
-                        title: pt.label || `${i.from.classId}`,
+                        title: `${i.from._featureType?.title}` || pt.label,
                         filter: i.from.classId
                     });
                 }

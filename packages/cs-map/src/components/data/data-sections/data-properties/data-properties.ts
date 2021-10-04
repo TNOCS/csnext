@@ -13,7 +13,7 @@ import { PropertyDetails} from './property-details';
 @Component({
     name: 'data-properties',
     components: { simplebar },
-    props: ['data', 'section', 'panel', 'feature', 'layer', 'featureType'],
+    props: ['data', 'section', 'panel', 'source', 'feature', 'layer', 'featureType'],
     template: require('./data-properties.html')
 } as any)
 export class DataProperties extends WidgetBase {

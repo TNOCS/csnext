@@ -61,7 +61,6 @@ export class MapDatasource extends DataSources {
     
     private pointPickerHandler?: MessageBusHandle;
     private featurePickerHandler?: MessageBusHandle;
-    public events = new MessageBusService();
     public featureTypes?: FeatureTypes;
     public activeDrawLayer?: IMapLayer;        
     public detailsComponent?: any;

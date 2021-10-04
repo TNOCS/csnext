@@ -33,6 +33,12 @@ export * from './components/data/data-sections/data-properties/property-details'
 export * from './components/data/data-info-panel/data-info-panel';
 export * from './components/data/data-sections/node-link';
 export * from './components/data/data-sections/relation-line-section';
+export * from './components/data/data-sections/relation-list-sections';
+import PropValue from './components/prop-value';
+export { PropValue }
+Vue.component('prop-value', PropValue);
+
+// Vue.component(PropValue)
 
 // components
 export * from './components/data/data-details/data-details';
@@ -70,6 +76,7 @@ export * from './utils/conversion';
 
 import './components/prop-value';
 import './assets/styles.css';
+import propValue from './components/prop-value';
 
 CsMap.AddLayerType(new GeojsonLayer());
 CsMap.AddLayerType(new GeojsonPlusLayer());
