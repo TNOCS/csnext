@@ -1,4 +1,4 @@
-import { Get, Controller, Param, Post, Body, Query, Put, Delete, Header, Res } from '@nestjs/common';
+import { Get, Controller, Param, Logger, Post, Body, Query, Put, Delete, Header, Res } from '@nestjs/common';
 import { FileDefinitionList, FileDefinition } from './../classes/file';
 import { FilesService } from './files.service';
 import { Response } from 'express';
@@ -18,6 +18,28 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('files')
 export class FilesController {
     constructor(private readonly filesService: FilesService) { }
+
+    @Get('/image')
+    @Header('Content-Type', 'image/svg+xml')
+    public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
+        const id = FilesService.getFileId(url);
+        const file = await this.filesService.getFile(id, url);
+        response.send(file);            
+    }
+
+    @ApiOperation({
+        summary: 'Add or update layer definition',
+        description: 'Add or update layer definition'
+    })
+    @ApiParam({
+        name: 'id',
+        description: 'Specify the layer id for the layer you want to get.'
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Returns new file definition',
+        type: FileDefinition
+    })
 
     @ApiOperation({
         summary: 'Get available files',
@@ -45,7 +67,7 @@ export class FilesController {
     @Get(':id')    
     public async file(@Param('id') id: string, @Query('url') url: string, @Res() response: Response )  {
         if (url) {
-            console.log(url);
+            Logger.log(url);
             id = FilesService.getFileId(url);
         }
         try {
@@ -63,29 +85,7 @@ export class FilesController {
     }
     }
 
-    @Get('/image')
-    @Header('Content-Type', 'image/svg+xml')
-    public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
-        const id = FilesService.getFileId(url);
-        console.log(id);
-        console.log('image');
-        const file = await this.filesService.getFile(id);
-        response.send(file);        
-    }
-
-    @ApiOperation({
-        summary: 'Add or update layer definition',
-        description: 'Add or update layer definition'
-    })
-    @ApiParam({
-        name: 'id',
-        description: 'Specify the layer id for the layer you want to get.'
-    })
-    @ApiResponse({
-        status: 200,
-        description: 'Returns new file definition',
-        type: FileDefinition
-    })
+    
     
     @Post('upload')
     @UseInterceptors(FileInterceptor('file'))

@@ -30,36 +30,37 @@ export class FilesService extends AggregateRoot {
 
     
     public loadImage(url: string) : Promise<FileDefinition | undefined> {
-
         return new Promise((resolve, reject) => {
+            
             const id = FilesService.getFileId(url);    
+            console.log('load image: ' + id);
             const path = join(this.absolutePath, id);                
             if (fs.existsSync(path)) {                
                 resolve({id: id, name: id});                
             } else {
                 try {
-                const writer = fs.createWriteStream(path);            
-                
-                const response = axios({
-                    url,
-                    method: 'GET',
-                    responseType: 'stream'
-                }).then(r => {
-                    try {
-                    r.data.pipe(writer);                
-                    writer.on('finish', ()=> { resolve({ id: id, name: id}) })
-                    writer.on('error', () => resolve({ id: '', name: '' }))
-                    } catch (e) {
-                        resolve({ id: '', name: ''})
-                    }
+                    const writer = fs.createWriteStream(path);            
                     
-                }).catch(e => {
-                    resolve({ id: '', name: '' })
-                })
-            }
-            catch(e) {
-                resolve({ id: '', name: ''});
-            }                                
+                    const response = axios({
+                        url,
+                        method: 'GET',
+                        responseType: 'stream'
+                    }).then(r => {
+                        try {
+                            r.data.pipe(writer);                
+                            writer.on('finish', ()=> { resolve({ id: id, name: id}) })
+                            writer.on('error', () => resolve({ id: '', name: '' }))
+                        } catch (e) {
+                            resolve({ id: '', name: ''})
+                        }
+                        
+                    }).catch(e => {
+                        resolve({ id: '', name: '' })
+                    })
+                }
+                catch(e) {
+                    resolve({ id: '', name: ''});
+                }                                
             }
         })            
 
@@ -83,11 +84,17 @@ export class FilesService extends AggregateRoot {
         })
     }
 
-    public getFile(fid: string) : Promise<Buffer | undefined> {
-        return new Promise((resolve, reject) => {            
-            console.log(fid);
+    public getFile(fid: string, url?: string) : Promise<Buffer | undefined> {
+        return new Promise(async (resolve, reject) => {                        
             const fp = join(this.absolutePath, fid);            
-            console.log(fp);
+            if (!fs.existsSync(fp) && url) {
+                try {
+                    await this.loadImage(url);
+                } catch (e) {
+                    Logger.error('unable to get/save image');
+                    resolve(undefined);
+                }
+            }
             if (fs.existsSync(fp)) {
                 try {
                     Logger.log(`Returning file: ${fp}`);
@@ -98,6 +105,7 @@ export class FilesService extends AggregateRoot {
                     reject();
                 }
             } else {
+                
                 Logger.error('file does not exist');
                 resolve(undefined);
             }            
