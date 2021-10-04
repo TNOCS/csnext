@@ -466,7 +466,7 @@ export class AppState extends AppStateBase {
     notification = {
       ...{
         id: guidGenerator(),
-        timeout: 3000,
+        timeout: notification.timeout ?? 3000,
         created: new Date(),
         isRead: false,
         buttonText: 'CLOSE',

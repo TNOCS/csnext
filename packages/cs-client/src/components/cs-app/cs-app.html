@@ -70,7 +70,7 @@
                 {{ $cs.Translate(lastNotification.buttonText) }}</v-btn>
         </v-layout>
     </v-snackbar>
-    <v-snackbars :messages.sync="$cs.notifications" :timeout="5000" bottom right>
+    <v-snackbars :messages.sync="$cs.notifications" bottom right>
         <template v-slot:default="{ message }">
             <h3 class="mb-2">{{ message.title}}</h3>
             {{ message.text }}
