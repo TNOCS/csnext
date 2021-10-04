@@ -10,6 +10,7 @@ export enum PropertyValueType {
     relation = 'relation',
     url = 'url',
     options = 'options',
+    element = "element",
     listitem = 'listitem',
     image = 'image',
     epoch = 'epoch',

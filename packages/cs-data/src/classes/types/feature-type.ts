@@ -10,10 +10,13 @@ export class FeatureType {
     public _baseTypes?: FeatureType[];
     @FormField({ title: 'Icon', type: 'string' })
     public icon?: string;
+    public iconProperty?: string;
     public mode?: string;    
     @FormField({ title: 'Abstract', type: 'checkbox'})
     public abstract?: boolean;  
     public color?: string;
+    @FormField({ title: 'Base uri', type: 'string'})
+    public baseUri?: string;
     public _node?: GraphElement;
     public _nlpType?: string;
     public _edge?: GraphElement;

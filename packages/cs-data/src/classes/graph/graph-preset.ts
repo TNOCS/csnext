@@ -29,6 +29,8 @@ export class GraphPreset {
     public globalFontSize?: number = 12;
     public clusterGravity?: number;
     public unitRadius?: number;
+    public collideStrength?: number;          
+    public alpha?: number;          
 
     
     public _visibleNodes: GraphElement[] = [];

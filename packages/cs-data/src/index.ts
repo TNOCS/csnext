@@ -11,6 +11,7 @@ export * from './classes/data-set';
 export * from './classes/feature-collection';
 export * from './classes/data-collection';
 export * from './classes/layer-legend';
+export * from './classes/filter/graph-filter';
 
 export * from './classes/info-panel/info-panel';
 export * from './classes/info-panel/info-panel-section';

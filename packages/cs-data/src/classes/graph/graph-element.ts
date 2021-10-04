@@ -42,6 +42,7 @@ import { FeatureType,GraphPreset, LinkInfo } from '../..';
     public _derivatives?: GraphElement[];
     public _incomming?: GraphElement[];
     public _outgoing?: GraphElement[];
+    public _elements?: { [key: string] : GraphElement | GraphElement[] }
     
 
     public static outOfRange(e: GraphElement, date: Date) {
@@ -75,7 +76,7 @@ import { FeatureType,GraphPreset, LinkInfo } from '../..';
 
     public static updateOriginals(e: GraphElement) {
         if (e._outgoing) {
-            e._originals = e._outgoing!.filter(r => r ?.to && r.classId === 'HAS_ORIGINAL').map(r => r.to!);
+            e._originals = e._outgoing!.filter(r => r && r.to && r.classId === 'HAS_ORIGINAL').map(r => r.to!);
         }
     }
 

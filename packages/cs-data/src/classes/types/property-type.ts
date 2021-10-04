@@ -17,6 +17,7 @@ export class PropertyType {
 
     static isNumber = [ (v: any) => { return v.type && v.type === PropertyValueType.number}];
     static isString = [ (v: any) => { return v.type && v.type === PropertyValueType.string}];
+    static isEpoch = [ (v: any) => { return v.type && v.type === PropertyValueType.epoch}];
     static isOptions = [ (v: any) => { return v.type && v.type === PropertyValueType.options}];
     static isListItem = [ (v: any) => { return v.type && v.type === PropertyValueType.listitem}];
     static isRelation = [ (v: any) => { return v.type && v.type === PropertyValueType.relation}];
@@ -48,7 +49,9 @@ export class PropertyType {
     public sd?: number;    
     public section?: string;
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
-    public stringFormat?: string;    
+    public stringFormat?: string;  
+    @FormField({ title: 'Date format', type: 'selection', options: ['date', 'time', 'datetime'], defaultValue: 'datetime', requirements: PropertyType.isEpoch, optional: true })
+    public dateFormat?: 'date' | 'time' | 'datetime';
     public title?: string;
     public optionsList?: string;
     public colorScheme?: string | string[];  
