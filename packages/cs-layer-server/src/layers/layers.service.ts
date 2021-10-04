@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Module } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
@@ -19,7 +19,7 @@ import { DebouncedFunc, throttle } from 'lodash';
 import { Debounce } from 'lodash-decorators';
 
 import { Socket } from 'socket.io';
-import { PostGisSource } from '../plugins/sources/postgis';
+// import { PostGisSource } from '../plugins/sources/postgis';
 // import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
 import { v1 as uuidv1} from 'uuid';
@@ -27,9 +27,7 @@ import { DefaultWebSocketGateway } from '../websocket-gateway';
 import Axios from 'axios';
 import AsyncLock from 'async-lock';
 import { AggregateRoot } from '@nestjs/cqrs';
-import { FeatureUpdatedEvent } from '../events/feature-events';
 import { QueryOptions } from '../classes/query-options';
-
 
 @Injectable()
 export class LayerService extends AggregateRoot {
@@ -931,7 +929,7 @@ export class LayerService extends AggregateRoot {
     private initPlugins() {
         LayerService.AddSourcePlugin(new KmlFileSource());
         LayerService.AddSourcePlugin(new GeojsonSource());
-        LayerService.AddSourcePlugin(new PostGisSource());
+        // LayerService.AddSourcePlugin(new PostGisSource());
         // LayerService.AddSourcePlugin(new ArangoDBSource());
     }
 
