@@ -9,9 +9,7 @@ export class MessageBusManager {
     };
   } = {};
 
-  public start() {
-
-  }
+  public start() {}
 
   public stop() {
     for (const id in this.busHandlers) {
