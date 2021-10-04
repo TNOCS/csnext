@@ -249,7 +249,7 @@ import simplebar from "simplebar-vue";
 import { DocDatasource } from "./../../datasources/doc-datasource";
 import { GraphDocument } from "./../../classes/document/graph-document";
 import { ViewType } from "./../../classes/document/view-type";
-import { defaultExtensions } from "@tiptap/starter-kit";
+import StarterKit from "@tiptap/starter-kit";
 import TextExtension from "./plugins/text-extension";
 import ParagraphExtension from "./plugins/paragraph-extension";
 import Highlight from "@tiptap/extension-highlight";
@@ -593,7 +593,7 @@ export default class DocumentViewer extends WidgetBase {
       }
       this.editor = new Editor({
         extensions: [
-          ...defaultExtensions(),
+          StarterKit,
           // SmilieReplacer,
           TextExtension,
           ParagraphExtension,

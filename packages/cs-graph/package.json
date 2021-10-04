@@ -20,37 +20,43 @@
         "access": "public"
     },
     "dependencies": {
+        "@ag-grid-community/core": "26.0.0",
+        "@ag-grid-community/vue": "26.0.0",
+        "@antv/g6": "4.3.6",
         "@csnext/cs-client": "^0.0.131",
-        "@csnext/cs-data": "^0.0.131",
         "@csnext/cs-core": "^0.0.131",
+        "@csnext/cs-data": "^0.0.131",
         "@csnext/cs-form": "^0.0.131",
         "@csnext/cs-map": "0.0.131",
-        "lodash.throttle": "4.1.1",
-        "interactjs": "1.10.11",
-
-
-        "@antv/g6": "4.3.4",
-        "vueisotope": "3.1.2",
-        "isotope-packery": "2.0.1",
-        "isotope-masonry-horizontal": "2.0.1",
-        "@tiptap/vue-2": "2.0.0-beta.42",
-        "@tiptap/starter-kit": "2.0.0-beta.89",
+        "@tiptap/extension-bubble-menu": "2.0.0-beta.31",
+        "@tiptap/extension-code-block-lowlight": "2.0.0-beta.35",
         "@tiptap/extension-highlight": "2.0.0-beta.15",
-        "@tiptap/extension-bubble-menu": "2.0.0-beta.25",
-        "@tiptap/suggestion": "2.0.0-beta.61",
+        "@tiptap/extension-placeholder": "2.0.0-beta.28",
+        "@tiptap/starter-kit": "2.0.0-beta.101",
+        "@tiptap/suggestion": "2.0.0-beta.68",
+        "@tiptap/vue-2": "2.0.0-beta.48",
         "@turf/distance": "^6.5.0",
+        "ag-grid-community": "26.0.0",
+        "ag-grid-vue": "26.0.0",
+        "global": "^4.4.0",
+        "interactjs": "1.10.11",
+        "isotope-masonry-horizontal": "2.0.1",
+        "isotope-packery": "2.0.1",
+        "lodash.throttle": "4.1.1",
         "tippy.js": "6.3.1",
-        "@tiptap/extension-code-block-lowlight": "2.0.0-beta.33",
-        "@tiptap/extension-placeholder": "2.0.0-beta.26"
+        "vueisotope": "3.1.2",
+        "webpack": "4.46.0"
     },
     "devDependencies": {
+        "@interactjs/types": "1.10.11",
         "@types/lodash.throttle": "^4.1.6",
         "@types/prosemirror-model": "1.13.0",
+        "@types/turf": "3.5.32",
         "vue-loader": "15.9.7",
-        "vue-template-compiler": "2.6.14",
-        "@interactjs/types": "1.10.11",
-        "@types/turf": "3.5.32"
+        "vue-template-compiler": "2.6.14"
     },
-    "peerDependencies": {},
+    "peerDependencies": {
+
+    },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

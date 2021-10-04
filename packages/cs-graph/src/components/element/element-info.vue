@@ -17,7 +17,10 @@
       </v-menu>
       <v-toolbar-title>{{
         activeElement.properties.name || activeElement._title
-      }}</v-toolbar-title>
+      }}
+      <br/>
+      <div class="type-sub-title">{{ activeElement._featureType.title}}</div>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -38,7 +41,7 @@
       </v-btn>
 
       <v-menu :close-on-content-click="false" offset-y>
-        <template v-slot:activator="{ on, attrs }">
+        <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>add</v-icon>
           </v-btn>
@@ -103,141 +106,12 @@
           ></cs-form>
         </v-tab-item>
         <v-tab-item value="tab-RELATIONS" class="full-height">
-          <div
-            v-if="activeElement && activeElement.type === 'node'"
-            class="element-info-facts"
+          <relation-list-sections class="ma-2"
+            :node="activeElement"
+            :source="dataSource"
           >
-            <div v-for="link in getLinks(activeElement)" :key="link.id">
-              <v-layout v-if="link && link.element" style="max-height: 30px">
-                <!-- <v-checkbox
-                  v-model="link.element.properties.verified"
-                  color="getColor(link.element)}"
-                ></v-checkbox> -->
-                <!-- <div class="link-avatar" :style="{'background': getColor(link.element)}"></div> -->
-                <div v-if="link.direction === 'from'">
-                  <!-- <span class="from-tag">{{ element._title }}</span>&nbsp; -->
-                  <a
-                    class="ei-link rel-tag"
-                    v-if="link.link"
-                    @click="selectElement(link.link)"
-                    >{{ link.link.classId }}</a
-                  >&nbsp;
-                  <a
-                    class="ei-link rel-tag"
-                    v-if="link.element"
-                    @click="selectElement(link.element)"
-                    >{{ link.element._title }}</a
-                  >
-                  <a
-                    class="ei-link to-tag"
-                    v-if="
-                      link.element.properties &&
-                      link.element.properties.external
-                    "
-                    @click="selectExternal(link.element)"
-                  >
-                    <v-icon>open_in_browser</v-icon>
-                  </a>
-                  <!-- {{ JSON.stringify(link) }} -->
-                </div>
-                <div v-if="link.direction === 'to'">
-                  <a
-                    class="ei-link to-tag"
-                    v-if="link.element"
-                    @click="selectElement(link.element)"
-                    >{{ link.element.classId }}</a
-                  >
-                  <a
-                    class="ei-link rel-tag"
-                    v-if="
-                      link.element.properties &&
-                      link.element.properties.external
-                    "
-                    @click="selectExternal(link.element)"
-                  >
-                    <v-icon>open_in_browser</v-icon> </a
-                  >&nbsp;
-                  <a
-                    class="ei-link rel-tag"
-                    v-if="link.link"
-                    @click="selectElement(link.link)"
-                    >{{ link.link._title }}</a
-                  >
-                </div>
-                <v-spacer></v-spacer>
-                <span v-if="link.element && link.element.properties">
-                  <v-tooltip
-                    bottom
-                    v-if="link.element.properties.hasOwnProperty('lat')"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">map</v-icon>
-                    </template>
-                    {{ link.element.properties.lat }} -
-                    {{ link.element.properties.lon }}
-                  </v-tooltip>
-                  <!-- <template v-if="link.element.property." -->
-                  <v-tooltip
-                    bottom
-                    v-if="link.element.properties.hasOwnProperty('reliability')"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">remove_red_eye</v-icon>
-                    </template>
-                    {{ link.element.properties.reliability }}
-                  </v-tooltip>
-                  <v-tooltip
-                    bottom
-                    v-if="link.element.properties.hasOwnProperty('start')"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">date_range</v-icon>
-                    </template>
-                    {{ link.element.properties.start }} -
-                    <span v-if="link.element.properties.stop">{{
-                      link.element.properties.stop
-                    }}</span>
-                    <span v-else>now</span>
-                  </v-tooltip>
-                  <v-tooltip
-                    bottom
-                    v-if="link.element.properties.hasOwnProperty('source')"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">insert_link</v-icon>
-                    </template>
-                    {{ link.element.properties.source }}
-                  </v-tooltip>
-                </span>
-              </v-layout>
-              <!-- {{ JSON.stringify(link.element.properties)}} -->
-            </div>
-          </div>
-          <div v-if="activeElement.type === 'edge'">
-            <!-- <div v-if="activeElement.class">
-        <a @click="selectElement(activeElement.class)">{{activeElement.class._title}}</a>        
-        {{ activeElement._title }}
-        <a
-          @click="selectElement(activeElement.class)"
-        >{{activeElement.class._title}}</a>
-            </div>-->
-            <div>
-              <a @click="selectElement(activeElement.from)">{{
-                activeElement.from._title
-              }}</a
-              >&nbsp;
-              <span v-if="activeElement.class">
-                <a @click="selectElement(activeElement.class)">{{
-                  activeElement.class
-                }}</a>
-              </span>
-              <span class="short-title" v-else>{{ activeElement._title }}</span
-              >&nbsp;
-              <a @click="selectElement(activeElement.to)">{{
-                activeElement.to._title
-              }}</a>
-            </div>
-          </div>
+          </relation-list-sections>
+                             
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
           <v-list two-line subheader>
@@ -320,6 +194,10 @@
   margin: 4px;
 }
 
+.type-sub-title {
+  font-size: 14px;
+}
+
 .short-title {
   white-space: nowrap;
   overflow: hidden;
@@ -386,13 +264,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { WidgetBase, IframeWidget } from "@csnext/cs-client";
-import { FeatureType, GraphElement, LinkInfo } from "@csnext/cs-data";
+import { FeatureType, GraphDatasource, GraphElement, LinkInfo } from "@csnext/cs-data";
 import simplebar from "simplebar-vue";
 import { PropertyType, PropertyValueType } from "@csnext/cs-data";
-import { DataInfoPanel } from "@csnext/cs-map";
+import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
 import { IFormOptions, IWidget } from "@csnext/cs-core";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes";
+
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
 export class PropertyValue {
@@ -402,7 +281,7 @@ export class PropertyValue {
 }
 
 @Component({
-  components: { simplebar, IframeWidget, DataInfoPanel },
+  components: { simplebar, IframeWidget, DataInfoPanel, RelationListSections },
 })
 export default class ElementInfo extends WidgetBase {
   public instancesCount = 0;
@@ -575,8 +454,7 @@ export default class ElementInfo extends WidgetBase {
     } else {
       this.widget.options.title = this.activeElement._title;
     }
-    this.updateForm();
-    // GraphElement.updateDerivatives(this.element);
+    this.updateForm();    
     this.$forceUpdate();
   }
 
@@ -649,6 +527,15 @@ export default class ElementInfo extends WidgetBase {
         this.activeElement = this.dataSource.activeElement;
         this.updateForm();
       }
+
+      this.busManager.subscribe(this.dataSource.events, GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
+        if (a === GraphDatasource.ELEMENT_UPDATED) {
+          if (e.id === this.activeElement?.id) {
+            this.updateElement();
+          }
+        }
+      })
+      
       this.dataSource.bus.subscribe(
         "element",
         (a: string, data: GraphElement) => {

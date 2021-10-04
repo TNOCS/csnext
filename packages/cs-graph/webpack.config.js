@@ -8,6 +8,8 @@ const config = buildConfig(
         '@csnext/cs-form': '@csnext/cs-form',
         '@csnext/cs-data': '@csnext/cs-data',
         '@csnext/cs-map': '@csnext/cs-map',
+        'ag-grid-vue': 'ag-grid-vue',
+        'ag-grid-community': 'ag-grid-community',
         axios: 'axios'
     },
     'csgraph'

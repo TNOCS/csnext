@@ -210,12 +210,9 @@ export default class RelationEditor extends Vue {
           fromId: this.node!.id,
           toId: n.id,
           classId: this.relation!.type,
-        } as GraphElement)
+        } as GraphElement, true)
           .then(async (e) => {
-            if (this.graph) {
-              await this.graph.addEdge(e);
-              await this.graph.parseEntities();
-              await this.graph.updateEdges();
+            if (this.graph) {              
               this.graph.openElement(n);
               this.$forceUpdate();
             }
@@ -273,11 +270,9 @@ export default class RelationEditor extends Vue {
         fromId: this.node.id,
         toId: this.newRelation.id,
         classId: this.relation.type,
-      } as GraphElement)
+      } as GraphElement, true)
       .then(async (e) => {
-        await this.graph!.addEdge(e);
-        await this.graph!.updateEdges();
-        await this.graph!.parseEntities();        
+        
       })
       .catch((e) => {})
       .finally(() => {
@@ -316,10 +311,7 @@ export default class RelationEditor extends Vue {
         toId: this.activeRelation.id,
         classId: this.relation.type,
       } as GraphElement)
-      .then(async (e) => {
-        await this.graph!.addEdge(e);
-        await this.graph!.updateEdges();
-        await this.graph!.parseEntities();
+      .then(async (e) => {        
         this.getActiveRelation();
       })
       .catch((e) => {})

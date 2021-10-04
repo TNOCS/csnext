@@ -58,7 +58,7 @@
       <v-tab-item value="tab-items">
         <simplebar style="background: red !important; height: 100%">
           <cs-widget
-            :widget="elementsWidget"
+            :widget="elementsWidget"            
             style="height: calc(100em - 465px)"
           ></cs-widget>
         </simplebar>
@@ -214,7 +214,7 @@ export default class FeatureTypeEditor extends WidgetBase {
     component: GraphElements,
     datasource: this.widget?.datasource,
     data: {
-      nodeFilters: "document",
+      classFilter: this.type?.type,
     },
   } as IWidget;
 
@@ -267,10 +267,24 @@ export default class FeatureTypeEditor extends WidgetBase {
           title: "TITLE",
           _key: "title",
           type: "string",
+          hint: "title"
         },
         {
           title: "ICON",
           _key: "icon",
+          type: "string",
+        },
+        {
+          title: "ICON_PROPERTY",
+          _key: "iconProperty",
+          type: "string"
+          // options: () => {
+          //   return this.type?.properties ? this.type.properties.filter(pt => pt.type === 'image').map(pt => pt.key) : [];
+          // },
+        },
+        {
+          title: "BASE_URI",
+          _key: "baseUri",
           type: "string",
         },
         {
@@ -452,7 +466,7 @@ export default class FeatureTypeEditor extends WidgetBase {
     const newEntity = {
       id: "new entity",
       entity: "new entity",
-      ent_class: "WEAPONS",
+      ent_class: "",
       aka: [],
     };
     this.source?.searchEntities?.push(newEntity);

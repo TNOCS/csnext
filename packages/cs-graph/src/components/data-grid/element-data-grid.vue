@@ -1,8 +1,8 @@
 <template>
-  <div v-if="featureType">
+  <div v-if="featureType" class="data-grid-component">
     <div class="data-grid-title">{{ options.title }}</div>
-    <v-layout class="ma-2">      
-      <v-btn-toggle dense v-model="options.defaultView" mandatory >        
+    <v-layout class="ma-2">
+      <v-btn-toggle dense v-model="options.defaultView" mandatory>
         <v-btn value="table">
           <v-icon>list</v-icon>
         </v-btn>
@@ -19,9 +19,17 @@
           <v-icon>account_tree</v-icon>
         </v-btn>
       </v-btn-toggle>
-      <v-menu offset-y v-if="classTypes.length>1" >
+      
+      <v-menu offset-y v-if="classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])" >
+          <v-btn
+            color="primary"
+            v-bind="attrs"
+            class="ml-2"
+            elevation="0"
+            v-on="on"
+            @keydown.native.alt.78="addEntity(classTypes[0])"
+          >
             <v-icon>add</v-icon>
             {{ $cs.Translate("NEW_ITEM") }}
           </v-btn>
@@ -36,12 +44,38 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn @keydown.native.alt.78="addEntity(classTypes[0])" @click="addEntity(classTypes[0])" v-else color="primary"  class="ml-2" elevation="0" >
-            <v-icon>add</v-icon>
-            
-            {{ $cs.Translate("NEW_ITEM") }}
+      <v-btn
+        @keydown.native.alt.78="addEntity(classTypes[0])"
+        @click="addEntity(classTypes[0])"
+        v-else
+        color="primary"
+        class="ml-2"
+        elevation="0"
+      >
+        <v-icon>add</v-icon>
+
+        {{ $cs.Translate("NEW_ITEM") }}
+      </v-btn>
+      <v-btn v-if="options.defaultView == 'tree'"                        
+            class="ml-2"
+            @click="expandTree()"
+            elevation="0"            
+          >
+            <v-icon>expand_more</v-icon>
+            {{ $cs.Translate("EXPAND_ALL") }}
           </v-btn>
-      <v-menu offset-y v-if="options.defaultView !== 'calendar'">
+          <v-btn v-if="options.defaultView == 'tree'"            
+            
+            class="ml-2"
+            @click="collapseTree()"
+            elevation="0"
+                   
+          >
+            <v-icon>expand_less</v-icon>
+            {{ $cs.Translate("COLLAPSE_ALL") }}
+          </v-btn>
+      
+      <!-- <v-menu offset-y v-if="options.defaultView !== 'calendar'">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" class="ml-2" elevation="0" v-on="on">
             <v-icon>sort</v-icon>
@@ -57,7 +91,7 @@
             <v-list-item-title>{{ item.label }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
       <!-- <v-menu offset-y v-if="options.defaultView === 0">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" class="ma-2" v-on="on">
@@ -96,9 +130,21 @@
     </v-menu> -->
     </v-layout>
 
-    <template v-if="options.defaultView === 'table'">
-      <simplebar class="data-table-scroll">
-        <v-data-table
+    <template v-if="options.defaultView === 'table'">      
+        <ag-grid-vue
+          class="table-grid"
+          :class="{'ag-theme-alpine-dark': $cs.project.theme.dark, 'ag-theme-alpine': !$cs.project.theme.dark}"
+          :columnDefs="columnDefs"          
+          :defaultColDef="defaultColDef"
+          :rowData="rowData"
+          rowSelection="single"
+          @selection-changed="onGridSelection"
+          @cell-value-changed="onCellValueChanged"
+          @grid-ready="onGridReady"
+        >
+        </ag-grid-vue>
+
+        <!-- <v-data-table
           :headers="headers"
           :items="items"
           item-key="id"
@@ -120,9 +166,7 @@
               @input="selectElement(item, $event)"
             ></v-simple-checkbox>
           </template>
-          <!-- <template v-slot:item>
-        <element-value></element-value>
-      </template> -->
+  
 
           <template v-slot:body="props">
             <tbody>
@@ -193,8 +237,7 @@
               {{ group }} ({{ items.length }})
             </th>
           </template>
-        </v-data-table>
-      </simplebar>
+        </v-data-table> -->      
     </template>
 
     <template v-if="options.defaultView === 'cards'">
@@ -253,7 +296,7 @@
     </simplebar> -->
     </template>
 
-    <template v-if="options.defaultView === 'calendar'">
+    <div class="calendar-view" v-if="options.defaultView === 'calendar'">
       <v-toolbar flat>
         <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
           Today
@@ -310,13 +353,14 @@
           @click:more="viewDay"
           
           @change="updateRange" -->
-    </template>
+    </div>
     <template v-if="options.defaultView === 'tree'">
       <div>
         <v-treeview
           v-model="selectedTree"
           return-object
           open-on-click
+          ref="treeView"
           selection-type="independent"
           :items="treeItems"
           activatable
@@ -337,8 +381,8 @@
                 ><v-icon>scatter_plot</v-icon></v-btn
               >
               <v-menu offset-y v-if="options.defaultView === 'tree'">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" icon
+                <template v-slot:activator="{ on }">
+                  <v-btn  v-on="on" icon
                     ><v-icon>add</v-icon></v-btn
                   >
                 </template>
@@ -363,7 +407,18 @@
               <v-icon v-if="item.entity._isLinked">check_circle</v-icon>
               <v-icon v-else>panorama_fish_eye</v-icon>
             </v-btn>
-            {{ item.name }}
+            <v-btn
+              icon
+              @click.stop="toggleCheckbox(item.entity)"
+              v-if="options.checkboxProperty"
+            >
+            {{ item.entity[options.checkboxProperty] }}
+              <v-icon v-if="item.entity.properties[options.checkboxProperty]">check_circle</v-icon>
+              <v-icon v-else>panorama_fish_eye</v-icon>
+            </v-btn>
+            <span @click="selectTableItem(item.entity)">
+            {{ item.entity.properties.name }}
+            </span>
             <!-- </v-btn> :value="item.entity._isLinked !== undefined" class="mt-3 ml-3 pa-0" :label="item.name"></v-checkbox> -->
             <!-- {{ item.entity._isLinked !== undefined}} -->
             <!-- <span class="tree-item-label" @click="selectEntity(item.entity)">{{item.name}}</span> -->
@@ -390,12 +445,19 @@
   </div>
 </template>
 
+
+
 <style scoped>
+
+
 .data-table-scroll {
   height: calc(100vh - 400px) !important;
 }
 
-
+.ag-root-wrapper {
+  border: 0 !important;
+  background: red !important;
+}
 
 .data-row {
   padding: 4px !important;
@@ -410,6 +472,19 @@
   font-size: 26px;
   font-weight: 600;
   padding: 10px;
+}
+
+.data-grid-component {
+  height: calc(100% - 120px)
+}
+
+.calendar-view {
+  height: calc(100% - 250px)
+}
+
+.table-grid {
+  width: 100%;
+  height: calc(100%);
 }
 
 .data-row:hover {
@@ -447,12 +522,17 @@
 
 <script lang="ts">
 import { Component, Ref, Watch } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
+import { AppState, WidgetBase } from "@csnext/cs-client";
 import { DataInfoPanel, NodeLink } from "@csnext/cs-map";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import OptionsFilter from "./options-filter.vue";
 
 // import { FeatureType } from "../../classes";
 import {
   FeatureType,
+  GraphDatasource,
   GraphElement,
   PropertyType,
   PropertyValueType,
@@ -460,18 +540,36 @@ import {
 import moment from "moment";
 import simplebar from "simplebar-vue";
 import isotope from "vueisotope";
-import { guidGenerator, WidgetOptions } from "@csnext/cs-core";
-import { DataGridOptions, GridView } from "./data-grid-options";
-import ElementValue from "./element-value.vue";
+import { AppStateBase, guidGenerator, WidgetOptions } from "@csnext/cs-core";
 import Vue from "vue";
-// import NewElement from "./new-element.vue";
-import { DocDatasource } from "./../..";
-import Placeholder from "@tiptap/extension-placeholder";
+import { PropValue } from "@csnext/cs-map";
+import GridPropValue from "./grid-prop-value";
+import OptionsCellEditor from "./options-cell-editor.vue"
+import NodeLinkCellEditor from './node-link-cell-editor.vue';
+import { AgGridVue } from "ag-grid-vue";
+import { CellValueChangedEvent, ColDef, GridApi } from "ag-grid-community";
+import GridRowActions from "./grid-row-actions.vue";
+import DateCellEditor from "./date-cell-editor.vue";
+import { DataGridOptions, DocDatasource, GridView } from "../..";
+// import Placeholder from "@tiptap/extension-placeholder";
 require("isotope-packery");
 
 @Component({
   name: "element-data-grid",
-  components: { simplebar, DataInfoPanel, NodeLink, isotope, ElementValue },
+  components: {
+    "date-cell-editor": DateCellEditor,
+    "grid-prop-value": GridPropValue,
+    "grid-row-actions": GridRowActions,
+    "options-cell-editor": OptionsCellEditor,
+    "node-link-cell-editor": NodeLinkCellEditor,
+    "options-filter": OptionsFilter,
+    PropValue,
+    AgGridVue,
+    simplebar,
+    DataInfoPanel,
+    NodeLink,
+    isotope,
+  },
 })
 export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
@@ -482,7 +580,7 @@ export default class ElementDataGrid extends WidgetBase {
   public classTypes: FeatureType[] = [];
   public sortOptions?: PropertyType[] | null = null;
   public groupOptions?: PropertyType[] | null = null;
-  public groupKey?: null | string = null;
+  public groupKey?: null | string = null;  
   public focus = "";
   public search: string = "";
   public selectedTree?: any = [];
@@ -491,6 +589,15 @@ export default class ElementDataGrid extends WidgetBase {
   public iso?: any;
   @Ref("calendar")
   public calendar?: any;
+  @Ref("treeView")
+  public treeView?: any;
+
+  public gridApi?: GridApi;
+  public columnApi: any | null = null;
+
+  public rowData: any | null = [];
+
+  public columnDefs: ColDef[] | null = null;
 
   public typeToLabel = {
     month: "Month",
@@ -500,6 +607,19 @@ export default class ElementDataGrid extends WidgetBase {
   };
 
   public headers: any[] = [];
+  public autoGroupColumnDef = {
+    headerName: "PMSEII",
+    field: "properties.PMSEII",
+    minWidth: 250,
+    cellRenderer: "agGroupCellRenderer",
+    cellRendererParams: { checkbox: true },
+  };
+  public defaultColDef = {
+    sortable: true,
+    resizable: true,
+    floatingFilter: true,
+    filter: true,
+  } as ColDef;
 
   public treeItems: any[] = [];
   public upToDate = false;
@@ -510,6 +630,31 @@ export default class ElementDataGrid extends WidgetBase {
 
   public isLinked(element: GraphElement) {
     return true;
+  }
+
+  public onCellValueChanged(event: CellValueChangedEvent) {    
+    if (!this.source || !event.data) { return; }
+    console.log(event.data.properties.end);
+    this.source.saveNode(event.data);
+    
+  }
+
+  public onGridSelection() {
+    if (!this.gridApi) {
+      return;
+    }
+    const rows = this.gridApi.getSelectedRows();
+    if (rows.length === 1) {
+      this.selectEntity(rows[0]);
+    }
+  }
+
+  public onGridReady(params: any) {
+    this.gridApi = params.api as GridApi;
+    this.columnApi = params.columnApi;
+    if (this.gridApi) {
+      this.gridApi.sizeColumnsToFit();
+    }
   }
 
   public selectEntity(element: GraphElement) {
@@ -548,6 +693,11 @@ export default class ElementDataGrid extends WidgetBase {
     this.source.createKGView([element]);
   }
 
+  @Watch("selectedTree")
+  public treeSelectionChanged() {
+    console.log(this.selectedTree);
+  }
+
   @Watch("options.defaultView")
   public viewChanged() {
     this.updateEntities(true);
@@ -557,30 +707,52 @@ export default class ElementDataGrid extends WidgetBase {
     console.log(this.selectedTree);
   }
 
+  public expandTree() {
+    (this.$refs.treeView as any).updateAll(true);
+  }
+
+  public collapseTree() {
+     (this.$refs.treeView as any).updateAll(false);
+  }
+
+  public async toggleCheckbox(entity: GraphElement) {
+ if (!this.source || !entity.properties || !this.options?.checkboxProperty) {
+      return;
+    }
+    // entity.properties[this.options.checkboxProperty] = (entity.properties[this.options.checkboxProperty] === true) ? false : true;
+    Vue.set(entity.properties, this.options.checkboxProperty, (entity.properties[this.options.checkboxProperty] === true) ? false : true)
+    this.source.saveNode(entity);
+    
+  }
+
   public async toggleLinked(entity: GraphElement) {
     if (!this.source) {
       return;
     }
-    if ((entity as any)._isLinked) {
-      await this.source.removeEdge((entity as any)._isLinked);
-      Vue.set(entity, "_isLinked", undefined);
+    if ((entity as any)._isLinked) {      
+      this.source.removeEdge((entity as any)._isLinked).then(r => {
+        Vue.set(entity, "_isLinked", undefined);
+        this.updateEntities(true);
+      }).catch(e => {
+        console.log('Error removing edge');
+      })
+      
+      
       // (entity as any)._isLinked = undefined;
-    } else {
+    } else {      
       if (
         entity.id &&
         this.options.relationToggle?.fromId &&
         this.options.relationToggle.relationClassId
-      ) {
-        const linkEdge = await this.source.addNewEdge({
+      ) {        
+        this.source.addNewEdge({
           fromId: this.options.relationToggle.fromId,
           toId: entity.id,
           classId: this.options.relationToggle.relationClassId,
-        } as GraphElement);
-        if (linkEdge) {
-          await this.source.addEdge(linkEdge);
-        }
-        Vue.set(entity, "_isLinked", linkEdge);
-        // (entity as any)._isLinked = linkEdge;
+        } as GraphElement, true).then(linkEdge => {
+          Vue.set(entity, "_isLinked", linkEdge);      
+          this.updateEntities(true);
+        });        
       }
     }
     // this.updateEntities(true);
@@ -614,7 +786,6 @@ export default class ElementDataGrid extends WidgetBase {
       value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     );
   }
-
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
@@ -659,6 +830,14 @@ export default class ElementDataGrid extends WidgetBase {
       this.options.selectedHeaders = [{ key: "name" }];
     }
     this.headers = [];
+    this.columnDefs = [];
+    this.autoGroupColumnDef = {
+      headerName: "Athlete",
+      field: "athlete",
+      minWidth: 250,
+      cellRenderer: "agGroupCellRenderer",
+      cellRendererParams: { checkbox: true },
+    };
     this.headers.push({ text: "", value: "icon", sortable: false });
     for (const header of this.options.selectedHeaders) {
       if (header.key && this.potentialProperties.hasOwnProperty(header.key)) {
@@ -673,8 +852,89 @@ export default class ElementDataGrid extends WidgetBase {
           width: header.width,
           propType: prop,
         });
+        let column = {
+          field: `properties.${prop.key}`,
+          headerName: prop.label,
+
+          // cellRenderer: 'daysFrostRenderer',
+          // cellRendererParams: {rendererImage: "frost.png"} ,
+          cellRenderer: "grid-prop-value",
+          // cellRendererParams: (d) => {
+          //   debugger;
+          //   return {'test': 'test'};
+          // },
+          editable: true,
+        } as ColDef;
+        if (prop.type === "epoch") {
+          column.cellEditor = 'date-cell-editor';
+          column.cellEditorParams = {
+            updatedCell: (row: GraphElement) => {              
+              this.source!.saveNode(row);
+              // this.updateEntities();
+            }
+          }
+          column.filter = "agDateColumnFilter";
+          column.filterParams = {
+            comparator: (epochCellFilter: any, cellValue: any) => {
+              var cellDate = new Date(cellValue);
+              
+              if (epochCellFilter.getTime() === cellDate.getTime()) {
+                return 0;
+              }
+              if (cellDate < epochCellFilter) {
+                return -1;
+              }
+              if (cellDate > epochCellFilter) {
+                return 1;
+              }
+            },
+            browserDatePicker: true,
+            minValidYear: 2000,
+          };
+        }     
+        if (prop.type === 'relation') {
+          column.cellEditor = 'node-link-cell-editor';
+          column.cellEditorParams = {
+            source: this.source,
+            updatedCell: (row: GraphElement) => {
+              this.source!.saveNode(row);
+            }
+          }
+        }
+        if (prop.type === 'options') {
+          column.cellEditor = 'options-cell-editor';
+          column.floatingFilter = true;
+          column.floatingFilterComponentFramework = 'options-filter';          
+          column.filterFramework = 'options-filter';
+          column.floatingFilterComponentParams = {
+            suppressFilterButton: true,
+            propType : prop
+          };
+          column.cellEditorParams = {
+            source: this.source,
+            updatedCell: (row: GraphElement) => {              
+              this.source!.saveNode(row);
+            }
+          }
+        }
+
+        // filter: 'agDateColumnFilter',
+        this.columnDefs.push(column);
       }
     }
+    this.columnDefs.push({
+      floatingFilter: false,
+      sortable: false,
+      cellRenderer: 'grid-row-actions',
+      cellRendererParams: {
+        graphNode: (row: GraphElement) => {          
+          this.graphNode(row)
+        },
+        delete: (row: GraphElement) => {
+          this.removeEntity(row);
+        }
+      }
+    })
     this.headers.push({ text: "Actions", value: "actions", sortable: false });
     this.$forceUpdate();
   }
@@ -701,6 +961,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.groupKey = `properties.${this.group.key}`;
     this.update();
   }
+  
 
   public selectTableItem(item: GraphElement) {
     if (!this.source) {
@@ -751,10 +1012,16 @@ export default class ElementDataGrid extends WidgetBase {
   public async addEntity(type: FeatureType, parent?: GraphElement) {
     if (!this.source) {
       return;
-    }
+    }    
     let placeholder = `new ${type.title}`;
     if (this.options.askForName) {
-      let name = await $cs.triggerInputDialog(placeholder, "enter new name", "", placeholder);
+      
+      $cs.triggerInputDialog(
+        placeholder,
+        "enter new name",
+        "",
+        placeholder
+      ).then(name => {
       this.source
         ?.addNewNode({
           id: `${type.type}-${guidGenerator()}`,
@@ -768,14 +1035,18 @@ export default class ElementDataGrid extends WidgetBase {
                 fromId: e.id,
                 toId: parent.id,
                 classId: this.options.parentProperty,
-              } as GraphElement);
+              } as GraphElement, true);
               if (parentEdge) {
-                await this.source.addEdge(parentEdge);
+                try {
+                  await this.source.addEdge(parentEdge);
+                } catch(e) {
+                  console.log('Error adding parent edge');
+                }
               }
             } catch (e) {
               console.log("Error adding parent edge edge");
             }
-            await this.source.updateEdges();
+            // await this.source.updateEdges();
           }
           // check if new relations should be created
           if (this.source && this.options.newRelations) {
@@ -792,10 +1063,7 @@ export default class ElementDataGrid extends WidgetBase {
                       toId: relation.toId,
                       classId:
                         this.potentialProperties[relation.key].relation?.type,
-                    } as GraphElement);
-                    if (newEdge) {
-                      await this.source.addEdge(newEdge);
-                    }
+                    } as GraphElement, true);                    
                   } catch (e) {
                     console.log("Error adding relation edge");
                   }
@@ -816,10 +1084,7 @@ export default class ElementDataGrid extends WidgetBase {
                     fromId: fromId,
                     toId: e.id,
                     classId: prop.relation?.type,
-                  } as GraphElement);
-                  if (newEdge) {
-                    await this.source.addEdge(newEdge);
-                  }
+                  } as GraphElement, true);                  
                 }
               }
             }
@@ -829,14 +1094,16 @@ export default class ElementDataGrid extends WidgetBase {
           if (this.options.onAfterAdded) {
             await this.options.onAfterAdded(e);
           } else {
-            this.source?.openElement(e);
+            // this.source?.openElement(e);
           }
           return e;
         })
         .catch((e) => {
           alert("error creating entity");
         });
+    })
     }
+    
   }
 
   public editEntity(element: GraphElement) {
@@ -864,13 +1131,15 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public updateTree(
+    treeItems: any[],
     // classTypes: string[],
     base?: GraphElement,
-    active?: any
+    active?: any,    
   ) {
     if (!this.source || !this.options.baseType) {
       return;
     }
+
     console.log(`update tree: ${base?._title}`);
     // console.log(treeItems);
     let items: any[] | undefined = [];
@@ -902,21 +1171,23 @@ export default class ElementDataGrid extends WidgetBase {
         if (item.id) {
           const treeItem = {
             id: item.id,
-            name: item._title,
+            name: item.properties.name,
             entity: item,
             children: [],
           };
           if (active?.children) {
             active.children.push(treeItem);
           } else {
-            this.treeItems.push(treeItem);
+            treeItems.push(treeItem);
             // console.log(this.treeItems);
           }
 
-          this.updateTree(item, treeItem);
+          this.updateTree(treeItems, item, treeItem);
         }
       }
     }
+
+    return treeItems;
   }
 
   public viewDay(date: string) {
@@ -971,6 +1242,22 @@ export default class ElementDataGrid extends WidgetBase {
       this.options.filter
     );
 
+    console.log('update entities');
+    for (const item of this.items) {
+      console.log(item.properties!.end);      
+    }
+
+    if (this.options.defaultView === GridView.table) {      
+      Vue.set(this, 'rowData', this.items);
+      if (this.gridApi) {
+        this.gridApi.refreshClientSideRowModel();
+      }
+    }
+
+    
+
+    // this.rowData = this.items;
+
     if (!this.sort) {
       this.sort = this.featureType.properties?.find(
         (p) => p.key === "updated_time"
@@ -982,15 +1269,18 @@ export default class ElementDataGrid extends WidgetBase {
       this.options.parentProperty
     ) {
       console.log("starting update tree");
-      this.treeItems = [];
-      this.updateTree(undefined, undefined);
+      // 
+      const treeItems = this.updateTree([], undefined, undefined);
+      Vue.set(this, 'treeItems', treeItems);
       console.log(this.treeItems);
-      this.$forceUpdate();
+      // this.$forceUpdate();
     }
 
     if (this.options.relationToggle) {
       this.updateLinkedEntities();
     }
+
+
     this.update();
   }
 
@@ -1035,9 +1325,21 @@ export default class ElementDataGrid extends WidgetBase {
     return moment(date).format("MMMM Do YYYY, h:mm:ss a");
   }
 
-  public contentLoaded() {
+
+  public contentLoaded(source: DocDatasource) {
     this.updateEntities(true);
     this.update();
+
+    if (this.source?.events) {
+        console.log('create subscription')
+        this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
+          if (action === GraphDatasource.ELEMENT_UPDATED) {            
+            this.updateEntities(true);
+            this.$forceUpdate();
+          }
+        })
+      }  
+    
     if (this.options) {
       if (this.options.calendarOptions) {
         this.setToday();
@@ -1049,6 +1351,9 @@ export default class ElementDataGrid extends WidgetBase {
         Vue.set(this.options, "defaultView", GridView.table);
         // this.options.defaultView = GridView.table;
       }
+      
+          
+      
       // let selectionSizePlugin = new Plugin({
       //   view(editorView) {
       //     return new SelectionSizeTooltip(editorView);

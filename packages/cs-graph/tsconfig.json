@@ -7,6 +7,5 @@
     "sourceMap": true,
     "experimentalDecorators": true
   },
-  "exclude": ["./dist"],
-  "include": ["./src/**/*.json", "./src/**/*.vue"]
+  "exclude": ["./dist", "./lib"]
 }

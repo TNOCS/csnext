@@ -45,16 +45,14 @@ export class DataGridOptions extends WidgetOptions {
     public canDelete?: boolean;
     public relationToggle?: DataGridRelationToggle;    
     public calendarOptions?: DataGridCalendarOptions;
+    public checkboxProperty?: string;
 
     public filter?: GraphFilter;
     public newItem?: any;
     public newRelations?: any[];
 }
 
-export class DataGridFilter {
-    public key?: string;
-    public value?: string;
-}
+
 
 export class DataGridHeader {
     public key?: string;

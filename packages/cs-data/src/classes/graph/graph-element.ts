@@ -123,63 +123,6 @@ import { FeatureType,GraphPreset, LinkInfo } from '../..';
         return !GraphElement.outOfRange(e, date);
     }
 
- 
-
-    public static getDerivatives(element: GraphElement, classId?: string[], res: GraphElement[] = [], checked: string[] = [], depth = 0): GraphElement[] {
-        if (!element.id || checked.indexOf(element.id) >= 0 || depth > 3) { return res; }
-
-        checked.push(element.id);
-        if (element._outgoing) {
-            for (const outRel of element._outgoing) {
-                if (outRel.id && (classId === undefined || (outRel.classId && classId.indexOf(outRel.classId) >= 0)) && outRel.to) {
-                    // let id = outRel.id + element.id;
-                    // if (res.findIndex(e => e.id === id) === -1) {
-                    if (depth >= 0 && (outRel.classId === 'locatedIn' || outRel.classId === 'writtenBy' || outRel.classId === 'recognized' || outRel.classId === 'leaderOf' || outRel.classId === 'contains')) {
-                        let rel = { id: outRel.id + element.id, type: "edge", class: outRel.class, to: outRel.to, from: element, classId: outRel.classId, _parent: element, properties: outRel.properties } as GraphElement;
-                        if (!rel.properties) { outRel.properties = {} };
-                        if (rel.properties && !rel.properties.hasOwnProperty('reliability') && rel.to && rel.to.properties && rel.to.properties.hasOwnProperty('reliability')) {
-                            rel.properties.reliability = rel.to.properties.reliability;
-                        }
-                        res.push(rel);
-                    }
-                    GraphElement.getDerivatives(outRel.to, ['locatedIn', 'detectedEvent', 'writtenBy', 'leaderOf', 'participantOf', 'contains', 'partOf'], res, checked, depth + 1);
-                    // }
-                }
-
-            }
-
-        }
-
-        if (element._incomming) {
-            for (const inRel of element._incomming) {
-                if ((classId === undefined || (inRel.classId && classId.indexOf(inRel.classId) >= 0)) && inRel.to) {
-                    // let id = inRel.id + element.id;
-                    // if (res.findIndex(e => e.id === id) === -1) {
-                    if (depth >= 0 && (inRel.classId === 'recognized' || inRel.classId === 'participantOf' || inRel.classId === 'detectedEvent')) {
-                        let rel = { id: inRel.id + element.id, type: "edge", class: inRel.class, to: element, from: inRel.from, classId: inRel.classId, _parent: element } as GraphElement;
-                        // if (inRel.properties !== undefined) // && inRel.properties.hasOwnProperty('reliability')) {
-
-                        // }
-                        rel.properties = inRel.properties;
-
-                        res.push(rel);
-                    } else {
-                        console.log(inRel.classId);
-                    }
-                    GraphElement.getDerivatives(inRel.to, ['recognized', 'participantOf', 'partOf', 'detectedEvent', 'contains'], res, checked, depth + 1);
-                    // }
-                }
-            }
-        }
-        return res;
-
-    }
-
-    public static updateDerivatives(element: GraphElement) {
-        element._derivatives = GraphElement.getDerivatives(element, undefined, []);
-        console.log('Update derivatives');
-    }
-
     public static getVisibility(e: GraphElement, filters?: GraphPreset): boolean {
         if (e._included) {
             return true;

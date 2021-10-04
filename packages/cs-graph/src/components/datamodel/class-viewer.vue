@@ -2,6 +2,7 @@
 <div>
   <div id="kg-vis" style="height: 100%; width: 100%"></div>
   <div class="vis-settings">
+    <v-checkbox v-model="showBaseNode" :label="$cs.Translate('SHOW_BASENODE')"></v-checkbox>
     <v-checkbox v-model="showBaseTypes" :label="$cs.Translate('SHOW_BASETYPES')"></v-checkbox>
     <v-checkbox v-model="showRelationTypes" :label="$cs.Translate('SHOW_RELATION_LABELS')"></v-checkbox>
     <v-checkbox v-model="showRelations" :label="$cs.Translate('SHOW_RELATIONS')"></v-checkbox>
@@ -40,10 +41,12 @@ export default class ClassViewer extends WidgetBase {
   private forceLayout?: any;
 
 
+  public showBaseNode = false;
   public showRelations = true;
   public showRelationTypes = true;
   public showBaseTypes = false;
 
+  @Watch('showBaseNode')
   @Watch('showRelationTypes')
   @Watch('showBaseTypes')
   @Watch('showRelations')
@@ -58,11 +61,8 @@ export default class ClassViewer extends WidgetBase {
   }
 
   private updateNode(e: FeatureType) {
-    if (e.type && this.graph && this.data && this.graphSource && e.type !== 'node') {
+    if (e.type && this.graph && this.data && this.graphSource && (this.showBaseNode || e.type !== 'node')) {
       let existing = this.data.nodes!.find(n => n.id === e.type); // get(e.id);
-
-      // e._title = GraphElement.getTitle(e);
-
       let active = true;
 
       let node = {
@@ -95,7 +95,9 @@ private updateRelation(e: RelationType, obs: FeatureType) {
     let edge = { id: id, source: obs.type, 
     target: e.objectType, width: 3,
     style: {
-      endArrow: true
+      endArrow: {
+        path: G6.Arrow.triangle()
+      }
     },
     label: this.showRelationTypes ? e.type : undefined, 
     arrows: "to",} as any;          

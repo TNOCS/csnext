@@ -15,15 +15,15 @@ export const Entity = Node.create<EntityOptions>({
     suggestion: {
       char: '#',
       command: ({ editor, range, props }) => {
-        editor
+        (editor
           .chain()
-          .focus()
+          .focus() as any)
           .replaceRange(range, 'entity', props)
           .insertContent(' ')
           .run()
       },
       allow: ({ editor, range }) => {
-        return editor.can().replaceRange(range, 'entity')
+        return (editor.can() as any).replaceRange(range, 'entity')
       },
     },
   },

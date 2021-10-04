@@ -19,7 +19,7 @@ export class Neo4J implements IDatabase {
     };
 
     private url = process.env.NEO4J_URL || 'bolt://localhost:7687';
-    private token = neo4j.auth.basic(process.env.NEO4J_NAME || 'neo4j', process.env.NEO4J_PASSWORD || 'v1919');
+    private token = neo4j.auth.basic(process.env.NEO4J_NAME || '', process.env.NEO4J_PASSWORD || '');
         
     public source?: GraphDatasource;
     public isRunning?: boolean;

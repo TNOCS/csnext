@@ -102,7 +102,7 @@ import Fuse from 'fuse.js';
 import { FeatureType, GraphElement } from '@csnext/cs-data';
 
 @Component({
-  name: "graph-elements"
+  name: "graph-elements",  
 })
 export default class GraphElements extends WidgetBase {
   public get graphSource(): DocDatasource | undefined {
@@ -110,13 +110,13 @@ export default class GraphElements extends WidgetBase {
       return this.widget.content as DocDatasource;
     }
   }
-
   
   public get filteredElements(): FuseResult<GraphElement>[] {
     let res : FuseResult<GraphElement>[] = []
     if (this.graphSource && this.graphSource.graph && this.graphSource.fuse) {            
       if (!this.searchString || this.searchString.length<2) {
-        res = Object.values(this.graphSource.graph).filter(e => e.type === 'node').map(s => { return { score: 0, item: s} as any})
+        res = this.graphSource.getClassElements(this.widget.data?.classFilter || 'node').map(s => { return { score: 0, item: s} as any})
+        // res = Object.values(this.graphSource.graph).filter(e => e.type === 'node').map(s => { return { score: 0, item: s} as any})
       } else {
         res = this.graphSource.fuse.search<GraphElement>(this.searchString) as any;        
         
@@ -198,8 +198,9 @@ export default class GraphElements extends WidgetBase {
 
   public toggleInclude(element: GraphElement) {
     if (!this.graphSource) { return; }
-    element._included = !element._included;
-    this.graphSource.triggerUpdateGraph();
+    this.graphSource.addElementToGraph(element);
+    // element._included = !element._included;
+    // this.graphSource.triggerUpdateGraph();
   }
 
   public getColor(element: GraphElement) {

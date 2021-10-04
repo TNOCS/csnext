@@ -85,7 +85,7 @@ export default class SourceManagement extends WidgetBase {
   }
 
   public addEntity() {
-    const newEntity = { id: 'new entity', entity: 'new entity', ent_class: 'WEAPONS', aka: []};
+    const newEntity = { id: 'new entity', entity: 'new entity', ent_class: '', aka: []};
     this.source?.searchEntities?.push(newEntity)
     this.source?.openEntityEditor(newEntity);
   }

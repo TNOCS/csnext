@@ -1,10 +1,6 @@
 <template>
-  <div>
-      <!-- <span v-if="header.propType.type === 'relation'">relation</span> -->
-      <!-- test -->
-      <!-- {{ header.propType.type }} -->
-      <prop-value :value="value()" :proptype="header.propType" :element="item"></prop-value>
-    <!-- {{ value() }} -->
+  <div>      
+      <prop-value :value="value()" :proptype="header.propType" :element="item"></prop-value>    
   </div>
 </template>
 
@@ -15,7 +11,7 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
-import { GraphElement, GraphSettings } from "@csnext/cs-data";
+import { GraphElement } from "@csnext/cs-data";
 // import { PropValue } from "@csnext/cs-map";
 
 
@@ -32,19 +28,7 @@ export default class ElementValue extends WidgetBase {
 
   public value() : string {
       if (!this.item?.properties || !this.header?.key) { return ''; }
-      return this.item.properties[this.header.key]; //header.propType.type;
-      if (this.item && this.header) {
-        return 'test';
-      }
-      return '';
-
-      
-  }
-
-  
-
-  mounted() {
-    
+      return this.item.properties[this.header.key];
   }
 }
 </script>

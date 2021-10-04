@@ -277,10 +277,8 @@ export default class DocumentEntities extends WidgetBase {
           fromId: this.document?._node.id,
           toId: this.newEntityNode.id,
           classId: "CONTAINS",
-        } as GraphElement)
-        .then(async (e) => {
-          await this.source!.addEdge(e);
-          this.source!.updateEdges();
+        } as GraphElement, true)
+        .then(async (e) => {          
           this.updateGroups();
         })
         .catch((e) => {});
