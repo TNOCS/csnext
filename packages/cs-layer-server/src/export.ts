@@ -1,5 +1,6 @@
 import * as path from 'path';
 import { NestFactory } from '@nestjs/core';
+import * as bodyParser from 'body-parser';
 import {
     DocumentBuilder,
     SwaggerModule,
@@ -31,6 +32,7 @@ export * from './classes/layer-meta';
 export * from './classes/layer-style';
 export * from './classes/log-definition';
 export * from './classes/log-item';
+export * from './classes/offline-options';
 export * from './classes/log-source';
 export * from './classes/query-options';
 export * from './log-items/log-items-controller';
@@ -39,19 +41,24 @@ export * from './files/files.service';
 export * from './files/files.controller';
 export * from './offline/offline.controller';
 export * from './offline/offline.service';
+
 export * from './events/';
 export * from './classes/file-server-options';
+export * from './layers/layers.module';
+export * from './graph/databases/link';
+export * from './graph/graph.module';
+export * from './graph/graph.service';
+export * from './graph/graph.controller';
 
 // export { TilesController } from './tiles/tiles.controller';
 export { DefaultWebSocketGateway } from './websocket-gateway';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import express, { json } from 'express';
+import express, { json, text } from 'express';
 import basicAuth from 'express-basic-auth';
 import { ServerBasicAuthConfig } from './server/server-basic-auth-config';
-import { ExpressPeerServer  } from 'peer';
+// import { ExpressPeerServer  } from 'peer';
 import { IPeerOptions } from './classes/peer-options';
 import { IFileServerOptions } from './classes/file-server-options';
-
 
 
 export class ServerConfig {
@@ -109,16 +116,17 @@ export class NestServer {
                 }));
             }
 
+            this.app.use(text( { limit: '500mb'}));
             this.app.use(json({ limit: '50mb' }));
            
             if (this.config && this.config.cors) {
                 this.app.enableCors({ origin: true });
             }
 
-            if (this.config.peerOptions) {
-                this.peerServer = ExpressPeerServer(this.app.getHttpServer(), this.config.peerOptions);
-                this.app.use('/peerjs', this.peerServer);
-            }
+            // if (this.config.peerOptions) {
+            //     this.peerServer = ExpressPeerServer(this.app.getHttpServer(), this.config.peerOptions);
+            //     this.app.use('/peerjs', this.peerServer);
+            // }
             this.app.use(compression());
             if (this.config && this.config.staticFolder) {
 
@@ -160,7 +168,7 @@ export class NestServer {
         });
     }
 
-    private initOpenApi(swaggerConfig: any, title: string)
+    public initOpenApi(swaggerConfig?: any, title?: string)
     {
         try {
             if (this.config && this.config.openApi)
@@ -177,7 +185,8 @@ export class NestServer {
                         .addTag('layer')
                         .build();
                 }
-                // console.log(JSON.stringify(this.swaggerConfig));
+                // console.log(this.app);
+                console.log(JSON.stringify(this.swaggerConfig));
                 this.openAPI = SwaggerModule.createDocument(
                     this.app,
                     this.swaggerConfig
@@ -186,6 +195,7 @@ export class NestServer {
                 SwaggerModule.setup('api', this.app, this.openAPI);
             }
         } catch(e) {
+            console.log(e);
             Logger.error(`Error creating open api endpoint`)
         }
     }

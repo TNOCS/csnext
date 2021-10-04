@@ -25,9 +25,7 @@ export class PostGisSource implements ISourcePlugin, ISourcePluginType {
 
         try {
           await client.connect();
-
-          
-
+                  
           const res = await client.query(query);
 
           let geojson = new LayerSource();

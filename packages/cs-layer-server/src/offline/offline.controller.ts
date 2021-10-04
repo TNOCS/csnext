@@ -37,7 +37,6 @@ export class OfflineController {
     }
 
     
-
     // @ApiOperation({
     //     summary: 'Add or update layer definition',
     //     description: 'Add or update layer definition'
