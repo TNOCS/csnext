@@ -41,20 +41,22 @@ export class RowChart implements IChartType {
           if (options.key) 
             return CrossFilterUtils.getKeyValue(options.key, options, d);
         }
+        return undefined;
       });
       // options._group = options._dimension.group((d:any) => {
       //   return d;
       // }); // .reduceSum((d: any) => { return this.getValue(this.options, d) / options.bucketSize; });                     //options._dimension.group();
 
-      options._group = options._dimension.group().reduce(
+      options._group = options._dimension.group()
+      .reduce(
         (p: any, v: any) => {
           p.count+=1;          
-          p.total += CrossFilterUtils.getValue(options, v, 'count'); //v[options.key!];                    
+          p.total += 1; //CrossFilterUtils.getValue(options.key!, options, v); //v[options.key!];                    
           return p;
         },
         (p: any, v: any) => {
           p.count-=1;          
-          p.total -= CrossFilterUtils.getValue(options, v, 'count'); //v[options.key!];          
+          p.total -=1; // CrossFilterUtils.getValue(options.key, options, v); //v[options.key!];          
           return p;
         },
         () => {
