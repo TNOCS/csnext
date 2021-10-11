@@ -1,5 +1,13 @@
+
 import { GraphDatasource, GraphElement } from '../../';
 
+
+export class NodeRule {
+    public title?: string;
+    public type?: string;
+    public id?: string;
+    public filter?: any = {};
+}
 export class GraphPreset {
     public title?: string;
     public showDataModel?= false;
@@ -30,7 +38,8 @@ export class GraphPreset {
     public clusterGravity?: number;
     public unitRadius?: number;
     public collideStrength?: number;          
-    public alpha?: number;          
+    public alpha?: number;     
+    public nodeRules?: NodeRule[] = [];
 
     
     public _visibleNodes: GraphElement[] = [];

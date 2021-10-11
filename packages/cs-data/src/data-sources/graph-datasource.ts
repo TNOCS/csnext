@@ -852,9 +852,9 @@ export class GraphDatasource extends DataSource {
     }
 
     public emptyGraph(trigger = true) {
-        // if (this.activeGraphPreset) {
-        //     this.activeGraphPreset._visibleNodes = [];
-        // }
+        if (this.activeGraphPreset?._visibleNodes) {
+            this.activeGraphPreset._visibleNodes.splice(0, this.activeGraphPreset._visibleNodes.length);
+        }
         for (const el of Object.values(this.graph)) {
             el._included = false;
         }
@@ -910,6 +910,18 @@ export class GraphDatasource extends DataSource {
             };
             this.addGraphPreset(defaultPreset);
         }
+    }
+
+    public deletePreset(preset: GraphPreset) {
+        this.graphPresets = this.graphPresets.filter(pr => pr !== preset);        
+        if (this.activeGraphPreset === preset) {
+            if (this.graphPresets.length>0) {
+                this.applyGraphPreset(this.graphPresets[0]);
+            } else {
+                this.addGraphPreset();
+            }
+        } 
+        this.saveGraphPresets();
     }
 
     public addGraphPreset(preset?: GraphPreset, activate = true) {

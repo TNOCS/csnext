@@ -22,6 +22,10 @@ import { FeatureType,GraphPreset, LinkInfo } from '../..';
         [key: string]: any;
     } = {};
 
+    public _flat?: {
+        [key: string]: any;
+    } = {};
+
     public _alternatives?: string[] = [];    
     public _source?: GraphElement;
     public _originals?: GraphElement[];
@@ -128,19 +132,19 @@ import { FeatureType,GraphPreset, LinkInfo } from '../..';
             return true;
         }
 
-        if (filters) {
+        // if (filters) {
                         
-            if (filters.filterTimeline && filters.focusDate) {
-                if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-                    return false;
-                }
-            }
-        }
-        if (filters && filters.filterTimeline && filters.focusDate) {
-            if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-                return false;
-            }
-        }
+        //     if (filters.filterTimeline && filters.focusDate) {
+        //         if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
+        //             return false;
+        //         }
+        //     }
+        // }
+        // if (filters && filters.filterTimeline && filters.focusDate) {
+        //     if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
+        //         return false;
+        //     }
+        // }
         if (e._visible !== undefined && e._visible === false) {
             return false;
         }        
