@@ -38,8 +38,13 @@ export class RowChart implements IChartType {
           let horizontal = CrossFilterUtils.getDayString(d, options.horizontalTime);
           return horizontal;
         } else {
-          if (options.key) 
-            return CrossFilterUtils.getKeyValue(options.key, options, d);
+          if (options.key)  {
+            
+            const v = CrossFilterUtils.getKeyValue(options.key, options, d);
+            // console.log(v);
+            // return 'test'
+            return v;
+          }
         }
         return undefined;
       });
