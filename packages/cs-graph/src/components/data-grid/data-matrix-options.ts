@@ -4,7 +4,9 @@ import { GraphFilter } from '@csnext/cs-data';
 export class DataMatrixOptions extends WidgetOptions {
     public horizontalType?: string;    
     public horizontalFilter?: GraphFilter;    
+    public horizontalParentProperty?: string;
     public verticalType?: string;    
     public verticalFilter?: GraphFilter;    
+    public verticalParentProperty?: string;
     
 }

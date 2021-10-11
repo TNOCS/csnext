@@ -1,8 +1,21 @@
 <template>
-  <div v-if="source && source.activeGraphPreset">    
+  <div v-if="source" style="height: 100%">    
+    <v-tabs
+      v-model="tab"      
+    >
+      <v-tab
+        v-for="(preset,pindx) in source.graphPresets"
+        :value="tab"
+        :key="pindx"
+      >
+        {{ preset.title }}
+      </v-tab>
+    </v-tabs>
+
     <v-btn @click="fitGraph()" icon>
         <v-icon>fit_screen</v-icon>
     </v-btn>
+
     <div id="kg-vis" style="height: 100%; width: 100%"></div>
     <v-menu
       v-model="showMenu"
@@ -39,13 +52,9 @@
             </v-list-item-content>
           </v-list-item>
 
-          <!-- <v-list-tile-action v-if="subItem.icon">
-                  <v-icon>{{ subItem.icon }}</v-icon>
-                </v-list-tile-action>
-              </v-list-tile> -->
         </v-list-group>
       </v-list>
-    </v-menu>
+    </v-menu> 
 
     <!-- <v-menu
       v-model="showMenu"
@@ -64,9 +73,9 @@
         </v-list-item>
       </v-list>
     </v-menu> -->
-    <div v-if="source.activeGraphPreset && source.activeGraphPreset.filterTimeline" class="graph-focus-date">
+    <!-- <div v-if="source.activeGraphPreset && source.activeGraphPreset.filterTimeline" class="graph-focus-date">
       {{ getShortDate(source.activeGraphPreset.focusDate) }}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -121,8 +130,7 @@ import dateFormat from "dateformat";
 import { IMenu } from "@csnext/cs-core";
 import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig } from "@antv/g6";
 import { guidGenerator } from "@csnext/cs-core";
-import { DocDatasource } from "@csnext/cs-graph";
-import Vue from "vue";
+import { DocDatasource } from "../..";
 const debounce = require('lodash.debounce');
 
 @Component({
@@ -138,6 +146,7 @@ export default class NetworkGraph extends WidgetBase {
   private showMenu = false;
   private x = 0;
   private y = 0;
+  private tab: any = null;
 
   private graph?: Graph;
   public get source(): DocDatasource | undefined {
@@ -146,11 +155,34 @@ export default class NetworkGraph extends WidgetBase {
     }
   }
 
+  @Watch('tab')
+  tabChanged() {
+    if (!this.source?.graphPresets) { return; }
+    const activePreset = this.source.graphPresets[this.tab];
+    if (activePreset) {
+      this.source.applyGraphPreset(activePreset);
+    }    
+  }
+
   private settingsUpdatedDebounce = debounce(this.settingsUpdated, 200);
   private graphInitDebounce = debounce(()=>{ if (!this.source?.graph) { return; } this.initGraph(true); this.updateGraph(this.source.graph, true);} , 200);
+  private viewportDebounce = debounce((graph: Graph)=>{ 
+    if (!graph) { return; } 
+      const zoom = graph.getZoom();
+      const center = graph.getGraphCenterPoint();
+      $cs.updateRouteQuery({'gz': zoom, 'gx': center!.x, 'gy': center!.y});       
+  } , 1000);
 
 
   public contextMenuitems: any[] = [];
+
+  // public resize() {
+  //   console.log('resize');
+  //   console.log(this.widget._size);
+  //   if (this.graph) {
+  //     this.graph.changeSize(this.widget._size.componentWidth, this.widget._size.componentHeight);
+  //   }
+  // }
 
   public getShortDate(date: Date) {
     if (date) {
@@ -163,9 +195,11 @@ export default class NetworkGraph extends WidgetBase {
   
   graphChanged() {    
     if (!this.graph || !this.source?.graph) { return; }
+    console.log('graph changed');
     this.graph.updateLayout(this.getLayout());
     this.graph.layout();    
-    this.initGraph(true) ; this.updateGraph(this.source.graph, true);
+    this.initGraph(true) ; 
+    this.updateGraph(this.source.graph, true);
     this.graph.render();
   }
 
@@ -191,6 +225,16 @@ export default class NetworkGraph extends WidgetBase {
     }
   }
 
+  private getElementImage(e: GraphElement) {    
+    if (this.source?.base_url && e._featureType?.iconProperty && e.properties && e.properties.hasOwnProperty(e._featureType.iconProperty)) {
+      return `${this.source.base_url}/files/image/?url=${e.properties[e._featureType.iconProperty]}`
+    }
+    if (e._featureType?.icon && this.source?.base_url) {
+      return `${this.source.base_url}/files/image/?url=${e._featureType.icon}`;      
+    }
+    return null; //'images/Flag_of_Russia.svg';
+  }
+
   private updateNode(e: GraphElement, force = false) {
     if (!e.id || !this.graph || !this.data || !this.data.nodes || !this.source || !this.source.activeGraphPreset?._visibleNodes) { return; }
       let existingIndex = this.data.nodes!.findIndex((n) => n.id === e.id);
@@ -211,12 +255,14 @@ export default class NetworkGraph extends WidgetBase {
           //   this.settings
           // ),
           cluster: e._featureType?.type,
+          img: this.getElementImage(e),
+          // element: e,
           size: this.source!.activeGraphPreset!.nodeSize,
           style: {
             fill: GraphElement.getBackgroundColor(e),
             fontFamily: "Roboto, sans-serif",
           },
-          labelCfg: {
+          labelCfg: {            
             style: {
               fontSize: this.source.activeGraphPreset.globalFontSize ?? 12,
               fontFamily: "Roboto, sans-serif",
@@ -302,7 +348,6 @@ export default class NetworkGraph extends WidgetBase {
     } as any;
 
 
-  console.log(edge);
 
     if (!existing) {      
         this.data?.edges?.push(edge);        
@@ -344,12 +389,13 @@ export default class NetworkGraph extends WidgetBase {
     switch (this.source.activeGraphPreset.layout) {
       case 'force': 
         layout = { ...layout, ...{
-          linkDistance: this.source.activeGraphPreset.linkDistance ?? 50, // Edge length
-          nodeStrength: this.source.activeGraphPreset.nodeStrenth ?? 30,
-          edgeStrength: this.source.activeGraphPreset.edgeStrength ?? 0.1,
-          collideStrength: this.source.activeGraphPreset.collideStrength ?? 0.8,
-          preventOverlap: true,          
-          alpha: this.source.activeGraphPreset.alpha ?? 0.3,
+          linkDistance: 50, // Edge length
+          nodeStrength: 30,
+          edgeStrength: 0.1,
+          collideStrength: 0.8,
+          preventOverlap: false,
+          nodeSize: 30,
+          alpha: 0.3,
           alphaDecay: 0.028,
           alphaMin: 0.01,
           forceSimulation: null,
@@ -412,7 +458,7 @@ export default class NetworkGraph extends WidgetBase {
           speed: 2000,
           maxIteration: 100,
           tick: () => {
-            this.graph!.refreshPositions();
+            // this.graph!.refreshPositions();
           }          
               } } 
         break;
@@ -470,7 +516,16 @@ export default class NetworkGraph extends WidgetBase {
     }
   }
 
+  private loaded = false;
+
   public contentLoaded() {
+    // if (this.loaded) { return; }
+    // this.loaded = true;
+
+    setTimeout(()=>{
+
+    
+    console.log('content loaded');
     if (this.source?.graph) {
       this.initGraph(true);
     
@@ -487,6 +542,7 @@ export default class NetworkGraph extends WidgetBase {
             }
             if (a === GraphDatasource.PRESET_ACTIVATED) {              
               this.emptyGraph()
+              this.tab = this.source.graphPresets.indexOf(d);
               this.initGraph();              
               this.$forceUpdate();
             }            
@@ -548,6 +604,7 @@ export default class NetworkGraph extends WidgetBase {
         }
       );
     }
+    }, 100);
   }
 
   refreshDragedNodePosition(e: any) {
@@ -612,7 +669,7 @@ export default class NetworkGraph extends WidgetBase {
               props.relation?.objectType
             ) {
               createMenu.items.push({
-                title: props.label || props.relation.type + ' - ' + props.relation.objectType,
+                title: props.label || props.relation.type,
                 action: async () => {
                   const type = this.source?.findObservation(
                     props.relation?.objectType!
@@ -728,17 +785,22 @@ export default class NetworkGraph extends WidgetBase {
       this.x = a.clientX;
       this.y = a.clientY;
 
-      this.showMenu = true;
-      console.log(a);
+      this.showMenu = true;      
     }
   }
 
   public getNodeStyle() {    
-    return {
+    if (!this.source?.activeGraphPreset?.nodeSize)  { return {}}
+    return {    
         // shape: "circle",
         type: 'main-node',
-        // size: [this.source!.activeGraphPreset!.nodeSize],
+        size: [this.source!.activeGraphPreset!.nodeSize],        
         color: "#5B8FF9",
+        clipCfg: {
+          show: true,
+          type: 'circle',
+          r: this.source!.activeGraphPreset!.nodeSize / 2
+        },
         style: {
           fill: "#9EC9FF",
           keepVisualSize: true,
@@ -756,14 +818,47 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public registerChart() {
+    if (!this.source?.graph || !this.widget?._size) { return; }
         const lightBlue = '#5b8ff9';
         const lightOrange = '#5ad8a6';
         G6.registerNode('main-node', {          
             update: undefined,
             afterDraw: (cfg: any, group: any) => {
-                const radius = cfg.size / 4; // node radius
-                const st = cfg.element as GraphElement;
-                const shape = group.get('children')[0];
+                const radius = (cfg.size / 2) + 1; // node radius
+                const element = this.source!.graph![cfg.id] as GraphElement;
+                const shape = group.get('children')[0];                
+
+                // const keyShape = group.get('children')[0];
+                // const back = group.addShape('circle', {
+                //   attrs: {
+                //     r: radius, //cfg.clipCfg.r,
+                //     x: 0,
+                //     y: 0,
+                //     stroke: 'black',
+                //     lineWidth: 4,                    
+                //     shadowOffsetY: 6,
+                //     shadowColor: '#eee',
+                //     shadowBlur: 10,
+                //     opacity: 0.5,
+                //   }
+                // });
+                // back.toBack();
+
+
+
+                // if (element?._featureType?.iconProperty) {
+                //   console.log(element.properties[element._featureType.iconProperty]);
+                // group.addShape('image', {
+                //         attrs: {
+                //             x: -10,
+                //             y: -radius + 8,
+                //             img: 'images/Flag_of_Russia.svg' // 'http://commons.wikimedia.org/wiki/Special:FilePath/Russia%2087.74494E%2066.20034N.jpg' //element.properties[element._featureType.iconProperty],
+                //         },
+                //         // must be assigned in G6 3.3 and later versions. it can be any value you want
+                //         name: 'image-shape',
+                //     });
+                
+                // }
               
             //  group.addShape('text', {
             //         attrs: {
@@ -777,7 +872,7 @@ export default class NetworkGraph extends WidgetBase {
             //         },
             //         name: 'text-shape',
             //       });     
-                if (!st || !this.graph) { return; }
+                // if (!st || !this.graph) { return; }
             }
         }, 'circle');
         
@@ -785,6 +880,8 @@ export default class NetworkGraph extends WidgetBase {
     }
 
   public initGraph(reset = false) {
+
+    console.log('init graph');
     
       if (!this.source || !this.source.activeGraphPreset) { return; }
 
@@ -799,20 +896,21 @@ export default class NetworkGraph extends WidgetBase {
     }
 
     const contextMenu = new Menu({
-      shouldBegin(evt: any) {
-        if (evt.target && evt.target.isCanvas && evt.target.isCanvas())
+      shouldBegin(evt) {
+        if (evt && evt.target && evt.target.isCanvas && evt.target.isCanvas())
           return true;
         return false;
       },
     }); 
     
     this.registerChart();
-    const dHeight = Math.min((this as any).widget._size.height, 1175);
-    const dWidth = (this as any).widget._size.width;
+    const dHeight = this.widget?._size?.componentHeight;
+    const dWidth = this.widget?._size?.componentWidth;
 
     
     
 
+    console.log(this.widget._size);
 
     this.graph = new G6.Graph({
       container: "kg-vis",
@@ -822,73 +920,7 @@ export default class NetworkGraph extends WidgetBase {
       animate: this.source.activeGraphPreset.animate ?? false,
       height: dHeight, // (this as any).widget._size.height,
       layout: this.getLayout(),
-    //   : {
-    //     // type: 'compactBox',
-    //     // direction: 'LR',
-    //     // getId: function getId(d: any) {
-    //     //   return d.id;
-    //     // },
-    //     // getHeight: function getHeight() {
-    //     //   return 16;
-    //     // },
-    //     // getWidth: function getWidth() {
-    //     //   return 16;
-    //     // },
-    //     // getVGap: function getVGap() {
-    //     //   return 10;
-    //     // },
-    //     // getHGap: function getHGap() {
-    //     //   return 100;
-    //     // },
-    //     type:  this.source.activeGraphPreset.layout ?? 'circular',
-    //     center: [dWidth / 2, dHeight / 2], // The center of the graph by default
-    //     minMovement: 0.5,
-    //     radius: this.source.activeGraphPreset.radius ?? 400,
-        
-    //     // maxIteration: 50,
-    //     preventOverlap: true,
-    //     damping: 0.5,
-    //     edgeStrength: this.source.activeGraphPreset.edgeStrength ?? 0.1,
-    //     nodeStrength: this.source.activeGraphPreset.nodeStrenth ?? 30,
-    //     nodeSize: this.source.activeGraphPreset.nodeSize ?? 100,
-    //     linkDistance: this.source.activeGraphPreset.linkDistance ?? 50, // Edge length
-    // // nodeStrength: 30,
-    // // edgeStrength: 0.1,
-    // collideStrength: 0.8,
-    // // nodeSize: 30,
-    // alpha: 0.3,
-    // alphaDecay: 0.028,
-    // alphaMin: 0.01,
-    // forceSimulation: null,
-        // nodeSize: (d:any) => { return [10] }, 
-        // (d: any) => {
-        //   debugger;
-        //   return this.source!.activeGraphPreset.nodeSize;
-        // },
-        // nodeStrength: (d: any) => {
-        //   return this.settings.nodeStrength;
-        // },
-        // nodeSize: (d: any) => {
-        //   if (d.size) return d.size;
-        //   return this.settings.nodeSize ?? 100;
-        // },
-        // nodeSpacing: (d: any) => {
-        //   if (d.degree === 0) return this.source.activeGraphPreset.nodeSpacing;
-        //   if (d.level) return this.source.activeGraphPreset.nodeSpacing;
-        //   return this.source!.activeGraphPreset!.nodeSpacing;
-        // },
-      //   onLayoutEnd: () => {
-      //     this.graph?.getEdges().forEach((edge: any) => {
-      //       if (!edge.oriLabel) return;
-      //       edge.update({
-      //         label: this.labelFormatter(
-      //           edge.oriLabel,
-      //           this.source!.activeGraphPreset!.labelMaxLength
-      //         ),
-      //       });
-      //     });
-      //   },
-      // },
+   
       modes: {
         default: [
           "drag-node",
@@ -953,30 +985,24 @@ export default class NetworkGraph extends WidgetBase {
     });
 
     this.graph.on('viewportchange', (e: any) => {                
-        const zoom = this.graph?.getZoom();
-        const center = this.graph?.getGraphCenterPoint();
-        $cs.updateRouteQuery({'gz': zoom, 'gx': center!.x, 'gy': center!.y});
-        console.log(zoom);                
+        this.viewportDebounce(this.graph);
     });
 
     // this.forceLayout = this.graph.get("layoutController").layoutMethod;
-    this.graph.on("node:dragstart", (e: any) => {
-      this.graph!.layout();
-      // this.forceLayout.execute();
-      this.refreshDragedNodePosition(e);
-    });
-    this.graph.on("node:drag", (e: any) => {
-      if (this.forceLayout) {
-        this.forceLayout.execute();
-      }
-      this.refreshDragedNodePosition(e);
-      // console.log("drag");
-    });
-    this.graph.on("node:dragend", (e: any) => {
-      e.item.get("model").fx = null;
-      e.item.get("model").fy = null;
-      // this.refreshDragedNodePosition(e);
-    });
+    // this.graph.on("node:dragstart", (e: any) => {
+    //   this.graph!.layout();      
+    //   this.refreshDragedNodePosition(e);
+    // });
+    // this.graph.on("node:drag", (e: any) => {
+    //   if (this.forceLayout) {
+    //     this.forceLayout.execute();
+    //   }
+    //   this.refreshDragedNodePosition(e);      
+    // });
+    // this.graph.on("node:dragend", (e: any) => {
+    //   e.item.get("model").fx = null;
+    //   e.item.get("model").fy = null;      
+    // });
     this.graph.on("node:contextmenu", (a: any) => {
       this.updateContextMenu(a);
     });
@@ -1012,23 +1038,23 @@ export default class NetworkGraph extends WidgetBase {
   mounted() {
     this.contentLoaded();
 
-    this.updateMenu({
-      id: "clear",
-      type: "icon",
-      icon: "delete",
-      action: (m) => {
-        this.emptyGraph();
-      },
-    });
+    // this.updateMenu({
+    //   id: "clear",
+    //   type: "icon",
+    //   icon: "delete",
+    //   action: (m) => {
+    //     this.emptyGraph();
+    //   },
+    // });
 
-    this.updateMenu({
-      id: "refresh",
-      type: "icon",
-      icon: "refresh",
-      action: (m) => {
-        this.updateGraph(this.source!.graph);
-      },
-    });
+    // this.updateMenu({
+    //   id: "refresh",
+    //   type: "icon",
+    //   icon: "refresh",
+    //   action: (m) => {
+    //     this.updateGraph(this.source!.graph);
+    //   },
+    // });
 
     this.busManager.subscribe(this.widget!.events, "size", (a, d) => {
       // if (this.network) {

@@ -18,8 +18,9 @@
       </v-col>
       <v-col cols="12" sm="6">
         <v-layout>
-        <v-btn text @click="savePreset()"><cs-label label="SAVE_PRESET"/></v-btn>
-        <v-btn text @click="addPreset()"><cs-label label="ADD_PRESET"/></v-btn>
+          <v-btn text @click="savePreset()"><v-icon>save</v-icon></v-btn>
+          <v-btn text @click="addPreset()"><v-icon>add</v-icon></v-btn>
+          <v-btn text @click="deletePreset()"><v-icon>delete</v-icon></v-btn>
         </v-layout>
       </v-col>
     </v-row>
@@ -94,6 +95,11 @@ export default class GraphSettings extends WidgetBase {
     if (this.widget.content) {
       return this.widget.content as DocDatasource;
     }
+  }
+
+  public deletePreset() {
+    if (!this.source?.activeGraphPreset) { return; }
+    this.source.deletePreset(this.source.activeGraphPreset);     
   }
 
   public addPreset() {

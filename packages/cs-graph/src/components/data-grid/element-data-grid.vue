@@ -251,6 +251,7 @@
           v-for="(entity, indx) of items"
           :key="indx"
           class="entity-card"
+          :color="entity._featureType.color"
           @click="selectEntity(entity)"
         >
           <data-info-panel

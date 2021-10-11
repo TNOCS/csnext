@@ -62,11 +62,11 @@ export default Text.extend({
             setTextEntity: (entity?: TextEntity) => ({ tr, dispatch }) => {
                 if (dispatch) {                    
                     const node = tr.doc.nodeAt(tr.selection.from);
-                    let text = tr.doc.textBetween(tr.selection.from, tr.selection.to -1);
+                    let text = (tr.doc as any).textBetween(tr.selection.from, tr.selection.to -1);
                     // const text = (node.text as string).substring();
                     if (entity?.text !== text) {                        
                         tr.selection.$from.pos = tr.selection.from - 1;
-                        text = tr.doc.textBetween(tr.selection.from, tr.selection.to).trim();                        
+                        text = (tr.doc as any).textBetween(tr.selection.from, tr.selection.to).trim();                        
                     }
 
                     // if (entity?.text !== text) {                        
