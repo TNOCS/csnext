@@ -172,13 +172,8 @@ export class LocalStorage implements IDatabase {
                 if (this.source) {
                     this.source.mergeFeatureTypes();  
                 }
-                return this.loadGraph(r);
-
-
+                resolve(this.loadGraph(r));
             });
-
-
-
         });
     }
 

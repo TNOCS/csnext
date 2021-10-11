@@ -38,15 +38,13 @@ export class GraphController {
     public loadData(): Promise<any> {
         return new Promise((resolve, reject) => {            
             if (!this.graph.source || !this.graph.db?.loadAll) { return; }
-            this.graph.source.featureTypes = this.layerService.config.featureTypes;            
+            this.graph.source.featureTypes = this.layerService.config.featureTypes;
             this.graph.db.loadAll().then(r => {                
                 this.graph.source?.updateSearchIndex();                                                
                 resolve(r);
             }).catch(e => {
                 reject();
             });
-
-
         })
     }
 
