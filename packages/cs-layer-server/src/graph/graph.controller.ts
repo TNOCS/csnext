@@ -34,12 +34,6 @@ export class GraphController {
         @Inject('OfflineService') private offlineService: OfflineService                
         ) {                                
     }
-
-    @Get('/')
-    base() {
-        return {};
-    }
-
     
     public loadData(): Promise<any> {
         return new Promise((resolve, reject) => {            
@@ -367,8 +361,6 @@ export class GraphController {
         })
     }
 
-    
-
     @Get('/check-geoshapes')
     checkGeoshapes(): Promise<any> {
         return new Promise(async (resolve, reject) => {
@@ -380,11 +372,13 @@ export class GraphController {
                             res[node.id] = node.properties.geoshape;
                             try {
                                 let url = node.properties.geoshape.split('+').join('_');
+                                // this.graph.init
+                                
 
                                 // console.log(`url: ${url}`);
-                                let file = await etl.downloadFileCache(url, undefined, 5000);
+                                let file = await this.filesService.getUrl(url); //await etl.downloadFileCache(url, undefined, 5000);
                                 if (file) {
-                                    let shape = await etl.openJson(file);
+                                    let shape = JSON.parse(file.toString('utf-8'));
 
                                     if (shape ?.data ?.features) {
                                         let mgjs = new simplify(shape.data, 0.1);
@@ -408,6 +402,7 @@ export class GraphController {
                                     // await sleep(5000);
                                 }
                             } catch (e) {
+                                console.log('here')
                                 Logger.error(`Error downloading ${node.properties.geoshape}`);
                             }
                         }

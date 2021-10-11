@@ -13,8 +13,8 @@ export class etl {
         })
     }
 
-    public static getPath(source: string, file: string): string {
-        let s = join(__dirname, './../../', 'data', source);
+    public static getPath(source: string, file: string, path: string): string {
+        let s = join(path, source); //join(__dirname, './../../', 'data', source);
         console.log(s);
         if (!fs.existsSync(s)) {
             fs.mkdirSync(s);
@@ -34,15 +34,17 @@ export class etl {
     }
 
     
-    public static downloadFileCache(url: string, headers?: any, sleep?: number, method: 'GET' | 'POST' = 'GET', body?: string): Promise<string | undefined> {
-        return etl.downloadFile(url, etl.getPath('cache', etl.generateHash(url + body) + '.url'), undefined, headers, sleep, method, body);
+    public static downloadFileCache2(url: string, path: string, headers?: any, sleep?: number, method: 'GET' | 'POST' = 'GET', body?: string): Promise<string | undefined> {
+        const p = etl.getPath('cache', etl.generateHash(url + body) + '.url', path);
+        console.log(p);
+        return etl.downloadFile2(url, p, undefined, headers, sleep, method, body);
     }
 
     public static sleep = (milliseconds: number) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
       }
 
-    public static downloadFile(url: string, targetPath: string, extractPath?: string, headers?: any, sleep?: number, method: 'GET' | 'POST' = 'GET', body?: string): Promise<string> {
+    public static downloadFile2(url: string, targetPath: string, extractPath?: string, headers?: any, sleep?: number, method: 'GET' | 'POST' = 'GET', body?: string): Promise<string> {
         return new Promise((resolve, reject) => {
             console.log(targetPath);
             if (fs.existsSync(targetPath)) {

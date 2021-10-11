@@ -1,9 +1,10 @@
-import { Injectable, Module, Logger } from '@nestjs/common';
+import { Injectable, Module, Logger, Inject } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { GraphDatasource } from '@csnext/cs-data';
 import { IDatabase } from './databases/database';
 import { guidGenerator } from "@csnext/cs-core";
 import { LocalStorage } from "./databases/local";
+import { FilesService } from '../export';
 
 @Injectable()
 export class GraphService {
@@ -12,6 +13,7 @@ export class GraphService {
     public db?: IDatabase;
     public database = process.env.DATABASE || 'local';
     public source?: GraphDatasource;
+    public filesPath? : string;
 
 
     constructor() {        

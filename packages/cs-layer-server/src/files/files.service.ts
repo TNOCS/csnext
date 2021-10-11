@@ -84,6 +84,11 @@ export class FilesService extends AggregateRoot {
         })
     }
 
+    public getUrl(url: string) : Promise<Buffer | undefined> {
+        const fid = FilesService.getFileId(url);
+        return this.getFile(fid, url);        
+    }
+
     public getFile(fid: string, url?: string) : Promise<Buffer | undefined> {
         return new Promise(async (resolve, reject) => {                        
             const fp = join(this.absolutePath, fid);            
