@@ -361,7 +361,7 @@ export class GraphDatasource extends DataSource {
                         c._incomming?.filter(i => {
                             if (i.classId === property) {
                                 let propVal = this.getValueFromElement(
-                                    "title",
+                                    "name",
                                     i.to
                                 );
                                 return this.compareOperator(
@@ -378,7 +378,7 @@ export class GraphDatasource extends DataSource {
                         c._outgoing?.filter(i => {
                             if (i.classId === property) {
                                 let propVal = this.getValueFromElement(
-                                    "title",
+                                    "name",
                                     i.to
                                 );
                                 return this.compareOperator(
