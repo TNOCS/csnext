@@ -573,9 +573,10 @@ export class MapDatasource extends DataSources {
 
     public showLayer(ml: IMapLayer): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
-            Vue.set(ml, 'enabled', true);
-            Vue.set(ml, 'visible', true);
+            
             if (this.map) {
+                Vue.set(ml, 'enabled', true);
+                Vue.set(ml, 'visible', true);
                 this.map
                     .showLayer(ml)
                     .then(maplayer => {
@@ -618,6 +619,9 @@ export class MapDatasource extends DataSources {
                 } else {
                     reject();
                 }
+            }
+            else {
+                resolve(ml);
             }
         })
     }

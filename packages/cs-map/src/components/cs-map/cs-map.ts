@@ -694,6 +694,8 @@ export class CsMap extends WidgetBase {
                         resolve(layer);
                     }
                 });
+            } else {
+                resolve(layer);
             }
         });
     }
