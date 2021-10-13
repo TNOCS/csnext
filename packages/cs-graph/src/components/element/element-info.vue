@@ -137,6 +137,20 @@
             </v-list-item>
           </v-list>
         </v-tab-item>
+        <v-tab-item value="tab-INDICATOR">
+          <v-list two-line subheader>
+            <v-list-item
+              v-for="item in indicatorElements"
+              :key="item.id"
+            >
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ item.properties.name}}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-tab-item>
         <v-tab-item value="tab-EEI">
           <cs-widget :widget="eeiWidget"></cs-widget>
         </v-tab-item>
@@ -262,7 +276,7 @@
 
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { WidgetBase, IframeWidget } from "@csnext/cs-client";
 import { FeatureType, GraphDatasource, GraphElement, LinkInfo } from "@csnext/cs-data";
 import simplebar from "simplebar-vue";
@@ -271,6 +285,7 @@ import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
 import { IFormOptions, IWidget } from "@csnext/cs-core";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes";
+import Axios from 'axios';
 
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
@@ -285,7 +300,7 @@ export class PropertyValue {
 })
 export default class ElementInfo extends WidgetBase {
   public instancesCount = 0;
-  public tabs = ["PROPERTIES", "EDITOR", "RELATIONS", "DOCUMENTS"];
+  public tabs = ["PROPERTIES", "EDITOR", "RELATIONS", "DOCUMENTS", "INDICATOR"];
   public tab = "EDITOR";
   public componentKey = 0;
   public history: string[] = [];
@@ -293,8 +308,14 @@ export default class ElementInfo extends WidgetBase {
   public props: PropertyValue[] = [];
   public eeiWidget: IWidget | null = null;
   public isDocument?: boolean = false;
+  private indicatorElements: GraphElement[] = [];
 
   public activeElement: GraphElement | null = null;
+
+  @Watch('activeElement')
+  public async updateIndicatorResults() {
+      this.getIndicatorResults();
+  }
 
   constructor() {
     super();
@@ -379,6 +400,19 @@ export default class ElementInfo extends WidgetBase {
   public graphNode() {
     if (this.activeElement && this.dataSource) {
       this.dataSource.createKGView([this.activeElement]);
+    }
+  }
+
+  public async getIndicatorResults() {
+    if (!this.activeElement?.properties?.indicator_definition?.indicatorId || !this.dataSource?.base_url) {
+      this.indicatorElements = [];
+    }
+    const indicatorId = this.activeElement!.properties!.indicator_definition!.indicatorId!;
+    const results = (await Axios.get(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;
+    if (results.hasOwnProperty('error') || !results.hasOwnProperty('array')) {
+      this.indicatorElements = [];
+    } else {
+      this.indicatorElements = results['array'] as GraphElement[];
     }
   }
 
