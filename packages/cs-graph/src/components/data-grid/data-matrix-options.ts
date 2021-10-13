@@ -8,5 +8,7 @@ export class DataMatrixOptions extends WidgetOptions {
     public verticalType?: string;    
     public verticalFilter?: GraphFilter;    
     public verticalParentProperty?: string;
+    public valueType?: string;
+    public valueProperty?: string;
     
 }
