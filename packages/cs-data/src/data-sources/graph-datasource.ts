@@ -795,6 +795,15 @@ export class GraphDatasource extends DataSource {
                 e._elements[props.key!] = this.graph[v] as GraphElement;
             }            
         }
+        for (const props of e._featureType?.properties.filter(pt => pt.key && pt.type === PropertyValueType.elementarray && e.properties!.hasOwnProperty(pt.key))) {
+            if (!e._elements[props.key!]) e._elements[props.key!] = [];
+            const arr: string[] = e.properties[props.key!];
+            arr.forEach(u => {
+                if (this.graph.hasOwnProperty(u)) {
+                    (e._elements![props.key!]! as GraphElement[]).push(this.graph[u] as GraphElement);
+                }
+            });     
+        }
     }
 
     /**
