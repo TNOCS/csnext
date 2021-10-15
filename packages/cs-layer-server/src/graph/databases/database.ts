@@ -1,5 +1,4 @@
 import { GraphDatasource, GraphElement } from '@csnext/cs-data';
-import { Request } from 'express';
 import { Link } from './link';
 import { GraphSchema, ObservationType } from './schema';
 
@@ -38,6 +37,7 @@ export interface IDatabase {
     loadGraph?(graph: {[key: string]: GraphElement}) : Promise<boolean>;
     schema?(): Promise<GraphSchema>;
     types?(): Promise<ObservationType[]>;
+    persist(): Promise<boolean>;
     
     link(link: Link): Promise<any>;
     unlinkId?(id: string): Promise<boolean>;

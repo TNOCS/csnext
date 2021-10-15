@@ -1,20 +1,16 @@
 import { Injectable, Module, Logger, Inject } from '@nestjs/common';
-import { AggregateRoot } from '@nestjs/cqrs';
 import { GraphDatasource } from '@csnext/cs-data';
 import { IDatabase } from './databases/database';
 import { guidGenerator } from "@csnext/cs-core";
 import { LocalStorage } from "./databases/local";
-import { FilesService } from '../export';
 
 @Injectable()
 export class GraphService {
-
     
     public db?: IDatabase;
     public database = process.env.DATABASE || 'local';
     public source?: GraphDatasource;
     public filesPath? : string;
-
 
     constructor() {        
         Logger.log('Initializing Graph Service', 'GraphService');
@@ -29,7 +25,6 @@ export class GraphService {
     //             reject();
     //         }           
     //     })
-
     // }
 
    public async init(databaseName?: string, folder?: string) {        
@@ -127,9 +122,12 @@ export class GraphService {
             }).catch(e => {
                 reject();
             })
-            
         });
     }
 
+    public async persist(): Promise<boolean> {
+        if (!this.db) return false;
+        return this.db.persist();
+    }
    
 }

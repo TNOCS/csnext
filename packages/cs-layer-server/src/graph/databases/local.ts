@@ -23,8 +23,6 @@ export class LocalStorage implements IDatabase {
     public async init(source: GraphDatasource): Promise<boolean> {
         this.source = source;
         this.isRunning = true;
-        
-
         return Promise.resolve(true);
     }
 
@@ -32,20 +30,15 @@ export class LocalStorage implements IDatabase {
 
     public runMultipleWriteQueries(queries: IQuery[]): Promise<any> {
         return new Promise(async (resolve, reject) => {
-
             resolve(true);
-
         });
-
     }
 
     public runQuery(query: string, params: any, cache = true): Promise<any> {
         return new Promise(async (resolve, reject) => {
             const result: any = [];
-
             resolve(result);
         });
-
     }
 
     public async reset(): Promise<boolean> {
@@ -58,6 +51,10 @@ export class LocalStorage implements IDatabase {
         } catch (e) {
             return Promise.reject(e);
         }
+    }
+
+    public async persist(): Promise<boolean> {
+        return this.save();
     }
 
     public async link(link: Link): Promise<any> {
@@ -233,6 +230,7 @@ export class LocalStorage implements IDatabase {
                 fs.writeFileSync(this.file, res, { encoding: 'utf8' });
             } catch (e) {
                 Logger.error(e);
+                reject();
             }
             resolve(true);
         })
