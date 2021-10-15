@@ -11,6 +11,7 @@ export enum PropertyValueType {
     url = 'url',
     options = 'options',
     element = "element",
+    elementarray = 'elementarray',
     listitem = 'listitem',
     image = 'image',
     epoch = 'epoch',
@@ -18,5 +19,5 @@ export enum PropertyValueType {
     feature = "feature",
     featurecollection = "featurecollection",
     tags = 'tags',
-    json = 'json'
+    json = 'json',
 }
