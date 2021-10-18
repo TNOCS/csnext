@@ -70,6 +70,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   description?: string;
   required?: boolean;
   group?: string;
+  section?: string;
   min?: number;
   max?: number;
   step?: number;
