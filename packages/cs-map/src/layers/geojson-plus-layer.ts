@@ -10,7 +10,7 @@ import {
     LngLatBounds,
     StyleFunction,
     LngLatLike,
-    MapboxGeoJSONFeature
+    MapboxGeoJSONFeature,
     MapLayerMouseEvent
 } from 'mapbox-gl';
 import { CsMap } from './..';
