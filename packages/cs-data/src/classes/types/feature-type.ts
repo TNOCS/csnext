@@ -22,6 +22,7 @@ export class FeatureType {
     public _edge?: GraphElement;
     public typeId?: string;
     public notification?: string;
+    public isEdge?: boolean;
     public _entities?: TextEntity[];
     // public featureType?: string;
     // public _featureType?: FeatureType;
