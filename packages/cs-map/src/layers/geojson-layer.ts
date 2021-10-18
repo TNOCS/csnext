@@ -19,6 +19,7 @@ export class GeojsonLayer extends BaseLayer {
     // public type?: 'fill' | 'line' | 'symbol' | 'circle' | 'fill-extrusion' | 'raster' | 'background' | 'heatmap' | 'hillshade';
     // public opacity?: number;
     public isEditable?: boolean;
+    public isDraggable?: boolean;
 
     // #endregion Properties (7)
 

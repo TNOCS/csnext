@@ -11,6 +11,7 @@ import {
     StyleFunction,
     LngLatLike,
     MapboxGeoJSONFeature
+    MapLayerMouseEvent
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import { PropertyType, MetaUtils, FeatureTypes, LayerLegend } from '@csnext/cs-data';
@@ -52,6 +53,8 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private leaveEvent = this.onLeave.bind(this);
     private moveEvent = this.onMove.bind(this);
     private renderEvent = this.onRender.bind(this);
+    private downEvent = this.onMouseDown.bind(this);
+    private upEvent = this.onMouseUp.bind(this);
     private mapEventsRegistered = false;
     private symbolLayer?: mapboxgl.Layer;
     private clusterLayer?: mapboxgl.Layer;
@@ -60,6 +63,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         closeButton: false
     });
     private hoveredStateId: any = null;
+    private draggingFeature: mapboxgl.MapboxGeoJSONFeature | null = null;
 
     // CLuster props
     private markers: any = {};
@@ -670,6 +674,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             if (this.style?.clusterSettings?.clusterProperties) {
                 map.on('render', this.renderEvent);
             }
+            map.on('mousedown', id, this.downEvent);
             this.mapEventsRegistered = true;
         }
     }
@@ -686,6 +691,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             if (this.style?.clusterSettings?.clusterProperties) {
                 map.off('render', this.renderEvent);
             }
+            map.off('mousedown', id, this.downEvent);
         }
         this.mapEventsRegistered = false;
     }
@@ -775,4 +781,25 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         if (!this.MapControl || !this._source?.id || !this.MapControl.isSourceLoaded(this._source.id)) return;
         this.updateMarkers();
     };
+    private onMouseDown(e: MapLayerMouseEvent) {
+        if (this.Map && this.isDraggable && e.features && e.features.length > 0) {
+            console.log(`Start dragging`);
+            e.preventDefault();
+            this.Map.map.getCanvas().style.cursor = 'grab';
+            this.draggingFeature = e.features[0];
+            this.Map.map.once('mouseup', this.upEvent);
+        }
+    }
+
+    private onMouseUp(e: MapLayerMouseEvent) {
+        if (this._events && this.Map && this.isDraggable && this.draggingFeature) {
+            const point: Point = this.draggingFeature.geometry as Point;
+            point.coordinates = [e.lngLat.lng, e.lngLat.lat, 0];
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_DRAGGED, {
+                features: [this.draggingFeature],
+                context: e
+            });
+        }
+        this.draggingFeature = null;
+    }
 }
