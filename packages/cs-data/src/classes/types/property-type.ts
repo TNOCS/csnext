@@ -46,6 +46,7 @@ export class PropertyType {
     @FormField({ title: 'Min', type: 'number', group: 'number', requirements: PropertyType.isNumber, optional: true })
     public min?: number;
     public options?: string[];
+    
     public sd?: number;    
     public section?: string;
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
@@ -61,9 +62,12 @@ export class PropertyType {
         defaultValue: 'text',
         type: 'selection', options: ['string', 'number', 'url', 'relation'] })
     public type?: PropertyValueType;
-
+    // element type if type is element type
+    public elementType?: string;
     public unique?: number;
     public legendStyle?: any;
+    public group?: string;
+    public section?: string;
     public resource?: string;
     public legend?: LayerLegend;
     public relation?: RelationType;
