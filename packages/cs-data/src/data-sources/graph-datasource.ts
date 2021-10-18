@@ -584,6 +584,8 @@ export class GraphDatasource extends DataSource {
         if (element.classId === undefined) {
             element.classId = classId;
         }
+
+        
         // element.properties.classId = element.classId;
 
         if (!element.id) {
@@ -621,6 +623,15 @@ export class GraphDatasource extends DataSource {
         return new Promise(async (resolve, reject) => {
             if (element.toId && element.fromId) {
                 element = this.createEdge(element, classId);
+                if (
+                    !element._featureType &&
+                    element.classId &&
+                    this.featureTypes &&
+                    this.featureTypes.hasOwnProperty(element.classId) &&
+                    this.featureTypes[element.classId].isEdge
+                ) {
+                    element._featureType = this.featureTypes[element.classId];
+                }
                 this.updateElementEdges(element);
                 this.addElement(element);
                 resolve(true);
