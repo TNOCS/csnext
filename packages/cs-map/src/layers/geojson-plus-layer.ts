@@ -622,7 +622,6 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
     private onMouseDown(e: MapLayerMouseEvent) {
         if (this.Map && this.isDraggable && e.features && e.features.length > 0) {
-            console.log(`Start dragging`);
             e.preventDefault();
             this.Map.map.getCanvas().style.cursor = 'grab';
             this.draggingFeature = e.features[0];
