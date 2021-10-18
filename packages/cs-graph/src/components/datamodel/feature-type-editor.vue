@@ -263,6 +263,11 @@ export default class FeatureTypeEditor extends WidgetBase {
           type: "string",
           readonly: true,
         },
+         {
+          title: "IS EDGE",
+          _key: "isEdge",
+          type: "boolean",
+        },
         {
           title: "TITLE",
           _key: "title",

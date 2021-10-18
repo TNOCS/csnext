@@ -64,9 +64,11 @@ export default class ClassViewer extends WidgetBase {
     if (e.type && this.graph && this.data && this.graphSource && (this.showBaseNode || e.type !== 'node')) {
       let existing = this.data.nodes!.find(n => n.id === e.type); // get(e.id);
       let active = true;
+      
 
       let node = {
         id: e.type,
+        classId: e.type,
         label: this.fittingString(e.title!, 50, 10),
         hidden: false,
         style: {
@@ -90,16 +92,18 @@ export default class ClassViewer extends WidgetBase {
 private updateRelation(e: RelationType, obs: FeatureType) {
   if (!this.data || !this.showRelations || !this.graph || !this.graphSource || !e.type || !obs.type || !e.objectType) { return; }
   let id = e.type + '-' + obs.type + '-' + e.objectType;
+  let type = this.graphSource?.findObservation(e.type);
+  let title = type?.title ?? e.type;
   let existing = this.data.edges!.find(n => n.id === id);
   if (!existing) {
-    let edge = { id: id, source: obs.type, 
+    let edge = { id: id, classId: e.type, source: obs.type, 
     target: e.objectType, width: 3,
     style: {
       endArrow: {
         path: G6.Arrow.triangle()
       }
     },
-    label: this.showRelationTypes ? e.type : undefined, 
+    label: this.showRelationTypes ? title : undefined, 
     arrows: "to",} as any;          
     this.data?.edges?.push(edge);
   }
@@ -145,7 +149,7 @@ public updateGraph() {
     // }
     for (const e of Object.values(this.graphSource.featureTypes)) {
       
-        if (e.type) {
+        if (e.type && !e.isEdge ) {
           
           this.updateNode(e);
           // if (e.class) {
@@ -253,10 +257,14 @@ public updateGraph() {
           "click-select",
           {
             type: "edge-tooltip",
-            formatText: (model) => {
-              if (model.node) {
+            formatText: (model: {[key: string]: any}) => {
+              if (model?.classId) {
+                let type = this.graphSource?.findObservation(model.classId);
+                if (type) {
+                  return type.title;
+                }                
               }
-              return "Geen informatie nog beschikbaar";
+              return 'not defined';
             },
             offset: 30,
           },
@@ -289,7 +297,7 @@ public updateGraph() {
           lineWidth: 1,          
         },
         labelCfg: {
-          autoRotate: false,
+          autoRotate: true,
           style: {        
             fontSize: 10,            
             // strokeWidth: 2,          
@@ -339,9 +347,9 @@ public updateGraph() {
       e.item.get('model').fy = null;
       // this.refreshDragedNodePosition(e);
     });
-    this.graph.on('node:click', (e: any) => {
-      if (e.item?._cfg?.id) {
-        let type = this.graphSource?.findObservation(e.item._cfg.id);
+    this.graph.on('click', (e: any) => {
+      if (e.item?._cfg?.model?.classId) {
+        let type = this.graphSource?.findObservation(e.item._cfg.model.classId);
         if (type) {
           this.graphSource?.openFeatureTypeEditor(type);
         }              

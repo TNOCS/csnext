@@ -13,6 +13,8 @@
             single-line
             hide-details
           ></v-text-field>
+          <!-- <v-checkbox :value="showNodes" label="nodes"></v-checkbox>
+          <v-checkbox :value="showEdges" label="edges"></v-checkbox> -->
            <v-btn @click.stop="addType()">
             <v-icon>add</v-icon>
             <!-- {{$cs.Translate('ADD_TYPE')}} -->
@@ -61,9 +63,12 @@ import { FeatureType } from "@csnext/cs-data";
 })
 export default class ClassOverview extends WidgetBase {
   public search = "";
+  public showNodes = true;
+  public showEdges = true;
   public headers = [
     
     { text: 'title', value: 'title', groupable: false},
+    { text: 'edge', value: 'isEdge', groupable: false},
     // { text: "type", value: "properties" },
     // { text: "count", value: "count", groupable: false },
     // { text: "properties", value: "properties.length", groupable: false },
