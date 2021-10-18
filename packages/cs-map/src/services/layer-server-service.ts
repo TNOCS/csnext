@@ -84,6 +84,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
                         }
                         gl.openFeatureDetails = true;
                         gl.isEditable = layer.isEditable;
+                        gl.isDraggable = layer.isDraggable;
                         gl.activeFeatureTypes = layer.activeFeatureTypes;
                         gl.isLive = layer.isLive;                                
                         gl.featureTypes = layer.featureTypes;

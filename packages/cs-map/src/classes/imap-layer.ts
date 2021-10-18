@@ -34,6 +34,7 @@ export interface IMapLayer {
     /* link to external source url */
     externalUrl?: string;
     isEditable?: boolean;
+    isDraggable?: boolean;
     isLive?: boolean;
     /** toggle visibility of layer */
     // visible?: boolean;
