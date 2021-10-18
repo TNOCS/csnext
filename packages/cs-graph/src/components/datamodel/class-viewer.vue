@@ -255,19 +255,19 @@ public updateGraph() {
           'activate-relations',
           "zoom-canvas",
           "click-select",
-          {
-            type: "edge-tooltip",
-            formatText: (model: {[key: string]: any}) => {
-              if (model?.classId) {
-                let type = this.graphSource?.findObservation(model.classId);
-                if (type) {
-                  return type.title;
-                }                
-              }
-              return 'not defined';
-            },
-            offset: 30,
-          },
+          // {
+          //   type: "edge-tooltip",
+          //   formatText: (model: {[key: string]: any}) => {
+          //     if (model?.classId) {
+          //       let type = this.graphSource?.findObservation(model.classId);
+          //       if (type) {
+          //         return type.title;
+          //       }                
+          //     }
+          //     return 'not defined';
+          //   },
+          //   offset: 30,
+          // },
         ],
         // addEdge: ["click-add-edge", "click-select"],
       },
