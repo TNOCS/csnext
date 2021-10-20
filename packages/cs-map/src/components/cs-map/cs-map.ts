@@ -55,6 +55,7 @@ export class CsMap extends WidgetBase {
     public static FEATURE_DELETED = 'deleted';
     public static FEATURE_MOUSE_ENTER = 'enter';
     public static FEATURE_MOUSE_LEAVE = 'leave';
+    public static FEATURE_DRAGGED = 'dragged';
     public static FEATURE_UPDATED = 'updated';
     public static FEATURE = 'feature';
     public static LEGENDS = 'legends';

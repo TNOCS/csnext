@@ -9,7 +9,8 @@ import extent from '@mapbox/geojson-extent';
 import {
     LngLatBounds,
     StyleFunction,
-    LngLatLike
+    LngLatLike,
+    MapLayerMouseEvent
 } from 'mapbox-gl';
 import { CsMap } from './..';
 import { PropertyType, MetaUtils, FeatureTypes, LayerLegend } from '@csnext/cs-data';
@@ -19,7 +20,7 @@ import { MessageBusHandle } from '@csnext/cs-core';
 import { BaseLayer } from './base-layer';
 import { LayerStyle } from '../classes/layer-style';
 import { CsWidget } from '@csnext/cs-client';
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 
 export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
 
@@ -51,6 +52,8 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     private enterEvent = this.onEnter.bind(this);
     private leaveEvent = this.onLeave.bind(this);
     private moveEvent = this.onMove.bind(this);
+    private downEvent = this.onMouseDown.bind(this);
+    private upEvent = this.onMouseUp.bind(this);
     private mapEventsRegistered = false;
     private symbolLayer?: mapboxgl.Layer;
     private clusterLayer?: mapboxgl.Layer;
@@ -59,6 +62,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         closeButton: false
     });
     private hoveredStateId: any = null;
+    private draggingFeature: mapboxgl.MapboxGeoJSONFeature | null = null;
 
     constructor(init?: Partial<IMapLayer>) {
         super(init);
@@ -516,6 +520,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             map.on('mousemove', id, this.moveEvent);
             map.on('mouseenter', id, this.enterEvent);
             map.on('mouseleave', id, this.leaveEvent);
+            map.on('mousedown', id, this.downEvent);
             this.mapEventsRegistered = true;
         }
     }
@@ -529,6 +534,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
             map.off('mouseenter', id, this.enterEvent);
             map.off('mouseleave', id, this.leaveEvent);
             map.off('mousemove', id, this.moveEvent);
+            map.off('mousedown', id, this.downEvent);
         }
         this.mapEventsRegistered = false;
     }
@@ -612,5 +618,26 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
                 this.MapControl.setFeatureState(fId, { hover: true });
             }
         }
+    }
+
+    private onMouseDown(e: MapLayerMouseEvent) {
+        if (this.Map && this.isDraggable && e.features && e.features.length > 0) {
+            e.preventDefault();
+            this.Map.map.getCanvas().style.cursor = 'grab';
+            this.draggingFeature = e.features[0];
+            this.Map.map.once('mouseup', this.upEvent);
+        }
+    }
+
+    private onMouseUp(e: MapLayerMouseEvent) {
+        if (this._events && this.Map && this.isDraggable && this.draggingFeature) {
+            const point: Point = this.draggingFeature.geometry as Point;
+            point.coordinates = [e.lngLat.lng, e.lngLat.lat, 0];
+            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_DRAGGED, {
+                features: [this.draggingFeature],
+                context: e
+            });
+        }
+        this.draggingFeature = null;
     }
 }
