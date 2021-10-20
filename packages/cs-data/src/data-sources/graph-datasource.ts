@@ -21,11 +21,9 @@ import {
 } from "../";
 import throttle from "lodash.throttle";
 import Fuse from "fuse.js";
+import _ from 'lodash';
 
 export type GraphObject = { [key: string]: GraphElement };
-
-
-
 
 export class GraphDatasource extends DataSource {
     public static GRAPH_EVENTS = "graphevents";
@@ -429,6 +427,21 @@ export class GraphDatasource extends DataSource {
         }
     }
 
+    public getUniqueClasses(): string[] {
+        let res: string[] = [];
+        res = _.chain(Object.values(this.graph)).map(c => c.classId || '').uniq().value();
+        return res.sort();
+    }
+
+    public getPropertiesForClass(classId: string): string[] {
+        let res: string[] = [];
+        const c = this.getClassElements(classId);
+        if (c && c.length>0 && c[0].properties) {
+            res = Object.keys(c[0].properties);
+        }
+        return res.sort();
+    }
+
     public getClassElements(
         classId: string,
         traversal?: boolean,
@@ -801,6 +814,7 @@ export class GraphDatasource extends DataSource {
             arr.forEach(u => {
                 if (this.graph.hasOwnProperty(u)) {
                     (e._elements![props.key!]! as GraphElement[]).push(this.graph[u] as GraphElement);
+                    e._elements![props.key!] = _.uniqBy((e._elements![props.key!]! as GraphElement[]), (elm => elm.id));
                 }
             });     
         }
