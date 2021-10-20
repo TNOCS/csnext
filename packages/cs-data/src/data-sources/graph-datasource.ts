@@ -32,6 +32,8 @@ export class GraphDatasource extends DataSource {
     public static GRAPH_UPDATED = "graph-updated";
     public static GRAPH_LOADED = "graph-loaded";
     public static ELEMENT_UPDATED = "element-updated";
+    public static ELEMENT_ADDED = "element-added";
+    public static ELEMENT_REMOVED = "element-removed";
     public static PRESET_EVENTS = "preset-events";
     public static PRESET_ELEMENT_ADDED = "preset-element-added";
     public static PRESET_ACTIVATED = "preset-activated";
