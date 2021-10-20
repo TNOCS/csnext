@@ -71,9 +71,12 @@
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
           <v-tabs-slider></v-tabs-slider>
+          <v-tab v-if="specialTab" key="SPECIAL" href="#tab-SPECIAL">
+            {{ activeElement._featureType.title }}
+          </v-tab>
           <v-tab v-for="tab in tabs" :key="tab" :href="`#tab-${tab}`">
-            {{ $cs.Translate(tab) }}</v-tab
-          >
+            {{ $cs.Translate(tab) }}
+          </v-tab>
           <!-- <v-tab href="#tab-properties">{{ $cs.Translate('PROPERTIES') }}</v-tab>
           <v-tab href="#tab-editor">{{ $cs.Translate('EDITOR')}}</v-tab>
           <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
@@ -85,6 +88,10 @@
 
     <simplebar class="full-height">
       <v-tabs-items v-model="tab" style="margin-bottom: 200px">
+        <v-tab-item v-if="specialTab" value="tab-SPECIAL">
+          <component :is="specialTab" :element="activeElement" :source="dataSource"></component>
+        </v-tab-item>
+
         <v-tab-item value="tab-PROPERTIES">
           <data-info-panel
             class="element-data-info-panel"
@@ -285,7 +292,9 @@ import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
 import { IFormOptions, IWidget } from "@csnext/cs-core";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes";
+import { InfoTabManager } from '../../classes/info-tab-manager';
 import Axios from 'axios';
+import { Component as VueComponent } from "vue";
 
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
@@ -311,6 +320,7 @@ export default class ElementInfo extends WidgetBase {
   private indicatorElements: GraphElement[] = [];
 
   public activeElement: GraphElement | null = null;
+  private specialTab: VueComponent | null = null;
 
   @Watch('activeElement')
   public async updateIndicatorResults() {
@@ -320,7 +330,6 @@ export default class ElementInfo extends WidgetBase {
   constructor() {
     super();
   }
-
 
   public get dataSource(): DocDatasource | undefined {
     if (this.widget.content) {      
@@ -554,11 +563,19 @@ export default class ElementInfo extends WidgetBase {
     this.updateElement();
   }
 
+  public updateTabs() {
+    if (!this.activeElement?.classId) {
+      this.specialTab = null;
+      return;
+    }
+    this.specialTab = InfoTabManager.tabs[this.activeElement.classId] || null;
+  }
   
   public mounted() {
     if (this.dataSource) {
       if (this.dataSource.activeElement) {
         this.activeElement = this.dataSource.activeElement;
+        this.updateTabs();
         this.updateForm();
       }
 
@@ -575,11 +592,13 @@ export default class ElementInfo extends WidgetBase {
         (a: string, data: GraphElement) => {
           this.activeElement = data;
           this.updateElement();
+          this.updateTabs();
         }
       );
       this.dataSource.bus.subscribe("focus", (a: string, data: any) => {
         this.activeElement = data;
         this.updateElement();
+        this.updateTabs();
         this.$forceUpdate();
       });
     }
