@@ -64,6 +64,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     });
     private hoveredStateId: any = null;
     private draggingFeature: mapboxgl.MapboxGeoJSONFeature | null = null;
+    private draggingStartXY: {x: number, y: number} | null = null;
 
     // CLuster props
     private markers: any = {};
@@ -782,24 +783,31 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
         this.updateMarkers();
     };
     private onMouseDown(e: MapLayerMouseEvent) {
-        if (this.Map && this.isDraggable && e.features && e.features.length > 0) {
-            console.log(`Start dragging`);
+        if (this.Map && this.isDraggable && e.features && e.features.length > 0 && e.originalEvent && e.originalEvent.button === 0) {
             e.preventDefault();
             this.Map.map.getCanvas().style.cursor = 'grab';
             this.draggingFeature = e.features[0];
+            this.draggingStartXY = e.point;
             this.Map.map.once('mouseup', this.upEvent);
         }
     }
 
     private onMouseUp(e: MapLayerMouseEvent) {
-        if (this._events && this.Map && this.isDraggable && this.draggingFeature) {
-            const point: Point = this.draggingFeature.geometry as Point;
-            point.coordinates = [e.lngLat.lng, e.lngLat.lat, 0];
-            this._events.publish(CsMap.FEATURE, CsMap.FEATURE_DRAGGED, {
-                features: [this.draggingFeature],
-                context: e
-            });
+        if (this._events && this.Map && this.isDraggable && this.draggingFeature && this.draggingStartXY && e.originalEvent && e.originalEvent.button === 0) {
+            const dx = Math.abs(e.point.x - this.draggingStartXY.x);
+            const dy = Math.abs(e.point.y - this.draggingStartXY.y);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const MIN_DISTANCE_DRAGGED = 25;
+            if (dist >= MIN_DISTANCE_DRAGGED) {
+                const point: Point = this.draggingFeature.geometry as Point;
+                point.coordinates = [e.lngLat.lng, e.lngLat.lat, 0];
+                this._events.publish(CsMap.FEATURE, CsMap.FEATURE_DRAGGED, {
+                    features: [this.draggingFeature],
+                    context: e
+                });
+            }
         }
         this.draggingFeature = null;
+        this.draggingStartXY = null;
     }
 }
