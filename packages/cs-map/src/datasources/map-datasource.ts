@@ -566,9 +566,15 @@ export class MapDatasource extends DataSources {
     public showLayerById(id: string): Promise<IMapLayer> {
         return new Promise((resolve, reject) => {
             if (!this.layers) return reject();
-            const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l);
+            const layer: IMapLayer | undefined = this.layers!.find((l: IMapLayer) => l.id === id);
             if (!layer) return reject();
-            return this.showLayer(layer);
+            this.showLayer(layer)
+            .then((ml: IMapLayer) => {
+                resolve(ml);
+            })
+            .catch((e: any) => {
+                reject();
+            })
         });
     }
 
