@@ -1,5 +1,5 @@
 <template>
-  <div v-if="field">
+  <div v-if="field">    
     <div v-if="field.data.relation.multiple">
       <v-layout
         >{{ field.title }}
@@ -79,7 +79,7 @@
           $cs.Translate(field.title) + ' (' + field.data.relation.type + ')'
         "
         :hint="field.hint"
-        itemText="_title"
+        itemText="properties.name"
         hide-no-data
         clearable
         @change="updateRelation()"

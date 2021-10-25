@@ -1,6 +1,11 @@
 
 import { GraphDatasource, GraphElement } from '../../';
 
+export class IGraphFilter {
+    public title?: string;    
+    public _visibleNodes: GraphElement[] = [];
+    public nodes?: string[]; 
+}
 
 export class NodeRule {
     public title?: string;
@@ -8,7 +13,7 @@ export class NodeRule {
     public id?: string;
     public filter?: any = {};
 }
-export class GraphPreset {
+export class GraphPreset extends IGraphFilter {
     public title?: string;
     public showDataModel?= false;
     public showInstance?= true;
@@ -42,10 +47,6 @@ export class GraphPreset {
     public nodeRules?: NodeRule[] = [];
 
     
-    public _visibleNodes: GraphElement[] = [];
-    private nodes?: string[];
-
-
     public static export(preset: GraphPreset): string {        
         return JSON.stringify({ ...preset, ...{nodes: preset._visibleNodes.map(n=>n.id)}}, (k, v) => {
             if (k.startsWith('_')) return undefined;                        

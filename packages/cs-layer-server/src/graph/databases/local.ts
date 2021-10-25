@@ -123,7 +123,7 @@ export class LocalStorage implements IDatabase {
         return new Promise(async (resolve, reject) => {
             
             if (!this.source) { reject(); return;  }
-                      
+                                  
             for (const key in graph) {
                 if (Object.prototype.hasOwnProperty.call(graph, key)) {
                     const element = graph[key] as GraphElement;                    
@@ -179,9 +179,20 @@ export class LocalStorage implements IDatabase {
             if (!this.source) {
                 reject();
                 return;
-            }
+            }            
+
             const res: any[] = [];
-            for (const element of Object.values(this.source.graph)) {
+            let list = [];
+            if (options?.id) {     
+                if (this.source.graph.hasOwnProperty(options.id)) {
+                    list = [this.source.graph[options.id]];
+                }
+            } else if (options?.type) {
+                list = this.source.getClassElements(options.type);
+            } else {
+                list = Object.values(this.source.graph);
+            }            
+            for (const element of list) {
                 switch (element.type) {
                     case "node":
                         res.push({ type: "node", id: element.id, classId: element.classId, properties: element.properties });

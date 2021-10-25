@@ -214,6 +214,13 @@ export default class NetworkGraph extends WidgetBase {
     super();
   }
 
+  public resize() {
+    if (!this.graph || !this.widget._size) { return; }
+    this.graph.changeSize(this.widget._size.width, this.widget._size.height);
+    this.graph.render();
+
+  }
+
   public updateMenu(menu: IMenu) {
     if (this.widget.options) {
       if (!this.widget.options.menus) {

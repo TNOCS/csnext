@@ -20,7 +20,7 @@
         </v-btn>
       </v-btn-toggle>
       
-      <v-menu offset-y v-if="classTypes.length > 1">
+      <v-menu offset-y v-if="options.canAdd && classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             color="primary"
@@ -47,8 +47,9 @@
       <v-btn
         @keydown.native.alt.78="addEntity(classTypes[0])"
         @click="addEntity(classTypes[0])"
-        v-else
+        v-else-if="options.canAdd"
         color="primary"
+        
         class="ml-2"
         elevation="0"
       >
@@ -131,6 +132,7 @@
     </v-layout>
 
     <template v-if="options.defaultView === 'table'">      
+        <div style="display: flex; flex-direction: row; height: 100%">
         <ag-grid-vue
           class="table-grid"
           :class="{'ag-theme-alpine-dark': $cs.project.theme.dark, 'ag-theme-alpine': !$cs.project.theme.dark}"
@@ -143,101 +145,7 @@
           @grid-ready="onGridReady"
         >
         </ag-grid-vue>
-
-        <!-- <v-data-table
-          :headers="headers"
-          :items="items"
-          item-key="id"
-          :search="search"
-          :group-by="groupKey"
-          disable-pagination
-          calculate-widths
-          :show-select="options.graphSelect"
-          @click:row="selectEntity"
-          :custom-filter="filterDataTable"
-        >
-          <template
-            v-if="options.graphSelect"
-            v-slot:item.data-table-select="{ item, isSelected, select }"
-          >
-            <v-simple-checkbox
-              color="green"
-              :value="item._included"
-              @input="selectElement(item, $event)"
-            ></v-simple-checkbox>
-          </template>
-  
-
-          <template v-slot:body="props">
-            <tbody>
-              <tr
-                class="data-row"
-                v-for="item in props.items"
-                :key="item.id"
-                @click="selectEntity(item)"
-              >
-                <td
-                  class="text-start"
-                  v-for="(header, index) in headers"
-                  :key="index"
-                >
-                  <template v-if="header.value === 'icon'">
-                    <v-img :src="item._featureType.icon" max-width="30"></v-img>
-                  </template>
-                  <template v-else-if="!header.propType">
-                    <v-layout>
-                      <v-btn @click.stop="editEntity(item)" icon
-                        ><v-icon small class="mr-2"> edit </v-icon></v-btn
-                      >
-                      <v-btn @click.stop="removeEntity(item)" icon
-                        ><v-icon small class="mr-2"> delete </v-icon></v-btn
-                      >
-                      <v-btn @click.stop="graphNode(entity)" icon
-                        ><v-icon small>scatter_plot</v-icon></v-btn
-                      >
-                    </v-layout>
-                  </template>
-
-                  <template v-else-if="header.propType.type === 'relation'">
-                    <span v-if="header.propType.relation.multiple">
-                      <node-link
-                        v-for="value of itemPropValues(header.propType, item)"
-                        :key="value.id"
-                        :node="value"
-                        :source="source"
-                      ></node-link>
-                    </span>
-                    <node-link
-                      v-else
-                      :node="itemPropValue(header.propType, item)"
-                      :source="source"
-                    ></node-link>
-                  </template>
-                  <prop-value
-                    v-else
-                    :value="itemPropValue(header.propType, item)"
-                    :proptype="header.propType"
-                    :element="item"
-                  ></prop-value>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-
-          <template v-slot:top>
-            <v-text-field
-              v-model="search"
-              label="Search"
-              class="mx-4"
-            ></v-text-field>
-          </template>
-          <template v-slot:group.header="{ group, items, isOpen, toggle }">
-            <th colspan="12">
-              <v-icon @click="toggle">{{ isOpen ? "remove" : "add" }} </v-icon>
-              {{ group }} ({{ items.length }})
-            </th>
-          </template>
-        </v-data-table> -->      
+</div>  
     </template>
 
     <template v-if="options.defaultView === 'cards'">
@@ -247,11 +155,18 @@
         :list="items"
         class="isotope-grid"
       >
-        <v-card
-          v-for="(entity, indx) of items"
+        <template v-for="(element, indx) of items">
+          <v-card          
           :key="indx"
           class="entity-card"
-          :color="entity._featureType.color"
+          @click="selectEntityCard(element)"
+        >  
+        <component :is="getElementCard(element)" :source="source" :element="element"></component>                
+          </v-card>
+          
+        <!-- <v-card          
+          :key="indx"
+          class="entity-card"
           @click="selectEntity(entity)"
         >
           <data-info-panel
@@ -272,7 +187,8 @@
               ><v-icon>scatter_plot</v-icon></v-btn
             >
           </v-card-actions>
-        </v-card>
+        </v-card> -->
+        </template>
       </isotope>
 
       <!-- <simplebar class="scroll">
@@ -448,23 +364,41 @@
 
 
 
-<style scoped>
+<style lang="scss" scoped>
 
+.ag-theme-alpine {
+    /* use theme parameters where possible */
+    --ag-header-background-color: transparent;
+    --ag-border-color: transparent;
+    --ag-border: 0px;
+    --ag-padding: 0px;
+}
+
+.ag-row {
+  height: 30px !important;
+}
 
 .data-table-scroll {
   height: calc(100vh - 400px) !important;
 }
 
 .ag-root-wrapper {
-  border: 0 !important;
-  background: red !important;
+  border: 0 !important;  
+}
+
+.ag-text-field-input  {
+  background: blue !important;
+}
+
+.element-card-name {
+  font-size: 30px;
 }
 
 .data-row {
   padding: 4px !important;
   margin: 4px !important;
   cursor: pointer;
-  min-height: 40px !important;
+  // min-height: 40px !important;
 
   /* margin-bottom: 10px; */
 }
@@ -476,7 +410,7 @@
 }
 
 .data-grid-component {
-  height: calc(100% - 120px)
+  height: calc(100% - 120px);  
 }
 
 .calendar-view {
@@ -485,6 +419,7 @@
 
 .table-grid {
   width: 100%;
+
   height: calc(100%);
 }
 
@@ -530,6 +465,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
 import OptionsFilter from "./options-filter.vue";
 
+
 // import { FeatureType } from "../../classes";
 import {
   FeatureType,
@@ -543,6 +479,7 @@ import simplebar from "simplebar-vue";
 import isotope from "vueisotope";
 import { AppStateBase, guidGenerator, WidgetOptions } from "@csnext/cs-core";
 import Vue from "vue";
+import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { PropValue } from "@csnext/cs-map";
 import GridPropValue from "./grid-prop-value";
 import OptionsCellEditor from "./options-cell-editor.vue"
@@ -551,7 +488,8 @@ import { AgGridVue } from "ag-grid-vue";
 import { CellValueChangedEvent, ColDef, GridApi } from "ag-grid-community";
 import GridRowActions from "./grid-row-actions.vue";
 import DateCellEditor from "./date-cell-editor.vue";
-import { DataGridOptions, DocDatasource, GridView } from "../..";
+import DefaultElementCard from "./cards/default-element-card.vue";
+import { ElementCardManager } from "./cards/element-card-manager"
 // import Placeholder from "@tiptap/extension-placeholder";
 require("isotope-packery");
 
@@ -570,6 +508,7 @@ require("isotope-packery");
     DataInfoPanel,
     NodeLink,
     isotope,
+    DefaultElementCard
   },
 })
 export default class ElementDataGrid extends WidgetBase {
@@ -650,6 +589,12 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+  public resize() {
+    if (this.gridApi) {
+      this.gridApi.sizeColumnsToFit();
+    }
+  }
+
   public onGridReady(params: any) {
     this.gridApi = params.api as GridApi;
     this.columnApi = params.columnApi;
@@ -663,6 +608,15 @@ export default class ElementDataGrid extends WidgetBase {
       this.options.onSelect(element);
     } else {
       this.editEntity(element);
+    }
+  }
+
+  public selectEntityCard(element: GraphElement) {
+    if (this.options.onSelect) {
+      this.options.onSelect(element);
+    } else {
+      this.source?.selectElement(element, false);
+      // this.editEntity(element);
     }
   }
 
@@ -717,7 +671,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public async toggleCheckbox(entity: GraphElement) {
- if (!this.source || !entity.properties || !this.options?.checkboxProperty) {
+ if (!this.source || !this.options.checkboxProperty || !entity.properties) {
       return;
     }
     // entity.properties[this.options.checkboxProperty] = (entity.properties[this.options.checkboxProperty] === true) ? false : true;
@@ -832,13 +786,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
     this.headers = [];
     this.columnDefs = [];
-    this.autoGroupColumnDef = {
-      headerName: "Athlete",
-      field: "athlete",
-      minWidth: 250,
-      cellRenderer: "agGroupCellRenderer",
-      cellRendererParams: { checkbox: true },
-    };
+    
     this.headers.push({ text: "", value: "icon", sortable: false });
     for (const header of this.options.selectedHeaders) {
       if (header.key && this.potentialProperties.hasOwnProperty(header.key)) {
@@ -1363,8 +1311,18 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  mounted() {
-    this.updateEntities();
+  private getElementCard(element: GraphElement) {
+    const id = element.classId;
+    if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
+      return ElementCardManager.cards[id]
+    }    
+    return 'default-element-card';    
   }
+
+  mounted() {    
+    this.updateEntities();    
+  }
+
+  
 }
 </script>

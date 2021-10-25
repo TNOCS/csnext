@@ -32,7 +32,7 @@ export class CsFormField extends Vue {
 
     @Watch('target')
     private targetChanged() {
-        this.updateOptions();
+        this.updateValue();
     }
 
     private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
@@ -71,9 +71,22 @@ export class CsFormField extends Vue {
         }
     }
 
-    public async mounted() {        
-        
+    public getOptions() {
         this.updateOptions();
+    }
+
+    public async search() {
+        this.updateOptions();
+        return this.items;
+    }
+
+    public updateValue() {
+        if (!this.target || !this.field?._key) { return; }
+        this.items = this.target[this.field._key]        
+    }
+
+    public async mounted() {          
+        this.updateValue();        
     }
 
     public triggerClick(field: IFormFieldOptions) {
@@ -92,11 +105,14 @@ export class CsFormField extends Vue {
         }
     }
 
-    public get selectedObject(): any | undefined {
+    public get selectedObject(): any | null {
         if (this.field && this.field.options && this.field && this.field.keyValue && this.target) {
             let o = this.items; //(Array.isArray(this.field.options)) ? this.field.options : this.field.options();
-            return o.find(s => s[this.field!.keyValue!] == this.target![this.field!._key!])
+            if (o) {
+                return o.find(s => s[this.field!.keyValue!] == this.target![this.field!._key!])
+            }
         }
+        return null;
     }
 
     public set selectedObject(s: any) {

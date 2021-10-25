@@ -413,18 +413,18 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public locateOnMap() {
-    if (!this.source?.map?.MapControl) {
-      return;
-    }
-    if (this.entity?._location && this.source?.map) {
-      const location = WktUtils.PointParser(this.entity._location);
-      if (location) {
-        this.source?.map.MapControl.flyTo({
-          zoom: 10,
-          center: { lat: location[1], lng: location[0] },
-        });
-      }
-    }
+    // if (!this.source?.map?.MapControl) {
+    //   return;
+    // }
+    // if (this.entity?._location && this.source?.map) {
+    //   const location = WktUtils.PointParser(this.entity._location);
+    //   if (location) {
+    //     this.source?.map.MapControl.flyTo({
+    //       zoom: 10,
+    //       center: { lat: location[1], lng: location[0] },
+    //     });
+    //   }
+    // }
   }
 
   public nearby() {

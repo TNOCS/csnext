@@ -223,7 +223,7 @@ export default class GraphSettings extends WidgetBase {
             min: 0.01,
             max: 1,
             step: 0.01,
-            requirements: [ (v: GraphPreset) => isLayout(v,['force'])  ] 
+            requirements: [ (v: GraphPreset) => isLayout(v,['force', 'gForce'])  ] 
           },
            {
             title: 'COLIDE_STRENGTH',
@@ -240,7 +240,7 @@ export default class GraphSettings extends WidgetBase {
             type: 'slider',
             min: 1,
             max: 100,
-            requirements: [ (v: GraphPreset) => isLayout(v,['force'])  ] 
+            requirements: [ (v: GraphPreset) => isLayout(v,['force', 'gForce'])  ] 
           },
           {
             title: 'ALPHA',
@@ -258,7 +258,7 @@ export default class GraphSettings extends WidgetBase {
             type: 'slider',
             min: 10,
             max: 500,
-            requirements: [ (v: GraphPreset) => isLayout(v,['radial', 'mds', 'force'])  ] 
+            requirements: [ (v: GraphPreset) => isLayout(v,['radial', 'mds', 'gForce', 'force'])  ] 
           },
           {
             title: 'UNIT_RADIUS',

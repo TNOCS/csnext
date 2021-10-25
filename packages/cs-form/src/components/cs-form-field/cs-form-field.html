@@ -43,12 +43,13 @@
     <template v-if="field.type === 'rating'">
             <div>{{ $cs.Translate(field.title) }}</div>
                 <v-rating v-model="target[field._key]" :clearable="field.clearable" :length="field.max-field.min+1" @input="fieldUpdated(field)">
-                 <template v-slot:item="props">
+                 <!-- <template v-slot:item="props">
                     <v-icon :color="props.isFilled ? genColor(props.index) : 'grey lighten-1'" @click="props.click">
                     {{ props.isFilled ? (field.options && field.options.fullIcon ? field.options.fullIcon : 'star') : (field.options && field.options.emptyIcon ? field.options.emptyIcon : 'star_border') }}
                     </v-icon>
-                </template>
+                </template> -->
     </v-rating>
+
     </template>
 
     <template v-if="field.type === 'datepicker'">            
@@ -171,16 +172,25 @@
                 :required="field.required"
                 :disabled="field.readonly"
                 :hint="field.hint"
-                :persistentHint="field.persistentHint"
+                :persistentHint="field.persistentHint"            
                 @change="fieldUpdated(field)"
             ></v-checkbox>
         </template>
     <template v-if="field.type === 'selection'">
+            <!-- <v-autocomplete
+                :items="items"
+                v-model="target[field._key]"
+                :search-input.sync="search"
+                :label="$cs.Translate(field.title)"
+                :disabled="field.readonly"
+                @change="fieldUpdated(field)"
+            ></v-autocomplete> -->
             <v-select
                 :items="items"
                 v-model="target[field._key]"
                 :label="$cs.Translate(field.title)"
                 :disabled="field.readonly"
+                @focus="getOptions()"
                 @change="fieldUpdated(field)"
             ></v-select>
         </template>

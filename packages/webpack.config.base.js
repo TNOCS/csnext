@@ -57,11 +57,12 @@ const mod = {
                 {
                     loader: "sass-loader",
                     options: {
-                        implementation: require("sass"),
+                        // implementation: require("sass"),
                         sassOptions: {
-                            fiber: false
+                            fiber: false,
+                            indentedSyntax: false
                         },
-                        indentedSyntax: true // optional
+                        // optional
                     }
                 }
             ]

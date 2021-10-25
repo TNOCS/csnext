@@ -415,6 +415,7 @@ export default class ElementInfo extends WidgetBase {
   public async getIndicatorResults() {
     if (!this.activeElement?.properties?.indicator_definition?.indicatorId || !this.dataSource?.base_url) {
       this.indicatorElements = [];
+      return;
     }
     const indicatorId = this.activeElement!.properties!.indicator_definition!.indicatorId!;
     const results = (await Axios.get(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;

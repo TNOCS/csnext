@@ -122,14 +122,14 @@ export default class DocumentEditor extends WidgetBase {
                 _key: 'note',
                 type: 'textarea'                
               },
-              {
-                title: 'SOURCE',
-                _key: 'sourceId',
-                type: 'combobox-objects',
-                keyText: 'title',
-                keyValue: 'id',
-                options: this.source!.sources             
-              },
+              // {
+              //   title: 'SOURCE',
+              //   _key: 'sourceId',
+              //   type: 'combobox-objects',
+              //   keyText: 'title',
+              //   keyValue: 'id',
+              //   options: this.source!.sources             
+              // },
               {
                 title: 'RELIABILITY',
                 _key: 'reliability',

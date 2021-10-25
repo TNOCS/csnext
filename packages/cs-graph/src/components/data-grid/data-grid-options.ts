@@ -43,6 +43,7 @@ export class DataGridOptions extends WidgetOptions {
     public baseTreeItem?: GraphElement;
     public groupId?: string;
     public canDelete?: boolean;
+    public canAdd?: boolean;
     public relationToggle?: DataGridRelationToggle;    
     public calendarOptions?: DataGridCalendarOptions;
     public checkboxProperty?: string;

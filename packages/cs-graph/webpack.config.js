@@ -10,7 +10,9 @@ const config = buildConfig(
         '@csnext/cs-map': '@csnext/cs-map',
         'ag-grid-vue': 'ag-grid-vue',
         'ag-grid-community': 'ag-grid-community',
-        axios: 'axios'
+        '@antv/g6': '@antv/g6',
+        axios: 'axios',
+        'simplebar-vue': 'simplebar-vue'
     },
     'csgraph'
 );

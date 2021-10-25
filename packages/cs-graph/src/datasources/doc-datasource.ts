@@ -1,5 +1,5 @@
 import { GraphDocument, Observation } from './../classes/';
-import { GraphElement, TextEntity, GraphDatasource, GraphPreset, InfoPanel } from '@csnext/cs-data';
+import { GraphElement, TextEntity, GraphDatasource, InfoPanel, IGraphFilter } from '@csnext/cs-data';
 import Axios from 'axios';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
@@ -13,12 +13,12 @@ import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 import RelationEditor from "./../components/document-management/relation-editor.vue";
 import { Editor } from '@tiptap/vue-2';
-import { AppState, HtmlWidget } from '@csnext/cs-client';
+import { AppState } from '@csnext/cs-client';
 import FeatureTypeEditor from "./../components/datamodel/feature-type-editor.vue";
-import { CrossFilterDatasource } from "@csnext/cs-crossfilter";
 import { IImportPlugin } from '../plugins/import-plugin';
 import { EmptyDocumentImport } from '../plugins/empty-document-import';
 import { IDocumentViewerPlugin } from '../plugins/viewer-plugin';
+import { GraphCrossFilter } from '../filters/graph-cross-filter';
 
 export class DocDatasource extends GraphDatasource {
 
@@ -32,24 +32,27 @@ export class DocDatasource extends GraphDatasource {
     public static FEATURE_TYPE_SELECTED = 'feature-type-selected';    
 
     public activeDocument?: GraphDocument;
-    public map?: CrossFilterDatasource;
+    // public map?: CrossFilterDatasource;
     public activeOperation?: GraphElement;
     // public documents: GraphDocument[] = [];
     public searchEntities?: SearchEntity[] = [];
     public viewTypes: { [id: string]: ViewType } = {};
-    public sources?: GraphElement[] = [];
+    // public sources?: GraphElement[] = [];
     public documentPlugins: IDocumentPlugin[] = [];
     public importPlugins: IImportPlugin[] = [];
     public viewerPlugins: IDocumentViewerPlugin[] = [];
     public visibleViewTypes: ViewType[] = [];
     public editor?: Editor | null = null;
     public elementHistory?: string[];
+    public crossFilter?: GraphCrossFilter;
+    public activeUser?: GraphElement;
+    public filters: IGraphFilter[] = [];
     
 
     public entityParser = new EntityParser();
     public layers: { [type: string]: GeojsonPlusLayer } = {};
 
-    constructor(public base_url: string, public timesourceId: string, public mapsourceId: string) {
+    constructor(public base_url: string, public timesourceId: string) {
         super();
     }
 
@@ -66,6 +69,10 @@ export class DocDatasource extends GraphDatasource {
         } else {
             return this.getObservation('node');
         }
+    }
+
+    public initCrossFilter() {
+        this.crossFilter = new GraphCrossFilter(this);
     }
 
     public async initLayer(ml: MapLayers, key: string, obs: FeatureType): Promise<IMapLayer> {
@@ -133,30 +140,30 @@ export class DocDatasource extends GraphDatasource {
 
     public async initLayers(defaultLayer?: string) {
 
-        if (this.featureTypes && this.map && this.map.MapControl ?.loaded) {
-            for (const key in this.featureTypes) {
-                if (Object.prototype.hasOwnProperty.call(this.featureTypes, key)) {
-                    const obs = this.featureTypes[key];
-                    if (obs._inheritedTypes ?.includes('location')) {
-                        let layer = await this.initLayer(this.map, key, obs);
-                        if (key === defaultLayer) {
-                            layer._events ?.subscribe(CsMap.LAYER, (a: string) => {
-                                if (a === CsMap.LAYER_ACTIVATED) {
-                                    this.map!.mainLayer = layer as GeojsonPlusLayer;
-                                    // this.map!.updateCrossfilter(layer._source?._data);                        
-                                }
-                            })                            
+        // if (this.featureTypes && this.map && this.map.MapControl ?.loaded) {
+        //     for (const key in this.featureTypes) {
+        //         if (Object.prototype.hasOwnProperty.call(this.featureTypes, key)) {
+        //             const obs = this.featureTypes[key];
+        //             if (obs._inheritedTypes ?.includes('location')) {
+        //                 let layer = await this.initLayer(this.map, key, obs);
+        //                 if (key === defaultLayer) {
+        //                     layer._events ?.subscribe(CsMap.LAYER, (a: string) => {
+        //                         if (a === CsMap.LAYER_ACTIVATED) {
+        //                             this.map!.mainLayer = layer as GeojsonPlusLayer;
+        //                             // this.map!.updateCrossfilter(layer._source?._data);                        
+        //                         }
+        //                     })                            
                             
 
-                        }
-                        // 
-                    } else {
+        //                 }
+        //                 // 
+        //             } else {
 
-                    }
-                };
-            }
-            this.updateLayers();
-        }
+        //             }
+        //         };
+        //     }
+        //     this.updateLayers();
+        // }
     }
 
     public addElementToLayer(layer: DataSet, element: GraphElement) {
@@ -258,61 +265,61 @@ export class DocDatasource extends GraphDatasource {
 
 
     public async updateLayerElements(elements: GraphElement[]) {
-        if (this.map) {
-            for (const element of elements) {
-                if (element.classId && element._featureType) {
-                    if (!this.layers.hasOwnProperty(element.classId)) {
-                        await this.initLayer(this.map, element.classId, element._featureType)
-                    }
+        // if (this.map) {
+        //     for (const element of elements) {
+        //         if (element.classId && element._featureType) {
+        //             if (!this.layers.hasOwnProperty(element.classId)) {
+        //                 await this.initLayer(this.map, element.classId, element._featureType)
+        //             }
 
-                    let layer = this.layers[element.classId]._source ?._data;
+        //             let layer = this.layers[element.classId]._source ?._data;
 
-                    if (layer && element.properties) {
-                        if (element.properties.hasOwnProperty('shape')) {
-                            let fc = JSON.parse(element.properties['shape']) as FeatureCollection;
-                            if (fc ?.features && fc.features.length > 0) {
-                                let p = fc.features[0];
-                                p.properties = {
-                                    ...element.properties, ...{
-                                        title: GraphElement.getTitle(element),
-                                        element: element.id,
-                                        color: GraphElement.getBackgroundColor(element)
-                                    }
-                                };
-                                layer.features.push(p)
-                            }
-                        }
-                        else if (element.properties.hasOwnProperty('lat') && element.properties.hasOwnProperty('lon')) {
-                            // if (this.graphSettings.showAllOnMap || GraphElement.getVisibility(element, this.graphSettings)) {
-                                let lat = parseFloat(element.properties['lat']);
-                                let lon = parseFloat(element.properties['lon']);
-                                layer.features.push({
-                                    "type": "Feature",
-                                    "id": element.id,
-                                    "properties": {
-                                        ...element.properties, ...{
-                                            title: GraphElement.getTitle(element),
-                                            element: element.id,
-                                            color: GraphElement.getBackgroundColor(element)
-                                        }
-                                    },
-                                    "geometry": {
-                                        "type": "Point",
-                                        "coordinates": [lon, lat]
-                                    }
-                                })
-                            // }
-                        }
-                    }
-                }
-            }
-            for (const key in this.layers) {
-                if (Object.prototype.hasOwnProperty.call(this.layers, key)) {
-                    const layer = this.layers[key];
-                    layer.updateLayer();
-                }
-            }
-        };
+        //             if (layer && element.properties) {
+        //                 if (element.properties.hasOwnProperty('shape')) {
+        //                     let fc = JSON.parse(element.properties['shape']) as FeatureCollection;
+        //                     if (fc ?.features && fc.features.length > 0) {
+        //                         let p = fc.features[0];
+        //                         p.properties = {
+        //                             ...element.properties, ...{
+        //                                 title: GraphElement.getTitle(element),
+        //                                 element: element.id,
+        //                                 color: GraphElement.getBackgroundColor(element)
+        //                             }
+        //                         };
+        //                         layer.features.push(p)
+        //                     }
+        //                 }
+        //                 else if (element.properties.hasOwnProperty('lat') && element.properties.hasOwnProperty('lon')) {
+        //                     // if (this.graphSettings.showAllOnMap || GraphElement.getVisibility(element, this.graphSettings)) {
+        //                         let lat = parseFloat(element.properties['lat']);
+        //                         let lon = parseFloat(element.properties['lon']);
+        //                         layer.features.push({
+        //                             "type": "Feature",
+        //                             "id": element.id,
+        //                             "properties": {
+        //                                 ...element.properties, ...{
+        //                                     title: GraphElement.getTitle(element),
+        //                                     element: element.id,
+        //                                     color: GraphElement.getBackgroundColor(element)
+        //                                 }
+        //                             },
+        //                             "geometry": {
+        //                                 "type": "Point",
+        //                                 "coordinates": [lon, lat]
+        //                             }
+        //                         })
+        //                     // }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     for (const key in this.layers) {
+        //         if (Object.prototype.hasOwnProperty.call(this.layers, key)) {
+        //             const layer = this.layers[key];
+        //             layer.updateLayer();
+        //         }
+        //     }
+        // };
     }
 
     public linkObservationToDocument(observation: FeatureType, doc: GraphDocument): Promise<FeatureType> {
@@ -377,6 +384,41 @@ export class DocDatasource extends GraphDatasource {
 
     public removeEntityNodeFromDocument(node: any, doc: GraphDocument) {
         if (!this.editor) { return; }
+    }
+
+    public setActiveUser(user: GraphElement) {
+        if (!user?.id) { return; }
+        this.activeUser = user;
+        localStorage.setItem('active-user-id', user.id);
+    }
+
+    public async initUser() {
+        // get all users of type person
+        const users = this.getClassElements('user', true, { hasObjectProperties: [{ property: 'agent_type', operator: '==', value: 'person' }]});
+
+        // if no users find, create default
+        if (users.length === 0) {
+            try {
+                const newUser = await this.addNewNode({
+                    classId: 'user',
+                    properties: {
+                        name: 'default',
+                        agent_type: 'person'
+                    }
+                });
+                this.setActiveUser(newUser);
+            } catch(e) {
+                console.log('Error adding default user');
+            }
+        } else {
+            // get active user from local storage
+            const activeUserId = localStorage.getItem('active-user-id');
+            if (activeUserId && this.graph.hasOwnProperty(activeUserId)) {
+                this.setActiveUser(this.graph[activeUserId]);
+            } else {
+                this.setActiveUser(users[0]);
+            }
+        }
     }
 
     public removeEntityListFromDocument(list: EntityList, doc: GraphDocument, removeInstances = false): Promise<EntityList> {
@@ -496,6 +538,8 @@ export class DocDatasource extends GraphDatasource {
             if (ft ?.properties) {
                 for (const pt of ft.properties) {
                     let required = pt.required;
+                    let group = pt.group;
+                    let section = pt.section;
 
                     switch (pt.type) {
                         case PropertyValueType.datetime:
@@ -504,8 +548,10 @@ export class DocDatasource extends GraphDatasource {
                                     title: pt.label!,
                                     _key: pt.key,
                                     type: 'datetimepicker',
-                                    readonly: pt.readonly,
-                                    required
+                                    readonly: pt.readonly,                                    
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -516,7 +562,9 @@ export class DocDatasource extends GraphDatasource {
                                     _key: pt.key,
                                     type: 'string',
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -527,7 +575,9 @@ export class DocDatasource extends GraphDatasource {
                             _key: pt.key,
                             type: 'string',
                             readonly: pt.readonly,
-                            required
+                            required,
+                            group,
+                            section
                         }
                     )
                 break;
@@ -540,14 +590,16 @@ export class DocDatasource extends GraphDatasource {
                             keyText: 'properties.name',
                             keyValue: 'id',
                             options: (()=> {
-                                if (pt.relation?.objectType) {
-                                    return this.getClassElements(pt.relation?.objectType)
+                                if (pt.elementType) {
+                                    return this.getClassElements(pt.elementType)
                                 }
                                 return [];                                
                             }),
                             readonly: pt.readonly,
                             clearable: !required,
-                            required
+                            required,
+                            group,
+                            section
                         }
                     )
                     break;
@@ -559,7 +611,9 @@ export class DocDatasource extends GraphDatasource {
                             type: 'selection',
                             options: pt.options,
                             readonly: pt.readonly,
-                            required
+                            required,
+                            group,
+                            section
                         }
                     )
                 break;
@@ -570,7 +624,9 @@ export class DocDatasource extends GraphDatasource {
                                     _key: pt.key,
                                     type: 'string',
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -581,20 +637,25 @@ export class DocDatasource extends GraphDatasource {
                                     _key: pt.key,
                                     type: 'checkbox',
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
-                break;
+                break;               
                         case PropertyValueType.number:
+                            let inputType = pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : "number";
                             form.fields ?.push(
                                 {
                                     title: pt.label!,
                                     _key: pt.key,
-                                    type: 'number',
+                                    type: inputType as any,
                                     min: pt.min,
                                     max: pt.max,
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -605,7 +666,9 @@ export class DocDatasource extends GraphDatasource {
                                     _key: pt.key,
                                     type: 'chips',
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -616,7 +679,9 @@ export class DocDatasource extends GraphDatasource {
                                     _key: pt.key,
                                     type: 'epochdatetimepicker',
                                     readonly: pt.readonly,
-                                    required
+                                    required,
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -636,7 +701,9 @@ export class DocDatasource extends GraphDatasource {
                                     readonly: pt.readonly,
                                     keyText: 'properties.name',
                                     keyValue: 'id',
-                                    required: required || (node._outgoing && node._outgoing.findIndex(r => r.classId === pt.relation ?.type) !== -1)
+                                    required: required || (node._outgoing && node._outgoing.findIndex(r => r.classId === pt.relation ?.type) !== -1),
+                                    group,
+                                    section
                                 }
                             )
                 break;
@@ -717,6 +784,7 @@ export class DocDatasource extends GraphDatasource {
         this.updateNodes();
         this.updateEdges();        
         this.updateFeatureTypeStats();
+        this.initUser();
         this.parseDocuments();
         }
 
@@ -1255,6 +1323,7 @@ export class DocDatasource extends GraphDatasource {
                     if (element.id) {
                         await this.removeNodeById(element.id, relations);                    
                     }
+                    this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_REMOVED, element);
                     resolve(true);
                 }).catch(e => {
                     reject(e);
@@ -1285,12 +1354,12 @@ export class DocDatasource extends GraphDatasource {
                 }
             }
             delete body.class;
-            this.updateNode(element, true);
+            this.updateNode(element, true);            
             this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element)
             // this.refresh();
 
             Axios.post(`${this.base_url}/graph/store`, body).then(() => {
-                $cs.triggerNotification({ title: $cs.Translate('NODE_SAVED'), timeout: 500 });
+                $cs.triggerNotification({ title: $cs.Translate('NODE_SAVED'), text: element.properties?.name, timeout: 500 });
                 // update node (e.g. set title)
                 
                 
@@ -1348,7 +1417,8 @@ export class DocDatasource extends GraphDatasource {
                 if (edge.id && this.graph.hasOwnProperty(edge.id)) {
                     delete this.graph[edge.id];
                 }             
-                this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)   
+                // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)   
+                this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_REMOVED, edge);
                 resolve(true);
             }).catch(() => {
                 resolve(false);
@@ -1378,6 +1448,8 @@ export class DocDatasource extends GraphDatasource {
                     await this.updateEdges();
                     await this.parseEntities();                
                 }
+                this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);
+                
                 resolve(edge);
             }).catch(e => {
                 reject(e);
@@ -1395,6 +1467,8 @@ export class DocDatasource extends GraphDatasource {
             if (!element.properties.name && element.id) { element.properties.name = element.id; }
             if (!element.properties.updated_time) { element.properties.updated_time = new Date().getTime(); }
             if (!element.properties.created_time) { element.properties.created_time = new Date().getTime(); }
+            if (!element.properties.created_by && this.activeUser) { element.properties.created_by = this.activeUser.id; }
+            if (!element.properties.updated_by && this.activeUser) { element.properties.updated_by = this.activeUser.id; }
             element.type = 'node';
 
             let body = { ...element };
@@ -1414,6 +1488,7 @@ export class DocDatasource extends GraphDatasource {
                 this.initElement(element);
                 res = res.addElement(element);
                 await this.refresh();
+                this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, element);
 
                 resolve(element);
 
@@ -1535,13 +1610,13 @@ export class DocDatasource extends GraphDatasource {
         for (const node of Object.values(this.graph)) {
             let excludeClasses = ['instance', 'airport', 'document'];
             
-            if (node.class && node.type === 'node' && !node.properties ?.nlp_ignore && node._title && !node._title ?.startsWith('Q') && !excludeClasses.includes(node.classId!)) {            
+            if (node.class && node.type === 'node' && !node.properties ?.nlp_ignore && node.properties?.name && !node.properties.name ?.startsWith('Q') && !excludeClasses.includes(node.classId!)) {            
                 entities.push(node);
                 // let aka = (node.properties?.aliases) ? node.properties.aliases.split(',') : [node.title];
 
                 this.searchEntities ?.push({
                     id: node.id,
-                    entity: node._title!,
+                    entity: node.properties.name!,
                     ent_class: node.classId,
                     aka: node._alternatives
                 });
@@ -1614,7 +1689,7 @@ export class DocDatasource extends GraphDatasource {
             await this.refresh(true);
             this.loadElementHistory();
 
-            this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;
+            // this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;
 
             this.importPlugins.push(new EmptyDocumentImport());
 

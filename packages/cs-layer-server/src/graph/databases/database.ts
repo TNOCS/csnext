@@ -22,6 +22,7 @@ export interface IAllOptions {
     type?: string;
     flat?: boolean;
     object?: boolean;
+    id?: string;
 }
 
 export interface IDatabase {

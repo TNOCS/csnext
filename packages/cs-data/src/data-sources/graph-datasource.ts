@@ -54,10 +54,6 @@ export class GraphDatasource extends DataSource {
     public graphPresets: GraphPreset[] = [];
     public activeGraphPreset?: GraphPreset;
 
-    public get observationTypes(): FeatureTypes | undefined {
-        return this.featureTypes;
-    }
-
     public get featureTypes(): FeatureTypes | undefined {
         return this._meta;
     }
@@ -544,12 +540,15 @@ export class GraphDatasource extends DataSource {
 
     public addNode(element: GraphElement, classId?: string) {
         let res = this;
-        if (!element.id) {
-            element.id = element._title;
-        }
+       
         if (!element._title && element.properties?.name) {
             element._title = element.properties.name;
         }
+
+        if (!element.id) {
+            element.id = element._title;
+        }
+        
         if (!element._title && element.id) {
             element._title = element.id;
         }

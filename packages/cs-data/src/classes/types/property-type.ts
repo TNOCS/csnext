@@ -47,8 +47,7 @@ export class PropertyType {
     public min?: number;
     public options?: string[];
     
-    public sd?: number;    
-    public section?: string;
+    public sd?: number;
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
     public stringFormat?: string;  
     @FormField({ title: 'Date format', type: 'selection', options: ['date', 'time', 'datetime'], defaultValue: 'datetime', requirements: PropertyType.isEpoch, optional: true })

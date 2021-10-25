@@ -413,7 +413,7 @@ export class GraphController {
         })
     }
 
-    @Get('/all/:type')
+    @Get('/type/:type')
     public allFromType(@Param('type') type: string): Promise<Boolean> {
         return new Promise((resolve, reject) => {
             if (this.graph && this.graph.db ?.all && typeof this.graph.db ?.all === 'function') {
@@ -422,11 +422,22 @@ export class GraphController {
         });
     }
 
+    @Get('/id/:id')
+    public allFromId(@Param('id') id: string): Promise<Boolean> {
+        return new Promise((resolve, reject) => {
+            if (this.graph && this.graph.db ?.all && typeof this.graph.db ?.all === 'function') {
+                resolve(this.graph.db.all({ id, flat: true, object: true }));
+            }
+        });
+    }
+
     @Get('/all')
     allData(): Promise<any> {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {                        
             if (this.graph && this.graph.db ?.all && typeof this.graph.db ?.all === 'function') {
                 resolve(this.graph.db.all());
+            } else {
+                reject(false);
             }
         });
     }
@@ -578,9 +589,16 @@ export class GraphController {
 
     @Post('/loadgraph')
     loadGraph(@Body() body: {[key: string]: GraphElement}, @Query('source') source?: string) {
-        if (body && this.graph.source && this.graph.db?.loadGraph) {            
-            this.graph.db.loadGraph(body);            
-        }
+        return new Promise(async (resolve, reject) => {
+            this.graph.db.loadGraph(body).then(r => {
+                console.log('saving');
+                this.graph.db.persist();
+                resolve(true);
+            }).catch(e => {
+                reject(e);
+            })
+            
+        })
     }
 
     @Post('/storemultiple')

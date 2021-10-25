@@ -6,6 +6,8 @@ export * from "./plugins/document-plugin";
 export * from "./plugins/import-plugin";
 export * from "./plugins/viewer-plugin";
 export * from "./classes/";
+export * from "./filters/graph-cross-filter";
+export * from "./components/data-grid/cards/element-card-manager";
 
 import Vue from 'vue';
 import NetworkGraph from "./components/graph/graph.vue";
@@ -21,6 +23,8 @@ import DocumentEntities from './components/document/document-entities.vue';
 import ReportEditor from './components/document-management/report-editor.vue';
 import { AppState } from '@csnext/cs-client';
 import ElementValue from "./components/data-grid/element-value.vue";
+import IndicatorElementCard from "./components/data-grid/cards/indicator-element-card.vue";
+import DefaultElementCard from "./components/data-grid/cards/default-element-card.vue";
 
 const locales = require('./assets/locales.json');
 
@@ -32,4 +36,4 @@ for (const lang in locales) {
 }
 
 
-export { ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
+export { IndicatorElementCard, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
