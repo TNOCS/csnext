@@ -341,11 +341,31 @@ export class GraphDatasource extends DataSource {
         return res;
     }
 
+    public getElementsHavingRelationWithPropertyAndOperator(
+        property: string,
+        searchValue: any,
+        operator: ValueOperatorType,
+    ): GraphElement[] {
+        let res: GraphElement[] = Object.values(this.graph).filter(c => {
+            let foundOutgoing;
+            const foundIncoming = c._incomming?.find(i => {
+                return (i.from?.classId === property && this.compareOperator(this.getValueFromElement("name", i.from), searchValue, operator));
+            });
+            if (!foundIncoming) {
+                foundOutgoing = c._outgoing?.find(o => {
+                    return (o.to?.classId === property && this.compareOperator(this.getValueFromElement("name", o.to), searchValue, operator));
+                });
+            }
+            return foundOutgoing || foundIncoming;
+        });
+        return res;
+    }
+
     public getElementsByPropertyAndOperator(
         property: string,
         searchValue: any,
         operator: ValueOperatorType,
-        skipRelations: boolean = false
+        skipRelations: boolean = false,
     ): GraphElement[] {
         let relationVals: GraphElement[] = [];
         let res: GraphElement[] = Object.values(this.graph).filter(c => {

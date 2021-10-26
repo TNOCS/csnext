@@ -20,6 +20,7 @@ export class FeatureType {
     public _node?: GraphElement;
     public _nlpType?: string;
     public _edge?: GraphElement;
+    public isEdge?: boolean;
     public typeId?: string;
     public notification?: string;
     public _entities?: TextEntity[];
