@@ -418,7 +418,7 @@ export default class ElementInfo extends WidgetBase {
       return;
     }
     const indicatorId = this.activeElement!.properties!.indicator_definition!.indicatorId!;
-    const results = (await Axios.get(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;
+    const results = (await Axios.get<any>(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;
     if (results.hasOwnProperty('error') || !results.hasOwnProperty('array')) {
       this.indicatorElements = [];
     } else {

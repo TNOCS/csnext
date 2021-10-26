@@ -32,7 +32,7 @@ export class LayerServer implements ILayerService, IStartStopService {
         this.removeExistingLayers(manager);
         if (this.options && this.options.url) {
             axios
-                .get(this.options.url)
+                .get<any[]>(this.options.url)
                 .then(async response => {
                     if (
                         response &&

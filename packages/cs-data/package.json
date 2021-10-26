@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@csnext/cs-core": "^0.0.131",
-        "axios": "0.21.1",
+        "axios": "0.23.0",
         "class-transformer": "0.3.1",
         "csvtojson": "2.0.10",
         "papaparse": "^5.3.1",

@@ -48,7 +48,7 @@ export class LogDataSource implements IDatasource {
   ): Promise<LogDataSource> {
     return new Promise<LogDataSource>((resolve, reject) => {
       if (this.logid) {
-        Axios.get(this.logurl + this.logid).then(r => {
+        Axios.get<any>(this.logurl + this.logid).then(r => {          
           if (r.data && r.data._logSource && r.data._logSource.items) {
             this.items = r.data._logSource.items;
             if (this.socket) {

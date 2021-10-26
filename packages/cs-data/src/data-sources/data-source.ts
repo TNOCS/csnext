@@ -73,7 +73,7 @@ export class DataSource implements IDatasource {
                     .get(this.url)
                     .then(async response => {
                         if (response) {
-                            this._data = this.InitFeatures(response.data, this.id);
+                            this._data = this.InitFeatures(response.data as DataSet, this.id);
                             this._loaded = true;
                             resolve(this._data);
                         }
@@ -110,7 +110,7 @@ export class DataSource implements IDatasource {
                         .get(this.url)
                         .then(async response => {
                             if (response) {
-                                this._data = this.InitFeatures(response.data, this.id);
+                                this._data = this.InitFeatures(response.data as DataSet, this.id);
                                 this._loaded = true;
                                 await this.initFeatureTypes(featureTypes);
                                 this.state = DataSourceState.loaded;

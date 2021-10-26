@@ -13,7 +13,7 @@ import {
     LayerEditor
 } from '..';
 import axios from 'axios';
-import { DataSource } from '@csnext/cs-data';
+import { DataSource, FeatureTypes } from '@csnext/cs-data';
 
 export class LayerServerService implements ILayerService, IStartStopService {
 
@@ -143,7 +143,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     public async loadFeatureTypes() {
         if (this.options?.url && this.options.loadFeatureTypes) {
             axios
-                .get(`${this.options.url}types`)
+                .get<FeatureTypes>(`${this.options.url}types`)
                 .then(r => {                           
                     this.manager!.featureTypes = r.data;                                                            
                 })

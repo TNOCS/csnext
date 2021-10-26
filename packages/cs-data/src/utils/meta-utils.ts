@@ -33,15 +33,17 @@ export class MetaUtils {
             const res: MetaFile = new MetaFile();
 
             Axios.get(url).then(response => {
-                if (response.data) {
+                
+                if (response?.data) {
+                    const data = response.data as any;
                     // load feature types from file
-                    if (response.data.hasOwnProperty('featureTypes')) {
-                        res.featureTypes = response.data.featureTypes;
+                    if (data.hasOwnProperty('featureTypes')) {
+                        res.featureTypes = data.featureTypes as FeatureTypes;
                     }
 
                     // check if property type data was specified
-                    if (response.data.hasOwnProperty('propertyTypeData')) {
-                        res.propertyTypeData = response.data.propertyTypeData;
+                    if (data.hasOwnProperty('propertyTypeData')) {
+                        res.propertyTypeData = data.propertyTypeData;
                         if (res.featureTypes && res.propertyTypeData) {
                             this.linkPropertyTypeData(res.featureTypes, res.propertyTypeData);
                         }
