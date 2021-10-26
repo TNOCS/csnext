@@ -19,7 +19,7 @@ export class FeatureType {
     public baseUri?: string;
     public _node?: GraphElement;
     public _nlpType?: string;
-    public _edge?: GraphElement;
+    public _edge?: GraphElement;    
     public typeId?: string;
     public notification?: string;
     public isEdge?: boolean;
