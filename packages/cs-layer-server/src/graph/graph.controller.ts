@@ -422,6 +422,22 @@ export class GraphController {
         });
     }
 
+    @Get('/types/:type')
+    public allFromTypes(@Param('type') type: string): Promise<{[id: string]: GraphElement}> {
+        return new Promise((resolve, reject) => {
+            if (this.graph && this.graph.db ?.all && typeof this.graph.db ?.all === 'function') {
+                this.graph.db.all({ type: type, flat: true, object: true }).then(r => {
+                    const res : { [id: string]: GraphElement} = {};
+                    for (const el of r) {
+                        res[el.id] = el;                        
+                    }
+                    resolve(res);
+                })
+                // resolve();
+            }
+        });
+    }
+
     @Get('/id/:id')
     public allFromId(@Param('id') id: string): Promise<Boolean> {
         return new Promise((resolve, reject) => {
