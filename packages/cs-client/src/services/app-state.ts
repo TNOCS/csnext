@@ -469,6 +469,7 @@ export class AppState extends AppStateBase {
         timeout: notification.timeout ?? 3000,
         created: new Date(),
         isRead: false,
+        group: false,
         buttonText: 'CLOSE',
         remember: true,
         _visible: true
@@ -482,7 +483,9 @@ export class AppState extends AppStateBase {
       this.project.notifications.items &&
       notification.remember
     ) {
-      this.project.notifications.items.push(notification);
+      if (!notification.group || this.project.notifications.items.findIndex(n => n.text === notification.text) === -1) {
+        this.project.notifications.items.push(notification);
+      }
     }
   }
 
