@@ -770,11 +770,11 @@ export class DocDatasource extends GraphDatasource {
                 //         properties: item.properties
                 //     })
                 // }                
-                    if (item.properties && item.hasOwnProperty('from') && item.hasOwnProperty('to')) {
+                    if (item.properties && item.hasOwnProperty('fromId') && item.hasOwnProperty('toId')) {
                         await this.addEdge({
                             id: item.id,
-                            toId: item.to,
-                            fromId: item.from,
+                            toId: item.toId,
+                            fromId: item.fromId,
                             classId: item.classId,
                             properties: item.properties
                         })
@@ -1359,7 +1359,7 @@ export class DocDatasource extends GraphDatasource {
             // this.refresh();
 
             Axios.post(`${this.base_url}/graph/store`, body).then(() => {
-                $cs.triggerNotification({ title: $cs.Translate('NODE_SAVED'), text: element.properties?.name, timeout: 500 });
+                $cs.triggerNotification({ title: $cs.Translate('NODE_SAVED'), text: element.properties?.name, timeout: 500, group: true });
                 // update node (e.g. set title)
                 
                 
