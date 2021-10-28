@@ -714,6 +714,52 @@ export class DocDatasource extends GraphDatasource {
         }
         return form;
     }
+
+    public async loadGraphElement<T>(id: string)  {
+        // $cs.loader.addLoader(`load-${id}`);
+        Axios.get<GraphElement[]>(`${this.base_url}/graph/id/${id}`).then((r) => {
+            if (r.data && r.data.length===1) {
+                const item = r.data[0];
+                if (r.data && item.id && item.properties && item.type === 'node') {                
+                    // find existing                    
+                    if (this.graph.hasOwnProperty(item.id)) {
+                        let el = this.graph[item.id];                        
+                        el.properties = item.properties;
+                        this.initElement(el);
+                        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, el);
+
+                    } else {
+
+
+                        // add new
+                        let el = { ... new GraphElement(), ...{ id: item.id, classId: item.classId, title: item.properties.name, properties: item.properties, alternatives: item.alternatives } } as GraphElement;
+                        this.initElement(el);
+                        this.addNode(el);
+                        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, el);
+                        return Promise.resolve(el);
+                    }
+                    
+                    
+                }        
+            }
+            return Promise.reject(undefined);
+            
+            // update node (e.g. set title)            
+            
+        }).catch(e => {
+            return Promise.reject(e);            
+        }).finally(() => {
+            // $cs.loader.removeLoader(`store-${id}`);
+            
+        })
+            
+            // this.updateNode(element, true);            
+            
+            // this.refresh();
+
+            
+
+    }
     
 
     public async loadGraph(url: string, clearCache = false) {

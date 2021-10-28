@@ -955,7 +955,7 @@ export class GraphDatasource extends DataSource {
             }
         } else {
             const defaultPreset = {
-                ...new GraphPreset(),
+                ...new GraphPreset(this),
                 ...{
                     title: "new preset",
                     layout: "mds",
@@ -981,7 +981,7 @@ export class GraphDatasource extends DataSource {
 
     public addGraphPreset(preset?: GraphPreset, activate = true) {
         if (!preset) {
-            preset = { ...new GraphPreset(), ...{ title: "new preset" } };
+            preset = { ...new GraphPreset(this), ...{ title: "new preset" } };
         }
         this.graphPresets.push(preset);
         if (activate) {

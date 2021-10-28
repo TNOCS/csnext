@@ -106,7 +106,7 @@ export default class GraphSettings extends WidgetBase {
     
     $cs.triggerInputDialog('GRAPH_PRESET', 'GRAPH_PRESET_TITLE', 'preset').then(r => {
       if (!this.source) { return; }
-      this.source.addGraphPreset({ ... new GraphPreset(), ...{ title: r }}, true);
+      this.source.addGraphPreset({ ... new GraphPreset(this.source), ...{ title: r }}, true);
     }).catch(e => {
 
     })

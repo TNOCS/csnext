@@ -1,8 +1,8 @@
 import { TimeRange } from '@csnext/cs-crossfilter';
-import { DataSet, FeatureType, GraphDatasource } from '@csnext/cs-data';
+import { DataSet, FeatureType, GraphDatasource, IGraphFilter } from '@csnext/cs-data';
 import crossfilter from 'crossfilter2';
 
-export class GraphCrossFilter {
+export class GraphCrossFilter extends IGraphFilter {
     public static CROSSFILTER = 'crossfilter';
     public static CROSSFILTER_DATALOADED = 'dataloaded';
     public static UPDATE_CHART = 'update_chart';
@@ -13,10 +13,6 @@ export class GraphCrossFilter {
     public featureType?: FeatureType;
     public ndx?: crossfilter.Crossfilter<any>;
     public timeRange?: TimeRange;
-
-    constructor(public source: GraphDatasource) {
-        console.log('init cross graph filter');
-    }
 
     public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {      
         if (!this.dimensions.hasOwnProperty(id)) { this.dimensions[id] = []}

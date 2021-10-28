@@ -5,6 +5,9 @@ export class IGraphFilter {
     public title?: string;    
     public _visibleNodes: GraphElement[] = [];
     public nodes?: string[]; 
+    constructor(public source: GraphDatasource) {
+        
+    }
 }
 
 export class NodeRule {
