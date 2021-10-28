@@ -53,8 +53,8 @@ export class LocalStorage implements IDatabase {
         }
     }
 
-    public async persist(): Promise<boolean> {
-        return this.save();
+    public async persist(): Promise<void> {
+        this.debounceSave();
     }
 
     public async link(link: Link): Promise<any> {

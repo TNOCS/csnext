@@ -125,8 +125,8 @@ export class GraphService {
         });
     }
 
-    public async persist(): Promise<boolean> {
-        if (!this.db) return false;
+    public async persist(): Promise<void> {
+        if (!this.db) return;
         return this.db.persist();
     }
    
