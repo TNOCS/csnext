@@ -1,9 +1,11 @@
-export function guidGenerator() {
-  const S4 = () => {
-    // tslint:disable-next-line:no-bitwise
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-  };
-  return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
+import { customAlphabet } from 'nanoid/non-secure';
+export function guidGenerator(length = 10) : string {
+  return customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', length).toString();
+  // const S4 = () => {
+  //   // tslint:disable-next-line:no-bitwise
+  //   return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+  // };
+  // return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4());
 }
 
 export function idGenerator() {
