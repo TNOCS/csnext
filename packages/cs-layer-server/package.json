@@ -16,7 +16,7 @@
         "build:webpack": "tsc && webpack --mode development",
         "dev:compile": "tsc -w",
         "dev": "tsc -w",
-        "clean": "del-cli package-lock.json dist lib node_modules",
+        "clean": "del-cli package-lock.json dist lib node_modules tsconfig.tsbuildinfo",
         "build": "tsc"
     },
     "dependencies": {
