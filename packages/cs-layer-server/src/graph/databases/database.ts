@@ -38,7 +38,7 @@ export interface IDatabase {
     loadGraph?(graph: {[key: string]: GraphElement}) : Promise<boolean>;
     schema?(): Promise<GraphSchema>;
     types?(): Promise<ObservationType[]>;
-    persist(): Promise<boolean>;
+    persist(): Promise<void>;
     
     link(link: Link): Promise<any>;
     unlinkId?(id: string): Promise<boolean>;

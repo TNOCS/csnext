@@ -14,11 +14,6 @@ export class GraphCrossFilter extends IGraphFilter {
     public ndx?: crossfilter.Crossfilter<any>;
     public timeRange?: TimeRange;
 
-    constructor() {
-        super()
-        
-    }
-
     public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {      
         if (!this.dimensions.hasOwnProperty(id)) { this.dimensions[id] = []}
         this.dimensions[id].push(dim);

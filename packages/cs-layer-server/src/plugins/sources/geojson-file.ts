@@ -50,6 +50,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     if (updated) {
                         this.saveSource(file, source);
                     }
+                    source._localFile = file;
 
                     if (meta && fs.existsSync(meta)) {
                         const metaContent = fs.readFileSync(meta, 'utf8');

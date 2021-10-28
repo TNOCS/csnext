@@ -831,6 +831,7 @@ export class GraphDatasource extends DataSource {
         );
     }
 
+    // Used to internally link referenced elements in proptype element and elementarray to the actual elements
     public updateElementProperties(e: GraphElement) {
         if (!e._elements) { e._elements = {}};
         if (!e._featureType?.properties || !e.properties) { return; }

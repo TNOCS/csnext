@@ -556,8 +556,8 @@ export class Neo4J implements IDatabase {
         }
     }
 
-    public async persist(): Promise<boolean> {
-        return true;
+    public async persist(): Promise<void> {
+        return;
     }
     
 }
