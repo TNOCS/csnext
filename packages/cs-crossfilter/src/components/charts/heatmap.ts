@@ -1,7 +1,10 @@
 import { IWidget } from '@csnext/cs-core';
 
-import { ChartOptions, IChartType, CrossFilterDatasource, CrossDashboardManager } from '../..';
+import { ChartOptions, IChartType, CrossDashboardManager } from '../..';
 import { PropertyType } from '@csnext/cs-data';
+import crossfilter from 'crossfilter2';
+import { GraphCrossFilter } from '../../../cross-filter';
+
 
 export class HeatMap implements IChartType {
   id = 'heatmap';
@@ -16,11 +19,11 @@ export class HeatMap implements IChartType {
     return true;
   }
 
-  draw(state : CrossDashboardManager, element: HTMLElement, widget: IWidget, options: ChartOptions) {
+  draw(state : CrossDashboardManager, element: HTMLElement, widget: IWidget, options: ChartOptions,  filter: GraphCrossFilter) {
 try{  
   
       var el: any;
-      if (!widget || !options || !state.source || !options._source?.ndx || !options._elementId) {
+      if (!widget || !options || !state.source || !filter.ndx || !options._elementId) {
         return false;
       }
       if (!options.keys) {

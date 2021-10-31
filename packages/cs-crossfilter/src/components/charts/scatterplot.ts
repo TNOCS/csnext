@@ -2,6 +2,7 @@ import { IWidget } from '@csnext/cs-core';
 import { CrossFilterUtils, CrossFilterDatasource, ChartOptions, IChartType, CrossDashboardManager } from '../..';
 import * as dc from 'dc';
 import * as d3 from 'd3';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 export class ScatterPlot implements IChartType {
   id = 'scatter';
@@ -33,12 +34,13 @@ export class ScatterPlot implements IChartType {
     state: CrossDashboardManager,
     element: HTMLElement,
     widget: IWidget,
-    options: ChartOptions
+    options: ChartOptions,
+    filter: GraphCrossFilter
   ) {
     try {
       let maxx = 0;
       let minx = Number.MAX_VALUE;
-      if (!widget?._size || !options || !state.source || !options._source?.ndx || !options._elementId) {
+      if (!widget?._size || !options || !state.source || !filter.ndx || !options._elementId) {
         return false;
       }
       // let metaX = options._view._meta.find(
@@ -55,7 +57,7 @@ export class ScatterPlot implements IChartType {
       //   return false;
       // }
 
-      options._dimension = options._source.ndx.dimension(d => {
+      options._dimension = filter.ndx.dimension(d => {
         if (options.keyX) {
           let vx = CrossFilterUtils.getKeyValue(options.keyX, options, d)
           if (vx > maxx) {
@@ -83,7 +85,7 @@ export class ScatterPlot implements IChartType {
         .group(options._group)
         .on('filtered',()=>{
           let f = this.getFilters(options);
-          options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);
+          options!._source!.events!.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);
         });
       el.render();
       options._chart = el;

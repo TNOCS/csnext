@@ -2,12 +2,13 @@ import { CrossDashboardManager, CrossFilterDatasource, TimeRange } from '.';
 import * as crossfilter from 'crossfilter2';
 import * as dc from 'dc';
 import { GeojsonPlusLayer } from '@csnext/cs-map';
+import { IDatasource } from '@csnext/cs-core';
 
 
 // import { c} from 'd3';
 export class ChartOptions
 {
-  public _source!: CrossFilterDatasource;
+  public _source!: IDatasource;
   public _dimension?: crossfilter.Dimension<any, any>;
   public _group?: crossfilter.Group<any, any, any>;
   public _manager?: CrossDashboardManager;

@@ -3,6 +3,8 @@ import { WidgetBase } from '@csnext/cs-client';
 import './chart.css';
 import { ChartOptions, CrossFilterDatasource } from './../../';
 import Vue from 'vue';
+import crossfilter from 'crossfilter2';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 @Component({
   name: 'actions',
@@ -14,6 +16,7 @@ export class CrossChart extends WidgetBase {
   public options?: ChartOptions;
   public valid?: boolean;
   public resizing = false;
+  public filter!: GraphCrossFilter;
   
   public clear() {
     Vue.nextTick(()=> {      
@@ -26,23 +29,25 @@ export class CrossChart extends WidgetBase {
 
   public updateChart() { 
     this.options = this.widget.data.options as ChartOptions;  
+    this.filter = this.widget.data.filter as GraphCrossFilter;
     this.options._elementId  = 'chart-' + this.widget.id;
-    if (this.options?.type && this.options._manager?.chartTypes?.hasOwnProperty(this.options.type))
+    if (this.options?.type && this.filter.ndx && this.options._manager?.chartTypes?.hasOwnProperty(this.options.type))
     {          
       this.valid = this.options._manager.chartTypes[this.options.type].draw(
         this.options._manager,
         this.$el as any,
         this.widget,
-        this.options
+        this.options,
+        this.filter
       );      
       if (this.options._dimension && this.options._source) {
         if (this.options.key) {
-          this.options._source.addDimension(this.options.key, this.options._dimension);
+          this.filter.addDimension(this.options.key, this.options._dimension);
         }        
       }
       if (this.options._group) {
         if (this.options.key) {
-          this.options._source.addGroup(this.options.key, this.options._group);
+          this.filter.addGroup(this.options.key, this.options._group);
         }        
       }
     }

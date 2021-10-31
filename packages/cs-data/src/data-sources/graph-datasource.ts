@@ -17,7 +17,8 @@ import {
     PropertyValueType,
     WktUtils,
     ValueOperatorType,
-    GraphFilter
+    GraphFilter,
+    IGraphFilter
 } from "../";
 import throttle from "lodash.throttle";
 import Fuse from "fuse.js";
@@ -166,7 +167,7 @@ export class GraphDatasource extends DataSource {
     }
 
 
-    public initElement(el: GraphElement) {
+    public initElement(el: GraphElement, agentId?: string) {
         // find featuretype
         if (el.classId && this.featureTypes) {
             el._featureType = this.findObservation(el.classId); //.find(ft => ft.type === el.classId);
@@ -177,6 +178,14 @@ export class GraphDatasource extends DataSource {
 
         if (!el.properties) {
             el.properties = {};
+        }
+
+        if (!el.properties.hasOwnProperty("created_by") && agentId)  {
+            el.properties["created_by"] = agentId;
+        }
+
+        if (!el.properties.hasOwnProperty("created_time")) {
+            el.properties["created_time"] = new Date().getTime();
         }
 
         this.checkDates(el);
@@ -788,6 +797,8 @@ export class GraphDatasource extends DataSource {
         });
     }
 
+
+
     public triggerUpdateGraph(element?: GraphElement) {
         this.bus.publish(
             GraphDatasource.GRAPH_EVENTS,
@@ -941,6 +952,10 @@ export class GraphDatasource extends DataSource {
             "graph-presets",
             JSON.stringify(this.graphPresets.map(p => GraphPreset.export(p)))
         );
+    }
+
+    public getGraphPreset(id: string) : IGraphFilter | undefined {
+        return this.graphPresets.find(p => p.id === id);
     }
 
     public loadGraphPresets() {

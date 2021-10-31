@@ -155,9 +155,9 @@ export class CrossFilterUtils {
           return d._flat[key];
       }
 
-        if (!d.hasOwnProperty(key)) {
-          return 'test';
-        }
+        // if (!d.hasOwnProperty(key)) {
+        //   return 'test';
+        // }
         if (c.enums && c.enums.length > 0) {
           return d[key];
           // let index = c.enums.indexOf(d[c.key]);

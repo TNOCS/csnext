@@ -46,6 +46,7 @@ export class DocDatasource extends GraphDatasource {
     public elementHistory?: string[];
     public crossFilter?: GraphCrossFilter;
     public activeUser?: GraphElement;
+    public bookmarks: string[] = [];
     public filters: IGraphFilter[] = [];
     
 
@@ -73,6 +74,27 @@ export class DocDatasource extends GraphDatasource {
 
     public initCrossFilter() {
         this.crossFilter = new GraphCrossFilter(this);
+    }
+
+    public toggleBookmark(bookmark: GraphElement): boolean {
+        if (bookmark.id && this.bookmarks.includes(bookmark.id)) {
+            return this.removeBookmark(bookmark);
+        } else {
+            return this.addBookmark(bookmark);
+        }
+    }
+
+    public addBookmark(bookmark: GraphElement): boolean {
+        this.bookmarks.push(bookmark.id!);        
+        return true;
+    }
+
+    public removeBookmark(bookmark: GraphElement): boolean {
+        const index = this.bookmarks.indexOf(bookmark.id!);
+        if (index >= 0) {
+            this.bookmarks.splice(index, 1);
+        }        
+        return true;
     }
 
     public async initLayer(ml: MapLayers, key: string, obs: FeatureType): Promise<IMapLayer> {
@@ -586,8 +608,8 @@ export class DocDatasource extends GraphDatasource {
                         {
                             title: pt.label!,
                             _key: pt.key,
-                            type: 'combobox-objects',                            
-                            keyText: 'properties.name',
+                            type: 'selection',                            
+                            keyText: 'title',
                             keyValue: 'id',
                             options: (()=> {
                                 if (pt.elementType) {
@@ -1384,9 +1406,22 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
-    public saveNode(element: GraphElement): Promise<GraphElement> {
+    public saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
         return new Promise((resolve, reject) => {
             $cs.loader.addLoader(`store-${element.id}`);
+            const u = this.activeUser ?? user;
+            if (element.properties && u?.id) {
+                element.properties['updated_by'] = u.id;
+                element.properties['updated_time'] = new Date().getTime();
+
+                if (!element.properties.hasOwnProperty('created_by')) {
+                    element.properties['created_by'] = u.id;
+                }
+
+                if (!element.properties.hasOwnProperty('created_time')) {
+                    element.properties['created_by'] = element.properties['updated_time'];
+                }
+            }
             let body = Object.assign({}, element);
             // (body as any)['@type'] = element.classId;
             body.alternatives = body._alternatives ?.join(',');
@@ -1399,7 +1434,7 @@ export class DocDatasource extends GraphDatasource {
                     delete (body as any)[prop];
                 }
             }
-            delete body.class;
+            delete body.class;            
             this.updateNode(element, true);            
             this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element)
             // this.refresh();

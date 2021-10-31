@@ -30,22 +30,17 @@ export class ChartEditor extends WidgetBase {
   }
 
   public get keys() : any[] {
-    // console.log('keys');
-    // console.log(this.options);
-    if (this.options?._source.featureType?.properties) {
-      return this.options._source.featureType.properties;
-    }
-    if (this.options && this.options?.layerId && !this.options._layer) {
-      this.options._layer = this.options._source.getLayer(this.options.layerId) as GeojsonPlusLayer;
-    }
-    if (this.options?._layer?._source?._featureType?.properties) {
-      return this.options?._layer?._source?._featureType?.properties;
-    }
-    // console.log('keys');
-    // console.log(this.manager?.source)
-    // if (this.manager?.source?.mainLayer?._source?._featureType?.properties) {
-    //   return this.manager.source.mainLayer._source._featureType.properties;
+    
+    // if (this.options?._source.featureType?.properties) {
+    //   return this.options._source.featureType.properties;
     // }
+    // if (this.options && this.options?.layerId && !this.options._layer) {
+    //   this.options._layer = this.options._source.getLayer(this.options.layerId) as GeojsonPlusLayer;
+    // }
+    // if (this.options?._layer?._source?._featureType?.properties) {
+    //   return this.options?._layer?._source?._featureType?.properties;
+    // }
+    
     return [];
     
   }

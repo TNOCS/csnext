@@ -3,6 +3,7 @@ import { IWidget } from '@csnext/cs-core';
 import * as dc from 'dc';
 import * as d3 from 'd3';
 import { IChartType, ChartOptions, CrossFilterUtils, CrossDashboardManager, CrossFilterDatasource } from './../..';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 export class TimeChart implements IChartType {
   id = 'time';
@@ -31,10 +32,11 @@ export class TimeChart implements IChartType {
     state : CrossDashboardManager,
     element: HTMLElement,
     widget: IWidget,
-    options: ChartOptions
+    options: ChartOptions,
+    filter: GraphCrossFilter
   ) {
     try {      
-      if (!widget?._size || !options || !state.source || !options._source?.ndx || !options._elementId) {
+      if (!widget?._size || !options || !state.source || !filter.ndx || !options._elementId) {
         return false;
       }
       // let meta = options._view._meta.find((m: Meta) => m.id === options.key);
@@ -53,20 +55,20 @@ export class TimeChart implements IChartType {
       }
       let max = 0;
 
-      options._dimension = options._source.ndx.dimension((d: any) => {
+      options._dimension = filter.ndx.dimension((d: any) => {
         let value = d.properties; // CrossFilterUtils.getValue(options, d);
         switch (options.timeAggregation) {
           case 'hour':
-            return value.hourStart;
+            return d._flat?.hourStart || value.hourStart;
           case 'day':
-            return value.dayStart;
+            return d._flat?.dayStart || value.dayStart;
           case 'week':
-            return value.weekStart;
+            return d._flat?.weekStart || value.weekStart;
           case 'month':
-            return value.monthStart;
+            return d._flat?.monthStart || value.monthStart;
           // case 'quarter': return value.quarterStart;
           case 'year':
-            return value.yearStart;
+            return d._flat?.yearStart || value.yearStart;
           default:
             if (
               options.timeAggregation &&
@@ -99,7 +101,7 @@ export class TimeChart implements IChartType {
       //     // return (Math.round(this.getValue(this.options, d) )) ;
       //   }
       // });
-      if (!options._dimension || !options.timeRange) { return false; }
+      if (!options._dimension || !filter.timeRange) { return false; }
       // options._group = options._dimension.group().reduceSum((d: any) => {
       //   let value = CrossFilterUtils.getValue(options, d);
       //   if (!options.bucketSize) { options.bucketSize = 1; }
@@ -118,29 +120,29 @@ export class TimeChart implements IChartType {
         (p: any, v: any) => {
           p.count+=1;          
           p.total += CrossFilterUtils.getValue(options, v); //v[options.key!];          
-          if (options.secondaryKey) {
-            let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
-            if (secValue) {
-              if (!secondaryKeys.includes(secValue)) { secondaryKeys.push(secValue)}
-              if (!p.secondaryCount.hasOwnProperty(secValue)) {
-                p.secondaryCount[secValue] = 1;
-              } else {
-                p.secondaryCount[secValue]+=1;
-              }
-            }
-          }
+          // if (options.secondaryKey) {
+          //   let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
+          //   if (secValue) {
+          //     if (!secondaryKeys.includes(secValue)) { secondaryKeys.push(secValue)}
+          //     if (!p.secondaryCount.hasOwnProperty(secValue)) {
+          //       p.secondaryCount[secValue] = 1;
+          //     } else {
+          //       p.secondaryCount[secValue]+=1;
+          //     }
+          //   }
+          // }
           
           return p;
         },
         (p: any, v: any) => {
           p.count-=1;          
           p.total -= CrossFilterUtils.getValue(options, v); //v[options.key!];
-          let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
-          if (secValue && p.secondaryCount) {
-            if (p.secondaryCount.hasOwnProperty(secValue)) {
-              p.secondaryCount[secValue]-=1;
-            }
-          }
+          // let secValue = CrossFilterUtils.getValue(options, v, options.secondaryKey);
+          // if (secValue && p.secondaryCount) {
+          //   if (p.secondaryCount.hasOwnProperty(secValue)) {
+          //     p.secondaryCount[secValue]-=1;
+          //   }
+          // }
           return p;
         },
         () => {
@@ -172,8 +174,8 @@ export class TimeChart implements IChartType {
             d3
               .scaleTime()
               .domain([
-                options.timeRange.start,
-                options.timeRange.end
+                filter.timeRange.start,
+                filter.timeRange.end
               ])
           );
           break;
@@ -182,8 +184,8 @@ export class TimeChart implements IChartType {
             d3
               .scaleTime()
               .domain([
-                options.timeRange.start,
-                options.timeRange.end
+                filter.timeRange.start,
+                filter.timeRange.end
               ])
           );
           break;
@@ -192,8 +194,8 @@ export class TimeChart implements IChartType {
             d3
               .scaleTime()
               .domain([
-                options.timeRange.start,
-                options.timeRange.end
+                filter.timeRange.start,
+                filter.timeRange.end
               ])
           );
           break;
@@ -202,8 +204,8 @@ export class TimeChart implements IChartType {
             d3
               .scaleTime()
               .domain([
-                options.timeRange.start,
-                options.timeRange.end
+                filter.timeRange.start,
+                filter.timeRange.end
               ])
           );
           break;
@@ -217,8 +219,8 @@ export class TimeChart implements IChartType {
             d3
               .scaleTime()
               .domain([
-                options.timeRange.start,
-                options.timeRange.end
+                filter.timeRange.start,
+                filter.timeRange.end
               ])
           );
           break;
@@ -227,17 +229,17 @@ export class TimeChart implements IChartType {
       }
 
 
-      // switch (options.lineCurve) {
-      //   case 'curve':
-      //     el.curve(d3.curveBasis);
-      //     break;
-      //   case 'linear':
-      //     el.curve(d3.curveLinear);
-      //     break;
-      //   default:
-      //     el.curve(d3.curveStepAfter);
-      //     break;
-      // }
+      switch (options.lineCurve) {
+        case 'curve':
+          el.curve(d3.curveBasis);
+          break;
+        case 'linear':
+          el.curve(d3.curveLinear);
+          break;
+        default:
+          el.curve(d3.curveStepAfter);
+          break;
+      }
 
     
 
@@ -262,7 +264,7 @@ export class TimeChart implements IChartType {
         .mouseZoomable(false)         
         .on('filtered',()=>{          
           let f = this.getFilters(options);          
-          options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
+          options!._source!.events!.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
         })
         
         // if (options.secondaryKey) {
@@ -273,17 +275,17 @@ export class TimeChart implements IChartType {
             
         //   }
         // }
-        switch (options.lineCurve) {
-          case 'curve':
-            el.curve(d3.curveBasis);
-            break;
-          case 'linear':
-            el.curve(d3.curveLinear);
-            break;
-          default:
-            el.curve(d3.curveStepAfter);
-            break;
-        }
+        // switch (options.lineCurve) {
+        //   case 'curve':
+        //     el.curve(d3.curveBasis);
+        //     break;
+        //   case 'linear':
+        //     el.curve(d3.curveLinear);
+        //     break;
+        //   default:
+        //     el.curve(d3.curveStepAfter);
+        //     break;
+        // }
         // .x(d3.scaleTime());  //[meta.min, max]));      
       el.render();
       options._chart = el;

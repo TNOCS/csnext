@@ -2,7 +2,14 @@
 import { GraphDatasource, GraphElement } from '../../';
 
 export class IGraphFilter {
-    public title?: string;    
+
+    public static GRAPH_FILTER = "graph-filter";
+    public static VISIBLE_NODES_CHANGED = "visible-nodes-changed";
+
+    public id?: string;
+    public title?: string;   
+    public type?: "crossfilter" | "listfilter";
+    public layers?: string[];
     public _visibleNodes: GraphElement[] = [];
     public nodes?: string[]; 
     constructor(public source: GraphDatasource) {

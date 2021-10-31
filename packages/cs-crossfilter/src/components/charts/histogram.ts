@@ -3,6 +3,7 @@ import { IWidget } from '@csnext/cs-core';
 import * as dc from 'dc';
 import * as d3 from 'd3';
 import { IChartType, ChartOptions, CrossFilterUtils, CrossDashboardManager, CrossFilterDatasource } from './../..';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 export class Histogram implements IChartType {
   id = 'histogram';
@@ -31,10 +32,11 @@ export class Histogram implements IChartType {
     state : CrossDashboardManager,
     element: HTMLElement,
     widget: IWidget,
-    options: ChartOptions
+    options: ChartOptions,
+    filter: GraphCrossFilter
   ) {
     try {      
-      if (!widget?._size || !options || !state.source || !options._source?.ndx || !options._elementId) {
+      if (!widget?._size || !options || !state.source || !options?._source?.events || !filter?.ndx || !options._elementId) {
         return false;
       }
       // let meta = options._view._meta.find((m: Meta) => m.id === options.key);
@@ -50,7 +52,7 @@ export class Histogram implements IChartType {
         options.bucketSize = 1;
       }
       let max = 0;
-      options._dimension = options._source.ndx.dimension((d: any) => {
+      options._dimension = filter.ndx.dimension((d: any) => {
         if (options && options.bucketSize) {
           let value = CrossFilterUtils.getValue(options, d);
           if (value) {
@@ -101,7 +103,7 @@ export class Histogram implements IChartType {
         .barPadding(1/options.bucketSize) // options.barPadding
         .on('filtered',()=>{          
           let f = this.getFilters(options);          
-          options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
+          options!._source!.events!.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
         })
         .x(d3.scaleLinear().domain([0, 10]));  //[meta.min, max]));      
       el.render();

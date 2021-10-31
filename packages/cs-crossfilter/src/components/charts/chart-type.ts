@@ -1,5 +1,7 @@
 import { IWidget } from "@csnext/cs-core";
+import crossfilter from 'crossfilter2';
 import { ChartOptions, CrossDashboardManager } from '../..';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 export interface IChartType {
     id: string;
@@ -9,5 +11,5 @@ export interface IChartType {
 
     getFilters(options: ChartOptions): any[][] | undefined;
 
-    draw(state : CrossDashboardManager, element: HTMLElement, widget: IWidget, option: ChartOptions) : boolean;
+    draw(state : CrossDashboardManager, element: HTMLElement, widget: IWidget, option: ChartOptions, filter: GraphCrossFilter) : boolean;
 }

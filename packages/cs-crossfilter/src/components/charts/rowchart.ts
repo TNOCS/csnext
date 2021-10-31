@@ -3,6 +3,8 @@ import { AppState } from '@csnext/cs-client';
 import { CrossFilterUtils, IChartType, CrossFilterDatasource, ChartOptions, CrossDashboardManager  } from '../..';
 import * as dc from 'dc';
 import { pluck } from 'dc';
+import crossfilter from 'crossfilter2';
+import { GraphCrossFilter } from '../../../cross-filter';
 
 export class RowChart implements IChartType {
   id = 'rowchart';
@@ -22,10 +24,10 @@ export class RowChart implements IChartType {
     return undefined;
   }
 
-  draw(state: CrossDashboardManager, element: HTMLElement, widget: IWidget, options: ChartOptions) {
+  draw(state: CrossDashboardManager, element: HTMLElement, widget: IWidget, options: ChartOptions,  filter: GraphCrossFilter) {
     try {
 
-      if (!widget?._size || !options || !state.source || !options._source?.ndx || !options._elementId) {
+      if (!widget?._size || !options || !state.source || !filter.ndx || !options._elementId) {
         return false;
       }
 
@@ -33,7 +35,7 @@ export class RowChart implements IChartType {
       // let meta = state.metaKeys[options.key]; //  options._view._meta.find((m: Meta) => m.id === options.key) as Meta;
       // if (!meta) { return false; }
 
-      options._dimension = options._source.ndx.dimension((d: any) => {
+      options._dimension = filter.ndx.dimension((d: any) => {
         if (options.rowTimeMode && options.horizontalTime) {
           let horizontal = CrossFilterUtils.getDayString(d, options.horizontalTime);
           return horizontal;
@@ -86,7 +88,7 @@ export class RowChart implements IChartType {
           return d.value.total; })    
         .on('filtered', () => {
           let f = this.getFilters(options);
-          options._source.events.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
+          options!._source!.events!.publish(CrossFilterDatasource.FILTER_CHANGED, options.chartId || '', f);          
         });
       if (options.orderByName) {
         el.ordering(pluck(options.key!));

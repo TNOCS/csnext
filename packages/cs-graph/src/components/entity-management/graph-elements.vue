@@ -54,18 +54,18 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item.item._title }}</v-list-item-title>
+              <v-list-item-title>{{ item.item.properties.name }}</v-list-item-title>
               <!-- {{ item.score }} -->
-              <v-list-item-subtitle v-if="item.item.class">
-                {{ item.item.class._title}}
-                <span v-if="item.item._incomming">
+              <v-list-item-subtitle v-if="item.item._featureType">
+                {{ item.item._featureType.title}}
+                <!-- <span v-if="item.item._incomming">
                   <v-icon small>arrow_forward</v-icon>
                   {{ item.item._incomming.length}}
                 </span>
                 <span v-if="item.item._outgoing">
                   <v-icon small>arrow_back</v-icon>
                   {{ item.item._outgoing.length}}
-                </span>
+                </span> -->
               </v-list-item-subtitle>
             </v-list-item-content>
 
@@ -114,13 +114,15 @@ export default class GraphElements extends WidgetBase {
   public get filteredElements(): FuseResult<GraphElement>[] {
     let res : FuseResult<GraphElement>[] = []
     if (this.graphSource && this.graphSource.graph && this.graphSource.fuse) {            
-      if (!this.searchString || this.searchString.length<2) {
+      // if (!this.searchString) { this.searchString = ''; }
+      if (!this.searchString) {
         res = this.graphSource.getClassElements(this.widget.data?.classFilter || 'node').map(s => { return { score: 0, item: s} as any})
+        // this.graphSource.fuse.search()
         // res = Object.values(this.graphSource.graph).filter(e => e.type === 'node').map(s => { return { score: 0, item: s} as any})
       } else {
         res = this.graphSource.fuse.search<GraphElement>(this.searchString) as any;        
         
-      }      
+      // }    ?  
       // return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
       //   return (
       //     f.type === "node" &&
@@ -134,7 +136,9 @@ export default class GraphElements extends WidgetBase {
       //   );
       // });
     }
+    }
     return res; //.map(s => s.item);
+  
   }
 
   public toggle() {

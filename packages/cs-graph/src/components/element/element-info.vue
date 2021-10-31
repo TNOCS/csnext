@@ -36,6 +36,10 @@
         <v-icon>delete</v-icon>
       </v-btn>
 
+      <v-btn icon @click="toggleBookmark()">
+        <v-icon>bookmark</v-icon>
+      </v-btn>
+
       <v-btn icon @click="graphNode()">
         <v-icon>scatter_plot</v-icon>
       </v-btn>
@@ -375,6 +379,12 @@ export default class ElementInfo extends WidgetBase {
       this.formDef = form;      
     })
     // Vue.set(this, "formDef", form);
+  }
+
+  public toggleBookmark() {
+    if (!this.dataSource || !this.activeElement) { return; }
+    this.dataSource.toggleBookmark(this.activeElement);
+
   }
 
 
