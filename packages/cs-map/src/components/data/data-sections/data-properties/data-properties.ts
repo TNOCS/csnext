@@ -53,7 +53,8 @@ export class DataProperties extends WidgetBase {
     }
 
     public updateSections() {        
-        // if (!this.layer || !this.layer.id || !this.panel) { return; }        
+        // if (!this.layer || !this.layer.id || !this.panel) { return; }     
+        // if (this.section && !this.section.id) { this.section.id = this.section.sectionType}
         if (this.section?.id && this.data?.id && !this.section.id && this.panel?.sections) {
             this.section.id = this.data.id + '-' + this.panel.title + '-' + this.panel.sections.indexOf(this.section);
         }
@@ -73,9 +74,10 @@ export class DataProperties extends WidgetBase {
             this.featureSectionsExpanded[this.section.id] = [defaultSection.id!];
         }
 
-        if (this.section && this.section.id && defaultSection.id && this.featureSectionsExpanded[this.section.id].includes(defaultSection.id)) {
-            this.sectionsPanels.push(0);
-        }
+        this.sectionsPanels.push(0);
+        // if (this.section && this.section.id && defaultSection.id && this.featureSectionsExpanded[this.section.id].includes(defaultSection.id)) {
+        //     this.sectionsPanels.push(0);
+        // }
 
         if (!this.featureType && this.layer?._source) {
             this.featureType = this.layer._source.getFeatureType();
@@ -149,11 +151,13 @@ export class DataProperties extends WidgetBase {
                         if (!section) {
                             section = { id: proptype.section, title: proptype.section, properties: [] };
                             result.push(section);
-                            if (this.section && section.id && this.section.id && this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.section.id) && this.featureSectionsExpanded[this.section.id].includes(section.id)) {
-                                if (this.sectionsPanels.indexOf(result.length - 1) === -1) {
-                                    this.sectionsPanels.push(result.length - 1);
-                                }
-                            }
+                            this.sectionsPanels.push(result.length - 1);
+
+                            // if (this.section && section.id && this.section.id && this.featureSectionsExpanded && this.featureSectionsExpanded.hasOwnProperty(this.section.id) && this.featureSectionsExpanded[this.section.id].includes(section.id)) {
+                            //     if (this.sectionsPanels.indexOf(result.length - 1) === -1) {
+                            //         this.sectionsPanels.push(result.length - 1);
+                            //     }
+                            // }
                         }
                     }
                     section.properties!.push(prop);
