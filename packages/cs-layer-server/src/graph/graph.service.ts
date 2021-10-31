@@ -53,7 +53,7 @@ export class GraphService {
         
     }
 
-    store(body: any, type: string, id?: string, source?: string) {
+    store(body: any, type: string, id?: string, agentId?: string) {
         return new Promise(async (resolve, reject) => {
             // make sure we use entity, instead of wiki path
             
@@ -76,19 +76,23 @@ export class GraphService {
                     document: r,
                     id: r.id,
                     class: type
-                }, source ?? 'unknown', new Date().getTime());
+                }, agentId ?? 'unknown', new Date().getTime());
                 
                 resolve(result);
             }
         })
     }
 
-    public storeMultiple(body: any[], source?: string) {
+    public storeMultiple(body: any[], agentId?: string) {
         return new Promise(async (resolve, reject) => {            
             if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
                 for (const el of body) {
+                    if (agentId && !el.document?.created_by) {
+                        el.document.created_by = agentId;
+                    }
+                    if (!el.document?.created_time) { el.document.created_time = new Date().getTime(); }
                     switch(el.type.toLowerCase()) {
-                        case 'n':
+                        case 'n':                            
                             await this.source.addNode({
                                 id: el.id,
                                 classId: el.class,
@@ -107,7 +111,7 @@ export class GraphService {
                     }                    
                 }                
                 // fs.writeFileSync('log-' + new Date().getTime() + '.json', JSON.stringify(body));
-                await this.db.storeMultiple(body, source ?? 'unknown', new Date().getTime()); // storemultiple(body);                
+                await this.db.storeMultiple(body, agentId, new Date().getTime()); // storemultiple(body);                
                 resolve({ result: "ok" });
             }
             reject();

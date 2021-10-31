@@ -108,7 +108,7 @@ export class LocalStorage implements IDatabase {
     }
 
 
-    public async storeMultiple(data: IData[], source?: string, updatedTime?: number): Promise<any> {
+    public async storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any> {
         return new Promise(async (resolve, reject) => {
             const res: any[] = [];
             // console.log(this);
@@ -119,7 +119,7 @@ export class LocalStorage implements IDatabase {
     }
 
 
-    public loadGraph(graph: { [key: string]: GraphElement }): Promise<boolean> {
+    public loadGraph(graph: { [key: string]: GraphElement }, agentId?: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {
             
             if (!this.source) { reject(); return;  }
@@ -129,7 +129,7 @@ export class LocalStorage implements IDatabase {
                     const element = graph[key] as GraphElement;                    
                     if (element.type === 'node') {
                         if (!element.id) { element.id = key; }
-                        this.source!.initElement(element);
+                        this.source!.initElement(element, agentId);
                         this.source!.addNode(element);
                     } 
                 }
@@ -270,7 +270,7 @@ export class LocalStorage implements IDatabase {
 
 
     
-    public async store(data: IData, source?: string, updatedTime?: number): Promise<any> {
+    public async store(data: IData, agentId?: string, updatedTime?: number): Promise<any> {
         if (!data.document.id) { reject('document contains no id'); }
         console.log('storing ' + data.document.id);
         // if (updatedTime) {

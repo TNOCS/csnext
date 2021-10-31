@@ -230,8 +230,7 @@ export class GraphController {
             this.allData().then(async all => {
                 let edges: any[] = [];
                 for (const s of all) {
-                    if (s.properties ?.id && s.properties ?.classId && s.classId === shape && s.properties.hasOwnProperty('shape')) {
-                        
+                    if (s.properties ?.id && s.classId === shape && s.properties.hasOwnProperty('shape')) {
                         
                         const fc = JSON.parse(s.properties.shape) as any;
 
@@ -239,7 +238,7 @@ export class GraphController {
                         if (fc && fc.features.length > 0) {
 
                             for (const p of all) {
-                                if (p.properties.id && p.properties ?.classId && p.classId === point) {
+                                if (p.classId === point) {
                                     if (!p.properties.lat && !p.properties.lon && p.location) {                                        
                                         const pos = parse(p.properties.location);
                                         if (pos ?.type === 'Point') {
@@ -365,7 +364,7 @@ export class GraphController {
             this.allData().then(async all => {
                 let res: { [id: string]: string } = {};
                 for (const node of all) {
-                    if (node.properties && (node.classId === 'country' || node.classId === 'province') && node.properties.hasOwnProperty('geoshape')) {
+                    if (node.properties && node.properties.hasOwnProperty('geoshape')) {
                         if (node.properties.geoshape.length > 0 && !node.properties.shape) {
                             res[node.id] = node.properties.geoshape;
                             try {
@@ -379,7 +378,7 @@ export class GraphController {
                                     let shape = JSON.parse(file.toString('utf-8'));
 
                                     if (shape ?.data ?.features) {
-                                        let mgjs = new simplify(shape.data, 0.1);
+                                        let mgjs = new simplify(shape.data, 0.01);
                                         for (const f of mgjs.features) {
                                             f.properties = {};
                                         }
@@ -604,9 +603,9 @@ export class GraphController {
     }
 
     @Post('/loadgraph')
-    loadGraph(@Body() body: {[key: string]: GraphElement}, @Query('source') source?: string) {
+    loadGraph(@Body() body: {[key: string]: GraphElement}, @Query('agent') agent?: string) {
         return new Promise(async (resolve, reject) => {
-            this.graph.db.loadGraph(body).then(r => {
+            this.graph.db.loadGraph(body, agent).then(r => {
                 console.log('saving');
                 this.graph.db.persist();
                 resolve(true);
@@ -618,9 +617,9 @@ export class GraphController {
     }
 
     @Post('/storemultiple')
-    storemultiple(@Body() body: any[], @Query('source') source?: string) {
+    storemultiple(@Body() body: any[], @Query('agent') agent?: string) {
         return new Promise(async (resolve, reject) => {
-            resolve(this.graph.storeMultiple(body));            
+            resolve(this.graph.storeMultiple(body, agent));            
         });
     }
 

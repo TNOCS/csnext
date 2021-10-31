@@ -28,14 +28,14 @@ export interface IAllOptions {
 export interface IDatabase {
     init(source: GraphDatasource): Promise<boolean>;
     reset(): Promise<boolean>;
-    store(data: IData, source?: string, updatedTime?: number): Promise<any>;
+    store(data: IData, agentId?: string, updatedTime?: number): Promise<any>;
     remove(id: string): Promise<boolean>;
-    storeMultiple(data: IData[], source?: string, updatedTime?: number): Promise<any>;
-    appendMultiple?(data: IData[], source?: string, updatedTime?: number): Promise<any>;
+    storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any>;
+    appendMultiple?(data: IData[], agentId?: string, updatedTime?: number): Promise<any>;
     storeArray(documents: any[], idProp: string, type?: string): Promise<any>;
     all?(options?: IAllOptions): Promise<any>;
     loadAll?(): Promise<any>;    
-    loadGraph?(graph: {[key: string]: GraphElement}) : Promise<boolean>;
+    loadGraph?(graph: {[key: string]: GraphElement}, agentId?: string, jobId?: string) : Promise<boolean>;
     schema?(): Promise<GraphSchema>;
     types?(): Promise<ObservationType[]>;
     persist(): Promise<void>;
