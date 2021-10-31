@@ -26,7 +26,7 @@ export interface IDashboard {
   // tslint:disable-next-line:variable-name
   _manager?: IDashboardManager;
 
-  options?: IDashboardOptions;
+  options?: IDashboardOptions;  
 
   // list of widgets
   widgets?: IWidget[];

@@ -8,4 +8,5 @@ export interface IDashboardManager {
     editDashboard?: (dashboard: IDashboard) => void;
     dataLoaded?: (d: any) => void;
     removeWidget?: (widget: IWidget) => void;
+    _contentHasBeenLoaded?: boolean;
 }

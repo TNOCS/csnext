@@ -196,7 +196,10 @@ export class CsDashboard extends Vue {
 
             // if dashboard manager availabe, trigger data loaded event
             if (this.dashboard._manager && typeof (this.dashboard._manager.contentLoaded) === 'function') {
-              this.dashboard._manager.contentLoaded(d);
+              if (!this.dashboard._manager._contentHasBeenLoaded) {
+                this.dashboard._manager.contentLoaded(d);
+                this.dashboard._manager._contentHasBeenLoaded = true;
+              }
             }
 
             // if there are widgets without dashboards, use dashboard content, note: only works for widgets that are initially defined
