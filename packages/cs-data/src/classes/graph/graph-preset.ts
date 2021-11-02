@@ -44,6 +44,7 @@ export class GraphPreset extends IGraphFilter {
     public labelMaxLength?: number;
     public animate?: boolean;
     public gravity?: number;
+    public speed?: number;
     public edgeStrength?: number;
     public nodeStrength?: number;
     public rankdir?: string;
@@ -59,7 +60,8 @@ export class GraphPreset extends IGraphFilter {
     
     public static export(preset: GraphPreset): string {        
         return JSON.stringify({ ...preset, ...{nodes: preset._visibleNodes.map(n=>n.id)}}, (k, v) => {
-            if (k.startsWith('_')) return undefined;                        
+            if (k.startsWith('_')) return undefined;      
+            if (k === 'source') return undefined;
             return v;
         });
     }
@@ -74,8 +76,7 @@ export class GraphPreset extends IGraphFilter {
                     res._visibleNodes.push(element)
                 }                
             }
-        }
-        
+        }        
         
         return res;
         

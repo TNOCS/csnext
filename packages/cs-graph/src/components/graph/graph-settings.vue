@@ -182,10 +182,20 @@ export default class GraphSettings extends WidgetBase {
             _key: 'gravity',
             type: 'slider',
             min: 0,
+            max: 100,
+            step: 0.1,
+            requirements: [ (v: GraphPreset)=> isLayout(v,'fruchterman')  ]   
+          }, 
+          {
+            title: 'SPEED',
+            _key: 'speed',
+            type: 'slider',
+            min: 0,
             max: 10,
             step: 0.1,
             requirements: [ (v: GraphPreset)=> isLayout(v,'fruchterman')  ]   
           }, 
+         
           {
             title: 'CLUSTERING',
             _key: 'clustering',
@@ -221,7 +231,7 @@ export default class GraphSettings extends WidgetBase {
             _key: 'edgeStrength',
             type: 'slider',
             min: 0.01,
-            max: 1,
+            max: 10,
             step: 0.01,
             requirements: [ (v: GraphPreset) => isLayout(v,['force', 'gForce'])  ] 
           },
