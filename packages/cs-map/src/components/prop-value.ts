@@ -4,29 +4,21 @@ import { NodeLink } from '..';
 
 export default Vue.extend({
     name: 'prop-value',
-    props: ['value', 'proptype', 'showUnit', 'source', 'element'],
-    methods: {
-        refresh(params) {
-            console.log('refresh');            
-        }
-    },
-    beforeMount() {
-        // if (this.params) {
-        //     const params = this.params!;
-        //     const key = params.colDef.field.replace('properties.', '');
-        //     this.value = params.value;
-        //     this.proptype = params.data._featureType.propertyMap[key];
-        //     this.element = params.data;
-        // }        
-    },
+    props: ['value', 'proptype', 'prop', 'showUnit', 'source', 'element'],
+    
   render(createElement: CreateElement): VNode {      
-    switch (this.proptype.type as PropertyValueType) {
+      let proptype = this.proptype;
+      if (!proptype && this.prop && this.element?._featureType?.propertyMap && this.element._featureType.propertyMap.hasOwnProperty(this.prop)) {
+          proptype = this.element._featureType.propertyMap[this.prop];
+      }
+      if (!proptype?.type) { return createElement('span','') }
+    switch (proptype.type as PropertyValueType) {
         case PropertyValueType.number:
             if (this.value) {
                 let n = parseInt(this.value);
                 if (n) {
-                let value = n.toFixed(this.proptype.decimals || 0);
-                if (this.showUnit && this.proptype.unit) { value+=' ' + this.proptype.unit; }
+                let value = n.toFixed(proptype.decimals || 0);
+                if (this.showUnit && proptype.unit) { value+=' ' + proptype.unit; }
                 return createElement('span', value);
                 }
             } else {
@@ -40,7 +32,7 @@ export default Vue.extend({
             if (this.value === undefined) {
                 return createElement('span', $cs.Translate('NO_DATE'));
             }
-            switch ((this.proptype as PropertyType).dateFormat) {
+            switch ((proptype as PropertyType).dateFormat) {
                 case 'date':                    
                     return createElement('span', new Date(this.value).toISOString().substr(0, 10));
                 case 'time':
@@ -61,8 +53,8 @@ export default Vue.extend({
             // find relation            
             const linkres : VNode[] = []; 
             // linkres.push(createElement('span', this.value));
-            if (this.element?._elements && this.element._elements.hasOwnProperty(this.proptype.key)) {
-                const link = this.element._elements[this.proptype.key];
+            if (this.element?._elements && this.element._elements.hasOwnProperty(proptype.key)) {
+                const link = this.element._elements[proptype.key];
                 linkres.push(createElement(NodeLink, {
                     props: {
                         node: link,
@@ -77,7 +69,7 @@ export default Vue.extend({
             // find relation            
             const res : VNode[] = []; 
             if (this.element?._outgoing) {
-                const rels = this.element._outgoing.filter(r => r.classId === this.proptype.relation.type);
+                const rels = this.element._outgoing.filter(r => r.classId === proptype.relation.type);
                 if (rels) {
                     for (const rel of rels) {
                         if (rel.to?.properties) {
@@ -92,8 +84,8 @@ export default Vue.extend({
             return createElement('span', '[json]');
         case PropertyValueType.url:                
           let url = (!this.value.startsWith('http')) ? 'https://' + this.value : this.value;
-          if (this.proptype.urlTemplate) {
-            url = this.proptype.urlTemplate.replace('$1', this.value)
+          if (proptype.urlTemplate) {
+            url = proptype.urlTemplate.replace('$1', this.value)
           }
           return createElement('a', { attrs: { target:'_blank', href: url} }, this.value)            
         default:
@@ -102,59 +94,3 @@ export default Vue.extend({
     // return cre('div', this.$scopedSlots.default!({}))
   }
 })
-
-
-
-// Vue.component('prop-value', {
-//     props: ['value', 'proptype', 'showUnit', 'element'],
-//     render(createElement): VNode {
-//         switch (this.proptype.type as PropertyValueType) {
-//             case PropertyValueType.number:
-//                 if (this.value) {
-//                     let n = parseInt(this.value);
-//                     if (n) {
-//                     let value = n.toFixed(this.proptype.decimals || 0);
-//                     if (this.showUnit && this.proptype.unit) { value+=' ' + this.proptype.unit; }
-//                     return createElement('span', value);
-//                     }
-//                 } else {
-//                     return createElement('span','');
-//                 }
-//             case PropertyValueType.image:
-//               return createElement('img', { class: 'info-image', attrs: { src: this.value}} );
-//             case PropertyValueType.date:
-//               return createElement('span', new Date(this.value).toLocaleString());                
-//             case PropertyValueType.epoch:
-//                 return createElement('span', new Date(this.value).toLocaleString());
-//             case PropertyValueType.boolean:
-//                 return createElement('span', this.value ? $cs.Translate('YES') : $cs.Translate('NO'))
-//             case PropertyValueType.featurecollection:
-//                 return createElement('span', '[feature collection]');
-//             case PropertyValueType.feature:
-//                 return createElement('span', this.value?.geometry?.type || '[feature]');
-//             case PropertyValueType.wkt:
-//                 return createElement('span', '[location]');                            
-//             case PropertyValueType.relation:
-//                 // find relation
-//                 if (this.element?._outgoing) {
-//                     const rel = this.element._outgoing.find(r => r.classId === this.proptype.relation.type);
-//                     if (rel) {
-//                         console.log(rel);
-//                         return createElement('a', { attrs: { }}, rel.to?.properties?.name);
-//                     }
-//                 }                
-//                 return createElement('span', '');
-                
-//             case PropertyValueType.json:
-//                 return createElement('span', '[json]');
-//             case PropertyValueType.url:                
-//               let url = (!this.value.startsWith('http')) ? 'https://' + this.value : this.value;
-//               if (this.proptype.urlTemplate) {
-//                 url = this.proptype.urlTemplate.replace('$1', this.value)
-//               }
-//               return createElement('a', { attrs: { target:'_blank', href: url} }, this.value)            
-//             default:
-//                 return createElement('span', { class:'info-prop-text'}, this.value);
-//         }
-//     }
-// });
