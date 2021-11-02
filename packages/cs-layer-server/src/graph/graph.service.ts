@@ -92,12 +92,12 @@ export class GraphService {
                     }
                     if (!el.document?.created_time) { el.document.created_time = new Date().getTime(); }
                     switch(el.type.toLowerCase()) {
-                        case 'n':                            
+                        case 'n':
                             await this.source.addNode({
                                 id: el.id,
                                 classId: el.class,
                                 properties: el.document
-                            });
+                            }, el.class, true);
                             break;
                         case 'e':
                             await this.source.addEdge({

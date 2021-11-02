@@ -457,6 +457,22 @@ export class GraphController {
         });
     }
 
+    @Get('/allobjects')
+    allObjects(): Promise<any> {
+        return new Promise(async (resolve, reject) => {                        
+            if (this.graph && this.graph.db ?.all && typeof this.graph.db ?.all === 'function') {
+                const res = {};
+                const r = await this.graph.db.all({object: true});
+                for (const rr of r) {
+                    res[rr.id] = rr;                    
+                }
+                resolve(res);
+            } else {
+                reject(false);
+            }
+        });
+    }
+
     @Get('/typedbschema')
     typedbschema() : Promise<any> {
         return new Promise(async (resolve, reject) => {
