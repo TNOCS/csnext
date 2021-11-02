@@ -381,11 +381,21 @@ export class DocDatasource extends GraphDatasource {
 
     public linkEntityListToDocument(entity: EntityList, doc: GraphDocument): Promise<EntityList> {
         return new Promise((resolve, reject) => {
-            if (!entity.node || !doc) { reject(); return; }
-            this.addNewEdge({ fromId: doc.id, toId: entity.node.id, classId: 'CONTAINS' } as GraphElement, false).then(async e => {
+            if (!entity.node || !doc) { reject(); return; }     
+            let suggested_by : string | undefined = undefined;
+            let suggested_time : number | undefined = undefined;       
+            // find agent
+            if (entity.instances && entity.instances.length>0) {
+                const e = entity.instances[0];
+                suggested_by = e.suggested_by;
+                suggested_time = e.suggested_time;
+            }
+            
+            this.addNewEdge({ fromId: doc.id, suggested_by, suggested_time, toId: entity.node.id, classId: 'CONTAINS' } as GraphElement, false).then(async e => {
                 entity.edge = e;
                 e.to = entity.node;
                 e.from = doc;
+                
                 await this.addEdge(e);
                 await this.saveDocument(doc);
                 await this.parseEntities();
@@ -1307,11 +1317,13 @@ export class DocDatasource extends GraphDatasource {
     public updateTextEntity(document: GraphDocument, entity: TextEntity) {
         if (!entity.text || entity.text.length === 0) { return; }
         if (!document.entities) { document.entities = []; }
-        const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
+        // const indx = document.entities.findIndex(e => e.entity_idx === entity.entity_idx);
+        const indx = document.entities.findIndex(e => e.position_start === entity.position_start);
         if (indx === -1) {
             document.entities.push(entity);
         } else {
-            document.entities[indx] = entity;
+            document.entities[indx].id = entity.id;
+            document.entities[indx].node_id = entity.node_id;
         }
     }
 
@@ -1406,6 +1418,25 @@ export class DocDatasource extends GraphDatasource {
         });
     }
 
+    public toggleAproveElement(element: GraphElement, agent?: GraphElement) : Promise<GraphElement> {
+        return new Promise((resolve, reject) => {
+            if (element.properties!.approved_by) {
+                delete element.properties!.approved_by;
+                delete element.properties!.approved_time;  
+                delete element._elements!.approved_by;              
+            } else {            
+                element.properties!.approved_by = agent?.id || this.activeUser?.id;
+                element.properties!.approved_time = new Date().getTime();                
+            }   
+            this.saveNode(element).then(e => {                
+                resolve(element);
+            }).catch(e => {
+                reject(e);
+            });    
+        })
+
+    }
+
     public saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
         return new Promise((resolve, reject) => {
             $cs.loader.addLoader(`store-${element.id}`);
@@ -1436,7 +1467,9 @@ export class DocDatasource extends GraphDatasource {
             }
             delete body.class;            
             this.updateNode(element, true);            
-            this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element)
+            this.updateElementProperties(element);
+            this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element);
+            
             // this.refresh();
 
             Axios.post(`${this.base_url}/graph/store`, body).then(() => {
@@ -1619,7 +1652,7 @@ export class DocDatasource extends GraphDatasource {
     }
 
     public createKGView(elements?: GraphElement[], expand = false) {
-        this.emptyGraph(false);
+        // this.emptyGraph(false);
         if (elements) {
             for (const el of elements) {
                 // el._included = true;

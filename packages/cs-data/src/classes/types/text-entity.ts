@@ -28,6 +28,8 @@ export class TextEntity {
     public node_id?: string;    
     public projection?: string;
     public converted?: string;
+    public suggested_by?: string;
+    public suggested_time?: number;
     public _highlight?: boolean;
     public _node?: GraphElement;
     public _edge?: GraphElement;
