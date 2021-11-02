@@ -40,7 +40,7 @@ export class NodeSpan extends Vue {
   name: 'node-link',
   props: ['node', 'source'],
   components: {NodeSpan},
-  template: `<div><node-span :node="node" :source="source"/</div>`,
+  template: `<div><node-span :node="node" :source="source"/></div>`,
 
 })
 export class NodeLink extends Vue {
