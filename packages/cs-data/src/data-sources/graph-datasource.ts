@@ -580,15 +580,19 @@ export class GraphDatasource extends DataSource {
         return res;
     }
 
-    public addNode(element: GraphElement, classId?: string) {
+    public addNode(element: GraphElement, classId?: string, merge?: boolean) {
         let res = this;
        
-        if (!element._title && element.properties?.name) {
-            element._title = element.properties.name;
-        }
+        
+
+        
 
         if (!element.id) {
             element.id = element._title;
+        }
+
+        if (!element._title && element.properties?.name) {
+            element._title = element.properties.name;
         }
         
         if (!element._title && element.id) {
@@ -598,23 +602,31 @@ export class GraphDatasource extends DataSource {
         if (classId) {
             element.classId = classId;
         }
-        // if (element.classId) {
-        //     res = res.addElement(element,stepId).addEdge({ fromId: element.id, toId: element.classId, _firstStep: stepId, classId: 'is', properties: { verified: true} }, stepId) as any;
-        // } else {
-        //     res = res.addElement(element, stepId);
-        // }
-        if (
-            !element._featureType &&
-            element.classId &&
-            this.featureTypes &&
-            this.featureTypes.hasOwnProperty(element.classId)
-        ) {
-            element._featureType = this.featureTypes[element.classId];
-        }
 
-        res = res.addElement(element);
-        if (this.fuse) {
-            this.fuse.add(element);
+        if (merge && element.id && this.graph.hasOwnProperty(element.id)) {
+            const existing = this.graph[element.id];
+            existing.properties = { ...existing.properties, ...element.properties};            
+        } else {
+
+        
+            // if (element.classId) {
+            //     res = res.addElement(element,stepId).addEdge({ fromId: element.id, toId: element.classId, _firstStep: stepId, classId: 'is', properties: { verified: true} }, stepId) as any;
+            // } else {
+            //     res = res.addElement(element, stepId);
+            // }
+            if (
+                !element._featureType &&
+                element.classId &&
+                this.featureTypes &&
+                this.featureTypes.hasOwnProperty(element.classId)
+            ) {
+                element._featureType = this.featureTypes[element.classId];
+            }
+
+            res = res.addElement(element);
+            if (this.fuse) {
+                this.fuse.add(element);
+            }
         }
         return this;
     }
@@ -800,11 +812,18 @@ export class GraphDatasource extends DataSource {
 
 
     public triggerUpdateGraph(element?: GraphElement) {
-        this.bus.publish(
-            GraphDatasource.GRAPH_EVENTS,
-            GraphDatasource.GRAPH_UPDATED,
-            element
-        );
+        if (element) {
+            this.events.publish(
+                GraphDatasource.GRAPH_EVENTS,
+                GraphDatasource.ELEMENT_UPDATED,
+                element
+            );
+        } else {
+            this.events.publish(
+                GraphDatasource.GRAPH_EVENTS,
+                GraphDatasource.GRAPH_UPDATED
+            );
+        }
     }
 
     private debounceUpdateTimeGraph = throttle(
@@ -945,13 +964,13 @@ export class GraphDatasource extends DataSource {
     }
 
     public saveGraphPresets() {
-        if (!this.graphPresets) {
-            return;
-        }
-        localStorage.setItem(
-            "graph-presets",
-            JSON.stringify(this.graphPresets.map(p => GraphPreset.export(p)))
-        );
+        // if (!this.graphPresets) {
+        //     return;
+        // }
+        // localStorage.setItem(
+        //     "graph-presets",
+        //     JSON.stringify(this.graphPresets.map(p => GraphPreset.export(p)))
+        // );
     }
 
     public getGraphPreset(id: string) : IGraphFilter | undefined {
