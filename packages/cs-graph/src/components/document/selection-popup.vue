@@ -15,6 +15,7 @@
       </v-tab>
 
       <v-tab-item>
+        <div>
         <template v-if="entity">
           <div v-if="entity._node" class="entity-node">
             <data-info-panel
@@ -22,6 +23,9 @@
               :featureType="entity._node._featureType"
               panel="popup"
             ></data-info-panel>
+
+            
+
 
             <div class="entity-node-actions">
               <v-btn icon @click="graphNode(entity)"
@@ -65,7 +69,7 @@
                 >{{ ft.title }}</v-chip
               ></span
             >
-            <v-layout class="ma-3">
+            <v-layout class="ma-3" style="margin-top: -20px">
               <v-radio-group v-model="searchMode" class="add-node-mode">
                 <v-radio label="Existing" value="KG"></v-radio>
                 <v-radio label="New" value="new"></v-radio>
@@ -94,15 +98,19 @@
           </div>
         </template>
         <template v-else> no entity </template>
+        <div v-if="suggestedby" class="suggestion-info">
+              suggested by: 
+              <strong><node-span :node="suggestedby" :source="source"></node-span></strong>
+              </div>
+        </div>
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
           <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title>
           <v-card-text v-if="suggestions">
-            <div v-for="(s, i) in suggestions" :key="i">
+            <div class="suggestion-item" v-for="(s, i) in suggestions" :key="i">
               <v-layout
-                >{{ s.properties.name
-                }}<v-btn v-if="!entity._node" icon @click="useSuggestion(s)"
+                >{{ s.item.properties.name }} ({{getScore(s.score)}})<v-btn v-if="!entity._node" icon @click="useSuggestion(s.item)"
                   ><v-icon>link</v-icon></v-btn
                 ></v-layout
               >
@@ -274,12 +282,22 @@
   right: 5px;
 }
 
+.suggestion-item{
+  font-size: 20px;
+}
+
 .add-node-mode {
   margin-right: 10px;
 }
 
 .entity-node {
   min-height: 150px;
+}
+
+.suggestion-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .entity-node-actions {
@@ -308,13 +326,14 @@ import { TextEntity } from "@csnext/cs-data";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
-import { DataInfoPanel } from "@csnext/cs-map";
+import { DataInfoPanel, NodeLink, NodeSpan } from "@csnext/cs-map";
+
 import { FeatureType } from "@csnext/cs-data";
 // import turf from "@turf/turf";
 // import distance from "@turf/distance";
 
 @Component({
-  components: { DataInfoPanel },
+  components: { DataInfoPanel, NodeLink, NodeSpan },
 })
 export default class SelectionPopup extends WidgetBase {
   @Prop()
@@ -359,7 +378,7 @@ export default class SelectionPopup extends WidgetBase {
 
   public newEntityNode: GraphElement = { _title: "" };
 
-  public suggestions: GraphElement[] | null = null;
+  public suggestions: any[] | null = null;
 
   constructor() {
     super();
@@ -389,11 +408,14 @@ export default class SelectionPopup extends WidgetBase {
     // await this.source.callEntitySearch(this.document);
   }
 
+  private getScore(value: number) {
+    return value.toFixed(2);
+  }
+
   public updateSuggestions() {
     if (this.entity?.text && this.source?.fuse) {
       this.suggestions = this.source.fuse
-        .search(this.entity.text)
-        .map((r) => r.item);
+        .search(this.entity.text)        
     }
   }
 
@@ -683,10 +705,23 @@ export default class SelectionPopup extends WidgetBase {
     }
   }
 
+  public suggestedby: GraphElement | null = null;
+  public suggestedtime: number | null = null;
+
+  public updateAgents() {
+    if (!this.source?.graph || !this.entity?.suggested_by || this.entity.suggested_time) { return; }
+    this.suggestedby = this.source.graph[this.entity.suggested_by];
+    console.log('suggested');
+    console.log(this.suggestedby);
+    if (!this.suggestedby) { return }
+
+  }
+
   mounted() {
     if (this.entity?.class === "location") {
       this.viewtab = 1;
     }
+    this.updateAgents();
     this.updatePotentialTypes();
     this.updateSuggestions();
   }
