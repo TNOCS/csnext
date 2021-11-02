@@ -15,6 +15,7 @@ export class EntityList {
 export class NodeEntities {
     public id!: string;
     public node?: GraphElement;
+    public title?: string;
     public entities: EntityList[] = [];
     public _adding = false;    
     public _open = true;  

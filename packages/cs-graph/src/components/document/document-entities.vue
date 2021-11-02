@@ -1,6 +1,6 @@
 <template>
   <simplebar
-    style="margin-top: -50px; height: calc(100%-80px)"
+    style="margin-left: 5px; margin-top: -25px; height: calc(100%-80px)"
     v-if="source && source.activeDocument && nodeGroups"
   >
     <!-- <v-row v-masonry transition-duration="0.3s" cols="3"  column-width="300" item-selector=".group-column" style="margin-left: 5px; margin-right: 10px"> -->
@@ -17,7 +17,7 @@
         class="group-column"
       >
         <div class="group-title">
-          {{ group.id }}
+          {{ group.title }}
           <v-btn
             v-if="!group._adding"
             @click.stop="
@@ -378,6 +378,7 @@ export default class DocumentEntities extends WidgetBase {
         if (!group) {
           group = {
             id: c,
+            title: c.replace('_', ' '),
             _adding: false,
             _open: true,            
             node: entity._node,
@@ -426,6 +427,7 @@ export default class DocumentEntities extends WidgetBase {
           if (!group && entity.classId) {
             group = {
               id: entity.classId,
+              title: entity._featureType?.title,
               _adding: false,
               _open: true,
               node: entity,
@@ -439,7 +441,7 @@ export default class DocumentEntities extends WidgetBase {
           ) {
             group.entities.push({
               id: entity.id!,
-              edge: relation,
+              edge: relation,              
               node: entity,
               instances: [],              
               _relations: 0,
