@@ -4,10 +4,11 @@ import { GraphElement } from '@csnext/cs-data';
 import { CsMap } from '../../cs-map/cs-map';
 
 
+
 @Component({
-  name: 'node-link',
+  name: 'node-span',
   props: ['node', 'source'],
-  template: `<div>
+  template: `<span>
   <v-tooltip transition="undefined" open-delay="100" bottom color="transparent">
       <template v-slot:activator="{ on }">
         <span class="link-title" @click.stop="activate()" v-on="on">{{node.title}}</span>
@@ -16,10 +17,10 @@ import { CsMap } from '../../cs-map/cs-map';
         <data-info-panel :data="node.properties" :node="node" :featureType="node._featureType" panel="popup"></data-info-panel>        
       </v-card>
   </v-tooltip>    
-</div>`,
+</span>`,
   components: { }
 })
-export class NodeLink extends Vue {
+export class NodeSpan extends Vue {
 
   private node?: GraphElement;
   private source?: IDatasource;
@@ -33,3 +34,18 @@ export class NodeLink extends Vue {
 
 }
 
+
+
+@Component({
+  name: 'node-link',
+  props: ['node', 'source'],
+  components: {NodeSpan},
+  template: `<div><node-span :node="node" :source="source"/</div>`,
+
+})
+export class NodeLink extends Vue {
+
+  private node?: GraphElement;
+  private source?: IDatasource;
+
+}
