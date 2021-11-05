@@ -29,6 +29,7 @@ export class CsHeader extends Vue {
   private busManager: MessageBusManager = new MessageBusManager();
   private loadingMenuIcon?: IMenu;
   private languageSwitchMenu?: IMenu;
+  private headerHovering: boolean = false;
   private visibleSidebars: { [key: string]: IDashboard } | undefined = {};
 
   @Watch('rightSidebar.sidebars')

@@ -1,44 +1,49 @@
 .header-title-menu {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 #main-toolbar {
-  padding-right: 0px;
+    padding-right: 0px;
 }
 
 .header-title {
-  margin-left: 0 !important;
+    margin-left: 0 !important;
 }
 
 .compact-header {
-    width: 500px;    
- 
+    width: 500px;
 }
 
+.header-title-menu-activator {
+    padding: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 .floating-toolbar {
-  margin-top: 15px !important;
-  margin-left: 15px;
-  max-width: 500px;
-  
+    margin-top: 15px !important;
+    margin-left: 15px;
+    max-width: 500px;
 }
 
 .v-application .theme--light a.breadcrumb-text {
-  color: black;
+    color: black;
 }
 
 .v-application .theme--dark a.breadcrumb-text {
-  color: white;
+    color: white;
 }
 
 .sidebar-dashboard-selected {
-  background: red;
+    background: red;
 }
 
 .sidebar-header-button {
-  margin: 0px !important;
-  padding: 0px !important;
-  min-width: 75px !important;
-  height: 100% !important;
-  border-left: 0px darkgray solid;
+    margin: 0px !important;
+    padding: 0px !important;
+    min-width: 75px !important;
+    height: 100% !important;
+    border-left: 0px darkgray solid;
 }
