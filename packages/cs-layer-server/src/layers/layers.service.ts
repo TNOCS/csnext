@@ -399,7 +399,7 @@ export class LayerService extends AggregateRoot {
 
     public queueSocketDelete(source: LayerSource, feature: Feature) {
         if (source) {
-            if (!this.socketSources.hasOwnProperty(source.id)) { this.socketSources[source.id] = source; }
+            if (!this.socketSources.hasOwnProperty(source.id) || this.socketSources[source.id]._socketQueue != source._socketQueue) { this.socketSources[source.id] = source; }
             if (!source._socketQueue) { source._socketQueue = {}; }
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
