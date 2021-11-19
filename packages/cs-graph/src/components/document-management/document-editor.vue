@@ -75,14 +75,14 @@ export default class DocumentEditor extends WidgetBase {
   public updateDocument() {
     
     if (!this.source || !this.document) { return; }    
-    if (this.document.sourceId && (!this.document._source || this.document._source.id !== this.document.sourceId)) {
-      // remove existing link
+    // if (this.document.sourceId && (!this.document._source || this.document._source.id !== this.document.sourceId)) {
+    //   // remove existing link
       
 
 
-      // source changed
-      // alert('source changed');
-    }
+    //   // source changed
+    //   // alert('source changed');
+    // }
 
     
     

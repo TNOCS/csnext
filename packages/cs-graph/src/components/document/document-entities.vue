@@ -362,7 +362,7 @@ export default class DocumentEntities extends WidgetBase {
     })
   }
 
-  @Watch("source.visibleViewTypes")
+  @Watch("source.activeDocument.visibleEntityTypes")
   public updateGroups() {
     if (!this.source) {
       return;
@@ -372,8 +372,8 @@ export default class DocumentEntities extends WidgetBase {
     }
     let res: NodeEntities[] = [];
     for (const entity of this.source.activeDocument.entities) {
-      const c = entity._node?.classId ?? entity.entity_class;
-      if (c && this.source.visibleViewTypes.findIndex((t) => t.id === c) !== -1) {
+      const c = entity._node?.classId ?? entity.spacy_label;
+      if (c && this.source.activeDocument.visibleEntityTypes.findIndex((t) => t.id === c) !== -1) {
         let group = res.find((g) => g.id === c);
         if (!group) {
           group = {

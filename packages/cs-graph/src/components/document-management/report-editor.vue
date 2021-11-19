@@ -112,15 +112,15 @@ export default class DocumentEditor extends WidgetBase {
     if (!this.source || !this.document) {
       return;
     }
-    if (
-      this.document.sourceId &&
-      (!this.document._source ||
-        this.document._source.id !== this.document.sourceId)
-    ) {
-      // remove existing link
-      // source changed
-      // alert('source changed');
-    }
+    // if (
+    //   this.document.sourceId &&
+    //   (!this.document._source ||
+    //     this.document._source.id !== this.document.sourceId)
+    // ) {
+    //   // remove existing link
+    //   // source changed
+    //   // alert('source changed');
+    // }
 
     this.source.saveDocument(this.document);
   }

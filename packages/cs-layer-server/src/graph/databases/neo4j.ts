@@ -6,7 +6,7 @@ import { GraphEntity, GraphRelation, GraphSchema, ObservationType } from './sche
 import { generateHash} from "@csnext/cs-core";
 
 import { GraphElement, FeatureType, FeatureCollection, GraphDatasource } from "@csnext/cs-data";
-import { reject } from 'lodash';
+// import { reject } from 'lodash';
 
 // import Cypher from 'cypher-tagged-templates';
 
@@ -92,9 +92,9 @@ export class Neo4J implements IDatabase {
 
     public runMultipleWriteQueries(queries: IQuery[]): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            if (!this.driver) { Promise.reject({ description: 'NEO4J not available' }); return; };
+            if (!this.driver) { reject({ description: 'NEO4J not available' }); return; };
             let session = this.driver.session();
-            if (!session) { return Promise.reject('No session available'); }
+            if (!session) { return reject('No session available'); }
             console.log(`Starting transaction with ${queries.length} queries`);
 
             const ts = session.beginTransaction();            
@@ -123,9 +123,9 @@ export class Neo4J implements IDatabase {
                 }
             }
 
-            if (!this.driver) { Promise.reject({ description: 'NEO4J not available' }); return; };
+            if (!this.driver) { reject({ description: 'NEO4J not available' }); return; };
             let session = this.driver.session();
-            if (!session) { return Promise.reject('No session available'); }
+            if (!session) { return reject('No session available'); }
             const result: any = [];
 
             session
@@ -536,7 +536,7 @@ export class Neo4J implements IDatabase {
     }
 
     public async store(data: IData, source?: string, updatedTime?: number): Promise<any> {        
-        if (!data.document.id) { reject('document contains no id'); }
+        if (!data.document.id) { Promise.reject('document contains no id'); }
         console.log('storing ' + data.document.id);
         if (updatedTime) {
             this.checkDates(data, updatedTime);

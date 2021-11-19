@@ -2,7 +2,7 @@
 import { FeatureType, TextEntity, TextRelation, GraphElement } from '@csnext/cs-data';
 import { Schema, Node as ProseMirrorNode } from 'prosemirror-model'
 import { guidGenerator } from '@csnext/cs-core';
-import { Observation } from '..';
+import { EntityType, Observation } from '..';
 
 
 
@@ -15,15 +15,31 @@ export class GraphDocument extends GraphElement {
     public relations?: TextRelation[];
     public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
-    public reliability?: string;
-    public credibility?: string;
-    public note?: string;    
-    public sourceId?: string;
-    public doc: any = {
+    public entityTypes: { [id: string]: EntityType } = {};
+    public visibleEntityTypes: EntityType[] = [];
+    // public reliability?: string;
+    // public credibility?: string;
+    // public note?: string;    
+    // public sourceId?: string;
+    // public doc: any = 
+
+    public refreshViewTypes() {
+        this.visibleEntityTypes = Object.values(this.entityTypes).filter(
+          (vt) => vt._selected
+        );
+      }
+    
+
+    public get doc() : any {
+        if (!this.properties) { this.properties = {}}
+        if (!this.properties.doc) { this.properties.doc = {
         type: "doc",
         content: [    
         ],
-      };
+        }}
+        return this.properties.doc;
+    }
+
     public notes?: DocumentNote[];
     
     // public _node?: GraphElement;
@@ -59,8 +75,8 @@ export class GraphDocument extends GraphElement {
             id: this.id, type: 'node', title: this.name, _title: this.name, classId: 'input', properties: {
                 name: this.name,
                 // text: this.originalText,
-                reliability: this.reliability,
-                credibility: this.credibility,                
+                // reliability: this.reliability,
+                // credibility: this.credibility,                
                 start: '01-03-2019'
             }            
         } as GraphElement;

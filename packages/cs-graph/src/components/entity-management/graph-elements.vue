@@ -1,8 +1,15 @@
 <template>
-  <div v-if="graphSource && graphSource.graph" style="padding: 3px; height: 100% !important">
+  <div
+    v-if="graphSource && graphSource.graph"
+    style="padding: 3px; height: 100% !important"
+  >
     <v-container>
       <v-toolbar elevation="0">
-        <v-text-field v-model="searchString" label="Search" single-line></v-text-field>
+        <v-text-field
+          v-model="searchString"
+          label="Search"
+          single-line
+        ></v-text-field>
 
         <!-- <v-select
           v-model="nodeFilters"
@@ -37,7 +44,7 @@
       </v-toolbar>
     </v-container>
 
-    <div class="sidebar-simplebar" style="top:60px">
+    <div class="sidebar-simplebar" style="top: 60px">
       <v-virtual-scroll
         v-if="graphSource"
         :items="filteredElements"
@@ -47,17 +54,23 @@
         <template v-slot="{ item }">
           <v-list-item @click="selectItem(item.item)">
             <v-list-item-avatar @click.stop="toggleInclude(item.item)">
-              <v-avatar :color="getColor(item.item)" size="56" class="white--text">
+              <v-avatar
+                :color="getColor(item.item)"
+                size="56"
+                class="white--text"
+              >
                 <v-icon v-if="item.item._included">bookmark</v-icon>
                 <!-- {{ item.initials }} -->
               </v-avatar>
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item.item.properties.name }}</v-list-item-title>
+              <v-list-item-title>{{
+                item.item.properties.name
+              }}</v-list-item-title>
               <!-- {{ item.score }} -->
               <v-list-item-subtitle v-if="item.item._featureType">
-                {{ item.item._featureType.title}}
+                {{ item.item._featureType.title }}
                 <!-- <span v-if="item.item._incomming">
                   <v-icon small>arrow_forward</v-icon>
                   {{ item.item._incomming.length}}
@@ -94,15 +107,15 @@
 
 
 <script lang="ts">
-import { Component, Watch } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
-import { DocDatasource } from "../../";
-import  FuseResult  from 'fuse.js';
+import { Component, Watch } from 'vue-property-decorator';
+import { WidgetBase } from '@csnext/cs-client';
+import { DocDatasource } from '../../';
+import FuseResult from 'fuse.js';
 import Fuse from 'fuse.js';
 import { FeatureType, GraphElement } from '@csnext/cs-data';
 
 @Component({
-  name: "graph-elements",  
+  name: 'graph-elements',
 })
 export default class GraphElements extends WidgetBase {
   public get graphSource(): DocDatasource | undefined {
@@ -110,66 +123,68 @@ export default class GraphElements extends WidgetBase {
       return this.widget.content as DocDatasource;
     }
   }
-  
+
   public get filteredElements(): FuseResult<GraphElement>[] {
-    let res : FuseResult<GraphElement>[] = []
-    if (this.graphSource && this.graphSource.graph && this.graphSource.fuse) {            
+    let res: FuseResult<GraphElement>[] = [];
+    if (this.graphSource && this.graphSource.graph && this.graphSource.fuse) {
       // if (!this.searchString) { this.searchString = ''; }
       if (!this.searchString) {
-        res = this.graphSource.getClassElements(this.widget.data?.classFilter || 'node').map(s => { return { score: 0, item: s} as any})
+        res = this.graphSource
+          .getClassElements(this.widget.data?.classFilter || 'node')
+          .map((s) => {
+            return { score: 0, item: s } as any;
+          });
         // this.graphSource.fuse.search()
         // res = Object.values(this.graphSource.graph).filter(e => e.type === 'node').map(s => { return { score: 0, item: s} as any})
       } else {
-        res = this.graphSource.fuse.search<GraphElement>(this.searchString) as any;        
-        
-      // }    ?  
-      // return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
-      //   return (
-      //     f.type === "node" &&
-      //     !f.isType &&
-      //     f.classId &&
-      //     (!this.filterIncluded || f._included) &&          
-      //     this.nodeFilters.includes(f.classId) 
-      //     // (this.searchString && this.searchString === "" ||
-      //     //   f._search?.toLowerCase().includes(this.searchString.toLowerCase())
-      //     //   )
-      //   );
-      // });
-    }
+        res = this.graphSource.fuse.search<GraphElement>(
+          this.searchString
+        ) as any;
+
+        // }    ?
+        // return Object.values(this.graphSource.graph).filter((f : GraphElement) => {
+        //   return (
+        //     f.type === "node" &&
+        //     !f.isType &&
+        //     f.classId &&
+        //     (!this.filterIncluded || f._included) &&
+        //     this.nodeFilters.includes(f.classId)
+        //     // (this.searchString && this.searchString === "" ||
+        //     //   f._search?.toLowerCase().includes(this.searchString.toLowerCase())
+        //     //   )
+        //   );
+        // });
+      }
     }
     return res; //.map(s => s.item);
-  
   }
 
   public toggle() {
     if (this.nodeFilters.length > 0) {
       this.nodeFilters = [];
     } else {
-      this.nodeFilters = this.availableNodeTypes.map(e => e.type ?? "");
+      this.nodeFilters = this.availableNodeTypes.map((e) => e.type ?? '');
     }
   }
 
   public filterIncluded: boolean = false;
 
-  
   public allSelected() {
     return this.nodeFilters.length === this.availableNodeTypes.length;
   }
 
-  
   public someSelected() {
     return this.nodeFilters.length > 0 && !this.allSelected();
   }
 
-  
   public get icon() {
-    if (this.allSelected()) return "mdi-close-box";
-    if (this.someSelected()) return "mdi-minus-box";
-    return "mdi-checkbox-blank-outline";
+    if (this.allSelected()) return 'mdi-close-box';
+    if (this.someSelected()) return 'mdi-minus-box';
+    return 'mdi-checkbox-blank-outline';
   }
 
   public nodeFilters: string[] = [];
-  public searchString: string  = "";
+  public searchString: string = '';
 
   constructor() {
     super();
@@ -183,26 +198,37 @@ export default class GraphElements extends WidgetBase {
   }
 
   public includeItem(element: GraphElement) {
-    element._included = true;
+    if (!this.graphSource) {
+      return;
+    }
+    this.graphSource.createKGView([element], 'default');
+    // element._included = true;
     // this.graphSource!.bus.publish("filter", "_included", element);
     // this.graphSource?.selectElement(element);
   }
 
-  public showInfo(element: GraphElement) {    
-    if (!this.graphSource) { return; }
-    this.graphSource.openElement(element);    
+  public showInfo(element: GraphElement) {
+    if (!this.graphSource) {
+      return;
+    }
+    this.graphSource.openElement(element);
   }
 
   public selectItem(element: GraphElement) {
-    
     // element._included = true;
     // this.graphSource!.bus.publish("filter", "_included", element);
     // this.graphSource?.selectElement(element, false);
   }
 
   public toggleInclude(element: GraphElement) {
-    if (!this.graphSource) { return; }
-    this.graphSource.addElementToGraph(element);
+    if (!this.graphSource) {
+      return;
+    }
+    // this.graphSource.addElementToPreset(element, true, 'default');
+    this.graphSource.createKGView([element], 'default');
+    $cs.triggerNotification({
+      title: `${element.properties!.name} added to graph`,
+    });
     // element._included = !element._included;
     // this.graphSource.triggerUpdateGraph();
   }
@@ -216,17 +242,16 @@ export default class GraphElements extends WidgetBase {
   }
 
   public contentLoaded() {
-    if (this.graphSource) {      
+    if (this.graphSource) {
       if (this.widget?.data?.nodeFilters) {
         this.nodeFilters = this.widget.data.nodeFilters;
       } else {
-        this.nodeFilters = this.availableNodeTypes.map(e => e.type ?? "");
+        this.nodeFilters = this.availableNodeTypes.map((e) => e.type ?? '');
       }
       setTimeout(() => {
         this.$forceUpdate();
       }, 200);
     }
   }
-
 }
 </script>

@@ -1,6 +1,7 @@
 import { GraphElement } from '@csnext/cs-data';
+import Vue from 'vue';
 import { GraphDocument } from '../classes/document/graph-document';
-import { ViewType } from '../classes/document/view-type';
+import { EntityType } from '../classes/document/view-type';
 import { DocDatasource } from '../datasources/doc-datasource';
 import { IDocumentPlugin, IDocumentPluginResult } from './document-plugin';
 
@@ -19,16 +20,19 @@ export class EntityParser implements IDocumentPlugin
             if (doc.entities && source)
             {
                 let ids : (string | undefined) [] = [];
+                
+                // clear entity types
+                Vue.set(doc, 'entityTypes', {})
+                
 
-                source.viewTypes = {};
-
+                // find existing entities
                 let containingEntities = doc._outgoing?.filter(o => o.classId === 'CONTAINS');
 
                 if (containingEntities && doc.entities) {
                     ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];
                     for (const entityEdge of containingEntities) {
                         // find entity
-                        const entity = doc.entities.find(i => i.node_id === entityEdge.toId);
+                        const entity = doc.entities.find(i => i.kg_id === entityEdge.toId);
                         if (entity) {
                             entity._edge = entityEdge;
                             entity._node = entityEdge.to;
@@ -44,39 +48,39 @@ export class EntityParser implements IDocumentPlugin
 
                 for (const entity of doc.entities)
                 {
-                    entity._included = (entity.id !== undefined) && ids.includes(entity.node_id);
+                    entity._included = (entity.id !== undefined) && ids.includes(entity.kg_id);
                     if (entity._node?._featureType?.type)
                     {
-                        entity.class = entity._node._featureType.type as string;
-                        if (!source.viewTypes.hasOwnProperty(entity.class))
+                        entity.spacy_label = entity._node._featureType.type as string;
+                        if (!doc.entityTypes.hasOwnProperty(entity.spacy_label))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
-                            source.viewTypes[entity.class] = { id: entity.class, title: entity._node._featureType.title, color, _selected: true } as ViewType;
+                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, title: entity._node._featureType.title, color, _selected: true } as EntityType;
                         }
                         // entity.view_class = 'doc-entity ' + entity.class + '-entity';
                         // if (entity._included)
                         // {
                         //     entity.view_class += ' ' + entity.class + '-entity-selected';
                         // }                        
-                    } else if (entity.entity_class) {
-                        entity.class = entity.entity_class as string;
-                        if (entity.class && !source.viewTypes.hasOwnProperty(entity.class))
+                    } else if (entity.spacy_label) {
+                        entity.spacy_label = entity.spacy_label as string;
+                        if (entity.spacy_label && !doc.entityTypes.hasOwnProperty(entity.spacy_label))
                         {
-                            source.viewTypes[entity.class] = { id: entity.class, title: entity.entity_class!, color: 'lightgray', _selected: false };
+                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, title: entity.spacy_label!, color: 'lightgray', _selected: false };
                         }
                         // entity.view_class = 'doc-entity rec-entity ' + entity.class + '-entity';
                     }
 
                     if (entity._node?.properties?.location) {
                         entity._location = entity._node.properties.location;                        
-                      } else if (entity.entity_class === 'location' && entity.converted) {
+                      } else if (entity.spacy_label === 'location' && entity.converted) {
                           entity._location = entity.converted;
                       }                    
                     
 
                     if (entity._node?.properties?.point_in_time) {
                         entity._date = entity._node.properties.point_in_time;                        
-                      } else if (entity.entity_class === 'DATE' && entity.converted) {
+                      } else if (entity.spacy_label === 'DATE' && entity.converted) {
                           entity._date = entity.converted;
                       }                    
                     }

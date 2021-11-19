@@ -96,20 +96,22 @@ export class FeatureType {
             if (Object.prototype.hasOwnProperty.call(types, key)) {
                 const type = types[key];
                 let ft = Object.assign({}, type);
-                ft._originalFeatureType = type;
-                FeatureType.initType(ft);            
-                if (ft.baseType) {
-                    ft._baseTypes = [];
-                    if (typeof ft.baseType === 'string') {                    
-                        const baseType = ft.baseType;                
-                        FeatureType.mergeBaseType(baseType, ft, types);
-                    } else {
-                        for (const baseType of ft.baseType) {
-                            this.mergeBaseType(baseType, ft, types);
-                        }
-                    }                
+                if (!ft._originalFeatureType) {                
+                    ft._originalFeatureType = type;
+                    FeatureType.initType(ft);            
+                    if (ft.baseType) {
+                        ft._baseTypes = [];
+                        if (typeof ft.baseType === 'string') {                    
+                            const baseType = ft.baseType;                
+                            FeatureType.mergeBaseType(baseType, ft, types);
+                        } else {
+                            for (const baseType of ft.baseType) {
+                                this.mergeBaseType(baseType, ft, types);
+                            }
+                        }                
+                    }
+                    res[key] = ft; 
                 }
-                res[key] = ft; 
             }
         }      
         return res;

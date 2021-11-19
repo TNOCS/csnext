@@ -6,7 +6,7 @@ import { CsMap } from '..';
 import Axios from 'axios';
 import osmtogeojson from 'osmtogeojson';
 import { LngLatBounds } from 'mapbox-gl';
-import throttle from 'lodash.throttle';
+import throttle from 'lodash/throttle';
 import { AppState } from '@csnext/cs-client';
 
 export interface IOverpassExtensionOptions {

@@ -15,7 +15,9 @@ import { FeatureType,
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
-import { DebouncedFunc, throttle } from 'lodash';
+// import { DebouncedFunc } from 'lodash';
+import throttle from 'lodash/throttle';
+import DebouncedFunc from 'lodash/debounce'
 import { Debounce } from 'lodash-decorators';
 
 import { Socket } from 'socket.io';

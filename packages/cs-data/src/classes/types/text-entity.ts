@@ -15,17 +15,18 @@ export class TextRelation {
 }
 
 export class TextEntity {
-    public text?: string;
-    public position_start?: number;
-    public position_end?: number;
-    public entity_class?: string;
-    public '@id'?: string;
-    public '@context'?: any;
-    public '@type'?: string;
-    public entity_idx?: string;
-    public class?: string;
-    public view_class?: string;
-    public node_id?: string;    
+    public text?: string;    
+    public id?: string;
+    public spacy_label?: string;
+    public kg_id?: string;
+
+    // public position_start?: number;
+    // public position_end?: number;
+    // public entity_class?: string;
+    // public entity_idx?: string;
+    // public class?: string;
+    // public view_class?: string;
+    // public node_id?: string;    
     public projection?: string;
     public converted?: string;
     public suggested_by?: string;
@@ -33,12 +34,11 @@ export class TextEntity {
     public _highlight?: boolean;
     public _node?: GraphElement;
     public _edge?: GraphElement;
-    public id?: string;
+    
     public _key?: string;
     public _included?: boolean;
     public _approved?: boolean;    
-    public _relations?: TextRelation[];
-    public _docEntity?: any;
+    public _relations?: TextRelation[];    
     public _location?: string;
     public _date?: string;
 }

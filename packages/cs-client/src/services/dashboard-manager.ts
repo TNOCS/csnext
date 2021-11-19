@@ -2,9 +2,9 @@ import { Logger } from './logger';
 import { IDashboardManagerConfig } from '@csnext/cs-core';
 
 export class DashboardManager {
-
   /** Available dashboard managers for layouting */
-  public static dashboardManagers: { [id: string]: IDashboardManagerConfig } = {};
+  public static dashboardManagers: { [id: string]: IDashboardManagerConfig } =
+    {};
 
   public static add(manager: IDashboardManagerConfig) {
     const managers = DashboardManager.dashboardManagers;
@@ -20,7 +20,10 @@ export class DashboardManager {
       id = comp.id;
     }
     if (id) {
-      const manager: IDashboardManagerConfig = { id, getInstance: () => Object.create(comp.prototype)};
+      const manager: IDashboardManagerConfig = {
+        id,
+        getInstance: () => Object.create(comp.prototype),
+      };
       DashboardManager.add(manager);
     }
   }

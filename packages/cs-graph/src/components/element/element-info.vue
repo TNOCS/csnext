@@ -1,7 +1,7 @@
 <template>
   <div v-if="dataSource && activeElement" style="height: 100%">
     <v-toolbar flat color="primary" dark>
-      <v-menu offset-y v-if="dataSource.elementHistory.length> 1">
+      <v-menu offset-y v-if="dataSource.elementHistory.length > 1">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>arrow_back</v-icon>
@@ -9,22 +9,32 @@
         </template>
         <v-list>
           <template v-for="elementId in dataSource.elementHistory">
-          <v-list-item v-if="elementId!==activeElement.id && dataSource.graph.hasOwnProperty(elementId)" :key="elementId" @click="dataSource.openElement(elementId)">
-            {{ dataSource.graph[elementId].properties.name }}
-          </v-list-item>
+            <v-list-item
+              v-if="
+                elementId !== activeElement.id &&
+                dataSource.graph.hasOwnProperty(elementId)
+              "
+              :key="elementId"
+              @click="dataSource.openElement(elementId)"
+            >
+              {{ dataSource.graph[elementId].properties.name }}
+            </v-list-item>
           </template>
         </v-list>
       </v-menu>
-      <v-toolbar-title>{{
-        activeElement.properties.name || activeElement._title
-      }}
-      <br/>
-      <div class="type-sub-title">{{ activeElement._featureType.title}}</div>
+      <v-toolbar-title
+        >{{ activeElement.properties.name || activeElement._title }}
+        <br />
+        <div class="type-sub-title">{{ activeElement._featureType.title }}</div>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
-      <v-btn v-if="activeElement._originals && activeElement._originals.length>0" icon @click="openOriginal()">
+      <v-btn
+        v-if="activeElement._originals && activeElement._originals.length > 0"
+        icon
+        @click="openOriginal()"
+      >
         <v-icon>image</v-icon>
       </v-btn>
 
@@ -93,7 +103,11 @@
     <simplebar class="full-height">
       <v-tabs-items v-model="tab" style="margin-bottom: 200px">
         <v-tab-item v-if="specialTab" value="tab-SPECIAL">
-          <component :is="specialTab" :element="activeElement" :source="dataSource"></component>
+          <component
+            :is="specialTab"
+            :element="activeElement"
+            :source="dataSource"
+          ></component>
         </v-tab-item>
 
         <v-tab-item value="tab-PROPERTIES">
@@ -117,12 +131,12 @@
           ></cs-form>
         </v-tab-item>
         <v-tab-item value="tab-RELATIONS" class="full-height">
-          <relation-list-sections class="ma-2"
+          <relation-list-sections
+            class="ma-2"
             :node="activeElement"
             :source="dataSource"
           >
           </relation-list-sections>
-                             
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
           <v-list two-line subheader>
@@ -150,13 +164,10 @@
         </v-tab-item>
         <v-tab-item value="tab-INDICATOR">
           <v-list two-line subheader>
-            <v-list-item
-              v-for="item in indicatorElements"
-              :key="item.id"
-            >
+            <v-list-item v-for="item in indicatorElements" :key="item.id">
               <v-list-item-content>
                 <v-list-item-title>
-                  {{ item.properties.name}}
+                  {{ item.properties.name }}
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -289,15 +300,20 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { WidgetBase, IframeWidget } from "@csnext/cs-client";
-import { FeatureType, GraphDatasource, GraphElement, LinkInfo } from "@csnext/cs-data";
+import {
+  FeatureType,
+  GraphDatasource,
+  GraphElement,
+  LinkInfo,
+} from "@csnext/cs-data";
 import simplebar from "simplebar-vue";
 import { PropertyType, PropertyValueType } from "@csnext/cs-data";
 import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
 import { IFormOptions, IWidget } from "@csnext/cs-core";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes";
-import { InfoTabManager } from '../../classes/info-tab-manager';
-import Axios from 'axios';
+import { InfoTabManager } from "../../classes/info-tab-manager";
+import Axios from "axios";
 import { Component as VueComponent } from "vue";
 
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
@@ -326,9 +342,9 @@ export default class ElementInfo extends WidgetBase {
   public activeElement: GraphElement | null = null;
   private specialTab: VueComponent | null = null;
 
-  @Watch('activeElement')
+  @Watch("activeElement")
   public async updateIndicatorResults() {
-      this.getIndicatorResults();
+    this.getIndicatorResults();
   }
 
   constructor() {
@@ -336,7 +352,7 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public get dataSource(): DocDatasource | undefined {
-    if (this.widget.content) {      
+    if (this.widget.content) {
       return this.widget.content as DocDatasource;
     }
   }
@@ -360,33 +376,24 @@ export default class ElementInfo extends WidgetBase {
     }
   }
 
-  public addToOperation() {
-    if (this.dataSource?.activeOperation && this.activeElement) {
-      this.dataSource.addToOperation(
-        this.dataSource.activeOperation,
-        this.activeElement
-      );
-    }
-  }
-
   public updateForm() {
     if (!this.dataSource || !this.activeElement) {
       return;
-    }    
+    }
     this.formDef = null;
     const form = this.dataSource.elementEditorForm(this.activeElement);
-    Vue.nextTick(()=> {      
-      this.formDef = form;      
-    })
+    Vue.nextTick(() => {
+      this.formDef = form;
+    });
     // Vue.set(this, "formDef", form);
   }
 
   public toggleBookmark() {
-    if (!this.dataSource || !this.activeElement) { return; }
+    if (!this.dataSource || !this.activeElement) {
+      return;
+    }
     this.dataSource.toggleBookmark(this.activeElement);
-
   }
-
 
   public deleteNode() {
     $cs.triggerYesNoQuestionDialog(`DELETE_NODE`, `ARE_YOU_SURE`).then((r) => {
@@ -423,16 +430,24 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public async getIndicatorResults() {
-    if (!this.activeElement?.properties?.indicator_definition?.indicatorId || !this.dataSource?.base_url) {
+    if (
+      !this.activeElement?.properties?.indicator_definition?.indicatorId ||
+      !this.dataSource?.base_url
+    ) {
       this.indicatorElements = [];
       return;
     }
-    const indicatorId = this.activeElement!.properties!.indicator_definition!.indicatorId!;
-    const results = (await Axios.get<any>(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;
-    if (results.hasOwnProperty('error') || !results.hasOwnProperty('array')) {
+    const indicatorId =
+      this.activeElement!.properties!.indicator_definition!.indicatorId!;
+    const results = (
+      await Axios.get<any>(
+        `${this.dataSource!.base_url!}/indicators/results/${indicatorId}`
+      )
+    ).data;
+    if (results.hasOwnProperty("error") || !results.hasOwnProperty("array")) {
       this.indicatorElements = [];
     } else {
-      this.indicatorElements = results['array'] as GraphElement[];
+      this.indicatorElements = results["array"] as GraphElement[];
     }
   }
 
@@ -496,7 +511,7 @@ export default class ElementInfo extends WidgetBase {
     this.isDocument =
       this.activeElement._featureType?._inheritedTypes &&
       this.activeElement._featureType?._inheritedTypes.includes("input");
-          
+
     console.log(this.activeElement);
 
     this.widget.title = this.activeElement._title;
@@ -508,7 +523,7 @@ export default class ElementInfo extends WidgetBase {
     } else {
       this.widget.options.title = this.activeElement._title;
     }
-    this.updateForm();    
+    this.updateForm();
     this.$forceUpdate();
   }
 
@@ -516,7 +531,7 @@ export default class ElementInfo extends WidgetBase {
     const o = this.getOriginal();
     if (!this.dataSource || !this.activeElement || !o) {
       return;
-    }    
+    }
     this.dataSource.openViewer(o, this.activeElement);
   }
 
@@ -581,7 +596,7 @@ export default class ElementInfo extends WidgetBase {
     }
     this.specialTab = InfoTabManager.tabs[this.activeElement.classId] || null;
   }
-  
+
   public mounted() {
     if (this.dataSource) {
       if (this.dataSource.activeElement) {
@@ -590,14 +605,18 @@ export default class ElementInfo extends WidgetBase {
         this.updateForm();
       }
 
-      this.busManager.subscribe(this.dataSource.events, GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
-        if (a === GraphDatasource.ELEMENT_UPDATED) {
-          if (e.id === this.activeElement?.id) {
-            this.updateElement();
+      this.busManager.subscribe(
+        this.dataSource.events,
+        GraphDatasource.GRAPH_EVENTS,
+        (a: string, e: GraphElement) => {
+          if (a === GraphDatasource.ELEMENT_UPDATED) {
+            if (e.id === this.activeElement?.id) {
+              this.updateElement();
+            }
           }
         }
-      })
-      
+      );
+
       this.dataSource.bus.subscribe(
         "element",
         (a: string, data: GraphElement) => {

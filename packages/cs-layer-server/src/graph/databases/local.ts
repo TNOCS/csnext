@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { IDatabase, IData, IQuery, IAllOptions } from "./database";
 import { Link } from "./link";
-import { GraphEntity, GraphRelation, GraphSchema, ObservationType } from './schema';
 import { join } from 'path';
 
-import { GraphElement, FeatureType, FeatureCollection, GraphDatasource } from "@csnext/cs-data";
-import { reject, throttle } from 'lodash';
+import { GraphElement, GraphDatasource } from "@csnext/cs-data";
+import throttle from 'lodash/throttle';
+// import { reject, throttle } from 'lodash';
 
 export class LocalStorage implements IDatabase {
 
@@ -271,8 +271,8 @@ export class LocalStorage implements IDatabase {
 
     
     public async store(data: IData, agentId?: string, updatedTime?: number): Promise<any> {
-        if (!data.document.id) { reject('document contains no id'); }
-        console.log('storing ' + data.document.id);
+        // if (!data.id) { Promise.reject('document contains no id'); }
+        // console.log('storing ' + data.document.id);
         // if (updatedTime) {
         //     this.checkDates(data, updatedTime);
         // }

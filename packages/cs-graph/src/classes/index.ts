@@ -3,4 +3,5 @@ export * from "./document/graph-document";
 export * from "./document/observation";
 export * from "./document/search-entity";
 export * from "./document/view-type";
+export * from "./graph/graph-shapes";
 export * from "./info-tab-manager";

@@ -1,13 +1,17 @@
 <template>
-  <div>    
+  <div>
     <v-container v-if="startMenu">
       <div class="start-menu-title">
-        {{ $cs.Translate("START_DOCUMENT_TITLE") }}
+        {{ $cs.Translate('START_DOCUMENT_TITLE') }}
       </div>
       <v-layout justify-center class="doc-action-cards">
-        <v-hover class="doc-action-card" v-for="ip in source.importPlugins" :key="ip.id">
+        <v-hover
+          class="doc-action-card"
+          v-for="ip in source.importPlugins"
+          :key="ip.id"
+        >
           <template v-slot:default="{ hover }">
-            <v-card              
+            <v-card
               :elevation="hover ? 16 : 2"
               width="200"
               height="200"
@@ -59,15 +63,16 @@
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
       <div class="filter-row">
         <v-layout>
+          <!-- {{ source.activeDocument.entityTypes }} -->
           <v-combobox
-            v-model="source.visibleViewTypes"
-            v-if="source.viewTypes"
-            :items="Object.values(source.viewTypes)"
+            v-model="source.activeDocument.visibleEntityTypes"
+            v-if="source.entityTypes"
+            :items="Object.values(source.activeDocument.entityTypes)"
             item-text="id"
             return-object
             chips
             flat
-            @change="updateViewTypes()"
+            @change="updateEntityTypes()"
             label="Select entity types"
             multiple
             prepend-icon="label"
@@ -75,8 +80,7 @@
           >
             <template v-slot:prepend-item>
               <v-list-item ripple @click="toggleEntities()">
-                <v-list-item-action>                  
-                </v-list-item-action>
+                <v-list-item-action> </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>Select / Deselect All</v-list-item-title>
                 </v-list-item-content>
@@ -96,167 +100,163 @@
             </template>
           </v-combobox>
           <v-tooltip>
-          <template v-slot:activator="{ on }">
-          <v-btn icon @click="toggleEntities()"><v-icon>done_all</v-icon></v-btn>
-          </template>
-          {{$cs.Translate('TOGGLE_ENTITIES')}}
+            <template v-slot:activator="{ on }">
+              <v-btn icon @click="toggleEntities()"
+                ><v-icon>done_all</v-icon></v-btn
+              >
+            </template>
+            {{ $cs.Translate('TOGGLE_ENTITIES') }}
           </v-tooltip>
         </v-layout>
       </div>
-      
-          <div v-if="editor" class="editor-menu-row">
-            <div class="document-title">
-              {{ source.activeDocument.properties.name }}
-            </div>            
-            <div class="editor-menu">
-              <v-btn-toggle dense>
-                
-                <v-btn
-                  @click="editor.chain().focus().toggleBold().run()"
-                  :class="{ 'is-active': editor.isActive('bold') }"
-                >
-                  <v-icon>format_bold</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleItalic().run()"
-                  :class="{ 'is-active': editor.isActive('italic') }"
-                >
-                  <v-icon>format_italic</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleStrike().run()"
-                  :class="{ 'is-active': editor.isActive('strike') }"
-                >
-                  <v-icon>format_strikethrough</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleHighlight().run()"
-                  :class="{ 'is-active': editor.isActive('highlight') }"
-                >
-                  <v-icon>highlight</v-icon>
-                </v-btn>
-             
-                <v-btn
-                  @click="editor.chain().focus().setParagraph().run()"
-                  :class="{ 'is-active': editor.isActive('paragraph') }"
-                >
-                  <v-icon>segment</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="
-                    editor.chain().focus().toggleHeading({ level: 1 }).run()
-                  "
-                  :class="{
-                    'is-active': editor.isActive('heading', { level: 1 }),
-                  }"
-                >
-                  h1
-                </v-btn>
-                <v-btn
-                  @click="
-                    editor.chain().focus().toggleHeading({ level: 2 }).run()
-                  "
-                  :class="{
-                    'is-active': editor.isActive('heading', { level: 2 }),
-                  }"
-                >
-                  h2
-                </v-btn>              
-                <v-btn
-                  @click="editor.chain().focus().toggleBulletList().run()"
-                  :class="{ 'is-active': editor.isActive('bulletList') }"
-                >
-                  <v-icon>format_list_bulleted</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleOrderedList().run()"
-                  :class="{ 'is-active': editor.isActive('orderedList') }"
-                >
-                  <v-icon>format_list_numbered</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleCodeBlock().run()"
-                  :class="{ 'is-active': editor.isActive('codeBlock') }"
-                >
-                  <v-icon>code</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().toggleBlockquote().run()"
-                  :class="{ 'is-active': editor.isActive('blockquote') }"
-                >
-                  <v-icon>format_quote</v-icon>
-                </v-btn>
-                <v-btn
-                  @click="editor.chain().focus().setHorizontalRule().run()"
-                >
-                  <v-icon>horizontal_rule</v-icon>
-                </v-btn>                
-                <v-btn @click="editor.chain().focus().undo().run()"
-                  ><v-icon>undo</v-icon></v-btn
-                >
-                <v-btn @click="editor.chain().focus().redo().run()"
-                  ><v-icon>redo</v-icon></v-btn
-                >
 
-                <v-btn @click="setTextEntity()"><v-icon>label</v-icon></v-btn>
-                <v-btn @click="setNodeParagraph()"
-                :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                ><v-icon>description</v-icon></v-btn>
-              </v-btn-toggle>              
-            </div>
-          </div>
-       
-    
-          <!-- <div > -->
-          <simplebar class="editor-row">
-            <bubble-menu :editor="editor" v-if="editor">    
-              <v-autocomplete
-                v-if="!editor.isActive('text-entity')"
-                auto-select-first
-                v-model="entityBubbleSelection"
-                :items="Object.values(source.featureTypes)"
-                item-text="title"
-                return-object
-                @change="setEntity(entityBubbleSelection)"
-                dense
-                rounded
-                filled
-              ></v-autocomplete>
-            </bubble-menu>
-            <editor-content
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
-              class="document-editor editor__content"
-              :editor="editor"
-            />
-          </simplebar>
-          <!-- </div> -->
-    </div>    
+      <div v-if="editor" class="editor-menu-row">
+        <div class="document-title">
+          {{ source.activeDocument.properties.name }}
+        </div>
+        <div class="editor-menu">
+          <v-btn-toggle dense>
+            <v-btn
+              @click="editor.chain().focus().toggleBold().run()"
+              :class="{ 'is-active': editor.isActive('bold') }"
+            >
+              <v-icon>format_bold</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleItalic().run()"
+              :class="{ 'is-active': editor.isActive('italic') }"
+            >
+              <v-icon>format_italic</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleStrike().run()"
+              :class="{ 'is-active': editor.isActive('strike') }"
+            >
+              <v-icon>format_strikethrough</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleHighlight().run()"
+              :class="{ 'is-active': editor.isActive('highlight') }"
+            >
+              <v-icon>highlight</v-icon>
+            </v-btn>
+
+            <v-btn
+              @click="editor.chain().focus().setParagraph().run()"
+              :class="{ 'is-active': editor.isActive('paragraph') }"
+            >
+              <v-icon>segment</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+              :class="{
+                'is-active': editor.isActive('heading', { level: 1 }),
+              }"
+            >
+              h1
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+              :class="{
+                'is-active': editor.isActive('heading', { level: 2 }),
+              }"
+            >
+              h2
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleBulletList().run()"
+              :class="{ 'is-active': editor.isActive('bulletList') }"
+            >
+              <v-icon>format_list_bulleted</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleOrderedList().run()"
+              :class="{ 'is-active': editor.isActive('orderedList') }"
+            >
+              <v-icon>format_list_numbered</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleCodeBlock().run()"
+              :class="{ 'is-active': editor.isActive('codeBlock') }"
+            >
+              <v-icon>code</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleBlockquote().run()"
+              :class="{ 'is-active': editor.isActive('blockquote') }"
+            >
+              <v-icon>format_quote</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
+              <v-icon>horizontal_rule</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().undo().run()"
+              ><v-icon>undo</v-icon></v-btn
+            >
+            <v-btn @click="editor.chain().focus().redo().run()"
+              ><v-icon>redo</v-icon></v-btn
+            >
+
+            <v-btn @click="setTextEntity()"><v-icon>label</v-icon></v-btn>
+            <v-btn
+              @click="setNodeParagraph()"
+              :class="{ 'is-active': editor.isActive('node-paragraph') }"
+              ><v-icon>description</v-icon></v-btn
+            >
+          </v-btn-toggle>
+        </div>
+      </div>
+
+      <!-- <div > -->
+      <simplebar class="editor-row">
+        <bubble-menu :editor="editor" v-if="editor">
+          <v-autocomplete
+            v-if="!editor.isActive('text-entity')"
+            auto-select-first
+            v-model="entityBubbleSelection"
+            :items="Object.values(source.featureTypes)"
+            item-text="title"
+            return-object
+            @change="setEntity(entityBubbleSelection)"
+            dense
+            rounded
+            filled
+          ></v-autocomplete>
+        </bubble-menu>
+        <editor-content
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          class="document-editor editor__content"
+          :editor="editor"
+        />
+      </simplebar>
+      <!-- </div> -->
+    </div>
   </div>
 </template>
 
 
 <script lang="ts">
-import { Component, Prop, Ref, Vue } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
-import { TextEntity } from "@csnext/cs-data";
-import { Editor, EditorContent, Node, BubbleMenu } from "@tiptap/vue-2";
-import SelectionPopup from "./selection-popup.vue";
-import simplebar from "simplebar-vue";
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
+import { WidgetBase } from '@csnext/cs-client';
+import { TextEntity } from '@csnext/cs-data';
+import { Editor, EditorContent, Node, BubbleMenu } from '@tiptap/vue-2';
+import SelectionPopup from './selection-popup.vue';
+import simplebar from 'simplebar-vue';
 
-import { DocDatasource } from "./../../datasources/doc-datasource";
-import { GraphDocument } from "./../../classes/document/graph-document";
-import { ViewType } from "./../../classes/document/view-type";
-import StarterKit from "@tiptap/starter-kit";
-import TextExtension from "./plugins/text-extension";
-import ParagraphExtension from "./plugins/paragraph-extension";
-import Highlight from "@tiptap/extension-highlight";
-import Placeholder from "@tiptap/extension-placeholder";
-import Axios from "axios";
-import { FeatureType } from "@csnext/cs-data";
-import { IImportPlugin } from "../..";
+import { DocDatasource, ITool } from './../../datasources/doc-datasource';
+import { GraphDocument } from './../../classes/document/graph-document';
+import { EntityType } from './../../classes/document/view-type';
+import StarterKit from '@tiptap/starter-kit';
+import TextExtension from './plugins/text-extension';
+import ParagraphExtension from './plugins/paragraph-extension';
+import Highlight from '@tiptap/extension-highlight';
+import Placeholder from '@tiptap/extension-placeholder';
+import Axios from 'axios';
+import { FeatureType } from '@csnext/cs-data';
+import { IImportPlugin } from '../..';
 import interact from 'interactjs';
 
 @Component({
@@ -292,7 +292,7 @@ export default class DocumentViewer extends WidgetBase {
   public selection?: any = null;
   public loaded = false;
   public startMenu = false;
-  public selectionText? = "";
+  public selectionText? = '';
   public selectionFrom?: number = 0;
   public selectionTo?: number = 0;
   public isLoading?: boolean;
@@ -304,7 +304,6 @@ export default class DocumentViewer extends WidgetBase {
   // public highlight?: Highlight;
   public source: DocDatasource | undefined = undefined;
   public entityBubbleSelection: FeatureType | null = null;
-  
 
   public setEntity() {
     if (
@@ -318,12 +317,12 @@ export default class DocumentViewer extends WidgetBase {
     this.editor
       .chain()
       .focus()
-      .setTextEntity({ class: this.entityBubbleSelection?.type })
+      .setTextEntity({ spacy_label: this.entityBubbleSelection?.type })
       .run();
     this.syncDocumentState();
     this.source.syncEntities(
       this.source.activeDocument,
-      this.source.activeDocument.doc.content,
+      this.source.activeDocument.properties?.doc?.content,
       true
     );
 
@@ -331,18 +330,11 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public setNodeParagraph() {
-    if (
-      !this.source?.activeDocument ||
-      !this.editor      
-    ) {
+    if (!this.source?.activeDocument || !this.editor) {
       return;
     }
 
-    this.editor
-      .chain()
-      .focus()
-      .toggleNodeParagraph()
-      .run();
+    this.editor.chain().focus().toggleNodeParagraph().run();
     // this.syncDocumentState();
     // this.source.syncEntities(
     //   this.source.activeDocument,
@@ -353,17 +345,16 @@ export default class DocumentViewer extends WidgetBase {
     // alert(this.entityBubbleSelection?.title);
   }
 
-  
   public toggleEntities() {
-    if (!this.source?.visibleViewTypes) {
+    if (!this.source?.activeDocument?.visibleEntityTypes) {
       return;
     }
-    if (this.source.visibleViewTypes!.length > 0) {
-      this.source.visibleViewTypes = [];
+    if (this.source.activeDocument?.visibleEntityTypes!.length > 0) {
+      this.source.activeDocument.visibleEntityTypes = [];
     } else {
-      this.source.visibleViewTypes = Object.values(this.source!.viewTypes);
+      this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
     }
-    this.updateViewTypes();
+    this.updateEntityTypes();
   }
 
   // public get document(): GraphDocument | undefined {
@@ -375,10 +366,10 @@ export default class DocumentViewer extends WidgetBase {
   public updateContextMenu() {
     this.contextMenuitems = [];
     this.contextMenuitems.push({
-      title: "entity",
-      icon: "label",
+      title: 'entity',
+      icon: 'label',
       action: () => {
-        alert("hide");
+        alert('hide');
       },
     });
   }
@@ -390,16 +381,19 @@ export default class DocumentViewer extends WidgetBase {
   public async clear() {
     if (
       (await $cs.triggerYesNoQuestionDialog(
-        "EMPTY_DOCUMENT",
-        "EMPTY_DOCUMENT_TEXT"
-      )) === "YES"
+        'EMPTY_DOCUMENT',
+        'EMPTY_DOCUMENT_TEXT'
+      )) === 'YES'
     ) {
       if (!this.source?.activeDocument || !this.editor) {
         return;
       }
       if (this.source.activeDocument.entities) {
         for (const entity of this.source.activeDocument.entities) {
-          this.source.removeEntityFromDocument(entity, this.source.activeDocument);
+          this.source.removeEntityFromDocument(
+            entity,
+            this.source.activeDocument
+          );
         }
         this.source.activeDocument.entities = [];
       }
@@ -407,7 +401,7 @@ export default class DocumentViewer extends WidgetBase {
       this.syncDocumentState();
       this.source.syncEntities(
         this.source.activeDocument,
-        this.source.activeDocument.doc.content,
+        this.source.activeDocument.properties?.doc?.content,
         true
       );
       this.startMenu = true;
@@ -423,7 +417,7 @@ export default class DocumentViewer extends WidgetBase {
     this.syncDocumentState();
     this.source.syncEntities(
       this.source.activeDocument,
-      this.source.activeDocument.doc.content,
+      this.source.activeDocument.properties?.doc?.content,
       true
     );
   }
@@ -445,6 +439,11 @@ export default class DocumentViewer extends WidgetBase {
     if (!this.editor) {
       return;
     }
+
+    if (this.source) {
+      this.source.removeWidgetTools(this.widget.id!);
+    }
+
     this.editor.destroy();
   }
 
@@ -456,21 +455,21 @@ export default class DocumentViewer extends WidgetBase {
     if (!this.editor) {
       return;
     }
-    alert("test entity");
+    alert('test entity');
   }
 
-  updateViewTypes() {
-    console.log("update view types");
-    if (!this.source) {
+  updateEntityTypes() {
+    console.log('update entity types');
+    if (!this.source?.activeDocument) {
       return;
     }
 
-    for (const type in this.source!.viewTypes) {
-      if (this.source!.viewTypes.hasOwnProperty(type)) {
-        const viewType = this.source!.viewTypes[type];
-        viewType._selected =
-          this.source.visibleViewTypes &&
-          this.source.visibleViewTypes.includes(viewType);
+    for (const type in this.source.activeDocument.entityTypes) {
+      if (this.source.activeDocument.entityTypes.hasOwnProperty(type)) {
+        const entityType = this.source.activeDocument.entityTypes[type];
+        entityType._selected =
+          this.source.activeDocument.visibleEntityTypes &&
+          this.source.activeDocument.visibleEntityTypes.includes(entityType);
       }
     }
 
@@ -481,91 +480,28 @@ export default class DocumentViewer extends WidgetBase {
 
   private dynamicSort(property) {
     var sortOrder = 1;
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
+    if (property[0] === '-') {
+      sortOrder = -1;
+      property = property.substr(1);
     }
-    return function (a,b) {
-        /* next line works with strings and numbers, 
-         * and you may want to customize it to your needs
-         */
-        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-        return result * sortOrder;
-    }
-}
-
-  public createTextEntities() {
-    console.log("create text entities");
-
-    // find all entities without node
-
-    if (
-      !this.source?.activeDocument?.entities ||
-      !this.source?.activeDocument?.doc ||
-      !this.editor
-    ) {
-      return;
-    }
-    let chain = this.editor.chain();
-    let additional = -1;
-    const pOffset: number[] = [];
-    let offset = 0;
-    // this.editor.state.doc.
-
-    for (const p of (this.editor.state.doc.content as any).content) {
-      console.log(p.textContent);
-      offset += p.textContent.length - 1;
-      pOffset.push(offset);
-    }
-
-    console.log(pOffset);
-
-    const entities = this.source.activeDocument.entities.filter(
-      (e) => !e._docEntity && e.position_start && e.position_end
-    ).sort(this.dynamicSort('position_start'));
-
-    console.log(entities.map(r => r.position_start));
-
-    for (const entity of entities) {
-      try {
-        const paragraph = 0; // (pOffset.findIndex((v) => entity.position_start! < v));
-        const to = entity.position_end! - additional + paragraph;
-        const from = entity.position_start! - additional + paragraph;
-        // console.log(`${entity.text} : ${paragraph} : ${from} + ${to}`);
-        // const docent = { id: entity.entity_idx, text: entity.text, type: 'city' };
-        chain.setTextSelection({ from, to }).setTextEntity(entity);
-        // this.editor.commands.replaceRange({
-        //   from: entity.position_start! - additional,
-        //   to: entity.position_end! - additional
-        // }, "text-entity", docent );
-        // entity._docEntity = docent as any;
-      } catch (e) {
-        console.log(entity);
-        console.log(e);
-      }
-      additional += entity.position_end! - entity.position_start! - 1;
-    }
-    chain.run();    
+    return function (a, b) {
+      /* next line works with strings and numbers,
+       * and you may want to customize it to your needs
+       */
+      var result =
+        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+      return result * sortOrder;
+    };
   }
 
-  public checkDocument() {
-    if (!this.source?.activeDocument) {
-      return;
-    }
-    if (!this.source.activeDocument.doc) {
-      this.source.activeDocument.doc = {
-        type: "doc",
-        content: [],
-      };
-    }
-  }
+
+
 
   public updateEditor(destroy = true) {
-    console.log("update editor");
+    console.log('update editor');
     if (!this.source || !this.source?.activeDocument) {
       return;
     }
-    this.checkDocument();
     // this.highlight = new Highlight({
     //   disableRegex: false,
     //   // entities: this.source?.activeDocument?.entities
@@ -576,11 +512,11 @@ export default class DocumentViewer extends WidgetBase {
       this.source.editor = undefined;
     }
 
-    this.source.syncEntities(
-      this.source.activeDocument,
-      this.source.activeDocument.doc.content,
-      true
-    );
+    // this.source.syncEntities(
+    //   this.source.activeDocument,
+    //   this.source.activeDocument.properties?.doc?.content,
+    //   true
+    // );
     // this.source.parseEntities();
     // this.createTextEntities();
 
@@ -682,12 +618,12 @@ export default class DocumentViewer extends WidgetBase {
         //     Did you see that? That’s a Vue component. We are really living in the future.
         //   </p>
         // `,
-        content: this.source?.activeDocument.doc,
+        content: this.source?.activeDocument?.properties?.doc,
         editorProps: {
           document: this.source!.activeDocument,
           source: this.source,
           attributes: {
-            spellcheck: "false",
+            spellcheck: 'false',
           },
         } as any,
       });
@@ -771,9 +707,10 @@ export default class DocumentViewer extends WidgetBase {
       //   return;
       // }
 
-      console.log("load document");
+      console.log('load document');
+
       this.source.activateDocument(doc).then(() => {
-        this.widget.options!.title = doc.name;        
+        this.widget.options!.title = doc.name;
         if (this.source?.activeDocument) {
           // this.source?.openDocumentDetails(this.source.activeDocument, false);
           if (this.source.activeDocument.entities) {
@@ -786,8 +723,11 @@ export default class DocumentViewer extends WidgetBase {
 
           this.loaded = true;
 
-          this.busManager.subscribe(this.source!.bus, "document-entities", () => {        
-          });          
+          this.busManager.subscribe(
+            this.source!.bus,
+            'document-entities',
+            () => {}
+          );
         }
       });
       this.mergeEntitites();
@@ -797,48 +737,47 @@ export default class DocumentViewer extends WidgetBase {
   createKG() {
     // debugger;
     if (this.source?.activeDocument) {
-      this.source.createKGView([this.source?.activeDocument], true);
+      this.source.createKGView([this.source?.activeDocument], 'default', true);
     }
   }
 
   updateContent() {
     Vue.nextTick(() => {
-      console.log("update content");
+      console.log('update content');
       if (!this.source?.activeDocument) {
         return;
       }
 
-      this.checkDocument();
+      
       // this.checkOriginal();
 
       if (
-        this.source.activeDocument.doc.content &&
-        this.source.activeDocument.doc.content.length === 0
-      ) {        
-        let paragraphs = this.source.activeDocument!.properties?.text?.split(
-          "\n\n"
-        );
+        this.source.activeDocument.properties?.doc?.content &&
+        this.source.activeDocument.properties.doc.content.length === 0
+      ) {
+        let paragraphs =
+          this.source.activeDocument!.properties?.text?.split('\n\n');
         for (const par of paragraphs) {
           const n = {
-            type: "paragraph",
+            type: 'paragraph',
             attrs: { length: par.length },
             content: [] as any[],
           };
-          let lines = par.split("\n");
+          let lines = par.split('\n');
           if (lines) {
             for (const line of lines) {
               if (line.length > 0) {
-                n.content.push({ type: "text", text: line });
+                n.content.push({ type: 'text', text: line });
               }
             }
           }
-          this.source.activeDocument.doc.content.push(n);
+          this.source.activeDocument.properties?.doc?.content.push(n);
         }
       }
 
       this.source.syncEntities(
         this.source.activeDocument,
-        this.source.activeDocument.doc.content
+        this.source.activeDocument.properties?.doc.content
       );
       if (!this.editor) {
         this.updateEditor();
@@ -847,27 +786,27 @@ export default class DocumentViewer extends WidgetBase {
       this.editor
         ?.chain()
         .clearContent()
-        .setContent(this.source.activeDocument.doc, false)
-        .run();     
-      this.updateViewTypes();
+        .setContent(this.source.activeDocument.properties?.doc, false)
+        .run();
+      this.updateEntityTypes();
     });
   }
 
   getText(j: any): string {
-    let res = "";
+    let res = '';
     if (j.content && Array.isArray(j.content)) {
       for (const content of j.content) {
-        if (content.hasOwnProperty("type")) {
+        if (content.hasOwnProperty('type')) {
           switch (content.type) {
-            case "node-paragraph":
-            case "paragraph":
-              res += this.getText(content) + "\n\n";
+            case 'node-paragraph':
+            case 'paragraph':
+              res += this.getText(content) + '\n\n';
               break;
-            case "text":
-              res += content.text ?? "";
+            case 'text':
+              res += content.text ?? '';
               break;
-            case "text-entity":
-              res += content.attrs.text ?? "";
+            case 'text-entity':
+              res += content.attrs.text ?? '';
               break;
           }
         }
@@ -881,19 +820,9 @@ export default class DocumentViewer extends WidgetBase {
     // alert('hi');
   }
 
-  public removeViewType(type: ViewType) {
-    if (this.source && this.source.visibleViewTypes) {
-      Vue.set(
-        this,
-        "visibleViewTypes",
-        this.source.visibleViewTypes.filter((vt) => vt.id !== type.id)
-      );
-      this.updateViewTypes();
-    }
-  }
 
   public async refresh(ignorePopup = false) {
-    console.log("refresh");
+    console.log('refresh');
     if (!this.source) {
       this.contentLoaded(this.widget.content);
       this.source = this.widget.content;
@@ -902,32 +831,39 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    if (this.source.activeDocument.entities && this.source.activeDocument.entities.length>0) {
-      $cs.triggerNotification({title: 'currently re-running the pipeline is not supported'});
+    if (
+      this.source.activeDocument.entities &&
+      this.source.activeDocument.entities.length > 0
+    ) {
+      $cs.triggerNotification({
+        title: 'currently re-running the pipeline is not supported',
+      });
       return;
-    } else if (!this.source.activeDocument.entities ||
+    } else if (
+      !this.source.activeDocument.entities ||
       this.source.activeDocument.entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog(
-        "Update entities",
-        "This will reset all existing entities (currently not supported!!!)"
-      )) === "YES")
-     {
+        'Update entities',
+        'This will reset all existing entities (currently not supported!!!)'
+      )) === 'YES'
+    ) {
       const json = this.editor.getJSON();
       const text = this.getText(json);
-      this.source.activeDocument.entities = [];      
+      this.source.activeDocument.entities = [];
       this.source.activeDocument.properties!.text = text;
-      this.source.activeDocument.doc = json;
-      this.source.parseDocument(this.source.activeDocument).then(() => {        
-        this.createTextEntities();
-        this.source!.refreshViewTypes();
-        this.syncDocumentState();        
+      this.source.activeDocument.properties!.doc = json;
+      this.source.parseDocument(this.source.activeDocument).then(() => {
+        // this.createTextEntities();
         
+        this.syncDocumentState();
+
         this.updateContent();
         this.source!.syncEntities(
           this.source!.activeDocument!,
           this.source!.activeDocument!.doc.content,
           true
         );
+        this.source!.activeDocument!.refreshViewTypes();
       });
     }
   }
@@ -938,34 +874,36 @@ export default class DocumentViewer extends WidgetBase {
     }
     const json = this.editor.getJSON();
     const text = this.getText(json);
-    this.source.activeDocument.properties!.text = text;    
-    this.source.activeDocument.doc = json;
-    this.updateViewTypes();
+    this.source.activeDocument.properties!.text = text;
+    this.source.activeDocument.properties!.doc = json;
+    this.updateEntityTypes();
   }
 
   public doImport(plugin: IImportPlugin) {
-    if (!this.source?.activeDocument)  { return; }
-    plugin.callImport(this.source.activeDocument, this.source).then(r => {      
-      this.updateContent();
-    }).catch(e => {
-
-    }).finally(()=> {
-      this.startMenu = false;
-    })    
+    if (!this.source?.activeDocument) {
+      return;
+    }
+    plugin
+      .callImport(this.source.activeDocument, this.source)
+      .then((r) => {
+        this.updateContent();
+      })
+      .catch((e) => {})
+      .finally(() => {
+        this.startMenu = false;
+      });
   }
-  
 
   public save() {
-    console.log("save");
+    console.log('save');
     if (!this.source || !this.source.activeDocument || !this.editor) {
       return;
     }
 
     this.syncDocumentState();
     console.log(JSON.stringify(this.source?.activeDocument?.doc));
-    this.source.saveDocument(this.source.activeDocument);    
+    this.source.saveDocument(this.source.activeDocument);
   }
-
 
   public contentLoaded(source: DocDatasource) {
     if (this.source !== undefined || !source) {
@@ -973,20 +911,22 @@ export default class DocumentViewer extends WidgetBase {
     }
     this.source = source;
     this.updateContextMenu();
-    console.log("content loaded");    
+    console.log('content loaded');
     this.busManager.subscribe(
       this.source!.bus,
-      "document",
-      (a: string, d: any) => {        
+      'document',
+      (a: string, d: any) => {
         this.updateEditor();
-        this.updateContent();        
+        this.updateContent();
+        this.initTools();
       }
-    );    
+    );
     this.checkDocumentIdQuery();
+    this.initTools();
   }
 
   private checkDocumentIdQuery() {
-    console.log("check document query");
+    console.log('check document query');
     if (!$cs.router || !this.source) {
       return;
     }
@@ -995,13 +935,14 @@ export default class DocumentViewer extends WidgetBase {
       if (
         this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
       ) {
-        
-        const doc = this.source.getElement($cs.router.currentRoute.query.id as string) as GraphDocument        
+        const doc = this.source.getElement(
+          $cs.router.currentRoute.query.id as string
+        ) as GraphDocument;
         if (doc) {
           this.loadDocument(doc);
         }
-      } else {        
-        this.loadDocument(this.source.activeDocument);        
+      } else {
+        this.loadDocument(this.source.activeDocument);
       }
     } else {
       if (this.source.activeDocument) {
@@ -1018,127 +959,188 @@ export default class DocumentViewer extends WidgetBase {
             // console.log(err);
           }
         );
-      }      
+      }
     }
   }
 
-   private dragMoveListener (event) {
-    var target = event.target
+  private dragMoveListener(event) {
+    var target = event.target;
     // keep the dragged position in the data-x/data-y attributes
-    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
     // translate the element
-    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+    target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
 
     // update the posiion attributes
-    target.setAttribute('data-x', x)
-    target.setAttribute('data-y', y)
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
   }
 
   private initializeDragDrop() {
     const position = { x: 0, y: 0 };
-     interact('.entity-drag').draggable({
-       manualStart: true,
+    interact('.entity-drag')
+      .draggable({
+        manualStart: true,
         listeners: {
           start(event) {
             const { currentTarget, interaction } = event;
-    let element = currentTarget;
-    var clientRect = element.getBoundingClientRect();
+            let element = currentTarget;
+            var clientRect = element.getBoundingClientRect();
             position.x = clientRect.left + document.body.scrollLeft;
             position.y = clientRect.top + document.body.scrollTop;
           },
-      move(event) {
-        position.x += event.dx;
-        position.y += event.dy;
-        event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-      }
+          move(event) {
+            position.x += event.dx;
+            position.y += event.dy;
+            event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+          },
+        },
+      })
+      .on('move', (event) => {
+        const { currentTarget, interaction } = event;
+        let element = currentTarget;
+
+        // If we are dragging an item from the sidebar, its transform value will be ''
+        // We need to clone it, and then start moving the clone
+        if (
+          interaction.pointerIsDown &&
+          !interaction.interacting() &&
+          currentTarget.style.transform === ''
+        ) {
+          element = currentTarget.cloneNode(true);
+          var clientRect = element.getBoundingClientRect();
+
+          // Add absolute positioning so that cloned object lives
+          // right on top of the original object
+          element.style.position = 'absolute';
+          element.style.left = 0;
+          element.style.top = 0;
+
+          // Add the cloned object to the document
+          const container = document.querySelector('.document-editor');
+          container && container.appendChild(element);
+
+          const { offsetTop, offsetLeft } = currentTarget;
+          position.x = offsetLeft;
+          position.y = offsetTop;
+
+          // If we are moving an already existing item, we need to make sure
+          // the position object has the correct values before we start dragging it
+        } else if (interaction.pointerIsDown && !interaction.interacting()) {
+          const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+          const transform = regex.exec(currentTarget.style.transform);
+
+          if (transform && transform.length > 1) {
+            position.x = Number(transform[1]);
+            position.y = Number(transform[2]);
+          }
+        }
+
+        // Start the drag event
+        interaction.start({ name: 'drag' }, event.interactable, element);
+      });
+  }
+
+  public initTools() {
+    if (!this.source) {
+      return;
     }
-      }).on("move", (event) => {        
-    const { currentTarget, interaction } = event;
-    let element = currentTarget;
-
-    // If we are dragging an item from the sidebar, its transform value will be ''
-    // We need to clone it, and then start moving the clone
-    if (
-      interaction.pointerIsDown &&
-      !interaction.interacting() &&
-      currentTarget.style.transform === ""
-    ) {
-      element = currentTarget.cloneNode(true);
-      var clientRect = element.getBoundingClientRect();
-
-      // Add absolute positioning so that cloned object lives
-      // right on top of the original object
-      element.style.position = "absolute";
-      element.style.left = 0;
-      element.style.top = 0;
-
-      // Add the cloned object to the document
-      const container = document.querySelector(".document-editor");
-      container && container.appendChild(element);
-
-      const { offsetTop, offsetLeft } = currentTarget;
-      position.x = offsetLeft;
-      position.y = offsetTop;
-
-      // If we are moving an already existing item, we need to make sure
-      // the position object has the correct values before we start dragging it
-    } else if (interaction.pointerIsDown && !interaction.interacting()) {
-      const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
-      const transform = regex.exec(currentTarget.style.transform);
-
-      if (transform && transform.length > 1) {
-        position.x = Number(transform[1]);
-        position.y = Number(transform[2]);
-      }
-    }
-
-    // Start the drag event
-    interaction.start({ name: "drag" }, event.interactable, element);
-  });
+    this.source.addTool({
+      id: 'entity_analysis',
+      title: 'Entity Analysis',
+      widget: this.widget,
+      subtitle: 'Entity Recognition, Search, Linking, Geo/time recognition',
+      image: 'images/entity_analysis.png',
+      action: async () => {
+        try {
+          await this.refresh();
+          return Promise.resolve(true);
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      },
+    } as ITool);
+    this.source.addTool({
+      id: 'observation_extraction',
+      title: 'Observation Extraction',
+      subtitle: 'find observations',
+      widget: this.widget,
+      disabled: true,
+      // subtitle: 'Entity Recognition, Search, Linking',
+      // image: 'images/entity_analysis.png',
+      action: async () => {
+        try {
+          await this.refresh();
+          return Promise.resolve(true);
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      },
+    } as ITool);
+    this.source.addTool({
+      id: 'geo_time_extraction',
+      title: 'Geo & time extraction',
+      subtitle: 'Recognize locations and time entities',
+      widget: this.widget,
+      disabled: true,
+      // subtitle: 'Entity Recognition, Search, Linking',
+      // image: 'images/entity_analysis.png',
+      action: async () => {
+        try {
+          await this.refresh();
+          return Promise.resolve(true);
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      },
+    } as ITool);
+    this.source.addTool({
+      id: 'language_detection',
+      title: 'Language Detection',
+      disabled: true,
+      widget: this.widget,
+      action: async () => {
+        try {
+          await this.refresh();
+          return Promise.resolve(true);
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      },
+    } as ITool);
   }
 
   public mounted() {
-    console.log("mounted");
-    if (!this.source) {
+    if (this.source) {
       this.contentLoaded(this.widget.content);
-    }    
+    }
   }
 }
 </script>
 
 
 <style>
-
-
 .editor-grid {
   padding: 5px;
   max-height: 100%;
-  display: grid;  
+  display: grid;
   grid-template-rows: 50px 100px 100%;
   grid-gap: 10px;
   max-height: calc(100vh - 276px);
 }
-.filter-row
-{
+.filter-row {
   grid-row: 1;
-
 }
-.editor-menu-row
-{
+.editor-menu-row {
   grid-row: 2;
-
 }
-.editor-row
-{
-grid-row: 3;
-/* overflow-x:hidden;
+.editor-row {
+  grid-row: 3;
+  /* overflow-x:hidden;
 overflow-y: auto; */
-/* max-height: 300px; */
+  /* max-height: 300px; */
 }
-
-
 
 .editor-scroll {
   /* height: 300px; */
@@ -1163,7 +1165,7 @@ overflow-y: auto; */
 }
 
 .linked-entity {
-  background-color: "lightgray";
+  background-color: 'lightgray';
   border-width: 2px !important;
 }
 
@@ -1251,7 +1253,7 @@ overflow-y: auto; */
   transform: translateX(-50%);
 }
 .tooltip:before {
-  content: "";
+  content: '';
   height: 0;
   width: 0;
   position: absolute;
@@ -1263,7 +1265,7 @@ overflow-y: auto; */
   border-top-color: silver;
 }
 .tooltip:after {
-  content: "";
+  content: '';
   height: 0;
   width: 0;
   position: absolute;
@@ -1308,6 +1310,4 @@ overflow-y: auto; */
   min-width: 36px !important;
   /* margin: 4px; */
 }
-
-
 </style>

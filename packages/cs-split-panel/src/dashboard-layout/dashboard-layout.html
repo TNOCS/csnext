@@ -1,0 +1,5 @@
+<v-card class="dashboard-layout-card">
+    <div v-if="data.dashboard.widgets" v-for="panel in panels" :key="panel.widgetId">
+        <v-btn class="ma-4" :class="{'primary': !panel.hide}" outlined @click="togglePanel(panel)">{{panel.title || panel.widgetId}}</v-btn>
+    </div>
+</v-card>

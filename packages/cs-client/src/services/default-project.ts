@@ -4,17 +4,17 @@ export const DefaultProject: IProject = {
   header: {
     title: 'Project Name',
     breadcrumbs: false,
-    dense: false
+    dense: false,
   },
   navigation: {
-    style: 'tabs'
+    style: 'tabs',
   },
   leftSidebar: {
     open: false,
     mini: false,
     clipped: true,
     permanent: false,
-    temporary: false
+    temporary: false,
   },
   datasources: {},
   theme: {
@@ -27,8 +27,8 @@ export const DefaultProject: IProject = {
       info: '#2196F3',
       success: '#4CAF50',
       warning: '#FFC107',
-      menu: '#000'
-    }
+      menu: '#000',
+    },
   },
   // footer: {
   //   visible: false,
@@ -42,8 +42,8 @@ export const DefaultProject: IProject = {
     clipped: true,
     temporary: false,
     width: 350,
-    sidebars: {}
+    sidebars: {},
   },
   menus: [],
-  dashboards: []
+  dashboards: [],
 };

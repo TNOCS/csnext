@@ -7,10 +7,10 @@
       <v-tab>
         <v-icon left> search </v-icon>
       </v-tab>
-      <v-tab :disabled="!entity._location">
+      <v-tab :disabled="!entity || !entity._location">
         <v-icon left> place </v-icon>
       </v-tab>
-      <v-tab :disabled="!entity._date">
+      <v-tab :disabled="!entity || !entity._date">
         <v-icon left> date_range </v-icon>
       </v-tab>
 
@@ -58,7 +58,7 @@
           </div>
           <div v-else>
             <v-card-title>{{ entity.text }}</v-card-title>
-            <v-card-subtitle>{{ entity.entity_class }}</v-card-subtitle>
+            <v-card-subtitle>{{ entity.spacy_label }}</v-card-subtitle>
             <span v-if="potentialTypes.length > 0"
               >Add new:<v-chip
                 small
@@ -499,7 +499,7 @@ export default class SelectionPopup extends WidgetBase {
     if (!this.source || !this.entity || !this.document) {
       return;
     }
-    this.entity.node_id = target.id;
+    this.entity.kg_id = target.id;
     this.entity._node = target;
     this.entity._node._included = true;
     if (!this.entity._node._alternatives) {
@@ -519,15 +519,15 @@ export default class SelectionPopup extends WidgetBase {
       this.entity = {
         text: this.text,
         id: guidGenerator(),
-        position_start: this.from,
-        position_end: this.to,
+        // position_start: this.from,
+        // position_end: this.to,
       };
       this.document!.entities?.push(this.entity);
     }
     switch (this.searchMode) {
       case "KG":
         if (this.newEntityNode && this.source) {
-          (this.entity.node_id = this.newEntityNode.id),
+          (this.entity.kg_id = this.newEntityNode.id),
             (this.entity._node = this.newEntityNode);
           this.entity._node._included = true;
           if (!this.entity._node._alternatives) {
@@ -548,7 +548,7 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public async addEntityAsClass(entity: TextEntity, category: FeatureType) {
-    if (!this.document || !this.source) {
+    if (!this.document || !this.source || !entity) {
       return;
     }
     const node = {
@@ -562,7 +562,7 @@ export default class SelectionPopup extends WidgetBase {
       _included: true,
     };
     entity._node = node;
-    entity.node_id = node.id;
+    entity.kg_id = node.id;
     this.source.addNode(node);
     await this.source.saveNode(node);
     this.source.updateNode(node);
@@ -583,9 +583,9 @@ export default class SelectionPopup extends WidgetBase {
           this.entity.text &&
           this.document
         ) {
-          this.entity.node_id = this.newEntityNode.id;
+          this.entity.kg_id = this.newEntityNode.id;
           this.entity.id = this.newEntityNode.id;
-          this.entity.class = this.newEntityNode.classId;
+          this.entity.spacy_label = this.newEntityNode.classId;
           this.entity._node = this.newEntityNode;
           this.entity._node._included = true;
           if (!this.document.entities?.includes(this.entity)) {
@@ -646,7 +646,7 @@ export default class SelectionPopup extends WidgetBase {
     }
     this.source.syncEntities(
       this.source.activeDocument,
-      this.source.activeDocument.doc.content,
+      this.source.activeDocument.properties!.doc!.content,
       true
     );
     this.$forceUpdate();
@@ -684,8 +684,8 @@ export default class SelectionPopup extends WidgetBase {
     if (!this.source) {
       return;
     }
-    if (this.source?.featureTypes && this.entity?.entity_class) {
-      if (this.entity.entity_class === "location") {
+    if (this.source?.featureTypes && this.entity?.spacy_label) {
+      if (this.entity.spacy_label === "location") {
         this.potentialTypes = Object.values(this.source.featureTypes).filter(
           (ft) => ft._inheritedTypes && ft._inheritedTypes.includes("location")
         );
@@ -694,8 +694,8 @@ export default class SelectionPopup extends WidgetBase {
       this.potentialTypes = Object.values(this.source.featureTypes).filter(
         (ft) =>
           ft.attributes &&
-          ft.attributes.hasOwnProperty("nlp:entity_class") &&
-          ft.attributes["nlp:entity_class"] === this.entity?.entity_class
+          ft.attributes.hasOwnProperty("spacy_label") &&
+          ft.attributes["spacy_label"] === this.entity?.spacy_label
       );
       if (this.potentialTypes && this.potentialTypes.length > 0) {
         this.newCategory = this.potentialTypes[0];
@@ -718,7 +718,7 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   mounted() {
-    if (this.entity?.class === "location") {
+    if (this.entity?.spacy_label === "location") {
       this.viewtab = 1;
     }
     this.updateAgents();

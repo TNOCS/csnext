@@ -33,9 +33,9 @@
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
           <v-tabs-slider></v-tabs-slider>
-          <v-tab href="#tab-editor">{{ $cs.Translate("EDITOR") }}</v-tab>
-          <v-tab href="#tab-items">{{ $cs.Translate("ENTITIES") }}</v-tab>
-          <v-tab href="#tab-template">{{ $cs.Translate("TEMPLATES") }}</v-tab>
+          <v-tab href="#tab-editor">{{ $cs.Translate('EDITOR') }}</v-tab>
+          <v-tab href="#tab-items">{{ $cs.Translate('ENTITIES') }}</v-tab>
+          <v-tab href="#tab-template">{{ $cs.Translate('TEMPLATES') }}</v-tab>
           <!-- <v-tab href="#tab-instances">{{ $cs.Translate('INSTANCES') }}</v-tab> -->
           <!-- <v-tab href="#tab-documents">{{ $cs.Translate('DOCUMENTS') }}</v-tab> -->
         </v-tabs>
@@ -58,7 +58,7 @@
       <v-tab-item value="tab-items">
         <simplebar style="background: red !important; height: 100%">
           <cs-widget
-            :widget="elementsWidget"            
+            :widget="elementsWidget"
             style="height: calc(100em - 465px)"
           ></cs-widget>
         </simplebar>
@@ -66,7 +66,11 @@
       <v-tab-item value="tab-template">
         <simplebar style="height: 100%">
           <h2>Keywords</h2>
-          <v-combobox multiple small-chips v-model="type.attributes.keywords"></v-combobox>
+          <v-combobox
+            multiple
+            small-chips
+            v-model="type.attributes.keywords"
+          ></v-combobox>
 
           <h2>Relations</h2>
 
@@ -197,14 +201,14 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
-import { DocDatasource } from "../../datasources/doc-datasource";
-import simplebar from "simplebar-vue";
-import { SearchEntity } from "../../classes/document/search-entity";
-import { IFormObject, IWidget } from "@csnext/cs-core";
-import { FeatureType, PropertyType, PropertyValueType } from "@csnext/cs-data";
-import { GraphElements } from "../..";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { WidgetBase } from '@csnext/cs-client';
+import { DocDatasource } from '../../datasources/doc-datasource';
+import simplebar from 'simplebar-vue';
+import { SearchEntity } from '../../classes/document/search-entity';
+import { IFormObject, IWidget } from '@csnext/cs-core';
+import { FeatureType, PropertyType, PropertyValueType } from '@csnext/cs-data';
+import { GraphElements } from '../..';
 
 @Component({
   components: { simplebar, GraphElements },
@@ -218,12 +222,12 @@ export default class FeatureTypeEditor extends WidgetBase {
     },
   } as IWidget;
 
-  public tab = "";
+  public tab = '';
 
-  public search = "";
+  public search = '';
   public headers = [
-    { text: "title", value: "title", groupable: false },
-    { text: "Actions", value: "actions", groupable: false, sortable: false },
+    { text: 'title', value: 'title', groupable: false },
+    { text: 'Actions', value: 'actions', groupable: false, sortable: false },
   ];
 
   public get source(): DocDatasource | undefined {
@@ -246,7 +250,7 @@ export default class FeatureTypeEditor extends WidgetBase {
           this.source?.startEditElement(e);
         })
         .catch((e) => {
-          alert("error creating entity");
+          alert('error creating entity');
         });
     }
   }
@@ -258,44 +262,44 @@ export default class FeatureTypeEditor extends WidgetBase {
 
       fields: [
         {
-          title: "TYPE",
-          _key: "type",
-          type: "string",
+          title: 'TYPE',
+          _key: 'type',
+          type: 'string',
           readonly: true,
         },
-         {
-          title: "IS EDGE",
-          _key: "isEdge",
-          type: "boolean",
+        {
+          title: 'IS EDGE',
+          _key: 'isEdge',
+          type: 'boolean',
         },
         {
-          title: "TITLE",
-          _key: "title",
-          type: "string",
-          hint: "title"
+          title: 'TITLE',
+          _key: 'title',
+          type: 'string',
+          hint: 'title',
         },
         {
-          title: "ICON",
-          _key: "icon",
-          type: "string",
+          title: 'ICON',
+          _key: 'icon',
+          type: 'string',
         },
         {
-          title: "ICON_PROPERTY",
-          _key: "iconProperty",
-          type: "string"
+          title: 'ICON_PROPERTY',
+          _key: 'iconProperty',
+          type: 'string',
           // options: () => {
           //   return this.type?.properties ? this.type.properties.filter(pt => pt.type === 'image').map(pt => pt.key) : [];
           // },
         },
         {
-          title: "BASE_URI",
-          _key: "baseUri",
-          type: "string",
+          title: 'BASE_URI',
+          _key: 'baseUri',
+          type: 'string',
         },
         {
-          title: "BASETYPES",
-          _key: "baseType",
-          type: "chips",
+          title: 'BASETYPES',
+          _key: 'baseType',
+          type: 'chips',
           options: () => {
             return this.source?.featureTypes
               ? Object.keys(this.source.featureTypes)
@@ -303,11 +307,11 @@ export default class FeatureTypeEditor extends WidgetBase {
           },
         },
         {
-          title: "PROPERTIES",
-          _key: "properties",
+          title: 'PROPERTIES',
+          _key: 'properties',
           canAdd: true,
           canDelete: true,
-          arrayFieldType: "object",
+          arrayFieldType: 'object',
           // arrayFilter: (v: PropertyType[]) => {
           //   return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
           //   },
@@ -315,7 +319,7 @@ export default class FeatureTypeEditor extends WidgetBase {
             return new PropertyType();
           },
           keyValuesType: PropertyType,
-          type: "array",
+          type: 'array',
           arrayType2: this.propertyForm,
           arrayType: {
             showToolbar: false,
@@ -325,86 +329,86 @@ export default class FeatureTypeEditor extends WidgetBase {
             canDelete: true,
             fields: [
               {
-                title: "key",
-                _key: "key",
-                type: "string",
-                group: "label",
+                title: 'key',
+                _key: 'key',
+                type: 'string',
+                group: 'label',
               },
               {
-                title: "label",
-                _key: "label",
-                type: "string",
-                group: "label",
+                title: 'label',
+                _key: 'label',
+                type: 'string',
+                group: 'label',
               },
               {
-                title: "type",
-                _key: "type",
-                type: "selection",
-                group: "label",
+                title: 'type',
+                _key: 'type',
+                type: 'selection',
+                group: 'label',
                 optional: false,
                 options: () => {
                   return Object.keys(PropertyValueType);
                 }, // [ 'string', 'number', 'boolean', 'url', 'date', 'relation']
               },
               {
-                title: "min",
-                _key: "min",
-                type: "number",
-                group: "number",
+                title: 'min',
+                _key: 'min',
+                type: 'number',
+                group: 'number',
                 optional: false,
                 requirements: PropertyType.isNumber,
               },
               {
-                title: "max",
-                _key: "max",
-                type: "number",
-                group: "number",
+                title: 'max',
+                _key: 'max',
+                type: 'number',
+                group: 'number',
                 optional: false,
                 requirements: PropertyType.isNumber,
               },
               {
-                title: "unit",
-                _key: "unit",
-                type: "string",
-                group: "number",
+                title: 'unit',
+                _key: 'unit',
+                type: 'string',
+                group: 'number',
                 optional: false,
                 requirements: PropertyType.isNumber,
               },
               {
-                title: "url template",
-                _key: "urlTemplate",
-                type: "string",
-                group: "url",
+                title: 'url template',
+                _key: 'urlTemplate',
+                type: 'string',
+                group: 'url',
                 optional: false,
                 requirements: PropertyType.isUrl,
               },
               {
-                title: "required",
-                _key: "required",
-                type: "boolean",
-                group: "label",
+                title: 'required',
+                _key: 'required',
+                type: 'boolean',
+                group: 'label',
                 optional: false,
               },
               {
                 requirements: PropertyType.isRelation,
-                title: "RELATION",
-                _key: "relation",
-                type: "object",
+                title: 'RELATION',
+                _key: 'relation',
+                type: 'object',
                 form: {
                   hideTitle: true,
                   isPanel: true,
                   fields: [
                     {
-                      _key: "type",
-                      type: "string",
-                      title: "type",
-                      group: "relation-def",
+                      _key: 'type',
+                      type: 'string',
+                      title: 'type',
+                      group: 'relation-def',
                     },
                     {
-                      _key: "objectType",
-                      type: "selection",
-                      title: "object type",
-                      group: "relation-def",
+                      _key: 'objectType',
+                      type: 'selection',
+                      title: 'object type',
+                      group: 'relation-def',
                       options: () => {
                         return this.source?.featureTypes
                           ? Object.keys(this.source.featureTypes)
@@ -412,36 +416,36 @@ export default class FeatureTypeEditor extends WidgetBase {
                       },
                     },
                     {
-                      _key: "multiple",
-                      type: "boolean",
-                      title: "multiple",
-                      group: "relation-def",
+                      _key: 'multiple',
+                      type: 'boolean',
+                      title: 'multiple',
+                      group: 'relation-def',
                     },
                   ],
                 },
               },
               {
                 // requirements: PropertyType.isOptions,
-                title: "OPTIONS",
-                _key: "options",
+                title: 'OPTIONS',
+                _key: 'options',
                 requirements: PropertyType.isOptions,
                 // canAdd: true,
                 // canDelete: true,
                 newItem: () => {
-                  return "";
+                  return '';
                 },
-                arrayFieldType: "string",
-                type: "chips",
+                arrayFieldType: 'string',
+                type: 'chips',
               },
               {
                 // requirements: PropertyType.isOptions,
-                title: "LIST",
-                _key: "optionsList",
+                title: 'LIST',
+                _key: 'optionsList',
                 requirements: PropertyType.isListItem,
                 // canAdd: true,
                 // canDelete: true,
                 // newItem: ()=> { return ''; },
-                type: "selection",
+                type: 'selection',
               },
             ],
           },
@@ -450,28 +454,28 @@ export default class FeatureTypeEditor extends WidgetBase {
           showToolbar: false,
           hideTitle: true,
           isPanel: false,
-          title: "ATTRIBUTES",
-          _key: "attributes",
+          title: 'ATTRIBUTES',
+          _key: 'attributes',
           canEditKey: true,
           keyValuesType: String,
-          type: "keysobject",
+          type: 'keysobject',
         },
       ],
     } as IFormObject;
   }
 
   public updateFeatureType() {
-    if (!this.source || !this.type) {
+    if (!this.source || !this.widget.data.type) {
       return;
     }
-    this.source.saveFeatureType(this.type);
+    this.source.saveFeatureType(this.widget.data.type);
   }
 
   public addEntity() {
     const newEntity = {
-      id: "new entity",
-      entity: "new entity",
-      ent_class: "",
+      id: 'new entity',
+      entity: 'new entity',
+      ent_class: '',
       aka: [],
     };
     this.source?.searchEntities?.push(newEntity);
@@ -484,7 +488,7 @@ export default class FeatureTypeEditor extends WidgetBase {
   }
 
   public deleteEntity(entity: SearchEntity) {
-    alert("delete");
+    alert('delete');
   }
 
   constructor() {
@@ -499,7 +503,7 @@ export default class FeatureTypeEditor extends WidgetBase {
   }
 
   mounted() {
-    console.log(" value types");
+    console.log(' value types');
     // console.log(Object.keys(PropertyValueType));
   }
 }

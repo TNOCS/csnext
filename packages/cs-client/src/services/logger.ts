@@ -1,18 +1,17 @@
 export class Logger {
-
   public static info(component: string, msg: any) {
     // tslint:disable-next-line:no-console
-    console.info('[' + component + ']', msg);
+    console.info(`[${component}]`, msg);
   }
 
   public static warn(component: string, msg: any) {
     // tslint:disable-next-line:no-console
-    console.info('[' + component + ']', msg);
+    console.warn(`[${component}]`, msg);
   }
 
   public static error(component: string, msg: any) {
     // tslint:disable-next-line:no-console
-    console.info('[' + component + ']', msg);
+    console.error(`[${component}]`, msg);
   }
 
   public static get Instance() {

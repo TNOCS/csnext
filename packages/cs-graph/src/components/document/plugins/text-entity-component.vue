@@ -98,6 +98,7 @@ import SelectionPopup from "./../selection-popup.vue";
 
 import { DocDatasource } from "../../../datasources/doc-datasource";
 import { GraphDocument } from "../../../classes/document/graph-document";
+import { guidGenerator } from "@csnext/cs-core";
 
 
 @Component({
@@ -135,10 +136,10 @@ export default class TextEntityComponent extends Vue {
     // alert('select');
   }
 
-  @Watch('source.visibleViewTypes')
+  @Watch('source.visibleEntityTypes')
   @Watch('entity._included')
   updatedViewTypes() {
-    // console.log('updateviewtypes');    
+    // console.log('updateEntityTypes');    
     
     this.setStyle();
     // this.$forceUpdate();
@@ -152,13 +153,13 @@ export default class TextEntityComponent extends Vue {
   }
 
   public setStyle() {
-    if (!this.source) { return {} as CSSStyleDeclaration}    
+    if (!this.source || !this.document) { return {} as CSSStyleDeclaration}    
     if (!this.element) {
       this.style = {
         backgroundColor: "lightgrey",
       } as CSSStyleDeclaration;
     }
-    if (this.source.visibleViewTypes.findIndex(vt => vt.id === this.entity?.class) >= 0) {
+    if (this.document.visibleEntityTypes.findIndex(vt => vt.id === this.entity?.spacy_label) >= 0) {
       this.visible = true;
     }
     this.style =  {
@@ -199,14 +200,15 @@ export default class TextEntityComponent extends Vue {
       // find entity
       if (this.document?.entities && node.attrs.id) {
         this.entity = this.document.entities.find(
-          (e) => e.entity_idx === node.attrs.id
+          (e) => e.id === node.attrs.id
         );
         if (!this.entity) {
           this.entity = {
-            id: 'None',
-            entity_idx: node.attrs.id,
+            // id: guidGenerator(),
+            id: node.attrs.id,
             text: node.text,
-            class: node.attrs.type ?? 'node'
+            spacy_label: node.attrs.type
+            // class: node.attrs.type ?? 'node'
           };
           this.document.entities.push(this.entity)
         }

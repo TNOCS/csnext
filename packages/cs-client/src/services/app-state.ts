@@ -12,10 +12,20 @@ import {
   InfoOptions,
   Loader,
   IMenu,
-  INotificationOptions
+  INotificationOptions,
+  idGenerator,
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
-import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, LayoutManager, DashboardManager } from '../';
+import {
+  CsApp,
+  CsDashboard,
+  Logger,
+  CsWidget,
+  HtmlWidget,
+  DatasourceManager,
+  LayoutManager,
+  DashboardManager,
+} from '../';
 import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
@@ -26,7 +36,6 @@ import { Framework } from 'vuetify';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState extends AppStateBase {
-
   public static DIALOG = 'dialog';
   public static DIALOG_ADDED = 'dialog-added';
   public static DIALOG_CLOSED = 'dialog-closed';
@@ -48,7 +57,7 @@ export class AppState extends AppStateBase {
   public static INFO_WIDGET_CLEARED = 'info-widget-cleared';
   public static NOTIFICATION = 'notification';
   public static NOTIFICATION_ADDED = 'new';
-  public static NOTIFICATION_CLEARED = 'clear-all'
+  public static NOTIFICATION_CLEARED = 'clear-all';
   public static FILE_UPLOAD = 'file-upload';
   public static FILE_UPLOAD_START = 'file-upload-start';
   public static LEFT_SIDEBAR_STATE = 'lsb';
@@ -63,17 +72,19 @@ export class AppState extends AppStateBase {
 
   public datasourceManager: DatasourceManager;
   public layoutManager: LayoutManager;
-  public dashboardManager: DashboardManager;  
+  public dashboardManager: DashboardManager;
   public activeInfoWidget?: IWidget;
 
   /** gets server url */
   public serverUrl(url?: string): string {
     if (process.env.VUE_APP_SERVER_URL) {
       return process.env.VUE_APP_SERVER_URL;
-    } else if (window.hasOwnProperty('_env') && ((window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL'))) {
+    } else if (
+      window.hasOwnProperty('_env') &&
+      (window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL')
+    ) {
       return (window as any)._env.VUE_APP_SERVER_URL;
-    }
-    else if (url !== undefined) {
+    } else if (url !== undefined) {
       return url;
     } else {
       var protocol = window.location.protocol;
@@ -91,7 +102,7 @@ export class AppState extends AppStateBase {
   public logger = Logger.Instance;
   /** Vue router instance */
   public router?: VueRouter = new VueRouter({ routes: [] });
-  public vuetify?: Framework ;
+  public vuetify?: Framework;
   /** Vue i18n instance */
   public i18n?: VueI18n;
   /** manages keyboard shortcuts */
@@ -99,10 +110,20 @@ export class AppState extends AppStateBase {
 
   private constructor() {
     super();
-    if (!this.project.datasources) { this.project.datasources = {}; }
-    if (!this.project.header) { this.project.header = {}; }
-    if (!this.project.notifications) { this.project.notifications = {}; }
-    Object.assign(this.project.notifications, { enabled: false, items: [], listStyle: 'popup' } as INotificationOptions);
+    if (!this.project.datasources) {
+      this.project.datasources = {};
+    }
+    if (!this.project.header) {
+      this.project.header = {};
+    }
+    if (!this.project.notifications) {
+      this.project.notifications = {};
+    }
+    Object.assign(this.project.notifications, {
+      enabled: false,
+      items: [],
+      listStyle: 'popup',
+    } as INotificationOptions);
     this.datasourceManager = new DatasourceManager();
     this.dashboardManager = new DashboardManager();
     this.layoutManager = new LayoutManager();
@@ -110,41 +131,55 @@ export class AppState extends AppStateBase {
   }
 
   public removeRouteQueryParam(key: string) {
-    if (!this.router?.currentRoute?.query) { return; }
+    if (!this.router?.currentRoute?.query) {
+      return;
+    }
     let query = Object.assign({}, this.router?.currentRoute?.query);
     if (query && query.hasOwnProperty(key)) {
       delete query[key];
-      this.router.replace({query}).then(()=>{}).catch(e => {});      
-    }    
+      this.router
+        .replace({ query })
+        .then(() => {})
+        .catch((e) => {});
+    }
   }
 
   public addRouteQueryParam(key: string, value: string) {
-    if (!this.router?.currentRoute?.query) { return; }
+    if (!this.router?.currentRoute?.query) {
+      return;
+    }
     let query = Object.assign({}, this.router?.currentRoute?.query);
     if (query) {
       query[key] = value;
-      this.router.replace({query}).then(()=>{}).catch(e => {});      
-    }    
-  }
-
-  public getRouteQuery(key: string) : string | undefined {
-    if (!this.router?.currentRoute?.query) { return; }
-    if (this.router.currentRoute.query.hasOwnProperty(key)) {
-        return this.router.currentRoute.query[key] as string;
+      this.router
+        .replace({ query })
+        .then(() => {})
+        .catch((e) => {});
     }
-    
   }
 
-  public updateRouteQuery(params : {[key: string]: any}) {
-    if (!this.router?.currentRoute?.query) { return; }
-    let query = this.router?.currentRoute?.query;
-    const combined = { ... query, ...params };        
-        this.router.replace({ path: this.router?.currentRoute.params[0], query: combined }, ()=> {
+  public getRouteQuery(key: string): string | undefined {
+    if (!this.router?.currentRoute?.query) {
+      return;
+    }
+    if (this.router.currentRoute.query.hasOwnProperty(key)) {
+      return this.router.currentRoute.query[key] as string;
+    }
+  }
 
-        }, (err) => {
-            // console.log(err);
-        })
-      
+  public updateRouteQuery(params: { [key: string]: any }) {
+    if (!this.router?.currentRoute?.query) {
+      return;
+    }
+    let query = this.router?.currentRoute?.query;
+    const combined = { ...query, ...params };
+    this.router.replace(
+      { path: this.router?.currentRoute.params[0], query: combined },
+      () => {},
+      (err) => {
+        // console.log(err);
+      }
+    );
   }
 
   public initSocket() {
@@ -157,20 +192,34 @@ export class AppState extends AppStateBase {
       this.socket = io(this.project.server.socketServerUrl, {});
 
       this.socket.on('connect', (e) => {
-        this.bus.publish(AppState.SOCKET, AppState.SOCKET_CONNECTED, this.socket);
+        this.bus.publish(
+          AppState.SOCKET,
+          AppState.SOCKET_CONNECTED,
+          this.socket
+        );
       });
       this.socket.on('reconnect', () => {
-        this.bus.publish(AppState.SOCKET, AppState.SOCKET_RECONNECTING, this.socket);
+        this.bus.publish(
+          AppState.SOCKET,
+          AppState.SOCKET_RECONNECTING,
+          this.socket
+        );
       });
       this.socket.on('disconnect', (e) => {
-        this.bus.publish(AppState.SOCKET, AppState.SOCKET_DISCONNECTED, this.socket);
+        this.bus.publish(
+          AppState.SOCKET,
+          AppState.SOCKET_DISCONNECTED,
+          this.socket
+        );
       });
     }
   }
 
   public get isMobile(): boolean {
-    if (this.project?.navigation?.forceDesktop) { return false; }
-    return ((window.innerWidth < 800) || (window.innerHeight < 800));
+    if (this.project?.navigation?.forceDesktop) {
+      return false;
+    }
+    return window.innerWidth < 800 || window.innerHeight < 800;
   }
 
   public get isFloatingHeader(): boolean {
@@ -178,7 +227,10 @@ export class AppState extends AppStateBase {
   }
 
   public get isBottomNavigation(): boolean {
-    return this.project?.navigation?.style === 'bottom' || (this.project?.navigation?.style === 'mobile-compact' && this.isMobile);
+    return (
+      this.project?.navigation?.style === 'bottom' ||
+      (this.project?.navigation?.style === 'mobile-compact' && this.isMobile)
+    );
   }
 
   public copyToClipboard(str: string) {
@@ -195,7 +247,7 @@ export class AppState extends AppStateBase {
 
   public initApp(element: string = '#app', project?: IProject) {
     new Vue({
-      render: h => h(CsApp)
+      render: (h) => h(CsApp),
     }).$mount(element);
     this.init(project);
   }
@@ -217,7 +269,11 @@ export class AppState extends AppStateBase {
     // this.project = merge(DefaultProject, project);
     this.project = { ...DefaultProject, ...project };
 
-    if (this.isMobile && this.project.navigation && this.project.navigation.autoMobileBottom) {
+    if (
+      this.isMobile &&
+      this.project.navigation &&
+      this.project.navigation.autoMobileBottom
+    ) {
       this.project.navigation.style = 'bottom';
     }
 
@@ -229,8 +285,10 @@ export class AppState extends AppStateBase {
       if (project.languages.localeMessages) {
         const messages = Object.keys(project.languages.localeMessages);
         for (const lang of messages) {
-          this.i18n!.mergeLocaleMessage(lang, project.languages!
-            .localeMessages![lang] as LocaleMessageObject);
+          this.i18n!.mergeLocaleMessage(
+            lang,
+            project.languages!.localeMessages![lang] as LocaleMessageObject
+          );
         }
       }
       this.i18n.locale = project.languages.defaultLanguage || 'en';
@@ -249,7 +307,7 @@ export class AppState extends AppStateBase {
         mini: false,
         clipped: true,
         permanent: false,
-        temporary: true
+        temporary: true,
       };
     }
 
@@ -272,25 +330,36 @@ export class AppState extends AppStateBase {
   public addDashboard(dashboard: IDashboard, parent?: IDashboard): IDashboard {
     this.initializeDashboards([dashboard]);
     if (parent) {
-      if (!parent.dashboards) { parent.dashboards = []; }      
+      if (!parent.dashboards) {
+        parent.dashboards = [];
+      }
       parent.dashboards.push(dashboard);
     } else {
-      if (!this.project.dashboards) { this.project.dashboards = []; }      
+      if (!this.project.dashboards) {
+        this.project.dashboards = [];
+      }
       this.project.dashboards.push(dashboard);
     }
     return dashboard;
-    
   }
 
   // Add a dashboard as a route
   public addDashboardRoute(d: IDashboard) {
-    if (!this.router) { return; }
+    if (!this.router) {
+      return;
+    }
     if (d.dashboards && d.dashboards.length > 0) {
       for (const dash of d.dashboards) {
         dash.parent = d;
         this.addDashboardRoute(dash);
       }
-      if (d.options && d.options.toolbarOptions && d.options.toolbarOptions.navigation && d.dashboards && d.dashboards.length > 0) {
+      if (
+        d.options &&
+        d.options.toolbarOptions &&
+        d.options.toolbarOptions.navigation &&
+        d.dashboards &&
+        d.dashboards.length > 0
+      ) {
         this.addDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
       }
     } else if (d.path) {
@@ -300,15 +369,17 @@ export class AppState extends AppStateBase {
         component: CsDashboard,
         props: () => ({ dashboard: d }),
         alias: '/' + d.title,
-        meta: d
+        meta: d,
       } as RouteConfig;
       // router.addRoutes([route]);
-      this.router.addRoute(route);      
+      this.router.addRoute(route);
 
       // check for keyboard shortcut
       if (d.options && d.options.shortcut && d.pathLink) {
         const sc = d.options.shortcut;
-        if (!sc.id) { sc.id = 'dashboard-' + d.id; }
+        if (!sc.id) {
+          sc.id = 'dashboard-' + d.id;
+        }
         sc._callback = () => {
           this.router!.push(d.pathLink as any).catch(() => {
             // console.log(e);
@@ -317,20 +388,27 @@ export class AppState extends AppStateBase {
         this.keyboard.register(sc);
       }
     }
-
   }
 
   public addDatasource<T>(datasource: IDatasource): T {
-    if (!this.project.datasources) { this.project.datasources = {}; }
-    if (!datasource.id) { datasource.id = guidGenerator(); }
+    if (!this.project.datasources) {
+      this.project.datasources = {};
+    }
+    if (!datasource.id) {
+      datasource.id = guidGenerator();
+    }
     this.project.datasources[datasource.id] = datasource;
     return datasource as T;
   }
 
   public addMenu(menu: IMenu) {
-    if (!this.project.menus) { this.project.menus = []; }
-    if (!menu.type) { menu.type = 'icon'; }
-    if (this.project.menus.findIndex(m => m.id === menu.id) === -1) {
+    if (!this.project.menus) {
+      this.project.menus = [];
+    }
+    if (!menu.type) {
+      menu.type = 'icon';
+    }
+    if (this.project.menus.findIndex((m) => m.id === menu.id) === -1) {
       Vue.nextTick(() => {
         if (this.project.menus) {
           this.project.menus.push(menu);
@@ -340,21 +418,27 @@ export class AppState extends AppStateBase {
   }
 
   public removeMenu(menuId: string) {
-    if (!this.project.menus) { return; }
-    const menuItemIndex = this.project.menus.findIndex(m => m.id === menuId);
+    if (!this.project.menus) {
+      return;
+    }
+    const menuItemIndex = this.project.menus.findIndex((m) => m.id === menuId);
     if (menuItemIndex >= 0) {
       this.project.menus.splice(menuItemIndex, 1);
     }
   }
 
   public get visibleSidebars(): { [key: string]: IDashboard } | undefined {
-    if (!this.project.rightSidebar) { return undefined; }
+    if (!this.project.rightSidebar) {
+      return undefined;
+    }
     let res = this.project.rightSidebar.sidebars;
     if (this.activeDashboard && this.activeDashboard.sidebars) {
       for (const sb in this.activeDashboard.sidebars) {
         if (this.activeDashboard.sidebars.hasOwnProperty(sb)) {
           const element = this.activeDashboard.sidebars[sb];
-          if (!element.id) { element.id = sb; }
+          if (!element.id) {
+            element.id = sb;
+          }
         }
       }
       res = { ...res, ...this.activeDashboard.sidebars };
@@ -363,7 +447,9 @@ export class AppState extends AppStateBase {
   }
 
   public addSidebar(id: string, sidebar: IDashboard, dashboard?: IDashboard) {
-    if (!sidebar) { return; }
+    if (!sidebar) {
+      return;
+    }
     sidebar = { ...{ id, widgets: [] }, ...sidebar };
     if (dashboard) {
       if (!dashboard.sidebars) {
@@ -386,14 +472,20 @@ export class AppState extends AppStateBase {
   }
 
   public removeSidebar(id: string) {
-    if (!this.project.rightSidebar || !this.project.rightSidebar.sidebars || !this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+    if (
+      !this.project.rightSidebar ||
+      !this.project.rightSidebar.sidebars ||
+      !this.project.rightSidebar.sidebars.hasOwnProperty(id)
+    ) {
       return;
     }
     delete this.project.rightSidebar.sidebars[id];
   }
 
   public updateBreadCrumbs(d?: IDashboard, main = true) {
-    if (!d) { d = this.activeDashboard; }
+    if (!d) {
+      d = this.activeDashboard;
+    }
     if (
       d &&
       this.project &&
@@ -432,32 +524,52 @@ export class AppState extends AppStateBase {
     if (typeof options === 'string') {
       options = { type: 'string', data: options };
     }
-    if (options && !options.type) { options.type = 'string'; }
+    if (options && !options.type) {
+      options.type = 'string';
+    }
     switch (options.type) {
       case 'string':
-        this.openRightSidebarWidget({ component: HtmlWidget, data: options.data, options: { showToolbar: false, title: options.title } }, { open: false }, 'info');
+        this.openRightSidebarWidget(
+          {
+            component: HtmlWidget,
+            data: options.data,
+            options: { showToolbar: false, title: options.title },
+          },
+          { open: false },
+          'info'
+        );
         break;
     }
   }
 
-  public addInfoWidget(widget: IWidget) {    
+  public checkWidgetId(widget: IWidget) {
+    if (widget && !widget.id) {
+      widget.id = `widget-${widget.component?.name}-${idGenerator()}`;
+    }
+  }
+
+  public addInfoWidget(widget: IWidget) {
     this.activeInfoWidget = widget;
     this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_ADDED, widget);
   }
 
   public clearInfoWidget() {
     this.activeInfoWidget = undefined;
-    this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_CLEARED, undefined);
+    this.bus.publish(
+      AppState.INFO_WIDGET,
+      AppState.INFO_WIDGET_CLEARED,
+      undefined
+    );
   }
 
   public TriggerNotification = this.triggerNotification;
 
   public removeNotification(id: string) {
     if (this.notifications) {
-      const index = this.notifications.findIndex(n => n.id === id);
-      if (index>=0) {
+      const index = this.notifications.findIndex((n) => n.id === id);
+      if (index >= 0) {
         this.notifications.splice(index, 1);
-      }      
+      }
     }
   }
 
@@ -472,18 +584,27 @@ export class AppState extends AppStateBase {
         group: false,
         buttonText: 'CLOSE',
         remember: true,
-        _visible: true
+        _visible: true,
       },
-      ...notification
+      ...notification,
     };
 
-    this.bus.publish(AppState.NOTIFICATION, AppState.NOTIFICATION_ADDED, notification);
+    this.bus.publish(
+      AppState.NOTIFICATION,
+      AppState.NOTIFICATION_ADDED,
+      notification
+    );
     if (
       this.project.notifications &&
       this.project.notifications.items &&
       notification.remember
     ) {
-      if (!notification.group || this.project.notifications.items.findIndex(n => n.text === notification.text) === -1) {
+      if (
+        !notification.group ||
+        this.project.notifications.items.findIndex(
+          (n) => n.text === notification.text
+        ) === -1
+      ) {
         this.project.notifications.items.push(notification);
       }
     }
@@ -496,14 +617,14 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public closeDialog() {    
+  public closeDialog() {
     this.bus.publish(AppState.DIALOG, AppState.DIALOG_CLOSED);
   }
 
   public triggerDialog(dialog: IDialog): Promise<string | undefined> {
     return new Promise((resolve) => {
-      dialog.input = dialog.defaultText ?? '';   
-      if (!dialog.actionCallback) {             
+      dialog.input = dialog.defaultText ?? '';
+      if (!dialog.actionCallback) {
         dialog.actionCallback = (action: string) => {
           resolve(action);
         };
@@ -512,29 +633,67 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public triggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
+  public triggerYesNoQuestionDialog(
+    title: string,
+    text: string
+  ): Promise<string> {
     return new Promise((resolve) => {
       const cb = (action: string) => {
-        resolve(action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO);
+        resolve(
+          action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO
+        );
       };
       const d = {
-        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: [this.Translate(AppState.YES), this.Translate(AppState.NO)], actionCallback: cb
+        fullscreen: false,
+        toolbar: true,
+        title: this.Translate(title),
+        text: this.Translate(text),
+        visible: true,
+        persistent: true,
+        width: 400,
+        actions: [this.Translate(AppState.YES), this.Translate(AppState.NO)],
+        actionCallback: cb,
       } as IDialog;
       this.triggerDialog(d);
     });
   }
 
-  public triggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string | undefined> {
+  public triggerQuestionDialog(
+    title: string,
+    text: string,
+    actions: string[]
+  ): Promise<string | undefined> {
     const d = {
-      fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, persistent: true, width: 400, actions: actions.map(a => this.Translate(a))
+      fullscreen: false,
+      toolbar: true,
+      title: this.Translate(title),
+      text: this.Translate(text),
+      visible: true,
+      persistent: true,
+      width: 400,
+      actions: actions.map((a) => this.Translate(a)),
     } as IDialog;
     return this.triggerDialog(d);
   }
 
-  public triggerInputDialog(title: string, text: string, defaultValue?: string, placeholder?: string): Promise<string> {
-    return new Promise((resolve, reject) => {    
+  public triggerInputDialog(
+    title: string,
+    text: string,
+    defaultValue?: string,
+    placeholder?: string
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
       const d = {
-        fullscreen: false, toolbar: true, title: this.Translate(title), text: this.Translate(text), visible: true, textInput: true, defaultText: defaultValue, placeholder: placeholder, persistent: true, width: 400 
+        fullscreen: false,
+        toolbar: true,
+        title: this.Translate(title),
+        text: this.Translate(text),
+        visible: true,
+        textInput: true,
+        defaultText: defaultValue,
+        placeholder: placeholder,
+        persistent: true,
+        width: 400,
       } as IDialog;
       d.actionCallback = (action: string | undefined) => {
         if (!action) {
@@ -544,14 +703,17 @@ export class AppState extends AppStateBase {
         }
       };
       this.triggerDialog(d);
-  });
+    });
   }
 
   public triggerFileUpload(acceptTypes: string): Promise<FormData | undefined> {
-    return new Promise((resolve, reject) => {    
-      this.bus.publish(AppState.FILE_UPLOAD, AppState.FILE_UPLOAD_START, { types: acceptTypes, callback: (r) => {        
-        resolve(r as FormData);
-      }});
+    return new Promise((resolve, reject) => {
+      this.bus.publish(AppState.FILE_UPLOAD, AppState.FILE_UPLOAD_START, {
+        types: acceptTypes,
+        callback: (r) => {
+          resolve(r as FormData);
+        },
+      });
     });
   }
 
@@ -564,46 +726,54 @@ export class AppState extends AppStateBase {
     ) {
       while (this.project.rightSidebar.dashboard.widgets.length > 0) {
         if (this.project.rightSidebar.dashboard.widgets[0].id) {
-          this.closeRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
+          this.closeRightSidebarWidget(
+            this.project.rightSidebar.dashboard.widgets[0].id
+          );
         }
         this.project.rightSidebar.dashboard.widgets.shift();
       }
-      this.closeRightSidebar();      
+      this.closeRightSidebar();
     }
   }
 
   public toggleLeftSidebar() {
-    if (!this.project?.leftSidebar) { return; }    
-    if (this.project.leftSidebar.open) { this.closeLeftSidebar(); } else { this.openLeftSidebar(); }
+    if (!this.project?.leftSidebar) {
+      return;
+    }
+    if (this.project.leftSidebar.open) {
+      this.closeLeftSidebar();
+    } else {
+      this.openLeftSidebar();
+    }
   }
 
   public openLeftSidebar() {
-    if (this.project?.leftSidebar) {      
+    if (this.project?.leftSidebar) {
       Vue.set(this.project.leftSidebar, 'open', true);
-      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "1");      
+      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, '1');
     }
   }
 
   public closeLeftSidebar() {
     if (this.project?.leftSidebar) {
-      Vue.set(this.project.leftSidebar, 'open', false);      
-      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, "0");
+      Vue.set(this.project.leftSidebar, 'open', false);
+      this.addRouteQueryParam(AppState.LEFT_SIDEBAR_STATE, '0');
     }
   }
 
   public checkLeftSidebarState() {
     if (this.router?.currentRoute.query[AppState.LEFT_SIDEBAR_STATE]) {
-      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE]=== "0") {
+      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE] === '0') {
         this.closeLeftSidebar();
-      } 
-      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE] === "1") {
+      }
+      if (this.router.currentRoute.query[AppState.LEFT_SIDEBAR_STATE] === '1') {
         this.openLeftSidebar();
-      } 
+      }
     }
   }
 
   public closeRightSidebar(): boolean {
-    if (this.project.rightSidebar) {      
+    if (this.project.rightSidebar) {
       this.project.rightSidebar.open = false;
       this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_CLOSED);
       return true;
@@ -613,7 +783,11 @@ export class AppState extends AppStateBase {
   }
 
   public closeRightSidebarKey(id: string): boolean {
-    if (this.project.rightSidebar && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
+    if (
+      this.project.rightSidebar &&
+      this.project.rightSidebar.sidebars &&
+      this.project.rightSidebar.sidebars.hasOwnProperty(id)
+    ) {
       this.project.rightSidebar.sidebars[id].hide = true;
       return true;
     } else {
@@ -632,12 +806,21 @@ export class AppState extends AppStateBase {
       this.project.rightSidebar.dashboard &&
       this.project.rightSidebar.dashboard.widgets
     ) {
-      const wi = this.project.rightSidebar.dashboard.widgets.findIndex(w => w.id === id);
+      const wi = this.project.rightSidebar.dashboard.widgets.findIndex(
+        (w) => w.id === id
+      );
       if (wi >= 0) {
-        const widget = this.project.rightSidebar.dashboard.widgets.splice(wi, 1)[0];
-        this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_REMOVED, widget);
+        const widget = this.project.rightSidebar.dashboard.widgets.splice(
+          wi,
+          1
+        )[0];
+        this.bus.publish(
+          AppState.RIGHTSIDEBAR,
+          AppState.RIGHTSIDEBAR_REMOVED,
+          widget
+        );
         if (this.project.rightSidebar.dashboard.widgets.length === 0) {
-          this.closeRightSidebar();          
+          this.closeRightSidebar();
         }
         return true;
       } else {
@@ -649,7 +832,9 @@ export class AppState extends AppStateBase {
 
   public addRightSidebarKey(key: string, open: boolean = false) {
     if (this.project.rightSidebar) {
-      if (!this.project.rightSidebar.sidebars) { this.project.rightSidebar.sidebars = {}; }
+      if (!this.project.rightSidebar.sidebars) {
+        this.project.rightSidebar.sidebars = {};
+      }
       if (!this.project.rightSidebar.sidebars.hasOwnProperty(key)) {
         this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
@@ -674,16 +859,21 @@ export class AppState extends AppStateBase {
 
   public toggleRightSidebar(key?: string) {
     const visible = this.visibleSidebars;
-    if (!visible || !this.project.rightSidebar) { return; }
+    if (!visible || !this.project.rightSidebar) {
+      return;
+    }
 
     if (key && visible.hasOwnProperty(key)) {
       const d = visible[key];
-      if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
+      if (
+        this.project.rightSidebar.dashboard &&
+        this.project.rightSidebar.dashboard.id === d.id
+      ) {
         if (this.project.rightSidebar.open) {
           this.closeRightSidebar();
         } else {
           this.project.rightSidebar.open = true;
-        }        
+        }
       } else {
         this.openRightSidebar(d);
       }
@@ -692,18 +882,35 @@ export class AppState extends AppStateBase {
         this.closeRightSidebar();
       } else {
         this.project.rightSidebar.open = true;
-      }        
+      }
     }
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
+  public openRightSidebarWidget(
+    widget: IWidget,
+    options?: ISidebarOptions,
+    key = 'default',
+    replace = true
+  ) {
     this.addRightSidebarWidget(widget, options, key, replace, true);
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public addRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace: boolean = true, open: boolean = false) {
-    if (!replace && widget.id && this.project.rightSidebar && this.project.rightSidebar.dashboard && this.findWidget(widget.id, this.project.rightSidebar.dashboard)) {
+  public addRightSidebarWidget(
+    widget: IWidget,
+    options?: ISidebarOptions,
+    key = 'default',
+    replace: boolean = true,
+    open: boolean = false
+  ) {
+    if (
+      !replace &&
+      widget.id &&
+      this.project.rightSidebar &&
+      this.project.rightSidebar.dashboard &&
+      this.findWidget(widget.id, this.project.rightSidebar.dashboard)
+    ) {
       return;
     }
     Vue.nextTick(() => {
@@ -713,7 +920,10 @@ export class AppState extends AppStateBase {
       } else {
         this.addRightSidebarKey(key);
         if (this.project.rightSidebar && this.project.rightSidebar.sidebars) {
-          if (this.project.rightSidebar.sidebars.hasOwnProperty(key) && this.project.rightSidebar.sidebars[key].widgets) {
+          if (
+            this.project.rightSidebar.sidebars.hasOwnProperty(key) &&
+            this.project.rightSidebar.sidebars[key].widgets
+          ) {
             this.project.rightSidebar.sidebars[key].widgets!.push(widget);
           }
         }
@@ -729,15 +939,25 @@ export class AppState extends AppStateBase {
             this.project.rightSidebar.open = options.open;
           }
           if (options.width !== undefined) {
-            
             this.project.rightSidebar.width = options.width;
           }
         } else {
-          this.project.rightSidebar.open = this.project.rightSidebar.open !== undefined ? this.project.rightSidebar.open : true;
+          this.project.rightSidebar.open =
+            this.project.rightSidebar.open !== undefined
+              ? this.project.rightSidebar.open
+              : true;
         }
       }
-      this.bus.publish(AppState.DASHBOARD_MAIN, AppState.DASHBOARD_CHANGED, AppState.Instance.activeDashboard); //To trigger the watch on visibleHeaders
-      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
+      this.bus.publish(
+        AppState.DASHBOARD_MAIN,
+        AppState.DASHBOARD_CHANGED,
+        AppState.Instance.activeDashboard
+      ); //To trigger the watch on visibleHeaders
+      this.bus.publish(
+        AppState.RIGHTSIDEBAR,
+        AppState.RIGHTSIDEBAR_ADDED,
+        widget
+      );
     });
     // }
   }
@@ -760,12 +980,16 @@ export class AppState extends AppStateBase {
     if (!dashboard && this.project.dashboards) {
       for (const d of this.project.dashboards) {
         const w = this.findWidget(id, d);
-        if (w) { return w; }
+        if (w) {
+          return w;
+        }
       }
     } else if (dashboard) {
       if (dashboard.widgets && dashboard.widgets.length > 0) {
-        const widget = dashboard.widgets.find(w => w.id === id);
-        if (widget) { return widget; }
+        const widget = dashboard.widgets.find((w) => w.id === id);
+        if (widget) {
+          return widget;
+        }
       } else if (dashboard.dashboards && dashboard.dashboards.length > 0) {
         for (const d of dashboard.dashboards) {
           const widget = this.findWidget(id, d);

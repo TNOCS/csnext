@@ -1,4 +1,4 @@
-export class ViewType {
+export class EntityType {
     public id!: string;
     public title!: string;
     public color!: string;    

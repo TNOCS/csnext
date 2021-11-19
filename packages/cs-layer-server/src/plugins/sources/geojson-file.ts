@@ -11,6 +11,7 @@ import fs from 'fs';
 import { Logger } from '@nestjs/common';
 import { Feature } from 'geojson';
 import path from 'path';
+import uniq from 'lodash/uniq';
 import { v1 as uuidv1} from 'uuid';
 import moment from 'moment';
 import {
@@ -24,7 +25,6 @@ import {
 } from 'simple-statistics';
 // import { createTileIndex } from '../../tiles/geojson-tiles';
 import { FeatureType, PropertyType } from '@csnext/cs-data';
-import _ from 'lodash';
 
 export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
     public id = 'json';
@@ -228,7 +228,7 @@ export class GeojsonSource implements ISourcePlugin, ISourcePluginType {
                     if (ft.properties.hasOwnProperty(pt)) {
                         const proptype = ft.properties[pt];
                         proptype.count = proptype._values.length;
-                        const unique: any[] = _.uniq(proptype._values);
+                        const unique: any[] = uniq(proptype._values);
                         proptype.unique = unique.length;
                         if (proptype.unique < 7) {
                             proptype.options = unique;

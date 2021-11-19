@@ -81,8 +81,8 @@ export default Text.extend({
                     const { parent, pos } = tr.selection.$from
                     const posAfter = pos + 1;
                     const nodeAfter = tr.doc.nodeAt(posAfter)
-                    const id = entity?.entity_idx ?? guidGenerator();
-                    const type = entity?.class ?? entity?.entity_class ?? 'node';
+                    const id = entity?.id ?? guidGenerator();
+                    const type = entity?.spacy_label ?? 'node';
 
                     const newEntity = this.type.create();
                     newEntity.attrs = { id : id, type, text: text };

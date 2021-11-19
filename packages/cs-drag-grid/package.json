@@ -14,7 +14,7 @@
         "dev": "nodemon --watch webpack.config.js --exec \"webpack --watch --env dev --mode development\"",
         "build": "webpack --mode development && tsc",
         "build:production": "webpack --mode development && tsc",
-        "clean": "del-cli  yarn.lock yarn-error.log dist lib typescript node_modules tsconfig.tsbuildinfo"
+        "clean": "del-cli package-lock.json yarn.lock yarn-error.log dist lib typescript node_modules tsconfig.tsbuildinfo"
     },
     "publishConfig": {
         "access": "public"

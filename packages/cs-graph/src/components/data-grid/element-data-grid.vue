@@ -19,7 +19,7 @@
           <v-icon>account_tree</v-icon>
         </v-btn>
       </v-btn-toggle>
-      
+
       <v-menu offset-y v-if="options.canAdd && classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -31,7 +31,7 @@
             @keydown.native.alt.78="addEntity(classTypes[0])"
           >
             <v-icon>add</v-icon>
-            {{ $cs.Translate("NEW_ITEM") }}
+            {{ $cs.Translate('NEW_ITEM') }}
           </v-btn>
         </template>
         <v-list>
@@ -49,33 +49,32 @@
         @click="addEntity(classTypes[0])"
         v-else-if="options.canAdd"
         color="primary"
-        
         class="ml-2"
         elevation="0"
       >
         <v-icon>add</v-icon>
 
-        {{ $cs.Translate("NEW_ITEM") }}
+        {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
-      <v-btn v-if="options.defaultView == 'tree'"                        
-            class="ml-2"
-            @click="expandTree()"
-            elevation="0"            
-          >
-            <v-icon>expand_more</v-icon>
-            {{ $cs.Translate("EXPAND_ALL") }}
-          </v-btn>
-          <v-btn v-if="options.defaultView == 'tree'"            
-            
-            class="ml-2"
-            @click="collapseTree()"
-            elevation="0"
-                   
-          >
-            <v-icon>expand_less</v-icon>
-            {{ $cs.Translate("COLLAPSE_ALL") }}
-          </v-btn>
-      
+      <v-btn
+        v-if="options.defaultView == 'tree'"
+        class="ml-2"
+        @click="expandTree()"
+        elevation="0"
+      >
+        <v-icon>expand_more</v-icon>
+        {{ $cs.Translate('EXPAND_ALL') }}
+      </v-btn>
+      <v-btn
+        v-if="options.defaultView == 'tree'"
+        class="ml-2"
+        @click="collapseTree()"
+        elevation="0"
+      >
+        <v-icon>expand_less</v-icon>
+        {{ $cs.Translate('COLLAPSE_ALL') }}
+      </v-btn>
+
       <!-- <v-menu offset-y v-if="options.defaultView !== 'calendar'">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" class="ml-2" elevation="0" v-on="on">
@@ -131,12 +130,15 @@
     </v-menu> -->
     </v-layout>
 
-    <template v-if="options.defaultView === 'table'">      
-        <div style="display: flex; flex-direction: row; height: 100%">
+    <template v-if="options.defaultView === 'table'">
+      <div style="display: flex; flex-direction: row; height: 100%">
         <ag-grid-vue
           class="table-grid"
-          :class="{'ag-theme-alpine-dark': $cs.project.theme.dark, 'ag-theme-alpine': !$cs.project.theme.dark}"
-          :columnDefs="columnDefs"          
+          :class="{
+            'ag-theme-alpine-dark': $cs.project.theme.dark,
+            'ag-theme-alpine': !$cs.project.theme.dark,
+          }"
+          :columnDefs="columnDefs"
           :defaultColDef="defaultColDef"
           :rowData="rowData"
           rowSelection="single"
@@ -145,7 +147,7 @@
           @grid-ready="onGridReady"
         >
         </ag-grid-vue>
-</div>  
+      </div>
     </template>
 
     <template v-if="options.defaultView === 'cards'">
@@ -156,15 +158,19 @@
         class="isotope-grid"
       >
         <template v-for="(element, indx) of items">
-          <v-card          
-          :key="indx"
-          class="entity-card"
-          @click="selectEntityCard(element)"
-        >  
-        <component :is="getElementCard(element)" :source="source" :element="element"></component>                
+          <v-card
+            :key="indx"
+            class="entity-card"
+            @click="selectEntityCard(element)"
+          >
+            <component
+              :is="getElementCard(element)"
+              :source="source"
+              :element="element"
+            ></component>
           </v-card>
-          
-        <!-- <v-card          
+
+          <!-- <v-card          
           :key="indx"
           class="entity-card"
           @click="selectEntity(entity)"
@@ -299,9 +305,7 @@
               >
               <v-menu offset-y v-if="options.defaultView === 'tree'">
                 <template v-slot:activator="{ on }">
-                  <v-btn  v-on="on" icon
-                    ><v-icon>add</v-icon></v-btn
-                  >
+                  <v-btn v-on="on" icon><v-icon>add</v-icon></v-btn>
                 </template>
                 <v-list>
                   <v-list-item
@@ -329,12 +333,14 @@
               @click.stop="toggleCheckbox(item.entity)"
               v-if="options.checkboxProperty"
             >
-            {{ item.entity[options.checkboxProperty] }}
-              <v-icon v-if="item.entity.properties[options.checkboxProperty]">check_circle</v-icon>
+              {{ item.entity[options.checkboxProperty] }}
+              <v-icon v-if="item.entity.properties[options.checkboxProperty]"
+                >check_circle</v-icon
+              >
               <v-icon v-else>panorama_fish_eye</v-icon>
             </v-btn>
             <span @click="selectTableItem(item.entity)">
-            {{ item.entity.properties.name }}
+              {{ item.entity.properties.name }}
             </span>
             <!-- </v-btn> :value="item.entity._isLinked !== undefined" class="mt-3 ml-3 pa-0" :label="item.name"></v-checkbox> -->
             <!-- {{ item.entity._isLinked !== undefined}} -->
@@ -365,13 +371,12 @@
 
 
 <style lang="scss" scoped>
-
 .ag-theme-alpine {
-    /* use theme parameters where possible */
-    --ag-header-background-color: transparent;
-    --ag-border-color: transparent;
-    --ag-border: 0px;
-    --ag-padding: 0px;
+  /* use theme parameters where possible */
+  --ag-header-background-color: transparent;
+  --ag-border-color: transparent;
+  --ag-border: 0px;
+  --ag-padding: 0px;
 }
 
 .ag-row {
@@ -383,10 +388,10 @@
 }
 
 .ag-root-wrapper {
-  border: 0 !important;  
+  border: 0 !important;
 }
 
-.ag-text-field-input  {
+.ag-text-field-input {
   background: blue !important;
 }
 
@@ -410,11 +415,11 @@
 }
 
 .data-grid-component {
-  height: calc(100% - 120px);  
+  height: calc(100% - 120px);
 }
 
 .calendar-view {
-  height: calc(100% - 250px)
+  height: calc(100% - 250px);
 }
 
 .table-grid {
@@ -457,14 +462,13 @@
 </style>
 
 <script lang="ts">
-import { Component, Ref, Watch } from "vue-property-decorator";
-import { AppState, WidgetBase } from "@csnext/cs-client";
-import { DataInfoPanel, NodeLink } from "@csnext/cs-map";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
-import OptionsFilter from "./options-filter.vue";
-
+import { Component, Ref, Watch } from 'vue-property-decorator';
+import { AppState, WidgetBase } from '@csnext/cs-client';
+import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+import OptionsFilter from './options-filter.vue';
 
 // import { FeatureType } from "../../classes";
 import {
@@ -473,42 +477,42 @@ import {
   GraphElement,
   PropertyType,
   PropertyValueType,
-} from "@csnext/cs-data";
-import moment from "moment";
-import simplebar from "simplebar-vue";
-import isotope from "vueisotope";
-import { AppStateBase, guidGenerator, WidgetOptions } from "@csnext/cs-core";
-import Vue from "vue";
-import { DocDatasource, DataGridOptions, GridView } from "./../../index";
-import { PropValue } from "@csnext/cs-map";
-import GridPropValue from "./grid-prop-value";
-import OptionsCellEditor from "./options-cell-editor.vue"
+} from '@csnext/cs-data';
+import moment from 'moment';
+import simplebar from 'simplebar-vue';
+import isotope from 'vueisotope';
+import { AppStateBase, guidGenerator, WidgetOptions } from '@csnext/cs-core';
+import Vue from 'vue';
+import { DocDatasource, DataGridOptions, GridView } from './../../index';
+import { PropValue } from '@csnext/cs-map';
+import GridPropValue from './grid-prop-value';
+import OptionsCellEditor from './options-cell-editor.vue';
 import NodeLinkCellEditor from './node-link-cell-editor.vue';
-import { AgGridVue } from "ag-grid-vue";
-import { CellValueChangedEvent, ColDef, GridApi } from "ag-grid-community";
-import GridRowActions from "./grid-row-actions.vue";
-import DateCellEditor from "./date-cell-editor.vue";
-import DefaultElementCard from "./cards/default-element-card.vue";
-import { ElementCardManager } from "./cards/element-card-manager"
+import { AgGridVue } from 'ag-grid-vue';
+import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
+import GridRowActions from './grid-row-actions.vue';
+import DateCellEditor from './date-cell-editor.vue';
+import DefaultElementCard from './cards/default-element-card.vue';
+import { ElementCardManager } from './cards/element-card-manager';
 // import Placeholder from "@tiptap/extension-placeholder";
-require("isotope-packery");
+require('isotope-packery');
 
 @Component({
-  name: "element-data-grid",
+  name: 'element-data-grid',
   components: {
-    "date-cell-editor": DateCellEditor,
-    "grid-prop-value": GridPropValue,
-    "grid-row-actions": GridRowActions,
-    "options-cell-editor": OptionsCellEditor,
-    "node-link-cell-editor": NodeLinkCellEditor,
-    "options-filter": OptionsFilter,
+    'date-cell-editor': DateCellEditor,
+    'grid-prop-value': GridPropValue,
+    'grid-row-actions': GridRowActions,
+    'options-cell-editor': OptionsCellEditor,
+    'node-link-cell-editor': NodeLinkCellEditor,
+    'options-filter': OptionsFilter,
     PropValue,
     AgGridVue,
     simplebar,
     DataInfoPanel,
     NodeLink,
     isotope,
-    DefaultElementCard
+    DefaultElementCard,
   },
 })
 export default class ElementDataGrid extends WidgetBase {
@@ -520,16 +524,16 @@ export default class ElementDataGrid extends WidgetBase {
   public classTypes: FeatureType[] = [];
   public sortOptions?: PropertyType[] | null = null;
   public groupOptions?: PropertyType[] | null = null;
-  public groupKey?: null | string = null;  
-  public focus = "";
-  public search: string = "";
+  public groupKey?: null | string = null;
+  public focus = '';
+  public search: string = '';
   public selectedTree?: any = [];
   public items: GraphElement[] | undefined = []; // this.generateFakeDataRows(100);
-  @Ref("iso")
+  @Ref('iso')
   public iso?: any;
-  @Ref("calendar")
+  @Ref('calendar')
   public calendar?: any;
-  @Ref("treeView")
+  @Ref('treeView')
   public treeView?: any;
 
   public gridApi?: GridApi;
@@ -540,18 +544,18 @@ export default class ElementDataGrid extends WidgetBase {
   public columnDefs: ColDef[] | null = null;
 
   public typeToLabel = {
-    month: "Month",
-    week: "Week",
-    day: "Day",
-    "4day": "4 Days",
+    month: 'Month',
+    week: 'Week',
+    day: 'Day',
+    '4day': '4 Days',
   };
 
   public headers: any[] = [];
   public autoGroupColumnDef = {
-    headerName: "PMSEII",
-    field: "properties.PMSEII",
+    headerName: 'PMSEII',
+    field: 'properties.PMSEII',
     minWidth: 250,
-    cellRenderer: "agGroupCellRenderer",
+    cellRenderer: 'agGroupCellRenderer',
     cellRendererParams: { checkbox: true },
   };
   public defaultColDef = {
@@ -572,11 +576,12 @@ export default class ElementDataGrid extends WidgetBase {
     return true;
   }
 
-  public onCellValueChanged(event: CellValueChangedEvent) {    
-    if (!this.source || !event.data) { return; }
+  public onCellValueChanged(event: CellValueChangedEvent) {
+    if (!this.source || !event.data) {
+      return;
+    }
     console.log(event.data.properties.end);
     this.source.saveNode(event.data);
-    
   }
 
   public onGridSelection() {
@@ -622,7 +627,7 @@ export default class ElementDataGrid extends WidgetBase {
 
   public itemPropValue(prop: PropertyType, element: GraphElement) {
     if (!element?.properties || !prop.key) {
-      return "";
+      return '';
     }
     if (
       prop.type === PropertyValueType.relation &&
@@ -638,7 +643,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public setToday() {
-    this.focus = "";
+    this.focus = '';
   }
 
   public graphNode(element: GraphElement) {
@@ -648,12 +653,12 @@ export default class ElementDataGrid extends WidgetBase {
     this.source.createKGView([element]);
   }
 
-  @Watch("selectedTree")
+  @Watch('selectedTree')
   public treeSelectionChanged() {
     console.log(this.selectedTree);
   }
 
-  @Watch("options.defaultView")
+  @Watch('options.defaultView')
   public viewChanged() {
     this.updateEntities(true);
   }
@@ -667,47 +672,57 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public collapseTree() {
-     (this.$refs.treeView as any).updateAll(false);
+    (this.$refs.treeView as any).updateAll(false);
   }
 
   public async toggleCheckbox(entity: GraphElement) {
- if (!this.source || !this.options.checkboxProperty || !entity.properties) {
+    if (!this.source || !this.options.checkboxProperty || !entity.properties) {
       return;
     }
     // entity.properties[this.options.checkboxProperty] = (entity.properties[this.options.checkboxProperty] === true) ? false : true;
-    Vue.set(entity.properties, this.options.checkboxProperty, (entity.properties[this.options.checkboxProperty] === true) ? false : true)
+    Vue.set(
+      entity.properties,
+      this.options.checkboxProperty,
+      entity.properties[this.options.checkboxProperty] === true ? false : true
+    );
     this.source.saveNode(entity);
-    
   }
 
   public async toggleLinked(entity: GraphElement) {
     if (!this.source) {
       return;
     }
-    if ((entity as any)._isLinked) {      
-      this.source.removeEdge((entity as any)._isLinked).then(r => {
-        Vue.set(entity, "_isLinked", undefined);
-        this.updateEntities(true);
-      }).catch(e => {
-        console.log('Error removing edge');
-      })
-      
-      
+    if ((entity as any)._isLinked) {
+      this.source
+        .removeEdge((entity as any)._isLinked)
+        .then((r) => {
+          Vue.set(entity, '_isLinked', undefined);
+          this.updateEntities(true);
+        })
+        .catch((e) => {
+          console.log('Error removing edge');
+        });
+
       // (entity as any)._isLinked = undefined;
-    } else {      
+    } else {
       if (
         entity.id &&
         this.options.relationToggle?.fromId &&
         this.options.relationToggle.relationClassId
-      ) {        
-        this.source.addNewEdge({
-          fromId: this.options.relationToggle.fromId,
-          toId: entity.id,
-          classId: this.options.relationToggle.relationClassId,
-        } as GraphElement, true).then(linkEdge => {
-          Vue.set(entity, "_isLinked", linkEdge);      
-          this.updateEntities(true);
-        });        
+      ) {
+        this.source
+          .addNewEdge(
+            {
+              fromId: this.options.relationToggle.fromId,
+              toId: entity.id,
+              classId: this.options.relationToggle.relationClassId,
+            } as GraphElement,
+            true
+          )
+          .then((linkEdge) => {
+            Vue.set(entity, '_isLinked', linkEdge);
+            this.updateEntities(true);
+          });
       }
     }
     // this.updateEntities(true);
@@ -715,7 +730,7 @@ export default class ElementDataGrid extends WidgetBase {
 
   public itemPropValues(prop: PropertyType, element: GraphElement) {
     if (!element?.properties || !prop.key) {
-      return "";
+      return '';
     }
     if (
       prop.type === PropertyValueType.relation &&
@@ -737,7 +752,7 @@ export default class ElementDataGrid extends WidgetBase {
     return (
       value != null &&
       search != null &&
-      typeof value === "string" &&
+      typeof value === 'string' &&
       value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     );
   }
@@ -748,14 +763,14 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public selectElement(element: GraphElement, selected: boolean) {
-    alert("selected");
+    alert('selected');
     if (!this.source) {
       return;
     }
     if (selected) {
-      this.source.addElementToGraph(element);
+      this.source.addElementToPreset(element, 'default');
     } else {
-      this.source.removeElementFromGraph(element);
+      this.source.removeElementFromPreset(element, 'default');
     }
 
     // alert('select');
@@ -782,12 +797,12 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     if (!this.options.selectedHeaders) {
-      this.options.selectedHeaders = [{ key: "name" }];
+      this.options.selectedHeaders = [{ key: 'name' }];
     }
     this.headers = [];
     this.columnDefs = [];
-    
-    this.headers.push({ text: "", value: "icon", sortable: false });
+
+    this.headers.push({ text: '', value: 'icon', sortable: false });
     for (const header of this.options.selectedHeaders) {
       if (header.key && this.potentialProperties.hasOwnProperty(header.key)) {
         const prop = this.potentialProperties[header.key];
@@ -807,26 +822,26 @@ export default class ElementDataGrid extends WidgetBase {
 
           // cellRenderer: 'daysFrostRenderer',
           // cellRendererParams: {rendererImage: "frost.png"} ,
-          cellRenderer: "grid-prop-value",
+          cellRenderer: 'grid-prop-value',
           // cellRendererParams: (d) => {
           //   debugger;
           //   return {'test': 'test'};
           // },
           editable: true,
         } as ColDef;
-        if (prop.type === "epoch") {
+        if (prop.type === 'epoch') {
           column.cellEditor = 'date-cell-editor';
           column.cellEditorParams = {
-            updatedCell: (row: GraphElement) => {              
+            updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
               // this.updateEntities();
-            }
-          }
-          column.filter = "agDateColumnFilter";
+            },
+          };
+          column.filter = 'agDateColumnFilter';
           column.filterParams = {
             comparator: (epochCellFilter: any, cellValue: any) => {
               var cellDate = new Date(cellValue);
-              
+
               if (epochCellFilter.getTime() === cellDate.getTime()) {
                 return 0;
               }
@@ -840,31 +855,31 @@ export default class ElementDataGrid extends WidgetBase {
             browserDatePicker: true,
             minValidYear: 2000,
           };
-        }     
+        }
         if (prop.type === 'relation') {
           column.cellEditor = 'node-link-cell-editor';
           column.cellEditorParams = {
             source: this.source,
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            }
-          }
+            },
+          };
         }
         if (prop.type === 'options') {
           column.cellEditor = 'options-cell-editor';
           column.floatingFilter = true;
-          column.floatingFilterComponentFramework = 'options-filter';          
+          column.floatingFilterComponentFramework = 'options-filter';
           column.filterFramework = 'options-filter';
           column.floatingFilterComponentParams = {
             suppressFilterButton: true,
-            propType : prop
+            propType: prop,
           };
           column.cellEditorParams = {
             source: this.source,
-            updatedCell: (row: GraphElement) => {              
+            updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            }
-          }
+            },
+          };
         }
 
         // filter: 'agDateColumnFilter',
@@ -876,29 +891,29 @@ export default class ElementDataGrid extends WidgetBase {
       sortable: false,
       cellRenderer: 'grid-row-actions',
       cellRendererParams: {
-        graphNode: (row: GraphElement) => {          
-          this.graphNode(row)
+        graphNode: (row: GraphElement) => {
+          this.graphNode(row);
         },
         delete: (row: GraphElement) => {
           this.removeEntity(row);
-        }
-      }
-    })
-    this.headers.push({ text: "Actions", value: "actions", sortable: false });
+        },
+      },
+    });
+    this.headers.push({ text: 'Actions', value: 'actions', sortable: false });
     this.$forceUpdate();
   }
 
   public setSort(prop: PropertyType) {
     if (this.iso) {
-      this.iso.sort("name");
-      this.iso.sort("custom");
+      this.iso.sort('name');
+      this.iso.sort('custom');
     }
     this.sort = prop;
     this.update();
   }
 
   public setGroup(prop?: PropertyType | string) {
-    if (typeof prop === "string" && this.groupOptions) {
+    if (typeof prop === 'string' && this.groupOptions) {
       prop = this.groupOptions.find((g) => g.key === prop);
     } else {
       return;
@@ -910,7 +925,6 @@ export default class ElementDataGrid extends WidgetBase {
     this.groupKey = `properties.${this.group.key}`;
     this.update();
   }
-  
 
   public selectTableItem(item: GraphElement) {
     if (!this.source) {
@@ -928,8 +942,8 @@ export default class ElementDataGrid extends WidgetBase {
 
   public getIsoOptions() {
     return {
-      itemSelector: ".entity-card",
-      layoutMode: "packery",
+      itemSelector: '.entity-card',
+      layoutMode: 'packery',
       getSortData: {
         name: (s: any) => {
           return s.properties.name;
@@ -943,13 +957,13 @@ export default class ElementDataGrid extends WidgetBase {
         },
         // updated: '.properties.updated_time',
       },
-      sortBy: "custom",
+      sortBy: 'custom',
       // percentPosition: true,
       // options for cellsByRow layout mode
 
       // options for masonry layout mode
       masonry: {
-        columnWidth: ".grid-sizer",
+        columnWidth: '.grid-sizer',
       },
     };
   }
@@ -961,98 +975,106 @@ export default class ElementDataGrid extends WidgetBase {
   public async addEntity(type: FeatureType, parent?: GraphElement) {
     if (!this.source) {
       return;
-    }    
+    }
     let placeholder = `new ${type.title}`;
     if (this.options.askForName) {
-      
-      $cs.triggerInputDialog(
-        placeholder,
-        "enter new name",
-        "",
-        placeholder
-      ).then(name => {
-      this.source
-        ?.addNewNode({
-          id: `${type.type}-${guidGenerator()}`,
-          properties: { ...this.options.newItem, classId: type.type, name },
-          classId: type.type,
-        })
-        .then(async (e) => {
-          if (this.source && parent && this.options.parentProperty) {
-            try {
-              const parentEdge = await this.source.addNewEdge({
-                fromId: e.id,
-                toId: parent.id,
-                classId: this.options.parentProperty,
-              } as GraphElement, true);
-              if (parentEdge) {
+      $cs
+        .triggerInputDialog(placeholder, 'enter new name', '', placeholder)
+        .then((name) => {
+          this.source
+            ?.addNewNode({
+              id: `${type.type}-${guidGenerator()}`,
+              properties: { ...this.options.newItem, classId: type.type, name },
+              classId: type.type,
+            })
+            .then(async (e) => {
+              if (this.source && parent && this.options.parentProperty) {
                 try {
-                  await this.source.addEdge(parentEdge);
-                } catch(e) {
-                  console.log('Error adding parent edge');
-                }
-              }
-            } catch (e) {
-              console.log("Error adding parent edge edge");
-            }
-            // await this.source.updateEdges();
-          }
-          // check if new relations should be created
-          if (this.source && this.options.newRelations) {
-            for (const relation of this.options.newRelations) {
-              // new relation to other id
-              if (relation.toId && this.potentialProperties) {
-                if (
-                  this.potentialProperties.hasOwnProperty(relation.key) &&
-                  this.potentialProperties[relation.key].relation?.type
-                ) {
-                  try {
-                    const newEdge = await this.source.addNewEdge({
+                  const parentEdge = await this.source.addNewEdge(
+                    {
                       fromId: e.id,
-                      toId: relation.toId,
-                      classId:
-                        this.potentialProperties[relation.key].relation?.type,
-                    } as GraphElement, true);                    
-                  } catch (e) {
-                    console.log("Error adding relation edge");
+                      toId: parent.id,
+                      classId: this.options?.parentProperty,
+                    } as GraphElement,
+                    true
+                  );
+                  if (parentEdge) {
+                    try {
+                      await this.source.addEdge(parentEdge);
+                    } catch (e) {
+                      console.log('Error adding parent edge');
+                    }
+                  }
+                } catch (e) {
+                  console.log('Error adding parent edge edge');
+                }
+                // await this.source.updateEdges();
+              }
+              // check if new relations should be created
+              if (this.source && this.options.newRelations) {
+                for (const relation of this.options.newRelations) {
+                  // new relation to other id
+                  if (relation.toId && this.potentialProperties) {
+                    if (
+                      this.potentialProperties.hasOwnProperty(relation.key) &&
+                      this.potentialProperties[relation.key].relation?.type
+                    ) {
+                      try {
+                        const newEdge = await this.source.addNewEdge(
+                          {
+                            fromId: e.id,
+                            toId: relation.toId,
+                            classId:
+                              this.potentialProperties[relation.key].relation
+                                ?.type,
+                          } as GraphElement,
+                          true
+                        );
+                      } catch (e) {
+                        console.log('Error adding relation edge');
+                      }
+                    }
+                  } else if (relation.fromId) {
+                    // create relation from other id
+                    const fromId =
+                      typeof relation.fromId === 'function'
+                        ? relation.fromId()
+                        : relation.fromId;
+                    const fromNode = this.source.getElement(fromId);
+                    if (
+                      fromNode?._featureType?.propertyMap &&
+                      fromNode._featureType.propertyMap.hasOwnProperty(
+                        relation.key
+                      )
+                    ) {
+                      const prop =
+                        fromNode._featureType.propertyMap[relation.key];
+                      const newEdge = await this.source.addNewEdge(
+                        {
+                          fromId: fromId,
+                          toId: e.id,
+                          classId: prop.relation?.type,
+                        } as GraphElement,
+                        true
+                      );
+                    }
                   }
                 }
-              } else if (relation.fromId) {
-                // create relation from other id
-                const fromId =
-                  typeof relation.fromId === "function"
-                    ? relation.fromId()
-                    : relation.fromId;
-                const fromNode = this.source.getElement(fromId);
-                if (
-                  fromNode?._featureType?.propertyMap &&
-                  fromNode._featureType.propertyMap.hasOwnProperty(relation.key)
-                ) {
-                  const prop = fromNode._featureType.propertyMap[relation.key];
-                  const newEdge = await this.source.addNewEdge({
-                    fromId: fromId,
-                    toId: e.id,
-                    classId: prop.relation?.type,
-                  } as GraphElement, true);                  
-                }
+                await this.source.updateEdges();
               }
-            }
-            await this.source.updateEdges();
-          }
-          this.updateEntities(true);
-          if (this.options.onAfterAdded) {
-            await this.options.onAfterAdded(e);
-          } else {
-            // this.source?.openElement(e);
-          }
-          return e;
-        })
-        .catch((e) => {
-          alert("error creating entity");
+              this.updateEntities(true);
+              if (this.options.onAfterAdded) {
+                await this.options.onAfterAdded(e);
+              } else {
+                // this.source?.openElement(e);
+              }
+              return e;
+            })
+            .catch((e) => {
+              alert('error creating entity');
+            });
         });
-    })
     }
-    
   }
 
   public editEntity(element: GraphElement) {
@@ -1071,7 +1093,7 @@ export default class ElementDataGrid extends WidgetBase {
         // alert('removed');
       })
       .catch((e) => {
-        alert("error");
+        alert('error');
       });
   }
 
@@ -1083,7 +1105,7 @@ export default class ElementDataGrid extends WidgetBase {
     treeItems: any[],
     // classTypes: string[],
     base?: GraphElement,
-    active?: any,    
+    active?: any
   ) {
     if (!this.source || !this.options.baseType) {
       return;
@@ -1144,7 +1166,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     this.focus = date;
-    this.options.calendarOptions.type = "day";
+    this.options.calendarOptions.type = 'day';
   }
 
   public updateEntities(force = false) {
@@ -1193,23 +1215,21 @@ export default class ElementDataGrid extends WidgetBase {
 
     console.log('update entities');
     for (const item of this.items) {
-      console.log(item.properties!.end);      
+      console.log(item.properties!.end);
     }
 
-    if (this.options.defaultView === GridView.table) {      
+    if (this.options.defaultView === GridView.table) {
       Vue.set(this, 'rowData', this.items);
       if (this.gridApi) {
         this.gridApi.refreshClientSideRowModel();
       }
     }
 
-    
-
     // this.rowData = this.items;
 
-    if (!this.sort) {
-      this.sort = this.featureType.properties?.find(
-        (p) => p.key === "updated_time"
+    if (!this.sort && this.featureType.properties) {
+      this.sort = this.featureType.properties.find(
+        (p) => p.key === 'updated_time'
       );
     }
 
@@ -1217,8 +1237,8 @@ export default class ElementDataGrid extends WidgetBase {
       this.options.defaultView === GridView.tree &&
       this.options.parentProperty
     ) {
-      console.log("starting update tree");
-      // 
+      console.log('starting update tree');
+      //
       const treeItems = this.updateTree([], undefined, undefined);
       Vue.set(this, 'treeItems', treeItems);
       console.log(this.treeItems);
@@ -1228,7 +1248,6 @@ export default class ElementDataGrid extends WidgetBase {
     if (this.options.relationToggle) {
       this.updateLinkedEntities();
     }
-
 
     this.update();
   }
@@ -1271,24 +1290,26 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public dateString(date: number): string {
-    return moment(date).format("MMMM Do YYYY, h:mm:ss a");
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
   }
-
 
   public contentLoaded(source: DocDatasource) {
     this.updateEntities(true);
     this.update();
 
     if (this.source?.events) {
-        console.log('create subscription')
-        this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
-          if (action === GraphDatasource.ELEMENT_UPDATED) {            
+      console.log('create subscription');
+      this.source.events.subscribe(
+        GraphDatasource.GRAPH_EVENTS,
+        (action: string, el: GraphElement) => {
+          if (action === GraphDatasource.ELEMENT_UPDATED) {
             this.updateEntities(true);
             this.$forceUpdate();
           }
-        })
-      }  
-    
+        }
+      );
+    }
+
     if (this.options) {
       if (this.options.calendarOptions) {
         this.setToday();
@@ -1297,12 +1318,10 @@ export default class ElementDataGrid extends WidgetBase {
         this.options.title = this.featureType?.title;
       }
       if (!this.options.defaultView) {
-        Vue.set(this.options, "defaultView", GridView.table);
+        Vue.set(this.options, 'defaultView', GridView.table);
         // this.options.defaultView = GridView.table;
       }
-      
-          
-      
+
       // let selectionSizePlugin = new Plugin({
       //   view(editorView) {
       //     return new SelectionSizeTooltip(editorView);
@@ -1314,15 +1333,13 @@ export default class ElementDataGrid extends WidgetBase {
   private getElementCard(element: GraphElement) {
     const id = element.classId;
     if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
-      return ElementCardManager.cards[id]
-    }    
-    return 'default-element-card';    
+      return ElementCardManager.cards[id];
+    }
+    return 'default-element-card';
   }
 
-  mounted() {    
-    this.updateEntities();    
+  mounted() {
+    this.updateEntities();
   }
-
-  
 }
 </script>

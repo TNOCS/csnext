@@ -13,12 +13,16 @@ export class DatasourceManager {
   /** Available datasource handlers  */
   // private static Processors: { [id: string]: IDatasourceProcessor } = {};
 
-  constructor() { }
+  constructor() {}
 
   /** Load a data source using the assigned data summary handler(s) */
   public load<T>(source: IDatasource | string): Promise<T> {
     return new Promise((resolve, reject) => {
-      if (typeof source === 'string' && $cs.project.datasources && $cs.project.datasources.hasOwnProperty(source)) {
+      if (
+        typeof source === 'string' &&
+        $cs.project.datasources &&
+        $cs.project.datasources.hasOwnProperty(source)
+      ) {
         const datasource = $cs.project.datasources[source];
         if (datasource.loaded) {
           resolve(datasource as T);
@@ -51,21 +55,23 @@ export class DatasourceManager {
         if (typeof datasource.execute === 'function') {
           datasource
             .execute($cs.project.datasources)
-            .catch(e => {
+            .catch((e) => {
               datasource.loaded = false;
               datasource.isLoading = false;
               reject(e);
-              while (datasource.requestQueue &&
-                datasource.requestQueue.length > 0) {
+              while (
+                datasource.requestQueue &&
+                datasource.requestQueue.length > 0
+              ) {
                 const item = datasource.requestQueue.pop();
                 if (item) {
                   item.reject(e);
                 }
                 return;
-            }
+              }
               return;
             })
-            .then(r => {
+            .then((r) => {
               datasource.loaded = true;
               datasource.isLoading = false;
               resolve(r);

@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 import {
   IWidget,
   IMenu,
@@ -7,23 +7,23 @@ import {
   MessageBusHandle,
   guidGenerator,
   WidgetOptions,
-  Topics
-} from '@csnext/cs-core';
-import resize from 'vue-resize-directive';
-import './cs-widget.css';
-import { AppState } from '../..';
-import { CsToolbarMenus } from '../cs-toolbar-menus/cs-toolbar-menus';
+  Topics,
+} from "@csnext/cs-core";
+import resize from "vue-resize-directive";
+import "./cs-widget.css";
+import { AppState } from "../..";
+import { CsToolbarMenus } from "../cs-toolbar-menus/cs-toolbar-menus";
 
 @Component({
-  name: 'cs-widget',
-  template: require('./cs-widget.html'),
+  name: "cs-widget",
+  template: require("./cs-widget.html"),
   directives: { resize },
   components: {
-    'cs-toolbar-menus': CsToolbarMenus
+    "cs-toolbar-menus": CsToolbarMenus,
   },
   props: {
-    widget: null
-  }
+    widget: null,
+  },
 } as any)
 export class CsWidget extends Vue {
   // #region Properties (8)
@@ -56,11 +56,22 @@ export class CsWidget extends Vue {
   // #region Public Accessors (2)
 
   public get options(): WidgetOptions {
-    if (this._options) { return this._options; }
-    if (!this.widget) { return {}; }
+    if (this._options) {
+      return this._options;
+    }
+    if (!this.widget) {
+      return {};
+    }
     if (this.widget._dashboard && this.widget._dashboard.defaultWidgetOptions) {
-      const toolbarOptions = { ...this.widget._dashboard.defaultWidgetOptions.toolbarOptions, ...this.widget.options?.toolbarOptions};
-      this._options = { ...this.widget._dashboard.defaultWidgetOptions, ...this.widget.options, ...{ toolbarOptions: toolbarOptions} };
+      const toolbarOptions = {
+        ...this.widget._dashboard.defaultWidgetOptions.toolbarOptions,
+        ...this.widget.options?.toolbarOptions,
+      };
+      this._options = {
+        ...this.widget._dashboard.defaultWidgetOptions,
+        ...this.widget.options,
+        ...{ toolbarOptions: toolbarOptions },
+      };
     } else if (this.widget.options) {
       this._options = this.widget.options;
     } else {
@@ -90,7 +101,7 @@ export class CsWidget extends Vue {
     if (!this.widget.options.menus) {
       this.widget.options.menus = [];
     }
-    if (!this.widget.options.menus.find(m => m.id === menu.id)) {
+    if (!this.widget.options.menus.find((m) => m.id === menu.id)) {
       this.widget.options.menus.push(menu);
     }
   }
@@ -98,12 +109,6 @@ export class CsWidget extends Vue {
   public beforeDestroy() {
     if (this.dsHandle) {
       this.$cs.bus.unsubscribe(this.dsHandle);
-    }
-  }
-
-  public checkWidgetId(widget: IWidget) {
-    if (widget && !widget.id) {
-      widget.id = 'widget-' + guidGenerator();
     }
   }
 
@@ -119,9 +124,9 @@ export class CsWidget extends Vue {
     this.widget._component = this.$refs.component;
     if (this.widget && this.widget.datasource) {
       this.dsHandle = this.$cs.bus.subscribe(
-        'ds-' + this.widget.datasource,
+        "ds-" + this.widget.datasource,
         (a: string, d: any) => {
-          if (a === 'updated') {
+          if (a === "updated") {
             this.widget!.content = d;
           }
         }
@@ -130,10 +135,10 @@ export class CsWidget extends Vue {
 
     if (this.widget.options.canEdit) {
       this.addMenuItem({
-        id: 'edit',
-        icon: 'mode_edit',
-        title: 'edit',
-        type: 'icon',
+        id: "edit",
+        icon: "mode_edit",
+        title: "edit",
+        type: "icon",
         action: () => {
           if (
             this.widget &&
@@ -148,20 +153,20 @@ export class CsWidget extends Vue {
               manager:
                 this.widget._dashboard && this.widget._dashboard._manager
                   ? this.widget._dashboard._manager
-                  : null
+                  : null,
             };
-            this.$cs.bus.publish('right-sidebar', 'open-widget', editor);
+            this.$cs.bus.publish("right-sidebar", "open-widget", editor);
           }
-        }
+        },
       });
     }
 
     if (this.widget.options.canRemove) {
       this.addMenuItem({
-        id: 'remove',
-        icon: 'delete',
-        type: 'icon',
-        title: 'remove',
+        id: "remove",
+        icon: "delete",
+        type: "icon",
+        title: "remove",
         action: () => {
           if (this.widget && this.widget._dashboard) {
             if (
@@ -171,7 +176,7 @@ export class CsWidget extends Vue {
               this.widget._dashboard._manager.removeWidget(this.widget);
             }
           }
-        }
+        },
       });
     }
   }
@@ -184,7 +189,7 @@ export class CsWidget extends Vue {
     }
   }
 
-  public initWidget() {    
+  public initWidget() {
     if (!this.widget) {
       return;
     }
@@ -206,12 +211,12 @@ export class CsWidget extends Vue {
     if (!this.widget.data) {
       this.widget.data = {};
     }
-    
+
     if (!this.widget.options.menus) {
-      Vue.set(this.widget.options, 'menus', []);
+      Vue.set(this.widget.options, "menus", []);
     }
     this.widget._project = this.$cs.project;
-    this.checkWidgetId(this.widget);
+    $cs.checkWidgetId(this.widget);
 
     if (this.widget.widgets && this.widget.widgets.length > 0) {
       this.activeWidget = this.widget.widgets[0];
@@ -219,20 +224,19 @@ export class CsWidget extends Vue {
         id: guidGenerator(),
         title: this.activeWidget.title,
         items: [],
-        outlined: true
+        outlined: true,
       };
       for (const w of this.widget.widgets) {
         toggleMenu.items!.push({
           id: guidGenerator(),
-          title: this.$cs.Translate(w.title || ''),
+          title: this.$cs.Translate(w.title || ""),
           action: () => {
             this.setActiveWidget(w);
             this.$forceUpdate();
-          }
+          },
         });
       }
       this.widget.options.menus!.push(toggleMenu);
-
     } else {
       this.setActiveWidget(this.widget);
       // this.activeWidget = this.widget;
@@ -241,25 +245,25 @@ export class CsWidget extends Vue {
     // check for close button
     if (this.widget.options.closeSidebarButton) {
       this.widget.options.menus!.push({
-        id: 'close',
-        icon: 'close',
-        toolTip: 'CLOSE',
+        id: "close",
+        icon: "close",
+        toolTip: "CLOSE",
         action: () => {
           this.$cs.closeRightSidebarWidget(this.widget!.id!);
-        }
+        },
       });
     }
 
     // check for close button
     if (this.widget.options.hideSidebarButton) {
       this.widget.options.menus!.push({
-        id: 'close',
-        icon: 'close',
-        toolTip: 'CLOSE',
+        id: "close",
+        icon: "close",
+        toolTip: "CLOSE",
         action: () => {
           this.$cs.closeRightSidebar();
           // this.$cs.CloseRightSidebarWidget(this.widget!.id!);
-        }
+        },
       });
     }
 
@@ -268,10 +272,17 @@ export class CsWidget extends Vue {
 
   public mounted() {
     this.updateSize(false);
-    if (!this.widget) { return; }
-    if (!this.widget.component) { return; }
+    if (!this.widget) {
+      return;
+    }
+    if (!this.widget.component) {
+      return;
+    }
     // check if datasource is defined
-    if (this.widget.datasource || (this.widget._dashboard && this.widget._dashboard.datasource)) {
+    if (
+      this.widget.datasource ||
+      (this.widget._dashboard && this.widget._dashboard.datasource)
+    ) {
       this.checkWidgetContent();
     } else if ((this.$refs.component as any).contentLoaded) {
       this.setWidgetContent(this.widget, undefined);
@@ -302,7 +313,7 @@ export class CsWidget extends Vue {
 
   public setWidgetContent(widget: IWidget, content: any) {
     if (this.widget?.content !== content) {
-      Vue.set(widget, 'content', content);
+      Vue.set(widget, "content", content);
       if (this.$refs.component !== undefined) {
         if ((this.$refs.component as any).contentLoaded) {
           (this.$refs.component as any).contentLoaded(content);
@@ -317,7 +328,7 @@ export class CsWidget extends Vue {
     }
   }
 
-  public updateSize(trigger = true, started = false) {    
+  public updateSize(trigger = true, started = false) {
     if (!this.widget || !this.widget.events) {
       return;
     }
@@ -326,20 +337,24 @@ export class CsWidget extends Vue {
         width: this.$refs.widget.$el.clientWidth,
         height: this.$refs.widget.$el.clientHeight,
         componentWidth: this.$refs.component.$el.clientWidth,
-        componentHeight: this.$refs.component.$el.clientHeight
+        componentHeight: this.$refs.component.$el.clientHeight,
       };
     }
 
-    if (!started && typeof this.widget?._component?.resize === 'function') {
+    if (!started && typeof this.widget?._component?.resize === "function") {
       this.widget._component.resize(this.widget._size);
     }
 
-    if (started && typeof this.widget?._component?.resizeStart === 'function') {
+    if (started && typeof this.widget?._component?.resizeStart === "function") {
       this.widget._component.resizeStart(this.widget._size);
     }
-    
+
     if (trigger) {
-      this.widget.events.publish(Topics.RESIZE, started ? Topics.RESIZE_STARTED : Topics.RESIZE_CHANGED, this.widget._size);
+      this.widget.events.publish(
+        Topics.RESIZE,
+        started ? Topics.RESIZE_STARTED : Topics.RESIZE_CHANGED,
+        this.widget._size
+      );
     }
   }
 
@@ -347,10 +362,10 @@ export class CsWidget extends Vue {
     const res: any = {};
     const opt = this.options;
     if (opt.height) {
-      res['max-height'] = opt.height + 'px';
+      res["max-height"] = opt.height + "px";
     }
     if (this.options && this.options.showToolbar) {
-      res.height = 'calc(100% - 30px)';
+      res.height = "calc(100% - 30px)";
     }
     return res;
   }
@@ -360,13 +375,15 @@ export class CsWidget extends Vue {
   // #region Private Methods (1)
 
   private checkWidgetContent() {
-    if (!this.widget) { return; }
+    if (!this.widget) {
+      return;
+    }
     if (this.widget.datasource !== undefined) {
       if (this.widget.content) {
         this.setWidgetContent(this.widget, this.widget.content);
       } else if (!this.loadingDataSource) {
         this.loadingDataSource = true;
-        $cs.loadDatasource(this.widget.datasource).then(d => {
+        $cs.loadDatasource(this.widget.datasource).then((d) => {
           this.loadingDataSource = false;
           this.setWidgetContent(this.widget!, d);
         });

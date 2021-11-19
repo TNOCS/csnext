@@ -9,9 +9,11 @@ export * from "./classes/";
 export * from "./filters/graph-cross-filter";
 export * from "./components/data-grid/cards/element-card-manager";
 
+
 import Vue from 'vue';
 import NetworkGraph from "./components/graph/graph.vue";
 import GraphElements from "./components/entity-management/graph-elements.vue";
+import RecentList from "./components/entity-management/recent-list.vue";
 import ElementDataGrid  from "./components/data-grid/element-data-grid.vue"
 import ClassOverview from "./components/datamodel/class-overview.vue";
 import ClassViewer from "./components/datamodel/class-viewer.vue";
@@ -36,4 +38,4 @@ for (const lang in locales) {
 }
 
 
-export { IndicatorElementCard, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
+export { IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
