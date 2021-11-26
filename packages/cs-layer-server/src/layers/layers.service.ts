@@ -15,14 +15,10 @@ import { FeatureType,
 import { KmlFileSource } from '../plugins/sources/kml-file';
 import { GeojsonSource } from '../plugins/sources/geojson-file';
 import { Feature } from 'geojson';
-// import { DebouncedFunc } from 'lodash';
 import throttle from 'lodash/throttle';
-import DebouncedFunc from 'lodash/debounce'
 import { Debounce } from 'lodash-decorators';
 
 import { Socket } from 'socket.io';
-// import { PostGisSource } from '../plugins/sources/postgis';
-// import { ArangoDBSource } from '../plugins/sources/arangodb';
 import { Inject } from '@nestjs/common/decorators';
 import { v1 as uuidv1} from 'uuid';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
@@ -30,6 +26,7 @@ import Axios from 'axios';
 import AsyncLock from 'async-lock';
 import { AggregateRoot } from '@nestjs/cqrs';
 import { QueryOptions } from '../classes/query-options';
+import { DebouncedFunc } from 'lodash';
 
 @Injectable()
 export class LayerService extends AggregateRoot {
