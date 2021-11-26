@@ -1047,6 +1047,31 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
     this.source.addTool({
+      id: 'article_importer',
+      title: 'Article Importer',
+      widget: this.widget,
+      subtitle: 'Article import',
+      image: 'images/entity_analysis.png',
+      action: async () => {
+        try {
+          // find article import
+          if (this.source?.importPlugins && this.source.activeDocument) {
+          const importPlugin = this.source.importPlugins.find(i => i.id === 'online-document')
+          if (importPlugin) {
+            await importPlugin.callImport(this.source.activeDocument, this.source);
+            await this.refresh();
+            return Promise.resolve(true);
+          } else {
+            return Promise.resolve(false);
+          }
+          }
+          
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      },
+    } as ITool);
+    this.source.addTool({
       id: 'entity_analysis',
       title: 'Entity Analysis',
       widget: this.widget,

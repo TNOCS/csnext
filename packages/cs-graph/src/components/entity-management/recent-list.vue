@@ -64,7 +64,8 @@ import { Component, Watch } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 
 import simplebar from "simplebar-vue";
-import { DocDatasource } from "@csnext/cs-graph";
+// import { DocDatasource } from "@csnext/cs-graph";
+import { DocDatasource} from "./../..";
 import { NodeLink, NodeSpan } from "@csnext/cs-map";
 import { GraphDatasource, GraphElement } from "@csnext/cs-data";
 import Vue from "vue";

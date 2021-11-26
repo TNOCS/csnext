@@ -1429,7 +1429,7 @@ export class DocDatasource extends GraphDatasource {
       if (doc.id) {
         doc.properties.id = doc.id;
       }
-      doc.properties.doc = doc.doc; // JSON.stringify(doc.doc);
+      // doc.properties.doc = doc.doc; // JSON.stringify(doc.doc);
       // doc.properties.sourceId = doc.sourceId;
       // doc.properties.notes = doc.notes;
       // doc.properties.credibility = doc.credibility;

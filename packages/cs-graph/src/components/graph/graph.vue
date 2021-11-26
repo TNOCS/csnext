@@ -851,7 +851,7 @@ export default class NetworkGraph extends WidgetBase {
             title: 'hide',
             icon: 'visibility_off',
             action: () => {
-              this.source?.removeElementFromPreset(element);
+              // this.source?.removeElementFromPreset(element);
             },
           });
           this.contextMenuitems.push({

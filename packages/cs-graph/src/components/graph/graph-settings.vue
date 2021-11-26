@@ -84,7 +84,8 @@
 import { Component } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
 import { GraphElement, GraphPreset, GraphDatasource } from "@csnext/cs-data";
-import { DocDatasource } from "@csnext/cs-graph";
+// import { DocDatasource } from "@csnext/cs-graph";
+import { DocDatasource} from "../../../";
 import { IFormObject } from "@csnext/cs-core";
 
 @Component({
