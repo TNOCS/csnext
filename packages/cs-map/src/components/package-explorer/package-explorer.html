@@ -40,7 +40,7 @@
                     </v-btn>
                 </template> {{ $cs.Translate('TABLE')}}
             </v-tooltip>
-       
+
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="shareState()" v-on="on" icon>
@@ -55,7 +55,7 @@
                     </v-btn>
                 </template> {{ $cs.Translate('LAYERS')}}
             </v-tooltip>
-         
+
         </v-layout>
 
         <!-- <v-toolbar-items
@@ -96,8 +96,8 @@
                             @click="showInsightDetails = !showInsightDetails"
                         >
                             <v-icon
-                                >{{ showInsightDetails ? 'keyboard_arrow_up' :
-                                'keyboard_arrow_down' }}</v-icon
+                                >{{ showInsightDetails ? 'mdi-keyboard-arrow-up' :
+                                'mdi-keyboard-arrow-down' }}</v-icon
                             >
                         </v-btn>
                     </template> {{$cs.Translate('INSIGHTVIEWS')}}
@@ -177,7 +177,7 @@
                 @click="showLegendDetails = !showLegendDetails"
             >
                 <v-icon
-                    >{{ showLegendDetails ? 'keyboard_arrow_up' :
+                    >{{ showLegendDetails ? 'mdi-keyboard-arrow-up' :
                     'info' }}</v-icon
                 >
             </v-btn>
@@ -253,7 +253,7 @@
         <simplebar style="position: absolute;left:0;right:0;top:112px;bottom:0;">
             <v-tabs-items v-model="tab" v-if="data">
                 <v-tab-item value="insights">
-                    <data-insigths :data="data"></data-insigths>                    
+                    <data-insigths :data="data"></data-insigths>
                 </v-tab-item>
                 <v-tab-item value="sources">
                     <data-sources :data="data"></data-sources>

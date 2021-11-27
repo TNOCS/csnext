@@ -79,7 +79,7 @@
                 v-if="searchMode === 'KG'"
                 :items="Object.values(source.graph)"
                 v-model="newEntityNode"
-                item-text="_title"
+                item-text="properties.name"
                 label="node"
                 return-object
               ></v-combobox>
@@ -168,14 +168,14 @@
             v-if="searchMode === 'KG'"
             :items="Object.values(source.graph)"
             v-model="newEntityNode"
-            item-text="_title"
+            item-text="properties.name"
             label="node"
             return-object
           ></v-combobox>
           <v-combobox
             v-model="newCategory"
             :items="source.availableNodeTypes"
-            item-text="_title"
+            item-text="properties.name"
             return-object
             v-if="searchMode=== 'new'"
             label="category"
@@ -184,7 +184,7 @@
             v-if="searchMode === 'online'"
             :items="Object.values(source.graph)"
             v-model="searchOnline"
-            item-text="_title"
+            item-text="properties.name"
             label="node"
             return-object
           ></v-combobox>
@@ -214,14 +214,14 @@
         <v-combobox
             v-model="newNoteSource"
             :items="source.getClassElements('source', true)"
-            item-text="_title"
+            item-text="properties.name"
             return-object            
             label="source"
           ></v-combobox>
           <v-combobox
             v-model="newNoteEEI"
             :items="source.getClassElements('eei', true)"
-            item-text="_title"
+            item-text="properties.name"
             return-object            
             label="EEI"
           ></v-combobox>
@@ -243,14 +243,14 @@
             v-if="searchMode === 'KG'"
             :items="Object.values(source.graph)"
             v-model="newEntityNode"
-            item-text="_title"
+            item-text="properties.name"
             label="node"
             return-object
           ></v-combobox>
           <v-combobox
             v-model="newCategory"
             :items="source.availableNodeTypes"
-            item-text="_title"
+            item-text="properties.name"
             return-object
             v-if="searchMode=== 'new'"
             label="category"
@@ -259,7 +259,7 @@
             v-if="searchMode === 'online'"
             :items="Object.values(source.graph)"
             v-model="searchOnline"
-            item-text="_title"
+            item-text="properties.name"
             label="node"
             return-object
           ></v-combobox>
@@ -361,7 +361,7 @@ export default class SelectionPopup extends WidgetBase {
 
   public addNote = false;
 
-  public searchOnline = { _title: "" };
+  public searchOnline = { };
 
   public searchMode = "KG";
 
@@ -372,11 +372,11 @@ export default class SelectionPopup extends WidgetBase {
 
   public newCategory: FeatureType | null = null;
 
-  public newNoteSource: GraphElement = { _title: "" };
-  public newNoteEEI: GraphElement = { _title: "" };
+  public newNoteSource: GraphElement = { };
+  public newNoteEEI: GraphElement = { };
   public newNoteUrl: string = "";
 
-  public newEntityNode: GraphElement = { _title: "" };
+  public newEntityNode: GraphElement = { };
 
   public suggestions: any[] | null = null;
 
@@ -564,8 +564,7 @@ export default class SelectionPopup extends WidgetBase {
     entity._node = node;
     entity.kg_id = node.id;
     this.source.addNode(node);
-    await this.source.saveNode(node);
-    this.source.updateNode(node);
+    await this.source.saveNode(node);    
     await this.source.linkEntityToDocument(entity, this.document);
     await this.source.parseEntities();
     this.publishChanges();

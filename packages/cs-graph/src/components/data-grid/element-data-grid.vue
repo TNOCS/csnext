@@ -236,7 +236,7 @@
         color="primary"
         event-timed="timed"
         :events="items"
-        event-name="_title"
+        event-name="properties.name"
         event-start="_startDate"
         event-stop="_endDate"
         @click:date="viewDay"
@@ -1057,7 +1057,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
 
-    console.log(`update tree: ${base?._title}`);
+    console.log(`update tree: ${base?.properties?.name}`);
     // console.log(treeItems);
     let items: any[] | undefined = [];
     if (base) {

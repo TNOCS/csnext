@@ -318,7 +318,7 @@ export default class NetworkGraph extends WidgetBase {
       this.data.nodes = this.data.nodes.filter((n) => n.id !== e.id);
     }
 
-    if (e._included) {
+    if (e._included && e.properties?.name) {
       let nodewidth = this.activePreset.nodeSize ?? 50;
       if (e.properties?.nodegraphlayout === 'modelRect') {
         nodewidth = 200;
@@ -328,7 +328,7 @@ export default class NetworkGraph extends WidgetBase {
         id: e.id,
         label: this.activePreset?.hideNodeLabel
           ? undefined
-          : this.fittingString(e._title!, 80, this.activePreset.globalFontSize ?? 12), // this.labelFormatter(e._title!, this.settings.labelMaxLength),
+          : this.fittingString(e.properties?.name, 80, this.activePreset.globalFontSize ?? 12), // this.labelFormatter(e._title!, this.settings.labelMaxLength),
         // hidden: this.graphSource.getHidden(
         //   e,
         //   this.settings

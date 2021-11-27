@@ -2,7 +2,7 @@
   <v-combobox
     :items="getItems()"
     v-model="activeRelation"
-    itemText="_title"
+    itemText="properties.name"
     filled
     dense
     autofocus

@@ -153,8 +153,7 @@ export class LocalStorage implements IDatabase {
                         }
                     }
                 }
-            }
-            this.source!.updateNodes();
+            }            
             this.source!.updateEdges();
             this.source!.updateFeatureTypeStats();
             // this.debounceSave();

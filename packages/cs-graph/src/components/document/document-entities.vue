@@ -53,7 +53,7 @@
               <v-combobox
                 :items="source.getClassElements(group.id)"
                 v-model="newEntityNode"
-                item-text="_title"
+                item-text="properties.name"
                 label="node"
                 return-object
               ></v-combobox>
@@ -75,7 +75,7 @@
                 v-if="searchMode === 'online'"
                 :items="Object.values(source.graph)"
                 v-model="searchOnline"
-                item-text="_title"
+                item-text="properties.name"
                 label="node"
                 return-object
               ></v-combobox>
@@ -233,7 +233,7 @@ require("isotope-packery");
 export default class DocumentEntities extends WidgetBase {
   public nodeGroups: NodeEntities[] = [];
   public searchMode = "KG";
-  public newEntityNode = { _title: "" } as GraphElement;
+  public newEntityNode = { } as GraphElement;
 
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {

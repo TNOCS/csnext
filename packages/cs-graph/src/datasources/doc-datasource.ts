@@ -65,6 +65,7 @@ export class DocDatasource extends GraphDatasource {
   public static FEATURE_TYPES = 'feature-types';
   public static FEATURE_TYPE_SELECTED = 'feature-type-selected';
 
+  //** graph backend, server or device */
   public storage?: IGraphStorage;
 
   public activeDocument?: GraphDocument;
@@ -248,7 +249,7 @@ export class DocDatasource extends GraphDatasource {
           p.properties = {
             ...element.properties,
             ...{
-              title: GraphElement.getTitle(element),
+              title: element.properties?.name,
               element: element.id,
               color: GraphElement.getBackgroundColor(element),
             },
@@ -270,7 +271,7 @@ export class DocDatasource extends GraphDatasource {
           properties: {
             ...element.properties,
             ...{
-              title: GraphElement.getTitle(element),
+              title: element.properties?.name,
               element: element.id,
               color: GraphElement.getBackgroundColor(element),
             },
@@ -288,7 +289,7 @@ export class DocDatasource extends GraphDatasource {
           properties: {
             ...element.properties,
             ...{
-              title: GraphElement.getTitle(element),
+              title: element.properties?.name,
               element: element.id,
               color: GraphElement.getBackgroundColor(element),
             },
@@ -903,159 +904,18 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async loadGraphElement<T>(id: string) {
-    // $cs.loader.addLoader(`load-${id}`);
-    Axios.get<GraphElement[]>(`${this.base_url}/graph/id/${id}`)
-      .then((r) => {
-        if (r.data && r.data.length === 1) {
-          const item = r.data[0];
-          if (r.data && item.id && item.properties && item.type === 'node') {
-            // find existing
-            if (this.graph.hasOwnProperty(item.id)) {
-              let el = this.graph[item.id];
-              el.properties = item.properties;
-              this.initElement(el);
-              this.events.publish(
-                GraphDatasource.GRAPH_EVENTS,
-                GraphDatasource.ELEMENT_UPDATED,
-                el
-              );
-            } else {
-              // add new
-              let el = {
-                ...new GraphElement(),
-                ...{
-                  id: item.id,
-                  classId: item.classId,
-                  title: item.properties.name,
-                  properties: item.properties,
-                  alternatives: item.alternatives,
-                },
-              } as GraphElement;
-              this.initElement(el);
-              this.addNode(el);
-              this.events.publish(
-                GraphDatasource.GRAPH_EVENTS,
-                GraphDatasource.ELEMENT_UPDATED,
-                el
-              );
-              return Promise.resolve(el);
-            }
-          }
-        }
-        return Promise.reject(undefined);
-
-        // update node (e.g. set title)
-      })
-      .catch((e) => {
-        return Promise.reject(e);
-      })
-      .finally(() => {
-        // $cs.loader.removeLoader(`store-${id}`);
-      });
-
-    // this.updateNode(element, true);
-
-    // this.refresh();
+    if (!this.storage?.loadGraphElement) { return Promise.reject(); }
+    const res = await this.storage.loadGraphElement(id);    
   }
 
-  public async loadGraph(url: string, clearCache = false) {
-    let jsonGraph: any;
-    const local = undefined; // localStorage.getItem(url);
-    if (local && !clearCache) {
-      jsonGraph = JSON.parse(local);
-    } else {
-      $cs.loader.addLoader('loadinggraph', 'loading graph', { color: 'green' });
-      const query = await Axios.get(url);
-      if (query.data) {
-        jsonGraph = query.data; // ? query.data.split('\n').map((r: any) => JSON.parse(r)) : jsonGraph.data;
-        try {
-          // localStorage.setItem(url, JSON.stringify(jsonGraph));
-        } catch (e) {}
-      }
-      $cs.loader.removeLoader('loadinggraph');
-    }
-    if (jsonGraph) {
-      // get all document types
-      let inputTypes: string[] | undefined;
-      if (this._meta) {
-        inputTypes = Object.values(this._meta)
-          .filter(
-            (ft) =>
-              ft._inheritedTypes &&
-              ft.type &&
-              ft._inheritedTypes.includes('input')
-          )
-          .map((ft) => ft.type!);
-      }
-      for (const item of jsonGraph.filter((i) => i.type === 'node')) {
-        if (item.properties && !item.properties.id && item.id) {
-          item.properties.id = item.id;
-        }
-        if (item.id && item.classId) {
-          const classId = item.classId; // item.labels[0];
-          // get all inputs
+  /** initial loading of graph */
+  public async loadGraph(clearCache = false) {
+    // find or select the graph
 
-          if (inputTypes && inputTypes.includes(classId)) {
-            let el = {
-              ...new GraphDocument(),
-              ...{
-                id: item.id,
-                classId: item.classId,
-                title: item.properties.name,
-                properties: item.properties,
-                alternatives: item.alternatives,
-              },
-            } as GraphElement;
-            this.initElement(el);
-            this.addNode(el);
-            // this.initDocument(el);
-          } else {
-            let el = {
-              ...new GraphElement(),
-              ...{
-                id: item.id,
-                classId: item.classId,
-                title: item.properties.name,
-                properties: item.properties,
-                alternatives: item.alternatives,
-              },
-            } as GraphElement;
-            this.initElement(el);
-            this.addNode(el);
-          }
-        }
-      }
-      for (const item of jsonGraph.filter((i) => i.type === 'edge')) {
-        // if (item.properties && item.hasOwnProperty('fromId') && item.hasOwnProperty('toId')) {
-        //     await this.addEdge({
-        //         id: item.id,
-        //         toId: item.toId,
-        //         fromId: item.fromId,
-        //         classId: item.classId,
-        //         properties: item.properties
-        //     })
-        // }
-        if (
-          item.properties &&
-          item.hasOwnProperty('fromId') &&
-          item.hasOwnProperty('toId')
-        ) {
-          await this.addEdge({
-            id: item.id,
-            toId: item.toId,
-            fromId: item.fromId,
-            classId: item.classId,
-            properties: item.properties,
-          });
-        }
-      }
-      // this.importCase();
-      this.updateNodes();
-      this.updateEdges();
-      this.updateFeatureTypeStats();
-      this.initUser();
-      this.parseDocuments();
-    }
+    if (!this.storage) { return Promise.resolve(); }
+    
+    await this.storage.loadGraph();
+
   }
 
   public deleteDocument(doc: GraphDocument) {
@@ -1319,7 +1179,6 @@ export class DocDatasource extends GraphDatasource {
   public refresh(loadGraph = false): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (!loadGraph) {
-        this.updateNodes(true);
         this.updateEdges(true);
         // await this.parseDocuments();
         // this.checkQueryParams();
@@ -1331,8 +1190,7 @@ export class DocDatasource extends GraphDatasource {
           await this.loadTypes();
           this.mergeFeatureTypes();
           try {
-            await this.loadGraph(`${this.base_url}/graph/all`, loadGraph);
-            this.updateNodes(true);
+            await this.loadGraph(loadGraph);
             this.updateEdges(true);
             await this.parseDocuments();
             this.loadGraphPresets();
@@ -1453,8 +1311,7 @@ export class DocDatasource extends GraphDatasource {
         );
       }
       this.saveNode(doc)
-        .then(async () => {
-          this.updateNodes(true);
+        .then(async () => {          
           await this.updateEdges(true);
           this.events.publish(
             DocDatasource.DOCUMENT,
@@ -1587,32 +1444,22 @@ export class DocDatasource extends GraphDatasource {
           }
         }
         $cs.loader.addLoader(`remove-${element.id}`);
-        Axios.post(`${this.base_url}/graph/remove`, undefined, {
-          params: { id: element.id },
-        })
-          .then(async () => {
-            if (element.id) {
-              await this.removeNodeById(element.id, relations);
-            }
+        this.storage?.removeElement(element.id).then(async g => {      
+            await this.removeNodeById(element.id!, relations);          
             this.events.publish(
               GraphDatasource.GRAPH_EVENTS,
               GraphDatasource.ELEMENT_REMOVED,
               element
             );
-            resolve(true);
-          })
-          .catch((e) => {
-            reject(e);
-          })
-          .finally(() => {
-            $cs.loader.removeLoader(`remove-${element.id}`);
-            if (notify) {
-              $cs.triggerNotification({
-                title: 'Node removed',
-                text: element.properties?.name,
-              });
-            }
-          });
+        }).finally(() => {
+          $cs.loader.removeLoader(`remove-${element.id}`);
+          if (notify) {
+            $cs.triggerNotification({
+              title: 'Node removed',
+              text: element.properties?.name,
+            });
+          }
+        })        
       }
     });
   }
@@ -1640,13 +1487,8 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  public saveNode(
-    element: GraphElement,
-    user?: GraphElement
-  ): Promise<GraphElement> {
-    return new Promise((resolve, reject) => {
-      $cs.loader.addLoader(`store-${element.id}`);
-      const u = this.activeUser ?? user;
+  public updateProvanance(element: GraphElement, user?: GraphElement) {
+    const u = this.activeUser ?? user;
       if (element.properties && u?.id) {
         element.properties['updated_by'] = u.id;
         element.properties['updated_time'] = new Date().getTime();
@@ -1659,48 +1501,40 @@ export class DocDatasource extends GraphDatasource {
           element.properties['created_by'] = element.properties['updated_time'];
         }
       }
-      let body = Object.assign({}, element);
-      // (body as any)['@type'] = element.classId;
-      body.alternatives = body._alternatives?.join(',');
-      if (body.properties) {
-        body = Object.assign(body, body.properties);
-        delete body.properties;
-      }
-      for (const prop of Object.keys(body)) {
-        if (prop.startsWith('_')) {
-          delete (body as any)[prop];
-        }
-      }
-      delete body.class;
-      this.updateNode(element, true);
-      this.updateElementProperties(element);
-      this.events.publish(
-        GraphDatasource.GRAPH_EVENTS,
-        GraphDatasource.ELEMENT_UPDATED,
-        element
-      );
+  }
 
-      // this.refresh();
-
-      Axios.post(`${this.base_url}/graph/store`, body)
-        .then(() => {
-          $cs.triggerNotification({
-            title: $cs.Translate('NODE_SAVED'),
-            text: element.properties?.name,
-            timeout: 500,
-            group: true,
-          });
-          // update node (e.g. set title)
-
-          resolve(element);
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
-          $cs.loader.removeLoader(`store-${element.id}`);
+  public async saveNode(
+    element: GraphElement,
+    user?: GraphElement
+  ): Promise<GraphElement> {
+    
+      $cs.loader.addLoader(`store-${element.id}`);
+      this.updateProvanance(element, user);
+      
+      try {
+        await this.storage!.saveElement(element);
+        this.events.publish(
+          GraphDatasource.GRAPH_EVENTS,
+          GraphDatasource.ELEMENT_UPDATED,
+          element
+        );
+        $cs.triggerNotification({
+          title: $cs.Translate('NODE_SAVED'),
+          text: element.properties?.name,
+          timeout: 500,
+          group: true,
         });
-    });
+
+      } catch (err) {
+
+      }
+      finally {
+        $cs.loader.removeLoader(`store-${element.id}`);
+        return Promise.resolve(element);
+      }
+      
+
+      
   }
 
   public async parseEntities() {
