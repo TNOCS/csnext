@@ -2,7 +2,7 @@
   <div v-if="featureType" class="data-grid-component">
     <div class="data-grid-title">{{ options.title }}</div>
     <v-layout class="ma-2">
-      <v-btn-toggle dense v-model="options.defaultView" mandatory>
+      <v-btn-toggle dense v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
         <v-btn value="table">
           <v-icon>list</v-icon>
         </v-btn>
@@ -35,11 +35,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item
-            v-for="(item, index) in classTypes"
-            :key="index"
-            @click="addEntity(item)"
-          >
+          <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)">
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -56,21 +52,11 @@
 
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
-      <v-btn
-        v-if="options.defaultView == 'tree'"
-        class="ml-2"
-        @click="expandTree()"
-        elevation="0"
-      >
+      <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="expandTree()" elevation="0">
         <v-icon>expand_more</v-icon>
         {{ $cs.Translate('EXPAND_ALL') }}
       </v-btn>
-      <v-btn
-        v-if="options.defaultView == 'tree'"
-        class="ml-2"
-        @click="collapseTree()"
-        elevation="0"
-      >
+      <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="collapseTree()" elevation="0">
         <v-icon>expand_less</v-icon>
         {{ $cs.Translate('COLLAPSE_ALL') }}
       </v-btn>
@@ -136,7 +122,7 @@
           class="table-grid"
           :class="{
             'ag-theme-alpine-dark': $cs.project.theme.dark,
-            'ag-theme-alpine': !$cs.project.theme.dark,
+            'ag-theme-alpine': !$cs.project.theme.dark
           }"
           :columnDefs="columnDefs"
           :defaultColDef="defaultColDef"
@@ -151,26 +137,14 @@
     </template>
 
     <template v-if="options.defaultView === 'cards'">
-      <isotope
-        :options="getIsoOptions()"
-        ref="iso"
-        :list="items"
-        class="isotope-grid"
-      >
-        <template v-for="(element, indx) of items">
-          <v-card
-            :key="indx"
-            class="entity-card"
-            @click="selectEntityCard(element)"
-          >
-            <component
-              :is="getElementCard(element)"
-              :source="source"
-              :element="element"
-            ></component>
-          </v-card>
+      <simplebar class="full-widget">
+        <isotope :options="getIsoOptions()" ref="iso" :list="items" class="isotope-grid">
+          <template v-for="(element, indx) of items">
+            <v-card :key="indx" class="entity-card" @click="selectEntityCard(element)">
+              <component :is="getElementCard(element)" :source="source" :element="element"></component>
+            </v-card>
 
-          <!-- <v-card          
+            <!-- <v-card          
           :key="indx"
           class="entity-card"
           @click="selectEntity(entity)"
@@ -194,9 +168,9 @@
             >
           </v-card-actions>
         </v-card> -->
-        </template>
-      </isotope>
-
+          </template>
+        </isotope>
+      </simplebar>
       <!-- <simplebar class="scroll">
     <v-virtual-scroll
         v-if="source"
@@ -221,9 +195,7 @@
 
     <div class="calendar-view" v-if="options.defaultView === 'calendar'">
       <v-toolbar flat>
-        <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
-          Today
-        </v-btn>
+        <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
         <v-btn fab text small color="grey darken-2" @click="prev">
           <v-icon small> chevron_left </v-icon>
         </v-btn>
@@ -294,13 +266,11 @@
           selection-type="leaf" -->
           <template v-slot:append="{ item }">
             <v-layout>
-              <v-btn icon @click.stop="removeEntity(item.entity)"
+              <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"
                 ><v-icon>delete</v-icon></v-btn
               >
-              <v-btn icon @click.stop="editEntity(item.entity)"
-                ><v-icon>edit</v-icon></v-btn
-              >
-              <v-btn icon @click.stop="graphNode(item.entity)"
+              <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>edit</v-icon></v-btn>
+              <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"
                 ><v-icon>scatter_plot</v-icon></v-btn
               >
               <v-menu offset-y v-if="options.defaultView === 'tree'">
@@ -320,23 +290,13 @@
             </v-layout>
           </template>
           <template v-slot:label="{ item }">
-            <v-btn
-              icon
-              @click.stop="toggleLinked(item.entity)"
-              v-if="options.relationToggle"
-            >
+            <v-btn icon @click.stop="toggleLinked(item.entity)" v-if="options.relationToggle">
               <v-icon v-if="item.entity._isLinked">check_circle</v-icon>
               <v-icon v-else>panorama_fish_eye</v-icon>
             </v-btn>
-            <v-btn
-              icon
-              @click.stop="toggleCheckbox(item.entity)"
-              v-if="options.checkboxProperty"
-            >
+            <v-btn icon @click.stop="toggleCheckbox(item.entity)" v-if="options.checkboxProperty">
               {{ item.entity[options.checkboxProperty] }}
-              <v-icon v-if="item.entity.properties[options.checkboxProperty]"
-                >check_circle</v-icon
-              >
+              <v-icon v-if="item.entity.properties[options.checkboxProperty]">check_circle</v-icon>
               <v-icon v-else>panorama_fish_eye</v-icon>
             </v-btn>
             <span @click="selectTableItem(item.entity)">
@@ -454,6 +414,10 @@
   margin: 5px;
 }
 
+.full-widget {
+  height: calc(100em - 200px);
+}
+
 .isotope-grid {
   /* width: 800px;
   height: 800px !important; */
@@ -475,15 +439,17 @@ import {
   FeatureType,
   GraphDatasource,
   GraphElement,
+  IGraphFilter,
   PropertyType,
-  PropertyValueType,
+  PropertyValueType
 } from '@csnext/cs-data';
 import moment from 'moment';
 import simplebar from 'simplebar-vue';
 import isotope from 'vueisotope';
 import { AppStateBase, guidGenerator, WidgetOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { DocDatasource, DataGridOptions, GridView } from './../../index';
+// import { DocDatasource, DataGridOptions, GridView } from "./../../index";
+import { DocDatasource, DataGridOptions, GridView } from '../..';
 import { PropValue } from '@csnext/cs-map';
 import GridPropValue from './grid-prop-value';
 import OptionsCellEditor from './options-cell-editor.vue';
@@ -512,8 +478,8 @@ require('isotope-packery');
     DataInfoPanel,
     NodeLink,
     isotope,
-    DefaultElementCard,
-  },
+    DefaultElementCard
+  }
 })
 export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
@@ -547,7 +513,7 @@ export default class ElementDataGrid extends WidgetBase {
     month: 'Month',
     week: 'Week',
     day: 'Day',
-    '4day': '4 Days',
+    '4day': '4 Days'
   };
 
   public headers: any[] = [];
@@ -556,13 +522,13 @@ export default class ElementDataGrid extends WidgetBase {
     field: 'properties.PMSEII',
     minWidth: 250,
     cellRenderer: 'agGroupCellRenderer',
-    cellRendererParams: { checkbox: true },
+    cellRendererParams: { checkbox: true }
   };
   public defaultColDef = {
     sortable: true,
     resizable: true,
     floatingFilter: true,
-    filter: true,
+    filter: true
   } as ColDef;
 
   public treeItems: any[] = [];
@@ -629,14 +595,8 @@ export default class ElementDataGrid extends WidgetBase {
     if (!element?.properties || !prop.key) {
       return '';
     }
-    if (
-      prop.type === PropertyValueType.relation &&
-      prop.relation?.type &&
-      element?._outgoing
-    ) {
-      const rel = element._outgoing.find(
-        (r) => r.classId === prop.relation!.type
-      );
+    if (prop.type === PropertyValueType.relation && prop.relation?.type && element?._outgoing) {
+      const rel = element._outgoing.find((r) => r.classId === prop.relation!.type);
       return rel?.to;
     }
     return element.properties[prop.key]; //header.propType.type;
@@ -705,17 +665,13 @@ export default class ElementDataGrid extends WidgetBase {
 
       // (entity as any)._isLinked = undefined;
     } else {
-      if (
-        entity.id &&
-        this.options.relationToggle?.fromId &&
-        this.options.relationToggle.relationClassId
-      ) {
+      if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
         this.source
           .addNewEdge(
             {
               fromId: this.options.relationToggle.fromId,
               toId: entity.id,
-              classId: this.options.relationToggle.relationClassId,
+              classId: this.options.relationToggle.relationClassId
             } as GraphElement,
             true
           )
@@ -732,14 +688,8 @@ export default class ElementDataGrid extends WidgetBase {
     if (!element?.properties || !prop.key) {
       return '';
     }
-    if (
-      prop.type === PropertyValueType.relation &&
-      prop.relation?.type &&
-      element?._outgoing
-    ) {
-      const rel = element._outgoing.filter(
-        (r) => r.classId === prop.relation!.type
-      );
+    if (prop.type === PropertyValueType.relation && prop.relation?.type && element?._outgoing) {
+      const rel = element._outgoing.filter((r) => r.classId === prop.relation!.type);
       if (!rel) {
         return [];
       }
@@ -767,11 +717,11 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source) {
       return;
     }
-    if (selected) {
-      this.source.addElementToPreset(element, 'default');
-    } else {
-      this.source.removeElementFromPreset(element, 'default');
-    }
+    // if (selected) {
+    //   this.source.addElementToPreset(element);
+    // } else {
+    //   this.source.removeElementFromPreset(element);
+    // }
 
     // alert('select');
   }
@@ -811,10 +761,10 @@ export default class ElementDataGrid extends WidgetBase {
           value: `properties.${prop.key}`,
           key: prop.key,
           sortable: true,
-          filterable: true,
+          filterable: !this.options.hideFilter,
           groupable: true,
-          width: header.width,
-          propType: prop,
+          // width: header.width,
+          propType: prop
         });
         let column = {
           field: `properties.${prop.key}`,
@@ -827,7 +777,7 @@ export default class ElementDataGrid extends WidgetBase {
           //   debugger;
           //   return {'test': 'test'};
           // },
-          editable: true,
+          editable: true
         } as ColDef;
         if (prop.type === 'epoch') {
           column.cellEditor = 'date-cell-editor';
@@ -835,7 +785,7 @@ export default class ElementDataGrid extends WidgetBase {
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
               // this.updateEntities();
-            },
+            }
           };
           column.filter = 'agDateColumnFilter';
           column.filterParams = {
@@ -853,7 +803,7 @@ export default class ElementDataGrid extends WidgetBase {
               }
             },
             browserDatePicker: true,
-            minValidYear: 2000,
+            minValidYear: 2000
           };
         }
         if (prop.type === 'relation') {
@@ -862,23 +812,23 @@ export default class ElementDataGrid extends WidgetBase {
             source: this.source,
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            },
+            }
           };
         }
         if (prop.type === 'options') {
           column.cellEditor = 'options-cell-editor';
-          column.floatingFilter = true;
+          column.floatingFilter = !this.options.hideFilter;
           column.floatingFilterComponentFramework = 'options-filter';
           column.filterFramework = 'options-filter';
           column.floatingFilterComponentParams = {
             suppressFilterButton: true,
-            propType: prop,
+            propType: prop
           };
           column.cellEditorParams = {
             source: this.source,
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            },
+            }
           };
         }
 
@@ -886,20 +836,24 @@ export default class ElementDataGrid extends WidgetBase {
         this.columnDefs.push(column);
       }
     }
-    this.columnDefs.push({
-      floatingFilter: false,
-      sortable: false,
-      cellRenderer: 'grid-row-actions',
-      cellRendererParams: {
-        graphNode: (row: GraphElement) => {
-          this.graphNode(row);
-        },
-        delete: (row: GraphElement) => {
-          this.removeEntity(row);
-        },
-      },
-    });
-    this.headers.push({ text: 'Actions', value: 'actions', sortable: false });
+    if (this.options.canDelete || this.options.canGraph) {
+      this.columnDefs.push({
+        floatingFilter: false,
+        sortable: false,
+        width: 90,
+        cellRenderer: 'grid-row-actions',
+        cellRendererParams: {
+          options: this.options,
+          graphNode: (row: GraphElement) => {
+            this.graphNode(row);
+          },
+          delete: (row: GraphElement) => {
+            this.removeEntity(row);
+          }
+        }
+      });
+      this.headers.push({ text: 'Actions', value: 'actions', sortable: false });
+    }
     this.$forceUpdate();
   }
 
@@ -944,17 +898,19 @@ export default class ElementDataGrid extends WidgetBase {
     return {
       itemSelector: '.entity-card',
       layoutMode: 'packery',
+      sortAscending: false,
       getSortData: {
         name: (s: any) => {
           return s.properties.name;
         },
         custom: (s: any) => {
-          if (this.sort?.key) {
-            return s.properties[this.sort.key];
-          } else {
-            return s.properties.name;
-          }
-        },
+          return s.properties.updated_time;
+          // if (this.sort?.key) {
+          //   return s.properties[this.sort.key];
+          // } else {
+          //   return s.properties.name;
+          // }
+        }
         // updated: '.properties.updated_time',
       },
       sortBy: 'custom',
@@ -963,8 +919,8 @@ export default class ElementDataGrid extends WidgetBase {
 
       // options for masonry layout mode
       masonry: {
-        columnWidth: '.grid-sizer',
-      },
+        columnWidth: '.grid-sizer'
+      }
     };
   }
 
@@ -978,102 +934,92 @@ export default class ElementDataGrid extends WidgetBase {
     }
     let placeholder = `new ${type.title}`;
     if (this.options.askForName) {
-      $cs
-        .triggerInputDialog(placeholder, 'enter new name', '', placeholder)
-        .then((name) => {
-          this.source
-            ?.addNewNode({
-              id: `${type.type}-${guidGenerator()}`,
-              properties: { ...this.options.newItem, classId: type.type, name },
-              classId: type.type,
-            })
-            .then(async (e) => {
-              if (this.source && parent && this.options.parentProperty) {
-                try {
-                  const parentEdge = await this.source.addNewEdge(
-                    {
-                      fromId: e.id,
-                      toId: parent.id,
-                      classId: this.options?.parentProperty,
-                    } as GraphElement,
-                    true
-                  );
-                  if (parentEdge) {
-                    try {
-                      await this.source.addEdge(parentEdge);
-                    } catch (e) {
-                      console.log('Error adding parent edge');
-                    }
+      $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder).then((name) => {
+        this.source
+          ?.addNewNode({
+            id: `${type.type}-${guidGenerator()}`,
+            properties: { ...this.options.newItem, classId: type.type, name },
+            classId: type.type
+          })
+          .then(async (e) => {
+            if (this.source && parent && this.options.parentProperty) {
+              try {
+                const parentEdge = await this.source.addNewEdge(
+                  {
+                    fromId: e.id,
+                    toId: parent.id,
+                    classId: this.options.parentProperty
+                  } as GraphElement,
+                  true
+                );
+                if (parentEdge) {
+                  try {
+                    await this.source.addEdge(parentEdge);
+                  } catch (e) {
+                    console.log('Error adding parent edge');
                   }
-                } catch (e) {
-                  console.log('Error adding parent edge edge');
                 }
-                // await this.source.updateEdges();
+              } catch (e) {
+                console.log('Error adding parent edge edge');
               }
-              // check if new relations should be created
-              if (this.source && this.options.newRelations) {
-                for (const relation of this.options.newRelations) {
-                  // new relation to other id
-                  if (relation.toId && this.potentialProperties) {
-                    if (
-                      this.potentialProperties.hasOwnProperty(relation.key) &&
-                      this.potentialProperties[relation.key].relation?.type
-                    ) {
-                      try {
-                        const newEdge = await this.source.addNewEdge(
-                          {
-                            fromId: e.id,
-                            toId: relation.toId,
-                            classId:
-                              this.potentialProperties[relation.key].relation
-                                ?.type,
-                          } as GraphElement,
-                          true
-                        );
-                      } catch (e) {
-                        console.log('Error adding relation edge');
-                      }
-                    }
-                  } else if (relation.fromId) {
-                    // create relation from other id
-                    const fromId =
-                      typeof relation.fromId === 'function'
-                        ? relation.fromId()
-                        : relation.fromId;
-                    const fromNode = this.source.getElement(fromId);
-                    if (
-                      fromNode?._featureType?.propertyMap &&
-                      fromNode._featureType.propertyMap.hasOwnProperty(
-                        relation.key
-                      )
-                    ) {
-                      const prop =
-                        fromNode._featureType.propertyMap[relation.key];
+              // await this.source.updateEdges();
+            }
+            // check if new relations should be created
+            if (this.source && this.options.newRelations) {
+              for (const relation of this.options.newRelations) {
+                // new relation to other id
+                if (relation.toId && this.potentialProperties) {
+                  if (
+                    this.potentialProperties.hasOwnProperty(relation.key) &&
+                    this.potentialProperties[relation.key].relation?.type
+                  ) {
+                    try {
                       const newEdge = await this.source.addNewEdge(
                         {
-                          fromId: fromId,
-                          toId: e.id,
-                          classId: prop.relation?.type,
+                          fromId: e.id,
+                          toId: relation.toId,
+                          classId: this.potentialProperties[relation.key].relation?.type
                         } as GraphElement,
                         true
                       );
+                    } catch (e) {
+                      console.log('Error adding relation edge');
                     }
                   }
+                } else if (relation.fromId) {
+                  // create relation from other id
+                  const fromId = typeof relation.fromId === 'function' ? relation.fromId() : relation.fromId;
+                  const fromNode = this.source.getElement(fromId);
+                  if (
+                    fromNode?._featureType?.propertyMap &&
+                    fromNode._featureType.propertyMap.hasOwnProperty(relation.key)
+                  ) {
+                    const prop = fromNode._featureType.propertyMap[relation.key];
+                    const newEdge = await this.source.addNewEdge(
+                      {
+                        fromId: fromId,
+                        toId: e.id,
+                        classId: prop.relation?.type
+                      } as GraphElement,
+                      true
+                    );
+                  }
                 }
-                await this.source.updateEdges();
               }
-              this.updateEntities(true);
-              if (this.options.onAfterAdded) {
-                await this.options.onAfterAdded(e);
-              } else {
-                // this.source?.openElement(e);
-              }
-              return e;
-            })
-            .catch((e) => {
-              alert('error creating entity');
-            });
-        });
+              await this.source.updateEdges();
+            }
+            this.updateEntities(true);
+            if (this.options.onAfterAdded) {
+              await this.options.onAfterAdded(e);
+            } else {
+              // this.source?.openElement(e);
+            }
+            return e;
+          })
+          .catch((e) => {
+            alert('error creating entity');
+          });
+      });
     }
   }
 
@@ -1117,25 +1063,16 @@ export default class ElementDataGrid extends WidgetBase {
     if (base) {
       if (base._incomming) {
         items = [
-          ...base._incomming
-            .filter((o) => o.classId === this.options.parentProperty)
-            .map((o) => o.from),
+          ...base._incomming.filter((o) => o.classId === this.options.parentProperty).map((o) => o.from)
         ];
       }
       // if (base._outgoing)
     } else {
       // const i =
       // debugger;
-      items = this.source
-        .getClassElements(this.options!.baseType)
-        ?.filter((i) => {
-          return (
-            !i._outgoing ||
-            i._outgoing.findIndex(
-              (p) => p.classId === this.options.parentProperty
-            ) === -1
-          );
-        });
+      items = this.source.getClassElements(this.options!.baseType)?.filter((i) => {
+        return !i._outgoing || i._outgoing.findIndex((p) => p.classId === this.options.parentProperty) === -1;
+      });
     }
     if (items) {
       for (const item of items) {
@@ -1144,7 +1081,7 @@ export default class ElementDataGrid extends WidgetBase {
             id: item.id,
             name: item.properties.name,
             entity: item,
-            children: [],
+            children: []
           };
           if (active?.children) {
             active.children.push(treeItem);
@@ -1174,10 +1111,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     const baseType = this.options.baseType;
-    if (
-      !this.source?.featureTypes ||
-      !this.source.featureTypes.hasOwnProperty(baseType)
-    ) {
+    if (!this.source?.featureTypes || !this.source.featureTypes.hasOwnProperty(baseType)) {
       return;
     }
     this.upToDate = true;
@@ -1207,15 +1141,21 @@ export default class ElementDataGrid extends WidgetBase {
       this.setGroup(this.options.groupId);
     }
 
-    this.items = this.source.getClassElements(
-      baseType,
-      true,
-      this.options.filter
-    );
+    if (this.options.syncMode === 'follow') {
+      this.busManager.subscribe(
+        this.source.events,
+        IGraphFilter.GRAPH_FILTER,
+        (a: string, f: IGraphFilter) => {
+          if (this.options.filter && f.id === this.options.filter) {
+            Vue.set(this, 'rowData', f._visibleNodes);
+            // this.items = f._visibleNodes;
+          }
+        }
+      );
 
-    console.log('update entities');
-    for (const item of this.items) {
-      console.log(item.properties!.end);
+      // alert("following");
+    } else {
+      this.items = this.source.getClassElements(baseType, true, this.options.filter);
     }
 
     if (this.options.defaultView === GridView.table) {
@@ -1227,21 +1167,16 @@ export default class ElementDataGrid extends WidgetBase {
 
     // this.rowData = this.items;
 
-    if (!this.sort && this.featureType.properties) {
-      this.sort = this.featureType.properties.find(
-        (p) => p.key === 'updated_time'
-      );
+    if (!this.sort) {
+      this.sort = this.featureType.properties?.find((p) => p.key === 'updated_time');
     }
 
-    if (
-      this.options.defaultView === GridView.tree &&
-      this.options.parentProperty
-    ) {
-      console.log('starting update tree');
+    if (this.options.defaultView === GridView.tree && this.options.parentProperty) {
+      // console.log("starting update tree");
       //
       const treeItems = this.updateTree([], undefined, undefined);
       Vue.set(this, 'treeItems', treeItems);
-      console.log(this.treeItems);
+      // console.log(this.treeItems);
       // this.$forceUpdate();
     }
 
@@ -1253,11 +1188,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public updateLinkedEntities() {
-    if (
-      !this.source ||
-      !this.options.relationToggle ||
-      !this.options.relationToggle.fromId
-    ) {
+    if (!this.source || !this.options.relationToggle || !this.options.relationToggle.fromId) {
       return;
     }
     // debugger;
@@ -1299,15 +1230,13 @@ export default class ElementDataGrid extends WidgetBase {
 
     if (this.source?.events) {
       console.log('create subscription');
-      this.source.events.subscribe(
-        GraphDatasource.GRAPH_EVENTS,
-        (action: string, el: GraphElement) => {
-          if (action === GraphDatasource.ELEMENT_UPDATED) {
-            this.updateEntities(true);
-            this.$forceUpdate();
-          }
+
+      this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
+        if (action === GraphDatasource.ELEMENT_UPDATED) {
+          this.updateEntities(true);
+          this.$forceUpdate();
         }
-      );
+      });
     }
 
     if (this.options) {
@@ -1339,6 +1268,8 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   mounted() {
+    this.defaultColDef.filter = !this.options.hideFilter;
+    this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();
   }
 }

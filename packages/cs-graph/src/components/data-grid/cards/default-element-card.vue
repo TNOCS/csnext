@@ -1,42 +1,62 @@
-<template>    
-    <data-info-panel
-      v-if="element"
-      :data="element.properties"
-      :node="element"
-      :featureType="element._featureType"
-      panel="popup"
-    ></data-info-panel>    
+<template>
+  <div class="element-card">
+    <img class="element-icon" v-if="element._featureType.icon" :src="element._featureType.icon" />
+    <!-- {{ element._featureType.infoPanels.popup}} -->
+    <div class="element-card-content">
+      <div class="element-title">{{ element.properties.name }}</div>
+      <div class="element-type">{{ element._featureType.title }}</div>
+      <div class="element-description">{{ element.properties.description }}</div>
+    </div>
+  </div>
 </template> 
 <style scoped>
+.element-card {
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 40px 1fr; /* padding: 4px; */
+}
+.element-card-content {
+  height: 100%;
+  grid-column: 2;
+  /* float: left; */
+}
 
+.element-icon {
+  margin: 5px;
+  max-width: 50px;
+
+  grid-column: 1;
+}
+
+.element-description {
+  margin-top: 5px;
+}
+
+.element-title {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.element-type {
+  font-size: 14px;
+  margin-top: -4px;
+}
 </style>
 <script lang="ts">
 import { GraphElement } from '@csnext/cs-data';
-import Vue from 'vue'
-import { Component, Prop } from "vue-property-decorator";
-import { DataInfoPanel } from "@csnext/cs-map";
-// import { DocDatasource } from "@csnext/cs-graph";
-import { DocDatasource } from '../../../datasources/doc-datasource';
+import Vue from 'vue';
+import { Component, Prop } from 'vue-property-decorator';
+import { DocDatasource } from '../../..';
 
 @Component({
-  name: "default-element-card",  
-  components: {
-      DataInfoPanel
-  },
+  name: 'default-element-card',
+  components: {}
 })
-
 export default class DefaultElementCard extends Vue {
+  @Prop()
+  public source?: DocDatasource;
 
-    @Prop() 
-    public source?: DocDatasource;
-
-    @Prop() 
-    public element?: GraphElement;
-    mounted() {
-        // console.log(this.element);
-    }
-
+  @Prop()
+  public element?: GraphElement;
 }
-    
-
 </script>
