@@ -348,7 +348,7 @@ export class GraphDatasource extends DataSource {
 
   public getElementsByTitle(title: string): GraphElement[] {
     let res: GraphElement[] = Object.values(this.graph).filter(
-      (c) => GraphElement.getTitle(c) === title
+      (c) => c.properties?.name === title
     );
     return res;
   }
@@ -588,17 +588,6 @@ export class GraphDatasource extends DataSource {
   public addNode(element: GraphElement, classId?: string, merge?: boolean) {
     let res = this;
 
-    if (!element.id) {
-      element.id = element._title;
-    }
-
-    if (!element._title && element.properties?.name) {
-      element._title = element.properties.name;
-    }
-
-    if (!element._title && element.id) {
-      element._title = element.id;
-    }
     element.type = 'node';
     if (classId) {
       element.classId = classId;
@@ -922,14 +911,12 @@ export class GraphDatasource extends DataSource {
         }
       }
     }
-    if (!e._title || clean) {
-      e._title = GraphElement.getTitle(e, true);
-    }
+    
     if (!e._search || clean) {
-      e._search = e._title;
-      if (e.class && e.class._title) {
-        e._search += e.class._title;
-      }
+      e._search = e.properties?.name;
+      // if (e.class && e.class._title) {
+      //   e._search += e.class._title;
+      // }
     }
   }
 
@@ -947,19 +934,6 @@ export class GraphDatasource extends DataSource {
     }
   }
 
-  public updateNode(e: GraphElement, clean = false) {
-    if (e.type === 'node') {
-      if (!e._title || clean) {
-        e._title = GraphElement.getTitle(e, clean);
-      }
-    }
-  }
-
-  public updateNodes(clean = false) {
-    for (const e of Object.values(this.graph)) {
-      this.updateNode(e, clean);
-    }
-  }
 
   public saveGraphPresets() {
     // if (!this.graphPresets) {

@@ -20,6 +20,13 @@ export class GraphElement {
   public backgroundColor?: string;
   public properties?: {
     [key: string]: any;
+    name?: string;
+    description?: string;
+    tags?: string[];
+    created_time?: number;    
+    updated_time?: number;
+    approved_time?: number;
+    suggested_time?: number;
   } = {};
 
   public _flat?: {
@@ -29,7 +36,6 @@ export class GraphElement {
   public _alternatives?: string[] = [];
   public _source?: GraphElement;
   public _originals?: GraphElement[];
-  public _included?: boolean = false;
   public _startDate?: Date;
   public _endDate?: Date;
   public _hidden?: boolean = false;
@@ -37,7 +43,6 @@ export class GraphElement {
   public _visible?: boolean = false;
   public _collapsed?: boolean = false;
   public _firstStep?: string;
-  public _title?: string;
   public _instances?: LinkInfo[];
   public _search?: string;
   public _group?: string;
@@ -52,7 +57,7 @@ export class GraphElement {
     if (e._startDate) {
       if (e._startDate >= date) {
         return true;
-      }
+      }      
       if (e._endDate && e._endDate <= date) return true;
     }
     return false;
@@ -104,23 +109,23 @@ export class GraphElement {
       }
     }
   }
-  public static getTitle(e: GraphElement, clean = false): string {
-    if (e.properties && e.properties.hasOwnProperty('name')) {
-      return e.properties.name;
-    }
-    if (e.properties && e.properties.hasOwnProperty('title')) {
-      return e.properties.title;
-    }
-    // if (e.title !== undefined) {
-    //     return (clean) ? e.title : e.title.toLowerCase().split('_').join(' ');
-    // }
-    // else
-    if (e.class) {
-      return GraphElement.getTitle(e.class);
-    } else {
-      return e.id || '';
-    }
-  }
+  // public static getTitle(e: GraphElement, clean = false): string | undefined {
+  //   if (e.properties && e.properties.hasOwnProperty('name')) {
+  //     return e.properties.name;
+  //   }
+  //   if (e.properties && e.properties.hasOwnProperty('title')) {
+  //     return e.properties.title;
+  //   }
+  //   // if (e.title !== undefined) {
+  //   //     return (clean) ? e.title : e.title.toLowerCase().split('_').join(' ');
+  //   // }
+  //   // else
+  //   if (e.class) {
+  //     return GraphElement.getTitle(e.class);
+  //   } else {
+  //     return e.id || '';
+  //   }
+  // }
 
   public static getFlat(e: GraphElement): GraphElement {
     const result = JSON.parse(
@@ -139,23 +144,7 @@ export class GraphElement {
   }
 
   public static getVisibility(e: GraphElement, filters?: GraphPreset): boolean {
-    if (e._included) {
-      return true;
-    }
-
-    // if (filters) {
-
-    //     if (filters.filterTimeline && filters.focusDate) {
-    //         if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-    //             return false;
-    //         }
-    //     }
-    // }
-    // if (filters && filters.filterTimeline && filters.focusDate) {
-    //     if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-    //         return false;
-    //     }
-    // }
+    
     if (e._visible !== undefined && e._visible === false) {
       return false;
     }

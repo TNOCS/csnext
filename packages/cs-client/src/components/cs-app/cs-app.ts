@@ -27,12 +27,10 @@ const en = require('./../../assets/translations/en.json');
 const nl = require('./../../assets/translations/nl.json');
 import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
-import { CsLoader } from '../cs-loader/cs-loader';
 
 import './../../assets/fonts/fonts.css';
 import './cs-app.css';
-// import 'simplebar/dist/simplebar.css';
-// import Vuetify from 'vuetify/lib';
+
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);

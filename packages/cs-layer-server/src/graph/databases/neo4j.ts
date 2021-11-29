@@ -468,20 +468,13 @@ export class Neo4J implements IDatabase {
                             })
                         }
                     }         
-                }
-
-                
-
-                this.source!.updateNodes();                
+                }           
                 this.source!.updateEdges();  
                 this.source!.updateFeatureTypeStats(); 
                 resolve(true);
             }).catch(e => {
                 reject();
-            })
-
-
-            
+            }) 
         });
     }
 
