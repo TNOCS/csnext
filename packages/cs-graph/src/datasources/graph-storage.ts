@@ -13,7 +13,9 @@ export interface IGraphStorage {
   loadTypes(): Promise<boolean>;
   saveTypes(): Promise<boolean>;
   loadGraph(): Promise<boolean>;
+  saveEdge?(element: GraphElement): Promise<GraphElement | undefined>;
   saveElement(element: GraphElement): Promise<boolean>;
+  removeEdge?(id: string): Promise<boolean>;
   loadGraphElement?(id: string): Promise<GraphElement | undefined>;
   removeElement(id: string): Promise<boolean>;
 }
@@ -123,7 +125,7 @@ export class GraphServer implements IGraphStorage {
           });
         }
       }
-      // this.source.importCase();      
+      // this.source.importCase();
       this.source.updateEdges();
       this.source.updateFeatureTypeStats();
       await this.source.initUser();
@@ -168,29 +170,47 @@ export class GraphServer implements IGraphStorage {
     }
   }
 
+  public async saveEdge(edge: GraphElement): Promise<GraphElement | undefined> {
+    try {
+      const res = await Axios.post(
+        `${this.base_url}/graph/link`,
+        edge.properties,
+        {
+          params: {
+            fromId: edge.fromId,
+            toId: edge.toId,
+            classId: edge.classId,
+          },
+        }
+      );
+      return Promise.resolve(res.data as GraphElement);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
   public async saveElement(element: GraphElement): Promise<boolean> {
     let body = Object.assign({}, element);
-      // (body as any)['@type'] = element.classId;
-      body.alternatives = body._alternatives?.join(',');
-      if (body.properties) {
-        body = Object.assign(body, body.properties);
-        delete body.properties;
+    // (body as any)['@type'] = element.classId;
+    body.alternatives = body._alternatives?.join(',');
+    if (body.properties) {
+      body = Object.assign(body, body.properties);
+      delete body.properties;
+    }
+    for (const prop of Object.keys(body)) {
+      if (prop.startsWith('_')) {
+        delete (body as any)[prop];
       }
-      for (const prop of Object.keys(body)) {
-        if (prop.startsWith('_')) {
-          delete (body as any)[prop];
-        }
-      }
-      delete body.class;      
-      this.source.updateElementProperties(element);
+    }
+    delete body.class;
+    this.source.updateElementProperties(element);
 
-      try {
-        Axios.post(`${this.base_url}/graph/store`, body);
-        return Promise.resolve(true);
-      }
-      catch (e) {
-        return Promise.reject(e);
-      }
+    try {
+      Axios.post(`${this.base_url}/graph/store`, body);
+      return Promise.resolve(true);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   public async removeElement(id: string): Promise<boolean> {
@@ -201,6 +221,23 @@ export class GraphServer implements IGraphStorage {
       return Promise.resolve(true);
     } catch (e) {
       return Promise.reject();
+    }
+  }
+
+  public async removeEdge(id: string): Promise<boolean> {
+    try {
+      const res = await Axios.post(
+        `${this.base_url}/graph/unlinkId`,
+        undefined,
+        {
+          params: {
+            id: id,
+          },
+        }
+      );
+      return true;
+    } catch (error) {
+      return Promise.reject(error);
     }
   }
 

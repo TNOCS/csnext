@@ -430,7 +430,7 @@ export default class SelectionPopup extends WidgetBase {
     if (!this.source || !entity._node) {
       return;
     }
-    entity._node._included = true;
+
     this.source.triggerUpdateGraph();
   }
 
@@ -500,8 +500,7 @@ export default class SelectionPopup extends WidgetBase {
       return;
     }
     this.entity.kg_id = target.id;
-    this.entity._node = target;
-    this.entity._node._included = true;
+    this.entity._node = target;    
     if (!this.entity._node._alternatives) {
       this.entity._node._alternatives = [];
     }
@@ -528,8 +527,7 @@ export default class SelectionPopup extends WidgetBase {
       case "KG":
         if (this.newEntityNode && this.source) {
           (this.entity.kg_id = this.newEntityNode.id),
-            (this.entity._node = this.newEntityNode);
-          this.entity._node._included = true;
+            (this.entity._node = this.newEntityNode);          
           if (!this.entity._node._alternatives) {
             this.entity._node._alternatives = [];
           }
@@ -585,8 +583,7 @@ export default class SelectionPopup extends WidgetBase {
           this.entity.kg_id = this.newEntityNode.id;
           this.entity.id = this.newEntityNode.id;
           this.entity.spacy_label = this.newEntityNode.classId;
-          this.entity._node = this.newEntityNode;
-          this.entity._node._included = true;
+          this.entity._node = this.newEntityNode;          
           if (!this.document.entities?.includes(this.entity)) {
             this.document.entities?.push(this.entity);
           }

@@ -1,8 +1,7 @@
 import { FeatureType, GraphPreset, LinkInfo } from '../..';
 
 export class GraphElement {
-  public id?: string;
-  // public title?: string;
+  public id?: string;  
   public type?: 'node' | 'edge' = 'node';
   public classId?: string;
   public class?: GraphElement;
@@ -36,7 +35,6 @@ export class GraphElement {
   public _alternatives?: string[] = [];
   public _source?: GraphElement;
   public _originals?: GraphElement[];
-  public _included?: boolean = false;
   public _startDate?: Date;
   public _endDate?: Date;
   public _hidden?: boolean = false;
@@ -145,23 +143,7 @@ export class GraphElement {
   }
 
   public static getVisibility(e: GraphElement, filters?: GraphPreset): boolean {
-    if (e._included) {
-      return true;
-    }
-
-    // if (filters) {
-
-    //     if (filters.filterTimeline && filters.focusDate) {
-    //         if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-    //             return false;
-    //         }
-    //     }
-    // }
-    // if (filters && filters.filterTimeline && filters.focusDate) {
-    //     if (!GraphElement.getTimeVisibility(e, filters.focusDate)) {
-    //         return false;
-    //     }
-    // }
+    
     if (e._visible !== undefined && e._visible === false) {
       return false;
     }

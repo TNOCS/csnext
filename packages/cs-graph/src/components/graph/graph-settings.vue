@@ -147,6 +147,7 @@ export default class GraphSettings extends WidgetBase {
           type: 'selection',
           readonly: false,
           options: [
+            'manual',
             'circular',
             'radial',
             'concentric',

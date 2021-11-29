@@ -1,6 +1,9 @@
 <template>
   <div class="element-card">
-    <img class="element-icon" v-if="element._featureType.icon" :src="element._featureType.icon" />
+    <template v-if="element._featureType.icon">
+    <v-icon class="element-icon">{{element._featureType.icon}}</v-icon>
+    </template>
+    <!-- <img class="element-icon" v-if="element._featureType.icon" :src="element._featureType.icon" /> -->
     <!-- {{ element._featureType.infoPanels.popup}} -->
     <div class="element-card-content">
       <div class="element-title">{{ element.properties.name }}</div>
@@ -24,7 +27,8 @@
 .element-icon {
   margin: 5px;
   max-width: 50px;
-
+  align-items: start;
+  
   grid-column: 1;
 }
 

@@ -1,6 +1,11 @@
 import { GraphDatasource, GraphElement } from '../../';
 import { FeatureType } from '../types/feature-type';
 
+export interface IGraphNodeDefinition {
+  x?: number;
+  y?: number;
+}
+
 export class IGraphFilter {
   public static GRAPH_FILTER = 'graph-filter';
   public static VISIBLE_NODES_CHANGED = 'visible-nodes-changed';
@@ -12,7 +17,7 @@ export class IGraphFilter {
   public layers?: string[];
   public _visibleNodes: GraphElement[] = [];
   public syncMode?: 'normal' | 'follow' = 'normal';
-  public nodes?: string[];
+  public nodes?: { [id: string] : IGraphNodeDefinition};
   public geoFilter?: Number[][];
   constructor(public source: GraphDatasource) {}
 }
@@ -80,7 +85,7 @@ export class GraphPreset extends IGraphFilter {
     let res = JSON.parse(config) as GraphPreset;
     if (res.nodes) {
       res._visibleNodes = [];
-      for (const nid of res.nodes) {
+      for (const nid of Object.keys(res.nodes)) {
         const element = source.getElement(nid);
         if (element) {
           res._visibleNodes.push(element);

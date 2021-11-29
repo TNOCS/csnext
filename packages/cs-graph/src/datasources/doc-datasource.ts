@@ -3,14 +3,12 @@ import {
   GraphElement,
   TextEntity,
   GraphDatasource,
-  InfoPanel,
   IGraphFilter,
   GraphPreset,
+  IGraphNodeDefinition,
 } from '@csnext/cs-data';
-import Axios from 'axios';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
-import { EntityType } from '../classes/document/view-type';
 import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from '../plugins/EntityParser';
 import { EntityList } from '../components/document/node-entities';
@@ -18,15 +16,12 @@ import {
   TimeDataSource,
   guidGenerator,
   IFormOptions,
-  WidgetOptions,
   IWidget,
 } from '@csnext/cs-core';
 import {
   DataSet,
   FeatureType,
-  FeatureTypes,
   PropertyValueType,
-  FeatureTypeStat,
 } from '@csnext/cs-data';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
@@ -70,19 +65,20 @@ export class DocDatasource extends GraphDatasource {
 
   public activeDocument?: GraphDocument;
   public searchEntities?: SearchEntity[] = [];
-  
+
   public documentPlugins: IDocumentPlugin[] = [];
 
   public importPlugins: IImportPlugin[] = [];
   public viewerPlugins: IDocumentViewerPlugin[] = [];
-  
+
   public editor?: Editor | null = null;
   public elementHistory?: string[];
   public crossFilter?: GraphCrossFilter;
   public activeUser?: GraphElement;
   public bookmarks: string[] = [];
   public filters: IGraphFilter[] = [];
-  public graphShapeDefinitions : GraphShapeDefinitions = new GraphShapeDefinitions();
+  public graphShapeDefinitions: GraphShapeDefinitions =
+    new GraphShapeDefinitions();
 
   public entityParser = new EntityParser();
   public layers: { [type: string]: GeojsonPlusLayer } = {};
@@ -434,9 +430,6 @@ export class DocDatasource extends GraphDatasource {
     if (p?._visibleNodes) {
       p._visibleNodes.splice(0, p._visibleNodes.length);
     }
-    for (const el of Object.values(this.graph)) {
-      el._included = false;
-    }
     if (trigger) {
       this.triggerUpdateGraph();
     }
@@ -475,12 +468,6 @@ export class DocDatasource extends GraphDatasource {
 
   public applyGraphPreset(preset: GraphPreset) {
     this.activeGraphPreset = preset;
-    // this.activeGraphPreset = preset;
-    Object.values(this.graph)
-      .filter((e) => e._included)
-      .forEach((e) => {
-        e._included = false;
-      });
     this.events.publish(
       GraphDatasource.PRESET_EVENTS,
       GraphDatasource.PRESET_ACTIVATED,
@@ -904,18 +891,21 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async loadGraphElement<T>(id: string) {
-    if (!this.storage?.loadGraphElement) { return Promise.reject(); }
-    const res = await this.storage.loadGraphElement(id);    
+    if (!this.storage?.loadGraphElement) {
+      return Promise.reject();
+    }
+    const res = await this.storage.loadGraphElement(id);
   }
 
   /** initial loading of graph */
   public async loadGraph(clearCache = false) {
     // find or select the graph
 
-    if (!this.storage) { return Promise.resolve(); }
-    
-    await this.storage.loadGraph();
+    if (!this.storage) {
+      return Promise.resolve();
+    }
 
+    await this.storage.loadGraph();
   }
 
   public deleteDocument(doc: GraphDocument) {
@@ -1080,18 +1070,14 @@ export class DocDatasource extends GraphDatasource {
         if (obs.relations) {
           for (const r of obs.relations) {
             if (r.hasOwnProperty('id') && doc.entities) {
-              r._entity = doc.entities.find(
-                (e) => e.id === r.id.toString()
-              );
+              r._entity = doc.entities.find((e) => e.id === r.id.toString());
             }
           }
         }
         if (obs.properties) {
           for (const r of obs.properties) {
             if (r.hasOwnProperty('id') && doc.entities) {
-              r._entity = doc.entities.find(
-                (e) => e.id === r.id.toString()
-              );
+              r._entity = doc.entities.find((e) => e.id === r.id.toString());
             }
           }
         }
@@ -1132,14 +1118,13 @@ export class DocDatasource extends GraphDatasource {
     //     content: [],
     //   };
     // }
-    doc._source = doc._outgoing?.find((e) => e.classId === 'FROM_SOURCE');    
+    doc._source = doc._outgoing?.find((e) => e.classId === 'FROM_SOURCE');
     // if (doc.properties?.notes) {
     //   doc.notes = JSON.parse(doc.properties.notes);
     // }
 
     if (doc.properties.entities) {
       doc.entities = JSON.parse(doc.properties.entities);
-      
     }
     this.linkDocumentEntities(doc);
     if (doc.properties.observations) {
@@ -1277,6 +1262,30 @@ export class DocDatasource extends GraphDatasource {
     return observations;
   }
 
+  public async createEntity(
+    type: FeatureType,
+    askForName?: boolean,
+    newItem?: GraphElement
+  ): Promise<GraphElement> {
+    let placeholder = `new ${type.title}`;
+    let name = placeholder;
+    if (askForName) {
+      name = await $cs.triggerInputDialog(
+        placeholder,
+        'enter new name',
+        '',
+        placeholder
+      );
+    }
+    const node = await this.addNewNode({
+      id: `${type.type}-${guidGenerator()}`,
+      properties: { ...newItem, classId: type.type, name },
+      classId: type.type,
+    });
+    return node;
+      
+  }
+
   public saveDocument(d: GraphDocument): Promise<GraphDocument> {
     return new Promise((resolve, reject) => {
       let doc = { ...d } as GraphDocument;
@@ -1311,7 +1320,7 @@ export class DocDatasource extends GraphDatasource {
         );
       }
       this.saveNode(doc)
-        .then(async () => {          
+        .then(async () => {
           await this.updateEdges(true);
           this.events.publish(
             DocDatasource.DOCUMENT,
@@ -1351,7 +1360,7 @@ export class DocDatasource extends GraphDatasource {
   //   }
   //   if (!document.entities) {
   //     document.entities = [];
-  //   }    
+  //   }
   //   const indx = document.entities.findIndex(
   //     (e) => e.position_start === entity.position_start
   //   );
@@ -1370,7 +1379,6 @@ export class DocDatasource extends GraphDatasource {
     GraphElement.updateOriginals(doc);
   }
 
-  
   public syncEntities(
     document: GraphDocument,
     content: any,
@@ -1380,31 +1388,30 @@ export class DocDatasource extends GraphDatasource {
     if (!document || !content || !Array.isArray(content)) {
       return;
     }
-    
+
     // const res = [];
     if (!document.entities) {
       document.entities = [];
     }
-    
 
     for (const node of content) {
       if (node.attrs && node.type === 'text-entity') {
         if (!node.attrs.id) {
           node.attrs.id = guidGenerator();
         }
-        
+
         const e = {
-            text: node.attrs.text,
-            id: node.attrs.id,
-            spacy_label: node.attrs.spacy_label,
-            kg_id: node.attrs.kg_id
-            // entity_class: node.attrs.type,
-            // _key: key,
-          } as TextEntity
-          if (e.kg_id && this.graph.hasOwnProperty(e.kg_id)) {
-            e._node = this.graph[e.kg_id];
-          }
-          document.entities.push(e);
+          text: node.attrs.text,
+          id: node.attrs.id,
+          spacy_label: node.attrs.spacy_label,
+          kg_id: node.attrs.kg_id,
+          // entity_class: node.attrs.type,
+          // _key: key,
+        } as TextEntity;
+        if (e.kg_id && this.graph.hasOwnProperty(e.kg_id)) {
+          e._node = this.graph[e.kg_id];
+        }
+        document.entities.push(e);
         node.entity = e;
         // e._docEntity = node;
       }
@@ -1444,22 +1451,25 @@ export class DocDatasource extends GraphDatasource {
           }
         }
         $cs.loader.addLoader(`remove-${element.id}`);
-        this.storage?.removeElement(element.id).then(async g => {      
-            await this.removeNodeById(element.id!, relations);          
+        this.storage
+          ?.removeElement(element.id)
+          .then(async (g) => {
+            await this.removeNodeById(element.id!, relations);
             this.events.publish(
               GraphDatasource.GRAPH_EVENTS,
               GraphDatasource.ELEMENT_REMOVED,
               element
             );
-        }).finally(() => {
-          $cs.loader.removeLoader(`remove-${element.id}`);
-          if (notify) {
-            $cs.triggerNotification({
-              title: 'Node removed',
-              text: element.properties?.name,
-            });
-          }
-        })        
+          })
+          .finally(() => {
+            $cs.loader.removeLoader(`remove-${element.id}`);
+            if (notify) {
+              $cs.triggerNotification({
+                title: 'Node removed',
+                text: element.properties?.name,
+              });
+            }
+          });
       }
     });
   }
@@ -1489,52 +1499,45 @@ export class DocDatasource extends GraphDatasource {
 
   public updateProvanance(element: GraphElement, user?: GraphElement) {
     const u = this.activeUser ?? user;
-      if (element.properties && u?.id) {
-        element.properties['updated_by'] = u.id;
-        element.properties['updated_time'] = new Date().getTime();
+    if (element.properties && u?.id) {
+      element.properties['updated_by'] = u.id;
+      element.properties['updated_time'] = new Date().getTime();
 
-        if (!element.properties.hasOwnProperty('created_by')) {
-          element.properties['created_by'] = u.id;
-        }
-
-        if (!element.properties.hasOwnProperty('created_time')) {
-          element.properties['created_by'] = element.properties['updated_time'];
-        }
+      if (!element.properties.hasOwnProperty('created_by')) {
+        element.properties['created_by'] = u.id;
       }
+
+      if (!element.properties.hasOwnProperty('created_time')) {
+        element.properties['created_by'] = element.properties['updated_time'];
+      }
+    }
   }
 
   public async saveNode(
     element: GraphElement,
     user?: GraphElement
   ): Promise<GraphElement> {
-    
-      $cs.loader.addLoader(`store-${element.id}`);
-      this.updateProvanance(element, user);
-      
-      try {
-        await this.storage!.saveElement(element);
-        this.events.publish(
-          GraphDatasource.GRAPH_EVENTS,
-          GraphDatasource.ELEMENT_UPDATED,
-          element
-        );
-        $cs.triggerNotification({
-          title: $cs.Translate('NODE_SAVED'),
-          text: element.properties?.name,
-          timeout: 500,
-          group: true,
-        });
+    $cs.loader.addLoader(`store-${element.id}`);
+    this.updateProvanance(element, user);
 
-      } catch (err) {
-
-      }
-      finally {
-        $cs.loader.removeLoader(`store-${element.id}`);
-        return Promise.resolve(element);
-      }
-      
-
-      
+    try {
+      await this.storage!.saveElement(element);
+      this.events.publish(
+        GraphDatasource.GRAPH_EVENTS,
+        GraphDatasource.ELEMENT_UPDATED,
+        element
+      );
+      $cs.triggerNotification({
+        title: $cs.Translate('NODE_SAVED'),
+        text: element.properties?.name,
+        timeout: 500,
+        group: true,
+      });
+    } catch (err) {
+    } finally {
+      $cs.loader.removeLoader(`store-${element.id}`);
+      return Promise.resolve(element);
+    }
   }
 
   public async parseEntities() {
@@ -1554,73 +1557,66 @@ export class DocDatasource extends GraphDatasource {
       if (!doc) {
         reject();
       } else {
-        $cs.data.activeDocument = doc?.id;      
-        this.syncEntities(doc, doc.properties?.content, true);          
-        await this.entityParser.callDocument(doc, this);        
+        $cs.data.activeDocument = doc?.id;
+        this.syncEntities(doc, doc.properties?.content, true);
+        await this.entityParser.callDocument(doc, this);
         this.bus.publish('document', 'activated', doc);
         resolve(doc);
       }
     });
   }
 
-  public removeEdge(edge: GraphElement): Promise<boolean> {
-    return new Promise((resolve) => {
+  public async removeEdge(edge: GraphElement): Promise<boolean> {
       $cs.loader.addLoader(`unlink-${edge.id}`);
-      Axios.post(`${this.base_url}/graph/unlinkId`, undefined, {
-        params: {
-          id: edge.id,
-        },
-      })
-        .then(async (r) => {
-          if (edge.from?._outgoing) {
-            edge.from._outgoing = edge.from._outgoing?.filter(
-              (e) => e.id !== edge.id
-            );
-          }
-          if (edge.to?._incomming) {
-            edge.to._incomming = edge.to._incomming?.filter(
-              (e) => e.id !== edge.id
-            );
-          }
-          if (edge.id && this.graph.hasOwnProperty(edge.id)) {
-            delete this.graph[edge.id];
-          }
-          // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)
-          this.events.publish(
-            GraphDatasource.GRAPH_EVENTS,
-            GraphDatasource.ELEMENT_REMOVED,
-            edge
-          );
-          resolve(true);
-        })
-        .catch(() => {
-          resolve(false);
-          // reject(e);
-        })
-        .finally(() => {
-          $cs.loader.removeLoader(`unlink-${edge.id}`);
-        });
-    });
+      if (this.storage?.removeEdge) {
+        try {
+          const r = await this.storage.removeEdge(edge.id!);
+        }
+        catch (e) {
+          return Promise.reject();
+        }
+      }
+
+      if (edge.from?._outgoing) {
+        edge.from._outgoing = edge.from._outgoing?.filter(
+          (e) => e.id !== edge.id
+        );
+      }
+      if (edge.to?._incomming) {
+        edge.to._incomming = edge.to._incomming?.filter(
+          (e) => e.id !== edge.id
+        );
+      }
+      if (edge.id && this.graph.hasOwnProperty(edge.id)) {
+        delete this.graph[edge.id];
+      }
+      // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)
+      this.events.publish(
+        GraphDatasource.GRAPH_EVENTS,
+        GraphDatasource.ELEMENT_REMOVED,
+        edge
+      );
+      $cs.loader.removeLoader(`unlink-${edge.id}`);
+
+      return Promise.resolve(true);
+      
   }
 
   /**
    * adds a new edge to the graph, based on a edge GraphElement and call graph api to store it
    */
-  public addNewEdge(
+  public async addNewEdge(
     edge: GraphElement,
     updateEdges = true
   ): Promise<GraphElement> {
-    return new Promise((resolve, reject) => {
+    
+
       edge = this.createEdge(edge);
       $cs.loader.addLoader(`store-${edge.id}`);
-      Axios.post(`${this.base_url}/graph/link`, edge.properties, {
-        params: {
-          fromId: edge.fromId,
-          toId: edge.toId,
-          classId: edge.classId,
-        },
-      })
-        .then(async (r) => {
+
+      if (this.storage?.saveEdge) {
+        try {
+          const r = await this.storage.saveEdge(edge);
           await this.addEdge(edge);
           if (updateEdges) {
             await this.updateEdges();
@@ -1631,20 +1627,20 @@ export class DocDatasource extends GraphDatasource {
             GraphDatasource.ELEMENT_ADDED,
             edge
           );
-
-          resolve(edge);
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
           $cs.loader.removeLoader(`store-${edge.id}`);
-        });
-    });
-  }
+          return Promise.resolve(edge);
+        } catch (err) {
+          return Promise.reject(err);
+        }
+      }
+      return Promise.reject();
+    }
+  
+     
+     
 
-  public addNewNode(element: GraphElement): Promise<GraphElement> {
-    return new Promise((resolve, reject) => {
+  public async addNewNode(element: GraphElement): Promise<GraphElement> {
+    
       let res = this;
       if (!element.id) {
         element.id = element.classId + '-' + guidGenerator();
@@ -1668,23 +1664,10 @@ export class DocDatasource extends GraphDatasource {
         element.properties.updated_by = this.activeUser.id;
       }
       element.type = 'node';
-
-      let body = { ...element };
-      // (body as any)['@type'] = element.classId;
-      console.log(body);
-      if (body.properties) {
-        body = Object.assign(body, body.properties);
-        delete body.properties;
-      }
-      for (const prop of Object.keys(body)) {
-        if (prop.startsWith('_')) {
-          (body as any)[prop] = undefined;
-        }
-      }
       $cs.loader.addLoader(`store-${element.id}`);
-      Axios.post(`${this.base_url}/graph/store`, body)
-        .then(async () => {
-          this.initElement(element);
+      try {
+        await this.saveNode(element);
+        this.initElement(element);
           res = res.addElement(element);
           await this.refresh();
           this.events.publish(
@@ -1692,16 +1675,15 @@ export class DocDatasource extends GraphDatasource {
             GraphDatasource.ELEMENT_ADDED,
             element
           );
-
-          resolve(element);
-        })
-        .catch((e) => {
-          reject(e);
-        })
-        .finally(() => {
-          $cs.loader.removeLoader(`store-${element.id}`);
-        });
-    });
+          return Promise.resolve(element);
+      }
+      catch (err) {
+        return Promise.reject(err);
+      }
+      finally {
+        $cs.loader.removeLoader(`store-${element.id}`);
+      }
+      
   }
 
   public selectElementId(id: string, open = false) {
@@ -1760,15 +1742,16 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public addElementToPreset(el: GraphElement, preset: string, trigger = true) {
+  public addElementToPreset(el: GraphElement, preset: string, trigger = true, pos?: IGraphNodeDefinition) {
     let p = this.getGraphPreset(preset);
     if (!p) {
       p = this.addGraphPreset({ id: preset, title: preset } as GraphPreset);
     }
 
-    if (p?._visibleNodes && !p._visibleNodes.includes(el)) {
-      p._visibleNodes.push(el);
-      el._included = true;
+    if (!p.nodes) { p.nodes = {}}
+
+    if (p?.nodes && el.id && !p.nodes.hasOwnProperty(el.id)) {
+      p.nodes[el.id] = { ...{x: 100, y: 100}, ...pos};      
       if (trigger) {
         this.triggerUpdateGraph(el);
         this.bus.publish(
@@ -1782,7 +1765,9 @@ export class DocDatasource extends GraphDatasource {
 
   public removeElementFromPreset(el: GraphElement, preset: string) {
     let p = this.getGraphPreset(preset);
-    el._included = false;
+    if (p?.nodes && el.id && p.nodes.hasOwnProperty(el.id)) { 
+      delete p.nodes[el.id];      
+    }
     if (p?._visibleNodes) {
       const i = p._visibleNodes.indexOf(el);
       p._visibleNodes.splice(i, 1);
@@ -1798,8 +1783,7 @@ export class DocDatasource extends GraphDatasource {
     if (element?._outgoing) {
       for (const out of element?._outgoing) {
         if (out.to && (!classId || out.classId === classId)) {
-          this.addElementToPreset(out.to, preset, false);
-          // out.to._included = true;
+          this.addElementToPreset(out.to, preset, false);          
         }
       }
     }
@@ -1807,8 +1791,7 @@ export class DocDatasource extends GraphDatasource {
     if (element?._incomming) {
       for (const incomming of element?._incomming) {
         if (incomming.from && (!classId || incomming.classId === classId)) {
-          this.addElementToPreset(incomming.from, preset, false);
-          // incomming.from._included = true;
+          this.addElementToPreset(incomming.from, preset, false);          
         }
       }
     }

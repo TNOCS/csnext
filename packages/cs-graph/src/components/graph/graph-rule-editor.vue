@@ -1,8 +1,11 @@
 <template>
   <div v-if="activePreset && rule">
     <v-layout>
+      <span class="rule-legend" :style="getRuleStyle(rule)"></span>
       <span class="rule-type">{{ rule._featureType.title }}</span
-      ><v-spacer /><v-btn icon @click="toggleRule(rule)">
+      >
+      <v-btn @click="addElement(rule)"><v-icon>mdi-add</v-icon></v-btn>
+      <v-spacer /><v-btn icon @click="toggleRule(rule)">
         <v-icon v-if="rule.disabled === true">visibility_off</v-icon><v-icon v-else>visibility</v-icon></v-btn
       >
     </v-layout>
@@ -13,15 +16,19 @@
 .rule-type {
   font-size: 22px;
 }
-</style>>
 
+.rule-legend {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+}
 </style>
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
 import { DocDatasource } from '../..';
 import Vue from 'vue';
-import { GraphPreset, IGraphFilter, NodeRule } from '@csnext/cs-data';
+import { FeatureType, GraphElement, GraphPreset, IGraphFilter, NodeRule } from '@csnext/cs-data';
 
 @Component({
   components: {}
@@ -35,6 +42,18 @@ export default class GraphRuleEditor extends Vue {
 
   @Prop()
   public rule!: any;
+
+  public getRuleStyle(rule: NodeRule) : any { 
+    return { 
+      'background-color' : rule._featureType?.color ?? 'gray'
+    }
+  }
+
+  public async addElement(rule: NodeRule) {
+    if (rule._featureType) {
+      const element = await this.source.createEntity(rule._featureType, true);    
+    }
+  }
 
   public toggleRule(rule: NodeRule) {
     rule.disabled = !rule.disabled;

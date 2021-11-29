@@ -474,10 +474,7 @@ export class Neo4J implements IDatabase {
                 resolve(true);
             }).catch(e => {
                 reject();
-            })
-
-
-            
+            }) 
         });
     }
 

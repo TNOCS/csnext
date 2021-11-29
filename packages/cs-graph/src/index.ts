@@ -30,6 +30,9 @@ import DefaultElementCard from "./components/data-grid/cards/default-element-car
 import User from "./components/graph/user.vue";
 import Management from "./components/graph/management.vue"
 
+import mdiFont from './assets/mdfont.json';
+
+
 
 const locales = require('./assets/locales.json');
 
@@ -41,4 +44,4 @@ for (const lang in locales) {
 }
 
 
-export { User, Management, IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
+export { mdiFont, User, Management, IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
