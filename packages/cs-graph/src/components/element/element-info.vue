@@ -23,7 +23,7 @@
         </v-list>
       </v-menu>
       <v-toolbar-title
-        >{{ activeElement.properties.name || activeElement._title }}
+        >{{ activeElement.properties.name }}</v-toolbar-title>
         <br />
         <div class="type-sub-title">{{ activeElement._featureType.title }}</div>
       </v-toolbar-title>
@@ -150,7 +150,7 @@
                   v-text="item.properties.title"
                 ></v-list-item-title>
                 <v-list-item-subtitle v-if="item._source">
-                  {{ item._source._title }}</v-list-item-subtitle
+                  {{ item._source.properties.name }}</v-list-item-subtitle
                 >
               </v-list-item-content>
 
@@ -514,14 +514,14 @@ export default class ElementInfo extends WidgetBase {
 
     console.log(this.activeElement);
 
-    this.widget.title = this.activeElement._title;
+    this.widget.title = this.activeElement.properties?.name;
     if (this.activeElement.type === "edge") {
       this.widget.options.title =
-        this.activeElement.from!._title +
+        this.activeElement.from!.properties?.name +
         " -> " +
-        this.activeElement.to!._title;
+        this.activeElement.to!.properties?.name;
     } else {
-      this.widget.options.title = this.activeElement._title;
+      this.widget.options.title = this.activeElement.properties?.name;
     }
     this.updateForm();
     this.$forceUpdate();

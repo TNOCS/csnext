@@ -9,14 +9,14 @@
     <v-container class="elevation-0"><v-row><v-col cols="2" v-for="(element, indx) in approvedElements()" :key="indx">
       <v-card :style="{'border-color': getEntityColor(element)}"  @click="openEntity(element)" class="entity-card">
         <!-- <div class="overline card-class-title">{{element.class._title}}</div> -->
-        <node-link class="entity-link" :source="source" :node="element" >{{element._title}}</node-link>
+        <node-link class="entity-link" :source="source" :node="element" >{{element.properties.name}}</node-link>
         
         </v-card>
         </v-col></v-row></v-container>
     <h3>Observations</h3>
     <v-container class="elevation-0"><v-row><v-col cols="2" v-for="(element, indx) in approvedObservations()" :key="indx">
       <v-card :style="{'border-color': getEntityColor(element)}" @click="openEntity(element)" class="entity-card">        
-        <node-link class="entity-link" :source="source" :node="element" >{{element._title}}</node-link></v-card></v-col></v-row></v-container>
+        <node-link class="entity-link" :source="source" :node="element" >{{element.properties.name}}</node-link></v-card></v-col></v-row></v-container>
     <!-- <v-layout><node-link class="entity-link" v-for="(element, indx) in approvedObservations()" :source="source" :node="element" :key="indx">{{element._title}}</node-link></v-layout> -->
   </simplebar>
 </template>

@@ -1,8 +1,7 @@
 import { FeatureType, GraphPreset, LinkInfo } from '../..';
 
 export class GraphElement {
-  public id?: string;
-  // public title?: string;
+  public id?: string;  
   public type?: 'node' | 'edge' = 'node';
   public classId?: string;
   public class?: GraphElement;

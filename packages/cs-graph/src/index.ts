@@ -27,6 +27,12 @@ import { AppState } from '@csnext/cs-client';
 import ElementValue from "./components/data-grid/element-value.vue";
 import IndicatorElementCard from "./components/data-grid/cards/indicator-element-card.vue";
 import DefaultElementCard from "./components/data-grid/cards/default-element-card.vue";
+import User from "./components/graph/user.vue";
+import Management from "./components/graph/management.vue"
+
+import mdiFont from './assets/mdfont.json';
+
+
 
 const locales = require('./assets/locales.json');
 
@@ -38,4 +44,4 @@ for (const lang in locales) {
 }
 
 
-export { IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
+export { mdiFont, User, Management, IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }

@@ -130,7 +130,7 @@ export default class GraphElements extends WidgetBase {
       // if (!this.searchString) { this.searchString = ''; }
       if (!this.searchString) {
         res = this.graphSource
-          .getClassElements(this.widget.data?.classFilter || 'node')
+          .getClassElements(this.widget.data?.classFilter || 'node', true)
           .map((s) => {
             return { score: 0, item: s } as any;
           });

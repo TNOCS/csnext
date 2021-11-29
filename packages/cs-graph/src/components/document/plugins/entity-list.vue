@@ -1,7 +1,7 @@
 <template>
   <div class="items">
     <v-autocomplete rounded filled
-  :items="items" v-model="selectedItem"  item-text="_title" return-object  @click="selectItem"
+  :items="items" v-model="selectedItem"  item-text="properties.name" return-object  @click="selectItem"
 ></v-autocomplete>
     <!-- <button
       class="item"
@@ -81,7 +81,7 @@ export default {
       const item = this.items[this.selectedIndex]
 
       if (item) {
-        this.command({ id: item._title })
+        this.command({ id: item.properties.name })
       }
     },
   },

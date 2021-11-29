@@ -41,6 +41,8 @@ import { HtmlWidget } from './widgets/html-widget/html-widget';
 
 import './components/cs-label';
 
+import '@mdi/font/css/materialdesignicons.css';
+
 // export components
 export * from './components/cs-app/cs-app';
 export * from './components/cs-widget/cs-widget';

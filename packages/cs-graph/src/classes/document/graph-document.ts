@@ -72,7 +72,7 @@ export class GraphDocument extends GraphElement {
 
     public getNode(): GraphElement {
         return {
-            id: this.id, type: 'node', title: this.name, _title: this.name, classId: 'input', properties: {
+            id: this.id, type: 'node', title: this.name, classId: 'input', properties: {
                 name: this.name,
                 // text: this.originalText,
                 // reliability: this.reliability,

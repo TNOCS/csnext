@@ -119,7 +119,7 @@ export class SplitPanel extends Vue {
     this.toggleMenu = {
       id: 'panel-toggle-menu' + this.dashboard.id,
       textButton: false,
-      icon: 'dashboard',
+      icon: 'mdi-view-compact',
       component: DashboardLayout,
       closeOnContentClick: false,
       enabled: true,

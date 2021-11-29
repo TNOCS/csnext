@@ -3,7 +3,6 @@ import { WidgetBase } from '@csnext/cs-client';
 import './chart-editor.css';
 import { IFormObject, IWidget } from '@csnext/cs-core';
 import { ChartOptions, CrossFilterDatasource, CrossDashboardManager } from '../..';
-import { GeojsonPlusLayer } from '@csnext/cs-map';
 
 @Component({
   name: 'actions',

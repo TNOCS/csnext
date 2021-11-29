@@ -136,7 +136,7 @@ export default class DocumentManagement extends WidgetBase {
   public headers = [
     { text: "name", value: "properties.name" },
     { text: "type", value: "classId", groupable: true },
-    { text: "source", value: "_source._title", groupable: true },
+    { text: "source", value: "_source.properties.name", groupable: true },
     { text: "reliability", value: "reliability", groupable: true },
     { text: "credibility", value: "credibility", groupable: true },    
     { text: "Actions", value: "actions", sortable: false },

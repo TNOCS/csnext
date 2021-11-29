@@ -5,7 +5,11 @@
     "importHelpers": true,    
     "resolveJsonModule": true,    
     "sourceMap": true,
+    "checkJs": false,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true, 
     "experimentalDecorators": true
   },
+  "include": ["*.json"],
   "exclude": ["./dist", "./lib"]
 }

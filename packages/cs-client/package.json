@@ -34,7 +34,8 @@
     },
     "devDependencies": {
         "@types/socket.io-client": "^3.0.0",
-        "base64-inline-loader": "^1.1.1"
+        "base64-inline-loader": "^1.1.1",
+        "@mdi/font": "6.5.95"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
 }

@@ -137,7 +137,7 @@ export default class RecentList extends WidgetBase {
         createItem(item.properties.approved_time, 'approved', item, item._elements?.approved_by);        
       }
 
-      if (item.properties?.updated_time && (item.properties.updated_time !== item.properties.created_time ||  item.properties.updated_time !== item.properties.approved_time) && item.properties.created_time < maxTime) {
+      if (item._elements?.updated_by && item.properties?.updated_time && (item.properties.updated_time !== item.properties.created_time ||  item.properties.updated_time !== item.properties.approved_time) && item.properties.updated_time < maxTime) {
         createItem(item.properties.updated_time, 'updated', item, item._elements?.updated_by);        
       }
     }

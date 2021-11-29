@@ -4,6 +4,7 @@
     ></v-select>
 </template>
 <script lang="ts">
+import { GraphElement, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import Vue from 'vue'
 import { Component, Watch } from 'vue-property-decorator';
 
@@ -50,7 +51,8 @@ export default class OptionsFilter extends Vue {
     }    
   }
 
-  myMethodForTakingValueFromFloatingFilter(value: string[]) {    
+  myMethodForTakingValueFromFloatingFilter(value: string[]) {
+    
       this.filterText = value;
     }
 

@@ -4,7 +4,7 @@ import Vuetify, { UserVuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
-import VueRouter, { RouteConfig } from 'vue-router';
+import VueRouter from 'vue-router';
 import VSnackbars from "v-snackbars";
 import {
   IDashboard,
@@ -16,7 +16,7 @@ import {
   Topics
 } from '@csnext/cs-core';
 import { Ref, Watch } from 'vue-property-decorator';
-import { AppState, Logger, CsDashboard, CsSettings } from '../../';
+import { AppState, Logger, CsSettings } from '../../';
 
 import { CsSidebar } from '../cs-sidebar/cs-sidebar';
 import { CsFooter } from '../cs-footer/cs-footer';
@@ -42,14 +42,14 @@ const i18n = new VueI18n({
   silentTranslationWarn: true
 });
 
-const vuetifyOpts = {
-  icons: {
-    iconfont: 'mdi' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
-  }
-  // lang: {
-  //   t: (key, ...params) => i18n.t(key, params)
-  // }
-} as UserVuetifyPreset;
+// const vuetifyOpts = {
+//   icons: {
+//     iconfont: 'mdi' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
+//   }
+//   // lang: {
+//   //   t: (key, ...params) => i18n.t(key, params)
+//   // }
+// } as UserVuetifyPreset;
 
 Vue.use(Vuetify);
 
@@ -59,7 +59,7 @@ const router = AppState.Instance.router; // new VueRouter({ routes: [] });
   name: 'cs-app',
   router,
   i18n,
-  vuetify: new Vuetify(vuetifyOpts),
+  vuetify: new Vuetify({}),
   template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
