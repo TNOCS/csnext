@@ -868,6 +868,7 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+  
   public syncDocumentState() {
     if (!this.source?.activeDocument || !this.editor) {
       return;
@@ -1079,7 +1080,8 @@ export default class DocumentViewer extends WidgetBase {
       image: 'images/entity_analysis.png',
       action: async () => {
         try {
-          await this.refresh();
+          this.updateEntityTypes();
+          // await this.refresh();
           return Promise.resolve(true);
         } catch (e) {
           return Promise.resolve(false);
@@ -1096,7 +1098,8 @@ export default class DocumentViewer extends WidgetBase {
       // image: 'images/entity_analysis.png',
       action: async () => {
         try {
-          await this.refresh();
+          // await this.refresh();
+          this.updateEntityTypes();
           return Promise.resolve(true);
         } catch (e) {
           return Promise.resolve(false);
