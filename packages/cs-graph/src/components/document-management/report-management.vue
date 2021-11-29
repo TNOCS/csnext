@@ -30,7 +30,7 @@
             </div>
           </vue-dropzone> -->
           <v-btn color="primary" class="ma-2" @click="addDocument()">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
             {{ $cs.Translate("ADD_DOCUMENT") }}
           </v-btn>
 
@@ -66,7 +66,7 @@
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" v-bind="attrs" class="ma-2" v-on="on">
-                <v-icon>add</v-icon>
+                <v-icon>mdi-plus</v-icon>
                 {{ $cs.Translate("NEW_REPORT") }}
               </v-btn>
             </template>
@@ -85,7 +85,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon @click.stop="editDocument(item)">mdi-pencil</v-icon>
-        <v-icon @click.stop="deleteItem(item)">mdi-delete</v-icon>
+        <v-icon @click.stop="deleteItem(item)">mdi-mdi-delete</v-icon>
       </template>    
     </v-data-table>
   </simplebar>

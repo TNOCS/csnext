@@ -26,7 +26,7 @@
             "
             icon
             class="group-add-button"
-            ><v-icon>add</v-icon></v-btn
+            ><v-icon>mdi-plus</v-icon></v-btn
           >
           <v-btn
             v-if="group._adding"
@@ -58,7 +58,7 @@
                 return-object
               ></v-combobox>
               <v-btn @click.stop="linkNode(group)" fab x-small class="mt-4 primary">
-                <v-icon>add</v-icon>
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-layout>
             <v-layout v-if="searchMode === 'new'">
@@ -67,7 +67,7 @@
                 :label="'new ' + group.id"
               ></v-text-field>
               <v-btn @click.stop="linkNode(group)" fab x-small class="mt-4 primary">
-                <v-icon>add</v-icon>
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-layout>
             <v-layout>
@@ -124,22 +124,22 @@
 
               <v-btn v-if="entity.instances.length>0" icon @click.stop="toggleApproveEntity(entity)"
                 ><v-icon v-if="entity._approved">remove</v-icon
-                ><v-icon v-else>add</v-icon></v-btn
+                ><v-icon v-else>mdi-plus</v-icon></v-btn
               >
               <v-btn v-if="entity.instances.length === 0" icon @click="deleteEntities(entity)">
-                <v-icon>delete</v-icon>
+                <v-icon>mdi-mdi-delete</v-icon>
               </v-btn>
               <v-btn
                 icon
                 v-if="!entity._approved"
                 @click="deleteEntities(entity)"
-                ><v-icon>delete</v-icon></v-btn
+                ><v-icon>mdi-mdi-delete</v-icon></v-btn
               >
               <v-btn
                 icon
                 v-if="!entity._approved"
                 @click="ignoreEntity(entity)"
-                ><v-icon>delete_forever</v-icon></v-btn
+                ><v-icon>mdi-delete_forever</v-icon></v-btn
               >
             </span>
             <span style="float: right">
@@ -157,7 +157,7 @@
                 v-if="entity.node"
                 @click="selectNodeInfo(entity.node)"
                 icon
-                ><v-icon>info</v-icon></v-btn
+                ><v-icon>mdi-information-outline</v-icon></v-btn
               > -->
             </span>
 

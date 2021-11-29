@@ -59,7 +59,7 @@
                 size="56"
                 class="white--text"
               >
-                <v-icon v-if="item.item._included">bookmark</v-icon>
+                <v-icon v-if="item.item._included">mdi-bookmark</v-icon>
                 <!-- {{ item.initials }} -->
               </v-avatar>
             </v-list-item-avatar>
@@ -76,7 +76,7 @@
                   {{ item.item._incomming.length}}
                 </span>
                 <span v-if="item.item._outgoing">
-                  <v-icon small>arrow_back</v-icon>
+                  <v-icon small>mdi-arrow-left</v-icon>
                   {{ item.item._outgoing.length}}
                 </span> -->
               </v-list-item-subtitle>
@@ -85,10 +85,10 @@
             <v-list-item-action>
               <v-layout>
                 <v-btn @click.stop="showInfo(item.item)" icon>
-                  <v-icon color="darken-4">info</v-icon>
+                  <v-icon color="darken-4">mdi-information-outline</v-icon>
                 </v-btn>
                 <v-btn @click.stop="toggleInclude(item.item)" icon>
-                  <v-icon color="darken-4">scatter_plot</v-icon>
+                  <v-icon color="darken-4">mdi-scatter-plot</v-icon>
                 </v-btn>
               </v-layout>
             </v-list-item-action>

@@ -1,10 +1,10 @@
 <template>
   <v-layout>
     <v-btn v-if="params.options.canDelete" small icon @click.stop="deleteRow"
-      ><v-icon>delete</v-icon></v-btn
+      ><v-icon>mdi-mdi-delete</v-icon></v-btn
     >
     <v-btn v-if="params.options.canGraph" small icon @click.stop="graphRow"
-      ><v-icon>scatter_plot</v-icon></v-btn
+      ><v-icon>mdi-scatter-plot</v-icon></v-btn
     >
   </v-layout>
 </template>

@@ -1,4 +1,4 @@
-import { WidgetOptions } from '@csnext/cs-core';
+import { IMenu, WidgetOptions } from '@csnext/cs-core';
 import { GraphElement, GraphFilter, IGraphFilter } from '@csnext/cs-data';
 
 export enum GridView {
@@ -41,6 +41,7 @@ export class DataGridOptions extends WidgetOptions {
   public defaultView: GridView = GridView.table;
   public treeStructure?: string[];
   public parentProperty?: string;
+  public graphPresetId?: string;
   public baseTreeItem?: GraphElement;
   public groupId?: string;
   public canDelete? = true;

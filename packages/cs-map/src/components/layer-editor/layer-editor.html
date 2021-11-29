@@ -3,16 +3,20 @@
         <v-toolbar-title>{{ layer.title }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-            <v-btn @click="updateLayer()" icon v-slot:activator="{ on }"
-                ><v-icon>check</v-icon>
+            <v-btn @click="updateLayer()" icon v-slot:activator="{ on }">
+                <v-icon>check</v-icon>
             </v-btn>
             update layer
         </v-tooltip>
         <v-tooltip bottom>
-            <v-btn icon v-slot:activator="{ on }"><v-icon>delete</v-icon> </v-btn>
+            <v-btn icon v-slot:activator="{ on }">
+                <v-icon>mdi-mdi-delete</v-icon>
+            </v-btn>
             delete layer
         </v-tooltip>
-        <v-btn icon> <v-icon>more_vert</v-icon> </v-btn>
+        <v-btn icon>
+            <v-icon>more_vert</v-icon>
+        </v-btn>
         <v-tabs right color="transparent" slot="extension" v-model="tabs">
             <v-tab href="#layer">Layer</v-tab>
             <v-tab href="#style">Style</v-tab>
@@ -26,17 +30,10 @@
                 <cs-form class="layer-editor-form" :data.sync="layer"></cs-form>
             </v-tab-item>
             <v-tab-item value="style">
-                <cs-form
-                    class="layer-editor-form"
-                    :data.sync="layer.style"
-                ></cs-form>
+                <cs-form class="layer-editor-form" :data.sync="layer.style"></cs-form>
             </v-tab-item>
             <v-tab-item value="featuretypes">
-                <cs-form
-                    class="layer-editor-form"
-                    :data.sync="layer"
-                    field="featureTypes"
-                ></cs-form>
+                <cs-form class="layer-editor-form" :data.sync="layer" field="featureTypes"></cs-form>
             </v-tab-item>
         </v-tabs-items>
     </div>

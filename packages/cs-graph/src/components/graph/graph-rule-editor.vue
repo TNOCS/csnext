@@ -4,7 +4,7 @@
       <span class="rule-legend" :style="getRuleStyle(rule)"></span>
       <span class="rule-type">{{ rule._featureType.title }}</span
       >
-      <v-btn @click="addElement(rule)"><v-icon>mdi-add</v-icon></v-btn>
+      <v-btn @click="addElement(rule)"><v-icon>mdi-mdi-plus</v-icon></v-btn>
       <v-spacer /><v-btn icon @click="toggleRule(rule)">
         <v-icon v-if="rule.disabled === true">visibility_off</v-icon><v-icon v-else>visibility</v-icon></v-btn
       >

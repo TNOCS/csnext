@@ -64,7 +64,7 @@
               >
                 <template v-slot:activator="{ on }">
                     <v-layout>
-                    <v-btn icon v-on="on"><v-icon>event</v-icon></v-btn>
+                    <v-btn icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
                     <v-text-field
                     v-model="DateValue"
                     :label="$cs.Translate(field.title)"    
@@ -91,7 +91,7 @@
               >
                 <template v-slot:activator="{ on }">
                     <v-layout>
-                    <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>event</v-icon></v-btn>
+                    <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
                     <v-text-field
                     v-model="DateValue"
                     :disabled="field.readonly"
@@ -106,7 +106,7 @@
     <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
                   <v-layout>
-                  <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>access_time</v-icon></v-btn>
+                  <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-clock-outline</v-icon></v-btn>
                   <v-text-field
                   v-model="TimeValue"
                   :disabled="field.readonly"
@@ -134,7 +134,7 @@
           >
             <template v-slot:activator="{ on }">
                 <v-layout>
-                <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>event</v-icon></v-btn>
+                <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-calendar</v-icon></v-btn>
                 <v-text-field
                 v-model="DateValue"
                 :disabled="field.readonly"
@@ -149,7 +149,7 @@
     <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
               <v-layout>
-              <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>access_time</v-icon></v-btn>
+              <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-clock-outline</v-icon></v-btn>
               <v-text-field
               v-model="TimeValue"
               :disabled="field.readonly"
@@ -356,14 +356,14 @@
             <template>    
                 {{ field.title }}            
                 <v-btn icon text v-if="field.canAdd" @click="addObject(field)">
-                    <v-icon>add</v-icon>
+                    <v-icon>mdi-plus</v-icon>
                 </v-btn>
                 <v-hover v-for="(item, indx) in getVisibleArray(field)" :key="indx" class="form-array-card-item" v-slot="{hover}" >
                     <v-card tile outlined :class="{ 'on-hover' : hover }" >                    
                         <cs-form v-if="field.arrayFieldType === 'object'" :data="item" :formdef.sync="field.arrayType" @saved="fieldUpdated(field)"></cs-form>
                         <cs-form-field v-else :target="item" :field="target[field._key]"></cs-form-field>                    
                         <v-btn style="position: absolute; top: 0; right: 0; z-index: 2000;" icon text right v-if="field.canDelete" @click="deleteFromArray(field._key, indx)">
-                            <v-icon>delete</v-icon>
+                            <v-icon>mdi-mdi-delete</v-icon>
                         </v-btn>
                     </v-card>
                 </v-hover>                
@@ -397,7 +397,7 @@
             <span v-if="!field.hideTitle">{{ $cs.Translate(field.title) }}</span>
             <v-spacer></v-spacer>
             <!-- <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)">
-                <v-icon>add</v-icon>
+                <v-icon>mdi-plus</v-icon>
             </v-btn> -->
         </v-layout>
         <div>
@@ -416,7 +416,7 @@
                                         {{ $cs.Translate(field.title) }}
                                     </template>
                             <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)">
-                                <v-icon>delete</v-icon>
+                                <v-icon>mdi-mdi-delete</v-icon>
                             </v-btn>
                         </v-layout>
                     </v-expansion-panel-header>

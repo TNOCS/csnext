@@ -6,11 +6,11 @@
       <v-spacer></v-spacer>
 
       <v-btn icon @click="createInstance()">
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
 
       <!-- <v-btn icon @click="deleteNode()">
-        <v-icon>delete</v-icon>
+        <v-icon>mdi-mdi-delete</v-icon>
       </v-btn> -->
 
       <!-- 
@@ -19,11 +19,11 @@
       </v-btn>
 
       <v-btn icon @click="graphNode()">
-        <v-icon>scatter_plot</v-icon>
+        <v-icon>mdi-scatter-plot</v-icon>
       </v-btn> -->
 
       <!-- <v-btn icon>
-        <v-icon>note_add</v-icon>
+        <v-icon>note_mdi-plus</v-icon>
       </v-btn> -->
 
       <v-btn icon>

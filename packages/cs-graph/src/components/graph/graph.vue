@@ -22,13 +22,13 @@
 >
     <v-layout id="dropdown-example-2">
       <v-btn @click="fitGraph()" icon>
-        <v-icon>fit_screen</v-icon>
+        <v-icon>mdi-fit-to-screen</v-icon>
       </v-btn>
       <!-- <v-btn @click="emptyGraph()" icon>
-        <v-icon>delete</v-icon>
+        <v-icon>mdi-mdi-delete</v-icon>
       </v-btn> -->
       <v-btn @click="openSettings()" icon>
-        <v-icon>settings</v-icon>
+        <v-icon>mdi-cog</v-icon>
       </v-btn>
 
       <!-- <v-overflow-btn      
@@ -948,6 +948,10 @@ export default class NetworkGraph extends WidgetBase {
         );
       }
     }, 100);
+  }
+
+  public refresh() {
+    this.updateGraph(this.source!.graph, true);
   }
 
   refreshDragedNodePosition(e: any) {

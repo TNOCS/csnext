@@ -10,9 +10,9 @@ import Vue from 'vue';
   <div class="list-section" v-if="node">        
       <v-layout>
         <div @click="toggleExpand()" class="section-title" v-if="section.title">{{section.title}}({{total}})</div><v-spacer></v-spacer>
-        <v-btn icon v-if="node && node._isEditting"><v-icon>add</v-icon></v-btn>
-        <v-btn v-if="expanded" @click="toggleExpand()" icon><v-icon>expand_more</v-icon></v-btn>
-        <v-btn v-else @click="toggleExpand()" icon><v-icon>expand_less</v-icon></v-btn>
+        <v-btn icon v-if="node && node._isEditting"><v-icon>mdi-plus</v-icon></v-btn>
+        <v-btn v-if="expanded" @click="toggleExpand()" icon><v-icon>mdi-chevron-up</v-icon></v-btn>
+        <v-btn v-else @click="toggleExpand()" icon><v-icon>mdi-chevron-down</v-icon></v-btn>
       </v-layout>
       <div class="d-flex flex-wrap" v-if="expanded">
         <node-link class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-link>

@@ -2,12 +2,16 @@ export *  from "./components/data-grid/data-grid-options";
 export * from "./components/data-grid/data-matrix-options";
 export * from "./components/document/node-entities";
 export * from "./datasources/doc-datasource";
+export * from "./components/graph/graph-widget-options";
 export * from "./plugins/document-plugin";
 export * from "./plugins/import-plugin";
 export * from "./plugins/viewer-plugin";
 export * from "./classes/";
 export * from "./filters/graph-cross-filter";
+export * from "./filters/cross-graph-manager";
+export * from "./filters/cross-graph-options";
 export * from "./components/data-grid/cards/element-card-manager";
+
 
 
 import Vue from 'vue';
@@ -29,7 +33,7 @@ import IndicatorElementCard from "./components/data-grid/cards/indicator-element
 import DefaultElementCard from "./components/data-grid/cards/default-element-card.vue";
 import User from "./components/graph/user.vue";
 import Management from "./components/graph/management.vue"
-
+import GraphMap from "./components/graph/graph-map.vue";
 import mdiFont from './assets/mdfont.json';
 
 
@@ -44,4 +48,4 @@ for (const lang in locales) {
 }
 
 
-export { mdiFont, User, Management, IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }
+export { mdiFont, GraphMap, User, Management, IndicatorElementCard, RecentList, DefaultElementCard, ElementDataGrid , ReportEditor, NetworkGraph, GraphElements, ElementValue, GraphSettings, ClassOverview, ClassViewer, ElementInfo, DocumentViewer, DocumentEditor, DocumentEntities }

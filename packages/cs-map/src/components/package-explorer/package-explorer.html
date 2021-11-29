@@ -30,7 +30,7 @@
             </v-tooltip>
             <v-btn icon @click="openBookmarks()" v-if="data.mainLayer">
                 <v-badge color="primary" overlap :dot="data.mainLayer.bookmarks.length === 0" :content="data.mainLayer.bookmarks.length">
-                    <v-icon>bookmark</v-icon>
+                    <v-icon>mdi-bookmark</v-icon>
                 </v-badge>
             </v-btn>
             <v-tooltip v-if="data.mainLayer" bottom>
@@ -321,7 +321,7 @@
                             <v-data-table :headers="tableHeaders" :items-per-page="50" :items="data.mainLayer._source._data.features" :footer-props="{
                                     showFirstLastPage: true,
                                     itemsPerPageOptions: [10, 50, 100],
-                                    firstIcon: 'arrow_back',
+                                    firstIcon: 'mdi-arrow-left',
                                     lastIcon: 'arrow_forward',
                                     prevIcon: 'arrow_left',
                                     nextIcon: 'arrow_right'

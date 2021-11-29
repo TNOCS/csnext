@@ -1,22 +1,22 @@
 <template>
   <div v-if="featureType" class="data-grid-component">
-    <div class="data-grid-title">{{ options.title }}</div>
+    <div class="data-grid-title"><span v-if="featureType.icon"><v-icon>{{featureType.icon}}</v-icon></span>{{ options.title }}</div>
     <v-layout class="ma-2">
       <v-btn-toggle dense v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
         <v-btn value="table">
-          <v-icon>list</v-icon>
+          <v-icon>mdi-format-list-bulleted</v-icon>
         </v-btn>
 
         <v-btn value="cards">
-          <v-icon>dashboard</v-icon>
+          <v-icon>mdi-view-dashboard</v-icon>
         </v-btn>
 
         <v-btn v-if="options.calendarOptions" value="calendar">
-          <v-icon>today</v-icon>
+          <v-icon>mdi-calendar</v-icon>
         </v-btn>
 
         <v-btn v-if="options.parentProperty" value="tree">
-          <v-icon>account_tree</v-icon>
+          <v-icon>mdi-file-tree</v-icon>
         </v-btn>
       </v-btn-toggle>
 
@@ -30,7 +30,7 @@
             v-on="on"
             @keydown.native.alt.78="addEntity(classTypes[0])"
           >
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
             {{ $cs.Translate('NEW_ITEM') }}
           </v-btn>
         </template>
@@ -48,16 +48,16 @@
         class="ml-2"
         elevation="0"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
 
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
       <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="expandTree()" elevation="0">
-        <v-icon>expand_more</v-icon>
+        <v-icon>mdi-chevron-up</v-icon>
         {{ $cs.Translate('EXPAND_ALL') }}
       </v-btn>
       <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="collapseTree()" elevation="0">
-        <v-icon>expand_less</v-icon>
+        <v-icon>mdi-chevron-down</v-icon>
         {{ $cs.Translate('COLLAPSE_ALL') }}
       </v-btn>
 
@@ -158,13 +158,13 @@
           ></data-info-panel>
           <v-card-actions>
             <v-btn icon @click="removeEntity(entity)"
-              ><v-icon>delete</v-icon></v-btn
+              ><v-icon>mdi-mdi-delete</v-icon></v-btn
             >
             <v-btn icon @click="editEntity(entity)"
-              ><v-icon>edit</v-icon></v-btn
+              ><v-icon>mdi-pencil</v-icon></v-btn
             >
             <v-btn icon @click="graphNode(entity)"
-              ><v-icon>scatter_plot</v-icon></v-btn
+              ><v-icon>mdi-scatter-plot</v-icon></v-btn
             >
           </v-card-actions>
         </v-card> -->
@@ -184,8 +184,8 @@
       <data-info-panel v-if="item" :data="item.properties" :node="item" :featureType="item._featureType" panel="popup" ></data-info-panel>      
       {{ dateString(item.properties.updated_time) }}
       <v-card-actions>
-      <v-btn icon @click="removeEntity(item)"><v-icon>delete</v-icon></v-btn>
-      <v-btn icon @click="editEntity(item)"><v-icon>edit</v-icon></v-btn>
+      <v-btn icon @click="removeEntity(item)"><v-icon>mdi-mdi-delete</v-icon></v-btn>
+      <v-btn icon @click="editEntity(item)"><v-icon>mdi-pencil</v-icon></v-btn>
       </v-card-actions>
     </v-card>
         </template>
@@ -267,15 +267,15 @@
           <template v-slot:append="{ item }">
             <v-layout>
               <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"
-                ><v-icon>delete</v-icon></v-btn
+                ><v-icon>mdi-mdi-delete</v-icon></v-btn
               >
-              <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>edit</v-icon></v-btn>
+              <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
               <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"
-                ><v-icon>scatter_plot</v-icon></v-btn
+                ><v-icon>mdi-scatter-plot</v-icon></v-btn
               >
               <v-menu offset-y v-if="options.defaultView === 'tree'">
                 <template v-slot:activator="{ on }">
-                  <v-btn v-on="on" icon><v-icon>add</v-icon></v-btn>
+                  <v-btn v-on="on" icon><v-icon>mdi-plus</v-icon></v-btn>
                 </template>
                 <v-list>
                   <v-list-item
@@ -610,7 +610,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source) {
       return;
     }
-    this.source.createKGView([element]);
+    this.source.createKGView([element], this.options.graphPresetId);
   }
 
   @Watch('selectedTree')

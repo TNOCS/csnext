@@ -4,7 +4,7 @@
       <v-menu offset-y v-if="dataSource.elementHistory.length > 1">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-            <v-icon>arrow_back</v-icon>
+            <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -43,21 +43,21 @@
       </v-btn>
 
       <v-btn icon @click="deleteNode()">
-        <v-icon>delete</v-icon>
+        <v-icon>mdi-mdi-delete</v-icon>
       </v-btn>
 
       <v-btn icon @click="toggleBookmark()">
-        <v-icon>bookmark</v-icon>
+        <v-icon>mdi-bookmark</v-icon>
       </v-btn>
 
       <v-btn icon @click="graphNode()">
-        <v-icon>scatter_plot</v-icon>
+        <v-icon>mdi-scatter-plot</v-icon>
       </v-btn>
 
       <v-menu :close-on-content-click="false" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </template>
 

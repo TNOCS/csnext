@@ -2,7 +2,7 @@
   <v-card class="selection-popup" v-if="source">
     <v-tabs vertical :value="viewtab">
       <v-tab>
-        <v-icon left> playlist_add_check </v-icon>
+        <v-icon left> mdi-playlist-plus_check </v-icon>
       </v-tab>
       <v-tab>
         <v-icon left> search </v-icon>
@@ -29,13 +29,13 @@
 
             <div class="entity-node-actions">
               <v-btn icon @click="graphNode(entity)"
-                ><v-icon>scatter_plot</v-icon></v-btn
+                ><v-icon>mdi-scatter-plot</v-icon></v-btn
               >
               <v-btn icon @click="openNode(entity)"
-                ><v-icon>info</v-icon></v-btn
+                ><v-icon>mdi-information-outline</v-icon></v-btn
               >
               <v-btn icon @click="deleteEntity()"
-                ><v-icon>delete</v-icon></v-btn
+                ><v-icon>mdi-mdi-delete</v-icon></v-btn
               >
 
               <v-tooltip bottom v-if="entity._included">
@@ -49,7 +49,7 @@
               <v-tooltip bottom v-else>
                 <template v-slot:activator="{ on }">
                   <v-btn icon v-on="on" @click="includeEntity()"
-                    ><v-icon>add</v-icon></v-btn
+                    ><v-icon>mdi-plus</v-icon></v-btn
                   >
                 </template>
                 {{ $cs.Translate("LINK_ENTITY") }}
@@ -92,7 +92,7 @@
                 label="category"
               ></v-combobox>
               <v-btn @click="createNode()" fab x-small class="mt-4 primary">
-                <v-icon>add</v-icon>
+                <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-layout>
           </div>
@@ -140,7 +140,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
-    <!-- <v-tab value="entity"><v-icon>playlist_add_check</v-icon></v-tab>
+    <!-- <v-tab value="entity"><v-icon>mdi-playlist-plus_check</v-icon></v-tab>
         <v-tab value="observation"><v-icon>camera_enhance</v-icon></v-tab>
         <v-tab value="note"><v-icon>note</v-icon></v-tab>     
          <v-tab-item value="entity"><h1>entity</h1></v-tab-item>
@@ -155,7 +155,7 @@
       <v-card-title>{{ entity.text }}</v-card-title>
       <v-card-subtitle>{{ entity.entity_class }}</v-card-subtitle>
       <v-btn icon large class="search-button" @click="searchNode = true">
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
       <v-container v-if="searchNode">
         <v-radio-group v-model="searchMode" row>
@@ -190,7 +190,7 @@
           ></v-combobox>
 
           <v-btn @click="linkNode()" fab x-small class="mt-4 primary">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-layout>
         <v-spacer></v-spacer>
@@ -203,10 +203,10 @@
       
        <v-layout >
       <v-btn icon large  @click="addNote = true; searchNode = false">
-        <v-icon>note_add</v-icon>
+        <v-icon>note_mdi-plus</v-icon>
       </v-btn>
       <v-btn icon large  @click="searchNode = true; addNote = false">
-        <v-icon>playlist_add</v-icon>
+        <v-icon>mdi-playlist-plus</v-icon>
       </v-btn>
       </v-layout>
       <v-container v-if="addNote">
@@ -265,7 +265,7 @@
           ></v-combobox>
 
           <v-btn @click="createNode()" fab x-small class="mt-4 primary">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-layout>
         

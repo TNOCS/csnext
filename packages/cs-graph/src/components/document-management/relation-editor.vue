@@ -4,7 +4,7 @@
       <v-layout
         >{{ field.title }}
         <v-btn @click="addNewObjectRelation()" icon style="margin-top: -5px"
-          ><v-icon>add</v-icon></v-btn
+          ><v-icon>mdi-plus</v-icon></v-btn
         ></v-layout
       >
       <v-layout class="flex-wrap" v-if="links">
@@ -23,21 +23,21 @@
               small
               icon
               @click="deleteLink(link)"
-              ><v-icon small>delete</v-icon></v-btn
+              ><v-icon small>mdi-delete</v-icon></v-btn
             >
             <v-btn
               class="relation-card-action"
               small
               icon
               @click="duplicate(link)"
-              ><v-icon small>content_copy</v-icon></v-btn
+              ><v-icon small>mdi-content-copy</v-icon></v-btn
             >
             <v-btn
               class="relation-card-action"
               small
               icon
               @click="editLink(link)"
-              ><v-icon small>edit</v-icon></v-btn
+              ><v-icon small>mdi-pencil</v-icon></v-btn
             >
           </v-card-actions>
         </v-card>
@@ -48,7 +48,7 @@
         :label="$cs.Translate(field.title)"
         :hint="field.hint"
         itemText="title"
-        prepend-icon="playlist_add"
+        prepend-icon="mdi-playlist-plus"
         hide-no-data
         return-object
         clearable

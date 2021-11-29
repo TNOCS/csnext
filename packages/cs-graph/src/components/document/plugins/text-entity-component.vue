@@ -32,7 +32,7 @@
             </span> -->
             <!-- <template v-if="entity">
             <v-icon v-if="entity._included" small>remove</v-icon>
-            <v-icon v-else small>add</v-icon>
+            <v-icon v-else small>mdi-plus</v-icon>
             </template> -->
             <!-- <v-menu top          >
         <template v-slot:activator="{ on, attrs }">        

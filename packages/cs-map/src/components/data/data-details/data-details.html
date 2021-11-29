@@ -5,7 +5,7 @@
         <v-spacer></v-spacer>
 
         <!-- <v-btn icon @click="deleteNode()">
-                <v-icon>delete</v-icon>
+                <v-icon>mdi-mdi-delete</v-icon>
             </v-btn>
 
             <v-btn v-if="!activeElement._isEditting" icon @click="editNode()">
@@ -16,18 +16,18 @@
             </v-btn>
 
             <v-btn icon @click="graphNode()">
-                <v-icon>scatter_plot</v-icon>
+                <v-icon>mdi-scatter-plot</v-icon>
             </v-btn> -->
 
         <!-- <v-btn icon>
-          <v-icon>note_add</v-icon>
+          <v-icon>note_mdi-plus</v-icon>
         </v-btn> -->
 
         <v-btn icon>
             <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
-        
-            <template v-slot:extension>
+
+        <template v-slot:extension>
                 <v-tabs v-model="tab" class="elevation-2">
                     <v-tabs-slider></v-tabs-slider>
                     <v-tab href="#tab-info-panel"
@@ -42,23 +42,13 @@
                 </v-tabs>
             </template>
     </v-toolbar>
-    
+
     <v-tabs-items v-model="tab">
         <v-tab-item value="tab-info-panel">
             <simplebar class="full-height">
-                <data-info-panel
-                    v-if="widget.data.feature"
-                    :key="componentKey"
-                    :data="widget.data.feature.properties"
-                    :source="source"                        
-                    :features="widget.data.features"
-                    :layer="widget.data.layer"       
-                    :feature="widget.data.feature"                 
-                    :node="widget.data.feature"
-                    :featureType="widget.data.featureType"
-                    panel="details"
-                ></data-info-panel>
+                <data-info-panel v-if="widget.data.feature" :key="componentKey" :data="widget.data.feature.properties" :source="source" :features="widget.data.features" :layer="widget.data.layer" :feature="widget.data.feature" :node="widget.data.feature" :featureType="widget.data.featureType"
+                    panel="details"></data-info-panel>
             </simplebar>
         </v-tab-item>
-    </v-tabs-items>    
+    </v-tabs-items>
 </v-card>

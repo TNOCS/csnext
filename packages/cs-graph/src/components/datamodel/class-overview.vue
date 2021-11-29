@@ -16,7 +16,7 @@
           <!-- <v-checkbox :value="showNodes" label="nodes"></v-checkbox>
           <v-checkbox :value="showEdges" label="edges"></v-checkbox> -->
            <v-btn @click.stop="addType()">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
             <!-- {{$cs.Translate('ADD_TYPE')}} -->
           </v-btn>
           
@@ -29,14 +29,14 @@
         class="mr-3"
         @click.stop="editEntity(item)"
       >
-        edit
+        mdi-pencil
       </v-icon>
       <v-icon
         small
         class="mr-2"
         @click="addEntity(item)"
       >
-        add
+        mdi-plus
       </v-icon>
       </template>  
     </v-data-table>

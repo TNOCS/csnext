@@ -14,7 +14,7 @@
             hide-details
           ></v-text-field>
           <v-btn @click="addEntity()">
-            <v-icon>add</v-icon>{{$cs.Translate('ADD_ENTITY')}}
+            <v-icon>mdi-plus</v-icon>{{$cs.Translate('ADD_ENTITY')}}
           </v-btn>
           <v-btn @click="refreshEntities()" icon>
             <v-icon>cached</v-icon>

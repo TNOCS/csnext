@@ -1,5 +1,5 @@
-import { TimeRange } from '@csnext/cs-crossfilter';
-import { DataSet, FeatureType, GraphDatasource, IGraphFilter } from '@csnext/cs-data';
+import { CrossFilterDatasource, TimeRange } from '@csnext/cs-crossfilter';
+import { FeatureType, GraphElement, IGraphFilter } from '@csnext/cs-data';
 import crossfilter from 'crossfilter2';
 
 export class GraphCrossFilter extends IGraphFilter {
@@ -13,6 +13,8 @@ export class GraphCrossFilter extends IGraphFilter {
     public featureType?: FeatureType;
     public ndx?: crossfilter.Crossfilter<any>;
     public timeRange?: TimeRange;
+    public allData : GraphElement[] = [];
+    
 
     public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {      
         if (!this.dimensions.hasOwnProperty(id)) { this.dimensions[id] = []}
@@ -23,20 +25,20 @@ export class GraphCrossFilter extends IGraphFilter {
         this.groups[id] = group;
     }
 
-    public async updateCrossfilter(dataset?: DataSet) {
-        // if (!dataset) {
-        //     dataset = this.mainLayer?._source?._data;            
-        // }
-        // if (dataset && dataset.features?.length>0) {
-        //     this.ndx = crossfilter(dataset.features);
-        //     this.timeRange = new TimeRange();
-        //     for (const feature of dataset.features) {
-        //         if (feature.properties?.point_in_time) {
-        //             this.timeRange.addTime(feature.properties.point_in_time)
-        //         }
+    public async updateCrossfilter(dataset: GraphElement[]) {
+        this.allData = dataset;
+        if (dataset && dataset.length>0) {
+            this.ndx = crossfilter(dataset);
+            this.timeRange = new TimeRange();
+            for (const element of dataset) {
+                if (element.properties?.point_in_time) {
+                    this.timeRange.addTime(element.properties.point_in_time)
+                }
                 
-        //     }
-        //     this.events.publish(CrossFilterDatasource.CROSSFILTER, CrossFilterDatasource.CROSSFILTER_DATALOADED, this);
-        // }
+            }
+            if (this.source?.events) {
+                this.source.events.publish(CrossFilterDatasource.CROSSFILTER, CrossFilterDatasource.CROSSFILTER_DATALOADED, this);
+            }
+        }
     }
 }
