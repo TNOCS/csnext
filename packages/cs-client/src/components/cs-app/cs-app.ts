@@ -42,15 +42,6 @@ const i18n = new VueI18n({
   silentTranslationWarn: true
 });
 
-// const vuetifyOpts = {
-//   icons: {
-//     iconfont: 'mdi' // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg',    
-//   }
-//   // lang: {
-//   //   t: (key, ...params) => i18n.t(key, params)
-//   // }
-// } as UserVuetifyPreset;
-
 Vue.use(Vuetify);
 
 const router = AppState.Instance.router; // new VueRouter({ routes: [] });
