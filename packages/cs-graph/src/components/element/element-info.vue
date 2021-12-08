@@ -22,8 +22,9 @@
           </template>
         </v-list>
       </v-menu>
+      
       <v-toolbar-title
-        >{{ activeElement.properties.name }}</v-toolbar-title>
+        ><v-icon v-if="activeElement._featureType.icon">{{activeElement._featureType.icon}}</v-icon> {{ activeElement.properties.name }}</v-toolbar-title>
         <br />
         <div class="type-sub-title">{{ activeElement._featureType.title }}</div>
       </v-toolbar-title>
@@ -39,11 +40,11 @@
       </v-btn>
 
       <v-btn v-if="isDocument" icon @click="openDocument(activeElement.id)">
-        <v-icon>folder_open</v-icon>
+        <v-icon>mdi-folder-outline</v-icon>
       </v-btn>
 
       <v-btn icon @click="deleteNode()">
-        <v-icon>mdi-mdi-delete</v-icon>
+        <v-icon>mdi-delete</v-icon>
       </v-btn>
 
       <v-btn icon @click="toggleBookmark()">
@@ -232,6 +233,7 @@
 
 .type-sub-title {
   font-size: 14px;
+  display: block;
 }
 
 .short-title {

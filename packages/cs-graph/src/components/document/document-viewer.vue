@@ -102,7 +102,7 @@
           <v-tooltip>
             <template v-slot:activator="{ on }">
               <v-btn icon @click="toggleEntities()"
-                ><v-icon>done_all</v-icon></v-btn
+                ><v-icon>mdi-check-all</v-icon></v-btn
               >
             </template>
             {{ $cs.Translate('TOGGLE_ENTITIES') }}
@@ -120,32 +120,32 @@
               @click="editor.chain().focus().toggleBold().run()"
               :class="{ 'is-active': editor.isActive('bold') }"
             >
-              <v-icon>format_bold</v-icon>
+              <v-icon>mdi-format-bold</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleItalic().run()"
               :class="{ 'is-active': editor.isActive('italic') }"
             >
-              <v-icon>format_italic</v-icon>
+              <v-icon>mdi-format-italic</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleStrike().run()"
               :class="{ 'is-active': editor.isActive('strike') }"
             >
-              <v-icon>format_strikethrough</v-icon>
+              <v-icon>mdi-format-strikethrough</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleHighlight().run()"
               :class="{ 'is-active': editor.isActive('highlight') }"
             >
-              <v-icon>highlight</v-icon>
+              <v-icon>mdi-marker</v-icon>
             </v-btn>
 
             <v-btn
               @click="editor.chain().focus().setParagraph().run()"
               :class="{ 'is-active': editor.isActive('paragraph') }"
             >
-              <v-icon>segment</v-icon>
+              <v-icon>mdi-segment</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
@@ -167,41 +167,41 @@
               @click="editor.chain().focus().toggleBulletList().run()"
               :class="{ 'is-active': editor.isActive('bulletList') }"
             >
-              <v-icon>format_list_bulleted</v-icon>
+              <v-icon>mdi-format-list-bulleted</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleOrderedList().run()"
               :class="{ 'is-active': editor.isActive('orderedList') }"
             >
-              <v-icon>format_list_numbered</v-icon>
+              <v-icon>mdi-format-list-numbered</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleCodeBlock().run()"
               :class="{ 'is-active': editor.isActive('codeBlock') }"
             >
-              <v-icon>code</v-icon>
+              <v-icon>mdi-code-tags</v-icon>
             </v-btn>
             <v-btn
               @click="editor.chain().focus().toggleBlockquote().run()"
               :class="{ 'is-active': editor.isActive('blockquote') }"
             >
-              <v-icon>format_quote</v-icon>
+              <v-icon>mdi-format-quote-close</v-icon>
             </v-btn>
             <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
-              <v-icon>horizontal_rule</v-icon>
+              <v-icon>mdi-reorder-horizontal</v-icon>
             </v-btn>
             <v-btn @click="editor.chain().focus().undo().run()"
-              ><v-icon>undo</v-icon></v-btn
+              ><v-icon>mdi-undo</v-icon></v-btn
             >
             <v-btn @click="editor.chain().focus().redo().run()"
-              ><v-icon>redo</v-icon></v-btn
+              ><v-icon>mdi-redo</v-icon></v-btn
             >
 
-            <v-btn @click="setTextEntity()"><v-icon>label</v-icon></v-btn>
+            <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
             <v-btn
               @click="setNodeParagraph()"
               :class="{ 'is-active': editor.isActive('node-paragraph') }"
-              ><v-icon>description</v-icon></v-btn
+              ><v-icon>mdi-format-paragraph</v-icon></v-btn
             >
           </v-btn-toggle>
         </div>
@@ -852,10 +852,13 @@ export default class DocumentViewer extends WidgetBase {
       this.source.activeDocument.entities = [];
       this.source.activeDocument.properties!.text = text;
       this.source.activeDocument.properties!.doc = json;
-      this.source.parseDocument(this.source.activeDocument).then(() => {
+      this.source.parseDocument(this.source.activeDocument).then((d) => {
+        if (this.source?.activeDocument && d.properties?.doc) {
+          this.source!.activeDocument!.properties!.doc = d.properties.doc;
+        
         // this.createTextEntities();
         
-        this.syncDocumentState();
+        // this.syncDocumentState();
 
         this.updateContent();
         this.source!.syncEntities(
@@ -863,7 +866,9 @@ export default class DocumentViewer extends WidgetBase {
           this.source!.activeDocument!.doc.content,
           true
         );
+        this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
         this.source!.activeDocument!.refreshViewTypes();
+        }
       });
     }
   }
@@ -1081,7 +1086,7 @@ export default class DocumentViewer extends WidgetBase {
       action: async () => {
         try {
           this.updateEntityTypes();
-          // await this.refresh();
+          await this.refresh();
           return Promise.resolve(true);
         } catch (e) {
           return Promise.resolve(false);

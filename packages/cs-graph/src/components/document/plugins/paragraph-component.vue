@@ -3,7 +3,7 @@
     class="paragraph-component"        
   >
    <v-layout><div class="paragraph-control">
-     <v-btn fab outlined x-small class="paragraph-button"><v-icon x-small>mdi-plus</v-icon></v-btn>
+     <!-- <v-btn fab outlined x-small class="paragraph-button"><v-icon x-small>mdi-plus</v-icon></v-btn> -->
    </div>
    <node-view-content class="paragraph-content" />
         <!-- <span          
@@ -54,8 +54,9 @@ export default class ParagraphComponent extends Vue {
 .paragraph-control {
   width: 20px;     
   margin: 5px;
-  border-color: red;
-  border-left-width: 3px;  
+  border-color: gray;
+  /* border-color: red; */
+  border-left-width: 2px;  
   border-left-style: solid;
 }
 

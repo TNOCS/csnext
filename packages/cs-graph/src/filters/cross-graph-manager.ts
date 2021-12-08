@@ -4,7 +4,6 @@ import {
   TabsLayout,
 } from "@csnext/cs-client";
 import { IDashboard, IDashboardOptions, IWidget } from "@csnext/cs-core";
-// import { ChartEditor, ChartOptions, CrossChart, CrossDashboardManager, HeatMap, Histogram, IChartType, RowChart, ScatterPlot, Stat, TimeChart } from "@csnext/cs-crossfilter";
 import {
   FeatureType,
   GraphElement,

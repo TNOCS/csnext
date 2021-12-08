@@ -99,18 +99,18 @@ export class GraphController {
       Logger.log('Checking offline images');
       if (this.graph.source?.featureTypes) {
         for (const ft of Object.values(this.graph.source.featureTypes).filter(
-          (f) => f.properties
+          (f: FeatureType) => f.properties
         )) {
-          const props = ft.properties?.filter(
+          const props = (ft as FeatureType).properties?.filter(
             (p) =>
               p.key &&
-              p._originalType === ft.type &&
+              p._originalType === (ft as FeatureType).type &&
               p.attributes &&
               p.attributes.hasOwnProperty('image:offline')
           );
-          if (props && props.length > 0 && ft.type) {
+          if (props && props.length > 0 && (ft as FeatureType).type) {
             // get all elemens
-            const elements = this.graph.source.getClassElements(ft.type, true);
+            const elements = this.graph.source.getClassElements((ft as FeatureType).type, true);
             for (const element of elements) {
               // for all props
               for (const prop of props.filter((e) =>
@@ -378,13 +378,13 @@ export class GraphController {
           const props = (ft as FeatureType).properties?.filter(
             (p) =>
               p.key &&
-              p._originalType === ft.type &&
+              p._originalType === (ft as FeatureType).type &&
               p.attributes &&
               p.attributes.hasOwnProperty('article:offline')
           );
-          if (props && props.length > 0 && ft.type) {
+          if (props && props.length > 0 && (ft as FeatureType).type) {
             // get all elemens
-            const elements = this.graph.source.getClassElements(ft.type, true);
+            const elements = this.graph.source.getClassElements((ft as FeatureType).type, true);
             for (const element of elements) {
               // for all props
               for (const prop of props.filter((e) =>

@@ -127,13 +127,13 @@
                 ><v-icon v-else>mdi-plus</v-icon></v-btn
               >
               <v-btn v-if="entity.instances.length === 0" icon @click="deleteEntities(entity)">
-                <v-icon>mdi-mdi-delete</v-icon>
+                <v-icon>mdi-delete</v-icon>
               </v-btn>
               <v-btn
                 icon
                 v-if="!entity._approved"
                 @click="deleteEntities(entity)"
-                ><v-icon>mdi-mdi-delete</v-icon></v-btn
+                ><v-icon>mdi-delete</v-icon></v-btn
               >
               <v-btn
                 icon
@@ -151,7 +151,7 @@
                   entity._togglemore = !entity._togglemore;
                   updateLayout();"
                 >{{ entity.instances.length
-                }}<v-icon>speaker_notes</v-icon></v-btn
+                }}<v-icon>mdi-message-bulleted</v-icon></v-btn
               >                                        
               <!-- <v-btn              
                 v-if="entity.node"

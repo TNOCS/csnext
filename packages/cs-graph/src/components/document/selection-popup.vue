@@ -5,13 +5,13 @@
         <v-icon left> mdi-playlist-plus_check </v-icon>
       </v-tab>
       <v-tab>
-        <v-icon left> search </v-icon>
+        <v-icon left>mdi-magnify</v-icon>
       </v-tab>
       <v-tab :disabled="!entity || !entity._location">
-        <v-icon left> place </v-icon>
+        <v-icon left>mdi-map-marker-outline</v-icon>
       </v-tab>
       <v-tab :disabled="!entity || !entity._date">
-        <v-icon left> date_range </v-icon>
+        <v-icon left>mdi-calendar-range</v-icon>
       </v-tab>
 
       <v-tab-item>
@@ -35,7 +35,7 @@
                 ><v-icon>mdi-information-outline</v-icon></v-btn
               >
               <v-btn icon @click="deleteEntity()"
-                ><v-icon>mdi-mdi-delete</v-icon></v-btn
+                ><v-icon>mdi-delete</v-icon></v-btn
               >
 
               <v-tooltip bottom v-if="entity._included">

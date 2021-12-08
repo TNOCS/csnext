@@ -28,4 +28,4 @@ es.node = {
     fs: 'empty'
 }
 
-module.exports = [config, es];
+module.exports = [config];

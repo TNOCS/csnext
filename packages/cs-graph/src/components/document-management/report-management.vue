@@ -85,7 +85,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon @click.stop="editDocument(item)">mdi-pencil</v-icon>
-        <v-icon @click.stop="deleteItem(item)">mdi-mdi-delete</v-icon>
+        <v-icon @click.stop="deleteItem(item)">mdi-delete</v-icon>
       </template>    
     </v-data-table>
   </simplebar>

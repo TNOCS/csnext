@@ -20,6 +20,7 @@ export class DataGridRelationToggle {
   public relationClassId?: string;
   public toId?: string;
   public fromId?: string;
+  public editProperties?: boolean;
 }
 
 export class DataGridCalendarOptions {
@@ -55,6 +56,7 @@ export class DataGridOptions extends WidgetOptions {
   public filter?: GraphFilter;
   public newItem?: any;
   public newRelations?: any[];
+  public additionalActions?: IMenu[];
 }
 
 export class DataGridHeader {

@@ -10,7 +10,7 @@
       </v-btn>
 
       <!-- <v-btn icon @click="deleteNode()">
-        <v-icon>mdi-mdi-delete</v-icon>
+        <v-icon>mdi-delete</v-icon>
       </v-btn> -->
 
       <!-- 

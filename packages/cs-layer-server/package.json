@@ -2,6 +2,7 @@
     "name": "@csnext/cs-layer-server",
     "version": "0.0.131",
     "main": "./dist/export.js",
+    "main2": "./lib/cslayerserver.cs.cjs",
     "types": "./dist/export.d.ts",
     "author": "Arnoud de Jong",
     "license": "MIT",
@@ -59,8 +60,7 @@
         "uuid": "^7.0.3",
         "wkx": "^0.5.0",
         "website-scraper": "4.2.3",
-        "@csnext/cs-core": "0.0.131",
-        "@csnext/cs-data": "0.0.131",
+
         "neo4j-driver": "4.2.3",
         "neo4j-graphql-js": "2.19.2"
     },
@@ -79,6 +79,8 @@
         "@types/wellknown": "0.5.1"
     },
     "peerdependencies": {
+        "@csnext/cs-core": "0.0.131",
+        "@csnext/cs-data": "0.0.131"
 
     },
     "gitHead": "7068e77f606a1134679f7716b100e19204f50296"

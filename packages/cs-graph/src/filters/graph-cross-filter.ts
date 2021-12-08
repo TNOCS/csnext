@@ -1,6 +1,6 @@
-import { CrossFilterDatasource, TimeRange } from '@csnext/cs-crossfilter';
 import { FeatureType, GraphElement, IGraphFilter } from '@csnext/cs-data';
 import crossfilter from 'crossfilter2';
+import { TimeRange } from '@csnext/cs-crossfilter';
 
 export class GraphCrossFilter extends IGraphFilter {
     public static CROSSFILTER = 'crossfilter';
@@ -37,7 +37,7 @@ export class GraphCrossFilter extends IGraphFilter {
                 
             }
             if (this.source?.events) {
-                this.source.events.publish(CrossFilterDatasource.CROSSFILTER, CrossFilterDatasource.CROSSFILTER_DATALOADED, this);
+                this.source.events.publish(GraphCrossFilter.CROSSFILTER, GraphCrossFilter.CROSSFILTER_DATALOADED, this);
             }
         }
     }

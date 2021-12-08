@@ -1,9 +1,8 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import './cs-toolbar-menus.css';
-import { Prop, Watch, PropSync } from 'vue-property-decorator';
-import { IDashboard, IMenu, IWidget } from '@csnext/cs-core';
-import { CsWidget } from '../cs-widget/cs-widget';
+import { Prop } from 'vue-property-decorator';
+import { IMenu, IWidget } from '@csnext/cs-core';
 
 @Component({
   name: 'cs-toolbar-menus',

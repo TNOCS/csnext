@@ -1,11 +1,11 @@
-import * as fs from 'fs';
-import neo4j, { Driver, Record  } from "neo4j-driver";
+import neo4j, { Driver  } from "neo4j-driver";
 import { IDatabase, IData, IQuery, IAllOptions } from "./database";
 import { Link } from "./link";
+import { FeatureType } from "@csnext/cs-data";
 import { GraphEntity, GraphRelation, GraphSchema, ObservationType } from './schema';
 import { generateHash} from "@csnext/cs-core";
 
-import { GraphElement, FeatureType, FeatureCollection, GraphDatasource } from "@csnext/cs-data";
+import { GraphElement, GraphDatasource } from "@csnext/cs-data";
 // import { reject } from 'lodash';
 
 // import Cypher from 'cypher-tagged-templates';
@@ -344,7 +344,7 @@ export class Neo4J implements IDatabase {
     private allBackup: any;
     private allClasses: any;
 
-    public types(): Promise<ObservationType[]> {
+    public types(): Promise<FeatureType[]> {
         return new Promise(async (resolve, reject) => {
             let res : ObservationType[] = [];
             let schema = await this.schema();
@@ -355,7 +355,7 @@ export class Neo4J implements IDatabase {
                     baseType: 'node',
                     properties: [                               
                     ]                    
-                } as ObservationType;
+                } as FeatureType;
                 if (entity.properties) {
                     for (const prop of entity.properties) {
                         ft.properties!.push({                            

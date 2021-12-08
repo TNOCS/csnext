@@ -1,10 +1,7 @@
-import { Node, mergeAttributes } from '@tiptap/core'
-import { Command, VueNodeViewRenderer } from '@tiptap/vue-2'
-import Component from './paragraph-component.vue'
-import { TextSelection } from 'prosemirror-state'
-import { guidGenerator } from '@csnext/cs-core'
-import { FeatureType, GraphElement, TextEntity } from '@csnext/cs-data'
-import Text from '@tiptap/extension-text';
+import { mergeAttributes } from '@tiptap/core'
+import { VueNodeViewRenderer } from '@tiptap/vue-2'
+import ParagraphComponent from './paragraph-component.vue'
+import { GraphElement } from '@csnext/cs-data'
 import Paragraph from '@tiptap/extension-paragraph';
 
 declare module '@tiptap/core' {
@@ -74,6 +71,6 @@ export default Paragraph.extend({
 
     
     addNodeView() {
-        return VueNodeViewRenderer(Component)
+        return VueNodeViewRenderer(ParagraphComponent)
     },
 })

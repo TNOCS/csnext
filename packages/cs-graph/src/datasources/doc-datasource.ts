@@ -958,7 +958,9 @@ export class DocDatasource extends GraphDatasource {
 
             if (doc.properties?.text && doc.properties?.text.length > 0) {
               let res = await plugin.callDocument(doc, this);
-              if (!res.error && res.document) {
+              if (!res.error && res.document?.properties?.doc) {
+                
+                doc.properties.doc = res.document.properties.doc;
                 // doc = res.document;
                 console.log(doc.entities?.filter((e) => e._node));
               } else {

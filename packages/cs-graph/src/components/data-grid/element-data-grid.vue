@@ -158,7 +158,7 @@
           ></data-info-panel>
           <v-card-actions>
             <v-btn icon @click="removeEntity(entity)"
-              ><v-icon>mdi-mdi-delete</v-icon></v-btn
+              ><v-icon>mdi-delete</v-icon></v-btn
             >
             <v-btn icon @click="editEntity(entity)"
               ><v-icon>mdi-pencil</v-icon></v-btn
@@ -184,7 +184,7 @@
       <data-info-panel v-if="item" :data="item.properties" :node="item" :featureType="item._featureType" panel="popup" ></data-info-panel>      
       {{ dateString(item.properties.updated_time) }}
       <v-card-actions>
-      <v-btn icon @click="removeEntity(item)"><v-icon>mdi-mdi-delete</v-icon></v-btn>
+      <v-btn icon @click="removeEntity(item)"><v-icon>mdi-delete</v-icon></v-btn>
       <v-btn icon @click="editEntity(item)"><v-icon>mdi-pencil</v-icon></v-btn>
       </v-card-actions>
     </v-card>
@@ -197,10 +197,10 @@
       <v-toolbar flat>
         <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
         <v-btn fab text small color="grey darken-2" @click="prev">
-          <v-icon small> chevron_left </v-icon>
+          <v-icon small>mdi-chevron-left</v-icon>
         </v-btn>
         <v-btn fab text small color="grey darken-2" @click="next">
-          <v-icon small> chevron_right </v-icon>
+          <v-icon small>mdi-chevron-right</v-icon>
         </v-btn>
         <v-toolbar-title v-if="$refs.calendar">
           {{ $refs.calendar.title }}
@@ -210,7 +210,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
               <span>{{ typeToLabel[options.calendarOptions.type] }}</span>
-              <v-icon right> expand_more </v-icon>
+              <v-icon right>mdi-expand-more</v-icon>
             </v-btn>
           </template>
           <v-list>
@@ -267,7 +267,7 @@
           <template v-slot:append="{ item }">
             <v-layout>
               <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"
-                ><v-icon>mdi-mdi-delete</v-icon></v-btn
+                ><v-icon>mdi-delete</v-icon></v-btn
               >
               <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
               <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"
@@ -290,14 +290,21 @@
             </v-layout>
           </template>
           <template v-slot:label="{ item }">
-            <v-btn icon @click.stop="toggleLinked(item.entity)" v-if="options.relationToggle">
-              <v-icon v-if="item.entity._isLinked">check_circle</v-icon>
-              <v-icon v-else>panorama_fish_eye</v-icon>
+            <span v-if="options.relationToggle">
+            <v-btn icon @click.stop="toggleLinked(item.entity)" >
+              <v-icon v-if="item.entity._isLinked">mdi-check-circle-outline</v-icon>              
+                <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+              
+
             </v-btn>
+            <v-btn v-if="item.entity._isLinked" icon @click.stop="selectTableItem(item.entity._isLinked)" >
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            </span>
             <v-btn icon @click.stop="toggleCheckbox(item.entity)" v-if="options.checkboxProperty">
               {{ item.entity[options.checkboxProperty] }}
-              <v-icon v-if="item.entity.properties[options.checkboxProperty]">check_circle</v-icon>
-              <v-icon v-else>panorama_fish_eye</v-icon>
+              <v-icon v-if="item.entity.properties[options.checkboxProperty]">mdi-check-circle-outline</v-icon>
+              <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
             </v-btn>
             <span @click="selectTableItem(item.entity)">
               {{ item.entity.properties.name }}
@@ -646,6 +653,10 @@ export default class ElementDataGrid extends WidgetBase {
       entity.properties[this.options.checkboxProperty] === true ? false : true
     );
     this.source.saveNode(entity);
+  }
+
+  public async editLinked(entity: GraphElement) {
+    
   }
 
   public async toggleLinked(entity: GraphElement) {
@@ -1056,9 +1067,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source || !this.options.baseType) {
       return;
     }
-
-    console.log(`update tree: ${base?.properties?.name}`);
-    // console.log(treeItems);
+    
     let items: any[] | undefined = [];
     if (base) {
       if (base._incomming) {

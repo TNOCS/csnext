@@ -21,8 +21,8 @@
             :id="'drag-' + node.attrs.id"
             v-bind="attrs"
             v-on="on">          
-            <v-icon v-if="node.attrs.type === 'DATE'" small>date_range</v-icon>
-            <v-icon v-if="entity && entity._location" small>place</v-icon>
+            <v-icon v-if="node.attrs.type === 'DATE'" small>mdi-calendar-range</v-icon>
+            <v-icon v-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
             <img v-if="icon" :src="icon" class="icon-image"/>
             
             {{ node.attrs.text }}

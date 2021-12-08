@@ -1,6 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core'
 import { Command, VueNodeViewRenderer } from '@tiptap/vue-2'
-import Component from './text-entity-component.vue'
+import EntityComponent from './text-entity-component.vue'
 import { TextSelection } from 'prosemirror-state'
 import { guidGenerator } from '@csnext/cs-core'
 import { FeatureType, TextEntity } from '@csnext/cs-data'
@@ -121,6 +121,6 @@ export default Text.extend({
     },
 
     addNodeView() {
-        return VueNodeViewRenderer(Component)
+        return VueNodeViewRenderer(EntityComponent)
     },
 })

@@ -9,12 +9,10 @@ export * from "./plugins/viewer-plugin";
 export * from "./classes/";
 export * from "./filters/graph-cross-filter";
 export * from "./filters/cross-graph-manager";
+export * from "./components/graph/graph-map-options"
 export * from "./filters/cross-graph-options";
 export * from "./components/data-grid/cards/element-card-manager";
 
-
-
-import Vue from 'vue';
 import NetworkGraph from "./components/graph/graph.vue";
 import GraphElements from "./components/entity-management/graph-elements.vue";
 import RecentList from "./components/entity-management/recent-list.vue";

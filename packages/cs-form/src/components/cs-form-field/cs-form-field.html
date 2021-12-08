@@ -363,7 +363,7 @@
                         <cs-form v-if="field.arrayFieldType === 'object'" :data="item" :formdef.sync="field.arrayType" @saved="fieldUpdated(field)"></cs-form>
                         <cs-form-field v-else :target="item" :field="target[field._key]"></cs-form-field>                    
                         <v-btn style="position: absolute; top: 0; right: 0; z-index: 2000;" icon text right v-if="field.canDelete" @click="deleteFromArray(field._key, indx)">
-                            <v-icon>mdi-mdi-delete</v-icon>
+                            <v-icon>mdi-delete</v-icon>
                         </v-btn>
                     </v-card>
                 </v-hover>                
@@ -416,7 +416,7 @@
                                         {{ $cs.Translate(field.title) }}
                                     </template>
                             <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)">
-                                <v-icon>mdi-mdi-delete</v-icon>
+                                <v-icon>mdi-delete</v-icon>
                             </v-btn>
                         </v-layout>
                     </v-expansion-panel-header>
