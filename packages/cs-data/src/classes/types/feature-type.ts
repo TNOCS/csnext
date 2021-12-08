@@ -216,6 +216,9 @@ export class FeatureType {
             {   
                 ft.attributes = {...base.attributes, ...ft.attributes};                                                
             }
+            if (base.icon) {
+                if (!ft.icon) { ft.icon = base.icon; }
+            }
             if (base.infoPanels)
             {
                 if (!ft.infoPanels) { ft.infoPanels = {}; }
