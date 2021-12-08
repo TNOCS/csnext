@@ -24,13 +24,29 @@ export class IGraphFilter {
 
 export class NodeRule {
   public title?: string;
-  public type?: string;
-  public id?: string;
+  public type?: 'TYPE' | 'ELEMENT' | 'RELATION' | 'PROPERTY_ELEMENT';
+  public featureType?: string;
+  public relationType?: string;
+  public elementType?: string;
+  public id?: string;    
+  public elementId?: string;
   public disabled?: boolean;
   public _featureType?: FeatureType;
   public traversal?: boolean;
   public filter?: any = {};
+  public outgoingRules?: NodeRule[];
+  public _count?: number;
+  public _editMode?: boolean;  
+  public _element?: GraphElement;
 }
+
+export class GraphFeatureTypeStat {
+  public _featureType;
+  public count?: number;
+  public hide?: boolean;
+  public color?: string;
+}
+
 export class GraphPreset extends IGraphFilter {
   public title?: string;
   public showDataModel? = false;
@@ -69,6 +85,9 @@ export class GraphPreset extends IGraphFilter {
   public collideStrength?: number;
   public alpha?: number;
   public nodeRules?: NodeRule[] = [];
+  public rulesEnabled?: boolean;
+  public elementsEnabled?: boolean;
+  public _stats?: {[key: string]: GraphFeatureTypeStat};
 
   public static export(preset: GraphPreset): string {
     return JSON.stringify(

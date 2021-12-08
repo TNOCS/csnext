@@ -6,12 +6,12 @@
       <v-spacer></v-spacer>
 
       <v-btn icon @click="refresh()">
-        <v-icon>refresh</v-icon>
+        <v-icon>mdi-refresh</v-icon>
       </v-btn>
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
-          <v-tab href="#tab-RULES">{{ $cs.Translate('RULES') }}</v-tab>
+          <v-tab href="#tab-CONTENT">{{ $cs.Translate('CONTENT') }}</v-tab>
           <v-tab href="#tab-LAYOUT">{{ $cs.Translate('LAYOUT') }}</v-tab>
 
           <!-- <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
@@ -22,9 +22,20 @@
     </v-toolbar>
 
     <v-tabs-items v-model="tab" style="margin-bottom: 200px">
-      <v-tab-item value="tab-RULES">
-        <v-container fluid v-if="activePreset.nodeRules">
-          Rules
+      <v-tab-item value="tab-CONTENT">
+        <v-expansion-panels
+      v-model="contentPanel"
+      class="ma-1"      
+      multiple
+    >
+      <v-expansion-panel>
+        <v-expansion-panel-header>          
+          <!-- <v-switch :value="activePreset.rulesEnabled" flat @click.native.stop="activePreset.rulesEnabled = !activePreset.rulesEnabled"></v-switch>           -->
+          <span class="content-expansion-header">Rules</span>
+          <v-spacer></v-spacer>          
+          <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_RULE"/></v-chip>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="rules-list">
           <graph-rule-editor
             v-for="(rule, i) in activePreset.nodeRules"
             :key="i"
@@ -32,7 +43,19 @@
             :activePreset="activePreset"
             :rule="rule"
           ></graph-rule-editor>
-        </v-container>
+          
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>
+          <span class="content-expansion-header">Elements</span>          
+          </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          
+          
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+        </v-expansion-panels>      
       </v-tab-item>
       <v-tab-item value="tab-LAYOUT">
         <v-container fluid>
@@ -51,6 +74,21 @@
     </v-tabs-items>
   </div>
 </template>
+
+<style scoped>
+.add-rule-button {
+  max-width: 125px;
+}
+
+.content-expansion-header {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.rules-list {
+  margin-left: 35px;
+}
+</style>
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
@@ -71,7 +109,8 @@ export default class GraphSettings extends WidgetBase {
     }
   }
 
-  public tab = 'RULES';
+  public tab = 'CONTENT';
+  public contentPanel: number[] = [0, 1];
   public activePreset?: GraphPreset | null = null;
 
   public addPreset() {
@@ -93,7 +132,7 @@ export default class GraphSettings extends WidgetBase {
     }
     this.source.events.publish(
       GraphDatasource.PRESET_EVENTS,
-      GraphDatasource.PRESET_CHANGED,
+      GraphDatasource.PRESET_LAYOUT_CHANGED,
       this.activePreset
     );
   }
@@ -125,6 +164,14 @@ export default class GraphSettings extends WidgetBase {
 
   public getColor(el: GraphElement): string {
     return GraphElement.getBackgroundColor(el);
+  }
+
+  public addTypeRule() {
+    if (!this.activePreset?.nodeRules) { return; }
+    this.activePreset.nodeRules.push({
+      type: 'TYPE',
+      _editMode: true
+    });    
   }
 
   public get formDef(): IFormObject {

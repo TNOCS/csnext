@@ -33,6 +33,7 @@ export class GraphDatasource extends DataSource {
   public static PRESET_ELEMENT_ADDED = 'preset-element-added';
   public static PRESET_ACTIVATED = 'preset-activated';
   public static PRESET_CHANGED = 'preset-changed';
+  public static PRESET_LAYOUT_CHANGED = 'preset-layout-changed';
 
   public activeId = '';
   public graph: GraphObject = {};
@@ -393,6 +394,17 @@ export class GraphDatasource extends DataSource {
       return foundOutgoing || foundIncoming;
     });
     return res;
+  }
+
+  public getElementsByRelationTypes(
+    element: GraphElement,
+    relationType: string
+  ) : (GraphElement | undefined)[] | undefined {
+    if (!element._outgoing) { return; }
+    
+    const outgoingElements =  element._outgoing.filter(r => r.to && r.classId === relationType).map(r => r.to as GraphElement);
+    if (outgoingElements.length>0) { return outgoingElements}
+    return;
   }
 
   public getElementsByPropertyAndOperator(
