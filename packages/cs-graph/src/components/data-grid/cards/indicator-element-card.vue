@@ -40,8 +40,8 @@
       </div>
     </div>
     <v-rating
-      empty-icon="radio_button_unchecked"
-      full-icon="radio_button_checked"
+      empty-icon="mdi-radiobox-blank"
+      full-icon="mdi-radiobox-marked"
       class="indicator-rating"
       v-model="element.properties.assessment"
       size="20"
@@ -51,9 +51,9 @@
     ></v-rating>
 
     <v-layout class="indicator-actions">
-      <v-btn icon v-if="element.properties.indicator_type === 'Manual'"><v-icon small>person</v-icon></v-btn>
-      <v-btn icon v-else><v-icon small>calculate</v-icon></v-btn>
-      <v-btn icon><v-icon small>map</v-icon></v-btn>
+      <v-btn icon v-if="element.properties.indicator_type === 'Manual'"><v-icon small>mdi-account</v-icon></v-btn>
+      <v-btn icon v-else><v-icon small>mdi-calculator</v-icon></v-btn>
+      <v-btn icon><v-icon small>mdi-map</v-icon></v-btn>
     </v-layout>
     <div class="assessment-rating" :style="getAssessmentStyle()"></div>
     <!-- <div class="element-card-value">{{element.properties.indicator_type}}</div> -->
