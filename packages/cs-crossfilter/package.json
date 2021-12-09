@@ -8,6 +8,7 @@
     "bugs": "https://github.com/TNOCS/csnext/issues",
     "license": "MIT",
     "scripts": {
+        "fixrouter": "del-cli node_modules/@csnext",
         "link": "yarn link",
         "unlink": "yarn unlink",
         "build:pack": "yarn pack --filename ../../dist/cs-crossfilter.tgz",
