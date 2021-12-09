@@ -58,7 +58,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
                 menus: [
                     {
                         type: 'icon',
-                        icon: 'clear',
+                        icon: 'mdi-close',
                         toolTip: 'clear',
                         method: 'clear'
                     },                    
@@ -78,7 +78,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
         } as IWidget;
         widget.options?.menus?.push({
             type: 'icon',
-            icon: 'build',
+            icon: 'mdi-wrench',
             toolTip: 'edit chart',
             action: (s)=> {              
                 $cs.openRightSidebarWidget({
@@ -95,7 +95,7 @@ export class CrossDashboardManager extends DashboardManagerBase {
             }});        
             widget.options?.menus?.push({
                 type: 'icon',
-                icon: 'map',
+                icon: 'mdi-map',
                 toolTip: 'use as legend',
                 action: (s)=> {       
                     if (this.source?.mainLayer) {

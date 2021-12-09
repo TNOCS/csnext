@@ -436,7 +436,7 @@ export class CsFormField extends Vue {
 
   public fieldInput(field: IFormFieldOptions) {
     if (field) {
-      field._appendIcon = 'save';
+      field._appendIcon = 'mdi-content-save';
     }
   }
 }
