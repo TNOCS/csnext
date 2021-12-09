@@ -6,12 +6,15 @@
       </v-tab>
       <v-tab>
         <v-icon left>mdi-magnify</v-icon>
-      </v-tab>
+      </v-tab>       
       <v-tab :disabled="!entity || !entity._location">
         <v-icon left>mdi-map-marker-outline</v-icon>
       </v-tab>
       <v-tab :disabled="!entity || !entity._date">
         <v-icon left>mdi-calendar-range</v-icon>
+      </v-tab>
+      <v-tab>
+        <v-icon left>search-web</v-icon>
       </v-tab>
 
       <v-tab-item>
@@ -41,7 +44,7 @@
               <v-tooltip bottom v-if="entity._included">
                 <template v-slot:activator="{ on }">
                   <v-btn v-on="on" icon @click="excludeEntity()"
-                    ><v-icon>remove</v-icon></v-btn
+                    ><v-icon>mdi-minus</v-icon></v-btn
                   >
                 </template>
                 {{ $cs.Translate("UNLINK_ENTITY") }}

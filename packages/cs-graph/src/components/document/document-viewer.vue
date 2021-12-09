@@ -61,61 +61,68 @@
     </v-container>
 
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
-      <div class="filter-row">
-        <v-layout>
-          <!-- {{ source.activeDocument.entityTypes }} -->
-          <v-combobox
-            v-model="source.activeDocument.visibleEntityTypes"
-            v-if="source.entityTypes"
-            :items="Object.values(source.activeDocument.entityTypes)"
-            item-text="id"
-            return-object
-            chips
-            flat
-            @change="updateEntityTypes()"
-            label="Select entity types"
-            multiple
-            prepend-icon="label"
-            solo
+      <v-toolbar flat outlined class="graph-menu" v-if="source.activeDocument" >
+      <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
+        <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+  depressed
+  fab
+  icon
+  outlined
+  v-bind="attrs"
+          v-on="on"
+  raised
+>
+       
+<v-icon v-if="source.activeDocument.properties.editor_mode==='EDIT'">mdi-pencil</v-icon>
+<v-icon v-else>mdi-eye</v-icon>
+</v-btn>
+      
+      </template>
+      <v-list>
+        <v-list-item @click="setEditorMode('EDIT')"
+        >
+          <v-icon>mdi-pencil</v-icon>
+          <v-list-item-title>Edit Mode</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="setEditorMode('VIEW')"          
+        >
+          <v-icon>mdi-eye</v-icon>
+          <v-list-item-title>View Mode</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+        <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes">
+          <v-chip
+            @click="toggleEntityType(id)"
+            v-for="(type, id) of source.activeDocument.entityTypes"
+            :key="id"
+            :color="type.color"
+            class="ml-2"
+            
           >
-            <template v-slot:prepend-item>
-              <v-list-item ripple @click="toggleEntities()">
-                <v-list-item-action> </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>Select / Deselect All</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-divider class="mt-2"></v-divider>
-            </template>
-
-            <template v-slot:selection="{ attrs, item, selected }">
-              <v-chip
-                v-bind="attrs"
-                :input-value="selected"
-                :color="item.color"
-              >
-                <strong>{{ item.title }}</strong
-                >&nbsp;
-              </v-chip>
-            </template>
-          </v-combobox>
-          <v-tooltip>
-            <template v-slot:activator="{ on }">
-              <v-btn icon @click="toggleEntities()"
-                ><v-icon>mdi-check-all</v-icon></v-btn
-              >
-            </template>
-            {{ $cs.Translate('TOGGLE_ENTITIES') }}
-          </v-tooltip>
+          <!-- :outlined="stat.hide" -->
+           
+            <!-- <v-icon v-if="stat._featureType.icon" left>{{
+              stat._featureType.icon
+            }}</v-icon> -->
+            {{ id }}
+             <v-avatar right dark class="darken-4">
+              <!-- {{ stat.count }} -->
+            </v-avatar>
+          </v-chip>
         </v-layout>
-      </div>
-
-      <div v-if="editor" class="editor-menu-row">
-        <div class="document-title">
-          {{ source.activeDocument.properties.name }}
-        </div>
-        <div class="editor-menu">
-          <v-btn-toggle dense>
+        <v-spacer></v-spacer>
+         <v-btn @click="save()" icon>
+          <v-icon>mdi-content-save</v-icon>
+        </v-btn>
+           
+      </v-layout>
+      <template v-slot:extension v-if="source.activeDocument.properties.editor_mode==='EDIT'">
+         <div>
+          <v-btn-toggle dense group>
             <v-btn
               @click="editor.chain().focus().toggleBold().run()"
               :class="{ 'is-active': editor.isActive('bold') }"
@@ -205,10 +212,28 @@
             >
           </v-btn-toggle>
         </div>
-      </div>
+      </template>
+    </v-toolbar>
+ 
+      
 
+        <div class="document-title">
+          {{ source.activeDocument.properties.name }}
+        </div>
+      
       <!-- <div > -->
       <simplebar class="editor-row">
+        <floating-menu :editor="editor" v-if="editor">
+      <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
+        H1
+      </button>
+      <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+        H2
+      </button>
+      <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+        Bullet List
+      </button>
+    </floating-menu>
         <bubble-menu :editor="editor" v-if="editor">
           <v-autocomplete
             v-if="!editor.isActive('text-entity')"
@@ -242,8 +267,9 @@
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 import { TextEntity } from '@csnext/cs-data';
-import { Editor, EditorContent, Node, BubbleMenu } from '@tiptap/vue-2';
+import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/vue-2';
 import SelectionPopup from './selection-popup.vue';
+import Mention from '@tiptap/extension-mention';
 import simplebar from 'simplebar-vue';
 
 import { DocDatasource, ITool } from './../../datasources/doc-datasource';
@@ -264,6 +290,8 @@ import interact from 'interactjs';
     simplebar,
     EditorContent,
     BubbleMenu,
+    FloatingMenu,
+
     // EditorMenuBubble,
     SelectionPopup,
   },
@@ -290,6 +318,7 @@ export default class DocumentViewer extends WidgetBase {
   public selectedEntity?: TextEntity | null = null;
   public keepInBounds = true;
   public selection?: any = null;
+  public editMode = true;
   public loaded = false;
   public startMenu = false;
   public selectionText? = '';
@@ -297,6 +326,7 @@ export default class DocumentViewer extends WidgetBase {
   public selectionTo?: number = 0;
   public isLoading?: boolean;
   public showPopup = true;
+  public extendedToolbar = false;
   // public document?: GraphDocument;
   public node?: Node;
   // v-if="selectionTo !== undefined && selectionFrom !== undefined"
@@ -329,6 +359,12 @@ export default class DocumentViewer extends WidgetBase {
     // alert(this.entityBubbleSelection?.title);
   }
 
+  public setEditorMode(mode: string) {
+    Vue.set(this.source!.activeDocument!.properties, 'editor_mode', mode);
+    this.editor.setEditable(mode === 'EDIT');    
+    // this.source!.activeDocument!.properties!.edit_mode = mode;
+  }
+
   public setNodeParagraph() {
     if (!this.source?.activeDocument || !this.editor) {
       return;
@@ -345,17 +381,7 @@ export default class DocumentViewer extends WidgetBase {
     // alert(this.entityBubbleSelection?.title);
   }
 
-  public toggleEntities() {
-    if (!this.source?.activeDocument?.visibleEntityTypes) {
-      return;
-    }
-    if (this.source.activeDocument?.visibleEntityTypes!.length > 0) {
-      this.source.activeDocument.visibleEntityTypes = [];
-    } else {
-      this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
-    }
-    this.updateEntityTypes();
-  }
+
 
   // public get document(): GraphDocument | undefined {
   //   if (this.source?.activeDocument) {
@@ -467,15 +493,11 @@ export default class DocumentViewer extends WidgetBase {
     for (const type in this.source.activeDocument.entityTypes) {
       if (this.source.activeDocument.entityTypes.hasOwnProperty(type)) {
         const entityType = this.source.activeDocument.entityTypes[type];
-        entityType._selected =
-          this.source.activeDocument.visibleEntityTypes &&
-          this.source.activeDocument.visibleEntityTypes.includes(entityType);
+        entityType._selected = true; 
+          // this.source.activeDocument.visibleEntityTypes &&
+          // this.source.activeDocument.visibleEntityTypes.includes(entityType);
       }
     }
-
-    // this.updateEditor();
-    // this.$forceUpdate();
-    // this.editor.commands.find("living");
   }
 
   private dynamicSort(property) {
@@ -535,6 +557,10 @@ export default class DocumentViewer extends WidgetBase {
           ParagraphExtension,
           Highlight,
           Placeholder,
+          Mention.configure({
+          HTMLAttributes: {
+            class: 'text-entity',
+          }}),
           // BubbleMenu.configure({
           //   element: document.querySelector('.menu'),
           // }),
@@ -619,6 +645,7 @@ export default class DocumentViewer extends WidgetBase {
         //   </p>
         // `,
         content: this.source?.activeDocument?.properties?.doc,
+        editable: true,
         editorProps: {
           document: this.source!.activeDocument,
           source: this.source,
@@ -866,8 +893,8 @@ export default class DocumentViewer extends WidgetBase {
           this.source!.activeDocument!.doc.content,
           true
         );
-        this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
-        this.source!.activeDocument!.refreshViewTypes();
+        // this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
+        // this.source!.activeDocument!.refreshViewTypes();
         }
       });
     }
@@ -1154,22 +1181,37 @@ export default class DocumentViewer extends WidgetBase {
 
 
 <style>
+
+
+.graph-toolbar-menu {
+  align-items: center;
+}
+
+.graph-menu {
+  /* position: absolute; */
+
+  /* left: 0;
+  right: 0;
+  top: 0; */
+}
+
+
 .editor-grid {
-  padding: 5px;
+  /* padding: 5px;
   max-height: 100%;
   display: grid;
   grid-template-rows: 50px 100px 100%;
   grid-gap: 10px;
-  max-height: calc(100vh - 276px);
+  max-height: calc(100vh - 276px); */
 }
 .filter-row {
-  grid-row: 1;
+  /* grid-row: 1; */
 }
 .editor-menu-row {
-  grid-row: 2;
+  /* grid-row: 2; */
 }
 .editor-row {
-  grid-row: 3;
+  /* grid-row: 3; */
   /* overflow-x:hidden;
 overflow-y: auto; */
   /* max-height: 300px; */

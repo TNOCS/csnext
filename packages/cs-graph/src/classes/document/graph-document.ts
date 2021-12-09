@@ -16,18 +16,18 @@ export class GraphDocument extends GraphElement {
     public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
     public entityTypes: { [id: string]: EntityType } = {};
-    public visibleEntityTypes: EntityType[] = [];
+    // public visibleEntityTypes: EntityType[] = [];
     // public reliability?: string;
     // public credibility?: string;
     // public note?: string;    
     // public sourceId?: string;
     // public doc: any = 
 
-    public refreshViewTypes() {
-        this.visibleEntityTypes = Object.values(this.entityTypes).filter(
-          (vt) => vt._selected
-        );
-      }
+    // public refreshViewTypes() {
+    //     this.visibleEntityTypes = Object.values(this.entityTypes).filter(
+    //       (vt) => vt._selected
+    //     );
+    //   }
     
 
     public get doc() : any {
@@ -60,6 +60,7 @@ export class GraphDocument extends GraphElement {
 
         if (!this.properties) { this.properties = {}};
         this.properties.id = this.properties.id ?? guidGenerator();
+        this.properties.editor_mode = this.properties?.editor_mode ?? 'VIEW';
         this.properties.created_time = this.properties.created_time ?? new Date().getTime();        
         this.properties.updated_time = this.properties.updated_time ?? new Date().getTime();        
     }

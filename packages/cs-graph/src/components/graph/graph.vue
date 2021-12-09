@@ -1722,7 +1722,7 @@ export default class NetworkGraph extends WidgetBase {
       plugins: [contextMenu, tooltip],
       animate: this.activePreset?.animate ?? false,
       height: dHeight, // (this as any).widget._size.height,
-      // layout: this.getLayout(),
+      layout: this.getLayout(),
       // renderer: 'svg',
 
       modes: {

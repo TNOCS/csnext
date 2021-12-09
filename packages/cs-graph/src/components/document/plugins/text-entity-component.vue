@@ -136,13 +136,9 @@ export default class TextEntityComponent extends Vue {
     // alert('select');
   }
 
-  @Watch('source.visibleEntityTypes')
   @Watch('entity._included')
   updatedViewTypes() {
-    // console.log('updateEntityTypes');    
-    
     this.setStyle();
-    // this.$forceUpdate();
   }
 
   public isLocation(node: any) {
@@ -159,9 +155,9 @@ export default class TextEntityComponent extends Vue {
         backgroundColor: "lightgrey",
       } as CSSStyleDeclaration;
     }
-    if (this.document.visibleEntityTypes.findIndex(vt => vt.id === this.entity?.spacy_label) >= 0) {
-      this.visible = true;
-    }
+    // if (this.document.visibleEntityTypes.findIndex(vt => vt.id === this.entity?.spacy_label) >= 0) {
+    //   this.visible = true;
+    // }
     this.style =  {
       backgroundColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray',
       borderStyle: (this.visible) ? 'solid' : 'none',

@@ -36,7 +36,7 @@
             "
             icon
             class="group-add-button"
-            ><v-icon>remove</v-icon></v-btn
+            ><v-icon>mdi-minus</v-icon></v-btn
           >
         </div>
         <v-card class="entity-add-card" v-if="group._adding">
@@ -362,7 +362,7 @@ export default class DocumentEntities extends WidgetBase {
     })
   }
 
-  @Watch("source.activeDocument.visibleEntityTypes")
+  @Watch("source.activeDocument.entityTypes")
   public updateGroups() {
     if (!this.source) {
       return;
@@ -373,7 +373,7 @@ export default class DocumentEntities extends WidgetBase {
     let res: NodeEntities[] = [];
     for (const entity of this.source.activeDocument.entities) {
       const c = entity._node?.classId ?? entity.spacy_label;
-      if (c && this.source.activeDocument.visibleEntityTypes.findIndex((t) => t.id === c) !== -1) {
+      if (c) {
         let group = res.find((g) => g.id === c);
         if (!group) {
           group = {
