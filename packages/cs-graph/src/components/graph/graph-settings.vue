@@ -28,6 +28,11 @@
       class="ma-1"      
       multiple
     >
+     <!-- <v-expansion-panel>
+        <v-expansion-panel-header>          
+          <span class="content-expansion-header">Time</span>          
+        </v-expansion-panel-header>
+     </v-expansion-panel> -->
       <v-expansion-panel>
         <v-expansion-panel-header>          
           <!-- <v-switch :value="activePreset.rulesEnabled" flat @click.native.stop="activePreset.rulesEnabled = !activePreset.rulesEnabled"></v-switch>           -->
@@ -51,6 +56,12 @@
           <span class="content-expansion-header">Elements</span>          
           </v-expansion-panel-header>
         <v-expansion-panel-content>
+          <v-list>
+            <v-list-item v-for="(n,id) in activePreset.nodes" :key="id" v-if="n._element">
+              <v-icon v-if="n._element._featureType.icon">{{n._element._featureType.icon}}</v-icon>
+            <v-list-item-title>{{n._element.properties.name}}</v-list-item-title>
+            </v-list-item>
+          </v-list>
           
           
         </v-expansion-panel-content>
@@ -110,7 +121,7 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public tab = 'CONTENT';
-  public contentPanel: number[] = [0, 1];
+  public contentPanel: number[] = [1, 2];
   public activePreset?: GraphPreset | null = null;
 
   public addPreset() {
@@ -207,11 +218,11 @@ export default class GraphSettings extends WidgetBase {
             'dagre'
           ]
         },
-        {
-          title: 'ANIMATE',
-          _key: 'animate',
-          type: 'checkbox'
-        },
+        // {
+        //   title: 'ANIMATE',
+        //   _key: 'animate',
+        //   type: 'checkbox'
+        // },
         {
           title: 'NODE_SIZE',
           _key: 'nodeSize',
@@ -233,15 +244,15 @@ export default class GraphSettings extends WidgetBase {
           _key: 'speed',
           type: 'slider',
           min: 0,
-          max: 10,
+          max: 50,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman')]
+          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'force'])]
         },
         {
           title: 'CLUSTERING',
           _key: 'clustering',
           type: 'checkbox',
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman')]
+          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'froce'])]
         },
         {
           title: 'CLUSTER_GRAVITY',
@@ -266,7 +277,16 @@ export default class GraphSettings extends WidgetBase {
           options: ['UL', 'UR', 'DL', 'DR'],
           requirements: [(v: GraphPreset) => isLayout(v, 'dagre')]
         },
-
+{
+          title: 'COLLIDE_STRENGTH',
+          _key: 'colideStrength',
+          type: 'slider',
+          min: 0,
+          max: 0.5,
+          step: 0.1,
+          default: 0.1,
+          requirements: [(v: GraphPreset) => isLayout(v, ['force'])]
+        },
         {
           title: 'EDGE_STRENGTH',
           _key: 'edgeStrength',
@@ -283,16 +303,17 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 1,
           max: 5000,
-          default: 1000,
-          requirements: [(v: GraphPreset) => isLayout(v, ['gForce'])]
+          default: 150,
+          requirements: [(v: GraphPreset) => isLayout(v, ['gForce', 'force'])]
         },
         {
           title: 'LINK_DISTANCE',
           _key: 'linkDistance',
           type: 'slider',
           min: 1,
+          default: 150,
           max: 500,
-          requirements: [(v: GraphPreset) => isLayout(v, ['radial', 'mds', 'gForce'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['radial', 'mds', 'gForce', 'force'])]
         },
         {
           title: 'UNIT_RADIUS',

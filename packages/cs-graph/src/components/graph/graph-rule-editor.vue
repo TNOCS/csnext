@@ -2,7 +2,7 @@
   <div v-if="activePreset && rule" >
     <v-layout>
       <span class="rule-legend" :style="getRuleStyle(rule)">
-        <v-icon dark class="rule-legend-icon" v-if="rule._featureType && rule._featureType.icon">{{rule._featureType.icon}}</v-icon>
+        <!-- <v-icon dark class="rule-legend-icon" v-if="rule._featureType && rule._featureType.icon">{{rule._featureType.icon}}</v-icon> -->
       </span>
       <div v-if="rule.type === 'TYPE'">        
         <v-select
@@ -165,6 +165,18 @@ export default class GraphRuleEditor extends Vue {
       this.activePreset.nodeRules = this.activePreset.nodeRules.filter(r => r !== this.rule);
     }
     this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
+    this.$forceUpdate();
+  }
+
+  public createOutgoingTypeRule() {
+    if (!this.rule.outgoingRules) {
+      this.rule.outgoingRules = [];      
+    }    
+    this.rule.outgoingRules.push({
+      type: 'TYPE',
+      _editMode: true
+    })
+    this.$forceUpdate();
   }
 
   public createOutgoingRelationRule() {
@@ -176,6 +188,7 @@ export default class GraphRuleEditor extends Vue {
       type: 'RELATION',
       _editMode: true
     })
+    this.$forceUpdate();
   }
 
   mounted() {
@@ -197,6 +210,16 @@ export default class GraphRuleEditor extends Vue {
         icon: 'mdi-note-plus-outline',
         action: (m) => {          
           this.createOutgoingRelationRule();
+        }
+      })
+
+    this.items.push({
+        title: 'ADD_OUTGOING_TYPE_RULE',
+        type: 'icon',
+        toolTip: 'TOOLTIP_ADD_OUTGOING_RELATION_RULE',
+        icon: 'mdi-note-plus-outline',
+        action: (m) => {          
+          this.createOutgoingTypeRule();
         }
       })
 

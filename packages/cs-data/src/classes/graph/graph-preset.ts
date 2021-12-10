@@ -4,6 +4,7 @@ import { FeatureType } from '../types/feature-type';
 export interface IGraphNodeDefinition {
   x?: number;
   y?: number;
+  _element?: GraphElement;
 }
 
 export class IGraphFilter {
@@ -45,6 +46,7 @@ export class GraphFeatureTypeStat {
   public count?: number;
   public hide?: boolean;
   public color?: string;
+  public pinned?: number;
 }
 
 export class GraphPreset extends IGraphFilter {
@@ -87,6 +89,7 @@ export class GraphPreset extends IGraphFilter {
   public nodeRules?: NodeRule[] = [];
   public rulesEnabled?: boolean;
   public elementsEnabled?: boolean;
+  public pinnedFeatureTypes?: string[];
   public _stats?: {[key: string]: GraphFeatureTypeStat};
 
   public static export(preset: GraphPreset): string {

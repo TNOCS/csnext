@@ -26,6 +26,7 @@ export class GraphElement {
     updated_time?: number;
     approved_time?: number;
     suggested_time?: number;
+    is_placeholder?: boolean;
   } = {};
 
   public _flat?: {
