@@ -360,8 +360,8 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public setEditorMode(mode: string) {
-    Vue.set(this.source!.activeDocument!.properties, 'editor_mode', mode);
-    this.editor.setEditable(mode === 'EDIT');    
+    Vue.set(this.source!.activeDocument!.properties!, 'editor_mode', mode);
+    this.editor!.setEditable(mode === 'EDIT');    
     // this.source!.activeDocument!.properties!.edit_mode = mode;
   }
 

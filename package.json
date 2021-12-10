@@ -13,6 +13,7 @@
         "unsafe-perm": true
     },
     "scripts": {
+        "fixrouter": "lerna run --parallel fixrouter",
         "postinstall": "lerna bootstrap && yarn run link",
         "dev": "lerna run --parallel dev",
         "dev:minimal": "lerna run --ignore {cs-billboard,cs-docs,cs-log,cs-markdown} --parallel dev ",

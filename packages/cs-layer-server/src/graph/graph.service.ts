@@ -10,6 +10,8 @@ export class GraphService {
   public database = process.env.DATABASE || 'local';
   public source?: GraphDatasource;
   public filesPath?: string;
+  private storeWithIntervalData: { node: any; edges: any[] }[] = [];
+  private storeWithIntervalInterval?: NodeJS.Timeout;
 
   constructor() {
     Logger.log('Initializing Graph Service', 'GraphService');
@@ -50,12 +52,7 @@ export class GraphService {
 
   public async loadDatabase() {}
 
-  store(
-    body: any,
-    type: string,
-    id?: string,
-    agentId?: string
-  ): Promise<GraphElement | undefined> {
+  store(body: any, type: string, id?: string, agentId?: string): Promise<GraphElement | undefined> {
     return new Promise(async (resolve, reject) => {
       // make sure we use entity, instead of wiki path
 
@@ -96,13 +93,7 @@ export class GraphService {
 
   public storeMultiple(body: any[], agentId?: string) {
     return new Promise(async (resolve, reject) => {
-      if (
-        this.db &&
-        this.source &&
-        body &&
-        Array.isArray(body) &&
-        body.length > 0
-      ) {
+      if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
         for (const el of body) {
           if (agentId && !el.document?.created_by) {
             el.document.created_by = agentId;
@@ -141,10 +132,54 @@ export class GraphService {
     });
   }
 
-  public static setupDB(
-    databaseName?: string,
-    folder?: string
-  ): Promise<GraphService> {
+  public storeWithInterval(body: any[], intervalMillis: number, agentId?: string) {
+    return new Promise(async (resolve, reject) => {
+      if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
+        for (const el of body) {
+          if (agentId && !el.document?.created_by) {
+            el.document.created_by = agentId;
+          }
+          if (!el.document?.created_time) {
+            el.document.created_time = new Date().getTime();
+          }
+          if (el.type.toLowerCase() === 'n') {
+            let edges = body.filter((elm) => elm.type.toLowerCase() === 'e' && (elm.from === el.id || elm.to === el.id));
+            this.storeWithIntervalData.push({ node: el, edges: edges });
+          }
+        }
+        // fs.writeFileSync('log-' + new Date().getTime() + '.json', JSON.stringify(body));
+        // await this.db.storeMultiple(body, agentId, new Date().getTime()); // storemultiple(body);
+        if (!!this.storeWithIntervalInterval) {
+          clearInterval(this.storeWithIntervalInterval);
+          this.storeWithIntervalData.length = 0;
+        }
+        this.storeWithIntervalInterval = setInterval(async () => {
+          let storeData = this.storeWithIntervalData.shift();
+          if (storeData) {
+            Logger.log(`Storing node ${storeData.node.id}`, 'GraphService');
+            await this.source.addNode(
+              { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
+              storeData.node.class,
+              true
+            );
+            for (const edge of storeData.edges) {
+              await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
+            }
+            await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
+            this.source.triggerUpdateGraph();
+          } else {
+            clearInterval(this.storeWithIntervalInterval);
+            Logger.log('Stopped storing elements on interval', 'GraphService');
+          }
+        }, intervalMillis);
+        Logger.log(`Start storing elements on interval of ${intervalMillis}ms`, 'GraphService');
+        resolve({ result: 'ok' });
+      }
+      reject();
+    });
+  }
+
+  public static setupDB(databaseName?: string, folder?: string): Promise<GraphService> {
     return new Promise(async (resolve, reject) => {
       let db = new GraphService();
       db.init(databaseName, folder)
