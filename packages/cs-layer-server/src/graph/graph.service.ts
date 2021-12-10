@@ -166,6 +166,7 @@ export class GraphService {
               await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
             }
             await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
+            this.source.triggerUpdateGraph();
           } else {
             clearInterval(this.storeWithIntervalInterval);
             Logger.log('Stopped storing elements on interval', 'GraphService');
