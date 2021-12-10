@@ -649,6 +649,13 @@ export class GraphController {
     });
   }
 
+  @Post('/storewithinterval')
+  storewithinterval(@Body() body: any[], @Query('interval') interval?: number | string, @Query('agent') agent?: string) {
+    return new Promise(async (resolve, reject) => {
+      resolve(this.graph.storeWithInterval(body, +interval || 1000, agent));
+    });
+  }
+
   // @Post('/appendmultiple')
   // appendmultiple(@Body() body: any[], @Query('source') source?: string) {
   //     return new Promise(async (resolve, reject) => {
