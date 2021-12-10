@@ -1,16 +1,4 @@
-import {
-  Req,
-  Request,
-  Get,
-  Controller,
-  Query,
-  Inject,
-  Render,
-  Param,
-  Post,
-  Body,
-  Logger,
-} from '@nestjs/common';
+import { Req, Request, Get, Controller, Query, Inject, Render, Param, Post, Body, Logger } from '@nestjs/common';
 import { LayerDefinition } from '../classes';
 import { Link } from './databases/link';
 import { LayerService } from '../layers/layers.service';
@@ -20,20 +8,9 @@ import { Injectable, Module } from '@nestjs/common';
 import { parse } from 'wellknown';
 import { etl } from './etl';
 
-import {
-  ApiTags,
-  ApiOperation,
-  ApiQuery,
-  ApiParam,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { Feature } from 'geojson';
-import {
-  FeatureType,
-  FeatureTypes,
-  GraphElement,
-  SearchResult,
-} from '@csnext/cs-data';
+import { FeatureType, FeatureTypes, GraphElement, SearchResult } from '@csnext/cs-data';
 import { FilesService, OfflineService } from '../export';
 import * as turf from '@turf/turf';
 import { idGenerator } from '@csnext/cs-core';
@@ -68,11 +45,7 @@ export class GraphController {
     });
   }
 
-  private searchIndex(
-    str: string,
-    searchValue: string,
-    isCaseSensitive: boolean
-  ) {
+  private searchIndex(str: string, searchValue: string, isCaseSensitive: boolean) {
     var modifiers = isCaseSensitive ? 'g' : 'gi';
     var regExpValue = new RegExp(searchValue, modifiers);
     var matches: any[] = [];
@@ -98,24 +71,16 @@ export class GraphController {
       }
       Logger.log('Checking offline images');
       if (this.graph.source?.featureTypes) {
-        for (const ft of Object.values(this.graph.source.featureTypes).filter(
-          (f: FeatureType) => f.properties
-        )) {
+        for (const ft of Object.values(this.graph.source.featureTypes).filter((f: FeatureType) => f.properties)) {
           const props = (ft as FeatureType).properties?.filter(
-            (p) =>
-              p.key &&
-              p._originalType === (ft as FeatureType).type &&
-              p.attributes &&
-              p.attributes.hasOwnProperty('image:offline')
+            (p) => p.key && p._originalType === (ft as FeatureType).type && p.attributes && p.attributes.hasOwnProperty('image:offline')
           );
           if (props && props.length > 0 && (ft as FeatureType).type) {
             // get all elemens
             const elements = this.graph.source.getClassElements((ft as FeatureType).type, true);
             for (const element of elements) {
               // for all props
-              for (const prop of props.filter((e) =>
-                element.properties!.hasOwnProperty(e.key!)
-              )) {
+              for (const prop of props.filter((e) => element.properties!.hasOwnProperty(e.key!))) {
                 // create url
                 if (element.properties && prop.key) {
                   let url = element.properties[prop.key];
@@ -127,9 +92,7 @@ export class GraphController {
                     console.log(url);
                     const file = await this.filesService.loadImage(url);
                     if (file && file.id && file.id !== '') {
-                      element.properties[
-                        prop.key
-                      ] = `http://localhost:9000/files/images?url=${file.id}`;
+                      element.properties[prop.key] = `http://localhost:9000/files/images?url=${file.id}`;
                       console.log(file);
                       console.log('saved');
                     }
@@ -210,9 +173,7 @@ export class GraphController {
   }
 
   @Get('/search')
-  public search(
-    @Query('query') query: string
-  ): Promise<SearchResult | undefined> {
+  public search(@Query('query') query: string): Promise<SearchResult | undefined> {
     return new Promise((resolve, reject) => {
       if (!this.graph.source?.fuse) {
         resolve(undefined);
@@ -273,21 +234,13 @@ export class GraphController {
   }
 
   @Get('/contains')
-  createContains(
-    @Query('point') point: string,
-    @Query('shape') shape: string,
-    @Query('relation') relation: string
-  ): Promise<any> {
+  createContains(@Query('point') point: string, @Query('shape') shape: string, @Query('relation') relation: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       // const t = new turf.turf
       this.allData().then(async (all) => {
         let edges: any[] = [];
         for (const s of all) {
-          if (
-            s.properties?.id &&
-            s.classId === shape &&
-            s.properties.hasOwnProperty('shape')
-          ) {
+          if (s.properties?.id && s.classId === shape && s.properties.hasOwnProperty('shape')) {
             const fc = JSON.parse(s.properties.shape) as any;
 
             // if (node.properties.)
@@ -308,43 +261,16 @@ export class GraphController {
                     for (const feature of fc.features) {
                       // console.log(feature.geometry.type);
 
-                      if (
-                        turf.inside(
-                          turf.point([p.properties.lat, p.properties.lon]),
-                          feature.geometry as any
-                        )
-                      ) {
+                      if (turf.inside(turf.point([p.properties.lat, p.properties.lon]), feature.geometry as any)) {
                         within = true;
-                        console.log(
-                          p.properties.id +
-                            ' - ' +
-                            p.properties.lat +
-                            ' - ' +
-                            p.properties.lon +
-                            ' - ' +
-                            s.properties.id
-                        );
-                        console.log(
-                          p.properties.name + ' - ' + s.properties.name
-                        );
+                        console.log(p.properties.id + ' - ' + p.properties.lat + ' - ' + p.properties.lon + ' - ' + s.properties.id);
+                        console.log(p.properties.name + ' - ' + s.properties.name);
                       }
                     }
                     if (within) {
-                      const id =
-                        p.properties.id +
-                        '-' +
-                        s.properties.id +
-                        '-' +
-                        relation;
+                      const id = p.properties.id + '-' + s.properties.id + '-' + relation;
                       edges.push(id);
-                      this.graph!.db!.link(
-                        Link.fromParam(
-                          p.properties.id,
-                          s.properties.id,
-                          relation,
-                          { id }
-                        )
-                      )
+                      this.graph!.db!.link(Link.fromParam(p.properties.id, s.properties.id, relation, { id }))
                         .then((r) => {
                           resolve(r);
                         })
@@ -372,24 +298,16 @@ export class GraphController {
       }
       Logger.log('Checking offline articles');
       if (this.graph.source?.featureTypes)
-        for (const ft of Object.values(this.graph.source.featureTypes).filter(
-          (f: FeatureType) => f.properties
-        )) {
+        for (const ft of Object.values(this.graph.source.featureTypes).filter((f: FeatureType) => f.properties)) {
           const props = (ft as FeatureType).properties?.filter(
-            (p) =>
-              p.key &&
-              p._originalType === (ft as FeatureType).type &&
-              p.attributes &&
-              p.attributes.hasOwnProperty('article:offline')
+            (p) => p.key && p._originalType === (ft as FeatureType).type && p.attributes && p.attributes.hasOwnProperty('article:offline')
           );
           if (props && props.length > 0 && (ft as FeatureType).type) {
             // get all elemens
             const elements = this.graph.source.getClassElements((ft as FeatureType).type, true);
             for (const element of elements) {
               // for all props
-              for (const prop of props.filter((e) =>
-                element.properties!.hasOwnProperty(e.key!)
-              )) {
+              for (const prop of props.filter((e) => element.properties!.hasOwnProperty(e.key!))) {
                 // create url
                 let url = element.properties![prop.key!];
                 if (url)
@@ -494,35 +412,23 @@ export class GraphController {
   @Get('/type/:type')
   public allFromType(@Param('type') type: string): Promise<Boolean> {
     return new Promise((resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.all &&
-        typeof this.graph.db?.all === 'function'
-      ) {
+      if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
         resolve(this.graph.db.all({ type: type, flat: true, object: true }));
       }
     });
   }
 
   @Get('/types/:type')
-  public allFromTypes(
-    @Param('type') type: string
-  ): Promise<{ [id: string]: GraphElement }> {
+  public allFromTypes(@Param('type') type: string): Promise<{ [id: string]: GraphElement }> {
     return new Promise((resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.all &&
-        typeof this.graph.db?.all === 'function'
-      ) {
-        this.graph.db
-          .all({ type: type, flat: true, object: true })
-          .then((r) => {
-            const res: { [id: string]: GraphElement } = {};
-            for (const el of r) {
-              res[el.id] = el;
-            }
-            resolve(res);
-          });
+      if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
+        this.graph.db.all({ type: type, flat: true, object: true }).then((r) => {
+          const res: { [id: string]: GraphElement } = {};
+          for (const el of r) {
+            res[el.id] = el;
+          }
+          resolve(res);
+        });
         // resolve();
       }
     });
@@ -531,11 +437,7 @@ export class GraphController {
   @Get('/id/:id')
   public allFromId(@Param('id') id: string): Promise<Boolean> {
     return new Promise((resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.all &&
-        typeof this.graph.db?.all === 'function'
-      ) {
+      if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
         resolve(this.graph.db.all({ id, flat: true, object: true }));
       }
     });
@@ -544,11 +446,7 @@ export class GraphController {
   @Get('/all')
   allData(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.all &&
-        typeof this.graph.db?.all === 'function'
-      ) {
+      if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
         resolve(this.graph.db.all());
       } else {
         reject(false);
@@ -559,11 +457,7 @@ export class GraphController {
   @Get('/allobjects')
   allObjects(): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.all &&
-        typeof this.graph.db?.all === 'function'
-      ) {
+      if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
         const res = {};
         const r = await this.graph.db.all({ object: true });
         for (const rr of r) {
@@ -647,11 +541,7 @@ export class GraphController {
   @Get('/schema')
   allClasses(): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (
-        this.graph &&
-        this.graph.db?.schema &&
-        typeof this.graph.db?.schema === 'function'
-      ) {
+      if (this.graph && this.graph.db?.schema && typeof this.graph.db?.schema === 'function') {
         resolve(this.graph.db.schema());
       }
     });
@@ -668,13 +558,7 @@ export class GraphController {
   }
 
   @Post('/link')
-  link(
-    @Body() body: any,
-    @Req() request: Request,
-    @Query('fromId') fromId: string,
-    @Query('toId') toId: string,
-    @Query('classId') classId: string
-  ) {
+  link(@Body() body: any, @Req() request: Request, @Query('fromId') fromId: string, @Query('toId') toId: string, @Query('classId') classId: string) {
     return new Promise(async (resolve, reject) => {
       if (!this.graph.db || !this.graph.source) {
         return { result: 'error' };
@@ -743,10 +627,7 @@ export class GraphController {
   }
 
   @Post('/loadgraph')
-  loadGraph(
-    @Body() body: { [key: string]: GraphElement },
-    @Query('agent') agent?: string
-  ) {
+  loadGraph(@Body() body: { [key: string]: GraphElement }, @Query('agent') agent?: string) {
     return new Promise(async (resolve, reject) => {
       this.graph.db
         .loadGraph(body, agent)
@@ -789,7 +670,7 @@ export class GraphController {
   ): Promise<GraphElement | undefined> {
     return new Promise(async (resolve, reject) => {
       // make sure we use entity, instead of wiki path
-      
+
       console.log(JSON.stringify(body));
       if (!body.hasOwnProperty('classId')) {
         body.classId = 'node';
@@ -798,7 +679,7 @@ export class GraphController {
         body.id = `${body.classId}-${idGenerator()}`;
         id = body.id;
       }
-      Logger.log(`Storing ${body.classId} with id: ${body.id}`)
+      Logger.log(`Storing ${body.classId} with id: ${body.id}`);
       if (idProp && body.hasOwnProperty(idProp)) {
         id = body[idProp as string];
       }
