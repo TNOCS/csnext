@@ -50,12 +50,7 @@ export class GraphService {
 
   public async loadDatabase() {}
 
-  store(
-    body: any,
-    type: string,
-    id?: string,
-    agentId?: string
-  ): Promise<GraphElement | undefined> {
+  store(body: any, type: string, id?: string, agentId?: string): Promise<GraphElement | undefined> {
     return new Promise(async (resolve, reject) => {
       // make sure we use entity, instead of wiki path
 
@@ -96,13 +91,7 @@ export class GraphService {
 
   public storeMultiple(body: any[], agentId?: string) {
     return new Promise(async (resolve, reject) => {
-      if (
-        this.db &&
-        this.source &&
-        body &&
-        Array.isArray(body) &&
-        body.length > 0
-      ) {
+      if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
         for (const el of body) {
           if (agentId && !el.document?.created_by) {
             el.document.created_by = agentId;
@@ -141,10 +130,7 @@ export class GraphService {
     });
   }
 
-  public static setupDB(
-    databaseName?: string,
-    folder?: string
-  ): Promise<GraphService> {
+  public static setupDB(databaseName?: string, folder?: string): Promise<GraphService> {
     return new Promise(async (resolve, reject) => {
       let db = new GraphService();
       db.init(databaseName, folder)
