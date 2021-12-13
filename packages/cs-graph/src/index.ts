@@ -12,6 +12,8 @@ export * from "./filters/cross-graph-manager";
 export * from "./components/graph/graph-map-options"
 export * from "./filters/cross-graph-options";
 export * from "./components/data-grid/cards/element-card-manager";
+export * from "./utils/doc-utils";
+export * from "./utils/cache-requests";
 
 import NetworkGraph from "./components/graph/graph.vue";
 import GraphElements from "./components/entity-management/graph-elements.vue";
