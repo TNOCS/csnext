@@ -2,7 +2,7 @@
   <v-card class="selection-popup" v-if="source">
     <v-tabs vertical :value="viewtab">
       <v-tab>
-        <v-icon left> mdi-playlist-plus_check </v-icon>
+        <v-icon left>mdi-tag-outline</v-icon>
       </v-tab>
       <v-tab>
         <v-icon left>mdi-magnify</v-icon>
@@ -114,7 +114,7 @@
             <div class="suggestion-item" v-for="(s, i) in suggestions" :key="i">
               <v-layout
                 >{{ s.item.properties.name }} ({{getScore(s.score)}})<v-btn v-if="!entity._node" icon @click="useSuggestion(s.item)"
-                  ><v-icon>link</v-icon></v-btn
+                  ><v-icon>mdi-link-plus</v-icon></v-btn
                 ></v-layout
               >
             </div>
@@ -125,11 +125,11 @@
         <v-card flat>
           <v-layout class="ma-4">
             <v-btn outlined @click="locateOnMap()">
-              <v-icon large>place</v-icon>
+              <v-icon large>mdi-crosshairs-gps</v-icon>
               {{ $cs.Translate("LOCATE_ON_MAP") }}</v-btn
             >
             <v-btn outlined @click="nearby()">
-              <v-icon large>place</v-icon>
+              <v-icon large>mdi-map-marker</v-icon>
               {{ $cs.Translate("NEARBY") }}</v-btn
             >
           </v-layout>
