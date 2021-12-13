@@ -5,22 +5,11 @@
         {{ $cs.Translate('START_DOCUMENT_TITLE') }}
       </div>
       <v-layout justify-center class="doc-action-cards">
-        <v-hover
-          class="doc-action-card"
-          v-for="ip in source.importPlugins"
-          :key="ip.id"
-        >
+        <v-hover class="doc-action-card" v-for="ip in source.importPlugins" :key="ip.id">
           <template v-slot:default="{ hover }">
-            <v-card
-              :elevation="hover ? 16 : 2"
-              width="200"
-              height="200"
-              @click="doImport(ip)"
-            >
+            <v-card :elevation="hover ? 16 : 2" width="200" height="200" @click="doImport(ip)">
               <v-img contain max-height="100" :src="ip.image"></v-img>
-              <v-btn class="doc-action-btn" text>{{
-                $cs.Translate(ip.title)
-              }}</v-btn>
+              <v-btn class="doc-action-btn" text>{{ $cs.Translate(ip.title) }}</v-btn>
             </v-card>
           </template>
         </v-hover>
@@ -61,179 +50,130 @@
     </v-container>
 
     <div class="editor-grid" v-show="!startMenu" v-if="loaded">
-      <v-toolbar flat outlined class="graph-menu" v-if="source.activeDocument" >
-      <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
-        <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-  depressed
-  fab
-  icon
-  outlined
-  v-bind="attrs"
-          v-on="on"
-  raised
->
-       
-<v-icon v-if="source.activeDocument.properties.editor_mode==='EDIT'">mdi-pencil</v-icon>
-<v-icon v-else>mdi-eye</v-icon>
-</v-btn>
-      
-      </template>
-      <v-list>
-        <v-list-item @click="setEditorMode('EDIT')"
-        >
-          <v-icon>mdi-pencil</v-icon>
-          <v-list-item-title>Edit Mode</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="setEditorMode('VIEW')"          
-        >
-          <v-icon>mdi-eye</v-icon>
-          <v-list-item-title>View Mode</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+      <v-toolbar flat outlined class="graph-menu" v-if="source.activeDocument">
+        <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn depressed fab icon outlined v-bind="attrs" v-on="on" raised>
+                <v-icon v-if="source.activeDocument.properties.editor_mode === 'EDIT'">mdi-pencil</v-icon>
+                <v-icon v-else>mdi-eye</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="setEditorMode('EDIT')">
+                <v-icon>mdi-pencil</v-icon>
+                <v-list-item-title>Edit Mode</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="setEditorMode('VIEW')">
+                <v-icon>mdi-eye</v-icon>
+                <v-list-item-title>View Mode</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
-        <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes">
-          <v-chip
-            @click="toggleEntityType(id)"
-            v-for="(type, id) of source.activeDocument.entityTypes"
-            :key="id"
-            :color="type.color"
-            class="ml-2"
-            
-          >
-          <!-- :outlined="stat.hide" -->
-           
-            <!-- <v-icon v-if="stat._featureType.icon" left>{{
+          <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes">
+            <v-chip @click="toggleEntityType(id)" v-for="(type, id) of source.activeDocument.entityTypes" :key="id" :color="type.color" class="ml-2">
+              <!-- :outlined="stat.hide" -->
+
+              <!-- <v-icon v-if="stat._featureType.icon" left>{{
               stat._featureType.icon
             }}</v-icon> -->
-            {{ id }}
-             <v-avatar right dark class="darken-4">
-              <!-- {{ stat.count }} -->
-            </v-avatar>
-          </v-chip>
+              {{ id }}
+              <v-avatar right dark class="darken-4">
+                <!-- {{ stat.count }} -->
+              </v-avatar>
+            </v-chip>
+          </v-layout>
+          <v-spacer></v-spacer>
+          <v-btn @click="save()" icon>
+            <v-icon>mdi-content-save</v-icon>
+          </v-btn>
         </v-layout>
-        <v-spacer></v-spacer>
-         <v-btn @click="save()" icon>
-          <v-icon>mdi-content-save</v-icon>
-        </v-btn>
-           
-      </v-layout>
-      <template v-slot:extension v-if="source.activeDocument.properties.editor_mode==='EDIT'">
-         <div>
-          <v-btn-toggle dense group>
-            <v-btn
-              @click="editor.chain().focus().toggleBold().run()"
-              :class="{ 'is-active': editor.isActive('bold') }"
-            >
-              <v-icon>mdi-format-bold</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleItalic().run()"
-              :class="{ 'is-active': editor.isActive('italic') }"
-            >
-              <v-icon>mdi-format-italic</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleStrike().run()"
-              :class="{ 'is-active': editor.isActive('strike') }"
-            >
-              <v-icon>mdi-format-strikethrough</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleHighlight().run()"
-              :class="{ 'is-active': editor.isActive('highlight') }"
-            >
-              <v-icon>mdi-marker</v-icon>
-            </v-btn>
+        <template v-slot:extension v-if="source.activeDocument.properties.editor_mode === 'EDIT'">
+          <div>
+            <v-btn-toggle dense group>
+              <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+                <v-icon>mdi-format-bold</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+                <v-icon>mdi-format-italic</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+                <v-icon>mdi-format-strikethrough</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleHighlight().run()" :class="{ 'is-active': editor.isActive('highlight') }">
+                <v-icon>mdi-marker</v-icon>
+              </v-btn>
 
-            <v-btn
-              @click="editor.chain().focus().setParagraph().run()"
-              :class="{ 'is-active': editor.isActive('paragraph') }"
-            >
-              <v-icon>mdi-segment</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-              :class="{
-                'is-active': editor.isActive('heading', { level: 1 }),
-              }"
-            >
-              h1
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-              :class="{
-                'is-active': editor.isActive('heading', { level: 2 }),
-              }"
-            >
-              h2
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleBulletList().run()"
-              :class="{ 'is-active': editor.isActive('bulletList') }"
-            >
-              <v-icon>mdi-format-list-bulleted</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleOrderedList().run()"
-              :class="{ 'is-active': editor.isActive('orderedList') }"
-            >
-              <v-icon>mdi-format-list-numbered</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleCodeBlock().run()"
-              :class="{ 'is-active': editor.isActive('codeBlock') }"
-            >
-              <v-icon>mdi-code-tags</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleBlockquote().run()"
-              :class="{ 'is-active': editor.isActive('blockquote') }"
-            >
-              <v-icon>mdi-format-quote-close</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
-              <v-icon>mdi-reorder-horizontal</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().undo().run()"
-              ><v-icon>mdi-undo</v-icon></v-btn
-            >
-            <v-btn @click="editor.chain().focus().redo().run()"
-              ><v-icon>mdi-redo</v-icon></v-btn
-            >
+              <v-btn @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
+                <v-icon>mdi-segment</v-icon>
+              </v-btn>
+              <v-btn
+                @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 1 }),
+                }"
+              >
+                h1
+              </v-btn>
+              <v-btn
+                @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 2 }),
+                }"
+              >
+                h2
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+                <v-icon>mdi-format-list-bulleted</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
+                <v-icon>mdi-format-list-numbered</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
+                <v-icon>mdi-code-tags</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
+                <v-icon>mdi-format-quote-close</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
+                <v-icon>mdi-reorder-horizontal</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
+              <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
 
-            <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
-            <v-btn
-              @click="setNodeParagraph()"
-              :class="{ 'is-active': editor.isActive('node-paragraph') }"
-              ><v-icon>mdi-format-paragraph</v-icon></v-btn
-            >
-          </v-btn-toggle>
-        </div>
-      </template>
-    </v-toolbar>
- 
-      
+              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
+              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
+                ><v-icon>mdi-format-paragraph</v-icon></v-btn
+              >
+            </v-btn-toggle>
+          </div>
+        </template>
+      </v-toolbar>
 
-        <div class="document-title">
-          {{ source.activeDocument.properties.name }}
-        </div>
-      
+      <div class="document-title">
+        {{ source.activeDocument.properties.name }}
+      </div>
+
       <!-- <div > -->
       <simplebar class="editor-row">
-        <floating-menu :editor="editor" v-if="editor">
-      <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
-        H1
-      </button>
-      <button @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
-        H2
-      </button>
-      <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
-        Bullet List
-      </button>
-    </floating-menu>
+        <floating-menu :editor="editor" v-if="editor && source.activeDocument.properties.editor_mode === 'EDIT'">
+          <button
+            @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+            :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
+          >
+            H1
+          </button>
+          <button
+            @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+            :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }"
+          >
+            H2
+          </button>
+          <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+            Bullet List
+          </button>
+        </floating-menu>
         <bubble-menu :editor="editor" v-if="editor">
           <v-autocomplete
             v-if="!editor.isActive('text-entity')"
@@ -335,33 +275,20 @@ export default class DocumentViewer extends WidgetBase {
   public entityBubbleSelection: FeatureType | null = null;
 
   public setEntity() {
-    if (
-      !this.source?.activeDocument ||
-      !this.editor ||
-      !this.entityBubbleSelection?.type
-    ) {
+    if (!this.source?.activeDocument || !this.editor || !this.entityBubbleSelection?.type) {
       return;
     }
 
-    this.editor
-      .chain()
-      .focus()
-      .setTextEntity({ spacy_label: this.entityBubbleSelection?.type })
-      .run();
+    this.editor.chain().focus().setTextEntity({ spacy_label: this.entityBubbleSelection?.type }).run();
     this.syncDocumentState();
-    DocUtils.syncEntities(
-      this.source.activeDocument,
-      this.source.activeDocument.properties?.doc?.content,
-      true,      
-    this.source
-    );
+    DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
 
     // alert(this.entityBubbleSelection?.title);
   }
 
   public setEditorMode(mode: string) {
     Vue.set(this.source!.activeDocument!.properties!, 'editor_mode', mode);
-    this.editor!.setEditable(mode === 'EDIT');    
+    this.editor!.setEditable(mode === 'EDIT');
     // this.source!.activeDocument!.properties!.edit_mode = mode;
   }
 
@@ -380,8 +307,6 @@ export default class DocumentViewer extends WidgetBase {
 
     // alert(this.entityBubbleSelection?.title);
   }
-
-
 
   // public get document(): GraphDocument | undefined {
   //   if (this.source?.activeDocument) {
@@ -405,32 +330,19 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public async clear() {
-    if (
-      (await $cs.triggerYesNoQuestionDialog(
-        'EMPTY_DOCUMENT',
-        'EMPTY_DOCUMENT_TEXT'
-      )) === 'YES'
-    ) {
+    if ((await $cs.triggerYesNoQuestionDialog('EMPTY_DOCUMENT', 'EMPTY_DOCUMENT_TEXT')) === 'YES') {
       if (!this.source?.activeDocument || !this.editor) {
         return;
       }
       if (this.source.activeDocument.entities) {
         for (const entity of this.source.activeDocument.entities) {
-          this.source.removeEntityFromDocument(
-            entity,
-            this.source.activeDocument
-          );
+          this.source.removeEntityFromDocument(entity, this.source.activeDocument);
         }
         this.source.activeDocument.entities = [];
       }
       this.editor?.commands.clearContent();
       this.syncDocumentState();
-      DocUtils.syncEntities(
-        this.source.activeDocument,
-        this.source.activeDocument.properties?.doc?.content,
-        true,
-        this.source
-      );
+      DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
       this.startMenu = true;
     }
   }
@@ -442,12 +354,7 @@ export default class DocumentViewer extends WidgetBase {
 
     this.editor.chain().focus().setTextEntity().run();
     this.syncDocumentState();
-    DocUtils.syncEntities(
-      this.source.activeDocument,
-      this.source.activeDocument.properties?.doc?.content,
-      true,
-      this.source
-    );
+    DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
   }
 
   // public setTextParagraph() {
@@ -495,9 +402,9 @@ export default class DocumentViewer extends WidgetBase {
     for (const type in this.source.activeDocument.entityTypes) {
       if (this.source.activeDocument.entityTypes.hasOwnProperty(type)) {
         const entityType = this.source.activeDocument.entityTypes[type];
-        entityType._selected = true; 
-          // this.source.activeDocument.visibleEntityTypes &&
-          // this.source.activeDocument.visibleEntityTypes.includes(entityType);
+        entityType._selected = true;
+        // this.source.activeDocument.visibleEntityTypes &&
+        // this.source.activeDocument.visibleEntityTypes.includes(entityType);
       }
     }
   }
@@ -512,14 +419,10 @@ export default class DocumentViewer extends WidgetBase {
       /* next line works with strings and numbers,
        * and you may want to customize it to your needs
        */
-      var result =
-        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+      var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
     };
   }
-
-
-
 
   public updateEditor(destroy = true) {
     console.log('update editor');
@@ -545,10 +448,7 @@ export default class DocumentViewer extends WidgetBase {
     // this.createTextEntities();
 
     if (!this.editor) {
-      if (
-        !this.source.activeDocument.properties?.text ||
-        this.source.activeDocument.properties.text.length === 0
-      ) {
+      if (!this.source.activeDocument.properties?.text || this.source.activeDocument.properties.text.length === 0) {
         this.startMenu = true;
       }
       this.editor = new Editor({
@@ -560,9 +460,10 @@ export default class DocumentViewer extends WidgetBase {
           Highlight,
           Placeholder,
           Mention.configure({
-          HTMLAttributes: {
-            class: 'text-entity',
-          }}),
+            HTMLAttributes: {
+              class: 'text-entity',
+            },
+          }),
           // BubbleMenu.configure({
           //   element: document.querySelector('.menu'),
           // }),
@@ -656,6 +557,7 @@ export default class DocumentViewer extends WidgetBase {
           },
         } as any,
       });
+      this.editor!.setEditable(this.source?.activeDocument?.properties?.edit_mode === 'EDIT');
     }
 
     // this.editor.content = ; // this.source?.activeDocument?.originalText;
@@ -752,11 +654,7 @@ export default class DocumentViewer extends WidgetBase {
 
           this.loaded = true;
 
-          this.busManager.subscribe(
-            this.source!.bus,
-            'document-entities',
-            () => {}
-          );
+          this.busManager.subscribe(this.source!.bus, 'document-entities', () => {});
         }
       });
       this.mergeEntitites();
@@ -777,15 +675,10 @@ export default class DocumentViewer extends WidgetBase {
         return;
       }
 
-      
       // this.checkOriginal();
 
-      if (
-        this.source.activeDocument.properties?.doc?.content &&
-        this.source.activeDocument.properties.doc.content.length === 0
-      ) {
-        let paragraphs =
-          this.source.activeDocument!.properties?.text?.split('\n\n');
+      if (this.source.activeDocument.properties?.doc?.content && this.source.activeDocument.properties.doc.content.length === 0) {
+        let paragraphs = this.source.activeDocument!.properties?.text?.split('\n\n');
         for (const par of paragraphs) {
           const n = {
             type: 'paragraph',
@@ -804,21 +697,12 @@ export default class DocumentViewer extends WidgetBase {
         }
       }
 
-      DocUtils.syncEntities(
-        this.source.activeDocument,
-        this.source.activeDocument.properties?.doc.content,
-        false,
-        this.source
-      );
+      DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc.content, false, this.source);
       if (!this.editor) {
         this.updateEditor();
       }
 
-      this.editor
-        ?.chain()
-        .clearContent()
-        .setContent(this.source.activeDocument.properties?.doc, false)
-        .run();
+      this.editor?.chain().clearContent().setContent(this.source.activeDocument.properties?.doc, false).run();
       this.updateEntityTypes();
     });
   }
@@ -851,7 +735,6 @@ export default class DocumentViewer extends WidgetBase {
     // alert('hi');
   }
 
-
   public async refresh(ignorePopup = false) {
     console.log('refresh');
     if (!this.source) {
@@ -862,10 +745,7 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    if (
-      this.source.activeDocument.entities &&
-      this.source.activeDocument.entities.length > 0
-    ) {
+    if (this.source.activeDocument.entities && this.source.activeDocument.entities.length > 0) {
       $cs.triggerNotification({
         title: 'currently re-running the pipeline is not supported',
       });
@@ -873,10 +753,7 @@ export default class DocumentViewer extends WidgetBase {
     } else if (
       !this.source.activeDocument.entities ||
       this.source.activeDocument.entities.length === 0 ||
-      (await $cs.triggerYesNoQuestionDialog(
-        'Update entities',
-        'This will reset all existing entities (currently not supported!!!)'
-      )) === 'YES'
+      (await $cs.triggerYesNoQuestionDialog('Update entities', 'This will reset all existing entities (currently not supported!!!)')) === 'YES'
     ) {
       const json = this.editor.getJSON();
       const text = this.getText(json);
@@ -886,26 +763,20 @@ export default class DocumentViewer extends WidgetBase {
       this.source.parseDocument(this.source.activeDocument).then((d) => {
         if (this.source?.activeDocument && d.properties?.doc) {
           this.source!.activeDocument!.properties!.doc = d.properties.doc;
-        
-        // this.createTextEntities();
-        
-        // this.syncDocumentState();
 
-        this.updateContent();
-        DocUtils.syncEntities(
-          this.source!.activeDocument!,
-          this.source!.activeDocument!.doc.content,
-          true,
-          this.source!
-        );
-        // this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
-        // this.source!.activeDocument!.refreshViewTypes();
+          // this.createTextEntities();
+
+          // this.syncDocumentState();
+
+          this.updateContent();
+          DocUtils.syncEntities(this.source!.activeDocument!, this.source!.activeDocument!.doc.content, true, this.source!);
+          // this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
+          // this.source!.activeDocument!.refreshViewTypes();
         }
       });
     }
   }
 
-  
   public syncDocumentState() {
     if (!this.source?.activeDocument || !this.editor) {
       return;
@@ -950,15 +821,11 @@ export default class DocumentViewer extends WidgetBase {
     this.source = source;
     this.updateContextMenu();
     console.log('content loaded');
-    this.busManager.subscribe(
-      this.source!.bus,
-      'document',
-      (a: string, d: any) => {
-        this.updateEditor();
-        this.updateContent();
-        this.initTools();
-      }
-    );
+    this.busManager.subscribe(this.source!.bus, 'document', (a: string, d: any) => {
+      this.updateEditor();
+      this.updateContent();
+      this.initTools();
+    });
     this.checkDocumentIdQuery();
     this.initTools();
   }
@@ -970,12 +837,8 @@ export default class DocumentViewer extends WidgetBase {
     }
 
     if ($cs.router.currentRoute?.query?.id) {
-      if (
-        this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id
-      ) {
-        const doc = this.source.getElement(
-          $cs.router.currentRoute.query.id as string
-        ) as GraphDocument;
+      if (this.source.activeDocument?.id !== $cs.router!.currentRoute?.query?.id) {
+        const doc = this.source.getElement($cs.router.currentRoute.query.id as string) as GraphDocument;
         if (doc) {
           this.loadDocument(doc);
         }
@@ -1041,11 +904,7 @@ export default class DocumentViewer extends WidgetBase {
 
         // If we are dragging an item from the sidebar, its transform value will be ''
         // We need to clone it, and then start moving the clone
-        if (
-          interaction.pointerIsDown &&
-          !interaction.interacting() &&
-          currentTarget.style.transform === ''
-        ) {
+        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
           element = currentTarget.cloneNode(true);
           var clientRect = element.getBoundingClientRect();
 
@@ -1094,16 +953,15 @@ export default class DocumentViewer extends WidgetBase {
         try {
           // find article import
           if (this.source?.importPlugins && this.source.activeDocument) {
-          const importPlugin = this.source.importPlugins.find(i => i.id === 'online-document')
-          if (importPlugin) {
-            await importPlugin.callImport(this.source.activeDocument, this.source);
-            await this.refresh();
-            return Promise.resolve(true);
-          } else {
-            return Promise.resolve(false);
+            const importPlugin = this.source.importPlugins.find((i) => i.id === 'online-document');
+            if (importPlugin) {
+              await importPlugin.callImport(this.source.activeDocument, this.source);
+              await this.refresh();
+              return Promise.resolve(true);
+            } else {
+              return Promise.resolve(false);
+            }
           }
-          }
-          
         } catch (e) {
           return Promise.resolve(false);
         }
@@ -1186,8 +1044,6 @@ export default class DocumentViewer extends WidgetBase {
 
 
 <style>
-
-
 .graph-toolbar-menu {
   align-items: center;
 }
@@ -1199,7 +1055,6 @@ export default class DocumentViewer extends WidgetBase {
   right: 0;
   top: 0; */
 }
-
 
 .editor-grid {
   /* padding: 5px;
