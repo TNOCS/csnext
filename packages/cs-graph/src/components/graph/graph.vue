@@ -15,6 +15,10 @@
       </v-tab>
     </v-tabs> -->
     <div id="kg-vis" class="graph-canvas"></div>
+
+    <cs-widget v-if="options.showInfoWidget && $cs.activeInfoWidget" class="graph-info-widget" :widget="$cs.activeInfoWidget"></cs-widget>
+
+
     <v-toolbar flat outlined class="graph-menu" v-if="activePreset">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
         <!-- <v-text-field
@@ -124,31 +128,19 @@
         </v-list-group>
       </v-list>
     </v-menu>
-
-    <!-- <v-menu
-      v-model="showMenu"
-      :position-x="x"
-      :position-y="y"
-      absolute
-      offset-y
-    >
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in contextMenuitems"
-          :key="index"
-          @click="item.action"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu> -->
-    <!-- <div v-if="source.activeGraphPreset && source.activeGraphPreset.filterTimeline" class="graph-focus-date">
-      {{ getShortDate(source.activeGraphPreset.focusDate) }}
-    </div> -->
   </div>
 </template>
 
 <style scoped>
+
+.graph-info-widget {
+    position: absolute;
+    bottom: 5px;
+    left: calc(50% - 250px);
+    width: 500px;
+    min-height: 50px;
+    max-height: 100px;
+}
 
 .left-right-template {
   position: relative;
@@ -250,6 +242,7 @@ import {
   PropertyValueType,
   IGraphNodeDefinition,
   IGraphFilter,
+  FilterGraphElement,
   FeatureType,
   NodeRule,
 } from '@csnext/cs-data';
@@ -273,7 +266,7 @@ export default class NetworkGraph extends WidgetBase {
   private x = 0;
   private y = 0;
   private tab: any = null;
-  public activePreset?: GraphPreset | null = null;
+  public activePreset?: FilterGraphElement | null = null;
   public dragInitialized = false;
   private featureTypes?: string[] | null = null;
 
@@ -427,10 +420,10 @@ export default class NetworkGraph extends WidgetBase {
     let gnd: IGraphNodeDefinition = {};
     // find position
     if (
-      this.activePreset.nodes &&
-      this.activePreset.nodes.hasOwnProperty(e.id)
+      this.activePreset.properties?.nodes &&
+      this.activePreset.properties?.nodes.hasOwnProperty(e.id)
     ) {
-      gnd = this.activePreset.nodes[e.id];
+      gnd = this.activePreset.properties?.nodes[e.id];
     }
     let existingIndex = this.data.nodes!.findIndex((n) => n.id === e.id);
     let existing: NodeConfig | undefined = this.data.nodes[existingIndex];
@@ -444,7 +437,7 @@ export default class NetworkGraph extends WidgetBase {
     }
 
     if (included && e.properties?.name) {
-      let nodewidth = this.activePreset.nodeSize ?? 50;
+      let nodewidth = this.activePreset.properties?.nodeSize ?? 50;
       if (e.properties?.nodegraphlayout === 'modelRect') {
         nodewidth = 200;
       }
@@ -453,12 +446,12 @@ export default class NetworkGraph extends WidgetBase {
 
       let node = {
         id: e.id,
-        label: this.activePreset?.hideNodeLabel
+        label: this.activePreset?.properties?.hideNodeLabel
           ? undefined
           : this.fittingString(
               e.properties?.name,
               80,
-              this.activePreset.globalFontSize ?? 12
+              this.activePreset.properties?.globalFontSize ?? 12
             ), // this.labelFormatter(e._title!, this.settings.labelMaxLength),
         // hidden: this.graphSource.getHidden(
         //   e,
@@ -487,7 +480,7 @@ export default class NetworkGraph extends WidgetBase {
         },
         labelCfg: {
           style: {
-            fontSize: this.activePreset.globalFontSize ?? 12,
+            fontSize: this.activePreset.properties?.globalFontSize ?? 12,
             fontFamily: 'Roboto, sans-serif',
           },
         },
@@ -593,17 +586,17 @@ export default class NetworkGraph extends WidgetBase {
           //   padding: [2, 2, 2, 2],
           //   radius: 2,
           // },
-          fontSize: this.activePreset.globalFontSize,
+          fontSize: this.activePreset.properties?.globalFontSize,
         },
       },
       hidden: this.source.getHidden(e, this.activePreset),
       title: label,
-      label: this.activePreset?.hideNodeLabel
+      label: this.activePreset?.properties?.hideNodeLabel
         ? undefined
         : this.fittingString(
             label ?? '',
             80,
-            this.activePreset?.globalFontSize ?? 12
+            this.activePreset?.properties?.globalFontSize ?? 12
           ),
       arrows: 'to',
     } as any;
@@ -640,20 +633,23 @@ export default class NetworkGraph extends WidgetBase {
       }
     });
     return res;
-  }
+}
 
   public getLayout() {
     if (!this.activePreset) {
       return;
     }
-    if (!this.activePreset.layout) {
-      this.activePreset.layout = 'force';
+    if (!this.activePreset.properties) {
+      this.activePreset.properties = {}
+    }
+    if (!this.activePreset.properties?.layout) {
+      this.activePreset.properties.layout = 'force';
     }
     let layout: LayoutConfig = {
-      type: this.activePreset.layout,
+      type: this.activePreset.properties?.layout,
       preventOverlap: true,
     };
-    switch (this.activePreset.layout) {
+    switch (this.activePreset.properties?.layout) {
       case 'manual':
         break;
       case 'force':
@@ -661,15 +657,15 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             type: 'force',
-            gravity: this.activePreset.gravity ?? 10,
+            gravity: this.activePreset.properties?.gravity ?? 10,
             preventOverlap: true,
-            speed: this.activePreset.speed ?? 25,
-            nodeStrength: this.activePreset.nodeStrength ?? 100,
-            nodeSpacing: this.activePreset.nodeSpacing ?? 150,
-            clustering: this.activePreset.clustering ?? false,
-            collideStrength: this.activePreset?.collideStrength ?? 0.1,
+            speed: this.activePreset.properties?.speed ?? 25,
+            nodeStrength: this.activePreset.properties?.nodeStrength ?? 100,
+            nodeSpacing: this.activePreset.properties?.nodeSpacing ?? 150,
+            clustering: this.activePreset.properties?.clustering ?? false,
+            collideStrength: this.activePreset?.properties?.collideStrength ?? 0.1,
             workerEnabled: false,
-            linkDistance: this.activePreset?.linkDistance ?? 150,
+            linkDistance: this.activePreset?.properties?.linkDistance ?? 150,
           },
           // ...{
           //   linkDistance: 50, // Edge length
@@ -689,8 +685,8 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            rankdir: this.activePreset.rankdir ?? 'TB',
-            align: this.activePreset.align ?? 'UL',
+            rankdir: this.activePreset.properties?.rankdir ?? 'TB',
+            align: this.activePreset.properties?.align ?? 'UL',
             preventOverlap: true,
           },
         };
@@ -700,7 +696,7 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             preventOverlap: true,
-            kr: this.activePreset.kr ?? 10,
+            kr: this.activePreset.properties?.kr ?? 10,
           },
         };
         break;
@@ -709,10 +705,10 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             // preventOverlap: true,
-            linkDistance: this.activePreset.linkDistance ?? 1,
-            // maxIteration: this.activePreset.maxIteration ?? 500,
-            // nodeStrength: this.activePreset.nodeStrength ?? 1000,
-            // edgeStrength: this.activePreset.edgeStrength ?? 200,
+            linkDistance: this.activePreset.properties?.linkDistance ?? 1,
+            // maxIteration: this.activePreset.properties?.maxIteration ?? 500,
+            // nodeStrength: this.activePreset.properties?.nodeStrength ?? 1000,
+            // edgeStrength: this.activePreset.properties?.edgeStrength ?? 200,
             // gpuEnabled: true,
             // workerEnabled: true,
             type: 'gForce',
@@ -774,8 +770,8 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            linkDistance: this.activePreset.linkDistance ?? 50,
-            unitRadius: this.activePreset.unitRadius ?? 50,
+            linkDistance: this.activePreset.properties?.linkDistance ?? 50,
+            unitRadius: this.activePreset.properties?.unitRadius ?? 50,
             preventOverlap: true,
           },
         };
@@ -784,7 +780,7 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            linkDistance: this.activePreset.linkDistance ?? 50,
+            linkDistance: this.activePreset.properties?.linkDistance ?? 50,
           },
         };
         break;
@@ -792,10 +788,10 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            gravity: this.activePreset.gravity ?? 1,
-            clustering: this.activePreset.clustering ?? false,
-            clusterGravity: this.activePreset.clusterGravity ?? 10,
-            speed: this.activePreset.speed ?? 5,
+            gravity: this.activePreset.properties?.gravity ?? 1,
+            clustering: this.activePreset.properties?.clustering ?? false,
+            clusterGravity: this.activePreset.properties?.clusterGravity ?? 10,
+            speed: this.activePreset.properties?.speed ?? 5,
             // maxIteration: 1000,
             tick: () => {
               this.graph!.refreshPositions();
@@ -822,7 +818,7 @@ export default class NetworkGraph extends WidgetBase {
     //   }
     // };
 
-    // this.activePreset._visibleNodes = [];
+    // this.activePreset.properties?._visibleNodes = [];
     // this.data = { nodes: [], edges: [] };
     for (const rule of rules) {
       switch (rule.type) {
@@ -941,8 +937,8 @@ export default class NetworkGraph extends WidgetBase {
       this.activePreset._stats = {};
     }
     
-    if (this.activePreset.pinnedFeatureTypes) {
-      for (const ft of this.activePreset.pinnedFeatureTypes) {
+    if (this.activePreset.properties?.pinnedFeatureTypes) {
+      for (const ft of this.activePreset.properties.pinnedFeatureTypes) {
         if (!this.activePreset._stats!.hasOwnProperty(ft))
         this.activePreset._stats![ft] = {
           count: 0,
@@ -960,8 +956,6 @@ export default class NetworkGraph extends WidgetBase {
       
     }
     
-
-
   }
 
   public updateGraph(graph: GraphObject, redraw = false) {
@@ -980,21 +974,21 @@ export default class NetworkGraph extends WidgetBase {
     }
 
     // get visible nodes from rules
-    if (this.activePreset?.nodeRules) {
+    if (this.activePreset?.properties?.nodeRules) {
       this.activePreset._visibleNodes = [];
       this.emptyStats();
-      this.updateRules(this.activePreset.nodeRules);
+      this.updateRules(this.activePreset.properties.nodeRules);
     }
 
     // check for visible nodes in node list
-    if (this.activePreset.nodes) {
-      for (const nid of Object.keys(this.activePreset.nodes)) {
+    if (this.activePreset.properties?.nodes) {
+      for (const nid of Object.keys(this.activePreset.properties?.nodes)) {
         if (
           this.activePreset._visibleNodes.findIndex((n) => n.id === nid) === -1
         ) {
           const e = this.source.getElement(nid);
           if (e) {
-            this.activePreset.nodes[nid]._element = e;
+            this.activePreset.properties.nodes[nid]._element = e;
             this.addElement(e);
           }
         }
@@ -1072,7 +1066,8 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.graph) {
       return;
     }
-    this.graph.updateLayout(this.getLayout());
+    this.initGraph(true);
+    // this.graph.updateLayout(this.getLayout());
     // this.graph.layout = this.getLayout();
     // console.log(this.graph.getDefaultCfg());
     console.log(this.graph);
@@ -1160,10 +1155,10 @@ export default class NetworkGraph extends WidgetBase {
             if (a === GraphDatasource.ELEMENT_REMOVED && this.graph) {
               if (
                 d.id &&
-                this.activePreset?.nodes &&
-                this.activePreset.nodes.hasOwnProperty(d.id)
+                this.activePreset?.properties?.nodes &&
+                this.activePreset.properties.nodes.hasOwnProperty(d.id)
               ) {
-                delete this.activePreset.nodes[d.id];
+                delete this.activePreset.properties.nodes[d.id];
                 this.activePreset._visibleNodes =
                   this.activePreset._visibleNodes.filter((n) => n !== d);
                 this.updateGraph(this.source!.graph, false);
@@ -1453,7 +1448,7 @@ export default class NetworkGraph extends WidgetBase {
 
       this.showMenu = true;
     } else {
-      if (this.activePreset!.elementsEnabled && this.source?.featureTypes) {
+      if (this.activePreset!.properties?.elementsEnabled && this.source?.featureTypes) {
         const addMenu = {
           title: 'add',
           active: true,
@@ -1493,7 +1488,7 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public getNodeStyle() {
-    if (!this.activePreset?.nodeSize) {
+    if (!this.activePreset?.properties?.nodeSize) {
       return {};
     }
 
@@ -1501,7 +1496,7 @@ export default class NetworkGraph extends WidgetBase {
       // shape: "donut",
       type: 'main-node',
       // type: "donut",
-      size: this.source!.activeGraphPreset!.nodeSize,
+      size: this.source!.activeGraphPreset!.properties?.nodeSize,
       // size: [120, 40],
       // clipCfg: {
       //   show: true,
@@ -1518,7 +1513,7 @@ export default class NetworkGraph extends WidgetBase {
         autoRotate: true,
         style: {
           fill: '#000',
-          fontSize: this.activePreset?.globalFontSize ?? 20,
+          fontSize: this.activePreset?.properties?.globalFontSize ?? 20,
         },
       },
     };
@@ -1760,10 +1755,8 @@ export default class NetworkGraph extends WidgetBase {
     });
 
     this.registerChart();
-    const dHeight = this.widget?._size?.componentHeight;
-    const dWidth = this.widget?._size?.componentWidth;
-
-    console.log(this.widget._size);
+    const dHeight = 1024 ?? this.widget?._size?.componentHeight;
+    const dWidth = 1024 ?? this.widget?._size?.componentWidth;
 
     const tooltip = new G6.Tooltip({
       offsetX: 10,
@@ -1800,7 +1793,7 @@ export default class NetworkGraph extends WidgetBase {
       width: dWidth, //(this as any).widget._size.width,
       linkCenter: false,
       plugins: [contextMenu, tooltip],
-      animate: this.activePreset?.animate ?? false,
+      animate: this.activePreset?.properties?.animate ?? false,
       height: dHeight, // (this as any).widget._size.height,
       layout: this.getLayout(),
       // renderer: 'svg',
@@ -1871,11 +1864,11 @@ export default class NetworkGraph extends WidgetBase {
     // });
     this.graph.on('node:dragend', (e: any) => {
       const elementId = e.item?._cfg?.id;
-      if (!elementId || !this.source || !this.activePreset?.nodes) {
+      if (!elementId || !this.source || !this.activePreset?.properties?.nodes) {
         return;
       }
       const element = this.source.getElement(elementId);
-      const node = this.activePreset.nodes[elementId];
+      const node = this.activePreset.properties?.nodes[elementId];
       if (!element || !node) {
         return;
       }
@@ -1947,9 +1940,9 @@ export default class NetworkGraph extends WidgetBase {
           if (e.relatedTarget?.dataset?.elementid) {
             // find element
             const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
-            if (existingElement?.id && this.activePreset?.nodes) {              
+            if (existingElement?.id && this.activePreset?.properties?.nodes) {              
               
-              this.activePreset.nodes[existingElement.id] = {
+              this.activePreset.properties.nodes[existingElement.id] = {
                 x: pos.x,
                 y: pos.y
               };      
@@ -1973,8 +1966,8 @@ export default class NetworkGraph extends WidgetBase {
               classId: ft.type,
             });
 
-            if (newNode?.id && this.activePreset?.nodes) {
-              this.activePreset.nodes[newNode.id] = {
+            if (newNode?.id && this.activePreset?.properties?.nodes) {
+              this.activePreset.properties.nodes[newNode.id] = {
                 x: pos.x,
                 y: pos.y
               };

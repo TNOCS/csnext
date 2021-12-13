@@ -1,6 +1,18 @@
-import { FeatureType, GraphPreset, LinkInfo } from '../..';
+import { FeatureType, GraphDatasource, LinkInfo } from '../..';
 
-export class GraphElement {
+export class BaseElementProperties {
+  [key: string]: any;
+  name?: string;
+  description?: string;
+  tags?: string[];
+  created_time?: number;    
+  updated_time?: number;
+  approved_time?: number;
+  suggested_time?: number;
+  is_placeholder?: boolean;
+}
+
+export class GraphElement<T = BaseElementProperties> {
   public id?: string;  
   public type?: 'node' | 'edge' = 'node';
   public classId?: string;
@@ -17,17 +29,7 @@ export class GraphElement {
   public kb_source?: string;
   public kb_time?: number;
   public backgroundColor?: string;
-  public properties?: {
-    [key: string]: any;
-    name?: string;
-    description?: string;
-    tags?: string[];
-    created_time?: number;    
-    updated_time?: number;
-    approved_time?: number;
-    suggested_time?: number;
-    is_placeholder?: boolean;
-  } = {};
+  public properties?: T;
 
   public _flat?: {
     [key: string]: any;
@@ -35,6 +37,7 @@ export class GraphElement {
 
   public _alternatives?: string[] = [];
   public _source?: GraphElement;
+  public _graphSource?: GraphDatasource;
   public _originals?: GraphElement[];
   public _startDate?: Date;
   public _endDate?: Date;
@@ -109,23 +112,6 @@ export class GraphElement {
       }
     }
   }
-  // public static getTitle(e: GraphElement, clean = false): string | undefined {
-  //   if (e.properties && e.properties.hasOwnProperty('name')) {
-  //     return e.properties.name;
-  //   }
-  //   if (e.properties && e.properties.hasOwnProperty('title')) {
-  //     return e.properties.title;
-  //   }
-  //   // if (e.title !== undefined) {
-  //   //     return (clean) ? e.title : e.title.toLowerCase().split('_').join(' ');
-  //   // }
-  //   // else
-  //   if (e.class) {
-  //     return GraphElement.getTitle(e.class);
-  //   } else {
-  //     return e.id || '';
-  //   }
-  // }
 
   public static getFlat(e: GraphElement): GraphElement {
     const result = JSON.parse(
@@ -141,15 +127,5 @@ export class GraphElement {
 
   public static getTimeVisibility(e: GraphElement, date: Date): boolean {
     return !GraphElement.outOfRange(e, date);
-  }
-
-  public static getVisibility(e: GraphElement, filters?: GraphPreset): boolean {
-    
-    if (e._visible !== undefined && e._visible === false) {
-      return false;
-    }
-    if (e._visible === undefined) {
-      return true;
-    } else return e._visible;
   }
 }

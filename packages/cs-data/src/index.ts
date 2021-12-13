@@ -26,6 +26,7 @@ export * from './classes/types/feature-type-stat';
 
 export * from './classes/graph/graph-preset';
 export * from './classes/graph/graph-element';
+export * from './classes/graph/filter-graph-element';
 export * from './classes/graph/link-info';
 export * from './classes/graph/search-result';
 

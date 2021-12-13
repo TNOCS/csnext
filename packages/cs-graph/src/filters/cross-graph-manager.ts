@@ -627,7 +627,7 @@ export class CrossGraphManager extends DashboardManagerBase {
       if (filter === undefined) {
         filter = new GraphCrossFilter(this.source);
         filter.id = this.dashboard.data.filter;
-        filter.layers = this.dashboard.data.layers;
+        filter.properties!.layers = this.dashboard.data.layers;
         this.source.addGraphPreset(filter, false);
       }
       this.filter = filter;

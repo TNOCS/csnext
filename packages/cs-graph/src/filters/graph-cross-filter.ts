@@ -1,8 +1,8 @@
-import { FeatureType, GraphElement, IGraphFilter } from '@csnext/cs-data';
+import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter } from '@csnext/cs-data';
 import crossfilter from 'crossfilter2';
 import { TimeRange } from '@csnext/cs-crossfilter';
 
-export class GraphCrossFilter extends IGraphFilter {
+export class GraphCrossFilter extends FilterGraphElement {
     public static CROSSFILTER = 'crossfilter';
     public static CROSSFILTER_DATALOADED = 'dataloaded';
     public static UPDATE_CHART = 'update_chart';
@@ -14,6 +14,11 @@ export class GraphCrossFilter extends IGraphFilter {
     public ndx?: crossfilter.Crossfilter<any>;
     public timeRange?: TimeRange;
     public allData : GraphElement[] = [];
+
+    constructor(source?: GraphDatasource) {
+        super()
+    }
+
     
 
     public addDimension(id: string, dim: crossfilter.Dimension<any, any>) {      
@@ -36,8 +41,8 @@ export class GraphCrossFilter extends IGraphFilter {
                 }
                 
             }
-            if (this.source?.events) {
-                this.source.events.publish(GraphCrossFilter.CROSSFILTER, GraphCrossFilter.CROSSFILTER_DATALOADED, this);
+            if (this._graphSource?.events) {
+                this._graphSource.events.publish(GraphCrossFilter.CROSSFILTER, GraphCrossFilter.CROSSFILTER_DATALOADED, this);
             }
         }
     }

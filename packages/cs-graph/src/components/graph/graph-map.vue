@@ -31,7 +31,7 @@ import mapboxgl, { MapboxOptions, GeoJSONSource, GeoJSONSourceRaw } from 'mapbox
 import { ILayerStyle, MapboxStyleDefinition, MapboxStyleSwitcherControl, MapOptions } from '@csnext/cs-map';
 import { GraphMapOptions } from './graph-map-options';
 import Vue from 'vue';
-import { IGraphFilter } from '@csnext/cs-data';
+import { FilterGraphElement } from '@csnext/cs-data';
 
 @Component({
   components: {}
@@ -139,8 +139,8 @@ export default class GraphMap extends WidgetBase {
 
     this.map.on('moveend', (e) => {
       const bounds = this.map!.getBounds();
-      if (this.filter && bounds) {
-        this.filter.geoFilter = bounds.toArray();
+      if (this.filter?.properties && bounds) {
+        this.filter.properties.geoFilter = bounds.toArray();
       }
       console.log('A moveend event occurred.');
     });
@@ -168,7 +168,7 @@ export default class GraphMap extends WidgetBase {
         const features: any[] = [];
         if (style) {
           for (const element of this.source.getClassElements(featureTypeId)) {
-            if (this.filter?._visibleNodes) {
+            if (this.filter?.properties?._visibleNodes) {
               let fall = this.filter._visibleNodes.filter(
                 (e) => e._outgoing && e._outgoing.findIndex((o) => o.toId === element.id) !== -1
               );
@@ -336,13 +336,13 @@ export default class GraphMap extends WidgetBase {
 
   public initLayers() {
     if (this.source && this.options.filter) {
-      const filter = this.source.getGraphPreset(this.options.filter) as IGraphFilter;
+      const filter = this.source.getGraphPreset(this.options.filter);
 
       // find all layers
-      if (!filter?.layers) {
+      if (!filter?.properties?.layers) {
         return;
       }
-      for (const layer of filter.layers) {
+      for (const layer of filter.properties.layers) {
         this.initLayer(layer);
       }
 
@@ -350,7 +350,7 @@ export default class GraphMap extends WidgetBase {
     }
   }
 
-  public filter?: IGraphFilter;
+  public filter?: FilterGraphElement;
 
   public contentLoaded() {
     if (!this.source || !this.options.filter) {
@@ -361,8 +361,8 @@ export default class GraphMap extends WidgetBase {
     if (this.source?.events) {
       this.busManager.subscribe(
         this.source.events,
-        IGraphFilter.GRAPH_FILTER,
-        (a: string, f: IGraphFilter) => {
+        FilterGraphElement.GRAPH_FILTER,
+        (a: string, f: FilterGraphElement) => {
           this.filter = f;
           this.initLayers();
         }

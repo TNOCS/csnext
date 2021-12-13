@@ -330,7 +330,7 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
 import { DataInfoPanel, NodeLink, NodeSpan } from "@csnext/cs-map";
-
+import { DocUtils } from '../../utils/doc-utils';
 import { FeatureType } from "@csnext/cs-data";
 // import turf from "@turf/turf";
 // import distance from "@turf/distance";
@@ -643,10 +643,11 @@ export default class SelectionPopup extends WidgetBase {
     if (!this.source?.activeDocument) {
       return;
     }
-    this.source.syncEntities(
+    DocUtils.syncEntities(
       this.source.activeDocument,
       this.source.activeDocument.properties!.doc!.content,
-      true
+      true,
+      this.source
     );
     this.$forceUpdate();
   }

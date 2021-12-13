@@ -161,8 +161,8 @@ export default class GraphRuleEditor extends Vue {
   public removeRule() {
     if (this.parent?.outgoingRules) {
       this.parent.outgoingRules = this.parent.outgoingRules.filter(r => r !== this.rule);      
-    } else if (this.activePreset?.nodeRules) {
-      this.activePreset.nodeRules = this.activePreset.nodeRules.filter(r => r !== this.rule);
+    } else if (this.activePreset?.properties?.nodeRules) {
+      this.activePreset.properties.nodeRules = this.activePreset.properties.nodeRules.filter(r => r !== this.rule);
     }
     this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
     this.$forceUpdate();

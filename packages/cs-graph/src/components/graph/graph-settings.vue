@@ -42,7 +42,7 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content class="rules-list">
           <graph-rule-editor
-            v-for="(rule, i) in activePreset.nodeRules"
+            v-for="(rule, i) in activePreset.properties.nodeRules"
             :key="i"
             :source="source"
             :activePreset="activePreset"
@@ -57,7 +57,7 @@
           </v-expansion-panel-header>
         <v-expansion-panel-content>
           <v-list>
-            <v-list-item v-for="(n,id) in activePreset.nodes" :key="id" v-if="n._element">
+            <v-list-item v-for="(n,id) in activePreset.properties.nodes" :key="id" v-if="n._element">
               <v-icon v-if="n._element._featureType.icon">{{n._element._featureType.icon}}</v-icon>
             <v-list-item-title>{{n._element.properties.name}}</v-list-item-title>
             </v-list-item>
@@ -73,7 +73,7 @@
           <v-row>
             <v-col>
               <cs-form
-                :data="activePreset"
+                :data="activePreset.properties"
                 :formdef="formDef"
                 class="pt-2 pa-3"
                 @saved="updateGraph"
@@ -104,7 +104,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
-import { GraphElement, GraphPreset, GraphDatasource } from '@csnext/cs-data';
+import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement } from '@csnext/cs-data';
 import { DocDatasource } from '../..';
 import { IFormObject } from '@csnext/cs-core';
 import Vue from 'vue';
@@ -122,7 +122,7 @@ export default class GraphSettings extends WidgetBase {
 
   public tab = 'CONTENT';
   public contentPanel: number[] = [1, 2];
-  public activePreset?: GraphPreset | null = null;
+  public activePreset?: FilterGraphElement | null = null;
 
   public addPreset() {
     $cs
@@ -178,20 +178,20 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public addTypeRule() {
-    if (!this.activePreset?.nodeRules) { return; }
-    this.activePreset.nodeRules.push({
+    if (!this.activePreset?.properties?.nodeRules) { return; }
+    this.activePreset.properties?.push({
       type: 'TYPE',
       _editMode: true
     });    
   }
 
   public get formDef(): IFormObject {
-    const isLayout = (config: GraphPreset, layout: string | string[]) => {
+    const isLayout = (config: FilterGraphElement, layout: string | string[]) => {
       if (typeof layout === 'string') {
-        return config.layout && config.layout === layout;
+        return config.properties?.layout && config.properties?.layout === layout;
       }
 
-      return config.layout && layout.includes(config.layout);
+      return config.properties?.layout && layout.includes(config.properties?.layout);
     };
 
     return {
@@ -261,7 +261,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 20,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman'), (v: GraphPreset) => v.clustering]
+          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman'), (v: GraphPreset) => v.properties?.clustering]
         },
         {
           title: 'DIRECTION',

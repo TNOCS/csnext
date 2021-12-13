@@ -29,7 +29,6 @@ export class GraphDocument extends GraphElement {
     //     );
     //   }
     
-
     public get doc() : any {
         if (!this.properties) { this.properties = {}}
         if (!this.properties.doc) { this.properties.doc = {

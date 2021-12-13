@@ -434,7 +434,7 @@
 
 <script lang="ts">
 import { Component, Ref, Watch } from 'vue-property-decorator';
-import { AppState, WidgetBase } from '@csnext/cs-client';
+import { WidgetBase } from '@csnext/cs-client';
 import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -444,6 +444,7 @@ import OptionsFilter from './options-filter.vue';
 // import { FeatureType } from "../../classes";
 import {
   FeatureType,
+  FilterGraphElement,
   GraphDatasource,
   GraphElement,
   IGraphFilter,
@@ -453,7 +454,7 @@ import {
 import moment from 'moment';
 import simplebar from 'simplebar-vue';
 import isotope from 'vueisotope';
-import { AppStateBase, guidGenerator, WidgetOptions } from '@csnext/cs-core';
+import { guidGenerator } from '@csnext/cs-core';
 import Vue from 'vue';
 // import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { DocDatasource, DataGridOptions, GridView } from '../..';
@@ -1154,7 +1155,7 @@ export default class ElementDataGrid extends WidgetBase {
       this.busManager.subscribe(
         this.source.events,
         IGraphFilter.GRAPH_FILTER,
-        (a: string, f: IGraphFilter) => {
+        (a: string, f: FilterGraphElement) => {
           if (this.options.filter && f.id === this.options.filter) {
             Vue.set(this, 'rowData', f._visibleNodes);
             // this.items = f._visibleNodes;

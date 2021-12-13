@@ -274,16 +274,15 @@ import simplebar from 'simplebar-vue';
 
 import { DocDatasource, ITool } from './../../datasources/doc-datasource';
 import { GraphDocument } from './../../classes/document/graph-document';
-import { EntityType } from './../../classes/document/view-type';
 import StarterKit from '@tiptap/starter-kit';
 import TextExtension from './plugins/text-extension';
 import ParagraphExtension from './plugins/paragraph-extension';
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
-import Axios from 'axios';
 import { FeatureType } from '@csnext/cs-data';
 import { IImportPlugin } from '../..';
 import interact from 'interactjs';
+import { DocUtils } from '../../utils/doc-utils';
 
 @Component({
   components: {
@@ -350,10 +349,11 @@ export default class DocumentViewer extends WidgetBase {
       .setTextEntity({ spacy_label: this.entityBubbleSelection?.type })
       .run();
     this.syncDocumentState();
-    this.source.syncEntities(
+    DocUtils.syncEntities(
       this.source.activeDocument,
       this.source.activeDocument.properties?.doc?.content,
-      true
+      true,      
+    this.source
     );
 
     // alert(this.entityBubbleSelection?.title);
@@ -425,10 +425,11 @@ export default class DocumentViewer extends WidgetBase {
       }
       this.editor?.commands.clearContent();
       this.syncDocumentState();
-      this.source.syncEntities(
+      DocUtils.syncEntities(
         this.source.activeDocument,
         this.source.activeDocument.properties?.doc?.content,
-        true
+        true,
+        this.source
       );
       this.startMenu = true;
     }
@@ -441,10 +442,11 @@ export default class DocumentViewer extends WidgetBase {
 
     this.editor.chain().focus().setTextEntity().run();
     this.syncDocumentState();
-    this.source.syncEntities(
+    DocUtils.syncEntities(
       this.source.activeDocument,
       this.source.activeDocument.properties?.doc?.content,
-      true
+      true,
+      this.source
     );
   }
 
@@ -802,9 +804,11 @@ export default class DocumentViewer extends WidgetBase {
         }
       }
 
-      this.source.syncEntities(
+      DocUtils.syncEntities(
         this.source.activeDocument,
-        this.source.activeDocument.properties?.doc.content
+        this.source.activeDocument.properties?.doc.content,
+        false,
+        this.source
       );
       if (!this.editor) {
         this.updateEditor();
@@ -888,10 +892,11 @@ export default class DocumentViewer extends WidgetBase {
         // this.syncDocumentState();
 
         this.updateContent();
-        this.source!.syncEntities(
+        DocUtils.syncEntities(
           this.source!.activeDocument!,
           this.source!.activeDocument!.doc.content,
-          true
+          true,
+          this.source!
         );
         // this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
         // this.source!.activeDocument!.refreshViewTypes();
