@@ -1,33 +1,19 @@
-
-import { FeatureType, TextEntity, TextRelation, GraphElement } from '@csnext/cs-data';
-import { Schema, Node as ProseMirrorNode } from 'prosemirror-model'
+import { FeatureType, TextEntity, TextRelation, GraphElement, BaseElementProperties } from '@csnext/cs-data';
 import { guidGenerator } from '@csnext/cs-core';
 import { EntityType, Observation } from '..';
 
+export class DocElementProperties extends BaseElementProperties {
+  public doc?: any;
+  public text?: any;
+}
 
-
-export class GraphDocument extends GraphElement {    
-    // public name?: string;
-    
-    // public originalText?: string;
+export class GraphDocument extends GraphElement<DocElementProperties> {
     public editedText?: string;
     public entities?: TextEntity[];
     public relations?: TextRelation[];
     public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
     public entityTypes: { [id: string]: EntityType } = {};
-    // public visibleEntityTypes: EntityType[] = [];
-    // public reliability?: string;
-    // public credibility?: string;
-    // public note?: string;    
-    // public sourceId?: string;
-    // public doc: any = 
-
-    // public refreshViewTypes() {
-    //     this.visibleEntityTypes = Object.values(this.entityTypes).filter(
-    //       (vt) => vt._selected
-    //     );
-    //   }
     
     public get doc() : any {
         if (!this.properties) { this.properties = {}}
@@ -39,17 +25,10 @@ export class GraphDocument extends GraphElement {
         return this.properties.doc;
     }
 
-    public notes?: DocumentNote[];
-    
-    // public _node?: GraphElement;
-    // public _source?: GraphElement;
 
     public get name() : string {
         return this.properties?.name ?? '';
     }
-
-    // public set name(value: string)
-
     constructor(element?: GraphElement) {
         super();
         
@@ -68,26 +47,11 @@ export class GraphDocument extends GraphElement {
         return this;
     }
 
-            
-
     public getNode(): GraphElement {
         return {
             id: this.id, type: 'node', title: this.name, classId: 'input', properties: {
-                name: this.name,
-                // text: this.originalText,
-                // reliability: this.reliability,
-                // credibility: this.credibility,                
-                start: '01-03-2019'
-            }            
+                name: this.name }            
         } as GraphElement;
     }
-}
-
-
-export class DocumentNote {
-    public start?: number;
-    public end?: number;
-    public text?: string;
-    public note?: string;
 }
 

@@ -123,7 +123,7 @@
             <span v-if="entity._hover">
 
               <v-btn v-if="entity.instances.length>0" icon @click.stop="toggleApproveEntity(entity)"
-                ><v-icon v-if="entity._approved">remove</v-icon
+                ><v-icon v-if="entity._approved">mdi-minus</v-icon
                 ><v-icon v-else>mdi-plus</v-icon></v-btn
               >
               <v-btn v-if="entity.instances.length === 0" icon @click="deleteEntities(entity)">
@@ -139,7 +139,7 @@
                 icon
                 v-if="!entity._approved"
                 @click="ignoreEntity(entity)"
-                ><v-icon>mdi-delete_forever</v-icon></v-btn
+                ><v-icon>mdi-delete-sweep</v-icon></v-btn
               >
             </span>
             <span style="float: right">

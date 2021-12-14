@@ -1,8 +1,10 @@
 import { Injectable, Module, Logger, Inject } from '@nestjs/common';
-import { GraphDatasource, GraphElement } from '@csnext/cs-data';
+import { GraphDatasource, GraphElement, IGraphElementAction } from '@csnext/cs-data';
 import { IDatabase } from './databases/database';
 import { guidGenerator } from '@csnext/cs-core';
 import { LocalStorage } from './databases/local';
+import { DefaultWebSocketGateway } from '../websocket-gateway';
+import { NestServer } from '../export';
 
 @Injectable()
 export class GraphService {
@@ -13,20 +15,7 @@ export class GraphService {
   private storeWithIntervalData: { node: any; edges: any[] }[] = [];
   private storeWithIntervalInterval?: NodeJS.Timeout;
 
-  constructor() {
-    Logger.log('Initializing Graph Service', 'GraphService');
-  }
-
-  // public init(databaseName: string, folder?: string) : Promise<IDatabase> {
-  //     return new Promise(async (resolve, reject) => {
-  //         try {
-  //             await this.initDatabase(database, folder);
-  //             resolve(this.db);
-  //         }catch(e) {
-  //             reject();
-  //         }
-  //     })
-  // }
+  public socket?: DefaultWebSocketGateway;
 
   public async init(databaseName?: string, folder?: string) {
     Logger.log('Initalizing Graph Data Source', 'GraphService');
@@ -67,13 +56,13 @@ export class GraphService {
           body.id = guidGenerator();
         }
 
-        const node = {
+        const element = {
           id: body.id,
           classId: type,
           properties: r,
-        };
+        } as GraphElement;
 
-        await this.source.addNode(node);
+        await this.source.addNode(element);
 
         result = await this.db.store(
           {
@@ -86,7 +75,14 @@ export class GraphService {
           new Date().getTime()
         );
 
-        resolve(node);
+        if (this.socket?.server) {          
+          this.socket.server.emit("graphelement",{
+            action: 'update',
+            elements: [GraphElement.getFlat(element)]            
+          } as IGraphElementAction);
+        }
+
+        resolve(element);
       }
     });
   }
@@ -179,18 +175,26 @@ export class GraphService {
     });
   }
 
-  public static setupDB(databaseName?: string, folder?: string): Promise<GraphService> {
+  public static setupDB( databaseName?: string, folder?: string, socket?: DefaultWebSocketGateway): Promise<GraphService> {
     return new Promise(async (resolve, reject) => {
-      let db = new GraphService();
-      db.init(databaseName, folder)
+      let graphService = new GraphService();
+      graphService.init(databaseName, folder)
         .then((e) => {
-          resolve(db);
+          resolve(graphService);
         })
         .catch((e) => {
           reject();
         });
     });
   }
+
+  public initSocket(socket?: DefaultWebSocketGateway) {
+    if (socket) {
+      this.socket = socket;
+      Logger.log('Socket initialized', 'graph-service');
+    }
+  }
+
 
   public async persist(): Promise<void> {
     if (!this.db) return;

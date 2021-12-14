@@ -1,8 +1,10 @@
+import { AppState } from '@csnext/cs-client';
 import {
   FeatureTypeHelpers,
   FeatureTypes,
   GraphDatasource,
   GraphElement,
+  IGraphElementAction,
 } from '@csnext/cs-data';
 import Axios from 'axios';
 import { DocDatasource, GraphDocument } from '..';
@@ -132,7 +134,40 @@ export class GraphServer implements IGraphStorage {
       await this.source.parseDocuments();
     }
 
+    if (AppState.Instance.socket) {      
+      this.useSocket()      
+      AppState.Instance.socket.on('connect', ()=> {
+        this.useSocket();
+      });
+    }
+
+    console.log('socket');
+    console.log(AppState.Instance.socket);
+
     return Promise.resolve(true);
+  }
+
+  public useSocket() {
+    if (AppState.Instance.socket?.connected) {
+      AppState.Instance.socket.on('graphelement', (data: IGraphElementAction) => {
+        console.log(data);
+        switch (data.action) {
+          case 'update':            
+            if (data.elements && this.source) {
+              for (const el of data.elements) {
+                if (el.id && el.properties?.hash_) {
+                  const existing = this.source.getElement(el.id);
+                  if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
+                    existing.properties = el.properties;
+                    this.source.updateElementProperties(el);
+                  }
+                }                
+              }
+            }            
+        }
+      })      
+    }
+
   }
 
   public async loadTypes(): Promise<boolean> {
@@ -190,6 +225,8 @@ export class GraphServer implements IGraphStorage {
   }
 
   public async saveElement(element: GraphElement): Promise<boolean> {
+    if (!element.properties) { element.properties = {}}
+    element.properties.hash_ = GraphElement.getHash(element);
     let body = Object.assign({}, element);
     // (body as any)['@type'] = element.classId;
     body.alternatives = body._alternatives?.join(',');
@@ -204,6 +241,8 @@ export class GraphServer implements IGraphStorage {
     }
     delete body.class;
     this.source.updateElementProperties(element);
+    
+    // body.properties.hash_ = element.properties.hash_;
 
     try {
       Axios.post(`${this.base_url}/graph/store`, body);

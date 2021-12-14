@@ -11,7 +11,7 @@ import { etl } from './etl';
 import { ApiTags, ApiOperation, ApiQuery, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { Feature } from 'geojson';
 import { FeatureType, FeatureTypes, GraphElement, SearchResult } from '@csnext/cs-data';
-import { FilesService, OfflineService } from '../export';
+import { DefaultWebSocketGateway, FilesService, OfflineService } from '../export';
 import * as turf from '@turf/turf';
 import { idGenerator } from '@csnext/cs-core';
 
@@ -24,7 +24,8 @@ export class GraphController {
     @Inject('DB') public readonly graph: GraphService,
     @Inject('LayerService') private layerService: LayerService,
     @Inject('FilesService') private filesService: FilesService,
-    @Inject('OfflineService') private offlineService: OfflineService
+    @Inject('OfflineService') private offlineService: OfflineService,
+    @Inject('DefaultWebSocketGateway') private readonly socket: DefaultWebSocketGateway
   ) {}
 
   public loadData(): Promise<any> {
@@ -32,11 +33,13 @@ export class GraphController {
       if (!this.graph.source || !this.graph.db?.loadAll) {
         return;
       }
+
       this.graph.source.featureTypes = this.layerService.config.featureTypes;
       this.graph.db
         .loadAll()
         .then((r) => {
           this.graph.source?.updateSearchIndex();
+          this.graph.initSocket(this.socket);
           resolve(r);
         })
         .catch((e) => {

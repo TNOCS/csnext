@@ -1,4 +1,4 @@
-import { BaseElementProperties, BaseGraphFilterProperties, FilterGraphElement, GraphDatasource, GraphElement } from '../../';
+import { BaseElementProperties, GraphFilterProperties, FilterGraphElement, GraphDatasource, GraphElement } from '../../';
 import { FeatureType } from '../types/feature-type';
 
 export interface IGraphNodeDefinition {

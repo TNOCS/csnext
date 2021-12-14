@@ -1,5 +1,5 @@
 <template>
-  <div>
+  
     <v-container v-if="startMenu">
       <div class="start-menu-title">
         {{ $cs.Translate('START_DOCUMENT_TITLE') }}
@@ -49,7 +49,7 @@
       </v-layout>
     </v-container>
 
-    <div class="editor-grid" v-show="!startMenu" v-if="loaded">
+    <div v-else-if="loaded" class="editor-grid" v-show="!startMenu">
       <v-toolbar flat outlined class="graph-menu" v-if="source.activeDocument">
         <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
           <v-menu offset-y>
@@ -151,12 +151,13 @@
         </template>
       </v-toolbar>
 
-      <div class="document-title">
-        {{ source.activeDocument.properties.name }}
-      </div>
+      
 
       <!-- <div > -->
       <simplebar class="editor-row">
+        <div class="document-title">
+        {{ source.activeDocument.properties.name }}
+      </div>
         <floating-menu :editor="editor" v-if="editor && source.activeDocument.properties.editor_mode === 'EDIT'">
           <button
             @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
@@ -199,7 +200,7 @@
       </simplebar>
       <!-- </div> -->
     </div>
-  </div>
+  
 </template>
 
 
@@ -1057,6 +1058,8 @@ export default class DocumentViewer extends WidgetBase {
 }
 
 .editor-grid {
+  display: grid;
+  grid-template-rows: 85px 100%;
   /* padding: 5px;
   max-height: 100%;
   display: grid;

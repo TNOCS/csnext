@@ -1,3 +1,4 @@
+import { generateHash } from '@csnext/cs-core';
 import { FeatureType, GraphDatasource, LinkInfo } from '../..';
 
 export class BaseElementProperties {
@@ -10,6 +11,12 @@ export class BaseElementProperties {
   approved_time?: number;
   suggested_time?: number;
   is_placeholder?: boolean;
+  hash_?: number;
+}
+
+export interface IGraphElementAction {
+  action: 'update' | 'delete';
+  elements: GraphElement[];
 }
 
 export class GraphElement<T = BaseElementProperties> {
@@ -29,7 +36,7 @@ export class GraphElement<T = BaseElementProperties> {
   public kb_source?: string;
   public kb_time?: number;
   public backgroundColor?: string;
-  public properties?: T;
+  public properties?: T;  
 
   public _flat?: {
     [key: string]: any;
@@ -111,6 +118,10 @@ export class GraphElement<T = BaseElementProperties> {
         return 'blue';
       }
     }
+  }
+
+  public static getHash(e: GraphElement): number {
+    return generateHash(`${e.id}-${e.properties?.updated_time}-${e.properties?.updated_time}`);
   }
 
   public static getFlat(e: GraphElement): GraphElement {

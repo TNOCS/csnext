@@ -1,7 +1,7 @@
 import { FeatureType, GraphDatasource } from '../..';
 import { BaseElementProperties, GraphElement } from './graph-element';
 
-export class BaseGraphFilterProperties extends BaseElementProperties {
+export class GraphFilterProperties extends BaseElementProperties {
     title?: string;
     showDataModel? = false;
     showInstance? = true;
@@ -48,7 +48,7 @@ export class BaseGraphFilterProperties extends BaseElementProperties {
   }
 
   
-  export class FilterGraphElement extends GraphElement<BaseGraphFilterProperties>
+  export class FilterGraphElement extends GraphElement<GraphFilterProperties>
   {
     public static GRAPH_FILTER = 'graph-filter';
     public static VISIBLE_NODES_CHANGED = 'visible-nodes-changed';
