@@ -1,7 +1,7 @@
 <template>
   <div class="element-card">
     <template v-if="element._featureType.icon">
-    <v-icon class="element-icon">{{element._featureType.icon}}</v-icon>
+      <v-icon class="element-icon">{{ element._featureType.icon }}</v-icon>
     </template>
     <!-- <img class="element-icon" v-if="element._featureType.icon" :src="element._featureType.icon" /> -->
     <!-- {{ element._featureType.infoPanels.popup}} -->
@@ -11,7 +11,7 @@
       <div class="element-description">{{ element.properties.description }}</div>
     </div>
   </div>
-</template> 
+</template>
 <style scoped>
 .element-card {
   padding: 5px;
@@ -28,7 +28,7 @@
   margin: 5px;
   max-width: 50px;
   align-items: start;
-  
+
   grid-column: 1;
 }
 
@@ -54,13 +54,13 @@ import { DocDatasource } from '../../..';
 
 @Component({
   name: 'default-element-card',
-  components: {}
+  components: {},
 })
 export default class DefaultElementCard extends Vue {
   @Prop()
   public source?: DocDatasource;
 
-  @Prop()
-  public element?: GraphElement;
+  @Prop({ default: null })
+  public element!: GraphElement | null;
 }
 </script>

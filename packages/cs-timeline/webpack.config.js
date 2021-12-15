@@ -8,7 +8,6 @@ const config = buildConfig(
     {
         "@csnext/cs-core": "@csnext/cs-core",
         "@csnext/cs-client": "@csnext/cs-client",
-        vue: "Vue",
         "vis-data/esnext": "vis-data/esnext"
     },
     "cstimeline",
