@@ -8,7 +8,6 @@ const config = [
             cs: ['./src/index.ts']
         },
         {
-            vue: 'Vue',            
             '@csnext/cs-client': '@csnext/cs-client',
             '@csnext/cs-core': '@csnext/cs-core',
             'simplebar-vue': 'simplebar-vue'

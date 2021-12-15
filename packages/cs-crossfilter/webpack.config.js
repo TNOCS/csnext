@@ -10,9 +10,7 @@ const config = [
             '@csnext/cs-core': '@csnext/cs-core',
             '@csnext/cs-data': '@csnext/cs-data',
             '@csnext/cs-map': '@csnext/cs-map',
-            'simplebar-vue': 'simplebar-vue',
-            vue: 'Vue',
-            Vue: 'Vue'
+            'simplebar-vue': 'simplebar-vue'
         },
         'cscrossfilter'
     )
