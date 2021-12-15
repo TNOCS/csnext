@@ -134,12 +134,6 @@ import DefaultElementCard from './default-element-card.vue';
 export default class IndicatorElementCard extends DefaultElementCard {
   public hover = false;
 
-  @Prop()
-  public source?: DocDatasource;
-
-  @Prop()
-  public element?: GraphElement;
-
   public getAssessmentStyle() {
     if (!this.element) {
       return;
