@@ -131,7 +131,7 @@ function buildConfig(path, libraryName, entry, externals, analyzer, plugins) {
             ... {
                 "core-js": "core-js",
                 simplebar: "simplebar",
-                vue: "Vue",
+                vue: "vue",
                 "vue-property-decorator": "vue-property-decorator",
                 "vue-class-component": "vue-class-component",
                 "class-transformer": "class-transformer",
