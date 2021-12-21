@@ -30,6 +30,7 @@ export interface IDatabase {
     reset(): Promise<boolean>;
     store(data: IData, agentId?: string, updatedTime?: number): Promise<any>;
     remove(id: string): Promise<boolean>;
+    removeMultiple(ids: string[]): Promise<any>;
     storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any>;
     appendMultiple?(data: IData[], agentId?: string, updatedTime?: number): Promise<any>;
     storeArray(documents: any[], idProp: string, type?: string): Promise<any>;

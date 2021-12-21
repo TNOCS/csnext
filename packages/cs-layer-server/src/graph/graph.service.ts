@@ -116,6 +116,33 @@ export class GraphService {
     });
   }
 
+  public removeMultiple(body: any[]) {
+    return new Promise(async (resolve, reject) => {
+      if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
+        try {
+          for (const el of body) {
+            if (el.id) {
+              switch (el.type.toLowerCase()) {
+                case 'n':
+                  await this.source.removeNodeById(el.id);
+                  break;
+                case 'e':
+                  await this.source.removeEdgeById(el.id);
+                  break;
+              }
+            }
+          }
+          await this.db.removeMultiple(body.map(b => b.id));
+        } catch {
+          Logger.warn(`Remove multiple failed`);
+          reject();
+        }
+        resolve({ result: 'ok' });
+      }
+      reject();
+    });
+  }
+
   public storeMultiple(body: any[], agentId?: string) {
     return new Promise(async (resolve, reject) => {
       if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {

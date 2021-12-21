@@ -292,6 +292,13 @@ export class Neo4J implements IDatabase {
         });
     }
 
+    public async removeMultiple(ids: string[]): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            //TODO
+            resolve(true);
+        });
+    }
+
     public async storeMultiple(data: IData[], source?: string, updatedTime?: number): Promise<any> {
         return new Promise(async (resolve, reject) => {
             const queries: IQuery[] = [];
