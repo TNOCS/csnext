@@ -8,6 +8,7 @@ import {
   DataSet,
   FeatureType,
   PropertyValueType,
+  GraphFilterProperties,
   GraphPreset,
   IGraphNodeDefinition,
 } from '@csnext/cs-data';
@@ -16,12 +17,7 @@ import EntityEditor from '../components/entity-management/entity-editor.vue';
 import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from '../plugins/EntityParser';
 import { EntityList } from '../components/document/node-entities';
-import {
-  TimeDataSource,
-  guidGenerator,
-  IFormOptions,
-  IWidget,
-} from '@csnext/cs-core';
+import { TimeDataSource, guidGenerator, IFormOptions, IWidget } from '@csnext/cs-core';
 
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
@@ -37,7 +33,6 @@ import { GraphServer, IGraphStorage } from './graph-storage';
 import { Component } from 'vue';
 import { GraphShapeDefinitions } from '../classes/graph/graph-shapes';
 import { DocUtils } from '../utils/doc-utils';
-
 
 export interface ITool {
   title: string;
@@ -79,8 +74,7 @@ export class DocDatasource extends GraphDatasource {
   public activeUser?: GraphElement;
   public bookmarks: string[] = [];
   public filters: FilterGraphElement[] = [];
-  public graphShapeDefinitions: GraphShapeDefinitions =
-    new GraphShapeDefinitions();
+  public graphShapeDefinitions: GraphShapeDefinitions = new GraphShapeDefinitions();
 
   public entityParser = new EntityParser();
   public layers: { [type: string]: GeojsonPlusLayer } = {};
@@ -105,7 +99,6 @@ export class DocDatasource extends GraphDatasource {
   public initCrossFilter() {
     this.crossFilter = new GraphCrossFilter(this);
   }
-
 
   //#region tools
 
@@ -158,11 +151,7 @@ export class DocDatasource extends GraphDatasource {
   //#endregion
 
   //#region layers
-  public async initLayer(
-    ml: MapLayers,
-    key: string,
-    obs: FeatureType
-  ): Promise<IMapLayer> {
+  public async initLayer(ml: MapLayers, key: string, obs: FeatureType): Promise<IMapLayer> {
     let l = await ml.addGeojsonLayer(obs.title!, undefined, {
       popup: '{{properties.title}}',
       type: ['country', 'province'].includes(key) ? 'fill' : 'circle',
@@ -245,10 +234,7 @@ export class DocDatasource extends GraphDatasource {
           };
           layer.features.push(p);
         }
-      } else if (
-        element.properties.hasOwnProperty('lat') &&
-        element.properties.hasOwnProperty('lon')
-      ) {
+      } else if (element.properties.hasOwnProperty('lat') && element.properties.hasOwnProperty('lon')) {
         // if (this.graphSettings.showAllOnMap || GraphElement.getVisibility(element, this.graphSettings)) {
         let lat = parseFloat(element.properties['lat']);
         element.properties['lat'] = lat;
@@ -405,27 +391,10 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  
   //#region presets
 
   public getGraphPreset(id: string): FilterGraphElement | undefined {
-    return this.graphPresets.find((p) => p.id === id);
-  }
-
-  public loadGraphPresets() {
-    this.graphPresets = [];
-    const presets = localStorage.getItem('graph-presets');
-    if (presets) {
-      const pConfig = JSON.parse(presets) as string[];
-      for (const config of pConfig) {
-        // this.graphPresets.push(GraphPreset.import(config, this));
-      }
-      if (this.graphPresets.length > 0) {
-        this.applyGraphPreset(this.graphPresets[0]);
-      }
-    } else {
-     
-    }
+    return this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
   }
 
   public emptyGraph(trigger = true, preset?: string) {
@@ -440,25 +409,13 @@ export class DocDatasource extends GraphDatasource {
     if (trigger) {
       this.triggerUpdateGraph();
     }
-  }
-
-  public deletePreset(preset: FilterGraphElement) {
-    this.graphPresets = this.graphPresets.filter((pr) => pr !== preset);
-    if (this.activeGraphPreset === preset) {
-      if (this.graphPresets.length > 0) {
-        this.applyGraphPreset(this.graphPresets[0]);
-      } else {
-        this.addGraphPreset();
-      }
-    }
-    this.saveGraphPresets();
-  }
+  }  
 
   public addGraphPreset(preset?: FilterGraphElement, activate = true): FilterGraphElement {
     if (!preset) {
       preset = {
         ...new FilterGraphElement(this),
-        ...{ id: 'default', title: 'default' },
+        ...{ id: 'default' },
       };
     } else {
       preset = { ...new FilterGraphElement(this), ...preset };
@@ -466,7 +423,7 @@ export class DocDatasource extends GraphDatasource {
     if (!preset._visibleNodes) {
       preset._visibleNodes = [];
     }
-    this.graphPresets.push(preset);
+    this.saveNode(preset);    
     if (activate) {
       this.applyGraphPreset(preset);
     }
@@ -475,21 +432,14 @@ export class DocDatasource extends GraphDatasource {
 
   public applyGraphPreset(preset: FilterGraphElement) {
     this.activeGraphPreset = preset;
-    this.events.publish(
-      GraphDatasource.PRESET_EVENTS,
-      GraphDatasource.PRESET_ACTIVATED,
-      preset
-    );
+    this.events.publish(GraphDatasource.PRESET_EVENTS, GraphDatasource.PRESET_ACTIVATED, preset);
   }
 
   //#endregion
 
-  //#region documents 
+  //#region documents
 
-  public linkObservationToDocument(
-    observation: FeatureType,
-    doc: GraphDocument
-  ): Promise<FeatureType> {
+  public linkObservationToDocument(observation: FeatureType, doc: GraphDocument): Promise<FeatureType> {
     return new Promise((resolve, reject) => {
       if (!observation._node || !doc) {
         reject();
@@ -518,16 +468,13 @@ export class DocDatasource extends GraphDatasource {
     return new Promise(async (resolve) => {
       if (this.documentPlugins) {
         // doc.entities = [];
-        for (const plugin of this.documentPlugins.filter(
-          (p) => typeof p.callDocument === 'function'
-        )) {
+        for (const plugin of this.documentPlugins.filter((p) => typeof p.callDocument === 'function')) {
           try {
             console.log(`Plugin: ${plugin.title}, Output: `);
 
             if (doc.properties?.text && doc.properties?.text.length > 0) {
               let res = await plugin.callDocument(doc, this);
               if (!res.error && res.document?.properties?.doc) {
-                
                 doc.properties.doc = res.document.properties.doc;
                 // doc = res.document;
                 console.log(doc.entities?.filter((e) => e._node));
@@ -561,9 +508,7 @@ export class DocDatasource extends GraphDatasource {
 
   public openViewer(element: GraphElement, document: GraphElement) {
     if (element.properties?.format && this.viewerPlugins) {
-      const viewer = this.viewerPlugins.find(
-        (v) => v.formats && v.formats.includes(element.properties?.format)
-      );
+      const viewer = this.viewerPlugins.find((v) => v.formats && v.formats.includes(element.properties?.format));
       if (viewer) {
         viewer.call(element, document, this);
       }
@@ -579,9 +524,7 @@ export class DocDatasource extends GraphDatasource {
         obs._featureType = this._meta[obs.type];
       }
       if (!obs._featureType) {
-        obs._featureType = Object.values(this._meta).find(
-          (f) => f.title === obs.type
-        );
+        obs._featureType = Object.values(this._meta).find((f) => f.title === obs.type);
       }
       if (obs._featureType) {
         if (obs.relations) {
@@ -653,20 +596,14 @@ export class DocDatasource extends GraphDatasource {
 
   public deleteDocument(doc: GraphDocument) {
     this.removeNode(doc, true).finally(() => {
-      this.events.publish(
-        DocDatasource.DOCUMENT,
-        DocDatasource.DOCUMENT_UPDATED
-      );
+      this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED);
       if (this.activeDocument?.id === doc.id) {
         this.activateDocument(undefined);
       }
     });
   }
 
-  public linkEntityToDocument(
-    entity: TextEntity,
-    doc: GraphDocument
-  ): Promise<TextEntity> {
+  public linkEntityToDocument(entity: TextEntity, doc: GraphDocument): Promise<TextEntity> {
     return new Promise((resolve, reject) => {
       if (!entity._node || !doc) {
         reject();
@@ -696,10 +633,7 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  public linkEntityListToDocument(
-    entity: EntityList,
-    doc: GraphDocument
-  ): Promise<EntityList> {
+  public linkEntityListToDocument(entity: EntityList, doc: GraphDocument): Promise<EntityList> {
     return new Promise((resolve, reject) => {
       if (!entity.node || !doc) {
         reject();
@@ -741,10 +675,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public triggerDocumentEntities() {
-    this.bus.publish(
-      DocDatasource.DOCUMENT_ENTITIES,
-      DocDatasource.ENTITIES_UPDATED
-    );
+    this.bus.publish(DocDatasource.DOCUMENT_ENTITIES, DocDatasource.ENTITIES_UPDATED);
   }
 
   public updateHighlights() {
@@ -757,11 +688,7 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public removeEntityListFromDocument(
-    list: EntityList,
-    doc: GraphDocument,
-    removeInstances = false
-  ): Promise<EntityList> {
+  public removeEntityListFromDocument(list: EntityList, doc: GraphDocument, removeInstances = false): Promise<EntityList> {
     return new Promise(async (resolve) => {
       // remove all entities
 
@@ -800,10 +727,7 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  public removeEntityFromDocument(
-    entity: TextEntity,
-    doc: GraphDocument
-  ): Promise<TextEntity> {
+  public removeEntityFromDocument(entity: TextEntity, doc: GraphDocument): Promise<TextEntity> {
     return new Promise((resolve, reject) => {
       if (!entity._edge) {
         resolve(entity);
@@ -835,9 +759,7 @@ export class DocDatasource extends GraphDatasource {
   public async initUser() {
     // get all users of type person
     const users = this.getClassElements('user', true, {
-      hasObjectProperties: [
-        { property: 'agent_type', operator: '==', value: 'person' },
-      ],
+      hasObjectProperties: [{ property: 'agent_type', operator: '==', value: 'person' }],
     });
 
     // if no users find, create default
@@ -867,7 +789,6 @@ export class DocDatasource extends GraphDatasource {
 
   //#endregion
 
-  
   public async loadTypes(): Promise<boolean> {
     console.log('loading types');
     $cs.loader.addLoader('types', 'loading types');
@@ -988,9 +909,7 @@ export class DocDatasource extends GraphDatasource {
               });
               break;
             case PropertyValueType.number:
-              let inputType = pt.attributes?.hasOwnProperty('form:type')
-                ? pt.attributes['form:type']
-                : 'number';
+              let inputType = pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'number';
               form.fields?.push({
                 title: pt.label!,
                 _key: pt.key,
@@ -1039,12 +958,7 @@ export class DocDatasource extends GraphDatasource {
                 readonly: pt.readonly,
                 keyText: 'properties.name',
                 keyValue: 'id',
-                required:
-                  required ||
-                  (node._outgoing &&
-                    node._outgoing.findIndex(
-                      (r) => r.classId === pt.relation?.type
-                    ) !== -1),
+                required: required || (node._outgoing && node._outgoing.findIndex((r) => r.classId === pt.relation?.type) !== -1),
                 group,
                 section,
               });
@@ -1117,14 +1031,10 @@ export class DocDatasource extends GraphDatasource {
           try {
             await this.loadGraph(loadGraph);
             this.updateEdges(true);
-            await this.parseDocuments();
-            this.loadGraphPresets();
+            await this.parseDocuments();            
             this.checkQueryParams();
             console.log('publish graph loaded event');
-            this.bus.publish(
-              GraphDatasource.GRAPH_EVENTS,
-              GraphDatasource.GRAPH_LOADED
-            );
+            this.bus.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.GRAPH_LOADED);
           } catch (e) {
             alert('error loading data');
           }
@@ -1155,30 +1065,18 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  
-
-  public async createEntity(
-    type: FeatureType,
-    askForName?: boolean,
-    newItem?: GraphElement
-  ): Promise<GraphElement> {
+  public async createEntity(type: FeatureType, askForName?: boolean, newItem?: GraphElement): Promise<GraphElement> {
     let placeholder = `new ${type.title}`;
     let name = placeholder;
     if (askForName) {
-      name = await $cs.triggerInputDialog(
-        placeholder,
-        'enter new name',
-        '',
-        placeholder
-      );
+      name = await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder);
     }
     const node = await this.addNewNode({
       id: `${type.type}-${guidGenerator()}`,
-      properties: { ...newItem, classId: type.type, name },
+      properties: { ...newItem, name },
       classId: type.type,
     });
     return node;
-      
   }
 
   public saveDocument(d: GraphDocument): Promise<GraphDocument> {
@@ -1194,25 +1092,17 @@ export class DocDatasource extends GraphDatasource {
 
       // update document entities, store in graph
       if (doc.entities) {
-        doc.properties.entities = JSON.stringify(
-          DocUtils.getSimplifiedEntities(doc)
-        );
+        doc.properties.entities = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
       }
 
       // delete doc.doc;
       if (doc.observations) {
-        doc.properties.observations = JSON.stringify(
-          DocUtils.getSimplifiedEntities(doc)          
-        );
+        doc.properties.observations = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
       }
       this.saveNode(doc)
         .then(async () => {
           await this.updateEdges(true);
-          this.events.publish(
-            DocDatasource.DOCUMENT,
-            DocDatasource.DOCUMENT_UPDATED,
-            d
-          );
+          this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, d);
           resolve(d);
         })
         .catch((e) => {
@@ -1247,15 +1137,9 @@ export class DocDatasource extends GraphDatasource {
     GraphElement.updateOriginals(doc);
   }
 
- 
-
-  public removeNode(
-    element: GraphElement,
-    relations = false,
-    notify = false
-  ): Promise<boolean> {
+  public removeNode(element: GraphElement, relations = false, notify = false): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (element && element.id) {
+      if (element && element.id && this.storage) {
         // remove relations
         if (relations) {
           // remove incomming relations
@@ -1272,33 +1156,28 @@ export class DocDatasource extends GraphDatasource {
           }
         }
         $cs.loader.addLoader(`remove-${element.id}`);
-        this.storage
-          ?.removeElement(element.id)
-          .then(async (g) => {
-            await this.removeNodeById(element.id!, relations);
-            this.events.publish(
-              GraphDatasource.GRAPH_EVENTS,
-              GraphDatasource.ELEMENT_REMOVED,
-              element
-            );
-          })
-          .finally(() => {
-            $cs.loader.removeLoader(`remove-${element.id}`);
-            if (notify) {
-              $cs.triggerNotification({
-                title: 'Node removed',
-                text: element.properties?.name,
-              });
-            }
-          });
+        try {
+          await this.storage.removeElement(element.id);
+
+          await this.removeNodeById(element.id!, relations);
+          this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_REMOVED, element);
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        } finally {
+          $cs.loader.removeLoader(`remove-${element.id}`);
+          if (notify) {
+            $cs.triggerNotification({
+              title: 'Node removed',
+              text: element.properties?.name,
+            });
+          }
+        }
       }
     });
   }
 
-  public toggleAproveElement(
-    element: GraphElement,
-    agent?: GraphElement
-  ): Promise<GraphElement> {
+  public toggleAproveElement(element: GraphElement, agent?: GraphElement): Promise<GraphElement> {
     return new Promise((resolve, reject) => {
       if (element.properties!.approved_by) {
         delete element.properties!.approved_by;
@@ -1334,20 +1213,14 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public async saveNode(
-    element: GraphElement,
-    user?: GraphElement
-  ): Promise<GraphElement> {
+  public async saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
+    if (!this.storage?.saveElement) { return Promise.reject(); }
     $cs.loader.addLoader(`store-${element.id}`);
     this.updateProvanance(element, user);
 
     try {
-      await this.storage!.saveElement(element);
-      this.events.publish(
-        GraphDatasource.GRAPH_EVENTS,
-        GraphDatasource.ELEMENT_UPDATED,
-        element
-      );
+      await this.storage.saveElement(element);
+      this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element);
       $cs.triggerNotification({
         title: $cs.Translate('NODE_SAVED'),
         text: element.properties?.name,
@@ -1388,132 +1261,104 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async removeEdge(edge: GraphElement): Promise<boolean> {
-      $cs.loader.addLoader(`unlink-${edge.id}`);
-      if (this.storage?.removeEdge) {
-        try {
-          const r = await this.storage.removeEdge(edge.id!);
-        }
-        catch (e) {
-          return Promise.reject();
-        }
+    $cs.loader.addLoader(`unlink-${edge.id}`);
+    if (this.storage?.removeEdge) {
+      try {
+        const r = await this.storage.removeEdge(edge.id!);
+      } catch (e) {
+        return Promise.reject();
       }
+    }
 
-      if (edge.from?._outgoing) {
-        edge.from._outgoing = edge.from._outgoing?.filter(
-          (e) => e.id !== edge.id
-        );
-      }
-      if (edge.to?._incomming) {
-        edge.to._incomming = edge.to._incomming?.filter(
-          (e) => e.id !== edge.id
-        );
-      }
-      if (edge.id && this.graph.hasOwnProperty(edge.id)) {
-        delete this.graph[edge.id];
-      }
-      // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)
-      this.events.publish(
-        GraphDatasource.GRAPH_EVENTS,
-        GraphDatasource.ELEMENT_REMOVED,
-        edge
-      );
-      $cs.loader.removeLoader(`unlink-${edge.id}`);
+    if (edge.from?._outgoing) {
+      edge.from._outgoing = edge.from._outgoing?.filter((e) => e.id !== edge.id);
+    }
+    if (edge.to?._incomming) {
+      edge.to._incomming = edge.to._incomming?.filter((e) => e.id !== edge.id);
+    }
+    if (edge.id && this.graph.hasOwnProperty(edge.id)) {
+      delete this.graph[edge.id];
+    }
+    // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)
+    this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.EDGE_REMOVED, edge);
+    $cs.loader.removeLoader(`unlink-${edge.id}`);
 
-      return Promise.resolve(true);
-      
+    return Promise.resolve(true);
+  }
+
+  public async saveEdge(edge: GraphElement, updateEdges = true) : Promise<GraphElement> {
+    $cs.loader.addLoader(`store-${edge.id}`);
+    if (this.storage?.saveElement) {
+      try {
+        const r = await this.storage.saveElement(edge);
+        await this.addEdge(edge);
+        if (updateEdges) {
+          await this.updateEdges();
+          await this.parseEntities();
+        }
+        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);        
+        return Promise.resolve(edge);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+      finally {
+        $cs.loader.removeLoader(`store-${edge.id}`);
+      }
+    }
+    return Promise.reject();
   }
 
   /**
    * adds a new edge to the graph, based on a edge GraphElement and call graph api to store it
    */
-  public async addNewEdge(
-    edge: GraphElement,
-    updateEdges = true
-  ): Promise<GraphElement> {
-    
-
-      edge = this.createEdge(edge);
-      $cs.loader.addLoader(`store-${edge.id}`);
-
-      if (this.storage?.saveEdge) {
-        try {
-          const r = await this.storage.saveEdge(edge);
-          await this.addEdge(edge);
-          if (updateEdges) {
-            await this.updateEdges();
-            await this.parseEntities();
-          }
-          this.events.publish(
-            GraphDatasource.GRAPH_EVENTS,
-            GraphDatasource.ELEMENT_ADDED,
-            edge
-          );
-          $cs.loader.removeLoader(`store-${edge.id}`);
-          return Promise.resolve(edge);
-        } catch (err) {
-          return Promise.reject(err);
-        }
-      }
-      return Promise.reject();
-    }
-  
-     
-     
+  public async addNewEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
+    edge = this.createEdge(edge);
+    return this.saveEdge(edge);    
+  }
 
   public async addNewNode(element: GraphElement): Promise<GraphElement> {
-    
-      let res = this;
-      if (!element.id) {
-        element.id = element.classId + '-' + guidGenerator();
-      }
-      if (!element.properties) {
-        element.properties = {};
-      }
-      if (!element.properties.name && element.id) {
-        element.properties.name = element.id;
-      }
-      if (!element.properties.updated_time) {
-        element.properties.updated_time = new Date().getTime();
-      }
-      if (!element.properties.created_time) {
-        element.properties.created_time = new Date().getTime();
-      }
-      if (!element.properties.created_by && this.activeUser) {
-        element.properties.created_by = this.activeUser.id;
-      }
-      if (!element.properties.updated_by && this.activeUser) {
-        element.properties.updated_by = this.activeUser.id;
-      }
-      element.type = 'node';
-      $cs.loader.addLoader(`store-${element.id}`);
-      try {
-        await this.saveNode(element);
-        this.initElement(element);
-          res = res.addElement(element);
-          await this.refresh();
-          this.events.publish(
-            GraphDatasource.GRAPH_EVENTS,
-            GraphDatasource.ELEMENT_ADDED,
-            element
-          );
-          return Promise.resolve(element);
-      }
-      catch (err) {
-        return Promise.reject(err);
-      }
-      finally {
-        $cs.loader.removeLoader(`store-${element.id}`);
-      }
-      
+    let res = this;
+    if (!element.id) {
+      element.id = element.classId + '-' + guidGenerator();
+    }
+    if (!element.properties) {
+      element.properties = {};
+    }
+    if (!element.properties.name && element.id) {
+      element.properties.name = element.id;
+    }
+    if (!element.properties.updated_time) {
+      element.properties.updated_time = new Date().getTime();
+    }
+    if (!element.properties.created_time) {
+      element.properties.created_time = new Date().getTime();
+    }
+    if (!element.properties.created_by && this.activeUser) {
+      element.properties.created_by = this.activeUser.id;
+    }
+    if (!element.properties.updated_by && this.activeUser) {
+      element.properties.updated_by = this.activeUser.id;
+    }
+    element.type = 'node';
+    $cs.loader.addLoader(`store-${element.id}`);
+    try {
+      await this.saveNode(element);
+      this.initElement(element);
+      res = res.addElement(element);
+      await this.refresh();
+      this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, element);
+      return Promise.resolve(element);
+    } catch (err) {
+      return Promise.reject(err);
+    } finally {
+      $cs.loader.removeLoader(`store-${element.id}`);
+    }
   }
 
   public selectElementId(id: string, open = false) {
     const e = this.getElement(id);
     if (e) {
-      this.selectElement(e, open);
-      if (open) {
-        this.openElement(e);
-      }
+      this.selectElement(e, open);      
     }
   }
 
@@ -1532,7 +1377,11 @@ export class DocDatasource extends GraphDatasource {
     if (!element) {
       return;
     }
+    this.activeElement = element;
     element._collapsed = !element._collapsed;
+    if (open) {
+      this.openElement(element);
+    }
     this.bus.publish('focus', 'element', element);
   }
 
@@ -1546,11 +1395,7 @@ export class DocDatasource extends GraphDatasource {
     this.bus.publish('element', 'stop-editing', element);
   }
 
-  public createKGView(
-    elements?: GraphElement[],
-    preset: string = 'default',
-    empty = false
-  ) {
+  public createKGView(elements?: GraphElement[], preset: string = 'default', empty = false) {
     if (empty) {
       this.emptyGraph(true, preset);
     }
@@ -1568,27 +1413,27 @@ export class DocDatasource extends GraphDatasource {
     if (!p) {
       p = this.addGraphPreset({ id: preset, properties: { name: preset } } as FilterGraphElement);
     }
-    if (!p.properties) { p.properties = {}}
+    if (!p.properties) {
+      p.properties = {};
+    }
 
-    if (!p.properties.nodes) { p.properties.nodes = {}}
+    if (!p.properties.nodes) {
+      p.properties.nodes = {};
+    }
 
     if (p?.properties.nodes && el.id && !p.properties.nodes.hasOwnProperty(el.id)) {
-      p.properties.nodes[el.id] = { ...{x: 100, y: 100}, ...pos};      
+      p.properties.nodes[el.id] = { ...{ x: 100, y: 100 }, ...pos };
       if (trigger) {
         this.triggerUpdateGraph(el);
-        this.bus.publish(
-          DocDatasource.PRESET_EVENTS,
-          DocDatasource.PRESET_ELEMENT_ADDED,
-          el
-        );
+        this.bus.publish(DocDatasource.PRESET_EVENTS, DocDatasource.PRESET_ELEMENT_ADDED, el);
       }
     }
   }
 
   public removeElementFromPreset(el: GraphElement, preset: string) {
     let p = this.getGraphPreset(preset);
-    if (p?.properties?.nodes && el.id && p.properties.nodes.hasOwnProperty(el.id)) { 
-      delete p.properties.nodes[el.id];      
+    if (p?.properties?.nodes && el.id && p.properties.nodes.hasOwnProperty(el.id)) {
+      delete p.properties.nodes[el.id];
     }
     if (p?._visibleNodes) {
       const i = p._visibleNodes.indexOf(el);
@@ -1597,15 +1442,11 @@ export class DocDatasource extends GraphDatasource {
     this.triggerUpdateGraph();
   }
 
-  public addRelationsToPreset(
-    element: GraphElement,
-    preset: string,
-    classId?: string
-  ) {
+  public addRelationsToPreset(element: GraphElement, preset: string, classId?: string) {
     if (element?._outgoing) {
       for (const out of element?._outgoing) {
         if (out.to && (!classId || out.classId === classId)) {
-          this.addElementToPreset(out.to, preset, false);          
+          this.addElementToPreset(out.to, preset, false);
         }
       }
     }
@@ -1613,7 +1454,7 @@ export class DocDatasource extends GraphDatasource {
     if (element?._incomming) {
       for (const incomming of element?._incomming) {
         if (incomming.from && (!classId || incomming.classId === classId)) {
-          this.addElementToPreset(incomming.from, preset, false);          
+          this.addElementToPreset(incomming.from, preset, false);
         }
       }
     }
@@ -1722,36 +1563,25 @@ export class DocDatasource extends GraphDatasource {
   public execute(): Promise<DocDatasource> {
     return new Promise(async (resolve, reject) => {
       this.initStorage();
-      if (!this.graphPresets) {
-        this.graphPresets = [];
-      }
-
-      // this.activeGraphPreset = this.graphPresets[0];
+      
       await this.refresh(true);
       this.loadElementHistory();
-
-      // this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;
-
+      
       this.importPlugins.push(new EmptyDocumentImport());
 
       if (this.timesourceId) {
-        AppState.Instance.loadDatasource<TimeDataSource>(
-          this.timesourceId
-        ).then((ts) => {
+        AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then((ts) => {
           // this.timesource = ts;
           // this.initTimeDatasource();
           resolve(this);
         });
       }
 
-      AppState.Instance.bus.subscribe(
-        AppState.RIGHTSIDEBAR,
-        (a: string, node: GraphElement) => {
-          if (a === AppState.RIGHTSIDEBAR_CLOSED) {
-            this.setQueryParams();
-          }
+      AppState.Instance.bus.subscribe(AppState.RIGHTSIDEBAR, (a: string, node: GraphElement) => {
+        if (a === AppState.RIGHTSIDEBAR_CLOSED) {
+          this.setQueryParams();
         }
-      );
+      });
 
       this.bus.subscribe(CsMap.NODE, (a: string, node: GraphElement) => {
         switch (a) {

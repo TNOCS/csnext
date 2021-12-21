@@ -43,6 +43,8 @@ export class DashboardLayout extends Vue {
           this.updatePanels(el.splitpanel);
         } else if (el.widgetId) {
           this.panels.push(el);
+        } else if (el.dashboardId) {
+          this.panels.push(el);
         }
       }
     }

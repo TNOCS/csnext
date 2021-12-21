@@ -670,6 +670,23 @@ export class GraphController {
   //     });
   // }
 
+  @Post('/save')
+  async save(
+    @Body() body: GraphElement[]
+  ) :  Promise<GraphElement[] | undefined> {
+    
+    const res : GraphElement[] = [];
+    for (const element of body) {
+      try {
+        const r = await this.graph.save(element);
+        res.push(r);
+      } catch(e) {
+        console.log(e)
+      }      
+    }
+    return Promise.resolve(res);
+  }
+
   @Post('/store')
   store(
     @Body() body: any,

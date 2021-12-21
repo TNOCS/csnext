@@ -1,11 +1,11 @@
 import { BaseElementProperties, GraphFilterProperties, FilterGraphElement, GraphDatasource, GraphElement } from '../../';
 import { FeatureType } from '../types/feature-type';
 
-export interface IGraphNodeDefinition {
-  x?: number;
-  y?: number;
-  _element?: GraphElement;
-}
+// export interface IGraphNodeDefinition {
+//   x?: number;
+//   y?: number;
+//   _element?: GraphElement;
+// }
 
 
 // export class FilterGraphElement extends GraphElement {

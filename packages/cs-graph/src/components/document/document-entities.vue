@@ -363,6 +363,7 @@ export default class DocumentEntities extends WidgetBase {
   }
 
   @Watch("source.activeDocument.entityTypes")
+  @Watch("source.activeDocument.properties.hide_unknowns")
   public updateGroups() {
     if (!this.source) {
       return;
@@ -371,7 +372,8 @@ export default class DocumentEntities extends WidgetBase {
       return;
     }
     let res: NodeEntities[] = [];
-    for (const entity of this.source.activeDocument.entities) {
+    for (const entity of this.source.activeDocument.entities) {     
+      if (!this.source.activeDocument?.properties?.hide_unknowns || entity._node?._featureType)  {
       const c = entity._node?.classId ?? entity.spacy_label;
       if (c) {
         let group = res.find((g) => g.id === c);
@@ -412,6 +414,7 @@ export default class DocumentEntities extends WidgetBase {
           ent.instances.push(entity);
           ent._relations+=entity._relations ? entity._relations.length : 0;
         }
+      }
       }
     }
 

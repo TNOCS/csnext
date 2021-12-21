@@ -55,7 +55,7 @@ export class EntityParser implements IDocumentPlugin
                         if (!doc.entityTypes.hasOwnProperty(entity.spacy_label))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
-                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, title: entity._node._featureType.title, color, _selected: true } as EntityType;
+                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, _featureType: entity._node._featureType, title: entity._node._featureType.title, color, _selected: true } as EntityType;
                         }
                         // entity.view_class = 'doc-entity ' + entity.class + '-entity';
                         // if (entity._included)
@@ -71,14 +71,23 @@ export class EntityParser implements IDocumentPlugin
                         // entity.view_class = 'doc-entity rec-entity ' + entity.class + '-entity';
                     }
 
-                    if (entity._node?.properties?.location) {
+
+                    if (entity.spacy_label && doc.entityTypes[entity.spacy_label]) {
+                        if (!doc.entityTypes[entity.spacy_label].count) {
+                            doc.entityTypes[entity.spacy_label]!.count = 1;
+                        } else {
+                            doc.entityTypes[entity.spacy_label].count! += 1;
+                        }
+                    }
+
+                    if (entity.spacy_label && entity._node?.properties?.location) {
                         entity._location = entity._node.properties.location;                        
                       } else if (entity.spacy_label === 'location' && entity.converted) {
                           entity._location = entity.converted;
                       }                    
                     
 
-                    if (entity._node?.properties?.point_in_time) {
+                    if (entity.spacy_label && entity._node?.properties?.point_in_time) {
                         entity._date = entity._node.properties.point_in_time;                        
                       } else if (entity.spacy_label === 'DATE' && entity.converted) {
                           entity._date = entity.converted;

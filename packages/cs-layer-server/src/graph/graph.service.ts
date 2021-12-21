@@ -1,7 +1,7 @@
 import { Injectable, Module, Logger, Inject } from '@nestjs/common';
 import { GraphDatasource, GraphElement, IGraphElementAction } from '@csnext/cs-data';
 import { IDatabase } from './databases/database';
-import { guidGenerator } from '@csnext/cs-core';
+import { guidGenerator, idGenerator } from '@csnext/cs-core';
 import { LocalStorage } from './databases/local';
 import { DefaultWebSocketGateway } from '../websocket-gateway';
 import { NestServer } from '../export';
@@ -40,6 +40,35 @@ export class GraphService {
   }
 
   public async loadDatabase() {}
+
+  async save(element: GraphElement, agentId?: string) : Promise<GraphElement | undefined> {
+    if (!this.db) { return Promise.reject(); }
+    if (!element.classId) {
+      element.classId = 'node'
+    }
+    if (!element.type) { element.type = 'node'}
+    if (!element.id) {
+      element.id = `${element.classId}-${idGenerator()}`;
+    }
+
+    try {
+      await this.source.addElement(element);
+
+      let result = await this.db.store(
+        {
+          type: (element.type === 'node') ? 'n' : 'e',
+          document: element.properties,
+          id: element.id,
+          class: element.classId,
+        },
+        agentId ?? 'unknown',
+        new Date().getTime()
+      );
+      return Promise.resolve(element);
+    } catch {
+      return Promise.reject();
+    }
+  }
 
   store(body: any, type: string, id?: string, agentId?: string): Promise<GraphElement | undefined> {
     return new Promise(async (resolve, reject) => {

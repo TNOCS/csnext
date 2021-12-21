@@ -56,7 +56,8 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn depressed fab icon outlined v-bind="attrs" v-on="on" raised>
                 <v-icon v-if="source.activeDocument.properties.editor_mode === 'EDIT'">mdi-pencil</v-icon>
-                <v-icon v-else>mdi-eye</v-icon>
+                <v-icon v-if="source.activeDocument.properties.editor_mode === 'VIEW'">mdi-eye</v-icon>
+                <v-icon v-if="source.activeDocument.properties.editor_mode === 'LEARN'">mdi-school</v-icon>                
               </v-btn>
             </template>
             <v-list>
@@ -68,23 +69,50 @@
                 <v-icon>mdi-eye</v-icon>
                 <v-list-item-title>View Mode</v-list-item-title>
               </v-list-item>
+              <v-list-item @click="setEditorMode('LEARN')">
+                <v-icon>mdi-school</v-icon>
+                <v-list-item-title>Learn Mode</v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
+          <template v-if="source.activeDocument.properties.editor_mode && source.activeDocument.properties.editor_mode === 'LEARN'">
+            <v-layout class="learn-toolbar">
+            <v-radio-group
+      v-model="source.activeDocument.properties.learn_mode"
+      row
+    >
+      <v-radio
+        label="Review"
+        value="REVIEW"
+      ></v-radio>
+      <v-radio
+        label="Learn"
+        value="LEARN"
+      ></v-radio>
+    </v-radio-group>
+    <!-- v-if="source.activeDocument.properties.learn_mode === 'LEARN'"  -->
+      <v-select v-model="source.activeDocument.activeLearningType" :items="Object.values(source.featureTypes)" item-text="title" item-value="id">
 
-          <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes">
-            <v-chip @click="toggleEntityType(id)" v-for="(type, id) of source.activeDocument.entityTypes" :key="id" :color="type.color" class="ml-2">
-              <!-- :outlined="stat.hide" -->
-
-              <!-- <v-icon v-if="stat._featureType.icon" left>{{
-              stat._featureType.icon
-            }}</v-icon> -->
-              {{ id }}
+      </v-select>
+            </v-layout>
+          </template>
+          <template v-else>
+          <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes" class="drag-types-container">
+            <template v-for="(type, id) of source.activeDocument.entityTypes">
+            <v-chip :outlined="!type._selected"  @click="type._selected = !type._selected" :key="id" :color="type.color" class="ml-2 drag-type" v-if="!source.activeDocument.properties.hide_unknowns || type._featureType">              
+              <v-icon v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
+              {{ type.title }}
               <v-avatar right dark class="darken-4">
-                <!-- {{ stat.count }} -->
+                {{ type.count }}
               </v-avatar>
             </v-chip>
+            </template>
           </v-layout>
+          </template>
           <v-spacer></v-spacer>
+          <v-switch v-model="source.activeDocument.properties.hide_unknowns">
+            <v-icon>mdi-content-save</v-icon>
+          </v-switch>
           <v-btn @click="save()" icon>
             <v-icon>mdi-content-save</v-icon>
           </v-btn>
@@ -190,6 +218,7 @@
           ></v-autocomplete>
         </bubble-menu>
         <editor-content
+          id="doc-editor"
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
@@ -243,6 +272,7 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+  public dragInitialized = false;
   public contextMenuitems: any[] = [];
 
   public set editor(value: Editor | undefined | null) {
@@ -829,6 +859,7 @@ export default class DocumentViewer extends WidgetBase {
     });
     this.checkDocumentIdQuery();
     this.initTools();
+    this.initDragging();
   }
 
   private checkDocumentIdQuery() {
@@ -1035,6 +1066,144 @@ export default class DocumentViewer extends WidgetBase {
     } as ITool);
   }
 
+  initDragging() {
+    if (this.dragInitialized) {
+      return;
+    }
+    this.dragInitialized = true;
+    const position = { x: 0, y: 0 };
+
+    interact('#doc-editor')
+      .dropzone({
+        ondrop: async (e) => {
+          e.stopImmediatePropagation();
+          let pos = { x: 100, y: 100 };
+          // if (e._interaction?.coords?.cur?.client) {
+          //   pos = this.graph!.getPointByClient(e._interaction.coords.cur.client.x, e._interaction.coords.cur.client.y);
+          // }
+
+          if (e.interaction?.element) {
+            e.interaction.element.remove();
+          }
+        //   if (e.relatedTarget?.dataset?.elementid) {
+        //     // find element
+        //     const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
+        //     if (existingElement?.id && this.activePreset?.properties?.nodes) {
+        //       this.activePreset.properties.nodes[existingElement.id] = {
+        //         x: pos.x,
+        //         y: pos.y,
+        //       };
+
+        //       this.addElement(existingElement);
+
+        //       this.updateGraph(this.source!.graph);
+        //     }
+        //   }
+        //   if (e.relatedTarget?.dataset?.id) {
+        //     const type = e.relatedTarget?.dataset?.id;
+
+        //     if (type && this.graph && this.source) {
+        //       const ft = this.source.getFeatureTypeById(type);
+        //       if (ft?.type) {
+        //         const newNode = await this.source.addNewNode({
+        //           id: `${ft.type}-${guidGenerator()}`,
+        //           properties: { type, name: ft.title },
+        //           classId: ft.type,
+        //         });
+
+        //         if (newNode?.id && this.activePreset?.properties?.nodes) {
+        //           this.activePreset.properties.nodes[newNode.id] = {
+        //             x: pos.x,
+        //             y: pos.y,
+        //           };
+
+        //           this.addElement(newNode);
+        //           this.updateGraph(this.source!.graph);                  
+        //           this.source.selectElement(newNode, true)
+        //         }
+        //       }
+        //     }
+
+        //     //
+
+        //     // this.graph.getCanvasByPoint()
+
+        //     // if (newNode?.id && element.id && props?.relation?.type) {
+        //     //   await this.source.addEdge({
+        //     //     classId: props.relation.type,
+        //     //     fromId: element.id,
+        //     //     toId: newNode.id,
+        //     //   } as GraphElement);
+
+        //     // this.source.createKGView([newNode], this.activePreset.id, true);
+        //     // }
+
+        //     // alert(ft.title)
+        //   }
+
+        //   // console.log(e.draggable.featureType);
+        //   // console.log();
+
+        //   console.log(e);
+        },
+      })
+      .on('dropactivate', () => {
+        // event.target.classList.add('drop-activated')
+      });
+
+    interact('.drag-type')
+      .draggable({
+        manualStart: true,
+        listeners: {
+          move(event) {
+            position.x += event.dx;
+            position.y += event.dy;
+            event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+          },
+        },
+      })
+
+      // This only gets called when we trigger it below using interact.start(...)
+      .on('move', (event) => {
+        const { currentTarget, interaction } = event;
+        let element = currentTarget;
+
+        // If we are dragging an item from the sidebar, its transform value will be ''
+        // We need to clone it, and then start moving the clone
+        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
+          element = currentTarget.cloneNode(true);
+
+          // Add absolute positioning so that cloned object lives right on top of the original object
+          element.style.position = 'absolute';
+          element.style.left = 0;
+          element.style.top = 0;
+          event.interactable.featureType = 'testje';
+
+          // Add the cloned object to the document
+          const container = document.querySelector('.drag-types-container');
+          container && container.appendChild(element);
+
+          const { offsetTop, offsetLeft } = currentTarget;
+          position.x = offsetLeft;
+          position.y = offsetTop;
+
+          // If we are moving an already existing item, we need to make sure the position object has
+          // the correct values before we start dragging it
+        } else if (interaction.pointerIsDown && !interaction.interacting()) {
+          const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+          const transform = regex.exec(currentTarget.style.transform);
+
+          if (transform && transform.length > 1) {
+            position.x = Number(transform[1]);
+            position.y = Number(transform[2]);
+          }
+        }
+
+        // Start the drag event
+        interaction.start({ name: 'drag' }, event.interactable, element);
+      });
+  }
+
   public mounted() {
     if (this.source) {
       this.contentLoaded(this.widget.content);
@@ -1045,6 +1214,16 @@ export default class DocumentViewer extends WidgetBase {
 
 
 <style>
+
+.drag-type {
+  cursor: crosshair;
+}
+
+.learn-toolbar {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
 .graph-toolbar-menu {
   align-items: center;
 }
@@ -1058,8 +1237,8 @@ export default class DocumentViewer extends WidgetBase {
 }
 
 .editor-grid {
-  display: grid;
-  grid-template-rows: 85px 100%;
+  /* display: grid;
+  grid-template-rows: 115px 100%; */
   /* padding: 5px;
   max-height: 100%;
   display: grid;

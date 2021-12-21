@@ -52,6 +52,14 @@
 
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
+      <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="linkAll()" elevation="0">
+        <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
+        {{ $cs.Translate('LINK_ALL') }}
+      </v-btn>
+      <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="unLinkAll()" elevation="0">
+        <v-icon>mdi-checkbox-multiple-blank-circle-outline</v-icon>
+        {{ $cs.Translate('UNLINK_ALL') }}
+      </v-btn>
       <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="expandTree()" elevation="0">
         <v-icon>mdi-chevron-up</v-icon>
         {{ $cs.Translate('EXPAND_ALL') }}
@@ -673,26 +681,41 @@ export default class ElementDataGrid extends WidgetBase {
     
   }
 
-  public async toggleLinked(entity: GraphElement) {
-    if (!this.source) {
-      return;
+  public async linkAll() {
+    if (!this.treeItems) { return; }
+    for (const item of this.treeItems) {
+      await this.link(item);      
     }
-    if ((entity as any)._isLinked) {
-      this.source
-        .removeEdge((entity as any)._isLinked)
-        .then((r) => {
-          Vue.set(entity, '_isLinked', undefined);
-          this.updateEntities(true);
-        })
-        .catch((e) => {
-          console.log('Error removing edge');
-        });
+  }
 
-      // (entity as any)._isLinked = undefined;
-    } else {
-      if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
-        this.source
-          .addNewEdge(
+  public async unLinkAll() {
+if (!this.treeItems) { return; }
+    for (const item of this.treeItems) {
+      await this.unlink(item);      
+    }
+  }
+
+  public async unlink(entity: GraphElement) : Promise<boolean> {
+    if (!this.source) {      
+      return Promise.reject();
+    }
+    try {
+    await this.source.removeEdge((entity as any)._isLinked);
+    Vue.set(entity, '_isLinked', undefined);
+    this.updateEntities(true);
+    return Promise.resolve(true);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  public async link(entity: GraphElement) : Promise<boolean> {
+    if (!this.source) {      
+      return Promise.reject();
+    }
+    if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
+        try {
+        const linkEdge = await this.source.addNewEdge(
             {
               fromId: this.options.relationToggle.fromId,
               toId: entity.id,
@@ -700,11 +723,28 @@ export default class ElementDataGrid extends WidgetBase {
             } as GraphElement,
             true
           )
-          .then((linkEdge) => {
-            Vue.set(entity, '_isLinked', linkEdge);
-            this.updateEntities(true);
-          });
+        Vue.set(entity, '_isLinked', linkEdge);
+        this.updateEntities(true);
       }
+      catch (e) {
+        return Promise.reject(e);
+      }
+    }
+    return Promise.reject();
+
+  }
+
+  public async toggleLinked(entity: GraphElement) {
+    if (!this.source) {
+      return;
+    }
+    if ((entity as any)._isLinked) {
+      await this.unlink(entity);
+      
+
+      // (entity as any)._isLinked = undefined;
+    } else {
+      await this.link(entity);
     }
     // this.updateEntities(true);
   }

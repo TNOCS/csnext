@@ -3,7 +3,7 @@ import { SplitPanelOptions } from './.';
 export class SplitElement {
   public size?: number;
   public title?: string;
-  public sizeUnit?: string = '%';
+  public sizeUnit?: 'fr' | 'px' | '%' | 'repeat' = '%';
   public minSize?: number;
   public widgetId?: string;
   public dashboardId?: string;
