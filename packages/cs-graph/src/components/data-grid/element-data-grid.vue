@@ -140,7 +140,7 @@
       <simplebar class="full-widget">
         <isotope :options="getIsoOptions()" ref="iso" :list="items" class="isotope-grid">
           <template v-for="(element, indx) of items">
-            <v-card :key="indx" class="entity-card" @click="selectEntityCard(element)">
+            <v-card :key="indx" class="entity-card" :class="[element.properties.value_type, element.properties.layout]" @click="selectEntityCard(element)">
               <component :is="getElementCard(element)" :source="source" :element="element"></component>
             </v-card>
 
@@ -417,8 +417,21 @@
 
 .entity-card {
   width: 300px;
-  height: 150px;
+  height: 120px;
   margin: 5px;
+}
+
+.entity-card.elementarray {
+  width: 605px;
+  height: 245px;
+}
+
+.entity-card.Trends {
+  height: 245px;
+}
+
+.entity-card.Gauge {
+  height: 245px;
 }
 
 .full-widget {
