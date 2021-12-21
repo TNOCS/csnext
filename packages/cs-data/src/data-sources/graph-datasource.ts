@@ -878,7 +878,8 @@ export class GraphDatasource extends DataSource {
         e.properties!.hasOwnProperty(pt.key)
     )) {
       if (!e._elements[props.key!]) e._elements[props.key!] = [];
-      const arr: string[] = e.properties[props.key!];
+      const arr: string[] = [...e.properties[props.key!]];
+      (e._elements[props.key!] as GraphElement[]).length = 0;
       arr.forEach((u) => {
         if (this.graph.hasOwnProperty(u)) {
           (e._elements![props.key!]! as GraphElement[]).push(
