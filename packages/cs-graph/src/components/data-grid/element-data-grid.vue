@@ -418,20 +418,20 @@
 .entity-card {
   width: 300px;
   height: 120px;
-  margin: 5px;
+  margin: 4px;
 }
 
 .entity-card.elementarray {
-  width: 605px;
-  height: 245px;
+  width: 608px;
+  height: 248px;
 }
 
 .entity-card.Trends {
-  height: 245px;
+  height: 248px;
 }
 
 .entity-card.Gauge {
-  height: 245px;
+  height: 248px;
 }
 
 .full-widget {
