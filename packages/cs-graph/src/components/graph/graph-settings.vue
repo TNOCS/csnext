@@ -11,7 +11,8 @@
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
-          <v-tab href="#tab-CONTENT">{{ $cs.Translate('CONTENT') }}</v-tab>
+          <v-tab href="#tab-RULES">{{ $cs.Translate('RULES') }}</v-tab>
+          <v-tab href="#tab-ELEMENTS">{{ $cs.Translate('ELEMENTS') }}</v-tab>
           <v-tab href="#tab-LAYOUT">{{ $cs.Translate('LAYOUT') }}</v-tab>
 
           <!-- <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
@@ -22,62 +23,34 @@
     </v-toolbar>
 
     <v-tabs-items v-model="tab" style="margin-bottom: 200px">
-      <v-tab-item value="tab-CONTENT">
-        <v-expansion-panels
-      v-model="contentPanel"
-      class="ma-1"      
-      multiple
-    >
-     <!-- <v-expansion-panel>
-        <v-expansion-panel-header>          
-          <span class="content-expansion-header">Time</span>          
-        </v-expansion-panel-header>
-     </v-expansion-panel> -->
-      <v-expansion-panel>
-        <v-expansion-panel-header>          
-          <!-- <v-switch :value="activePreset.rulesEnabled" flat @click.native.stop="activePreset.rulesEnabled = !activePreset.rulesEnabled"></v-switch>           -->
-          <span class="content-expansion-header">Rules</span>
-          <v-spacer></v-spacer>          
-          <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_RULE"/></v-chip>
-        </v-expansion-panel-header>
-        <v-expansion-panel-content class="rules-list">
-          <graph-rule-editor
-            v-for="(rule, i) in activePreset.properties.nodeRules"
-            :key="i"
-            :source="source"
-            :activePreset="activePreset"
-            :rule="rule"
-          ></graph-rule-editor>
-          
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header>
-          <span class="content-expansion-header">Elements</span>          
-          </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <v-list>
-            <v-list-item v-for="(n,id) in activePreset.properties.nodes" :key="id" v-if="n._element">
-              <v-icon v-if="n._element._featureType.icon">{{n._element._featureType.icon}}</v-icon>
-            <v-list-item-title>{{n._element.properties.name}}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-          
-          
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-        </v-expansion-panels>      
+      <v-tab-item value="tab-RULES">
+            <v-layout class="rules-editor">
+              <span class="content-expansion-header">Rules</span>
+              <v-spacer></v-spacer>
+              <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_RULE" /></v-chip>
+            </v-layout>
+              <graph-rule-editor
+                v-for="(rule, i) in activePreset.properties.nodeRules"
+                :key="i"
+                :source="source"
+                :activePreset="activePreset"
+                :rule="rule"
+              ></graph-rule-editor>
+         
+      </v-tab-item>
+      <v-tab-item value="tab-ELEMENTS">
+        <v-list>
+                <v-list-item v-for="(n, id) in activePreset.properties.nodes" :key="id" v-if="n._element">
+                  <v-icon v-if="n._element._featureType.icon">{{ n._element._featureType.icon }}</v-icon>
+                  <v-list-item-title>{{ n._element.properties.name }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
       </v-tab-item>
       <v-tab-item value="tab-LAYOUT">
         <v-container fluid>
           <v-row>
             <v-col>
-              <cs-form
-                :data="activePreset.properties"
-                :formdef="formDef"
-                class="pt-2 pa-3"
-                @saved="updateGraph"
-              ></cs-form>
+              <cs-form :data="activePreset.properties" :formdef="formDef" class="pt-2 pa-3" @saved="updateGraph"></cs-form>
             </v-col>
           </v-row>
         </v-container>
@@ -87,6 +60,10 @@
 </template>
 
 <style scoped>
+.rules-editor
+{
+  padding: 6px;
+}
 .add-rule-button {
   max-width: 125px;
 }
@@ -104,14 +81,14 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
-import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement } from '@csnext/cs-data';
+import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement, GraphFilterProperties } from '@csnext/cs-data';
 import { DocDatasource } from '../..';
 import { IFormObject } from '@csnext/cs-core';
 import Vue from 'vue';
 import GraphRuleEditor from './graph-rule-editor.vue';
 
 @Component({
-  components: { GraphRuleEditor }
+  components: { GraphRuleEditor },
 })
 export default class GraphSettings extends WidgetBase {
   public get source(): DocDatasource | undefined {
@@ -141,11 +118,7 @@ export default class GraphSettings extends WidgetBase {
     if (!this.source?.events || !this.activePreset) {
       return;
     }
-    this.source.events.publish(
-      GraphDatasource.PRESET_EVENTS,
-      GraphDatasource.PRESET_LAYOUT_CHANGED,
-      this.activePreset
-    );
+    this.source.events.publish(GraphDatasource.PRESET_EVENTS, GraphDatasource.PRESET_LAYOUT_CHANGED, this.activePreset);
   }
 
   public applyPreset(preset: GraphPreset) {
@@ -157,10 +130,7 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public savePreset() {
-    if (!this.source?.graphPresets) {
-      return;
-    }
-    this.source.saveGraphPresets();
+    // this.source.saveGraphPresets();
   }
 
   public refresh() {
@@ -178,20 +148,28 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public addTypeRule() {
-    if (!this.activePreset?.properties?.nodeRules) { return; }
-    this.activePreset.properties?.push({
+    if (!this.activePreset?.properties) {
+      return;
+    }
+
+    if (!this.activePreset.properties.nodeRules) {
+      this.activePreset.properties.nodeRules = []
+    }
+    this.activePreset.properties.nodeRules.push({
       type: 'TYPE',
-      _editMode: true
-    });    
+      _editMode: true,
+    });
+
+    this.$forceUpdate();
   }
 
   public get formDef(): IFormObject {
-    const isLayout = (config: FilterGraphElement, layout: string | string[]) => {
+    const isLayout = (config: GraphFilterProperties, layout: string | string[]) => {
       if (typeof layout === 'string') {
-        return config.properties?.layout && config.properties?.layout === layout;
+        return config.layout && config.layout === layout;
       }
 
-      return config.properties?.layout && layout.includes(config.properties?.layout);
+      return config.layout && layout.includes(config.layout);
     };
 
     return {
@@ -204,19 +182,7 @@ export default class GraphSettings extends WidgetBase {
           _key: 'layout',
           type: 'selection',
           readonly: false,
-          options: [
-            'manual',
-            'circular',
-            'radial',
-            'concentric',
-            'grid',
-            'mds',
-            'fruchterman',
-            'force',
-            'forceAtlas2',
-            'gForce',
-            'dagre'
-          ]
+          options: ['manual', 'circular', 'radial', 'concentric', 'grid', 'mds', 'fruchterman', 'force', 'forceAtlas2', 'gForce', 'dagre'],
         },
         // {
         //   title: 'ANIMATE',
@@ -228,7 +194,7 @@ export default class GraphSettings extends WidgetBase {
           _key: 'nodeSize',
           type: 'slider',
           min: 10,
-          max: 300
+          max: 300,
         },
         {
           title: 'GRAVITY',
@@ -237,7 +203,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman')],
         },
         {
           title: 'SPEED',
@@ -246,13 +212,13 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 50,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'force'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'force'])],
         },
         {
           title: 'CLUSTERING',
           _key: 'clustering',
           type: 'checkbox',
-          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'froce'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'froce'])],
         },
         {
           title: 'CLUSTER_GRAVITY',
@@ -261,23 +227,23 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 20,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman'), (v: GraphPreset) => v.properties?.clustering]
+          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman'), (v: GraphPreset) => v.properties?.clustering],
         },
         {
           title: 'DIRECTION',
           _key: 'rankdir',
           type: 'selection',
           options: ['TB', 'BT', 'LR', 'RL'],
-          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')],
         },
         {
           title: 'ALIGN',
           _key: 'align',
           type: 'selection',
           options: ['UL', 'UR', 'DL', 'DR'],
-          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')],
         },
-{
+        {
           title: 'COLLIDE_STRENGTH',
           _key: 'colideStrength',
           type: 'slider',
@@ -285,7 +251,7 @@ export default class GraphSettings extends WidgetBase {
           max: 0.5,
           step: 0.1,
           default: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, ['force'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['force'])],
         },
         {
           title: 'EDGE_STRENGTH',
@@ -295,7 +261,7 @@ export default class GraphSettings extends WidgetBase {
           max: 1000,
           step: 10,
           default: 200,
-          requirements: [(v: GraphPreset) => isLayout(v, ['gForce'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['gForce'])],
         },
         {
           title: 'NODE_STRENGTH',
@@ -304,7 +270,7 @@ export default class GraphSettings extends WidgetBase {
           min: 1,
           max: 5000,
           default: 150,
-          requirements: [(v: GraphPreset) => isLayout(v, ['gForce', 'force'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['gForce', 'force'])],
         },
         {
           title: 'LINK_DISTANCE',
@@ -313,7 +279,7 @@ export default class GraphSettings extends WidgetBase {
           min: 1,
           default: 150,
           max: 500,
-          requirements: [(v: GraphPreset) => isLayout(v, ['radial', 'mds', 'gForce', 'force'])]
+          requirements: [(v: GraphPreset) => isLayout(v, ['radial', 'mds', 'gForce', 'force'])],
         },
         {
           title: 'UNIT_RADIUS',
@@ -321,7 +287,7 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 10,
           max: 300,
-          requirements: [(v: GraphPreset) => isLayout(v, 'radial')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'radial')],
         },
         {
           title: 'Repulsive parameter',
@@ -330,7 +296,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           default: 5,
-          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')],
         },
         {
           title: 'MAX_ITERATION',
@@ -339,7 +305,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10000,
           default: 500,
-          requirements: [(v: GraphPreset) => isLayout(v, 'gForce')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'gForce')],
         },
         {
           title: 'Gravity parameter',
@@ -348,7 +314,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           default: 5,
-          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')],
         },
         {
           title: 'RADIUS',
@@ -356,7 +322,7 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 10,
           max: 1000,
-          requirements: [(v: GraphPreset) => isLayout(v, 'circular')]
+          requirements: [(v: GraphPreset) => isLayout(v, 'circular')],
         },
         {
           title: 'FONT_SIZE',
@@ -364,19 +330,19 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 8,
           max: 24,
-          default: 12
+          default: 12,
         },
         {
           title: 'HIDE_NODE_LABEL',
           _key: 'hideNodeLabel',
-          type: 'checkbox'
+          type: 'checkbox',
         },
         {
           title: 'HIDE_EDGE_LABEL',
           _key: 'hideEdgeLabel',
-          type: 'checkbox'
-        }
-      ]
+          type: 'checkbox',
+        },
+      ],
     } as IFormObject;
   }
 

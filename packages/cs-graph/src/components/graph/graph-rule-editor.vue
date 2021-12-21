@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activePreset && rule" >
+  <div v-if="activePreset && rule" class="rule-line" >
     <v-layout>
       <span class="rule-legend" :style="getRuleStyle(rule)">
         <!-- <v-icon dark class="rule-legend-icon" v-if="rule._featureType && rule._featureType.icon">{{rule._featureType.icon}}</v-icon> -->
@@ -54,6 +54,10 @@
 </template>
 
 <style scoped>
+
+.rule-line{
+  margin: 6px;
+}
 .rule-type {
   font-size: 22px;
 }
