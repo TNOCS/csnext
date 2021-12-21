@@ -1,21 +1,23 @@
 <template>
 
   <node-view-wrapper
-    class="text-entity-component"
     v-if="node"
+    class="text-entity-component"
     :style="style"
     :class="{ 'highlight' : entity && entity._highlight, 'excluded': entity && !entity._included && !entity._highlight, 'hide': !visible}"   
   >  
     
       <v-menu
         offset-y
+        open-on-hover        
+        
         v-model="openMenu"
         :close-on-content-click="false"
-        open-delay="500"      
+        open-delay="10"      
       >
         <template v-slot:activator="{ on, attrs }">        
 <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
-          <span         
+          <span                  
             @click.stop="selectEntity()"
             class="content entity-drag"
             :id="'drag-' + node.attrs.id"
@@ -123,6 +125,7 @@ export default class TextEntityComponent extends Vue {
   public icon?: string | null = null;
   public style?: CSSStyleDeclaration | null = null;
   public node?: any;
+  private detailed = true;
 
   public menuItems: any[] = [];
 
@@ -148,6 +151,8 @@ export default class TextEntityComponent extends Vue {
     return node.attrs.type === 'location';
   }
 
+  @Watch('document.activeLearningType')
+  @Watch('document.properties.learn_mode')
   public setStyle() {
     if (!this.source || !this.document) { return {} as CSSStyleDeclaration}    
     if (!this.element) {
@@ -164,6 +169,10 @@ export default class TextEntityComponent extends Vue {
       borderColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray'
     
     } as CSSStyleDeclaration;
+    if (this.document?.properties?.editor_mode === 'LEARN' && this.document.properties.learn_mode === 'REVIEW' && this.document.activeLearningType !== this.element?.classId) {
+      this.style.backgroundColor = 'blue';
+      this.$forceUpdate();
+    }
   }
 
   

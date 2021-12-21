@@ -1214,11 +1214,12 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
+    if (!this.storage?.saveElement) { return Promise.reject(); }
     $cs.loader.addLoader(`store-${element.id}`);
     this.updateProvanance(element, user);
 
     try {
-      await this.storage!.saveElement(element);
+      await this.storage.saveElement(element);
       this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element);
       $cs.triggerNotification({
         title: $cs.Translate('NODE_SAVED'),

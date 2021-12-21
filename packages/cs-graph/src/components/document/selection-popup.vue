@@ -1,5 +1,13 @@
-<template>
-  <v-card class="selection-popup" v-if="source">
+<template v-if="source">
+  <div v-if="document.properties.editor_mode && document.properties.editor_mode === 'LEARN'" >
+    <v-layout class="learn-popup" v-if="document.properties.learn_mode && document.properties.learn_mode === 'REVIEW'" >
+    <v-btn style="background:green"><v-icon>mdi-check</v-icon></v-btn>
+    <v-btn style="background:red"><v-icon>mdi-close</v-icon></v-btn>
+    </v-layout>
+    <v-layout v-else>
+    </v-layout>
+  </div>
+  <v-card class="selection-popup" v-else>
     <v-tabs vertical :value="viewtab">
       <v-tab>
         <v-icon left>mdi-tag-outline</v-icon>
@@ -279,6 +287,10 @@
 </template>
 
 <style scoped>
+
+.learn-popup {
+  background-color: transparent;
+}
 .search-button {
   /* position: absolute; */
   top: 5px;

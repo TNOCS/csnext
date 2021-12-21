@@ -5,6 +5,9 @@ import { EntityType, Observation } from '..';
 export class DocElementProperties extends BaseElementProperties {
   public doc?: any;
   public text?: any;
+  public editor_mode?: 'VIEW' | 'EDIT' | 'LEARN';
+  public learn_mode?: 'REVIEW' | 'LEARN'
+  public hide_unknowns?: boolean;
 }
 
 export class GraphDocument extends GraphElement<DocElementProperties> {
@@ -14,6 +17,7 @@ export class GraphDocument extends GraphElement<DocElementProperties> {
     public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
     public entityTypes: { [id: string]: EntityType } = {};
+    public activeLearningType? : FeatureType;
     
     public get doc() : any {
         if (!this.properties) { this.properties = {}}
