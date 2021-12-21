@@ -1,9 +1,17 @@
 import { FeatureType, GraphDatasource } from '../..';
 import { BaseElementProperties, GraphElement } from './graph-element';
 
+
+export interface IGraphNodeDefinition {
+  x?: number;
+  y?: number;
+  _element?: GraphElement;
+}
+
 export class GraphFilterProperties extends BaseElementProperties {
     title?: string;
     showDataModel? = false;
+    editor_mode?: 'VIEW' | 'EDIT';
     showInstance? = true;
     showReliability? = false;
     filterTimeline? = false;
@@ -44,6 +52,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     pinnedFeatureTypes?: string[];
     layers?: string[];
     geoFilter?: Number[][];
+    nodes?: { [id: string] : IGraphNodeDefinition};
   
   }
 
@@ -54,6 +63,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     public static VISIBLE_NODES_CHANGED = 'visible-nodes-changed';
     public static RULES_CHANGED = 'rules-changed';
     public _visibleNodes: GraphElement[] = [];
+    public _selectedElements: string[] = [];
     
 
     public _stats?: {[key: string]: GraphFeatureTypeStat};

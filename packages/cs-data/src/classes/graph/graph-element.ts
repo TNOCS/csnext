@@ -132,7 +132,9 @@ export class GraphElement<T = BaseElementProperties> {
         }
         return value;
       })
-    );
+    ) as GraphElement;
+    if (result.to) { delete result.to; }
+    if (result.from) { delete result.from; }
     return result;
   }
 

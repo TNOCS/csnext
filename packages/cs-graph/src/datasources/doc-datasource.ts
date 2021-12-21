@@ -8,6 +8,7 @@ import {
   DataSet,
   FeatureType,
   PropertyValueType,
+  GraphFilterProperties,
   GraphPreset,
   IGraphNodeDefinition,
 } from '@csnext/cs-data';
@@ -393,22 +394,7 @@ export class DocDatasource extends GraphDatasource {
   //#region presets
 
   public getGraphPreset(id: string): FilterGraphElement | undefined {
-    return this.graphPresets.find((p) => p.id === id);
-  }
-
-  public loadGraphPresets() {
-    this.graphPresets = [];
-    const presets = localStorage.getItem('graph-presets');
-    if (presets) {
-      const pConfig = JSON.parse(presets) as string[];
-      for (const config of pConfig) {
-        // this.graphPresets.push(GraphPreset.import(config, this));
-      }
-      if (this.graphPresets.length > 0) {
-        this.applyGraphPreset(this.graphPresets[0]);
-      }
-    } else {
-    }
+    return this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
   }
 
   public emptyGraph(trigger = true, preset?: string) {
@@ -423,25 +409,13 @@ export class DocDatasource extends GraphDatasource {
     if (trigger) {
       this.triggerUpdateGraph();
     }
-  }
-
-  public deletePreset(preset: FilterGraphElement) {
-    this.graphPresets = this.graphPresets.filter((pr) => pr !== preset);
-    if (this.activeGraphPreset === preset) {
-      if (this.graphPresets.length > 0) {
-        this.applyGraphPreset(this.graphPresets[0]);
-      } else {
-        this.addGraphPreset();
-      }
-    }
-    this.saveGraphPresets();
-  }
+  }  
 
   public addGraphPreset(preset?: FilterGraphElement, activate = true): FilterGraphElement {
     if (!preset) {
       preset = {
         ...new FilterGraphElement(this),
-        ...{ id: 'default', title: 'default' },
+        ...{ id: 'default' },
       };
     } else {
       preset = { ...new FilterGraphElement(this), ...preset };
@@ -449,7 +423,7 @@ export class DocDatasource extends GraphDatasource {
     if (!preset._visibleNodes) {
       preset._visibleNodes = [];
     }
-    this.graphPresets.push(preset);
+    this.saveNode(preset);    
     if (activate) {
       this.applyGraphPreset(preset);
     }
@@ -1057,8 +1031,7 @@ export class DocDatasource extends GraphDatasource {
           try {
             await this.loadGraph(loadGraph);
             this.updateEdges(true);
-            await this.parseDocuments();
-            this.loadGraphPresets();
+            await this.parseDocuments();            
             this.checkQueryParams();
             console.log('publish graph loaded event');
             this.bus.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.GRAPH_LOADED);
@@ -1100,7 +1073,7 @@ export class DocDatasource extends GraphDatasource {
     }
     const node = await this.addNewNode({
       id: `${type.type}-${guidGenerator()}`,
-      properties: { ...newItem, classId: type.type, name },
+      properties: { ...newItem, name },
       classId: type.type,
     });
     return node;
@@ -1306,10 +1279,32 @@ export class DocDatasource extends GraphDatasource {
       delete this.graph[edge.id];
     }
     // this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, edge)
-    this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_REMOVED, edge);
+    this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.EDGE_REMOVED, edge);
     $cs.loader.removeLoader(`unlink-${edge.id}`);
 
     return Promise.resolve(true);
+  }
+
+  public async saveEdge(edge: GraphElement, updateEdges = true) : Promise<GraphElement> {
+    $cs.loader.addLoader(`store-${edge.id}`);
+    if (this.storage?.saveElement) {
+      try {
+        const r = await this.storage.saveElement(edge);
+        await this.addEdge(edge);
+        if (updateEdges) {
+          await this.updateEdges();
+          await this.parseEntities();
+        }
+        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);        
+        return Promise.resolve(edge);
+      } catch (err) {
+        return Promise.reject(err);
+      }
+      finally {
+        $cs.loader.removeLoader(`store-${edge.id}`);
+      }
+    }
+    return Promise.reject();
   }
 
   /**
@@ -1317,24 +1312,7 @@ export class DocDatasource extends GraphDatasource {
    */
   public async addNewEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
     edge = this.createEdge(edge);
-    $cs.loader.addLoader(`store-${edge.id}`);
-
-    if (this.storage?.saveEdge) {
-      try {
-        const r = await this.storage.saveEdge(edge);
-        await this.addEdge(edge);
-        if (updateEdges) {
-          await this.updateEdges();
-          await this.parseEntities();
-        }
-        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);
-        $cs.loader.removeLoader(`store-${edge.id}`);
-        return Promise.resolve(edge);
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    }
-    return Promise.reject();
+    return this.saveEdge(edge);    
   }
 
   public async addNewNode(element: GraphElement): Promise<GraphElement> {
@@ -1379,10 +1357,7 @@ export class DocDatasource extends GraphDatasource {
   public selectElementId(id: string, open = false) {
     const e = this.getElement(id);
     if (e) {
-      this.selectElement(e, open);
-      if (open) {
-        this.openElement(e);
-      }
+      this.selectElement(e, open);      
     }
   }
 
@@ -1401,7 +1376,11 @@ export class DocDatasource extends GraphDatasource {
     if (!element) {
       return;
     }
+    this.activeElement = element;
     element._collapsed = !element._collapsed;
+    if (open) {
+      this.openElement(element);
+    }
     this.bus.publish('focus', 'element', element);
   }
 
@@ -1583,16 +1562,10 @@ export class DocDatasource extends GraphDatasource {
   public execute(): Promise<DocDatasource> {
     return new Promise(async (resolve, reject) => {
       this.initStorage();
-      if (!this.graphPresets) {
-        this.graphPresets = [];
-      }
-
-      // this.activeGraphPreset = this.graphPresets[0];
+      
       await this.refresh(true);
       this.loadElementHistory();
-
-      // this.map = await $cs.loadDatasource<CrossFilterDatasource>(this.mapsourceId) as CrossFilterDatasource;
-
+      
       this.importPlugins.push(new EmptyDocumentImport());
 
       if (this.timesourceId) {

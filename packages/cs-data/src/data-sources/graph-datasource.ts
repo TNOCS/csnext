@@ -15,7 +15,8 @@ import {
   PropertyValueType,
   WktUtils,
   ValueOperatorType,
-  GraphFilter  
+  GraphFilter,  
+  BaseElementProperties
 } from '../';
 import throttle from 'lodash/throttle';
 import Fuse from 'fuse.js';
@@ -29,6 +30,7 @@ export class GraphDatasource extends DataSource {
   public static ELEMENT_UPDATED = 'element-updated';
   public static ELEMENT_ADDED = 'element-added';
   public static ELEMENT_REMOVED = 'element-removed';
+  public static EDGE_REMOVED = 'edge-removed';
   public static PRESET_EVENTS = 'preset-events';
   public static PRESET_ELEMENT_ADDED = 'preset-element-added';
   public static PRESET_ACTIVATED = 'preset-activated';
@@ -47,7 +49,6 @@ export class GraphDatasource extends DataSource {
   public typeStats: { [key: string]: FeatureTypeStat } = {};
   public fuse?: Fuse<any>;
   public fuseOptions?: Fuse.IFuseOptions<any> = {};
-  public graphPresets: GraphPreset[] = [];
   public activeGraphPreset?: GraphPreset;
 
   public get featureTypes(): FeatureTypes | undefined {
@@ -340,9 +341,9 @@ export class GraphDatasource extends DataSource {
     } else return false;
   }
 
-  public getElement(id: string): GraphElement | undefined {
+  public getElement<T = BaseElementProperties>(id: string): GraphElement<T> | undefined {
     if (this.graph.hasOwnProperty(id)) {
-      return this.graph[id];
+      return this.graph[id] as GraphElement<T>;
     }
     return;
   }
@@ -599,8 +600,7 @@ export class GraphDatasource extends DataSource {
 
   public addNode(element: GraphElement, classId?: string, merge?: boolean) {
     let res = this;
-
-    element.type = 'node';
+    if (!element.type) { element.type = 'node'; }
     if (classId) {
       element.classId = classId;
     }
@@ -669,7 +669,7 @@ export class GraphDatasource extends DataSource {
 
   public addEdge(element: GraphElement, classId?: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (element.toId && element.fromId) {
+      
         element = this.createEdge(element, classId);
         if (
           !element._featureType &&
@@ -682,10 +682,7 @@ export class GraphDatasource extends DataSource {
         }
         this.updateElementEdges(element);
         this.addElement(element);
-        resolve(true);
-      } else {
-        reject('edge is missing to/from ids');
-      }
+        resolve(true);      
     });
   }
 
@@ -780,7 +777,7 @@ export class GraphDatasource extends DataSource {
     }
   }
 
-  public addElement(element: GraphElement) {
+  public addElement(element: GraphElement, merge?: boolean) {
     element = { ...new GraphElement(), ...element };
     // if (source && !element.properties!.hasOwnProperty('source')) {
     //     element.properties!.source = source;
