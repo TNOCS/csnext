@@ -2,17 +2,18 @@
   <node-view-wrapper
     class="paragraph-component"        
   >
-   <v-layout><div class="paragraph-control">
-     <!-- <v-btn fab outlined x-small class="paragraph-button"><v-icon x-small>mdi-plus</v-icon></v-btn> -->
-   </div>
+
+     <!-- <v-icon aria-hidden="true" class="paragraph-button" x-small>mdi-drag</v-icon> -->
+<!-- <v-icon class="paragraph-button" x-small>mdi-drag</v-icon> -->
    <node-view-content class="paragraph-content" />
+   
         <!-- <span          
           class="content"
           v-bind="attrs"
           v-on="on"
           >test paragraph
         </span> -->
-   </v-layout>
+   <!-- </v-layout> -->
   </node-view-wrapper>  
 </template>
 
@@ -22,8 +23,6 @@ import {
   NodeViewWrapper,
   NodeViewContent
 } from "@tiptap/vue-2";
-
-import { GraphElement, TextEntity } from "@csnext/cs-data";
 
 
 @Component({
@@ -36,35 +35,28 @@ export default class ParagraphComponent extends Vue {
   @Prop()
   nodeViewProps: any;
 
-  
-
-  public mounted() {
-    // debugger;
-    // console.log('mounted text entity component');    
-  }
 }
 </script>
 
 <style lang="css" scoped>
 .paragraph-component {  
-  
+  position: relative;
 }
 
-
-.paragraph-control {
-  width: 20px;     
-  margin: 5px;
-  border-color: gray;
-  /* border-color: red; */
-  border-left-width: 2px;  
-  border-left-style: solid;
+.paragraph-component::before {
+  content: "<v-icon x-small>mdi-drag</v-icon>";
 }
+
 
 .paragraph-button {
-  width: 24px;
+  display: none;
+  position: absolute;
+
+  left: -20px;
+  /* width: 24px;
   height: 24px;
-  transform: translateX(-12);
-  background: white;  
+  transform: translateX(-20px);
+  background: white;   */
 }
 
 .paragraph-content {
