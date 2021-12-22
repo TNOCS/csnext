@@ -3073,7 +3073,7 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-document/-/extension-document-2.0.0-beta.15.tgz#5d17a0289244a913ab2ef08e8495a1e46950711e"
   integrity sha512-ypENC+xUYD5m2t+KOKNYqyXnanXd5fxyIyhR1qeEEwwQwMXGNrO3kCH6O4mIDCpy+/WqHvVay2tV5dVsXnvY8w==
 
-"@tiptap/extension-dropcursor@^2.0.0-beta.25":
+"@tiptap/extension-dropcursor@2.0.0-beta.25", "@tiptap/extension-dropcursor@^2.0.0-beta.25":
   version "2.0.0-beta.25"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-dropcursor/-/extension-dropcursor-2.0.0-beta.25.tgz#962f290a200259533a26194daca5a4b4a53e72d3"
   integrity sha512-GYf5s6dkZtsDy+TEkrQK6kLbfbitG4qnk02D+FlhlJMI/Nnx8rYCRJbwEHDdqrfX7XwZzULMqqqHvzxZYrEeNg==
@@ -18657,6 +18657,11 @@ vue-router@^3.4.5, vue-router@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.5.3.tgz#041048053e336829d05dafacf6a8fb669a2e7999"
   integrity sha512-FUlILrW3DGitS2h+Xaw8aRNvGTwtuaxrRkNSHWTizOfLUie7wuYwezeZ50iflRn8YPV5kxmU2LQuu3nM/b3Zsg==
+
+vue-scroll-stop@0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/vue-scroll-stop/-/vue-scroll-stop-0.1.5.tgz#ca19e3f425260287c52b1dda2ea2305a092f7521"
+  integrity sha512-7tvDxo50j2TMO2L4VIPhbowU4WPniNU6rH6W3k1oFoeGLR+o8Kz+HGjf2yaU8+qk/2cbugqrsGWYI0SJ/Yv46w==
 
 vue-server-renderer@^2.6.10:
   version "2.6.14"

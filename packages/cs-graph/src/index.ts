@@ -36,6 +36,9 @@ import Management from './components/graph/management.vue';
 import GraphMap from './components/graph/graph-map.vue';
 import mdiFont from './assets/mdfont.json';
 import Suggestions from './components/insights/suggestions.vue';
+import VueScrollStop from "vue-scroll-stop";
+import Vue from "vue";
+Vue.use(VueScrollStop);
 
 const locales = require('./assets/locales.json');
 
