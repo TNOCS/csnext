@@ -970,15 +970,10 @@ if (!this.treeItems) { return; }
         },
         custom: (s: any) => {
           return s.properties.updated_time;
-          // if (this.sort?.key) {
-          //   return s.properties[this.sort.key];
-          // } else {
-          //   return s.properties.name;
-          // }
-        }
-        // updated: '.properties.updated_time',
+        },
+        assessment: (s: any) => `${s.properties.assessment || 0}${s.properties.name}`
       },
-      sortBy: 'custom',
+      sortBy: 'assessment',
       // percentPosition: true,
       // options for cellsByRow layout mode
 
