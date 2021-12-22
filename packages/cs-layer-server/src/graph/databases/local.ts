@@ -107,6 +107,16 @@ export class LocalStorage implements IDatabase {
         })
     }
 
+    public async removeMultiple(ids: string[]): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            let promises = ids.map(id => {return this.remove(id);});
+            Promise.all(promises).then(() => {
+                this.debounceSave();
+            }).finally(() => {     
+                resolve(true);
+            });
+        });
+    }
 
     public async storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any> {
         return new Promise(async (resolve, reject) => {
@@ -117,7 +127,6 @@ export class LocalStorage implements IDatabase {
             resolve(res);
         });
     }
-
 
     public loadGraph(graph: { [key: string]: GraphElement }, agentId?: string): Promise<boolean> {
         return new Promise(async (resolve, reject) => {

@@ -629,6 +629,13 @@ export class GraphController {
     }
   }
 
+  @Post('/removemultiple')
+  async removeMultiple(@Body() body: any[]) {
+    return new Promise(async (resolve, reject) => {
+      resolve(this.graph.removeMultiple(body));
+    });
+  }
+
   @Post('/loadgraph')
   loadGraph(@Body() body: { [key: string]: GraphElement }, @Query('agent') agent?: string) {
     return new Promise(async (resolve, reject) => {
