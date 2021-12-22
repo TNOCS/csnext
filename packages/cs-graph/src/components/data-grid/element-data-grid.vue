@@ -684,47 +684,54 @@ export default class ElementDataGrid extends WidgetBase {
   public async linkAll() {
     if (!this.treeItems) { return; }
     for (const item of this.treeItems) {
-      await this.link(item);      
+      await this.link(item, false);      
     }
+    this.updateEntities(true);
   }
 
   public async unLinkAll() {
-if (!this.treeItems) { return; }
+    if (!this.treeItems) { return; }
     for (const item of this.treeItems) {
-      await this.unlink(item);      
+      await this.unlink(item, false);      
     }
+    this.updateEntities(true);
   }
 
-  public async unlink(entity: GraphElement) : Promise<boolean> {
+  public async unlink(entity: GraphElement, update = true) : Promise<boolean> {
     if (!this.source) {      
       return Promise.reject();
     }
     try {
     await this.source.removeEdge((entity as any)._isLinked);
     Vue.set(entity, '_isLinked', undefined);
-    this.updateEntities(true);
+    if (update) {
+      this.updateEntities(true);
+    }
     return Promise.resolve(true);
     } catch (e) {
       return Promise.reject(e);
     }
   }
 
-  public async link(entity: GraphElement) : Promise<boolean> {
+  public async link(entity: GraphElement, update = true) : Promise<boolean> {
     if (!this.source) {      
       return Promise.reject();
     }
     if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
-        try {
-        const linkEdge = await this.source.addNewEdge(
+        try {          
+          const linkEdge = await this.source.addNewEdge(
             {
               fromId: this.options.relationToggle.fromId,
               toId: entity.id,
               classId: this.options.relationToggle.relationClassId
             } as GraphElement,
-            true
+            false
           )
-        Vue.set(entity, '_isLinked', linkEdge);
-        this.updateEntities(true);
+          Vue.set(entity, '_isLinked', linkEdge);
+          if (update) {
+            this.updateEntities(true);
+          }
+        return Promise.resolve(true);
       }
       catch (e) {
         return Promise.reject(e);
@@ -739,14 +746,11 @@ if (!this.treeItems) { return; }
       return;
     }
     if ((entity as any)._isLinked) {
-      await this.unlink(entity);
-      
-
-      // (entity as any)._isLinked = undefined;
+      await this.unlink(entity);      
     } else {
       await this.link(entity);
     }
-    // this.updateEntities(true);
+    this.updateEntities(true);
   }
 
   public itemPropValues(prop: PropertyType, element: GraphElement) {
@@ -1215,8 +1219,6 @@ if (!this.treeItems) { return; }
           }
         }
       );
-
-      // alert("following");
     } else {
       this.items = this.source.getClassElements(baseType, true, this.options.filter);
     }
@@ -1228,17 +1230,23 @@ if (!this.treeItems) { return; }
       }
     }
 
-    // this.rowData = this.items;
+    // // this.rowData = this.items;
 
-    if (!this.sort) {
-      this.sort = this.featureType.properties?.find((p) => p.key === 'updated_time');
-    }
+    // if (!this.sort) {
+    //   this.sort = this.featureType.properties?.find((p) => p.key === 'updated_time');
+    // }
 
     if (this.options.defaultView === GridView.tree && this.options.parentProperty) {
       // console.log("starting update tree");
+
+      Object.freeze(this.treeItems);
+
+      if (!this.treeItems || this.treeItems.length === 0) {
+        const treeItems = this.updateTree([], undefined, undefined);
+        Vue.set(this, 'treeItems', treeItems);
+      }
       //
-      const treeItems = this.updateTree([], undefined, undefined);
-      Vue.set(this, 'treeItems', treeItems);
+      
       // console.log(this.treeItems);
       // this.$forceUpdate();
     }
@@ -1248,6 +1256,7 @@ if (!this.treeItems) { return; }
     }
 
     this.update();
+    this.$forceUpdate();
   }
 
   public updateLinkedEntities() {
@@ -1296,8 +1305,8 @@ if (!this.treeItems) { return; }
 
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED) {
-          this.updateEntities(true);
-          this.$forceUpdate();
+          // this.updateEntities(true);
+          // this.$forceUpdate();
         }
       });
     }

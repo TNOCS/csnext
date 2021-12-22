@@ -1287,14 +1287,19 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async saveEdge(edge: GraphElement, updateEdges = true) : Promise<GraphElement> {
-    $cs.loader.addLoader(`store-${edge.id}`);
+    $cs.loader.addLoader(`saveedge-${edge.id}`);
     if (this.storage?.saveElement) {
       try {
         const r = await this.storage.saveElement(edge);
         await this.addEdge(edge);
         if (updateEdges) {
-          await this.updateEdges();
-          await this.parseEntities();
+          if (edge) {
+            this.updateElementEdges(edge);            
+          } else {
+            await this.updateEdges();
+            await this.parseEntities();
+          }
+          
         }
         this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);        
         return Promise.resolve(edge);
@@ -1302,7 +1307,7 @@ export class DocDatasource extends GraphDatasource {
         return Promise.reject(err);
       }
       finally {
-        $cs.loader.removeLoader(`store-${edge.id}`);
+        $cs.loader.removeLoader(`saveedge-${edge.id}`);
       }
     }
     return Promise.reject();

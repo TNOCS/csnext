@@ -608,12 +608,7 @@ export class GraphDatasource extends DataSource {
     if (merge && element.id && this.graph.hasOwnProperty(element.id)) {
       const existing = this.graph[element.id];
       existing.properties = { ...existing.properties, ...element.properties };
-    } else {
-      // if (element.classId) {
-      //     res = res.addElement(element,stepId).addEdge({ fromId: element.id, toId: element.classId, _firstStep: stepId, classId: 'is', properties: { verified: true} }, stepId) as any;
-      // } else {
-      //     res = res.addElement(element, stepId);
-      // }
+    } else {      
       if (
         !element._featureType &&
         element.classId &&
