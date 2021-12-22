@@ -157,9 +157,18 @@ export class GraphServer implements IGraphStorage {
               for (const el of data.elements) {
                 if (el.id && el.properties?.hash_) {
                   const existing = this.source.getElement(el.id);
-                  if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
-                    existing.properties = el.properties;
-                    this.source.updateElementProperties(el);
+                  if (existing) {
+                    if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
+                      existing.properties = el.properties;
+                      this.source.updateElementProperties(el);
+                    }
+                  } else {
+                    if (el.type === 'edge') {
+                      this.source.addEdge(el);
+                    } else {
+                      this.source.addNode(el);
+                    }
+                    this.source.triggerUpdateGraph(el);
                   }
                 }                
               }
