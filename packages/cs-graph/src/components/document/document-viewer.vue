@@ -186,7 +186,7 @@
         <div class="document-title">
         {{ source.activeDocument.properties.name }}
       </div>
-        <floating-menu :editor="editor" v-if="editor && source.activeDocument.properties.editor_mode === 'EDIT'">
+        <!-- <floating-menu :editor="editor" v-if="editor && source.activeDocument.properties.editor_mode === 'EDIT'">
           <button
             @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
@@ -202,7 +202,7 @@
           <button @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
             Bullet List
           </button>
-        </floating-menu>
+        </floating-menu> -->
         <bubble-menu :editor="editor" v-if="editor">
           <v-autocomplete
             v-if="!editor.isActive('text-entity')"
@@ -223,6 +223,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
+          v-scroll-stop="true"
           class="document-editor editor__content"
           :editor="editor"
         />
@@ -253,6 +254,7 @@ import { FeatureType } from '@csnext/cs-data';
 import { IImportPlugin } from '../..';
 import interact from 'interactjs';
 import { DocUtils } from '../../utils/doc-utils';
+import Dropcursor from '@tiptap/extension-dropcursor'
 
 @Component({
   components: {
@@ -469,15 +471,6 @@ export default class DocumentViewer extends WidgetBase {
       this.editor.destroy();
       this.source.editor = undefined;
     }
-
-    // this.source.syncEntities(
-    //   this.source.activeDocument,
-    //   this.source.activeDocument.properties?.doc?.content,
-    //   true
-    // );
-    // this.source.parseEntities();
-    // this.createTextEntities();
-
     if (!this.editor) {
       if (!this.source.activeDocument.properties?.text || this.source.activeDocument.properties.text.length === 0) {
         this.startMenu = true;
@@ -487,6 +480,7 @@ export default class DocumentViewer extends WidgetBase {
           StarterKit,
           // SmilieReplacer,
           TextExtension,
+          Dropcursor,
           ParagraphExtension,
           Highlight,
           Placeholder,
@@ -581,6 +575,7 @@ export default class DocumentViewer extends WidgetBase {
         content: this.source?.activeDocument?.properties?.doc,
         editable: true,
         editorProps: {
+          
           document: this.source!.activeDocument,
           source: this.source,
           attributes: {
@@ -588,79 +583,12 @@ export default class DocumentViewer extends WidgetBase {
           },
         } as any,
       });
-      this.editor!.setEditable(this.source?.activeDocument?.properties?.edit_mode === 'EDIT');
+      if (!this.source.activeDocument.properties.editor_mode) {
+        this.source.activeDocument.properties.editor_mode = 'EDIT';
+      }
+      this.setEditorMode(this.source.activeDocument.properties.editor_mode);
     }
 
-    // this.editor.content = ; // this.source?.activeDocument?.originalText;
-    // this.editor.options./ = false;
-    // this.editor.on("transaction", (a: any) => {
-    //   // console.log(a);
-    //   const state = a.state;
-    //   if (state.selection && this.source?.activeDocument?.entities) {
-    //     this.selection = state.selection;
-    //     const from = state.selection.from;
-    //     const to = state.selection.to;
-    //     this.selectionFrom = from;
-    //     this.selectionTo = to;
-    //     // no selection, use cursor pos
-    //     if (from === to) {
-    //       let pos = this.selection?.$cursor?.pos;
-    //       // console.log('cursor: ' + pos);
-    //       // console.log('anchor ' + this.selection?.$anchor?.pos);
-    //       // console.log('head ' + this.selection?.$head?.pos);
-
-    //       if (pos) {
-    //       const entity = this.source.activeDocument.entities.find(
-    //         (e) =>
-    //           e.position_start !== undefined &&
-    //           e.position_end !== undefined &&
-    //           e.position_end >= pos &&
-    //           e.position_start <= pos
-    //       );
-    //       if (this.source && entity) {
-    //         this.selectedEntity = entity;
-    //         // console.log(this.selectedEntity.text);
-    //         // console.log(this.selectedEntity.position_start +  ' - ' + this.selectedEntity.position_end);
-    //         if (this.selectedEntity.position_start && this.selectedEntity.position_end) {
-    //           this.editor.setSelection(this.selectedEntity.position_start + 1, this.selectedEntity.position_end);
-    //           this.editor.focus();
-    //         }
-
-    //         // const transaction = a.setSelection(new TextSelection(this.selectedEntity.position_start, this.selectedEntity.position_end));
-    //         // this.editor!.dispatch(transaction);
-
-    //         if (entity._node) {
-    //           // this.source.toggleElement(entity._node);
-    //           this.source.selectElement(entity._node, false);
-    //           // this.source!.selectElement(entity._node, true);
-    //         } else {
-
-    //         }
-    //       } else {
-    //         this.selectedEntity = undefined;
-    //       }
-    //       }
-    //       // const entity = this.source.activeDocument.entities.find(
-    //       //   (e) =>
-    //       //     e.position_start !== undefined &&
-    //       //     e.position_end !== undefined &&
-    //       //     e.position_end >= from &&
-    //       //     e.position_start <= from
-    //       // );
-
-    //     } else {
-    //       // if (to - from < 20) {
-    //       this.selectionText = this.source.activeDocument.originalText!.substring(
-    //         from - 1,
-    //         to - 1
-    //       );
-    //       // } else {
-    //       //   this.selectionText = undefined;
-
-    //       // }
-    //     }
-    //   }
-    // });
   }
 
   public loadDocument(doc: GraphDocument) {
@@ -776,12 +704,12 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    if (this.source.activeDocument.entities && this.source.activeDocument.entities.length > 0) {
-      $cs.triggerNotification({
-        title: 'currently re-running the pipeline is not supported',
-      });
-      return;
-    } else if (
+    // if (this.source.activeDocument.entities && this.source.activeDocument.entities.length > 0) {
+    //   $cs.triggerNotification({
+    //     title: 'currently re-running the pipeline is not supported',
+    //   });
+    //   return;
+    if (
       !this.source.activeDocument.entities ||
       this.source.activeDocument.entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog('Update entities', 'This will reset all existing entities (currently not supported!!!)')) === 'YES'
@@ -1073,83 +1001,84 @@ export default class DocumentViewer extends WidgetBase {
     this.dragInitialized = true;
     const position = { x: 0, y: 0 };
 
-    interact('#doc-editor')
-      .dropzone({
-        ondrop: async (e) => {
-          e.stopImmediatePropagation();
-          let pos = { x: 100, y: 100 };
-          // if (e._interaction?.coords?.cur?.client) {
-          //   pos = this.graph!.getPointByClient(e._interaction.coords.cur.client.x, e._interaction.coords.cur.client.y);
-          // }
+    // interact('.paragraph-component')
+    // interact('#doc-editor')
+    //   .dropzone({
+    //     ondrop: async (e) => {
+    //       e.stopImmediatePropagation();
+    //       let pos = { x: 100, y: 100 };
+    //       // if (e._interaction?.coords?.cur?.client) {
+    //       //   pos = this.graph!.getPointByClient(e._interaction.coords.cur.client.x, e._interaction.coords.cur.client.y);
+    //       // }
 
-          if (e.interaction?.element) {
-            e.interaction.element.remove();
-          }
-        //   if (e.relatedTarget?.dataset?.elementid) {
-        //     // find element
-        //     const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
-        //     if (existingElement?.id && this.activePreset?.properties?.nodes) {
-        //       this.activePreset.properties.nodes[existingElement.id] = {
-        //         x: pos.x,
-        //         y: pos.y,
-        //       };
+    //       if (e.interaction?.element) {
+    //         e.interaction.element.remove();
+    //       }
+    //     //   if (e.relatedTarget?.dataset?.elementid) {
+    //     //     // find element
+    //     //     const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
+    //     //     if (existingElement?.id && this.activePreset?.properties?.nodes) {
+    //     //       this.activePreset.properties.nodes[existingElement.id] = {
+    //     //         x: pos.x,
+    //     //         y: pos.y,
+    //     //       };
 
-        //       this.addElement(existingElement);
+    //     //       this.addElement(existingElement);
 
-        //       this.updateGraph(this.source!.graph);
-        //     }
-        //   }
-        //   if (e.relatedTarget?.dataset?.id) {
-        //     const type = e.relatedTarget?.dataset?.id;
+    //     //       this.updateGraph(this.source!.graph);
+    //     //     }
+    //     //   }
+    //     //   if (e.relatedTarget?.dataset?.id) {
+    //     //     const type = e.relatedTarget?.dataset?.id;
 
-        //     if (type && this.graph && this.source) {
-        //       const ft = this.source.getFeatureTypeById(type);
-        //       if (ft?.type) {
-        //         const newNode = await this.source.addNewNode({
-        //           id: `${ft.type}-${guidGenerator()}`,
-        //           properties: { type, name: ft.title },
-        //           classId: ft.type,
-        //         });
+    //     //     if (type && this.graph && this.source) {
+    //     //       const ft = this.source.getFeatureTypeById(type);
+    //     //       if (ft?.type) {
+    //     //         const newNode = await this.source.addNewNode({
+    //     //           id: `${ft.type}-${guidGenerator()}`,
+    //     //           properties: { type, name: ft.title },
+    //     //           classId: ft.type,
+    //     //         });
 
-        //         if (newNode?.id && this.activePreset?.properties?.nodes) {
-        //           this.activePreset.properties.nodes[newNode.id] = {
-        //             x: pos.x,
-        //             y: pos.y,
-        //           };
+    //     //         if (newNode?.id && this.activePreset?.properties?.nodes) {
+    //     //           this.activePreset.properties.nodes[newNode.id] = {
+    //     //             x: pos.x,
+    //     //             y: pos.y,
+    //     //           };
 
-        //           this.addElement(newNode);
-        //           this.updateGraph(this.source!.graph);                  
-        //           this.source.selectElement(newNode, true)
-        //         }
-        //       }
-        //     }
+    //     //           this.addElement(newNode);
+    //     //           this.updateGraph(this.source!.graph);                  
+    //     //           this.source.selectElement(newNode, true)
+    //     //         }
+    //     //       }
+    //     //     }
 
-        //     //
+    //     //     //
 
-        //     // this.graph.getCanvasByPoint()
+    //     //     // this.graph.getCanvasByPoint()
 
-        //     // if (newNode?.id && element.id && props?.relation?.type) {
-        //     //   await this.source.addEdge({
-        //     //     classId: props.relation.type,
-        //     //     fromId: element.id,
-        //     //     toId: newNode.id,
-        //     //   } as GraphElement);
+    //     //     // if (newNode?.id && element.id && props?.relation?.type) {
+    //     //     //   await this.source.addEdge({
+    //     //     //     classId: props.relation.type,
+    //     //     //     fromId: element.id,
+    //     //     //     toId: newNode.id,
+    //     //     //   } as GraphElement);
 
-        //     // this.source.createKGView([newNode], this.activePreset.id, true);
-        //     // }
+    //     //     // this.source.createKGView([newNode], this.activePreset.id, true);
+    //     //     // }
 
-        //     // alert(ft.title)
-        //   }
+    //     //     // alert(ft.title)
+    //     //   }
 
-        //   // console.log(e.draggable.featureType);
-        //   // console.log();
+    //     //   // console.log(e.draggable.featureType);
+    //     //   // console.log();
 
-        //   console.log(e);
-        },
-      })
-      .on('dropactivate', () => {
-        // event.target.classList.add('drop-activated')
-      });
+    //     //   console.log(e);
+    //     },
+    //   })
+    //   .on('dropactivate', () => {
+    //     // event.target.classList.add('drop-activated')
+    //   });
 
     interact('.drag-type')
       .draggable({
@@ -1329,7 +1258,7 @@ overflow-y: auto; */
 } */
 
 .document-editor {
-  /* margin-left: 30px; */
+  margin-left: 20px;
   /* width: 50%; */
 }
 
