@@ -64,6 +64,15 @@ export class GraphService {
         agentId ?? 'unknown',
         new Date().getTime()
       );
+
+      if (this.socket?.server) {          
+        this.socket.server.emit("graphelement",{
+          action: 'update',
+          elements: [GraphElement.getFlat(element)]            
+        } as IGraphElementAction);
+      }
+
+
       return Promise.resolve(element);
     } catch {
       return Promise.reject();
