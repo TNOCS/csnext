@@ -1,5 +1,5 @@
 import { Injectable, Module, Logger, Inject } from '@nestjs/common';
-import { GraphDatasource, GraphElement, IGraphElementAction } from '@csnext/cs-data';
+import { BaseElementProperties, GraphDatasource, GraphElement, IGraphElementAction } from '@csnext/cs-data';
 import { IDatabase } from './databases/database';
 import { guidGenerator, idGenerator } from '@csnext/cs-core';
 import { LocalStorage } from './databases/local';
@@ -104,16 +104,23 @@ export class GraphService {
           new Date().getTime()
         );
 
-        if (this.socket?.server) {          
-          this.socket.server.emit("graphelement",{
-            action: 'update',
-            elements: [GraphElement.getFlat(element)]            
-          } as IGraphElementAction);
-        }
-
+        this.sendSocketUpdateForElement(element);
         resolve(element);
       }
     });
+  }
+
+  public sendSocketUpdateForElement(element: GraphElement<BaseElementProperties>) {
+    this.sendSocketUpdateForElements([element]);
+  }
+
+  public sendSocketUpdateForElements(elements: GraphElement<BaseElementProperties>[]) {
+    if (this.socket?.server) {          
+      this.socket.server.emit("graphelement",{
+        action: 'update',
+        elements: elements.map(e => GraphElement.getFlat(e))   
+      } as IGraphElementAction);
+    }
   }
 
   public removeMultiple(body: any[]) {
@@ -146,6 +153,7 @@ export class GraphService {
   public storeMultiple(body: any[], agentId?: string) {
     return new Promise(async (resolve, reject) => {
       if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
+        const allElements = [];
         for (const el of body) {
           if (agentId && !el.document?.created_by) {
             el.document.created_by = agentId;
@@ -175,9 +183,11 @@ export class GraphService {
               });
               break;
           }
+          allElements.push(el);
         }
         // fs.writeFileSync('log-' + new Date().getTime() + '.json', JSON.stringify(body));
         await this.db.storeMultiple(body, agentId, new Date().getTime()); // storemultiple(body);
+        this.sendSocketUpdateForElements(allElements);
         resolve({ result: 'ok' });
       }
       reject();
@@ -203,6 +213,7 @@ export class GraphService {
         // await this.db.storeMultiple(body, agentId, new Date().getTime()); // storemultiple(body);
         if (!!this.storeWithIntervalInterval) {
           clearInterval(this.storeWithIntervalInterval);
+          this.storeWithIntervalInterval = undefined;
           this.storeWithIntervalData.length = 0;
         }
         this.storeWithIntervalInterval = setInterval(async () => {
@@ -221,6 +232,7 @@ export class GraphService {
             this.source.triggerUpdateGraph();
           } else {
             clearInterval(this.storeWithIntervalInterval);
+            this.storeWithIntervalInterval = undefined;
             Logger.log('Stopped storing elements on interval', 'GraphService');
           }
         }, intervalMillis);

@@ -4,7 +4,7 @@ import { IDatabase, IData, IQuery, IAllOptions } from "./database";
 import { Link } from "./link";
 import { join } from 'path';
 
-import { GraphElement, GraphDatasource } from "@csnext/cs-data";
+import { GraphElement, GraphDatasource, BaseElementProperties } from "@csnext/cs-data";
 import throttle from 'lodash/throttle';
 // import { reject, throttle } from 'lodash';
 
@@ -116,6 +116,14 @@ export class LocalStorage implements IDatabase {
                 resolve(true);
             });
         });
+    }
+    
+    public sendSocketUpdateForElement(element: GraphElement<BaseElementProperties>) {
+        this.sendSocketUpdateForElements([element]);
+    }
+
+    public sendSocketUpdateForElements(elements: GraphElement<BaseElementProperties>[]) {
+        return;
     }
 
     public async storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any> {
