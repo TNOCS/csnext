@@ -1,7 +1,7 @@
 import neo4j, { Driver  } from "neo4j-driver";
 import { IDatabase, IData, IQuery, IAllOptions } from "./database";
 import { Link } from "./link";
-import { FeatureType } from "@csnext/cs-data";
+import { BaseElementProperties, FeatureType } from "@csnext/cs-data";
 import { GraphEntity, GraphRelation, GraphSchema, ObservationType } from './schema';
 import { generateHash} from "@csnext/cs-core";
 
@@ -297,6 +297,14 @@ export class Neo4J implements IDatabase {
             //TODO
             resolve(true);
         });
+    }
+
+    public sendSocketUpdateForElement(element: GraphElement<BaseElementProperties>) {
+        this.sendSocketUpdateForElements([element]);
+    }
+
+    public sendSocketUpdateForElements(elements: GraphElement<BaseElementProperties>[]) {
+        return;
     }
 
     public async storeMultiple(data: IData[], source?: string, updatedTime?: number): Promise<any> {

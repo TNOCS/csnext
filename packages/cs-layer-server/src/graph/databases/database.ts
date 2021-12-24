@@ -1,4 +1,4 @@
-import { GraphDatasource, GraphElement } from '@csnext/cs-data';
+import { BaseElementProperties, GraphDatasource, GraphElement } from '@csnext/cs-data';
 import { Link } from './link';
 import { GraphSchema, ObservationType } from './schema';
 
@@ -40,6 +40,9 @@ export interface IDatabase {
     schema?(): Promise<GraphSchema>;
     types?(): Promise<ObservationType[]>;
     persist(): Promise<void>;
+    sendSocketUpdateForElement(element: GraphElement<BaseElementProperties>);
+    sendSocketUpdateForElement(element: GraphElement<BaseElementProperties>);
+
     
     link(link: Link): Promise<any>;
     unlinkId?(id: string): Promise<boolean>;

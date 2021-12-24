@@ -255,6 +255,7 @@ import { IImportPlugin } from '../..';
 import interact from 'interactjs';
 import { DocUtils } from '../../utils/doc-utils';
 import Dropcursor from '@tiptap/extension-dropcursor'
+import suggestion from './plugins/suggestion'
 
 @Component({
   components: {
@@ -358,9 +359,6 @@ export default class DocumentViewer extends WidgetBase {
     });
   }
 
-  public mergeEntitites() {
-    // this.updateContent();
-  }
 
   public async clear() {
     if ((await $cs.triggerYesNoQuestionDialog('EMPTY_DOCUMENT', 'EMPTY_DOCUMENT_TEXT')) === 'YES') {
@@ -488,6 +486,7 @@ export default class DocumentViewer extends WidgetBase {
             HTMLAttributes: {
               class: 'text-entity',
             },
+            suggestion
           }),
           // BubbleMenu.configure({
           //   element: document.querySelector('.menu'),
@@ -583,10 +582,10 @@ export default class DocumentViewer extends WidgetBase {
           },
         } as any,
       });
-      if (!this.source.activeDocument.properties.editor_mode) {
+      if (this.source.activeDocument.properties && !this.source.activeDocument.properties.editor_mode) {
         this.source.activeDocument.properties.editor_mode = 'EDIT';
       }
-      this.setEditorMode(this.source.activeDocument.properties.editor_mode);
+      this.setEditorMode(this.source.activeDocument.properties!.editor_mode!);
     }
 
   }
@@ -616,7 +615,6 @@ export default class DocumentViewer extends WidgetBase {
           this.busManager.subscribe(this.source!.bus, 'document-entities', () => {});
         }
       });
-      this.mergeEntitites();
     }
   }
 
@@ -785,10 +783,18 @@ export default class DocumentViewer extends WidgetBase {
       this.updateContent();
       this.initTools();
     });
-    this.checkDocumentIdQuery();
+    if (this.widget.data?.document) {
+      const doc = this.source.getElement(this.widget.data.document) as GraphDocument;
+      this.loadDocument(doc);
+
+    } else {
+      this.checkDocumentIdQuery();
+    }
     this.initTools();
     this.initDragging();
   }
+
+ 
 
   private checkDocumentIdQuery() {
     console.log('check document query');
@@ -1134,7 +1140,7 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public mounted() {
-    if (this.source) {
+    if (this.widget.content) {
       this.contentLoaded(this.widget.content);
     }
   }

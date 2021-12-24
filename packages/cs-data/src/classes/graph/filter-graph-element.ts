@@ -8,51 +8,56 @@ export interface IGraphNodeDefinition {
   _element?: GraphElement;
 }
 
+export class GraphLayout {
+  showInstance? = true;
+  showReliability? = false;
+  filterTimeline? = false;
+  filterStep? = false;
+  showExternal? = false;
+  focusDate?: Date;
+  autoFocus? = true;
+  showAllOnMap? = true;
+  nodeSize?: number;
+  radius?: number;
+  hideNodeLabel?: boolean = false;
+  hideEdgeLabel?: boolean = false;
+  layout?: string = 'circular';
+  showAllOnTimeline? = false;
+  nodeStrenth?: number;
+  linkDistance?: number;
+  nodeSpacing?: number;
+  labelMaxLength?: number;
+  animate?: boolean;
+  gravity?: number;
+  speed?: number;
+  edgeStrength?: number;
+  nodeStrength?: number;
+  maxIteration?: number = 500;
+  rankdir?: string;
+  align?: string;
+  clustering?: boolean;
+  globalFontSize?: number = 12;
+  clusterGravity?: number;
+  unitRadius?: number;
+  kr?: number;
+  kg?: number;
+  collideStrength?: number;
+  alpha?: number;
+  nodeRules?: NodeRule[] = [];
+  rulesEnabled?: boolean;
+  elementsEnabled?: boolean;
+  nodes?: { [id: string] : IGraphNodeDefinition};
+}
+
 export class GraphFilterProperties extends BaseElementProperties {
     title?: string;
     showDataModel? = false;
     editor_mode?: 'VIEW' | 'EDIT';
-    showInstance? = true;
-    showReliability? = false;
-    filterTimeline? = false;
-    filterStep? = false;
-    showExternal? = false;
-    focusDate?: Date;
-    autoFocus? = true;
-    showAllOnMap? = true;
-    nodeSize?: number;
-    radius?: number;
-    hideNodeLabel?: boolean = false;
-    hideEdgeLabel?: boolean = false;
-    layout?: string = 'circular';
-    showAllOnTimeline? = false;
-    nodeStrenth?: number;
-    linkDistance?: number;
-    nodeSpacing?: number;
-    labelMaxLength?: number;
-    animate?: boolean;
-    gravity?: number;
-    speed?: number;
-    edgeStrength?: number;
-    nodeStrength?: number;
-    maxIteration?: number = 500;
-    rankdir?: string;
-    align?: string;
-    clustering?: boolean;
-    globalFontSize?: number = 12;
-    clusterGravity?: number;
-    unitRadius?: number;
-    kr?: number;
-    kg?: number;
-    collideStrength?: number;
-    alpha?: number;
-    nodeRules?: NodeRule[] = [];
-    rulesEnabled?: boolean;
-    elementsEnabled?: boolean;
+    graphLayout?: GraphLayout;
     pinnedFeatureTypes?: string[];
     layers?: string[];
     geoFilter?: Number[][];
-    nodes?: { [id: string] : IGraphNodeDefinition};
+
   
   }
 

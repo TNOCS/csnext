@@ -567,6 +567,14 @@ export class DocDatasource extends GraphDatasource {
       doc.properties.text = '';
     }
 
+    if (!doc.properties.doc) {
+      doc.properties.doc = {
+        type: "doc",
+        content: [    
+        ],
+      };
+    }
+
     doc._source = doc._outgoing?.find((e) => e.classId === 'FROM_SOURCE');
 
     if (doc.properties.entities) {

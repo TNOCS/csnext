@@ -18,7 +18,7 @@
         <template v-slot:activator="{ on, attrs }">        
 <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
           <span                  
-            @click.stop="selectEntity()"
+            @click.stop="selectEntity() "
             class="content entity-drag"
             :id="'drag-' + node.attrs.id"
             v-bind="attrs"
@@ -58,7 +58,7 @@
           :editor="editor"
           :entity="entity"
           :source="source"
-          :document="document"
+          :document="document"          
         >
         </selection-popup>
         <!-- 
@@ -125,6 +125,7 @@ export default class TextEntityComponent extends Vue {
   public icon?: string | null = null;
   public style?: CSSStyleDeclaration | null = null;
   public node?: any;
+  public showPopup = false;
   private detailed = true;
 
   public menuItems: any[] = [];

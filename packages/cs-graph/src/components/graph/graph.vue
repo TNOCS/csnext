@@ -600,30 +600,34 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.activePreset.properties) {
       this.activePreset.properties = {};
     }
-    if (!this.activePreset.properties?.layout) {
-      this.activePreset.properties.layout = 'force';
+    if (!this.activePreset.properties.graphLayout) {
+      this.activePreset.properties.graphLayout = {}
+    }
+    if (!this.activePreset.properties!.graphLayout!.layout) {
+      this.activePreset.properties!.graphLayout.layout = 'force';
     }
     let layout: LayoutConfig = {
-      type: this.activePreset.properties?.layout,
+      type: this.activePreset.properties?.graphLayout.layout,
       preventOverlap: true,
     };
-    switch (this.activePreset.properties?.layout) {
+    switch (this.activePreset.properties.graphLayout.layout) {
       case 'manual':
         break;
       case 'force':
         layout = {
           ...layout,
           ...{
+
             type: 'force',
-            gravity: this.activePreset.properties?.gravity ?? 10,
+            gravity: this.activePreset.properties.graphLayout.gravity ?? 10,
             preventOverlap: true,
-            speed: this.activePreset.properties?.speed ?? 25,
-            nodeStrength: this.activePreset.properties?.nodeStrength ?? 100,
-            nodeSpacing: this.activePreset.properties?.nodeSpacing ?? 150,
-            clustering: this.activePreset.properties?.clustering ?? false,
-            collideStrength: this.activePreset?.properties?.collideStrength ?? 0.1,
+            speed: this.activePreset.properties.graphLayout.speed ?? 25,
+            nodeStrength: this.activePreset.properties.graphLayout.nodeStrength ?? 100,
+            nodeSpacing: this.activePreset.properties.graphLayout.nodeSpacing ?? 150,
+            clustering: this.activePreset.properties.graphLayout.clustering ?? false,
+            collideStrength: this.activePreset?.properties?.graphLayout.collideStrength ?? 0.1,
             workerEnabled: false,
-            linkDistance: this.activePreset?.properties?.linkDistance ?? 150,
+            linkDistance: this.activePreset?.properties?.graphLayout.linkDistance ?? 150,
           },
           // ...{
           //   linkDistance: 50, // Edge length
@@ -643,8 +647,8 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            rankdir: this.activePreset.properties?.rankdir ?? 'TB',
-            align: this.activePreset.properties?.align ?? 'UL',
+            rankdir: this.activePreset.properties.graphLayout.rankdir ?? 'TB',
+            align: this.activePreset.properties.graphLayout.align ?? 'UL',
             preventOverlap: true,
           },
         };
@@ -654,7 +658,7 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             preventOverlap: true,
-            kr: this.activePreset.properties?.kr ?? 10,
+            kr: this.activePreset.properties.graphLayout.kr ?? 10,
           },
         };
         break;
@@ -663,10 +667,10 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             // preventOverlap: true,
-            linkDistance: this.activePreset.properties?.linkDistance ?? 1,
-            // maxIteration: this.activePreset.properties?.maxIteration ?? 500,
-            // nodeStrength: this.activePreset.properties?.nodeStrength ?? 1000,
-            // edgeStrength: this.activePreset.properties?.edgeStrength ?? 200,
+            linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 1,
+            // maxIteration: this.activePreset.properties.graphLayout.maxIteration ?? 500,
+            // nodeStrength: this.activePreset.properties.graphLayout.nodeStrength ?? 1000,
+            // edgeStrength: this.activePreset.properties.graphLayout.edgeStrength ?? 200,
             // gpuEnabled: true,
             // workerEnabled: true,
             type: 'gForce',
@@ -728,8 +732,8 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            linkDistance: this.activePreset.properties?.linkDistance ?? 50,
-            unitRadius: this.activePreset.properties?.unitRadius ?? 50,
+            linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 50,
+            unitRadius: this.activePreset.properties.graphLayout.unitRadius ?? 50,
             preventOverlap: true,
           },
         };
@@ -738,7 +742,7 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            linkDistance: this.activePreset.properties?.linkDistance ?? 50,
+            linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 50,
           },
         };
         break;
@@ -746,10 +750,10 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            gravity: this.activePreset.properties?.gravity ?? 1,
-            clustering: this.activePreset.properties?.clustering ?? false,
-            clusterGravity: this.activePreset.properties?.clusterGravity ?? 10,
-            speed: this.activePreset.properties?.speed ?? 5,
+            gravity: this.activePreset.properties.graphLayout.gravity ?? 1,
+            clustering: this.activePreset.properties.graphLayout.clustering ?? false,
+            clusterGravity: this.activePreset.properties.graphLayout.clusterGravity ?? 10,
+            speed: this.activePreset.properties.graphLayout.speed ?? 5,
             // maxIteration: 1000,
             tick: () => {
               this.graph!.refreshPositions();
@@ -920,15 +924,15 @@ export default class NetworkGraph extends WidgetBase {
     }
 
     // get visible nodes from rules
-    if (this.activePreset?.properties?.nodeRules) {
+    if (this.activePreset?.properties?.graphLayout?.nodeRules) {
       this.activePreset._visibleNodes = [];
       this.emptyStats();
-      this.updateRules(this.activePreset.properties.nodeRules);
+      this.updateRules(this.activePreset.properties.graphLayout.nodeRules);
     }
 
     // check for visible nodes in node list
-    if (this.activePreset.properties?.nodes) {
-      for (const nid of Object.keys(this.activePreset.properties?.nodes)) {
+    if (this.activePreset.properties?.graphLayout?.nodes) {
+      for (const nid of Object.keys(this.activePreset.properties?.graphLayout.nodes)) {
         if (this.activePreset._visibleNodes.findIndex((n) => n.id === nid) === -1) {
           const e = this.source.getElement(nid);
           if (e) {
@@ -1085,8 +1089,8 @@ export default class NetworkGraph extends WidgetBase {
             this.updateGraph(this.source!.graph, false);
           }
           if (a === GraphDatasource.ELEMENT_REMOVED) {
-            if (d.id && this.activePreset?.properties?.nodes && this.activePreset.properties.nodes.hasOwnProperty(d.id)) {
-              delete this.activePreset.properties.nodes[d.id];
+            if (d.id && this.activePreset?.properties?.graphLayout?.nodes && this.activePreset.properties.graphLayout.nodes.hasOwnProperty(d.id)) {
+              delete this.activePreset.properties.graphLayout.nodes[d.id];
               this.activePreset._visibleNodes = this.activePreset._visibleNodes.filter((n) => n !== d);              
               this.updateGraph(this.source!.graph, false);
             }            
@@ -1300,7 +1304,7 @@ export default class NetworkGraph extends WidgetBase {
           }
           this.contextMenuitems.push({
             title: 'hide',
-            icon: 'mdi-eye-of',
+            icon: 'mdi-eye-off',
             action: () => {
               if (element && this.activePreset?.id) {
                 this.source!.removeElementFromPreset(element, this.activePreset.id);
@@ -1325,7 +1329,7 @@ export default class NetworkGraph extends WidgetBase {
 
       this.showMenu = true;
     } else {
-      if (this.activePreset!.properties?.elementsEnabled && this.source?.featureTypes) {
+      if (this.activePreset!.properties?.graphLayout?.elementsEnabled && this.source?.featureTypes) {
         const addMenu = {
           title: 'add',
           active: true,
@@ -1360,7 +1364,7 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public getNodeStyle() {
-    if (!this.activePreset?.properties?.nodeSize) {
+    if (!this.activePreset?.properties?.graphLayout?.nodeSize) {
       return {};
     }
 
@@ -1368,7 +1372,7 @@ export default class NetworkGraph extends WidgetBase {
       // shape: "donut",
       type: 'main-node',
       // type: "donut",
-      size: this.source?.activeGraphPreset?.properties?.nodeSize || 30,
+      size: this.source?.activeGraphPreset?.properties?.graphLayout?.nodeSize || 30,
       // size: [120, 40],
       // clipCfg: {
       //   show: true,
@@ -1385,7 +1389,7 @@ export default class NetworkGraph extends WidgetBase {
         autoRotate: true,
         style: {
           fill: '#000',
-          fontSize: this.activePreset?.properties?.globalFontSize ?? 20,
+          fontSize: this.activePreset?.properties?.graphLayout.globalFontSize ?? 20,
         },
       },
     };
@@ -1671,7 +1675,7 @@ export default class NetworkGraph extends WidgetBase {
       width: dWidth, //(this as any).widget._size.width,
       linkCenter: false,
       plugins: [contextMenu],
-      animate: this.activePreset?.properties?.animate ?? false,
+      animate: this.activePreset?.properties?.graphLayout?.animate ?? false,
       height: dHeight, // (this as any).widget._size.height,
       layout: this.getLayout(),
       // renderer: 'svg',
@@ -1726,11 +1730,11 @@ export default class NetworkGraph extends WidgetBase {
     this.graph.on('keyup', (e) => {
       // console.log('key up')
       
-      if (this.source?.graph && e.key === 'Delete' && this.activePreset?._selectedElements && this.activePreset.properties?.nodes)
+      if (this.source?.graph && e.key === 'Delete' && this.activePreset?._selectedElements && this.activePreset.properties?.graphLayout?.nodes)
       {
         for (const el of this.activePreset._selectedElements) {
-          if (this.activePreset.properties.nodes.hasOwnProperty(el)) {
-            delete this.activePreset.properties.nodes[el];
+          if (this.activePreset.properties.graphLayout.nodes.hasOwnProperty(el)) {
+            delete this.activePreset.properties.graphLayout.nodes[el];
           }
         }
         this.activePreset._selectedElements = [];
@@ -1779,11 +1783,11 @@ export default class NetworkGraph extends WidgetBase {
     // });
     this.graph.on('node:dragend', (e: any) => {
       const elementId = e.item?._cfg?.id;
-      if (!elementId || !this.source || !this.activePreset?.properties?.nodes) {
+      if (!elementId || !this.source || !this.activePreset?.properties?.graphLayout?.nodes) {
         return;
       }
       const element = this.source.getElement(elementId);
-      const node = this.activePreset.properties?.nodes[elementId];
+      const node = this.activePreset.properties?.graphLayout?.nodes[elementId];
       if (!element || !node) {
         return;
       }
@@ -1862,8 +1866,8 @@ export default class NetworkGraph extends WidgetBase {
           if (e.relatedTarget?.dataset?.elementid) {
             // find element
             const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
-            if (existingElement?.id && this.activePreset?.properties?.nodes) {
-              this.activePreset.properties.nodes[existingElement.id] = {
+            if (existingElement?.id && this.activePreset?.properties?.graphLayout?.nodes) {
+              this.activePreset.properties.graphLayout.nodes[existingElement.id] = {
                 x: pos.x,
                 y: pos.y,
               };
@@ -1885,8 +1889,8 @@ export default class NetworkGraph extends WidgetBase {
                   classId: ft.type,
                 });
 
-                if (newNode?.id && this.activePreset?.properties?.nodes) {
-                  this.activePreset.properties.nodes[newNode.id] = {
+                if (newNode?.id && this.activePreset?.properties?.graphLayout?.nodes) {
+                  this.activePreset.properties.graphLayout.nodes[newNode.id] = {
                     x: pos.x,
                     y: pos.y,
                   };

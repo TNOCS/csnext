@@ -161,6 +161,7 @@ export class GraphServer implements IGraphStorage {
                     if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
                       existing.properties = el.properties;
                       this.source.updateElementProperties(el);
+                      this.source.triggerUpdateGraph(existing);
                     }
                   } else {
                     if (el.type === 'edge') {
@@ -168,7 +169,7 @@ export class GraphServer implements IGraphStorage {
                     } else {
                       this.source.addNode(el);
                     }
-                    this.source.triggerUpdateGraph(el);
+                    this.source.triggerUpdateGraph(el);                  
                   }
                 }                
               }

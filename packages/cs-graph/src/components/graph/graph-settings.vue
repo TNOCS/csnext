@@ -30,7 +30,7 @@
               <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_RULE" /></v-chip>
             </v-layout>
               <graph-rule-editor
-                v-for="(rule, i) in activePreset.properties.nodeRules"
+                v-for="(rule, i) in activePreset.properties.graphLayout.nodeRules"
                 :key="i"
                 :source="source"
                 :activePreset="activePreset"
@@ -40,7 +40,7 @@
       </v-tab-item>
       <v-tab-item value="tab-ELEMENTS">
         <v-list>
-                <v-list-item v-for="(n, id) in activePreset.properties.nodes" :key="id" v-if="n._element">
+                <v-list-item v-for="(n, id) in activePreset.properties.graphLayout.nodes" :key="id" v-if="n._element">
                   <v-icon v-if="n._element._featureType.icon">{{ n._element._featureType.icon }}</v-icon>
                   <v-list-item-title>{{ n._element.properties.name }}</v-list-item-title>
                 </v-list-item>
@@ -50,7 +50,7 @@
         <v-container fluid>
           <v-row>
             <v-col>
-              <cs-form :data="activePreset.properties" :formdef="formDef" class="pt-2 pa-3" @saved="updateGraph"></cs-form>
+              <cs-form :data="activePreset.properties.graphLayout" :formdef="formDef" class="pt-2 pa-3" @saved="updateGraph"></cs-form>
             </v-col>
           </v-row>
         </v-container>
@@ -148,14 +148,14 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public addTypeRule() {
-    if (!this.activePreset?.properties) {
+    if (!this.activePreset?.properties?.graphLayout) {
       return;
     }
 
-    if (!this.activePreset.properties.nodeRules) {
-      this.activePreset.properties.nodeRules = []
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = []
     }
-    this.activePreset.properties.nodeRules.push({
+    this.activePreset.properties.graphLayout.nodeRules.push({
       type: 'TYPE',
       _editMode: true,
     });
@@ -166,10 +166,10 @@ export default class GraphSettings extends WidgetBase {
   public get formDef(): IFormObject {
     const isLayout = (config: GraphFilterProperties, layout: string | string[]) => {
       if (typeof layout === 'string') {
-        return config.layout && config.layout === layout;
+        return config.graphLayout?.layout && config.graphLayout.layout === layout;
       }
 
-      return config.layout && layout.includes(config.layout);
+      return config.graphLayout?.layout && layout.includes(config.graphLayout.layout);
     };
 
     return {
