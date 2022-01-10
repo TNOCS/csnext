@@ -211,10 +211,12 @@ export class LocalStorage implements IDatabase {
             for (const element of list) {
                 switch (element.type) {
                     case "node":
-                        res.push({ type: "node", id: element.id, classId: element.classId, properties: element.properties });
+                        // res.push({ type: "node", id: element.id, classId: element.classId, properties: element.properties });
+                        res.push(GraphElement.getFlat(element));
                         break;
                     case "edge":
-                        res.push({ type: "edge", id: element.id, classId: element.classId, toId: element.toId, fromId: element.fromId, properties: element.properties });
+                        // res.push({ type: "edge", id: element.id, classId: element.classId, toId: element.toId, fromId: element.fromId, properties: element.properties });
+                        res.push(GraphElement.getFlat(element));
                         break;
                 }
             }
