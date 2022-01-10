@@ -75,6 +75,7 @@ export class PropertyType {
     @FormField({ title: 'Url template', type: 'string', requirements: PropertyType.isUrl, optional: true })
     public urlTemplate?: string;  
     public required?: boolean;
+    public timeseries?: boolean;
 
     public class?: string;
     public _initialized?: boolean = false;
