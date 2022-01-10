@@ -82,6 +82,7 @@ export class GraphServer implements IGraphStorage {
                 title: item.properties.name,
                 properties: item.properties,
                 alternatives: item.alternatives,
+                timeseries: item.timeseries,
               },
             } as GraphElement;
             this.source.initElement(el);
@@ -96,6 +97,7 @@ export class GraphServer implements IGraphStorage {
                 title: item.properties.name,
                 properties: item.properties,
                 alternatives: item.alternatives,
+                timeseries: item.timeseries,
               },
             } as GraphElement;
             this.source.initElement(el);
@@ -160,7 +162,7 @@ export class GraphServer implements IGraphStorage {
                   if (existing) {
                     if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
                       existing.properties = el.properties;
-                      this.source.updateElementProperties(el);
+                      this.source.updateElementProperties(existing);
                       this.source.triggerUpdateGraph(existing);
                     }
                   } else {
@@ -318,6 +320,7 @@ export class GraphServer implements IGraphStorage {
                   title: item.properties.name,
                   properties: item.properties,
                   alternatives: item.alternatives,
+                  timeseries: item.timeseries,
                 },
               } as GraphElement;
               this.source.initElement(el);
