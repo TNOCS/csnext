@@ -429,6 +429,7 @@
   margin: 4px;
 }
 
+.entity-card.Timeseries,
 .entity-card.elementarray {
   width: 608px;
   height: 248px;
