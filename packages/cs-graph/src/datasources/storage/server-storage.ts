@@ -75,6 +75,7 @@ export class ServerStorage implements IGraphStorage {
                 classId: item.classId,                
                 properties: item.properties,
                 alternatives: item.alternatives,
+                timeseries: item.timeseries,
               },
             } as GraphElement;
             this.source.initElement(el);
@@ -88,6 +89,7 @@ export class ServerStorage implements IGraphStorage {
                 classId: item.classId,                
                 properties: item.properties,
                 alternatives: item.alternatives,
+                timeseries: item.timeseries,
               },
             } as GraphElement;
             this.source.initElement(el);
@@ -310,6 +312,7 @@ export class ServerStorage implements IGraphStorage {
                   title: item.properties.name,
                   properties: item.properties,
                   alternatives: item.alternatives,
+                  timeseries: item.timeseries,
                 },
               } as GraphElement;
               this.source.initElement(el);

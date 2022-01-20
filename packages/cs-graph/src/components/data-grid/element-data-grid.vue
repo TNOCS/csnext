@@ -563,6 +563,7 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   margin-left: 15px;
 }
 
+.entity-card.Timeseries,
 .entity-card.elementarray {
   width: 608px;
   height: 248px;

@@ -36,7 +36,8 @@ export class GraphElement<T = BaseElementProperties> {
   public kb_source?: string;
   public kb_time?: number;
   public backgroundColor?: string;
-  public properties?: T;  
+  public properties?: T;
+  public timeseries?: Record<string, number[][]>;
 
   public _flat?: {
     [key: string]: any;
