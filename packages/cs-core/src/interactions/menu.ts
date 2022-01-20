@@ -1,3 +1,4 @@
+import { IWidget } from '..';
 import { IDashboard } from '../dashboard/dashboard';
 
 export interface IMenu {
@@ -22,6 +23,7 @@ export interface IMenu {
   items?: IMenu[];
   action?: (menu: IMenu, dashboard?: IDashboard) => void;
   component?: any;
+  widget?: IWidget;
   closeOnContentClick?: boolean;
   data?: any;
   _dashboard?: IDashboard;

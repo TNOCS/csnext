@@ -6,6 +6,9 @@
     <v-btn v-if="params.options.canGraph" small icon @click.stop="graphRow"
       ><v-icon>mdi-scatter-plot</v-icon></v-btn
     >
+    <v-btn v-if="params.options.canEdit" small icon @click.stop="editRow"
+      ><v-icon>mdi-pencil</v-icon></v-btn
+    >
   </v-layout>
 </template>
 <script lang="ts">
@@ -23,6 +26,12 @@ export default class GridRowActions extends Vue {
   public deleteRow() {
     if (this.element) {
       this.params.delete(this.element);
+    }
+  }
+
+  public editRow() {
+    if (this.element) {
+      this.params.editNode(this.element);
     }
   }
 

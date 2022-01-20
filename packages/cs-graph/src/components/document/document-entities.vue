@@ -250,8 +250,8 @@ export default class DocumentEntities extends WidgetBase {
   }
 
   public clearHighlight() {
-    if (this.source?.activeDocument?.entities) {
-      for (const entity of this.source.activeDocument.entities) {
+    if (this.source?.activeDocument?._entities) {
+      for (const entity of this.source.activeDocument._entities) {
         Vue.set(entity, '_highlight', false);
         // entity._highlight = false;        
       }
@@ -349,7 +349,7 @@ export default class DocumentEntities extends WidgetBase {
 
   public deleteEntities(list: EntityList) : Promise<boolean> {    
     return new Promise(async (resolve, reject) => {
-      if (!this.source?.activeDocument?.entities || !list.instances) {
+      if (!this.source?.activeDocument?._entities || !list.instances) {
         reject();
         return;
       }
@@ -362,17 +362,17 @@ export default class DocumentEntities extends WidgetBase {
     })
   }
 
-  @Watch("source.activeDocument.entityTypes")
+  @Watch("source.activeDocument._entityTypes")
   @Watch("source.activeDocument.properties.hide_unknowns")
   public updateGroups() {
     if (!this.source) {
       return;
     }
-    if (!this.source?.activeDocument?.entities) {
+    if (!this.source?.activeDocument?._entities) {
       return;
     }
     let res: NodeEntities[] = [];
-    for (const entity of this.source.activeDocument.entities) {     
+    for (const entity of this.source.activeDocument._entities) {     
       if (!this.source.activeDocument?.properties?.hide_unknowns || entity._node?._featureType)  {
       const c = entity._node?.classId ?? entity.spacy_label;
       if (c) {

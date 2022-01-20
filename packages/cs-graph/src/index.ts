@@ -2,6 +2,9 @@ export * from './components/data-grid/data-grid-options';
 export * from './components/data-grid/data-matrix-options';
 export * from './components/document/node-entities';
 export * from './datasources/doc-datasource';
+export * from './datasources/storage/server-storage';
+export * from './datasources/storage/device-storage';
+export * from './datasources/storage/graph-storage';
 export * from './components/graph/graph-widget-options';
 export * from './plugins/document-plugin';
 export * from './plugins/import-plugin';
@@ -39,6 +42,8 @@ import Suggestions from './components/insights/suggestions.vue';
 import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
 Vue.use(VueScrollStop);
+
+import './assets/styles.css';
 
 const locales = require('./assets/locales.json');
 

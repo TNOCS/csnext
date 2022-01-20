@@ -20,7 +20,7 @@ export class FeatureType {
     public _node?: GraphElement;
     public _nlpType?: string;
     public _edge?: GraphElement;    
-    public typeId?: string;
+    public typeId?: string;    
     public notification?: string;
     public isEdge?: boolean;
     public _entities?: TextEntity[];
@@ -32,7 +32,8 @@ export class FeatureType {
 
     @FormField({
         title: 'Properties',
-        type: 'array',
+        type: 'string',
+        array: true,
         canAdd: true,
         canDelete: true,
         canEditKey: true
@@ -219,6 +220,8 @@ export class FeatureType {
             if (base.icon) {
                 if (!ft.icon) { ft.icon = base.icon; }
             }
+
+            if (base.style && !ft.style) { ft.style = base.style; }
             if (base.infoPanels)
             {
                 if (!ft.infoPanels) { ft.infoPanels = {}; }

@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import { IFormFieldOptions, IFormObject } from '@csnext/cs-core';
 import '@csnext/cs-client';
-import Component from 'vue-class-component';
 import './cs-form-field.css';
 import { CsForm } from '../..';
 const debounce = require('lodash/debounce');
 
-import { Emit, Prop, Watch } from 'vue-property-decorator';
+import { Emit, Component, Watch } from 'vue-property-decorator';
 import format from 'date-fns/format';
+import StringEditor from '../fields/string-editor.vue';
+import ChipsEditor from '../fields/chips-editor.vue';
+import UrlEditor from '../fields/url-editor.vue';
 @Component({
   name: 'cs-formfield',
   template: require('./cs-form-field.html'),
@@ -35,11 +37,19 @@ export class CsFormField extends Vue {
     this.updateValue();
   }
 
+  private getEditor() {
+    switch (this.field?.type) {      
+      case 'string': return StringEditor;
+      case 'chips': return ChipsEditor;
+      case 'url': return UrlEditor;
+    }    
+  }
+
   private fieldUpdatedDebounce = debounce(this.fieldUpdated, 200);
 
   private rules: { [key: string]: Function } = {
     required: (val) => {
-      if (this.field?.required && !val)
+      if (this.field?.required && (val === undefined || val === ""))
         return this.$cs.Translate('FIELD_REQUIRED');
       return true;
     },
@@ -96,6 +106,21 @@ export class CsFormField extends Vue {
   public async search() {
     this.updateOptions(true);
     return this.items;
+  }
+
+  public removeIndex(i: number) {
+    if (!this.target || !this.field?._key || !Array.isArray(this.target[this.field._key])) {
+      return;       
+    }
+    this.target[this.field._key]!.splice(i,1);   
+    this.changed(this.field);
+  }
+
+  public addArrayItem() {
+    if (!this.target || !this.field?._key || !Array.isArray(this.target[this.field._key])) {
+      return;       
+    }
+    this.target[this.field._key].push(undefined)
   }
 
   public updateValue() {

@@ -41,8 +41,19 @@
       <v-tab-item value="tab-ELEMENTS">
         <v-list>
                 <v-list-item v-for="(n, id) in activePreset.properties.graphLayout.nodes" :key="id" v-if="n._element">
-                  <v-icon v-if="n._element._featureType.icon">{{ n._element._featureType.icon }}</v-icon>
+                  <v-list-item-avatar>
+                    <v-icon v-if="n._element._featureType.icon">{{ n._element._featureType.icon }}</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                  
                   <v-list-item-title>{{ n._element.properties.name }}</v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+          <v-btn @click="removeElement(id)" icon>
+            <v-icon color="grey lighten-1">mdi-delete</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      
                 </v-list-item>
               </v-list>
       </v-tab-item>
@@ -81,7 +92,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
-import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement, GraphFilterProperties } from '@csnext/cs-data';
+import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement, GraphFilterProperties, GraphLayout } from '@csnext/cs-data';
 import { DocDatasource } from '../..';
 import { IFormObject } from '@csnext/cs-core';
 import Vue from 'vue';
@@ -129,6 +140,14 @@ export default class GraphSettings extends WidgetBase {
     this.$forceUpdate();
   }
 
+  public removeElement(id: string) {
+    if (!this.source || !this.activePreset?.properties?.graphLayout?.nodes) { return; }
+    delete this.activePreset.properties.graphLayout.nodes[id];
+    this.$forceUpdate();
+    this.source.applyGraphPreset(this.activePreset);
+
+  }
+
   public savePreset() {
     // this.source.saveGraphPresets();
   }
@@ -164,12 +183,12 @@ export default class GraphSettings extends WidgetBase {
   }
 
   public get formDef(): IFormObject {
-    const isLayout = (config: GraphFilterProperties, layout: string | string[]) => {
+    const isLayout = (config: GraphLayout, layout: string | string[]) => {
       if (typeof layout === 'string') {
-        return config.graphLayout?.layout && config.graphLayout.layout === layout;
+        return config.layout && config.layout === layout;
       }
 
-      return config.graphLayout?.layout && layout.includes(config.graphLayout.layout);
+      return config.layout && layout.includes(config.layout);
     };
 
     return {
@@ -183,6 +202,15 @@ export default class GraphSettings extends WidgetBase {
           type: 'selection',
           readonly: false,
           options: ['manual', 'circular', 'radial', 'concentric', 'grid', 'mds', 'fruchterman', 'force', 'forceAtlas2', 'gForce', 'dagre'],
+        },
+        {
+          title: 'PINNED_TYPES',
+          _key: 'pinnedFeatureTypes',
+          type: 'selection',
+          array: true,
+          multiple: true,
+          readonly: false,
+          options: ()=>{ return (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : [] }
         },
         // {
         //   title: 'ANIMATE',
@@ -203,7 +231,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'fruchterman')],
         },
         {
           title: 'SPEED',
@@ -212,13 +240,13 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 50,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'force'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['fruchterman', 'force'])],
         },
         {
           title: 'CLUSTERING',
           _key: 'clustering',
           type: 'checkbox',
-          requirements: [(v: GraphPreset) => isLayout(v, ['fruchterman', 'froce'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['fruchterman', 'froce'])],
         },
         {
           title: 'CLUSTER_GRAVITY',
@@ -227,21 +255,21 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 20,
           step: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, 'fruchterman'), (v: GraphPreset) => v.properties?.clustering],
+          requirements: [(v: GraphLayout) => isLayout(v, 'fruchterman'), (v: GraphLayout) => v.clustering],
         },
         {
           title: 'DIRECTION',
           _key: 'rankdir',
           type: 'selection',
           options: ['TB', 'BT', 'LR', 'RL'],
-          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'dagre')],
         },
         {
           title: 'ALIGN',
           _key: 'align',
           type: 'selection',
           options: ['UL', 'UR', 'DL', 'DR'],
-          requirements: [(v: GraphPreset) => isLayout(v, 'dagre')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'dagre')],
         },
         {
           title: 'COLLIDE_STRENGTH',
@@ -251,7 +279,7 @@ export default class GraphSettings extends WidgetBase {
           max: 0.5,
           step: 0.1,
           default: 0.1,
-          requirements: [(v: GraphPreset) => isLayout(v, ['force'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['force'])],
         },
         {
           title: 'EDGE_STRENGTH',
@@ -261,7 +289,7 @@ export default class GraphSettings extends WidgetBase {
           max: 1000,
           step: 10,
           default: 200,
-          requirements: [(v: GraphPreset) => isLayout(v, ['gForce'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['gForce'])],
         },
         {
           title: 'NODE_STRENGTH',
@@ -270,7 +298,7 @@ export default class GraphSettings extends WidgetBase {
           min: 1,
           max: 5000,
           default: 150,
-          requirements: [(v: GraphPreset) => isLayout(v, ['gForce', 'force'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['gForce', 'force'])],
         },
         {
           title: 'LINK_DISTANCE',
@@ -279,7 +307,7 @@ export default class GraphSettings extends WidgetBase {
           min: 1,
           default: 150,
           max: 500,
-          requirements: [(v: GraphPreset) => isLayout(v, ['radial', 'mds', 'gForce', 'force'])],
+          requirements: [(v: GraphLayout) => isLayout(v, ['radial', 'mds', 'gForce', 'force'])],
         },
         {
           title: 'UNIT_RADIUS',
@@ -287,7 +315,7 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 10,
           max: 300,
-          requirements: [(v: GraphPreset) => isLayout(v, 'radial')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'radial')],
         },
         {
           title: 'Repulsive parameter',
@@ -296,7 +324,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           default: 5,
-          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'forceAtlas2')],
         },
         {
           title: 'MAX_ITERATION',
@@ -305,7 +333,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10000,
           default: 500,
-          requirements: [(v: GraphPreset) => isLayout(v, 'gForce')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'gForce')],
         },
         {
           title: 'Gravity parameter',
@@ -314,7 +342,7 @@ export default class GraphSettings extends WidgetBase {
           min: 0,
           max: 10,
           default: 5,
-          requirements: [(v: GraphPreset) => isLayout(v, 'forceAtlas2')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'forceAtlas2')],
         },
         {
           title: 'RADIUS',
@@ -322,7 +350,7 @@ export default class GraphSettings extends WidgetBase {
           type: 'slider',
           min: 10,
           max: 1000,
-          requirements: [(v: GraphPreset) => isLayout(v, 'circular')],
+          requirements: [(v: GraphLayout) => isLayout(v, 'circular')],
         },
         {
           title: 'FONT_SIZE',
@@ -360,7 +388,7 @@ export default class GraphSettings extends WidgetBase {
     if (!this.source || !this.widget?.data?.preset) {
       return;
     }
-    Vue.set(this, 'activePreset', this.source.getGraphPreset(this.widget.data.preset));
+    Vue.set(this, 'activePreset', this.source.getElement(this.widget.data.preset));
 
     if (!this.activePreset) {
       return;

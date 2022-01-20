@@ -14,6 +14,8 @@ import { FeatureType, FeatureTypes, GraphElement, SearchResult } from '@csnext/c
 import { DefaultWebSocketGateway, FilesService, OfflineService } from '../export';
 import * as turf from '@turf/turf';
 import { idGenerator } from '@csnext/cs-core';
+import type { OverpassJson } from "overpass-ts";
+import { overpass } from "overpass-ts";
 
 @ApiTags()
 @Controller('graph')
@@ -368,7 +370,8 @@ export class GraphController {
       this.allData().then(async (all) => {
         let res: { [id: string]: string } = {};
         for (const node of all) {
-          if (node.properties && node.properties.hasOwnProperty('geoshape')) {
+          
+          if (node.properties!.hasOwnProperty('geoshape')) {
             if (node.properties.geoshape.length > 0 && !node.properties.shape) {
               res[node.id] = node.properties.geoshape;
               try {
@@ -405,6 +408,32 @@ export class GraphController {
                 Logger.error(`Error downloading ${node.properties.geoshape}`);
               }
             }
+          } 
+          else if (node.properties!.hasOwnProperty('coordinate')) {
+            // already coordinate, skip
+          }
+          else if (node.properties!.hasOwnProperty('openstreetmaprelationid') && (node.properties['openstreetmaprelationid'] !== undefined)) {
+            try { 
+              console.log(`${node.properties.name} - ${node.properties.id}`);
+              const url = `https://overpass-api.de/api/interpreter?data=[out:json]; rel(${node.properties['openstreetmaprelationid']}); out body;>;out skel qt;`;
+              if (url.indexOf('undefined') === -1) {
+                let file = await this.filesService.getUrl(url);           
+                if (file) {
+                  const rawJson = file.toString('utf-8');
+                  if (rawJson && rawJson.length>0) {
+                    let res = JSON.parse(rawJson);
+                  }
+                  // if (res.elements) { console.log(res.elements.length)}
+                }
+                console.log(url);
+            }
+            } catch (e) {
+              console.log(e);
+
+            }
+
+
+
           }
         }
         resolve(res);

@@ -1,42 +1,28 @@
 <template>
-
   <node-view-wrapper
     v-if="node"
     class="text-entity-component"
     :style="style"
-    :class="{ 'highlight' : entity && entity._highlight, 'excluded': entity && !entity._included && !entity._highlight, 'hide': !visible}"   
-  >  
-    
-      <v-menu
-        offset-y
-        open-on-hover        
-        
-        v-model="openMenu"
-        :close-on-content-click="false"
-        open-delay="10"      
-      >
-        <template v-slot:activator="{ on, attrs }">        
-<!-- <drag tag="span" :transfer-data="{ node: node }"> -->
-          <span                  
-            @click.stop="selectEntity() "
-            class="content entity-drag"
-            :id="'drag-' + node.attrs.id"
-            v-bind="attrs"
-            v-on="on">          
-            <v-icon v-if="node.attrs.type === 'DATE'" small>mdi-calendar-range</v-icon>
-            <v-icon v-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
-            <img v-if="icon" :src="icon" class="icon-image"/>
-            
-            {{ node.attrs.text }}
-            
-            <!-- <span v-if="entity">   
+    :class="{ highlight: entity && entity._highlight, excluded: entity && !entity._included && !entity._highlight, hide: !visible }"
+  >
+    <v-menu offset-y open-on-hover v-model="openMenu" :close-on-content-click="false" open-delay="10">
+      <template v-slot:activator="{ on, attrs }">
+        <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
+        <span @click.stop="selectEntity()" class="content entity-drag" :id="'drag-' + node.attrs.id" v-bind="attrs" v-on="on">
+          <v-icon v-if="node.attrs.type === 'DATE'" small>mdi-calendar-range</v-icon>
+          <v-icon v-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
+          <img v-if="icon" :src="icon" class="icon-image" />
+
+          {{ node.attrs.text }}
+
+          <!-- <span v-if="entity">   
               {{ entity._included}}      
             </span> -->
-            <!-- <template v-if="entity">
+          <!-- <template v-if="entity">
             <v-icon v-if="entity._included" small>remove</v-icon>
             <v-icon v-else small>mdi-plus</v-icon>
             </template> -->
-            <!-- <v-menu top          >
+          <!-- <v-menu top          >
         <template v-slot:activator="{ on, attrs }">        
             <v-icon  v-bind="attrs"
             v-on="on" small>more_vert</v-icon>        
@@ -51,17 +37,11 @@
           </v-list-item>
         </v-list>
       </v-menu>            -->
-      </span>
-          <!-- </drag>           -->
-        </template>
-        <selection-popup
-          :editor="editor"
-          :entity="entity"
-          :source="source"
-          :document="document"          
-        >
-        </selection-popup>
-        <!-- 
+        </span>
+        <!-- </drag>           -->
+      </template>
+      <selection-popup :editor="editor" :entity="entity" :source="source" :document="document"> </selection-popup>
+      <!-- 
           <v-card>
             <v-card-title>{{ node.attrs.type }}</v-card-title>
             <template v-if="element">
@@ -85,28 +65,24 @@
           </v-list-item>
         </v-list> 
           </v-card>        -->
-      </v-menu>    
+    </v-menu>
   </node-view-wrapper>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import {
-  Editor,
-  NodeViewWrapper,
-} from "@tiptap/vue-2";
-import { GraphElement, TextEntity } from "@csnext/cs-data";
-import SelectionPopup from "./../selection-popup.vue";
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Editor, NodeViewWrapper } from '@tiptap/vue-2';
+import { GraphElement, TextEntity } from '@csnext/cs-data';
+import SelectionPopup from './../selection-popup.vue';
 
-import { DocDatasource } from "../../../datasources/doc-datasource";
-import { GraphDocument } from "../../../classes/document/graph-document";
-import { guidGenerator } from "@csnext/cs-core";
-
+import { DocDatasource } from '../../../datasources/doc-datasource';
+import { GraphDocument } from '../../../classes/document/graph-document';
+import { DocUtils } from '../../../utils/doc-utils';
 
 @Component({
   components: {
     NodeViewWrapper,
-    SelectionPopup
+    SelectionPopup,
   },
 })
 export default class TextEntityComponent extends Vue {
@@ -147,7 +123,7 @@ export default class TextEntityComponent extends Vue {
 
   public isLocation(node: any) {
     if (this.element?.properties?.location) {
-      return true;      
+      return true;
     }
     return node.attrs.type === 'location';
   }
@@ -155,79 +131,86 @@ export default class TextEntityComponent extends Vue {
   @Watch('document.activeLearningType')
   @Watch('document.properties.learn_mode')
   public setStyle() {
-    if (!this.source || !this.document) { return {} as CSSStyleDeclaration}    
+    if (!this.source || !this.document) {
+      return {} as CSSStyleDeclaration;
+    }
     if (!this.element) {
       this.style = {
-        backgroundColor: "lightgrey",
+        backgroundColor: 'lightgrey',
       } as CSSStyleDeclaration;
     }
     // if (this.document.visibleEntityTypes.findIndex(vt => vt.id === this.entity?.spacy_label) >= 0) {
     //   this.visible = true;
     // }
-    this.style =  {
+    this.style = {
       backgroundColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray',
-      borderStyle: (this.visible) ? 'solid' : 'none',
-      borderColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray'
-    
+      borderStyle: this.visible ? 'solid' : 'none',
+      borderColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray',
     } as CSSStyleDeclaration;
-    if (this.document?.properties?.editor_mode === 'LEARN' && this.document.properties.learn_mode === 'REVIEW' && this.document.activeLearningType !== this.element?.classId) {
+    if (
+      this.document?.properties?.editor_mode === 'LEARN' &&
+      this.document.properties.learn_mode === 'REVIEW' &&
+      this.document.activeLearningType !== this.element?.classId
+    ) {
       this.style.backgroundColor = 'blue';
       this.$forceUpdate();
     }
   }
 
-  
- 
-
-  public mounted() {    
+  public mounted() {
     const editor = (this as any).editor as Editor;
     const node = (this as any).node;
 
     this.source = (this as any).editor?.options?.editorProps?.source;
+    if (!this.source) {
+      return;
+    }
     if ((editor?.options?.editorProps as any)?.document) {
       // find document
       if (!node?.attrs) {
         return;
       }
 
-
-      if (!node.attrs.type) {
-        node.attrs.type = "person";
-      }
       this.document = (editor?.options?.editorProps as any)?.document;
 
       this.menuItems.push({
-        title: "remove",
+        title: 'remove',
         action: () => {
-          alert("remove");
+          alert('remove');
         },
       });
 
       // find entity
-      if (this.document?.entities && node.attrs.id) {
-        this.entity = this.document.entities.find(
-          (e) => e.id === node.attrs.id
-        );
+      if (this.document?._entities && node.attrs.id) {
+        this.entity = this.document._entities.find((e) => e.id === node.attrs.id);
         if (!this.entity) {
-          this.entity = {
-            // id: guidGenerator(),
-            id: node.attrs.id,
-            text: node.text,
-            spacy_label: node.attrs.type
-            // class: node.attrs.type ?? 'node'
-          };
-          this.document.entities.push(this.entity)
+          console.log('Entity not found, sync them');
+          DocUtils.syncEntities(this.document, this.source, [{ ...node, ...{type: "text-entity"}}]);
+          this.entity = this.document._entities.find((e) => e.id === node.attrs.id);
         }
+        if (!this.element && node?.attrs?.kg_id) {
+          this.element = this.source.getElement(node.attrs.kg_id);
+        }
+        // if (!this.entity &&) {
+        //   // this.entity = {
+        //   //   // id: guidGenerator(),
+        //   //   id: node.attrs.id,
+        //   //   text: node.text,
+        //   //   spacy_label: node.attrs.type
+        //   //   // class: node.attrs.type ?? 'node'
+        //   // };
+        //   this.entity =  node.attrs;
+        //   this.document._entities.push(this.entity)
+        // }
         if (this.entity?._node) {
           this.element = this.entity._node;
+        }
 
-          if (this.element.properties && this.element._featureType?.infoPanels?.popup)
-          {
-            const popup = this.element._featureType?.infoPanels?.popup;
-            if (popup && popup.iconImageProperty && this.element.properties.hasOwnProperty(popup.iconImageProperty)) {
-              this.icon = this.element.properties[popup.iconImageProperty];              
-            }
-          }          
+        if (this.element?.properties && this.element._featureType?.infoPanels?.popup) {
+          const popup = this.element._featureType?.infoPanels?.popup;
+          if (popup && popup.iconImageProperty && this.element.properties.hasOwnProperty(popup.iconImageProperty)) {
+            this.icon = this.element.properties[popup.iconImageProperty];
+          }
         }
       }
 
@@ -260,11 +243,11 @@ export default class TextEntityComponent extends Vue {
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
-.highlight{
+.highlight {
   background-color: yellow !important;
 }
 
-.hide:hover {  
+.hide:hover {
   background-color: lightgray !important;
 }
 

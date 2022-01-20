@@ -61,6 +61,7 @@ export class GraphElement<T = BaseElementProperties> {
   public _derivatives?: GraphElement[];
   public _incomming?: GraphElement[];
   public _outgoing?: GraphElement[];
+  public _temporary?: any;
   public _elements?: { [key: string]: GraphElement | GraphElement[] };
 
   public static outOfRange(e: GraphElement, date: Date) {

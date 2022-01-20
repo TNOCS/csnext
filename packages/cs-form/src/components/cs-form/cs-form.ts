@@ -41,7 +41,7 @@ export class CsForm extends Vue {
     public sortedFieldGroups: FieldGroup[] = [];
     public data?: IFormObject;
     public formkey?: string;
-    public formdef?: IFormOptions;
+    public formdef?: IFormOptions;    
     public optionalFields?: FieldGroup[] = [];
     public panel = [0];
     public keys: { [key: string]: IFormObject } = {};
@@ -221,6 +221,7 @@ export class CsForm extends Vue {
         });
 
         this.sortFieldGroups();
+        
     }
 
     public fieldTriggered(field: IFormFieldOptions) {
@@ -258,6 +259,11 @@ export class CsForm extends Vue {
         } else {
             this.sortedFieldGroups = this.fieldGroups || [];
         }
+        if (this.optionalFields && this.optionalFields.length>0) {
+            this.optionalFields[0].fields = this.optionalFields[0].fields?.sort((a, b) => { return (a.title.toLowerCase() < b.title.toLowerCase()) ? -1 : 1 });
+        }
+        
+            
     }
 
     public updateAllGroupVisbility() {

@@ -7,6 +7,7 @@ import { IDashboard, IDashboardOptions, IWidget } from "@csnext/cs-core";
 import {
   FeatureType,
   GraphElement,
+  GraphLayout,
   GraphPreset,
   IGraphFilter,
   PropertyType,
@@ -120,8 +121,7 @@ export class CrossGraphManager extends DashboardManagerBase {
           area: "left",
           flat: true,
           class: "data-map-container",
-          token:
-            "pk.eyJ1IjoiZGFteWxlbiIsImEiOiJjazFqN2ljNzYwMTJlM2xucGV3enJvYjE4In0.kArBU3x7YIy3DhfyQhtSGw",
+          token: this.dashboard.data?.mapboxToken,            
           mbOptions: {
             style: "mapbox://styles/mapbox/satellite-streets-v10",
             center: [-117.69298, 38.83915],
@@ -129,6 +129,7 @@ export class CrossGraphManager extends DashboardManagerBase {
           } as any,
           showDraw: true,
           showRuler: true,
+          preset: this.filter,
           showGrid: true,
           showFeatureDetails: false,
           showStyles: true,
@@ -142,7 +143,7 @@ export class CrossGraphManager extends DashboardManagerBase {
           showCompass: true,
           peliasOptions: {
             accessToken:
-              "XiNgsCXbBqV4CPtilm1VkAyATed84mT7CLHXLZH1vx6LITo0XqAx1NiVATKHAfWz",
+            this.dashboard.data?.peliasToken,
           },
           filter: this.dashboard.data?.filter,
         } as GraphMapOptions,
@@ -492,7 +493,7 @@ export class CrossGraphManager extends DashboardManagerBase {
         }
       }
 
-      if (data) {
+      if (data && this.filter) {
         this.filter.updateCrossfilter(data);
       }
     }
@@ -538,7 +539,7 @@ export class CrossGraphManager extends DashboardManagerBase {
         menus: [
           {
             type: "icon",
-            icon: "clear",
+            icon: "mdi-close",
             toolTip: "clear",
             method: "clear",
           },
@@ -558,7 +559,7 @@ export class CrossGraphManager extends DashboardManagerBase {
     } as IWidget;
     widget.options?.menus?.push({
       type: "icon",
-      icon: "build",
+      icon: "mdi-tune",
       toolTip: "edit chart",
       action: (s) => {
         $cs.openRightSidebarWidget(
@@ -580,7 +581,7 @@ export class CrossGraphManager extends DashboardManagerBase {
     });
     widget.options?.menus?.push({
       type: "icon",
-      icon: "map",
+      icon: "mdi-format-color-fill",
       toolTip: "use as legend",
       action: (s) => {
         // if (this.source?.mainLayer) {
@@ -621,20 +622,30 @@ export class CrossGraphManager extends DashboardManagerBase {
 
   public initFilter() {
     if (this.source && this.dashboard?.data?.filter) {
-      let filter = this.source.getGraphPreset(
-        this.dashboard.data.filter
-      ) as GraphCrossFilter;
-      if (filter === undefined) {
-        filter = new GraphCrossFilter(this.source);
-        filter.id = this.dashboard.data.filter;
-        filter.properties!.layers = this.dashboard.data.layers;
-        this.source.addGraphPreset(filter, false);
-      }
-      this.filter = filter;
+      // let filter = this.source.getGraphPreset(
+      //   this.dashboard.data.filter
+      // ) as GraphCrossFilter;
+      // if (filter === undefined) {
+        this.filter = new GraphCrossFilter(this.source);
+        this.filter.id = this.dashboard.data.filter;
+        this.filter.properties = {
+          editor_mode: 'VIEW',
+          graphLayout: {            
+            layout: 'force',
+            nodes: {},
+            pinnedFeatureTypes: [this.crossDashboardOptions?.baseFeatureType]
+
+          } as GraphLayout
+        }
+        // filter.properties!.layers = this.dashboard.data.layers;
+        this.source.addGraphPreset(this.filter, false);
+      // } else {
+      //   this.filter = {...new GraphCrossFilter(this.source), ...filter};
+      // }
     }
   }
   public contentLoaded(source: DocDatasource) {
-    this.source = source;
+    this.source = source;    
     this.initFilter();
     this.initData();
     this.initChartWidgets();
@@ -642,8 +653,9 @@ export class CrossGraphManager extends DashboardManagerBase {
     this.source.events.subscribe(
       CrossFilterDatasource.FILTER_CHANGED,
       (a: string, e: any) => {
-        if (this.filter) {
+        if (this.filter && this.source) {
           this.filter._visibleNodes = this.filter?.ndx?.allFiltered() as GraphElement[];
+          this.source.updateFilterStats(this.filter);
           console.log(this.filter._visibleNodes.length);
           this.source?.events.publish(
             IGraphFilter.GRAPH_FILTER,

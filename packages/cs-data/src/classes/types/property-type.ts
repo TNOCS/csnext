@@ -27,6 +27,8 @@ export class PropertyType {
     public label?: string;
     @FormField({ title: 'Description', type: 'string', optional: true })
     public description?: string;
+    @FormField({ title: 'Hint', type: 'string', optional: true })
+    public hint?: string;
     public count?: number;
     @FormField({ title: 'Default', type: 'number', group: 'number', optional: true })
     public default?: any;
@@ -46,6 +48,7 @@ export class PropertyType {
     @FormField({ title: 'Min', type: 'number', group: 'number', requirements: PropertyType.isNumber, optional: true })
     public min?: number;
     public options?: string[];
+    public mapping?: {[text: string]: any};
     
     public sd?: number;
     @FormField({ title: 'String format', type: 'string', requirements: PropertyType.isString, optional: true })
@@ -55,6 +58,7 @@ export class PropertyType {
     public title?: string;
     public optionsList?: string;
     public colorScheme?: string | string[];  
+    public array?: boolean;
     public defaultLegendColor?: string;    
     @FormField({ title: 'Type', 
         required: true,

@@ -12,6 +12,10 @@
   background-color: lightgray;
 }
 
+.input-component {
+  width: 100%;
+}
+
 .v-input--checkbox {
     margin-top: 0px;
     padding-top: 0px;

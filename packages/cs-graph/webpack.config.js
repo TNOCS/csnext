@@ -12,6 +12,7 @@ const config = buildConfig(
         'ag-grid-community': 'ag-grid-community',
         '@antv/g6': '@antv/g6',
         axios: 'axios',
+        vue: 'Vue',
         'simplebar-vue': 'simplebar-vue'
     },
     'csgraph'

@@ -66,8 +66,11 @@ export class GraphDatasource extends DataSource {
       threshold: 0.3,
       keys: [
         { name: 'properties.name', weight: 1 },
-        { name: 'properties.description', weight: 0.5 },
-        { name: 'properties.aliases', weight: 0.7 },
+        { name: 'properties.description', weight: 0.7 },
+        { name: 'properties.tags', weight: 0.5 },
+        { name: 'properties.aliases', weight: 0.5 },
+        { name: 'properties.motto_text', weight: 0.4 },
+        { name: 'properties.wikipedia', weight: 0.3 },
       ],
       includeScore: true,
     });
@@ -246,6 +249,9 @@ export class GraphDatasource extends DataSource {
       el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
     }
     if (el.properties.hasOwnProperty('location')) {
+      if (el.id === 'Q9186375') {
+        debugger;
+      }
       const values = WktUtils.PointParser(el.properties['location']);
       if (values && values.length === 2) {
         el.properties['lat'] = values[0];
@@ -255,18 +261,22 @@ export class GraphDatasource extends DataSource {
       }
     }
 
-    if (el.properties.hasOwnProperty('coordinate location')) {
-      const values = el.properties['coordinate location']
-        .replace('Point(', '')
+    if (el.properties.hasOwnProperty('coordinate') && !el.properties.hasOwnProperty('lat')) {      
+      // only take first
+      const cos = el.properties['coordinate'].split(',');
+      if (cos.length>0) {
+        const values = cos[0].replace('Point(', '')
         .replace(')', '')
         .split(' ');
-      if (values.length === 2) {
-        el.properties['lat'] = values[1];
-        el.properties['lon'] = values[0];
-      } else {
-        // console.log(el.properties['coordinate location']);
-      }
+      
+            
+      if (values && values.length === 2) {
+        el.properties['lat'] = parseFloat(values[0]);
+        el.properties['lon'] = parseFloat(values[1]);
+      } 
     }
+  }
+
   }
 
   public get availableEdgeTypes(): { [key: string]: PropertyType } {
@@ -412,14 +422,16 @@ export class GraphDatasource extends DataSource {
     property: string,
     searchValue: any,
     operator: ValueOperatorType,
-    skipRelations: boolean = false
+    skipRelations: boolean = false,
+    list?: GraphElement[]
   ): GraphElement[] {
     let relationVals: GraphElement[] = [];
-    let res: GraphElement[] = Object.values(this.graph).filter((c) => {
+    if (!list) { list = Object.values(this); }
+    let res: GraphElement[] = list.filter((c) => {
       let propVal = this.getValueFromElement(property, c);
-      if (propVal != undefined) {
-        return this.compareOperator(propVal, searchValue, operator);
-      }
+      // if (propVal != undefined) {
+      
+      // }
       if (!skipRelations) {
         relationVals = relationVals.concat(
           (
@@ -442,6 +454,7 @@ export class GraphDatasource extends DataSource {
           ).map((e) => e.from!)
         );
       }
+      return this.compareOperator(propVal, searchValue, operator);
       return false;
     });
     if (relationVals.length > 0) {
@@ -463,17 +476,21 @@ export class GraphDatasource extends DataSource {
   ): boolean {
     switch (operator) {
       case '==':
-        return propVal == searchValue;
+        return propVal !== undefined && propVal == searchValue;
       case '>=':
-        return propVal >= searchValue;
+        return propVal !== undefined && propVal >= searchValue;
       case '>':
-        return propVal > searchValue;
+        return propVal !== undefined && propVal > searchValue;
       case '<=':
-        return propVal <= searchValue;
+        return propVal !== undefined && propVal <= searchValue;
       case '<':
-        return propVal < searchValue;
+        return propVal !== undefined && propVal < searchValue;
       case '!=':
-        return propVal != searchValue;
+        return propVal !== undefined && propVal != searchValue;
+      case 'set':
+        return (propVal !== undefined && propVal !== null);
+      case 'not set':
+        return (propVal === undefined || propVal === null);
       default:
         console.log(`Unknown ValueOperatorType ${operator}`);
         return false;
@@ -514,14 +531,18 @@ export class GraphDatasource extends DataSource {
     if (filter) {
       if (
         filter.hasObjectProperties &&
-        filter.hasObjectProperties.length === 1
+        filter.hasObjectProperties.length > 0
       ) {
-        const f = filter.hasObjectProperties[0];
-        res = this.getElementsByPropertyAndOperator(
-          f.property,
-          f.value,
-          f.operator
-        );
+        for (const objPropFilter of filter.hasObjectProperties) {
+          res = this.getElementsByPropertyAndOperator(
+            objPropFilter.property,
+            objPropFilter.value,
+            objPropFilter.operator,
+            false,
+            res
+          );  
+        }        
+        
         // filter.hasObjectProperties[0].operator
         // for (const f of filter.hasObjectProperties) {
 
@@ -580,8 +601,13 @@ export class GraphDatasource extends DataSource {
               }
               return false;
             })
-        );
-      } else if (filter.hasObjectRelation) {
+        )
+      } 
+      else if (filter.hasElementRelation) {
+        res = res.filter((o) => o._elements && filter.hasElementRelation?.elementId && filter.hasElementRelation?.property && o._elements.hasOwnProperty(filter.hasElementRelation.property) && (
+          (Array.isArray(o._elements[filter.hasElementRelation.property]) ? ((o._elements[filter.hasElementRelation.property] as GraphElement[]).findIndex(e => e.id === filter!.hasElementRelation!.elementId) !== -1) : (o._elements[filter.hasElementRelation.property] as GraphElement).id === filter!.hasElementRelation!.elementId)))
+      }
+      else if (filter.hasObjectRelation) {
         res = res.filter(
           (o) =>
             o._outgoing &&
@@ -635,8 +661,6 @@ export class GraphDatasource extends DataSource {
       element.classId = classId;
     }
 
-    // element.properties.classId = element.classId;
-
     if (!element.id) {
       element.id = 'edge-' + guidGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
     }
@@ -656,7 +680,7 @@ export class GraphDatasource extends DataSource {
     if (element.from && !element.from._outgoing) {
       element.from._outgoing = [];
     }
-    if (element.from?._outgoing && !element.from._outgoing.includes(element)) {
+    if (element.from?._outgoing && element.from._outgoing.findIndex((l :GraphElement) => l.id === element.id) === -1) {
       element.from._outgoing.push(element);
     }
     return element;
@@ -891,18 +915,30 @@ export class GraphDatasource extends DataSource {
    * Updates incomming and outgoing edges for an element
    */
   public updateElementEdges(e: GraphElement, clean = false) {
+    // check if to id has been changed, remove existing outgoing links
+    if (e.toId && e.to?.id && e.to.id !== e.toId) {
+      if (!e._outgoing) { e._outgoing = [];}
+      e._outgoing = e._outgoing.filter(o => o.id === e.to!.id);
+      e.to = undefined;
+    }
     if (e.toId && !e.to) {
       e.to = this.graph[e.toId];
       if (e.to) {
         if (!e.to._incomming) {
           e.to._incomming = [e];
         } else {
-          // if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
-          e.to._incomming.push(e);
-          // }
+          if (e.to._incomming.findIndex(o => o.id === e.id) === -1) {
+            e.to._incomming.push(e);
+          }
         }
       } else {
       }
+    }
+    // check if from id has been changed, remove existing outgoing links
+    if (e.fromId && e.from?.id && e.from.id !== e.fromId) {
+      if (!e._incomming) { e._incomming = [];}
+      e._incomming = e._incomming.filter(o => o.id === e.from!.id);
+      e.from = undefined;
     }
     if (e.fromId && !e.from) {
       e.from = this.getElement(e.fromId);
@@ -910,9 +946,9 @@ export class GraphDatasource extends DataSource {
         if (!e.from._outgoing) {
           e.from._outgoing = [e];
         } else {
-          // if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
-          e.from._outgoing.push(e);
-          // }
+          if (e.from._outgoing.findIndex(o => o.id === e.id) === -1) {
+            e.from._outgoing.push(e);
+          }
         }
       }
     }

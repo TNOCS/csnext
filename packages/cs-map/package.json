@@ -24,7 +24,7 @@
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-data": "^0.0.131",
         "@csnext/cs-form": "^0.0.131",
-        "@mapbox/geojson-extent": "^1.0.0",
+        "@mapbox/geojson-extent": "^1.0.1",
         "@mapbox/polylabel": "^1.0.2",
         "@mapbox/simplespec-to-gl-style": "^0.4.0",
         "@turf/centroid": "^6.5.0",
@@ -40,7 +40,7 @@
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
         "@types/lodash": "4.14.177",
-        "@types/mapbox-gl": "^1.13.0",
+        "@types/mapbox-gl": "^1.13.2",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32",
         "vue-template-compiler": "2.6.14",

@@ -1,7 +1,39 @@
 <template>
-  <div v-if="field">    
+  <div v-if="field">
     <div v-if="field.data.relation.multiple">
-      <v-layout
+      <v-autocomplete
+        auto-select-first
+        v-model="links"
+        :items="getItems()"
+        chips
+        @change="updateLinks()"
+        :label="$cs.Translate(field.title)"
+        :hint="field.hint"
+        :persistentHint="field.persistentHint"
+        append-outer-icon="mdi-plus"
+        @click:append-outer="createElement()"
+        clearable
+        item-text="element.properties.name"
+        multiple
+        return-object
+      >
+        <template v-slot:selection="data">
+          <v-chip
+            v-bind="data.attrs"
+            :input-value="data.selected"
+            close
+            :color="data.item.color"
+            @click="data.select"
+            @click:close="remove(data.item)"
+          >
+            <v-avatar left v-if="data.item.element._featureType.icon">
+              <v-icon>{{ data.item.element._featureType.icon }}</v-icon>
+            </v-avatar>
+            {{ data.item.element.properties.name }}
+          </v-chip>
+        </template>
+      </v-autocomplete>
+      <!-- <v-layout
         >{{ field.title }}
         <v-btn @click="addNewObjectRelation()" icon style="margin-top: -5px"
           ><v-icon>mdi-plus</v-icon></v-btn
@@ -69,38 +101,31 @@
             >{{ props.item.title }}</span
           >
         </template>
-      </v-combobox>
+      </v-combobox> -->
     </div>
     <div v-else>
-      <v-combobox
+      <v-autocomplete
         :items="getItems()"
         v-model="activeRelation"
-        :label="
-          $cs.Translate(field.title) + ' (' + field.data.relation.type + ')'
-        "
+        :label="$cs.Translate(field.title) + ' (' + field.data.relation.type + ')'"
         :hint="field.hint"
-        itemText="properties.name"
+        item-text="element.properties.name"
         hide-no-data
         clearable
         @change="updateRelation()"
-        :return-object="true"
-        itemValue="id"
+        return-object
+        item-value="element.id"
         :persistentHint="field.persistentHint"
         :disabled="field.readonly"
         :append-outer-icon="field._appendIcon"
       >
-        <template v-slot:item="props">
+        <!-- <template v-slot:item="props">
           <span v-if="props"
-            ><v-img
-              :src="props.item.image"
-              max-height="48"
-              max-width="48"
-              style="float: left; margin-right: 10px"
-            ></v-img
-            >{{ props.item.title }}</span
+            ><v-img :src="props.item.image" max-height="48" max-width="48" style="float: left; margin-right: 10px"></v-img
+            >{{ props.item.properties.name }}</span
           >
-        </template>
-      </v-combobox>
+        </template> -->
+      </v-autocomplete>
     </div>
   </div>
 </template>
@@ -124,20 +149,16 @@
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
-import {
-  guidGenerator,
-  IFormFieldOptions,
-  IFormOptions,
-} from "@csnext/cs-core";
+import { Component } from 'vue-property-decorator';
+import { WidgetBase } from '@csnext/cs-client';
+import { guidGenerator, idGenerator, IFormFieldOptions, IFormOptions } from '@csnext/cs-core';
 
-import simplebar from "simplebar-vue";
+import simplebar from 'simplebar-vue';
 
-import { NodeLink, DataInfoPanel } from "@csnext/cs-map";
-import Vue from "vue";
-import { DocDatasource } from "../../datasources/doc-datasource";
-import { RelationType } from "@csnext/cs-data";
+import { NodeLink, NodeChip, DataInfoPanel } from '@csnext/cs-map';
+import Vue from 'vue';
+import { DocDatasource } from '../../datasources/doc-datasource';
+import { FeatureType, RelationType } from '@csnext/cs-data';
 import { LinkInfo, GraphElement } from '@csnext/cs-data';
 
 @Component({
@@ -145,20 +166,100 @@ import { LinkInfo, GraphElement } from '@csnext/cs-data';
     field: undefined,
     target: undefined,
   } as any,
-  components: { simplebar, NodeLink, DataInfoPanel },
+  components: { simplebar, NodeLink, NodeChip, DataInfoPanel },
 })
 export default class RelationEditor extends Vue {
+  public links: LinkInfo[] | null = null;
+  public linkIds: string[] = [];
 
-  public links : LinkInfo[] | null = null;
-
-  public getItems() {
-    if (this.graph && this.relation?.objectType) {
-      console.log("Get items---");
-      console.log(this.relation);
-      return this.graph!.getClassElements(this.relation.objectType, true);
-    } else {
-      return [];
+  public createElement() {
+    if (!this.graph?.featureTypes || !this.relation?.objectType || !this.graph.featureTypes.hasOwnProperty(this.relation.objectType)) {
+      return;
     }
+    const ft = this.graph.featureTypes[this.relation.objectType];    
+    if (!ft?.title) { return; }
+    $cs.triggerInputDialog(ft.title, 'enter new name', '', ft.title).then((name) => {
+      this.graph
+        ?.addNewNode({
+          id: `${this.relation!.objectType}-${idGenerator()}`,
+          properties: { name },
+          classId: this.relation!.objectType,
+        })
+        .then(async (newNode) => {
+          this.graph!.addNewEdge(
+          {
+            fromId: this.node!.id,
+            toId: newNode.id,
+            classId: this.relation!.type,
+          } as GraphElement,
+          true
+        )
+          .then(async (e) => {
+            this.$forceUpdate();
+          });
+
+          
+        });
+    });
+  }
+
+  public async updateLinks(e: any) {
+    if (!this.graph || !this.links) {
+      return;
+    }
+    for (const oldLink of this.linkIds) {
+      const old = this.links.find((l) => l.link?.id === oldLink);
+      if (!old && this.graph.graph.hasOwnProperty(oldLink)) {
+        await this.graph.removeEdge(this.graph.graph[oldLink]);
+      }
+    }
+    for (const currentLink of this.links) {
+      if (!currentLink.link?.id || this.linkIds.indexOf(currentLink.link.id) === -1) {
+        if (this.node && currentLink.element?.id) {
+          try {
+            await this.graph.addNewEdge(
+              {
+                fromId: this.node!.id,
+                toId: currentLink.element.id,
+                classId: this.relation!.type,
+              } as GraphElement,
+              true
+            );
+          } catch {
+          } finally {
+            this.setLinks();
+          }
+        }
+      }
+    }
+    // for (const relation of this.links) {
+    //   if (relation.link?.id && this.linkIds.indexOf(relation.link.id))
+
+    // }
+    // remove old links
+
+    // add new links
+  }
+
+  public remove(li: LinkInfo) {
+    this.links = this.links ? this.links.filter((l) => l !== li) : [];
+    this.updateRelation();
+  }
+
+  public getItems(): LinkInfo[] {
+    const res: LinkInfo[] = [];
+    if (this.graph && this.relation?.objectType) {
+      const elements = this.graph!.getClassElements(this.relation.objectType, true);
+      if (elements && this.node) {
+        for (const el of elements) {
+          if (el.id !== this.node.id) {
+            res.push({ element: el, direction: 'to', link: undefined });
+          }
+        }
+        // return elements.map((e: GraphElement) => { element: e, direction: 'to'}) as LinkInfo[];
+      }
+    }
+    return res;
   }
 
   public get relation(): RelationType | undefined {
@@ -183,7 +284,7 @@ export default class RelationEditor extends Vue {
     if (!l.element || !this.graph) {
       return;
     }
-    this.graph.openElement(l.element);    
+    this.graph.openElement(l.element);
   }
 
   public async addNewObjectRelation() {
@@ -193,26 +294,29 @@ export default class RelationEditor extends Vue {
 
     // create target object
     let obs = this.graph.getObservation(this.relation.objectType)!;
-    let title = "new " + obs.title;
+    let title = 'new ' + obs.title;
 
     this.graph
       .addNewNode({
-        id: obs.type + "-" + guidGenerator(),        
+        id: obs.type + '-' + guidGenerator(),
         classId: obs.type,
-        kb_source: "collator",
+        kb_source: 'collator',
       })
       .then(async (n) => {
         obs._node = n;
         obs.typeId = this.relation!.type;
         this.graph?.addNode(n);
 
-        this.graph!.addNewEdge({
-          fromId: this.node!.id,
-          toId: n.id,
-          classId: this.relation!.type,
-        } as GraphElement, true)
+        this.graph!.addNewEdge(
+          {
+            fromId: this.node!.id,
+            toId: n.id,
+            classId: this.relation!.type,
+          } as GraphElement,
+          true
+        )
           .then(async (e) => {
-            if (this.graph) {              
+            if (this.graph) {
               this.graph.openElement(n);
               this.$forceUpdate();
             }
@@ -246,10 +350,11 @@ export default class RelationEditor extends Vue {
     let res: LinkInfo[] = [];
     for (const link of this.node._outgoing) {
       if (link.classId === this.relation.type) {
-        res.push({ direction: "to", element: link.to, link });
+        res.push({ direction: 'to', element: link.to, link, color: link.to ? GraphElement.getBackgroundColor(link.to) : 'blue' });
       }
     }
-    this.links= res;
+    this.links = res;
+    this.linkIds = this.links!.filter((l) => l.link?.id).map((l) => l.link!.id!);
   }
 
   public formDef: IFormOptions | null = null;
@@ -263,17 +368,16 @@ export default class RelationEditor extends Vue {
     if (!this.graph || !this.node || !this.relation) {
       return;
     }
-    console.log("Add new relation");
-    console.log(this.newRelation);
     this.graph
-      .addNewEdge({
-        fromId: this.node.id,
-        toId: this.newRelation.id,
-        classId: this.relation.type,
-      } as GraphElement, true)
-      .then(async (e) => {
-        
-      })
+      .addNewEdge(
+        {
+          fromId: this.node.id,
+          toId: this.newRelation.id,
+          classId: this.relation.type,
+        } as GraphElement,
+        true
+      )
+      .then(async (e) => {})
       .catch((e) => {})
       .finally(() => {
         this.newRelation = undefined;
@@ -283,54 +387,42 @@ export default class RelationEditor extends Vue {
   }
 
   public getActiveRelation() {
-    let rel = this.node?._outgoing?.find(r => r.classId === this.relation?.type);
+    let rel = this.node?._outgoing?.find((r) => r.classId === this.relation?.type);
     if (rel) {
-      this.activeRelation = rel?.to;
+      this.activeRelation = { direction: 'to', link: rel, element: rel.to, color: rel.to ? GraphElement.getBackgroundColor(rel.to) : 'blue' };
+
       this.oldRelation = rel;
     }
-    
   }
 
   public async updateRelation() {
     if (!this.graph || !this.node || !this.relation || !this.activeRelation) {
       return;
     }
-    console.log("new relation");
-    console.log(this.activeRelation);
 
     if (this.oldRelation) {
       await this.graph.removeEdge(this.oldRelation);
       delete this.oldRelation;
     }
-    
-    // if (this.node._outgoing)
 
     this.graph
       .addNewEdge({
         fromId: this.node.id,
-        toId: this.activeRelation.id,
+        toId: this.activeRelation.element.id,
         classId: this.relation.type,
       } as GraphElement)
-      .then(async (e) => {        
+      .then(async (e) => {
         this.getActiveRelation();
       })
       .catch((e) => {})
-      .finally(() => {   
-        this.setLinks();     
+      .finally(() => {
+        this.setLinks();
       });
-
-    // alert('update relation');
   }
 
   mounted() {
     this.getActiveRelation();
     this.setLinks();
-    console.log("relation graph");
-    if (this.field) {
-      console.log(this.field);
-      // conso
-      // console.log(this.field!.data)
-    }
   }
 }
 </script>

@@ -8,6 +8,8 @@ export interface IFormOptions {
   hideTitle?: boolean;
   showToolbar?: boolean;
   toolbarClass?: string;
+  showPanels?: boolean;
+  verbose?: boolean;
   isPanelOpen?: boolean;
   optionalSupport?: boolean;
   data?: any;
@@ -53,13 +55,13 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'checkboxes-horizontal'
   | 'checkbox'
   | 'object'
-  | 'selection'
-  | 'array'
+  | 'selection'  
   | 'keyvalue'
   | 'form'
   | 'union'
   | 'keysobject'
   | 'datetimepicker'
+  | 'url'
   | 'epochdatetimepicker'
   | 'datepicker'
   | 'button-trigger'
@@ -71,6 +73,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   required?: boolean;
   group?: string;
   section?: string;
+  array?: boolean;
   min?: number;
   max?: number;
   step?: number;
@@ -89,6 +92,7 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   newItem?: ()=>any;
   readonly?: boolean;
   keyText?: string;
+  urlTemplate?: string;
   keyValue?: string;
   icon?: string;
   colors?: string[];

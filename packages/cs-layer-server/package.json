@@ -63,7 +63,7 @@
         "uuid": "^7.0.3",
         "wkx": "^0.5.0",
         "website-scraper": "4.2.3",
-
+        "overpass-ts": "4.3.8",
         "neo4j-driver": "4.2.3",
         "neo4j-graphql-js": "2.19.2"
     },

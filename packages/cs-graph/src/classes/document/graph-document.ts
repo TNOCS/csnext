@@ -12,11 +12,11 @@ export class DocElementProperties extends BaseElementProperties {
 
 export class GraphDocument extends GraphElement<DocElementProperties> {
     public editedText?: string;
-    public entities?: TextEntity[];
-    public relations?: TextRelation[];
+    public _entities?: TextEntity[];
+    // public relations?: TextRelation[];
     public observations?: Observation[];
     public suggestedObservation?: FeatureType[] = [];
-    public entityTypes: { [id: string]: EntityType } = {};
+    public _entityTypes: { [id: string]: EntityType } = {};
     public activeLearningType? : FeatureType;
     
     public get doc() : any {

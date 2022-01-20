@@ -25,9 +25,9 @@
       
       <v-toolbar-title
         ><v-icon v-if="activeElement._featureType.icon">{{activeElement._featureType.icon}}</v-icon> {{ activeElement.properties.name }}</v-toolbar-title>
-        <br />
+        <!-- <br />
         <div class="type-sub-title">{{ activeElement._featureType.title }}</div>
-      </v-toolbar-title>
+      </v-toolbar-title> -->
 
       <v-spacer></v-spacer>
 
@@ -47,15 +47,19 @@
         <v-icon>mdi-delete</v-icon>
       </v-btn>
 
-      <v-btn icon @click="toggleBookmark()">
+      <!-- <v-btn icon @click="editNode()">
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn> -->
+
+      <!-- <v-btn icon @click="toggleBookmark()">
         <v-icon>mdi-bookmark</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <v-btn icon @click="graphNode()">
         <v-icon>mdi-scatter-plot</v-icon>
       </v-btn>
 
-      <v-menu :close-on-content-click="false" offset-y>
+      <!-- <v-menu :close-on-content-click="false" offset-y>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-plus</v-icon>
@@ -69,19 +73,11 @@
                 <v-list-item-title>follow</v-list-item-title>
               </v-list-item-content>
             </template>
-            <v-list-item>
-              <!-- <v-list-item v-if="item.items"                
-                v-for="(subItem, si) in item.items"
-                :key="si"
-                @click="subItem.action"
-              >
-                <v-list-item-content>
-            <v-list-item-title v-text="subItem.title"></v-list-item-title>
-          </v-list-item-content> -->
+            <v-list-item>            
             </v-list-item>
           </v-list-group>
         </v-list>
-      </v-menu>
+      </v-menu> -->
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
@@ -268,6 +264,7 @@
 .feature-property-value {
   font-size: 16px;
   text-align: right;
+  max-width: 66%;
   justify-content: flex-end;
 }
 
@@ -279,7 +276,7 @@
   position: absolute;
   cursor: pointer;
   font-size: 16px;
-  width: 66%;
+  /* width: 66%; */
 }
 
 .prop-key {
@@ -378,12 +375,21 @@ export default class ElementInfo extends WidgetBase {
     }
   }
 
+  // public editNode() {
+  //   if (this.dataSource && this.activeElement && this.widget._dashboard) {
+  //     if (!this.widget._dashboard.options) {
+  //       this.widget._dashboard.options = {};
+  //     }
+  //     this.widget._dashboard.options.sidebarExpanded = true;      
+  //   }
+  // }
+
   public updateForm() {
     if (!this.dataSource || !this.activeElement) {
       return;
     }
     this.formDef = null;
-    const form = this.dataSource.elementEditorForm(this.activeElement);
+    const form = this.dataSource.elementEditorForm(this.activeElement, true, true);
     Vue.nextTick(() => {
       this.formDef = form;
     });
@@ -412,12 +418,7 @@ export default class ElementInfo extends WidgetBase {
     return GraphElement.getBackgroundColor(el);
   }
 
-  public editNode() {
-    if (this.activeElement && this.dataSource) {
-      this.dataSource.startEditElement(this.activeElement);
-      $cs.triggerNotification({ title: "Editing started" });
-    }
-  }
+  
 
   public saveNode() {
     if (this.activeElement && this.dataSource) {

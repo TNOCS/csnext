@@ -7,28 +7,22 @@ import {
   IGraphElementAction,
 } from '@csnext/cs-data';
 import Axios from 'axios';
-import { DocDatasource, GraphDocument } from '..';
+import { DocDatasource, GraphDocument } from '../..';
+import { IGraphStorage, StorageTypes } from './graph-storage';
 
-export interface IGraphStorage {
-  source?: DocDatasource;
-  init(source: DocDatasource);
-  loadTypes(): Promise<boolean>;
-  saveTypes(): Promise<boolean>;
-  loadGraph(): Promise<boolean>;
-  saveEdge?(element: GraphElement): Promise<GraphElement | undefined>;
-  saveElement?(element: GraphElement): Promise<GraphElement>;
-  removeEdge?(id: string): Promise<boolean>;
-  loadGraphElement?(id: string): Promise<GraphElement | undefined>;
-  removeElement(id: string): Promise<boolean>;
-}
 
-export class GraphServer implements IGraphStorage {
+
+
+export class ServerStorage implements IGraphStorage {
   public source!: DocDatasource;
+
+  public storageType : StorageTypes = 'server';
 
   constructor(public base_url: string) {}
 
-  public init(source: DocDatasource) {
+  public init(source: DocDatasource) : Promise<boolean> {
     this.source = source;
+    return Promise.resolve(true);
   }
 
   public async loadGraph(): Promise<boolean> {
@@ -78,8 +72,7 @@ export class GraphServer implements IGraphStorage {
               ...new GraphDocument(),
               ...{
                 id: item.id,
-                classId: item.classId,
-                title: item.properties.name,
+                classId: item.classId,                
                 properties: item.properties,
                 alternatives: item.alternatives,
               },
@@ -92,8 +85,7 @@ export class GraphServer implements IGraphStorage {
               ...new GraphElement(),
               ...{
                 id: item.id,
-                classId: item.classId,
-                title: item.properties.name,
+                classId: item.classId,                
                 properties: item.properties,
                 alternatives: item.alternatives,
               },
@@ -160,7 +152,7 @@ export class GraphServer implements IGraphStorage {
                   if (existing) {
                     if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
                       existing.properties = el.properties;
-                      this.source.updateElementProperties(el);
+                      this.source.updateElementProperties(existing);
                       this.source.triggerUpdateGraph(existing);
                     }
                   } else {

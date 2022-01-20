@@ -92,6 +92,9 @@
         </v-list-item>
       </v-list>
 
+      <v-card v-if="menu.widget">
+        <cs-widget :widget="menu.widget"></cs-widget>
+      </v-card>
       <v-card v-if="menu.component" style="z-index: 1000">
         <component :is="menu.component" :data="menu.data"></component>
       </v-card>

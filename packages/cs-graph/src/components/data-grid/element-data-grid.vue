@@ -1,6 +1,10 @@
 <template>
   <div v-if="featureType" class="data-grid-component">
-    <div class="data-grid-title"><span v-if="featureType.icon"><v-icon>{{featureType.icon}}</v-icon></span>{{ options.title }}</div>
+    <div class="data-grid-title">
+      <span v-if="featureType.icon" class="mr-4"
+        ><v-icon>{{ featureType.icon }}</v-icon></span
+      >{{ options.title }}
+    </div>
     <v-layout class="ma-2">
       <v-btn-toggle dense v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
         <v-btn value="table">
@@ -18,18 +22,19 @@
         <v-btn v-if="options.parentProperty" value="tree">
           <v-icon>mdi-file-tree</v-icon>
         </v-btn>
+
+        <v-btn v-if="options.newsOptions" value="news">
+          <v-icon>mdi-newspaper-variant</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.kanbanOptions" value="kanban">
+          <v-icon>mdi-format-columns</v-icon>
+        </v-btn>
       </v-btn-toggle>
 
       <v-menu offset-y v-if="options.canAdd && classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            v-bind="attrs"
-            class="ml-2"
-            elevation="0"
-            v-on="on"
-            @keydown.native.alt.78="addEntity(classTypes[0])"
-          >
+          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])">
             <v-icon>mdi-plus</v-icon>
             {{ $cs.Translate('NEW_ITEM') }}
           </v-btn>
@@ -49,9 +54,27 @@
         elevation="0"
       >
         <v-icon>mdi-plus</v-icon>
-
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
+
+      <template v-if="options.defaultView == 'kanban' && options.kanbanOptions.columnPropertySelection">
+      <v-menu offset-y >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
+            <v-icon>mdi-blur</v-icon>
+            {{options.kanbanOptions.columnProperty}}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item v-for="(prop, index) in options.kanbanOptions.columnPropertySelection" :key="index" @click="selectKanbanProperty(prop)">
+            <v-list-item-title>{{ prop }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      </template>
+
+
+      
       <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="linkAll()" elevation="0">
         <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
         {{ $cs.Translate('LINK_ALL') }}
@@ -130,7 +153,7 @@
           class="table-grid"
           :class="{
             'ag-theme-alpine-dark': $cs.project.theme.dark,
-            'ag-theme-alpine': !$cs.project.theme.dark
+            'ag-theme-alpine': !$cs.project.theme.dark,
           }"
           :columnDefs="columnDefs"
           :defaultColDef="defaultColDef"
@@ -148,57 +171,99 @@
       <simplebar class="full-widget">
         <isotope :options="getIsoOptions()" ref="iso" :list="items" class="isotope-grid">
           <template v-for="(element, indx) of items">
-            <v-card :key="indx" class="entity-card" :class="[element.properties.value_type, element.properties.layout]" @click="selectEntityCard(element)">
+            <v-card
+              :key="indx"
+              class="entity-card"
+              :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
+              @click="selectEntityCard(element)"
+            >
               <component :is="getElementCard(element)" :source="source" :element="element"></component>
             </v-card>
-
-            <!-- <v-card          
-          :key="indx"
-          class="entity-card"
-          @click="selectEntity(entity)"
-        >
-          <data-info-panel
-            v-if="entity"
-            :data="entity.properties"
-            :node="entity"
-            :featureType="entity._featureType"
-            panel="popup"
-          ></data-info-panel>
-          <v-card-actions>
-            <v-btn icon @click="removeEntity(entity)"
-              ><v-icon>mdi-delete</v-icon></v-btn
-            >
-            <v-btn icon @click="editEntity(entity)"
-              ><v-icon>mdi-pencil</v-icon></v-btn
-            >
-            <v-btn icon @click="graphNode(entity)"
-              ><v-icon>mdi-scatter-plot</v-icon></v-btn
-            >
-          </v-card-actions>
-        </v-card> -->
           </template>
         </isotope>
       </simplebar>
-      <!-- <simplebar class="scroll">
-    <v-virtual-scroll
-        v-if="source"
+    </template>
+
+    <template v-if="options.defaultView === 'news'">
+      <!-- <v-virtual-scroll
+        :bench="10"
         :items="items"
-        :item-height="60"
-        clientHeight="100%"
-      >
-        <template v-slot="{ item }">
-    
-          <v-card class="entity-card">      
-      <data-info-panel v-if="item" :data="item.properties" :node="item" :featureType="item._featureType" panel="popup" ></data-info-panel>      
-      {{ dateString(item.properties.updated_time) }}
-      <v-card-actions>
-      <v-btn icon @click="removeEntity(item)"><v-icon>mdi-delete</v-icon></v-btn>
-      <v-btn icon @click="editEntity(item)"><v-icon>mdi-pencil</v-icon></v-btn>
-      </v-card-actions>
-    </v-card>
-        </template>
-    </v-virtual-scroll>
-    </simplebar> -->
+        height="300"
+        item-height="64"
+      > -->
+      <simplebar class="full-widget">
+        <v-list>
+          <v-list-item three-line v-for="(element, indx) of items" :key="indx" class="news-card" @click="selectEntityCard(element)">
+            <v-list-item-content>
+              <div
+                class="text-overline mb-4"
+                v-if="options.newsOptions.sourceElement && element._elements.hasOwnProperty(options.newsOptions.sourceElement)"
+              >
+                {{ element._elements[options.newsOptions.sourceElement].properties.name }}
+              </div>
+              <v-list-item-title class="text-h5 mb-1">
+                {{ element.properties.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
+                <span class="source-property" v-if="element.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
+                  element.properties[options.newsOptions.sourceProperty]
+                }}</span>
+                {{ element.properties.description }}</v-list-item-subtitle
+              >
+            </v-list-item-content>
+            <v-list-item-avatar v-if="element.properties.image" tile size="50">
+              <v-img class="feed-image" :src="element.properties.image"></v-img>
+            </v-list-item-avatar>
+          </v-list-item>
+        </v-list>
+      </simplebar>
+      <!-- </v-virtual-scroll> -->
+    </template>
+
+    <template v-if="options.defaultView === 'kanban'">
+      <simplebar class="full-widget">
+        <v-layout v-if="kanbanColumns" class="kanban-board">
+          <v-card
+            v-for="column in kanbanColumns"
+            :key="column.title"
+            outlined
+            class="kanban-column"            
+            :data-prop="column.prop"
+            :style="getKanbanColumnStyle(column)"
+          >
+            <v-layout class="kanban-column-header" :class="{'kanban-column-rotated': column.collapsed}">
+              <v-btn icon @click="toggleKanbanColumn(column)"><v-icon v-if="column.collapsed">mdi-chevron-down</v-icon><v-icon v-else>mdi-chevron-right</v-icon></v-btn>
+            <span class="kanban-column-title">{{ column.title }}</span>
+            <v-spacer v-if="!column.collapsed"/>
+            <v-icon>mdi-card-multiple-outline</v-icon><span class="kanban-column-header-indicator">{{column.elements.length}}</span>
+            <v-btn v-if="!column.collapsed && options.canAdd" icon @click="addKanbanColumnElement(column)"><v-icon>mdi-plus</v-icon></v-btn>
+            </v-layout>
+            <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
+            <draggable class="kanban-column-items" v-if="!column.collapsed" :list="column.elements" :animation="200" ghost-class="ghost-card" group="kanban" @end="movedKanbanCard">
+              <v-card
+                class="kanban-card"
+                outlined
+                :style="getKanbanCardStyle(element)"
+                v-for="element in column.elements"
+                :key="element.id"
+                @click="selectEntityCard(element)"
+                :data-elementid="element.id"
+              >
+                <component v-if="options.kanbanOptions.componentView" :is="getElementCard(element)" :source="source" :element="element"></component>
+                <span v-else>{{ element.properties.name }}</span>
+              </v-card>
+              <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
+              <!-- <task-card
+              v-for="(task) in column.tasks"
+              :key="task.id"
+              :task="task"
+              class="mt-3 cursor-move"
+            ></task-card> -->
+              <!-- </transition-group> -->
+            </draggable>
+          </v-card>
+        </v-layout>
+      </simplebar>
     </template>
 
     <div class="calendar-view" v-if="options.defaultView === 'calendar'">
@@ -274,23 +339,15 @@
           selection-type="leaf" -->
           <template v-slot:append="{ item }">
             <v-layout>
-              <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"
-                ><v-icon>mdi-delete</v-icon></v-btn
-              >
+              <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"><v-icon>mdi-delete</v-icon></v-btn>
               <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
-              <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"
-                ><v-icon>mdi-scatter-plot</v-icon></v-btn
-              >
+              <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"><v-icon>mdi-scatter-plot</v-icon></v-btn>
               <v-menu offset-y v-if="options.defaultView === 'tree'">
                 <template v-slot:activator="{ on }">
                   <v-btn v-on="on" icon><v-icon>mdi-plus</v-icon></v-btn>
                 </template>
                 <v-list>
-                  <v-list-item
-                    v-for="(itemtype, index) in classTypes"
-                    :key="index"
-                    @click.stop="addChildEntity(itemtype, item.entity)"
-                  >
+                  <v-list-item v-for="(itemtype, index) in classTypes" :key="index" @click.stop="addChildEntity(itemtype, item.entity)">
                     <v-list-item-title>{{ itemtype.title }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
@@ -299,15 +356,13 @@
           </template>
           <template v-slot:label="{ item }">
             <span v-if="options.relationToggle">
-            <v-btn icon @click.stop="toggleLinked(item.entity)" >
-              <v-icon v-if="item.entity._isLinked">mdi-check-circle-outline</v-icon>              
+              <v-btn icon @click.stop="toggleLinked(item.entity)">
+                <v-icon v-if="item.entity._isLinked">mdi-check-circle-outline</v-icon>
                 <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
-              
-
-            </v-btn>
-            <v-btn v-if="item.entity._isLinked" icon @click.stop="selectTableItem(item.entity._isLinked)" >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+              </v-btn>
+              <v-btn v-if="item.entity._isLinked" icon @click.stop="selectTableItem(item.entity._isLinked)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
             </span>
             <v-btn icon @click.stop="toggleCheckbox(item.entity)" v-if="options.checkboxProperty">
               {{ item.entity[options.checkboxProperty] }}
@@ -346,6 +401,74 @@
 
 
 <style lang="scss" scoped>
+.column-width {
+  min-width: 320px;
+  width: 320px;
+}
+/* Unfortunately @apply cannot be setup in codesandbox, 
+but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
+.ghost-card {
+  opacity: 0.5;
+  background: #f7fafc;
+  border: 1px solid #4299e1;
+}
+
+.kanban-board {
+  height: 100%;
+}
+
+.kanban-card {
+  margin-bottom: 5px;
+  cursor: move;
+}
+
+.kanban-column-rotated {
+    -webkit-transform: translateY(-100%) rotate(90deg); /* Safari */
+    -moz-transform: translateY(-100%) rotate(90deg); /* Firefox 3.6 Firefox 4 */
+    /*-moz-transform-origin: right top; */
+    -ms-transform: translateY(-100%) rotate(90deg); /* IE9 */
+    -o-transform: translateY(-100%) rotate(90deg); /* Opera */
+    transform: translateY(-100%) rotate(90deg); /* W3C */  
+    -webkit-transform-origin: left bottom;
+    -moz-transform-origin: left bottom;
+    -ms-transform-origin: left bottom;
+    -o-transform-origin: left bottom;
+    transform-origin: left bottom;
+    min-width: 400px;
+
+}
+
+.kanban-column-header-indicator {
+  margin: 5px;
+  font-weight: 600;
+}
+
+.kanban-column-title {
+  font-size: 22px;
+  font-weight: 700px;
+  margin-right: 10px;
+}
+
+.kanban-column-header {
+  margin-bottom: 5px;
+  border-bottom-color: lightgray;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding: 3px;
+}
+
+.kanban-column-items {  
+  padding: 3px;
+}
+
+.kanban-column {  
+  margin: 5px;    
+}
+
+.kanban-board:empty {
+  padding-bottom: 100px;
+}
+
 .ag-theme-alpine {
   /* use theme parameters where possible */
   --ag-header-background-color: transparent;
@@ -389,6 +512,9 @@
   padding: 10px;
 }
 
+.source-property {
+  font-weight: 600;
+}
 .data-grid-component {
   height: calc(100% - 120px);
 }
@@ -429,6 +555,14 @@
   margin: 4px;
 }
 
+.news-card {
+  width: 90%;
+
+  min-height: 150px;
+  margin: 5px;
+  margin-left: 15px;
+}
+
 .entity-card.elementarray {
   width: 608px;
   height: 248px;
@@ -446,12 +580,17 @@
   height: calc(100em - 200px);
 }
 
+.kanban-card {
+  min-height: 100px;
+}
+
 .isotope-grid {
   /* width: 800px;
   height: 800px !important; */
   /* background: red; */
 }
 </style>
+
 
 <script lang="ts">
 import { Component, Ref, Watch } from 'vue-property-decorator';
@@ -463,15 +602,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
 import OptionsFilter from './options-filter.vue';
 
 // import { FeatureType } from "../../classes";
-import {
-  FeatureType,
-  FilterGraphElement,
-  GraphDatasource,
-  GraphElement,
-  IGraphFilter,
-  PropertyType,
-  PropertyValueType
-} from '@csnext/cs-data';
+import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import moment from 'moment';
 import simplebar from 'simplebar-vue';
 import isotope from 'vueisotope';
@@ -489,8 +620,11 @@ import GridRowActions from './grid-row-actions.vue';
 import DateCellEditor from './date-cell-editor.vue';
 import DefaultElementCard from './cards/default-element-card.vue';
 import { ElementCardManager } from './cards/element-card-manager';
+import draggable from 'vuedraggable';
 // import Placeholder from "@tiptap/extension-placeholder";
 require('isotope-packery');
+
+export class KanBanColumn { title?: string; prop?: string; elements?: GraphElement[]; element?: GraphElement; collapsed?: boolean };
 
 @Component({
   name: 'element-data-grid',
@@ -507,8 +641,9 @@ require('isotope-packery');
     DataInfoPanel,
     NodeLink,
     isotope,
-    DefaultElementCard
-  }
+    draggable,
+    DefaultElementCard,
+  },
 })
 export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
@@ -542,22 +677,16 @@ export default class ElementDataGrid extends WidgetBase {
     month: 'Month',
     week: 'Week',
     day: 'Day',
-    '4day': '4 Days'
+    '4day': '4 Days',
   };
 
   public headers: any[] = [];
-  public autoGroupColumnDef = {
-    headerName: 'PMSEII',
-    field: 'properties.PMSEII',
-    minWidth: 250,
-    cellRenderer: 'agGroupCellRenderer',
-    cellRendererParams: { checkbox: true }
-  };
+
   public defaultColDef = {
     sortable: true,
     resizable: true,
     floatingFilter: true,
-    filter: true
+    filter: true,
   } as ColDef;
 
   public treeItems: any[] = [];
@@ -635,6 +764,10 @@ export default class ElementDataGrid extends WidgetBase {
     this.focus = '';
   }
 
+  public editNode(element: GraphElement) {
+    alert('edit node');
+  }
+
   public graphNode(element: GraphElement) {
     if (!this.source) {
       return;
@@ -669,76 +802,72 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     // entity.properties[this.options.checkboxProperty] = (entity.properties[this.options.checkboxProperty] === true) ? false : true;
-    Vue.set(
-      entity.properties,
-      this.options.checkboxProperty,
-      entity.properties[this.options.checkboxProperty] === true ? false : true
-    );
+    Vue.set(entity.properties, this.options.checkboxProperty, entity.properties[this.options.checkboxProperty] === true ? false : true);
     this.source.saveNode(entity);
   }
 
-  public async editLinked(entity: GraphElement) {
-    
-  }
+  public async editLinked(entity: GraphElement) {}
 
   public async linkAll() {
-    if (!this.treeItems) { return; }
+    if (!this.treeItems) {
+      return;
+    }
     for (const item of this.treeItems) {
-      await this.link(item, false);      
+      await this.link(item, false);
     }
     this.updateEntities(true);
   }
 
   public async unLinkAll() {
-    if (!this.treeItems) { return; }
+    if (!this.treeItems) {
+      return;
+    }
     for (const item of this.treeItems) {
-      await this.unlink(item, false);      
+      await this.unlink(item, false);
     }
     this.updateEntities(true);
   }
 
-  public async unlink(entity: GraphElement, update = true) : Promise<boolean> {
-    if (!this.source) {      
+  public async unlink(entity: GraphElement, update = true): Promise<boolean> {
+    if (!this.source) {
       return Promise.reject();
     }
     try {
-    await this.source.removeEdge((entity as any)._isLinked);
-    Vue.set(entity, '_isLinked', undefined);
-    if (update) {
-      this.updateEntities(true);
-    }
-    return Promise.resolve(true);
+      await this.source.removeEdge((entity as any)._isLinked);
+      Vue.set(entity, '_isLinked', undefined);
+      if (update) {
+        this.updateEntities(true);
+      }
+      return Promise.resolve(true);
     } catch (e) {
       return Promise.reject(e);
     }
   }
 
-  public async link(entity: GraphElement, update = true) : Promise<boolean> {
-    if (!this.source) {      
+  public async link(entity: GraphElement, update = true): Promise<boolean> {
+    if (!this.source) {
       return Promise.reject();
     }
     if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
-        try {          
-          const linkEdge = await this.source.addNewEdge(
-            {
-              fromId: this.options.relationToggle.fromId,
-              toId: entity.id,
-              classId: this.options.relationToggle.relationClassId
-            } as GraphElement,
-            false
-          )
-          Vue.set(entity, '_isLinked', linkEdge);
-          if (update) {
-            this.updateEntities(true);
-          }
+      try {
+        const linkEdge = await this.source.addNewEdge(
+          {
+            fromId: this.options.relationToggle.fromId,
+            toId: entity.id,
+            classId: this.options.relationToggle.relationClassId,
+          } as GraphElement,
+          false
+        );
+        Vue.set(entity, '_isLinked', linkEdge);
+        if (update) {
+          this.updateEntities(true);
+        }
         return Promise.resolve(true);
-      }
-      catch (e) {
+      } catch (e) {
         return Promise.reject(e);
       }
     }
     return Promise.reject();
-
   }
 
   public async toggleLinked(entity: GraphElement) {
@@ -746,7 +875,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     if ((entity as any)._isLinked) {
-      await this.unlink(entity);      
+      await this.unlink(entity);
     } else {
       await this.link(entity);
     }
@@ -768,12 +897,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   private filterDataTable(value: string, search: string) {
-    return (
-      value != null &&
-      search != null &&
-      typeof value === 'string' &&
-      value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-    );
+    return value != null && search != null && typeof value === 'string' && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1;
   }
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
@@ -833,7 +957,7 @@ export default class ElementDataGrid extends WidgetBase {
           filterable: !this.options.hideFilter,
           groupable: true,
           // width: header.width,
-          propType: prop
+          propType: prop,
         });
         let column = {
           field: `properties.${prop.key}`,
@@ -846,7 +970,7 @@ export default class ElementDataGrid extends WidgetBase {
           //   debugger;
           //   return {'test': 'test'};
           // },
-          editable: true
+          editable: true,
         } as ColDef;
         if (prop.type === 'epoch') {
           column.cellEditor = 'date-cell-editor';
@@ -854,7 +978,7 @@ export default class ElementDataGrid extends WidgetBase {
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
               // this.updateEntities();
-            }
+            },
           };
           column.filter = 'agDateColumnFilter';
           column.filterParams = {
@@ -872,7 +996,7 @@ export default class ElementDataGrid extends WidgetBase {
               }
             },
             browserDatePicker: true,
-            minValidYear: 2000
+            minValidYear: 2000,
           };
         }
         if (prop.type === 'relation') {
@@ -881,7 +1005,7 @@ export default class ElementDataGrid extends WidgetBase {
             source: this.source,
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            }
+            },
           };
         }
         if (prop.type === 'options') {
@@ -891,13 +1015,13 @@ export default class ElementDataGrid extends WidgetBase {
           column.filterFramework = 'options-filter';
           column.floatingFilterComponentParams = {
             suppressFilterButton: true,
-            propType: prop
+            propType: prop,
           };
           column.cellEditorParams = {
             source: this.source,
             updatedCell: (row: GraphElement) => {
               this.source!.saveNode(row);
-            }
+            },
           };
         }
 
@@ -916,10 +1040,13 @@ export default class ElementDataGrid extends WidgetBase {
           graphNode: (row: GraphElement) => {
             this.graphNode(row);
           },
+          editNode: (row: GraphElement) => {
+            this.editNode(row);
+          },
           delete: (row: GraphElement) => {
             this.removeEntity(row);
-          }
-        }
+          },
+        },
       });
       this.headers.push({ text: 'Actions', value: 'actions', sortable: false });
     }
@@ -975,7 +1102,7 @@ export default class ElementDataGrid extends WidgetBase {
         custom: (s: any) => {
           return s.properties.updated_time;
         },
-        assessment: (s: any) => `${s.properties.assessment || 0}${s.properties.name}`
+        assessment: (s: any) => `${s.properties.assessment || 0}${s.properties.name}`,
       },
       sortBy: 'assessment',
       // percentPosition: true,
@@ -983,8 +1110,8 @@ export default class ElementDataGrid extends WidgetBase {
 
       // options for masonry layout mode
       masonry: {
-        columnWidth: '.grid-sizer'
-      }
+        columnWidth: '.grid-sizer',
+      },
     };
   }
 
@@ -1003,7 +1130,7 @@ export default class ElementDataGrid extends WidgetBase {
           ?.addNewNode({
             id: `${type.type}-${guidGenerator()}`,
             properties: { ...this.options.newItem, classId: type.type, name },
-            classId: type.type
+            classId: type.type,
           })
           .then(async (e) => {
             if (this.source && parent && this.options.parentProperty) {
@@ -1012,7 +1139,7 @@ export default class ElementDataGrid extends WidgetBase {
                   {
                     fromId: e.id,
                     toId: parent.id,
-                    classId: this.options.parentProperty
+                    classId: this.options.parentProperty,
                   } as GraphElement,
                   true
                 );
@@ -1033,16 +1160,13 @@ export default class ElementDataGrid extends WidgetBase {
               for (const relation of this.options.newRelations) {
                 // new relation to other id
                 if (relation.toId && this.potentialProperties) {
-                  if (
-                    this.potentialProperties.hasOwnProperty(relation.key) &&
-                    this.potentialProperties[relation.key].relation?.type
-                  ) {
+                  if (this.potentialProperties.hasOwnProperty(relation.key) && this.potentialProperties[relation.key].relation?.type) {
                     try {
                       const newEdge = await this.source.addNewEdge(
                         {
                           fromId: e.id,
                           toId: relation.toId,
-                          classId: this.potentialProperties[relation.key].relation?.type
+                          classId: this.potentialProperties[relation.key].relation?.type,
                         } as GraphElement,
                         true
                       );
@@ -1054,16 +1178,13 @@ export default class ElementDataGrid extends WidgetBase {
                   // create relation from other id
                   const fromId = typeof relation.fromId === 'function' ? relation.fromId() : relation.fromId;
                   const fromNode = this.source.getElement(fromId);
-                  if (
-                    fromNode?._featureType?.propertyMap &&
-                    fromNode._featureType.propertyMap.hasOwnProperty(relation.key)
-                  ) {
+                  if (fromNode?._featureType?.propertyMap && fromNode._featureType.propertyMap.hasOwnProperty(relation.key)) {
                     const prop = fromNode._featureType.propertyMap[relation.key];
                     const newEdge = await this.source.addNewEdge(
                       {
                         fromId: fromId,
                         toId: e.id,
-                        classId: prop.relation?.type
+                        classId: prop.relation?.type,
                       } as GraphElement,
                       true
                     );
@@ -1111,6 +1232,165 @@ export default class ElementDataGrid extends WidgetBase {
     super();
   }
 
+  public kanbanColumns: KanBanColumn[] = [];
+  
+  
+
+  public async movedKanbanCard(e: any) {
+    if (!this.source || !this.source?.graph || !this.options?.kanbanOptions) {
+      return;
+    }
+    const elementId = e.item?.dataset?.elementid;
+    const value = e.to?.parentNode?.dataset?.prop;
+
+    const prop = this.options.kanbanOptions.columnProperty;
+    
+    if (elementId && value && prop && this.source.graph.hasOwnProperty(elementId)) {
+      const element = this.source.graph[elementId];
+      if (!element?.properties) {
+        element.properties = {};
+      }
+
+      if (this.options.kanbanOptions.columnProperty) {
+        const propType = this.potentialProperties[this.options.kanbanOptions.columnProperty];
+        switch (propType?.type) {
+          case PropertyValueType.element:
+            if (!element?._elements) {
+              element._elements = {};
+            }
+            element.properties![prop] = value;
+            element._elements[prop] = this.source.graph[value];
+            break;
+          case PropertyValueType.number:
+            element.properties[prop] = parseInt(value);
+            break;
+          default:
+            element.properties![prop] = value;
+        }
+
+        await this.source.saveNode(element);
+      }
+    }
+  }
+
+  public getKanbanColumnStyle(column: any) {
+    if (!this.options?.kanbanOptions) {
+      return {};
+    }
+    return {
+      width: column.collapsed ? '50px' : this.options.kanbanOptions.columnWidth ?? '100%',
+    } as any;
+  }
+
+  public getKanbanCardStyle(element: GraphElement) {
+    if (!this.options?.kanbanOptions) {
+      return {};
+    }
+    return {
+      height: this.options.kanbanOptions.cardHeight ?? undefined,
+    } as any;
+  }
+
+  public toggleKanbanColumn(column: KanBanColumn) {
+    column.collapsed = !column.collapsed;
+    this.$forceUpdate();
+  }
+
+  public addKanbanColumnElement(column: KanBanColumn) {
+
+  }
+  
+
+  public selectKanbanProperty(property: string) {
+    if (!this.options.kanbanOptions) { return; }
+    this.options.kanbanOptions.columnProperty = property;
+    this.updateKanban();
+  }
+
+  public updateKanban() {
+    if (this.options?.defaultView !== GridView.kanban) {
+      return;
+    }
+    if (!this.source || !this.options.kanbanOptions || !this.potentialProperties || !this.items) {
+      return;
+    }
+    const kanban = this.options.kanbanOptions;
+    const columns: KanBanColumn[] = [];
+    if (kanban.undefinedSupported) {
+      columns.push({ title: 'unknown', prop: undefined, elements: [], collapsed: true });
+    }
+    if (kanban.columnProperty && this.potentialProperties.hasOwnProperty(kanban.columnProperty)) {
+      const propType = this.potentialProperties[kanban.columnProperty];
+      if (propType.type === PropertyValueType.relation) {
+      } else {
+        if (propType.type === PropertyValueType.element && propType.elementType) {
+          // get elements
+          const elements = this.source.getClassElements(propType.elementType);          
+          for (const element of elements) {
+            columns.push({ prop: element.id, title: element.properties?.name ?? propType.elementType!, elements: [], element });                    
+          }
+        } else if (propType.type === PropertyValueType.options) {
+          if (propType.options) {            
+            for (const option of propType.options) {              
+              columns.push({ prop: option, title: option, elements: [] });              
+            }
+          }
+        }
+        else if (propType.type === PropertyValueType.number || propType.type === PropertyValueType.string) {
+          
+          if (propType.mapping) {
+            for (const text in propType.mapping) {
+              if (Object.prototype.hasOwnProperty.call(propType.mapping, text)) {
+                const value = propType.mapping[text];
+                columns.push({ prop: value, title: text, elements: [] });
+              }
+            }
+          }
+        }
+
+        for (const item of this.items) {
+          const column = columns.find((k) => kanban.columnProperty &&  k.prop === item?.properties![kanban.columnProperty]);
+          if (column?.elements) {
+          if (column) {
+            column.elements.push(item);
+          } else {
+            if (kanban.undefinedSupported) {
+              columns[0]!.elements!.push(item);
+              columns[0]!.collapsed = false;
+            }
+          }
+          }
+          // switch (propType.type) {
+          //   case PropertyValueType.element:
+          //     if (propType?.elementType && item.properties.hasOwnProperty(propType.elementType)) {
+                
+          //     }
+          //     break;
+          //   default:
+
+          // }
+          // if (columns && item?.properties && ) {
+            
+          //   if (column?.elements) {
+          //     column.elements.push(item);
+          //   }
+          // } else {
+          //   if (kanban.undefinedSupported) {
+          //     columns[0].elements.push(item);
+          //   }
+          // }
+        }
+      }
+    }
+
+    
+
+    Vue.set(this, 'kanbanColumns', columns);
+    this.$forceUpdate();
+
+    // console.log(this.kanbanColumns);
+  }
+
   public updateTree(
     treeItems: any[],
     // classTypes: string[],
@@ -1120,19 +1400,17 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source || !this.options.baseType) {
       return;
     }
-    
+
     let items: any[] | undefined = [];
     if (base) {
       if (base._incomming) {
-        items = [
-          ...base._incomming.filter((o) => o.classId === this.options.parentProperty).map((o) => o.from)
-        ];
+        items = [...base._incomming.filter((o) => o.classId === this.options.parentProperty).map((o) => o.from)];
       }
       // if (base._outgoing)
     } else {
       // const i =
       // debugger;
-      items = this.source.getClassElements(this.options!.baseType)?.filter((i) => {
+      items = this.source.getClassElements(this.options!.baseType, true)?.filter((i) => {
         return !i._outgoing || i._outgoing.findIndex((p) => p.classId === this.options.parentProperty) === -1;
       });
     }
@@ -1143,7 +1421,7 @@ export default class ElementDataGrid extends WidgetBase {
             id: item.id,
             name: item.properties.name,
             entity: item,
-            children: []
+            children: [],
           };
           if (active?.children) {
             active.children.push(treeItem);
@@ -1178,9 +1456,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
     this.upToDate = true;
     this.featureType = this.source.featureTypes[baseType];
-    this.classTypes = Object.values(this.source.featureTypes).filter(
-      (ft) => ft._inheritedTypes?.includes(baseType) && !ft.abstract
-    );
+    this.classTypes = Object.values(this.source.featureTypes).filter((ft) => ft._inheritedTypes?.includes(baseType) && !ft.abstract);
 
     for (const type of this.classTypes) {
       if (type.properties) {
@@ -1192,28 +1468,20 @@ export default class ElementDataGrid extends WidgetBase {
       }
     }
 
-    this.sortOptions = Object.values(this.potentialProperties).filter(
-      (p) => p.type !== PropertyValueType.relation
-    );
-    this.groupOptions = Object.values(this.potentialProperties).filter(
-      (p) => p.type !== PropertyValueType.relation
-    );
+    this.sortOptions = Object.values(this.potentialProperties).filter((p) => p.type !== PropertyValueType.relation);
+    this.groupOptions = Object.values(this.potentialProperties).filter((p) => p.type !== PropertyValueType.relation);
 
     if (!this.group && this.options?.groupId) {
       this.setGroup(this.options.groupId);
     }
 
     if (this.options.syncMode === 'follow') {
-      this.busManager.subscribe(
-        this.source.events,
-        IGraphFilter.GRAPH_FILTER,
-        (a: string, f: FilterGraphElement) => {
-          if (this.options.filter && f.id === this.options.filter) {
-            Vue.set(this, 'rowData', f._visibleNodes);
-            // this.items = f._visibleNodes;
-          }
+      this.busManager.subscribe(this.source.events, IGraphFilter.GRAPH_FILTER, (a: string, f: FilterGraphElement) => {
+        if (this.options.filter && f.id === this.options.filter) {
+          Vue.set(this, 'rowData', f._visibleNodes);
+          // this.items = f._visibleNodes;
         }
-      );
+      });
     } else {
       this.items = this.source.getClassElements(baseType, true, this.options.filter);
     }
@@ -1231,6 +1499,9 @@ export default class ElementDataGrid extends WidgetBase {
     //   this.sort = this.featureType.properties?.find((p) => p.key === 'updated_time');
     // }
 
+    if (this.options.kanbanOptions) {
+      this.updateKanban();
+    }
     if (this.options.defaultView === GridView.tree && this.options.parentProperty) {
       // console.log("starting update tree");
 
@@ -1241,7 +1512,7 @@ export default class ElementDataGrid extends WidgetBase {
         Vue.set(this, 'treeItems', treeItems);
       }
       //
-      
+
       // console.log(this.treeItems);
       // this.$forceUpdate();
     }
@@ -1263,9 +1534,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!element?._outgoing) {
       return;
     }
-    const selected = element._outgoing.filter(
-      (r) => r.classId === this.options.relationToggle!.relationClassId
-    );
+    const selected = element._outgoing.filter((r) => r.classId === this.options.relationToggle!.relationClassId);
     if (this.items && selected) {
       for (const item of this.items) {
         (item as any)._isLinked = selected.find((i) => i.toId === item.id);
@@ -1300,8 +1569,8 @@ export default class ElementDataGrid extends WidgetBase {
 
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED) {
-          // this.updateEntities(true);
-          // this.$forceUpdate();
+          this.updateEntities(true);
+          this.$forceUpdate();
         }
       });
     }

@@ -44,7 +44,7 @@ export default class ParagraphComponent extends Vue {
 }
 
 .paragraph-component::before {
-  content: "<v-icon x-small>mdi-drag</v-icon>";
+  content: "";
 }
 
 

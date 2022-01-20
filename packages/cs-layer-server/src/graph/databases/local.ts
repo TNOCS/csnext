@@ -144,7 +144,7 @@ export class LocalStorage implements IDatabase {
             for (const key in graph) {
                 if (Object.prototype.hasOwnProperty.call(graph, key)) {
                     const element = graph[key] as GraphElement;                    
-                    if (element.type === 'node') {
+                    if (element.type === 'node' && (element.id !== element.properties?.name)) {
                         if (!element.id) { element.id = key; }
                         this.source!.initElement(element, agentId);
                         this.source!.addNode(element);

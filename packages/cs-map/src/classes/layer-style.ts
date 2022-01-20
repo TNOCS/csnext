@@ -59,7 +59,8 @@ export const MapboxColorForm: IFormOptions = {
         },
         {
             _key: 'stops',
-            type: 'array',
+            type: 'number',
+            array: true,
             title: 'color',
             arrayType: MapboxStopForm
         }

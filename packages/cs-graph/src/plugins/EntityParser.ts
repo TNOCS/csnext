@@ -17,22 +17,22 @@ export class EntityParser implements IDocumentPlugin
     {
         return new Promise((resolve, reject) =>
         {
-            if (doc.entities && source)
+            if (doc._entities && source)
             {
                 let ids : (string | undefined) [] = [];
                 
                 // clear entity types
-                Vue.set(doc, 'entityTypes', {})
+                Vue.set(doc, '_entityTypes', {})
                 
 
                 // find existing entities
                 let containingEntities = doc._outgoing?.filter(o => o.classId === 'CONTAINS');
 
-                if (containingEntities && doc.entities) {
+                if (containingEntities && doc._entities) {
                     ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];
                     for (const entityEdge of containingEntities) {
                         // find entity
-                        const entity = doc.entities.find(i => i.kg_id === entityEdge.toId);
+                        const entity = doc._entities.find(i => i.kg_id === entityEdge.toId);
                         if (entity) {
                             entity._edge = entityEdge;
                             entity._node = entityEdge.to;
@@ -43,19 +43,23 @@ export class EntityParser implements IDocumentPlugin
                 }
                 
                 // get list of approved entities
-                
+
+
+                for (const et of Object.values(doc._entityTypes)) {
+                    et.count = 0;                    
+                }
                 
 
-                for (const entity of doc.entities)
+                for (const entity of doc._entities)
                 {
                     entity._included = (entity.id !== undefined) && ids.includes(entity.kg_id);
                     if (entity._node?._featureType?.type)
                     {
                         entity.spacy_label = entity._node._featureType.type as string;
-                        if (!doc.entityTypes.hasOwnProperty(entity.spacy_label))
+                        if (!doc._entityTypes.hasOwnProperty(entity.spacy_label))
                         {
                             const color = GraphElement.getBackgroundColor(entity._node);
-                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, _featureType: entity._node._featureType, title: entity._node._featureType.title, color, _selected: true } as EntityType;
+                            doc._entityTypes[entity.spacy_label] = { id: entity.spacy_label, _featureType: entity._node._featureType, title: entity._node._featureType.title, color, _selected: true } as EntityType;
                         }
                         // entity.view_class = 'doc-entity ' + entity.class + '-entity';
                         // if (entity._included)
@@ -64,19 +68,20 @@ export class EntityParser implements IDocumentPlugin
                         // }                        
                     } else if (entity.spacy_label) {
                         entity.spacy_label = entity.spacy_label as string;
-                        if (entity.spacy_label && !doc.entityTypes.hasOwnProperty(entity.spacy_label))
+                        if (entity.spacy_label && !doc._entityTypes.hasOwnProperty(entity.spacy_label))
                         {
-                            doc.entityTypes[entity.spacy_label] = { id: entity.spacy_label, title: entity.spacy_label!, color: 'lightgray', _selected: false };
+                            doc._entityTypes[entity.spacy_label] = { id: entity.spacy_label, title: entity.spacy_label!, color: 'lightgray', _selected: false };
                         }
                         // entity.view_class = 'doc-entity rec-entity ' + entity.class + '-entity';
                     }
 
 
-                    if (entity.spacy_label && doc.entityTypes[entity.spacy_label]) {
-                        if (!doc.entityTypes[entity.spacy_label].count) {
-                            doc.entityTypes[entity.spacy_label]!.count = 1;
+                    if (entity.spacy_label && doc._entityTypes[entity.spacy_label]) {
+                        if (!doc._entityTypes[entity.spacy_label].count) {
+                            doc._entityTypes[entity.spacy_label]!.count = 1;
                         } else {
-                            doc.entityTypes[entity.spacy_label].count! += 1;
+                            doc._entityTypes[entity.spacy_label].count! += 1;
+                            console.log('Add 1' + ' - ' + entity.spacy_label);
                         }
                     }
 

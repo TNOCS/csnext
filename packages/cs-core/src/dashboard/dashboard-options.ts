@@ -13,6 +13,10 @@ export interface IDashboardOptions {
   // allow left & right swipe gestures to switch between dashboards
   touchGesturesEnabled?: boolean;
   _dashboard?: IDashboard;
+  // width of sidebar if this dashboard is hosted in a sidebar
+  sidebarWidth?: number | string;
+  sidebarTemporary?: boolean;
+  sidebarExpanded?: boolean;
   info?: InfoOptions | string;
   // trigger dashboard using keyboard short cut
   shortcut?: KeyboardShortcut;

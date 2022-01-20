@@ -15,6 +15,8 @@ import simplebar from 'simplebar-vue';
 export class CsSidebar extends Vue {
   public app = AppState.Instance;
   public menu = false;
+  public canExpand = false;
+  public isExpanded = false;
 
   public dashboard?: IDashboard | null = null;
 
@@ -23,18 +25,29 @@ export class CsSidebar extends Vue {
 
   @Watch('sideBar.dashboard')
   public sideBarChanged(n: IDashboard, o: any) {
-    
+    Vue.nextTick(()=> {        
       if (this.sideBar?.dashboard) {       
         this.dashboard = null;
-        Vue.nextTick(()=> {
-          this.dashboard = this.sideBar?.dashboard;
-        })
+        this.dashboard = this.sideBar?.dashboard;
 
+        this.isExpanded = this.dashboard?.options?.sidebarExpanded ?? false;
+        
         if (!this.sideBar.width) {
           this.sideBar.width = 300;
         }
+        if (this.sideBar.right) {
+          this.canExpand = true;
+        }
       }
+    })
+
     
+  }
+
+  public expandSidebar() {
+    this.isExpanded = !this.isExpanded;    
+    this.$forceUpdate();
+
   }
 
   @Watch('sideBar.canResize')
@@ -62,10 +75,30 @@ export class CsSidebar extends Vue {
     }
   }
 
+  @Watch('sideBar.dashboard.options.sidebarTemporary')
+  @Watch('sideBar.temporary')
+  public get sidebarTemporary() {
+    if (this.isExpanded) { return true; }
+    if (this.sideBar?.dashboard?.options?.sidebarTemporary) {
+      return this.sideBar.dashboard.options.sidebarTemporary;
+    }
+    return this.sideBar?.temporary;
+  }
+
+  @Watch('sideBar.dashboard.options.sidebarWidth')
   @Watch('sideBar.width')
   public get sidebarWidth(): string {
+    
     if ($cs.isMobile && this.sideBar) {
       return '100%';
+    }
+
+    if (this.isExpanded) {
+      return '80%';
+    }
+
+    if (this.sideBar?.dashboard?.options?.sidebarWidth) {
+      return this.sideBar.dashboard.options.sidebarWidth.toString();
     }
     if (this.sideBar?.width) {
       return this.sideBar.width.toString();
@@ -74,6 +107,7 @@ export class CsSidebar extends Vue {
   }
 
   public mounted() {
+    
     if (this.sideBar?.dashboard) {
       this.sideBarChanged(this.sideBar.dashboard, undefined);
     }

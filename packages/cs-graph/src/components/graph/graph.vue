@@ -10,31 +10,34 @@
         {{ preset.title }}
       </v-tab>
     </v-tabs> -->
-    <div id="kg-vis" class="graph-canvas"></div>
+    <!-- <div id="kg-vis" class="graph-canvas"></div> -->
+
+    <draggable @add="onDrop" :disabled="!dropEnabled" :sort="false" :options="dropOptions" class="landing-area">
+      <div id="kg-vis" class="graph-canvas"></div>
+    </draggable>
 
     <cs-widget v-if="options.showInfoWidget && $cs.activeInfoWidget" class="graph-info-widget" :widget="$cs.activeInfoWidget"></cs-widget>
 
     <v-toolbar flat class="graph-menu" v-if="activePreset">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
-
         <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn depressed fab icon outlined v-bind="attrs" v-on="on" raised>
-                <v-icon v-if="activePreset.properties.editor_mode === 'EDIT'">mdi-pencil</v-icon>
-                <v-icon v-if="activePreset.properties.editor_mode === 'VIEW'">mdi-eye</v-icon>                
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="setEditorMode('EDIT')">
-                <v-icon>mdi-pencil</v-icon>
-                <v-list-item-title>Edit Mode</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="setEditorMode('VIEW')">
-                <v-icon>mdi-eye</v-icon>
-                <v-list-item-title>View Mode</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn depressed fab icon outlined v-bind="attrs" v-on="on" raised>
+              <v-icon v-if="activePreset.properties.editor_mode === 'EDIT'">mdi-pencil</v-icon>
+              <v-icon v-if="activePreset.properties.editor_mode === 'VIEW'">mdi-eye</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="setEditorMode('EDIT')">
+              <v-icon>mdi-pencil</v-icon>
+              <v-list-item-title>Edit Mode</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="setEditorMode('VIEW')">
+              <v-icon>mdi-eye</v-icon>
+              <v-list-item-title>View Mode</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <!-- <v-text-field
             filled
             rounded
@@ -44,26 +47,47 @@
             prepend-inner-icon="mdi-magnify"
           ></v-text-field> -->
         <v-layout v-if="activePreset && activePreset._stats" class="drag-types-container">
-          <v-chip
-            @click="toggleFeatureType(id)"
-            v-for="(stat, id) of activePreset._stats"
-            :key="id"
-            :data-id="id"
-            :color="stat.color"
-            class="ml-2 drag-type"
-            :outlined="stat.hide"
-          >
-            <v-icon v-if="stat.pinned" left>mdi-pin-outline</v-icon>
-            <v-icon v-if="stat._featureType.icon" left>{{ stat._featureType.icon }}</v-icon>
-            {{ stat._featureType.title }}
-            <v-avatar right dark class="darken-4">
-              {{ stat.count }}
-            </v-avatar>
-          </v-chip>
+          <!-- <v-menu v-model="pinMenu" :close-on-content-click="false" :nudge-width="200" offset-x>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-pin</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn text @click="pinMenu = false"> Cancel </v-btn>
+                <v-btn color="primary" text @click="pinMenu = false"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu> -->
+          <draggable v-model="activePreset._stats" @start="dropEnabled = true" @end="dropEnabled = false" :options="availableItems" :sort="false">
+            <v-chip
+              @click="toggleFeatureType(id)"
+              v-for="(stat, id) of activePreset._stats"
+              :key="id"
+              label
+              :data-classId="stat._featureType.type"
+              :data-source="graph"
+              :color="stat.color"
+              class="ml-2 drag-type"
+              :outlined="stat.hide"
+            >
+              <v-icon v-if="stat.pinned" left>mdi-pin-outline</v-icon>
+              <v-icon v-if="stat._featureType.icon" left>{{ stat._featureType.icon }}</v-icon>
+              {{ stat._featureType.title }}
+              <v-avatar right dark class="darken-4">
+                {{ stat.count }}
+              </v-avatar>
+            </v-chip>
+          </draggable>
         </v-layout>
         <v-spacer></v-spacer>
         <v-btn text>
-          <v-icon>mdi-selection</v-icon> <span v-if="activePreset._selectedElements && activePreset._selectedElements.length>0">{{activePreset._selectedElements.length}}</span>
+          <v-icon>mdi-selection</v-icon>
+          <span v-if="activePreset._selectedElements && activePreset._selectedElements.length > 0">{{ activePreset._selectedElements.length }}</span>
         </v-btn>
         <v-btn @click="fitGraph()" icon>
           <v-icon>mdi-fit-to-screen</v-icon>
@@ -80,8 +104,7 @@
         <v-btn @click="refresh()" icon>
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
-        
-        
+
         <!-- <v-btn @click="openEditor()" icon>
           <v-icon>mdi-format-list-bulleted-type</v-icon>
         </v-btn> -->
@@ -240,33 +263,38 @@ import {
   IGraphNodeDefinition,
   IGraphFilter,
   FilterGraphElement,
-  FeatureType,
-  NodeRule,
 } from '@csnext/cs-data';
 import { IMenu } from '@csnext/cs-core';
-import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig, G6GraphEvent } from '@antv/g6';
+import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig } from '@antv/g6';
 import { guidGenerator } from '@csnext/cs-core';
-import { GraphWidgetOptions } from './graph-widget-options';
-import { DefaultElementCard, DocDatasource, mdiFont } from '../..';
-import GraphSettings from './graph-settings.vue';
-import interact from 'interactjs';
+
 import Vue from 'vue';
 import debounce from 'lodash/debounce';
+import { GraphWidgetOptions } from './graph-widget-options';
+import { DefaultElementCard, DocDatasource, GraphShape, mdiFont } from '../..';
+import GraphSettings from './graph-settings.vue';
+import draggable from 'vuedraggable';
+
+// import { GraphWidgetOptions, DefaultElementCard, DocDatasource, mdiFont, GraphSettings, GraphShape } from '@csnext/cs-graph';
 
 @Component({
-  components: {},
+  components: {
+    draggable,
+  },
 })
 export default class NetworkGraph extends WidgetBase {
-  public data?: GraphData;
+  public data: GraphData = { nodes: [], edges: [] };
   private showTabs = true;
-  public visibleNodes: string[] = [];
   private showMenu = false;
   private x = 0;
   private y = 0;
   private tab: any = null;
+  public pinMenu = false;
   public activePreset?: FilterGraphElement | null = null;
   public dragInitialized = false;
-  private featureTypes?: string[] | null = null;
+
+  public dropEnabled = false;
+  // private featureTypes?: string[] | null = null;
 
   private graph?: Graph;
   public get source(): DocDatasource | undefined {
@@ -276,17 +304,20 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   @Watch('tab')
-  tabChanged() {
-    
-  }
+  tabChanged() {}
 
   private settingsUpdatedDebounce = debounce(this.settingsUpdated, 200);
   private viewportDebounce = debounce((graph: Graph) => {
     if (!graph) {
       return;
     }
+    // graph.getViewPortCenterPoint();
     const zoom = graph.getZoom();
     const center = graph.getGraphCenterPoint();
+    const p = graph.getPointByCanvas(0, 0);
+    console.log(p);
+
+    console.log(zoom);
     $cs.updateRouteQuery({ gz: zoom, gx: center!.x, gy: center!.y });
   }, 1000);
 
@@ -300,6 +331,20 @@ export default class NetworkGraph extends WidgetBase {
       this.$forceUpdate();
     }
   }
+
+  public dropOptions = {
+    group: 'items',
+    enabled: false,
+  };
+
+  public availableItems = {
+    group: {
+      name: 'items',
+      pull: 'clone',
+      put: false,
+    },
+    sort: false,
+  };
 
   public openSettings() {
     $cs.openRightSidebarWidget(
@@ -326,7 +371,7 @@ export default class NetworkGraph extends WidgetBase {
 
   public setEditorMode(mode: string) {
     if (this.activePreset?.properties) {
-      Vue.set(this.activePreset!.properties!, 'editor_mode', mode);    
+      Vue.set(this.activePreset!.properties!, 'editor_mode', mode);
     }
   }
 
@@ -406,8 +451,8 @@ export default class NetworkGraph extends WidgetBase {
     }
     let gnd: IGraphNodeDefinition = {};
     // find position
-    if (this.activePreset.properties?.nodes && this.activePreset.properties?.nodes.hasOwnProperty(e.id)) {
-      gnd = this.activePreset.properties?.nodes[e.id];
+    if (this.activePreset.properties?.graphLayout?.nodes && this.activePreset.properties.graphLayout.nodes.hasOwnProperty(e.id)) {
+      gnd = this.activePreset.properties.graphLayout.nodes[e.id];
     }
     let existingIndex = this.data.nodes!.findIndex((n) => n.id === e.id);
     let existing: NodeConfig | undefined = this.data.nodes[existingIndex];
@@ -419,8 +464,16 @@ export default class NetworkGraph extends WidgetBase {
       this.data.nodes = this.data.nodes.filter((n) => n.id !== e.id);
     }
 
+    let graphShapeAttr: string | undefined = undefined;
+    let graphShape: GraphShape | undefined = undefined;
+
+    if (e._featureType?.attributes!['graph:node'] && this.source?.graphShapeDefinitions?.nodes) {
+      graphShapeAttr = e._featureType?.attributes!['graph:node'];
+      graphShape = this.source.graphShapeDefinitions.nodes.find((s) => s.name === graphShapeAttr);
+    }
+
     if (included && e.properties?.name) {
-      let nodewidth = this.activePreset.properties?.nodeSize ?? 50;
+      let nodewidth = this.activePreset.properties?.graphLayout?.nodeSize ?? 50;
       if (e.properties?.nodegraphlayout === 'modelRect') {
         nodewidth = 200;
       }
@@ -429,9 +482,10 @@ export default class NetworkGraph extends WidgetBase {
 
       let node = {
         id: e.id,
-        label: this.activePreset?.properties?.hideNodeLabel
-          ? undefined
-          : this.fittingString(e.properties?.name, 80, this.activePreset.properties?.globalFontSize ?? 12), // this.labelFormatter(e._title!, this.settings.labelMaxLength),
+        label:
+          this.activePreset?.properties?.graphLayout?.hideNodeLabel || graphShape?.hideLabel
+            ? undefined
+            : this.fittingString(e.properties?.name, 80, this.activePreset.properties?.graphLayout?.globalFontSize ?? 12), // this.labelFormatter(e._title!, this.settings.labelMaxLength),
         // hidden: this.graphSource.getHidden(
         //   e,
         //   this.settings
@@ -449,14 +503,14 @@ export default class NetworkGraph extends WidgetBase {
         // icon: {
         //   show: true,
         // },
-        type: e.properties?.nodegraphlayout ?? e._featureType?.attributes!['graph:node'] ?? 'main-node',
+        type: e.properties?.graphLayout?.nodegraphlayout ?? graphShapeAttr ?? 'main-node',
         style: {
           fill: this.getNodeColor(e), // GraphElement.getBackgroundColor(e),
           fontFamily: 'Roboto, sans-serif',
         },
         labelCfg: {
           style: {
-            fontSize: this.activePreset.properties?.globalFontSize ?? 12,
+            fontSize: this.activePreset.properties?.graphLayout?.globalFontSize ?? 12,
             fontFamily: 'Roboto, sans-serif',
           },
         },
@@ -525,46 +579,49 @@ export default class NetworkGraph extends WidgetBase {
     // console.log("Adding edge");
     const label = e._featureType?.title ?? e.classId;
 
-    let edge = {
-      id: e.id,
-      source: e.fromId,
-      target: e.toId,
-      type: e._featureType?.attributes!['graph:edge'] ?? 'default',
-      style: {
-        endArrow: {
-          path: G6.Arrow.triangle(),
-        },
-        lineWidth: 6,
-      },
-      labelCfg: {
-        autoRotate: true,
-        // refY: 10,
-        style: {
-          autoRotate: true,
-          // fill: '#1890ff',
-          // background: {
-          //   fill: '#ffffff',
-          //   stroke: '#9EC9FF',
-          //   padding: [2, 2, 2, 2],
-          //   radius: 2,
-          // },
-          fontSize: this.activePreset.properties?.globalFontSize,
-        },
-      },
-      hidden: this.source.getHidden(e, this.activePreset),
-      title: label,
-      label: this.activePreset?.properties?.hideNodeLabel
-        ? undefined
-        : this.fittingString(label ?? '', 80, this.activePreset?.properties?.globalFontSize ?? 12),
-      arrows: 'to',
-    } as any;
-
     if (!existing) {
+      let edge = {
+        id: e.id,
+        source: e.fromId,
+        target: e.toId,
+        type: e._featureType?.attributes!['graph:edge'] ?? 'default',
+        style: {
+          endArrow: {
+            path: G6.Arrow.triangle(),
+          },
+          lineWidth: 6,
+        },
+        labelCfg: {
+          autoRotate: true,
+          // refY: 10,
+          style: {
+            autoRotate: true,
+            // fill: '#1890ff',
+            // background: {
+            //   fill: '#ffffff',
+            //   stroke: '#9EC9FF',
+            //   padding: [2, 2, 2, 2],
+            //   radius: 2,
+            // },
+            fontSize: this.activePreset.properties?.graphLayout?.globalFontSize,
+          },
+        },
+        hidden: this.source.getHidden(e, this.activePreset),
+        title: label,
+        label: this.activePreset?.properties?.graphLayout?.hideEdgeLabel
+          ? undefined
+          : this.fittingString(label ?? '', 80, this.activePreset?.properties?.graphLayout?.globalFontSize ?? 12),
+        arrows: 'to',
+      } as any;
       this.data?.edges?.push(edge);
-    } else {
-      console.log('remove ' + edge.id);
-      this.graph.remove(edge.id);
     }
+
+    // if (!existing) {
+
+    // } else {
+    //   console.log('remove ' + edge.id);
+    //   this.graph.remove(edge.id);
+    // }
   }
 
   public fitGraph() {
@@ -597,18 +654,19 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.activePreset) {
       return;
     }
+    const preventOverlap = true;
     if (!this.activePreset.properties) {
       this.activePreset.properties = {};
     }
     if (!this.activePreset.properties.graphLayout) {
-      this.activePreset.properties.graphLayout = {}
+      this.activePreset.properties.graphLayout = {};
     }
     if (!this.activePreset.properties!.graphLayout!.layout) {
       this.activePreset.properties!.graphLayout.layout = 'force';
     }
     let layout: LayoutConfig = {
       type: this.activePreset.properties?.graphLayout.layout,
-      preventOverlap: true,
+      preventOverlap,
     };
     switch (this.activePreset.properties.graphLayout.layout) {
       case 'manual':
@@ -617,10 +675,9 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-
             type: 'force',
             gravity: this.activePreset.properties.graphLayout.gravity ?? 10,
-            preventOverlap: true,
+            preventOverlap,
             speed: this.activePreset.properties.graphLayout.speed ?? 25,
             nodeStrength: this.activePreset.properties.graphLayout.nodeStrength ?? 100,
             nodeSpacing: this.activePreset.properties.graphLayout.nodeSpacing ?? 150,
@@ -649,7 +706,7 @@ export default class NetworkGraph extends WidgetBase {
           ...{
             rankdir: this.activePreset.properties.graphLayout.rankdir ?? 'TB',
             align: this.activePreset.properties.graphLayout.align ?? 'UL',
-            preventOverlap: true,
+            preventOverlap,
           },
         };
         break;
@@ -657,7 +714,7 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            preventOverlap: true,
+            preventOverlap,
             kr: this.activePreset.properties.graphLayout.kr ?? 10,
           },
         };
@@ -666,7 +723,7 @@ export default class NetworkGraph extends WidgetBase {
         layout = {
           ...layout,
           ...{
-            // preventOverlap: true,
+            // preventOverlap,
             linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 1,
             // maxIteration: this.activePreset.properties.graphLayout.maxIteration ?? 500,
             // nodeStrength: this.activePreset.properties.graphLayout.nodeStrength ?? 1000,
@@ -676,9 +733,9 @@ export default class NetworkGraph extends WidgetBase {
             type: 'gForce',
             gpuEnabled: true,
             animate: false,
-            maxIteration: 200,
+            maxIteration: 500,
             gatherDiscrete: true,
-            descreteGravity: 200,
+            // descreteGravity: 200,
             // linkDistanceFunc: (e) => {
             //   if (e.source === '0') return 10;
             //   return 10;
@@ -722,7 +779,7 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             maxLevelDiff: 0.5,
-            preventOverlap: true,
+            preventOverlap,
 
             sortBy: 'degree',
           },
@@ -734,7 +791,7 @@ export default class NetworkGraph extends WidgetBase {
           ...{
             linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 50,
             unitRadius: this.activePreset.properties.graphLayout.unitRadius ?? 50,
-            preventOverlap: true,
+            preventOverlap,
           },
         };
         break;
@@ -763,99 +820,6 @@ export default class NetworkGraph extends WidgetBase {
         break;
     }
     return layout;
-  }
-
-  public updateRules(rules: NodeRule[], element?: GraphElement) {
-    if (!this.source || !rules || rules.length === 0) {
-      return;
-    }
-
-    // const nodes: any[] = [];
-
-    // const addElement = (el: GraphElement) => {
-    //   if (!this.activePreset!._visibleNodes!.includes(el)) {
-    //     this.addElement(el);
-    //     // this.activePreset!._visibleNodes.push(el);
-    //     // nodes.push(el);
-    //   }
-    // };
-
-    // this.activePreset.properties?._visibleNodes = [];
-    // this.data = { nodes: [], edges: [] };
-    for (const rule of rules) {
-      switch (rule.type) {
-        case 'TYPE':
-          if (rule.featureType && !rule._featureType) {
-            rule._featureType = this.source.getFeatureTypeById(rule.featureType);
-          }
-
-          if (rule._featureType && rule.featureType && !rule.disabled) {
-            if (element) {
-              if (element._outgoing)
-                for (const out of element._outgoing) {
-                  if (out.to?._featureType?._inheritedTypes && out.to._featureType._inheritedTypes.includes(rule.featureType)) {
-                    this.addElement(out.to);
-                    if (rule.outgoingRules) {
-                      this.updateRules(rule.outgoingRules, out.to);
-                    }
-                  }
-                }
-            } else {
-              const elements = this.source.getClassElements(rule.featureType, true);
-              if (elements) {
-                for (const el of elements) {
-                  this.addElement(el);
-                  if (rule.outgoingRules) {
-                    this.updateRules(rule.outgoingRules, el);
-                  }
-                }
-              }
-            }
-          }
-          break;
-        case 'RELATION':
-          if (rule.relationType && !rule.disabled) {
-            if (element?._outgoing) {
-              for (const o of element._outgoing) {
-                if (o.classId === rule.relationType && o.to) {
-                  this.addElement(o.to);
-                  if (rule.outgoingRules) {
-                    this.updateRules(rule.outgoingRules, o.to);
-                  }
-                }
-              }
-            }
-          }
-          break;
-        case 'ELEMENT':
-          if (rule.elementId && !rule.disabled) {
-            rule._element = this.source.getElement(rule.elementId);
-            if (rule._element) {
-              if (!this.activePreset!._visibleNodes!.includes(rule._element)) {
-                this.addElement(rule._element);
-              }
-              if (rule.outgoingRules) {
-                this.updateRules(rule.outgoingRules, rule._element);
-              }
-            }
-          }
-          break;
-        case 'PROPERTY_ELEMENT':
-          if (element?._elements && rule.elementType && !rule.disabled) {
-            if (element._elements.hasOwnProperty(rule.elementType)) {
-              const ees = Array.isArray(element._elements[rule.elementType])
-                ? element._elements[rule.elementType]
-                : [element._elements[rule.elementType]];
-              for (const ee of ees as GraphElement[]) {
-                this.addElement(ee);
-              }
-            }
-          }
-          break;
-      }
-    }
-    // this.activePreset!._visibleNodes = [...this.activePreset!._visibleNodes, ...nodes];
-    // const toBeDeleted = this.activePreset._visibleNodes.filter(n => nodes.includes(n));
   }
 
   public addElement(e: GraphElement): boolean {
@@ -889,15 +853,18 @@ export default class NetworkGraph extends WidgetBase {
       this.activePreset._stats = {};
     }
 
-    if (this.activePreset.properties?.pinnedFeatureTypes) {
-      for (const ft of this.activePreset.properties.pinnedFeatureTypes) {
-        if (!this.activePreset._stats!.hasOwnProperty(ft))
+    if (this.activePreset.properties?.graphLayout?.pinnedFeatureTypes) {
+      for (const ft of this.activePreset.properties.graphLayout.pinnedFeatureTypes) {
+        if (!this.activePreset._stats!.hasOwnProperty(ft)) {
+          const f = this.source.getFeatureTypeById(ft);
           this.activePreset._stats![ft] = {
             count: 0,
             hide: false,
             pinned: true,
-            _featureType: this.source.getFeatureTypeById(ft),
+            color: f?.color ?? 'gray',
+            _featureType: f,
           };
+        }
       }
     }
     if (this.activePreset._stats) {
@@ -927,16 +894,19 @@ export default class NetworkGraph extends WidgetBase {
     if (this.activePreset?.properties?.graphLayout?.nodeRules) {
       this.activePreset._visibleNodes = [];
       this.emptyStats();
-      this.updateRules(this.activePreset.properties.graphLayout.nodeRules);
+      this.source.applyGraphPresetRules(this.activePreset, this.activePreset.properties.graphLayout.nodeRules);
+
+      // this.updateRules(this.activePreset.properties.graphLayout.nodeRules);
     }
 
     // check for visible nodes in node list
     if (this.activePreset.properties?.graphLayout?.nodes) {
       for (const nid of Object.keys(this.activePreset.properties?.graphLayout.nodes)) {
-        if (this.activePreset._visibleNodes.findIndex((n) => n.id === nid) === -1) {
+        const node = this.activePreset.properties.graphLayout.nodes[nid];
+        if (!node.preset && this.activePreset._visibleNodes.findIndex((n) => n.id === nid) === -1) {
           const e = this.source.getElement(nid);
           if (e) {
-            this.activePreset.properties.nodes[nid]._element = e;
+            node._element = e;
             this.addElement(e);
           }
         }
@@ -957,52 +927,23 @@ export default class NetworkGraph extends WidgetBase {
       }
     }
 
-    // .filter(
-    //   (n) => n.type === 'node' && n.id
-    // )
     if (this.data.nodes) {
       for (const node of this.data.nodes) {
         if (this.activePreset._visibleNodes.findIndex((n) => n.id === node.id) === -1) {
           this.data.nodes = this.data.nodes.filter((f) => f.id !== node.id!);
         }
-        // const el = this.source.getElement(node.id.toString());
-
-        // if (!el || !GraphElement.getVisibility(el)) {
-        // this.graph.remove(node.id);
-        // this.data.nodes = this.data.nodes?.filter((n) => n.id !== node.id);
-        // this.nodes.remove(id);
-        // }
       }
     }
 
-    // this.visibleNodes = this.data.nodes!.map((r) => r.id);
-
-    // for (const e of Object.values(graph)) {
-    //   if (e.type === 'edge') {
-    //     if (e.fromId && e.toId) {
-    //       this.updateEdge(e);
-    //     }
-    //   }
-    // }
-
     if (this.data.edges && this.source?.graph) {
-      this.data.edges = this.data.edges.filter(e => e.id !== undefined && this.source!.graph!.hasOwnProperty(e.id!.toString()))
+      this.data.edges = this.data.edges.filter((e) => e.id !== undefined && this.source!.graph!.hasOwnProperty(e.id!.toString()));
     }
-    
-
-    // for (const edge of this.data.edges!) {
-    //   if (edge?.id) {
-    //     const el = this.source.getElement(edge.id!.toString());
-    //     if (!el) {
-    //       this.graph.remove(edge.id!);
-    //     }
-    //   }
-    // }
 
     if (this.graph) {
       this.graph.data(this.data);
 
       this.graph.render();
+      //   this.graph.paint();
     }
   }
 
@@ -1013,40 +954,36 @@ export default class NetworkGraph extends WidgetBase {
       return;
     }
     this.initGraph(true);
-    // this.graph.updateLayout(this.getLayout());
-    // this.graph.layout = this.getLayout();
-    // console.log(this.graph.getDefaultCfg());
     console.log(this.graph);
-    // this.graph.layout();
-    // this.graph.render();
-    // this.graph.refresh();
   }
 
   public contentLoaded() {
     if (this.loaded) {
       return;
     }
-    this.loaded = true;
+
+    this.busManager.subscribe(this.source!.events, GraphDatasource.GRAPH_EVENTS, (a) => {
+      if (a === GraphDatasource.GRAPH_LOADED) {
+        this.contentLoaded();
+      }
+    });
 
     if (!this.source?.featureTypes) {
       return;
     }
 
-    this.featureTypes = Object.values(this.source.featureTypes)
-      .filter((ft) => ft.type)
-      .map((ft) => ft.type) as string[];
+    this.loaded = true;
 
     this.registerShapes();
     this.registerBehaviors();
     this.initPreset();
-    this.initDragging();
+    // this.initDragging();
 
     setTimeout(() => {
       console.log('content loaded');
       if (this.source?.graph) {
         this.initGraph(false);
 
-        // this.tutorialSource.goToId(this.tutorialSource.activeId);
         this.updateGraph(this.source.graph, true);
 
         this.$forceUpdate();
@@ -1091,12 +1028,12 @@ export default class NetworkGraph extends WidgetBase {
           if (a === GraphDatasource.ELEMENT_REMOVED) {
             if (d.id && this.activePreset?.properties?.graphLayout?.nodes && this.activePreset.properties.graphLayout.nodes.hasOwnProperty(d.id)) {
               delete this.activePreset.properties.graphLayout.nodes[d.id];
-              this.activePreset._visibleNodes = this.activePreset._visibleNodes.filter((n) => n !== d);              
+              this.activePreset._visibleNodes = this.activePreset._visibleNodes.filter((n) => n !== d);
               this.updateGraph(this.source!.graph, false);
-            }            
+            }
           }
-          if (a === GraphDatasource.EDGE_REMOVED) {            
-            this.updateGraph(this.source!.graph, true);            
+          if (a === GraphDatasource.EDGE_REMOVED) {
+            this.updateGraph(this.source!.graph, true);
           }
           if (a === GraphDatasource.ELEMENT_UPDATED && d && this.activePreset?._visibleNodes) {
             if (this.activePreset._visibleNodes.includes(d)) {
@@ -1150,6 +1087,13 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public refresh() {
+    if (!this.options || !this.source) {
+      return;
+    }
+
+    if (!this.options.preset) {
+      this.options.preset = this.source.activeDocument as unknown as GraphPreset;
+    }
     if (this.source && this.options?.preset) {
       if (typeof this.options.preset === 'string') {
         this.activePreset = this.source.getGraphPreset(this.options.preset) as GraphPreset;
@@ -1174,10 +1118,13 @@ export default class NetworkGraph extends WidgetBase {
   public updateContextMenu(a: any) {
     console.log('update context menu');
     if (this.source && a.item?._cfg?.id) {
+      this.contextMenuitems = [];
       const element = this.source.getElement(a.item._cfg.id);
-      if (!element?._featureType?.properties) {
-        return;
+      if (!element) { return; }
+      if (!element.properties) {
+        element.properties = {};
       }
+
       switch (element?.type) {
         case 'node':
           const outgoingMenu = {
@@ -1223,34 +1170,42 @@ export default class NetworkGraph extends WidgetBase {
             action: () => {},
             items: [] as any[],
           };
-          for (const props of element._featureType?.properties) {
-            if (props.type === PropertyValueType.relation && props.relation?.type && props.relation?.objectType) {
-              createMenu.items.push({
-                title: props.label || props.relation.type,
-                action: async () => {
-                  const type = this.source?.findObservation(props.relation?.objectType!);
-                  if (!type || !this.source || !this.activePreset?.id) {
-                    return;
-                  }
-                  let name = `new ${type.type}`;
+          if (element._featureType?.properties) {
+            for (const props of element._featureType.properties) {
+              if (props.type === PropertyValueType.relation && props.relation?.type && props.relation?.objectType) {
+                linkMenu.items.push({
+                  title: props.label || props.relation.type,
+                  action: async () => {
+                    alert(props.label);
+                  },
+                });
+                createMenu.items.push({
+                  title: props.label || props.relation.type,
+                  action: async () => {
+                    const type = this.source?.findObservation(props.relation?.objectType!);
+                    if (!type || !this.source || !this.activePreset?.id) {
+                      return;
+                    }
+                    let name = `new ${type.type}`;
 
-                  name = await $cs.triggerInputDialog('Name', 'enter new name', name);
+                    name = await $cs.triggerInputDialog('Name', 'enter new name', name);
 
-                  const newNode = await this.source.addNewNode({
-                    id: `${type.type}-${guidGenerator()}`,
-                    properties: { name },
-                    classId: type.type,
-                  });
-                  if (newNode?.id && element.id && props?.relation?.type) {
-                    await this.source.addEdge({
-                      classId: props.relation.type,
-                      fromId: element.id,
-                      toId: newNode.id,
-                    } as GraphElement);
-                    this.source.createKGView([newNode], this.activePreset.id);
-                  }
-                },
-              });
+                    const newNode = await this.source.addNewNode({
+                      id: `${type.type}-${guidGenerator()}`,
+                      properties: { name },
+                      classId: type.type,
+                    });
+                    if (newNode?.id && element.id && props?.relation?.type) {
+                      await this.source.addEdge({
+                        classId: props.relation.type,
+                        fromId: element.id,
+                        toId: newNode.id,
+                      } as GraphElement);
+                      this.source.createKGView([newNode], this.activePreset.id);
+                    }
+                  },
+                });
+              }
             }
           }
 
@@ -1303,6 +1258,19 @@ export default class NetworkGraph extends WidgetBase {
             this.contextMenuitems.push(linkMenu);
           }
           this.contextMenuitems.push({
+            title: 'delete',
+            icon: 'mdi-delete',
+            action: () => {
+              if (element && this.activePreset?.id) {
+                this.source!.removeNode(element)
+                  .then((r) => {
+                    this.updateGraph(this.source!.graph!);
+                  })
+                  .catch((e) => {});
+              }
+            },
+          });
+          this.contextMenuitems.push({
             title: 'hide',
             icon: 'mdi-eye-off',
             action: () => {
@@ -1319,8 +1287,37 @@ export default class NetworkGraph extends WidgetBase {
               this.source?.createKGView([element]);
             },
           });
+          this.contextMenuitems.push({
+            title: 'edit',
+            icon: 'mdi-pencil',
+            action: () => {
+              this.source!.startEditElement(element);
+            },
+          });
           break;
         case 'edge':
+          this.contextMenuitems.push({
+            title: 'delete',
+            icon: 'mdi-delete',
+            action: () => {
+              if (element && this.activePreset?.id) {
+                this.source!.removeEdge(element)
+                  .then((r) => {
+                    this.updateGraph(this.source!.graph!);
+                  })
+                  .catch((e) => {});
+              }
+            },
+          });
+          if (element._featureType) {
+            this.contextMenuitems.push({
+              title: 'edit',
+              icon: 'mdi-pencil',
+              action: () => {
+                this.source!.startEditElement(element);
+              },
+            });
+          }
           break;
       }
 
@@ -1424,6 +1421,9 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public registerShapes() {
+    if (!this.source) {
+      return;
+    }
     if (this.source?.graphShapeDefinitions) {
       this.source.graphShapeDefinitions.edges.push({
         name: 'default',
@@ -1432,41 +1432,108 @@ export default class NetworkGraph extends WidgetBase {
       });
 
       this.source.graphShapeDefinitions.edges.push({
+        name: 'dialog-relation',
+        shape: {
+          afterDraw: (cfg: any, group: any) => {
+            const children = group.get('children');
+            if (this.source && cfg.id && children && children.length > 0) {
+              const shape = children[0];
+              const element = this.source.graph[cfg.id]!;
+              if (element) {
+                // console.log(element?.id)
+
+                // const useOpacity = this.followedGoal ?? this.followedAction;
+
+                const fromPoint = shape.getPoint(0.65);
+
+                group.addShape('circle', {
+                  attrs: {
+                    r: 15,
+                    stroke: '#333',
+                    fill: '#ffffff',
+                    x: fromPoint.x,
+                    y: fromPoint.y,
+                    action: 'toggleCondition',
+                  },
+                });
+
+                let icon = '';
+                switch (element.properties?.relation_type) {
+                  case 'increases':
+                    icon = '+';
+                    break;
+                  case 'decreases':
+                    icon = '-';
+                    break;
+                }
+
+                group.addShape('text', {
+                  attrs: {
+                    text: icon,
+                    fontSize: 26,
+                    fontWeight: 600,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    fill: '#000000',
+                    x: fromPoint.x,
+                    y: fromPoint.y + 2,
+                    action: 'toggleCondition',
+                  },
+                });
+              }
+            }
+          },
+          update: undefined,
+        },
+        actions: {
+          toggleCondition: (element: GraphElement, source: DocDatasource) => {
+            source.selectElement(element, false);
+            if (element.properties) {
+              element.properties['relation_type'] =
+                element.properties?.relation_type && element.properties['relation_type'] === 'increases' ? 'decreases' : 'increases';
+            }
+
+            return Promise.resolve(true);
+          },
+        },
+        extendType: 'line',
+      });
+
+      this.source.graphShapeDefinitions.edges.push({
         name: 'weighted-indicator-relation',
         shape: {
-          afterDraw(cfg:any, group: any) {
-            const children = group.get('children')
-            if (children && children.length>0) {
+          afterDraw(cfg: any, group: any) {
+            const children = group.get('children');
+            if (children && children.length > 0) {
               const shape = children[0];
-            
 
-            // const useOpacity = this.followedGoal ?? this.followedAction;
+              // const useOpacity = this.followedGoal ?? this.followedAction;
 
-            const fromPoint = shape.getPoint(0.65);
+              const fromPoint = shape.getPoint(0.65);
 
-            group.addShape('circle', {
-              attrs: {
-                r: 10,
-                stroke: '#333',
-                fill: '#ffffff',
-                x: fromPoint.x,
-                y: fromPoint.y,
-                action: 'toggleCondition',
-              },
-            });
+              group.addShape('circle', {
+                attrs: {
+                  r: 10,
+                  stroke: '#333',
+                  fill: '#ffffff',
+                  x: fromPoint.x,
+                  y: fromPoint.y,
+                  action: 'toggleCondition',
+                },
+              });
 
-            group.addShape('text', {
-              attrs: {
-                text: '+',
-                fontSize: 22,
-                fontWeight: 600,
-                textAlign: 'center',
-                textBaseline: 'middle',
-                fill: '#000000',
-                x: fromPoint.x,
-                y: fromPoint.y + 1,
-              },
-            });
+              group.addShape('text', {
+                attrs: {
+                  text: '+',
+                  fontSize: 22,
+                  fontWeight: 600,
+                  textAlign: 'center',
+                  textBaseline: 'middle',
+                  fill: '#000000',
+                  x: fromPoint.x,
+                  y: fromPoint.y + 1,
+                },
+              });
             }
           },
           update: undefined,
@@ -1559,7 +1626,18 @@ export default class NetworkGraph extends WidgetBase {
   }
 
   public initPreset() {
-    if (!this.source || !this.options?.preset) {
+    if (!this.source || !this.options) {
+      return;
+    }
+
+    if (!this.options?.preset && this.source.activeDocument) {
+      this.options.preset = this.source.activeDocument as unknown as GraphPreset;
+      if (!this.options.preset.properties!.graphLayout) {
+        this.options.preset.properties!.graphLayout = { layout: 'force', nodeRules: [{ type: 'ELEMENT', elementId: this.source.activeDocument.id }] };
+      }
+    }
+
+    if (!this.options.preset) {
       return;
     }
 
@@ -1586,7 +1664,7 @@ export default class NetworkGraph extends WidgetBase {
     // this.activePreset = this.source.graphPresets.find(p => p.id);
   }
 
-  public initGraph(reset = false) {
+  public async initGraph(reset = false) {
     console.log('init graph');
 
     // if (!this.activePreset) {
@@ -1611,10 +1689,16 @@ export default class NetworkGraph extends WidgetBase {
       this.activePreset = this.source.activeGraphPreset;
     }
 
-    if (!this.activePreset) { return; }
+    if (!this.activePreset) {
+      return;
+    }
 
-    if (!this.activePreset.properties) { this.activePreset.properties = {}}
-    if (!this.activePreset.properties.editor_mode) { this.activePreset.properties.editor_mode = 'EDIT'}
+    if (!this.activePreset.properties) {
+      this.activePreset.properties = {};
+    }
+    if (!this.activePreset.properties.editor_mode) {
+      this.activePreset.properties.editor_mode = 'EDIT';
+    }
 
     // if (!this.activePreset) {
     //   this.activePreset =
@@ -1678,6 +1762,7 @@ export default class NetworkGraph extends WidgetBase {
       animate: this.activePreset?.properties?.graphLayout?.animate ?? false,
       height: dHeight, // (this as any).widget._size.height,
       layout: this.getLayout(),
+      autoPaint: true,
       // renderer: 'svg',
 
       modes: {
@@ -1685,11 +1770,25 @@ export default class NetworkGraph extends WidgetBase {
           'drag-node',
           // "drag-combo",
           // "collapse-expand-combo",
-          'click-add-node',
-          'drag-canvas',
-          'zoom-canvas',
-          'click-select',
+          {
+            type: 'drag-canvas',
+            enableOptimize: true,
+          },
+          { type: 'zoom-canvas', enableOptimize: true },
           'shortcuts-call',
+          {
+            type: 'create-edge',
+            key: 'alt', // undefined by default, options: 'shift', 'control', 'ctrl', 'meta', 'alt'
+          },
+          {
+            type: 'click-select',
+            shouldBegin: (e) => {
+              if ((e.target as any).attrs?.hasOwnProperty('action')) {
+                return false;
+              }
+              return true;
+            },
+          },
 
           // {
           //   type: "edge-tooltip",
@@ -1701,6 +1800,7 @@ export default class NetworkGraph extends WidgetBase {
           //   offset: 30,
           // },
         ],
+
         // addEdge: ["click-add-edge", "click-select"],
       },
       defaultNode: this.getNodeStyle(),
@@ -1729,9 +1829,8 @@ export default class NetworkGraph extends WidgetBase {
 
     this.graph.on('keyup', (e) => {
       // console.log('key up')
-      
-      if (this.source?.graph && e.key === 'Delete' && this.activePreset?._selectedElements && this.activePreset.properties?.graphLayout?.nodes)
-      {
+
+      if (this.source?.graph && e.key === 'Delete' && this.activePreset?._selectedElements && this.activePreset.properties?.graphLayout?.nodes) {
         for (const el of this.activePreset._selectedElements) {
           if (this.activePreset.properties.graphLayout.nodes.hasOwnProperty(el)) {
             delete this.activePreset.properties.graphLayout.nodes[el];
@@ -1743,25 +1842,55 @@ export default class NetworkGraph extends WidgetBase {
         this.updateGraph(this.source.graph, true);
         this.resize();
         this.$forceUpdate();
-
-
-        
       }
       // console.log(e);
-
-    })
+    });
 
     this.graph.on('nodeselectchange', (e: any) => {
       console.log(e.selectedItems, e.select);
       const sel: any[] = [];
       if (this.activePreset && e.selectedItems?.nodes) {
         for (const node of e.selectedItems?.nodes) {
-          if (node._cfg?.id) { sel.push(node._cfg.id)}
+          if (node._cfg?.id) {
+            sel.push(node._cfg.id);
+          }
         }
 
         this.activePreset._selectedElements = sel;
         this.$forceUpdate();
       }
+    });
+
+    this.graph.on('aftercreateedge', async (e: any) => {
+      if (!this.source) {
+        return;
+      }
+      console.log(e);
+
+      const sourceId = e.edge?._cfg?.source?._cfg?.id;
+      const targetId = e.edge?._cfg?.target?._cfg?.id;
+      if (sourceId && targetId) {
+        const source = this.source.getElement(sourceId);
+        const target = this.source.getElement(targetId);
+        if (source && target) {
+          await this.source.addNewEdge({
+            fromId: sourceId,
+            toId: targetId,
+            classId: this.activePreset?.properties?.graphLayout?.defaultEdgeType ?? 'LINKED_TO',
+            properties: {},
+          });
+          this.updateGraph(this.source!.graph);
+        }
+      }
+
+      //   const edges = this.graph.save().edges;
+      //   G6.Util.processParallelEdges(edges);
+      //   this.graph.getEdges().forEach((edge, i) => {
+      //     this.graph.updateItem(edge, {
+      //       curveOffset: edges[i].curveOffset,
+      //       curvePosition: edges[i].curvePosition,
+      //     });
+      //   });
     });
 
     this.graph.on('viewportchange', () => {
@@ -1783,32 +1912,82 @@ export default class NetworkGraph extends WidgetBase {
     // });
     this.graph.on('node:dragend', (e: any) => {
       const elementId = e.item?._cfg?.id;
-      if (!elementId || !this.source || !this.activePreset?.properties?.graphLayout?.nodes) {
+
+      if (
+        !elementId ||
+        !this.source ||
+        !this.activePreset?.properties?.graphLayout ||
+        !this.activePreset.properties.graphLayout.layout ||
+        this.activePreset.properties.graphLayout.layout !== 'manual'
+      ) {
         return;
       }
+
+      if (!this.activePreset.properties.graphLayout.nodes) {
+        this.activePreset.properties.graphLayout.nodes = {};
+      }
+
       const element = this.source.getElement(elementId);
-      const node = this.activePreset.properties?.graphLayout?.nodes[elementId];
-      if (!element || !node) {
+      const node = this.activePreset.properties.graphLayout.nodes[elementId];
+      if (!element) {
         return;
       }
-      node.x = e.x;
-      node.y = e.y;
+
+      if (!node) {
+        this.activePreset.properties.graphLayout.nodes[elementId] = { x: e.x, y: e.y, _element: element, preset: true };
+      } else {
+        node.x = e.x;
+        node.y = e.y;
+      }
     });
     this.graph.on('contextmenu', (a: any) => {
       this.updateContextMenu(a);
     });
-    this.graph.on('onClick', () => {
-      debugger;
+    this.graph.on('edge:click', async (evt: any) => {
+      try {
+        if (this.source?.graphShapeDefinitions?.edges && evt.item?._cfg?.currentShape) {
+          const element = this.source.graph[evt.item!._cfg!.id];
+          let clicked = false;
+          if (this.source.graphShapeDefinitions?.edges) {
+            const shape = this.source.graphShapeDefinitions.edges.find((e) => e.name === evt.item._cfg.currentShape);
+
+            if (shape && evt.target?.attrs?.action) {
+              const act = evt.target.attrs.action;
+              if (shape.actions && shape.actions.hasOwnProperty(act)) {
+                clicked = true;
+                await shape.actions[act](element, this.source);
+                this.graph!.refreshItem(evt.item);
+              }
+            }
+          }
+          if (!clicked) {
+            // this.source!.selectElement(element, this.options.openElementDetails);
+          }
+        }
+      } catch (e) {}
     });
-    this.graph.on('click', (e: any) => {
-      if (e.item?._cfg?.model?.id) {
-        // find node
-        const node = this.source?.getElement(e.item._cfg.model.id);
-        if (node) {
-          this.source!.selectElement(node, this.options.openElementDetails);
+    this.graph.on('node:click', async (evt: any) => {
+      if (evt.item?._cfg?.model?.id) {
+        const element = this.source?.getElement(evt.item._cfg.model.id);
+        if (this.source?.graphShapeDefinitions?.nodes) {
+          const shape = this.source.graphShapeDefinitions.nodes.find((e) => e.name === evt.item._cfg.currentShape);
+          // find node
+
+          if (shape && evt.target?.attrs?.action) {
+            const act = evt.target.attrs.action;
+            if (element && shape.actions && shape.actions.hasOwnProperty(act)) {
+              await shape.actions[act]!(element, this.source!);
+              this.graph!.refreshItem(evt.item);
+            }
+          }
+        }
+        if (element) {
+          this.source!.selectElement(element, this.options.openElementDetails);
         }
       }
     });
+
+    // this.restoreCanvas();
   }
 
   public save() {
@@ -1844,172 +2023,82 @@ export default class NetworkGraph extends WidgetBase {
     }
   }
 
-  initDragging() {
-    if (this.dragInitialized) {
-      return;
-    }
-    this.dragInitialized = true;
-    const position = { x: 0, y: 0 };
+  public async onDrop(e: any, d: any, s: any) {
+    // console.log(e);
+    const originalEvent = e.originalEvent;
+    const clientPos = { x: originalEvent.clientX, y: originalEvent.clientY };
+    console.log(e, clientPos);
+    let pos = this.graph!.getPointByClient(clientPos.x, clientPos.y);
+    const classId = e.item?.dataset?.classid;
 
-    interact('#kg-vis')
-      .dropzone({
-        ondrop: async (e) => {
-          e.stopImmediatePropagation();
-          let pos = { x: 100, y: 100 };
-          if (e._interaction?.coords?.cur?.client) {
-            pos = this.graph!.getPointByClient(e._interaction.coords.cur.client.x, e._interaction.coords.cur.client.y);
+    if (classId && this.graph && this.source) {
+      const ft = this.source.getFeatureTypeById(classId);
+      if (ft?.type) {
+        const newNode = await this.source.addNewNode({
+          id: `${ft.type}-${guidGenerator()}`,
+          properties: { classId, name: ft.title },
+          classId: ft.type,
+        });
+
+        if (newNode?.id && this.activePreset?.properties?.graphLayout) {
+          if (!this.activePreset.properties.graphLayout.nodes) {
+            this.activePreset.properties.graphLayout.nodes = {};
           }
+          this.activePreset.properties.graphLayout.nodes[newNode.id] = {
+            x: pos.x,
+            y: pos.y,
+          };
 
-          if (e.interaction?.element) {
-            e.interaction.element.remove();
-          }
-          if (e.relatedTarget?.dataset?.elementid) {
-            // find element
-            const existingElement = this.source!.getElement(e.relatedTarget.dataset.elementid);
-            if (existingElement?.id && this.activePreset?.properties?.graphLayout?.nodes) {
-              this.activePreset.properties.graphLayout.nodes[existingElement.id] = {
-                x: pos.x,
-                y: pos.y,
-              };
-
-              this.addElement(existingElement);
-
-              this.updateGraph(this.source!.graph);
-            }
-          }
-          if (e.relatedTarget?.dataset?.id) {
-            const type = e.relatedTarget?.dataset?.id;
-
-            if (type && this.graph && this.source) {
-              const ft = this.source.getFeatureTypeById(type);
-              if (ft?.type) {
-                const newNode = await this.source.addNewNode({
-                  id: `${ft.type}-${guidGenerator()}`,
-                  properties: { type, name: ft.title },
-                  classId: ft.type,
-                });
-
-                if (newNode?.id && this.activePreset?.properties?.graphLayout?.nodes) {
-                  this.activePreset.properties.graphLayout.nodes[newNode.id] = {
-                    x: pos.x,
-                    y: pos.y,
-                  };
-
-                  this.addElement(newNode);
-                  this.updateGraph(this.source!.graph);                  
-                  this.source.selectElement(newNode, this.options.openElementDetails)
-                }
-              }
-            }
-
-            //
-
-            // this.graph.getCanvasByPoint()
-
-            // if (newNode?.id && element.id && props?.relation?.type) {
-            //   await this.source.addEdge({
-            //     classId: props.relation.type,
-            //     fromId: element.id,
-            //     toId: newNode.id,
-            //   } as GraphElement);
-
-            // this.source.createKGView([newNode], this.activePreset.id, true);
-            // }
-
-            // alert(ft.title)
-          }
-
-          // console.log(e.draggable.featureType);
-          // console.log();
-
-          console.log(e);
-        },
-      })
-      .on('dropactivate', () => {
-        // event.target.classList.add('drop-activated')
-      });
-
-    interact('.drag-type')
-      .draggable({
-        manualStart: true,
-        listeners: {
-          move(event) {
-            position.x += event.dx;
-            position.y += event.dy;
-            event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-          },
-        },
-      })
-
-      // This only gets called when we trigger it below using interact.start(...)
-      .on('move', (event) => {
-        const { currentTarget, interaction } = event;
-        let element = currentTarget;
-
-        // If we are dragging an item from the sidebar, its transform value will be ''
-        // We need to clone it, and then start moving the clone
-        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
-          element = currentTarget.cloneNode(true);
-
-          // Add absolute positioning so that cloned object lives right on top of the original object
-          element.style.position = 'absolute';
-          element.style.left = 0;
-          element.style.top = 0;
-          event.interactable.featureType = 'testje';
-
-          // Add the cloned object to the document
-          const container = document.querySelector('.drag-types-container');
-          container && container.appendChild(element);
-
-          const { offsetTop, offsetLeft } = currentTarget;
-          position.x = offsetLeft;
-          position.y = offsetTop;
-
-          // If we are moving an already existing item, we need to make sure the position object has
-          // the correct values before we start dragging it
-        } else if (interaction.pointerIsDown && !interaction.interacting()) {
-          const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
-          const transform = regex.exec(currentTarget.style.transform);
-
-          if (transform && transform.length > 1) {
-            position.x = Number(transform[1]);
-            position.y = Number(transform[2]);
-          }
+          this.addElement(newNode);
+          this.updateGraph(this.source!.graph);
+          this.source.selectElement(newNode, this.options.openElementDetails);
+          this.$forceUpdate();
         }
-
-        // Start the drag event
-        interaction.start({ name: 'drag' }, event.interactable, element);
-      });
+      }
+    }
   }
 
   beforeDestroy() {
-    interact('.drag-type').unset();
-    interact('#kg-vis').unset();
     this.dragInitialized = false;
+    this.busManager.stop();
+  }
+
+  getQueryNumber(v: string, defaultValue?: number): number | undefined {
+    const sv = $cs.getRouteQuery(v);
+    if (sv) {
+      return parseFloat(sv);
+    }
+    return defaultValue;
+  }
+
+  restoreCanvas() {
+    if (!this.graph) {
+      return;
+    }
+    console.log('restore canvas');
+    const z = this.getQueryNumber('gz', 1);
+    const x = this.getQueryNumber('gx');
+    const y = this.getQueryNumber('gy');
+
+    if (z && x && y) {
+      console.log(`zoom to ${z}`);
+      Vue.nextTick(() => {
+        this.graph!.zoom(z);
+
+        const p = this.graph!.getPointByCanvas(0, 0);
+        console.log(p);
+        this.graph!.moveTo(x, y);
+      });
+
+      //   this.graph.zoom(z, { x: x, y: y });
+      // this.graph.translate(parseFloat(x) / parseFloat(zoom), parseFloat(y) / parseFloat(zoom))
+    }
   }
 
   mounted() {
     if (this.source?.graph) {
-      this.updateGraph(this.source.graph);
-      this.$forceUpdate();
+      this.contentLoaded();
     }
-
-    // this.updateMenu({
-    //   id: "clear",
-    //   type: "icon",
-    //   icon: "delete",
-    //   action: (m) => {
-    //     this.emptyGraph();
-    //   },
-    // });
-    // this.updateMenu({
-    //   id: "refresh",
-    //   type: "icon",
-    //   icon: "refresh",
-    //   action: (m) => {
-    //     this.updateGraph(this.source!.graph);
-    //   },
-    // });
   }
 }
 </script>

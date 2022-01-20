@@ -35,11 +35,15 @@ export default Text.extend({
 
     atom: true,
 
-    addAttributes() {
-        return {
+    addAttributes() {        
+
+        return {            
             id: { default: null },            
             type: { default: 'person' },
-            text: { default: '' }            
+            text: { default: '' },
+            kg_id: { default: undefined },
+            label: { default: null},
+            spacy_label: { default: null}
         }
     },
 
@@ -60,9 +64,9 @@ export default Text.extend({
     addCommands() {
         return {            
             setTextEntity: (entity?: TextEntity) => ({ tr, dispatch }) => {
-                if (dispatch) {                    
+                if (dispatch) {                            
                     const node = tr.doc.nodeAt(tr.selection.from);
-                    let text = (tr.doc as any).textBetween(tr.selection.from, tr.selection.to -1);
+                    let text = entity?.text ?? (tr.doc as any).textBetween(tr.selection.from, tr.selection.to -1);
                     // const text = (node.text as string).substring();
                     if (entity?.text !== text) {                        
                         tr.selection.$from.pos = tr.selection.from - 1;
@@ -85,7 +89,7 @@ export default Text.extend({
                     const type = entity?.spacy_label ?? 'node';
 
                     const newEntity = this.type.create();
-                    newEntity.attrs = { id : id, type, text: text };
+                    newEntity.attrs = entity as any; // {...{ id : id, type, text: text }, ...entity};
                     newEntity.text = text;
                     tr.replaceSelectionWith(newEntity)
                     

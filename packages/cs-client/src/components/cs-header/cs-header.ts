@@ -133,6 +133,7 @@ export class CsHeader extends Vue {
   }
 
   public mounted() {
+    this.InitMenus();
     this.updateVisibleSidebars();
     // listen to dashboard init events
     this.busManager.subscribe(this.$cs.bus, AppState.DASHBOARD_MAIN, () => {

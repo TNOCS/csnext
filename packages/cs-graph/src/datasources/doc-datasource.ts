@@ -9,8 +9,8 @@ import {
   FeatureType,
   PropertyValueType,
   GraphFilterProperties,
-  GraphPreset,
   IGraphNodeDefinition,
+  NodeRule,
 } from '@csnext/cs-data';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
@@ -25,14 +25,18 @@ import RelationEditor from './../components/document-management/relation-editor.
 import { Editor } from '@tiptap/vue-2';
 import { AppState } from '@csnext/cs-client';
 import FeatureTypeEditor from './../components/datamodel/feature-type-editor.vue';
-import { IImportPlugin } from '../plugins/import-plugin';
 import { EmptyDocumentImport } from '../plugins/empty-document-import';
-import { IDocumentViewerPlugin } from '../plugins/viewer-plugin';
-import { GraphCrossFilter } from '../filters/graph-cross-filter';
-import { GraphServer, IGraphStorage } from './graph-storage';
-import { Component } from 'vue';
-import { GraphShapeDefinitions } from '../classes/graph/graph-shapes';
-import { DocUtils } from '../utils/doc-utils';
+import {
+  IImportPlugin,
+  IDocumentViewerPlugin,
+  GraphCrossFilter,
+  DocUtils,
+  GraphShapeDefinitions,
+  ServerStorage,
+  IGraphStorage,
+  DeviceStorage,
+} from '..';
+import Vue, { Component } from 'vue';
 
 export interface ITool {
   title: string;
@@ -56,6 +60,8 @@ export class DocDatasource extends GraphDatasource {
   public static ENTITIES_UPDATED = 'entities-updated';
   public static FEATURE_TYPES = 'feature-types';
   public static FEATURE_TYPE_SELECTED = 'feature-type-selected';
+  public static STORAGE = 'storage';
+  public static STORAGE_CHANGED = 'storgage_changed';
 
   //** graph backend, server or device */
   public storage?: IGraphStorage;
@@ -84,9 +90,57 @@ export class DocDatasource extends GraphDatasource {
     super();
   }
 
+  public async openServerStorage() {
+    localStorage.setItem(this.storageTypeKey, 'server');
+    if (this.storage?.storageType === 'device') {
+      location.reload();
+    }
+  }
+
+  private get storageTypeKey(): string {
+    return `storageType-${$cs.project.id}`;
+  }
+
+  private get historyKey(): string {
+    return `entity-history-${$cs.project.id}`;
+  }
+
+  private get activeUserKey(): string {
+    return `active-user-${$cs.project.id}`;
+  }
+
+  public async openDeviceStorage(databaseHandle: any) {
+    localStorage.setItem(this.storageTypeKey, 'device');
+    if (this.storage?.storageType === 'server') {
+      location.reload();
+    } else if (this.storage?.storageType === 'device') {
+    } else {
+      this.storage = new DeviceStorage();
+    }
+    Vue.set(this.storage, 'databaseHandle', databaseHandle);
+    await this.storage.init(this);
+    await this.refresh(true);
+    $cs.closeDialog();
+  }
+
   public async initStorage() {
-    this.storage = new GraphServer(this.base_url);
-    this.storage.init(this);
+    const storageType = localStorage.getItem(this.storageTypeKey);
+
+    if (storageType === 'device') {
+      this.storage = new DeviceStorage();
+      this.storage.source = this;
+      if ($cs.project?.header?.titleWidget) {
+        $cs.triggerDialog({ widget: $cs.project.header.titleWidget, width: '900px' });
+      }
+      // alert('device storage');
+    } else {
+      this.storage = new ServerStorage(this.base_url);
+    }
+    try {
+      await this.storage.init(this);
+    } catch (e) {
+      $cs.triggerNotification({ text: 'ERROR_INITIALIZING_STORAGE' });
+    }
   }
 
   public async reset(): Promise<boolean> {
@@ -409,7 +463,7 @@ export class DocDatasource extends GraphDatasource {
     if (trigger) {
       this.triggerUpdateGraph();
     }
-  }  
+  }
 
   public addGraphPreset(preset?: FilterGraphElement, activate = true): FilterGraphElement {
     if (!preset) {
@@ -423,11 +477,181 @@ export class DocDatasource extends GraphDatasource {
     if (!preset._visibleNodes) {
       preset._visibleNodes = [];
     }
-    this.saveNode(preset);    
+    this.saveNode(preset);
     if (activate) {
       this.applyGraphPreset(preset);
     }
     return preset;
+  }
+
+  public updateRules(preset: FilterGraphElement, rule: NodeRule) {
+    if (preset.properties?.graphLayout?.nodeRules) {
+      preset._visibleNodes = [];
+      this.applyGraphPresetRules(preset, preset.properties?.graphLayout?.nodeRules);
+      this.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, rule);
+    }
+  }
+
+  public applyGraphPresetRules(preset: FilterGraphElement, rules: NodeRule[], element?: GraphElement, list?: GraphElement[]) {
+    if (!rules || rules.length === 0) {
+      return;
+    }
+
+    if (!preset._visibleNodes) {
+      preset._visibleNodes = [];
+    }
+
+    for (const rule of rules) {
+      switch (rule.type) {
+        case 'INCOMMING_TYPE':
+          if (rule.featureType && !rule._featureType) {
+            rule._featureType = this.getFeatureTypeById(rule.featureType);
+          }
+
+          if (rule._featureType && rule.featureType && !rule.disabled) {
+            if (element) {
+              if (element._incomming)
+                for (const incomming of element._incomming) {
+                  if (incomming.from?._featureType?._inheritedTypes && incomming.from._featureType._inheritedTypes.includes(rule.featureType)) {
+                    this.addVisibleElement(preset, incomming.from);
+                    if (rule.outgoingRules) {
+                      this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from);
+                    }
+                  }
+                }
+            }
+          }
+          break;
+        case 'TYPE':
+          if (rule.featureType && !rule._featureType) {
+            rule._featureType = this.getFeatureTypeById(rule.featureType);
+          }
+
+          if (rule._featureType && rule.featureType && !rule.disabled) {
+            if (element) {
+              if (element._outgoing)
+                for (const out of element._outgoing) {
+                  if (out.to?._featureType?._inheritedTypes && out.to._featureType._inheritedTypes.includes(rule.featureType)) {
+                    this.addVisibleElement(preset, out.to);
+                    if (rule.outgoingRules) {
+                      this.applyGraphPresetRules(preset, rule.outgoingRules, out.to);
+                    }
+                  }
+                }
+            } else {
+              const elements = this.getClassElements(rule.featureType, true, rule.filter);
+              if (elements) {
+                for (const el of elements) {
+                  this.addVisibleElement(preset, el);
+                  if (rule.outgoingRules) {
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case 'INCOMMING_RELATION':
+          if (rule.relationType && !rule.disabled) {
+            if (element?._incomming) {
+              for (const o of element._incomming) {
+                if (o.classId === rule.relationType && o.from) {
+                  this.addVisibleElement(preset, o.from);
+                  if (rule.outgoingRules) {
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.from);
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case 'RELATION':
+          if (rule.relationType && !rule.disabled) {
+            if (element?._outgoing) {
+              for (const o of element._outgoing) {
+                if (o.classId === rule.relationType && o.to) {
+                  this.addVisibleElement(preset, o.to);
+                  if (rule.outgoingRules) {
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.to);
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case 'ELEMENT':
+          if (rule.elementId && !rule.disabled) {
+            rule._element = this.getElement(rule.elementId);
+            if (rule._element) {
+              if (!preset!._visibleNodes!.includes(rule._element)) {
+                this.addVisibleElement(preset, rule._element);
+              }
+              if (rule.outgoingRules) {
+                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element);
+              }
+            }
+          }
+          break;
+        case 'PROPERTY_ELEMENT':
+          if (element?._elements && rule.elementType && !rule.disabled) {
+            if (element._elements.hasOwnProperty(rule.elementType)) {
+              const ees = Array.isArray(element._elements[rule.elementType])
+                ? element._elements[rule.elementType]
+                : [element._elements[rule.elementType]];
+              for (const ee of ees as GraphElement[]) {
+                this.addVisibleElement(preset, ee);
+              }
+            }
+          }
+          break;
+      }
+    }
+    // this.activePreset!._visibleNodes = [...this.activePreset!._visibleNodes, ...nodes];
+    // const toBeDeleted = this.activePreset._visibleNodes.filter(n => nodes.includes(n));
+  }
+
+  public updateFilterStats(preset: FilterGraphElement) {
+    if (!preset || !preset._visibleNodes) {
+      return false;
+    }
+
+    preset._stats = {};
+
+    for (const e of preset._visibleNodes) {
+      if (preset?._stats &&  !preset._stats.hasOwnProperty(e.classId!)) {
+        preset._stats[e.classId!] = {
+          _featureType: e._featureType,
+          count: 0,
+          hide: false,
+          color: e._featureType?.color,
+        };        
+      }
+      preset!._stats[e.classId!].count! += 1;
+      
+    }
+  }
+
+  public addVisibleElement(preset: FilterGraphElement, e: GraphElement): boolean {
+    if (!preset || !e.classId || !e._featureType) {
+      return false;
+    }
+    if (!preset._stats) {
+      preset._stats = {};
+    }
+    if (!preset!._visibleNodes!.includes(e)) {
+      preset!._visibleNodes!.push(e);
+      if (!preset!._stats.hasOwnProperty(e.classId)) {
+        preset._stats[e.classId] = {
+          _featureType: e._featureType,
+          count: 0,
+          hide: false,
+          color: e._featureType?.color,
+        };
+      }
+      preset._stats[e.classId].count! += 1;
+      return true;
+    }
+    return false;
   }
 
   public applyGraphPreset(preset: FilterGraphElement) {
@@ -477,7 +701,7 @@ export class DocDatasource extends GraphDatasource {
               if (!res.error && res.document?.properties?.doc) {
                 doc.properties.doc = res.document.properties.doc;
                 // doc = res.document;
-                console.log(doc.entities?.filter((e) => e._node));
+                console.log(doc._entities?.filter((e) => e._node));
               } else {
                 console.log(`Error: ${res.error}`);
               }
@@ -516,7 +740,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public linkDocumentObservations(doc: GraphDocument) {
-    if (!doc.observations || !doc.entities || !this._meta) {
+    if (!doc.observations || !doc._entities || !this._meta) {
       return;
     }
     for (const obs of doc.observations) {
@@ -529,15 +753,15 @@ export class DocDatasource extends GraphDatasource {
       if (obs._featureType) {
         if (obs.relations) {
           for (const r of obs.relations) {
-            if (r.hasOwnProperty('id') && doc.entities) {
-              r._entity = doc.entities.find((e) => e.id === r.id.toString());
+            if (r.hasOwnProperty('id') && doc._entities) {
+              r._entity = doc._entities.find((e) => e.id === r.id.toString());
             }
           }
         }
         if (obs.properties) {
           for (const r of obs.properties) {
-            if (r.hasOwnProperty('id') && doc.entities) {
-              r._entity = doc.entities.find((e) => e.id === r.id.toString());
+            if (r.hasOwnProperty('id') && doc._entities) {
+              r._entity = doc._entities.find((e) => e.id === r.id.toString());
             }
           }
         }
@@ -546,8 +770,8 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public linkDocumentEntities(doc: GraphDocument) {
-    if (doc.entities && typeof Array.isArray(doc.entities)) {
-      for (const e of doc.entities) {
+    if (doc._entities && typeof Array.isArray(doc._entities)) {
+      for (const e of doc._entities) {
         if (e.id && !e._node && e.kg_id) {
           e._node = this.getElement(e.kg_id);
           if (!e._node) {
@@ -569,17 +793,16 @@ export class DocDatasource extends GraphDatasource {
 
     if (!doc.properties.doc) {
       doc.properties.doc = {
-        type: "doc",
-        content: [    
-        ],
+        type: 'doc',
+        content: [],
       };
     }
 
     doc._source = doc._outgoing?.find((e) => e.classId === 'FROM_SOURCE');
 
-    if (doc.properties.entities) {
-      doc.entities = JSON.parse(doc.properties.entities);
-    }
+    // if (doc.properties.entities) {
+    //   doc._entities = JSON.parse(doc.properties.entities);
+    // }
     this.linkDocumentEntities(doc);
     if (doc.properties.observations) {
       doc.observations = JSON.parse(doc.properties.observations);
@@ -710,7 +933,7 @@ export class DocDatasource extends GraphDatasource {
         // }
       }
       if (removeInstances && list.instances?.length > 0) {
-        doc.entities = doc.entities?.filter((t) => !list.instances.includes(t));
+        doc._entities = doc._entities?.filter((t) => !list.instances.includes(t));
       }
 
       // remove edge is exists
@@ -761,7 +984,7 @@ export class DocDatasource extends GraphDatasource {
       return;
     }
     this.activeUser = user;
-    localStorage.setItem('active-user-id', user.id);
+    localStorage.setItem(this.activeUserKey, user.id);
   }
 
   public async initUser() {
@@ -786,7 +1009,7 @@ export class DocDatasource extends GraphDatasource {
       }
     } else {
       // get active user from local storage
-      const activeUserId = localStorage.getItem('active-user-id');
+      const activeUserId = localStorage.getItem(this.activeUserKey);
       if (activeUserId && this.graph.hasOwnProperty(activeUserId)) {
         this.setActiveUser(this.graph[activeUserId]);
       } else {
@@ -804,18 +1027,21 @@ export class DocDatasource extends GraphDatasource {
       const res = await this.storage!.loadTypes();
       return Promise.resolve(res);
     } catch (e) {
-      return Promise.reject();
+      $cs.triggerNotification({ text: 'ERROR_LOADING_TYPES' });
+      return Promise.resolve(false);
     } finally {
       $cs.loader.removeLoader('types');
     }
   }
 
-  public elementEditorForm(node: GraphElement): IFormOptions {
+  public elementEditorForm(node: GraphElement, editOnly = true, verbose = false): IFormOptions {
     let form: IFormOptions = {
       showToolbar: false,
       hideTitle: true,
       optionalSupport: true,
       isPanel: false,
+      verbose,
+      showPanels: true,
       fields: [],
     };
     // this.formDef = this.formDef2;
@@ -827,150 +1053,190 @@ export class DocDatasource extends GraphDatasource {
           let required = pt.required;
           let group = pt.group;
           let section = pt.section;
+          let hint = pt.hint;
+          let array = pt.array;
 
-          switch (pt.type) {
-            case PropertyValueType.datetime:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'datetimepicker',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.string:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'string',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.image:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'string',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.element:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'selection',
-                keyText: 'title',
-                keyValue: 'id',
-                options: () => {
-                  if (pt.elementType) {
-                    return this.getClassElements(pt.elementType);
-                  }
-                  return [];
-                },
-                readonly: pt.readonly,
-                clearable: !required,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.options:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'selection',
-                options: pt.options,
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.wkt:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'string',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.boolean:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'checkbox',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.number:
-              let inputType = pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'number';
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: inputType as any,
-                min: pt.min,
-                max: pt.max,
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.tags:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'chips',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.epoch:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                type: 'epochdatetimepicker',
-                readonly: pt.readonly,
-                required,
-                group,
-                section,
-              });
-              break;
-            case PropertyValueType.relation:
-              form.fields?.push({
-                title: pt.label!,
-                _key: pt.key,
-                component: RelationEditor,
-                type: 'component',
-                data: {
-                  relation: pt.relation,
-                  node: node,
-                  graph: this,
-                },
-                readonly: pt.readonly,
-                keyText: 'properties.name',
-                keyValue: 'id',
-                required: required || (node._outgoing && node._outgoing.findIndex((r) => r.classId === pt.relation?.type) !== -1),
-                group,
-                section,
-              });
-              break;
+          if (!editOnly || !pt.readonly) {
+            switch (pt.type) {
+              case PropertyValueType.datetime:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'datetimepicker',
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.url:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'url',
+                  urlTemplate: pt.urlTemplate,
+                  readonly: pt.readonly,
+                  required,
+                  array,
+                  hint,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.string:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'string',
+                  readonly: pt.readonly,
+                  required,
+                  array,
+                  hint,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.image:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'string',
+                  readonly: pt.readonly,
+                  required,
+                  hint,
+                  array,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.element:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'selection',
+                  keyText: 'properties.name',
+                  keyValue: 'id',
+                  options: () => {
+                    if (pt.elementType) {
+                      return this.getClassElements(pt.elementType);
+                    }
+                    return [];
+                  },
+                  readonly: pt.readonly,
+                  clearable: !required,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.options:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'selection',
+                  options: pt.options,
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.wkt:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'string',
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.boolean:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'checkbox',
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.number:
+                let inputType = pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'number';
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: inputType as any,
+                  min: pt.min,
+                  max: pt.max,
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.tags:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'chips',
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.epoch:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  type: 'epochdatetimepicker',
+                  readonly: pt.readonly,
+                  hint,
+                  array,
+                  required,
+                  group,
+                  section,
+                });
+                break;
+              case PropertyValueType.relation:
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  component: RelationEditor,
+                  type: 'component',
+                  data: {
+                    relation: pt.relation,
+                    node: node,
+                    graph: this,
+                  },
+                  readonly: pt.readonly,
+                  keyText: 'properties.name',
+                  keyValue: 'id',
+                  required: required || (node._outgoing && node._outgoing.findIndex((r) => r.classId === pt.relation?.type) !== -1),
+                  group,
+                  array,
+                  hint,
+                  section,
+                });
+                break;
+            }
           }
         }
       }
@@ -1036,21 +1302,19 @@ export class DocDatasource extends GraphDatasource {
           this.initDocumentPlugins();
           await this.loadTypes();
           this.mergeFeatureTypes();
-          try {
-            await this.loadGraph(loadGraph);
-            this.updateEdges(true);
-            await this.parseDocuments();            
-            this.checkQueryParams();
-            console.log('publish graph loaded event');
-            this.bus.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.GRAPH_LOADED);
-          } catch (e) {
-            alert('error loading data');
-          }
+
+          await this.loadGraph(loadGraph);
+          this.updateEdges(true);
+          await this.parseDocuments();
+          this.checkQueryParams();
+          console.log('publish graph loaded event');
+          this.bus.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.GRAPH_LOADED);
 
           // this.updateSearchEntities();
           resolve(true);
         } catch (e) {
-          reject();
+          $cs.triggerNotification({ text: 'Error loading knowledge graph' });
+          resolve(true);
         }
       }
     });
@@ -1099,9 +1363,9 @@ export class DocDatasource extends GraphDatasource {
       }
 
       // update document entities, store in graph
-      if (doc.entities) {
-        doc.properties.entities = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
-      }
+      // if (doc._entities) {
+      //   doc.properties.entities = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
+      // }
 
       // delete doc.doc;
       if (doc.observations) {
@@ -1222,7 +1486,9 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
-    if (!this.storage?.saveElement) { return Promise.reject(); }
+    if (!this.storage?.saveElement) {
+      return Promise.reject();
+    }
     $cs.loader.addLoader(`store-${element.id}`);
     this.updateProvanance(element, user);
 
@@ -1260,7 +1526,7 @@ export class DocDatasource extends GraphDatasource {
         reject();
       } else {
         $cs.data.activeDocument = doc?.id;
-        DocUtils.syncEntities(doc, doc.properties?.content, true, this);
+        DocUtils.syncEntities(doc, this, doc.properties?.content, true);
         await this.entityParser.callDocument(doc, this);
         this.bus.publish('document', 'activated', doc);
         resolve(doc);
@@ -1294,7 +1560,7 @@ export class DocDatasource extends GraphDatasource {
     return Promise.resolve(true);
   }
 
-  public async saveEdge(edge: GraphElement, updateEdges = true) : Promise<GraphElement> {
+  public async saveEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
     $cs.loader.addLoader(`saveedge-${edge.id}`);
     if (this.storage?.saveElement) {
       try {
@@ -1302,19 +1568,17 @@ export class DocDatasource extends GraphDatasource {
         await this.addEdge(edge);
         if (updateEdges) {
           if (edge) {
-            this.updateElementEdges(edge);            
+            this.updateElementEdges(edge);
           } else {
             await this.updateEdges();
             await this.parseEntities();
           }
-          
         }
-        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);        
+        this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);
         return Promise.resolve(edge);
       } catch (err) {
         return Promise.reject(err);
-      }
-      finally {
+      } finally {
         $cs.loader.removeLoader(`saveedge-${edge.id}`);
       }
     }
@@ -1326,7 +1590,7 @@ export class DocDatasource extends GraphDatasource {
    */
   public async addNewEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
     edge = this.createEdge(edge);
-    return this.saveEdge(edge);    
+    return this.saveEdge(edge);
   }
 
   public async addNewNode(element: GraphElement): Promise<GraphElement> {
@@ -1371,7 +1635,7 @@ export class DocDatasource extends GraphDatasource {
   public selectElementId(id: string, open = false) {
     const e = this.getElement(id);
     if (e) {
-      this.selectElement(e, open);      
+      this.selectElement(e, open);
     }
   }
 
@@ -1399,8 +1663,10 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public startEditElement(element: GraphElement) {
-    element._isEditting = true;
-    this.bus.publish('element', 'start-editing', element);
+    this.selectElement(element, true);
+
+    // element._isEditting = true;
+    // this.bus.publish('element', 'start-editing', element);
   }
 
   public stopEditElement(element: GraphElement) {
@@ -1430,12 +1696,16 @@ export class DocDatasource extends GraphDatasource {
       p.properties = {};
     }
 
-    if (!p.properties.nodes) {
-      p.properties.nodes = {};
+    if (!p.properties.graphLayout) {
+      p.properties.graphLayout = {};
     }
 
-    if (p?.properties.nodes && el.id && !p.properties.nodes.hasOwnProperty(el.id)) {
-      p.properties.nodes[el.id] = { ...{ x: 100, y: 100 }, ...pos };
+    if (!p.properties.graphLayout.nodes) {
+      p.properties.graphLayout.nodes = {};
+    }
+
+    if (p?.properties?.graphLayout?.nodes && el.id && !p.properties.graphLayout.nodes.hasOwnProperty(el.id)) {
+      p.properties.graphLayout.nodes[el.id] = { ...{ x: 100, y: 100 }, ...pos };
       if (trigger) {
         this.triggerUpdateGraph(el);
         this.bus.publish(DocDatasource.PRESET_EVENTS, DocDatasource.PRESET_ELEMENT_ADDED, el);
@@ -1445,8 +1715,8 @@ export class DocDatasource extends GraphDatasource {
 
   public removeElementFromPreset(el: GraphElement, preset: string) {
     let p = this.getGraphPreset(preset);
-    if (p?.properties?.nodes && el.id && p.properties.nodes.hasOwnProperty(el.id)) {
-      delete p.properties.nodes[el.id];
+    if (p?.properties?.graphLayout?.nodes && el.id && p.properties.graphLayout.nodes.hasOwnProperty(el.id)) {
+      delete p.properties.graphLayout.nodes[el.id];
     }
     if (p?._visibleNodes) {
       const i = p._visibleNodes.indexOf(el);
@@ -1543,7 +1813,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public loadElementHistory() {
-    const history = localStorage.getItem('element-history');
+    const history = localStorage.getItem(this.historyKey);
     if (history && history.length > 0) {
       this.elementHistory = history.split(',');
     } else {
@@ -1556,7 +1826,7 @@ export class DocDatasource extends GraphDatasource {
       return;
     }
     const history = this.elementHistory.join(',');
-    localStorage.setItem('element-history', history);
+    localStorage.setItem(this.historyKey, history);
   }
 
   public addElementToHistory(id: string) {
@@ -1575,11 +1845,10 @@ export class DocDatasource extends GraphDatasource {
 
   public execute(): Promise<DocDatasource> {
     return new Promise(async (resolve, reject) => {
-      this.initStorage();
-      
+      await this.initStorage();
       await this.refresh(true);
       this.loadElementHistory();
-      
+
       this.importPlugins.push(new EmptyDocumentImport());
 
       if (this.timesourceId) {

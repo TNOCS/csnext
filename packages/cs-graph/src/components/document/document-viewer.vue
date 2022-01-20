@@ -97,8 +97,8 @@
             </v-layout>
           </template>
           <template v-else>
-          <v-layout v-if="source.activeDocument && source.activeDocument.entityTypes" class="drag-types-container">
-            <template v-for="(type, id) of source.activeDocument.entityTypes">
+          <v-layout v-if="source.activeDocument && source.activeDocument._entityTypes" class="drag-types-container">
+            <template v-for="(type, id) of source.activeDocument._entityTypes">
             <v-chip :outlined="!type._selected"  @click="type._selected = !type._selected" :key="id" :color="type.color" class="ml-2 drag-type" v-if="!source.activeDocument.properties.hide_unknowns || type._featureType">              
               <v-icon v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
               {{ type.title }}
@@ -110,11 +110,13 @@
           </v-layout>
           </template>
           <v-spacer></v-spacer>
-          <v-switch v-model="source.activeDocument.properties.hide_unknowns">
-            <v-icon>mdi-content-save</v-icon>
+          <v-switch v-model="source.activeDocument.properties.hide_unknowns">          
           </v-switch>
           <v-btn @click="save()" icon>
             <v-icon>mdi-content-save</v-icon>
+          </v-btn>
+          <v-btn @click="openDetails()" icon>
+            <v-icon>mdi-information-outline</v-icon>
           </v-btn>
         </v-layout>
         <template v-slot:extension v-if="source.activeDocument.properties.editor_mode === 'EDIT'">
@@ -203,6 +205,7 @@
             Bullet List
           </button>
         </floating-menu> -->
+        <!-- <mention-list :editor="editor" v-if="editor"></mention-list> -->
         <bubble-menu :editor="editor" v-if="editor">
           <v-autocomplete
             v-if="!editor.isActive('text-entity')"
@@ -240,9 +243,9 @@ import { WidgetBase } from '@csnext/cs-client';
 import { TextEntity } from '@csnext/cs-data';
 import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/vue-2';
 import SelectionPopup from './selection-popup.vue';
-import Mention from '@tiptap/extension-mention';
+// import Mention from '@tiptap/extension-mention';
 import simplebar from 'simplebar-vue';
-
+import { TextMention } from './plugins/text-mention';
 import { DocDatasource, ITool } from './../../datasources/doc-datasource';
 import { GraphDocument } from './../../classes/document/graph-document';
 import StarterKit from '@tiptap/starter-kit';
@@ -252,10 +255,10 @@ import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import { FeatureType } from '@csnext/cs-data';
 import { IImportPlugin } from '../..';
-import interact from 'interactjs';
 import { DocUtils } from '../../utils/doc-utils';
 import Dropcursor from '@tiptap/extension-dropcursor'
 import suggestion from './plugins/suggestion'
+import MentionList from './plugins/mention-list.vue';
 
 @Component({
   components: {
@@ -263,6 +266,7 @@ import suggestion from './plugins/suggestion'
     EditorContent,
     BubbleMenu,
     FloatingMenu,
+    MentionList,
 
     // EditorMenuBubble,
     SelectionPopup,
@@ -315,7 +319,7 @@ export default class DocumentViewer extends WidgetBase {
 
     this.editor.chain().focus().setTextEntity({ spacy_label: this.entityBubbleSelection?.type }).run();
     this.syncDocumentState();
-    DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
+    DocUtils.syncEntities(this.source.activeDocument, this.source, this.source.activeDocument.properties?.doc?.content, true);
 
     // alert(this.entityBubbleSelection?.title);
   }
@@ -365,15 +369,15 @@ export default class DocumentViewer extends WidgetBase {
       if (!this.source?.activeDocument || !this.editor) {
         return;
       }
-      if (this.source.activeDocument.entities) {
-        for (const entity of this.source.activeDocument.entities) {
+      if (this.source.activeDocument._entities) {
+        for (const entity of this.source.activeDocument._entities) {
           this.source.removeEntityFromDocument(entity, this.source.activeDocument);
         }
-        this.source.activeDocument.entities = [];
+        this.source.activeDocument._entities = [];
       }
       this.editor?.commands.clearContent();
       this.syncDocumentState();
-      DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
+      DocUtils.syncEntities(this.source.activeDocument, this.source, this.source.activeDocument.properties?.doc?.content, true);
       this.startMenu = true;
     }
   }
@@ -385,7 +389,7 @@ export default class DocumentViewer extends WidgetBase {
 
     this.editor.chain().focus().setTextEntity().run();
     this.syncDocumentState();
-    DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc?.content, true, this.source);
+    DocUtils.syncEntities(this.source.activeDocument, this.source, this.source.activeDocument.properties?.doc?.content, true);
   }
 
   // public setTextParagraph() {
@@ -430,12 +434,10 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    for (const type in this.source.activeDocument.entityTypes) {
-      if (this.source.activeDocument.entityTypes.hasOwnProperty(type)) {
-        const entityType = this.source.activeDocument.entityTypes[type];
-        entityType._selected = true;
-        // this.source.activeDocument.visibleEntityTypes &&
-        // this.source.activeDocument.visibleEntityTypes.includes(entityType);
+    for (const type in this.source.activeDocument._entityTypes) {
+      if (this.source.activeDocument._entityTypes.hasOwnProperty(type)) {
+        const entityType = this.source.activeDocument._entityTypes[type];
+        entityType._selected = true;        
       }
     }
   }
@@ -453,6 +455,12 @@ export default class DocumentViewer extends WidgetBase {
       var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
       return result * sortOrder;
     };
+  }
+
+  public openDetails() {
+    if (this.source?.activeDocument) {
+      this.source.selectElement(this.source.activeDocument, true);
+    }
   }
 
   public updateEditor(destroy = true) {
@@ -482,11 +490,15 @@ export default class DocumentViewer extends WidgetBase {
           ParagraphExtension,
           Highlight,
           Placeholder,
-          Mention.configure({
-            HTMLAttributes: {
+          TextMention.configure({
+            // renderLabel: (props) => {
+            //   return 'text-entity'
+            // },
+             HTMLAttributes: {
               class: 'text-entity',
+              name: 'text-entity'
             },
-            suggestion
+            suggestion                        
           }),
           // BubbleMenu.configure({
           //   element: document.querySelector('.menu'),
@@ -587,23 +599,16 @@ export default class DocumentViewer extends WidgetBase {
       }
       this.setEditorMode(this.source.activeDocument.properties!.editor_mode!);
     }
-
   }
 
   public loadDocument(doc: GraphDocument) {
-    if (this.source && doc) {
-      // if (this.source.activeDocument === doc) {
-      //   return;
-      // }
-
-      console.log('load document');
-
+    if (this.source && doc) {      
       this.source.activateDocument(doc).then(() => {
         this.widget.options!.title = doc.name;
         if (this.source?.activeDocument) {
           // this.source?.openDocumentDetails(this.source.activeDocument, false);
-          if (this.source.activeDocument.entities) {
-            for (const ent of this.source.activeDocument.entities) {
+          if (this.source.activeDocument._entities) {
+            for (const ent of this.source.activeDocument._entities) {
               if (ent._node) {
                 // ent._node._included = true;
               }
@@ -611,23 +616,20 @@ export default class DocumentViewer extends WidgetBase {
           }
 
           this.loaded = true;
-
           this.busManager.subscribe(this.source!.bus, 'document-entities', () => {});
         }
       });
     }
   }
 
-  createKG() {
-    // debugger;
+  createKG() {    
     if (this.source?.activeDocument) {
       this.source.createKGView([this.source?.activeDocument], 'default', true);
     }
   }
 
   updateContent() {
-    Vue.nextTick(() => {
-      console.log('update content');
+    Vue.nextTick(() => {      
       if (!this.source?.activeDocument) {
         return;
       }
@@ -654,7 +656,9 @@ export default class DocumentViewer extends WidgetBase {
         }
       }
 
-      DocUtils.syncEntities(this.source.activeDocument, this.source.activeDocument.properties?.doc.content, false, this.source);
+      this.source.activeDocument._entities = [];
+
+      DocUtils.syncEntities(this.source.activeDocument, this.source, this.source.activeDocument.properties?.doc.content, false);
       if (!this.editor) {
         this.updateEditor();
       }
@@ -708,27 +712,21 @@ export default class DocumentViewer extends WidgetBase {
     //   });
     //   return;
     if (
-      !this.source.activeDocument.entities ||
-      this.source.activeDocument.entities.length === 0 ||
+      !this.source.activeDocument._entities ||
+      this.source.activeDocument._entities.length === 0 ||
       (await $cs.triggerYesNoQuestionDialog('Update entities', 'This will reset all existing entities (currently not supported!!!)')) === 'YES'
     ) {
+      
       const json = this.editor.getJSON();
       const text = this.getText(json);
-      this.source.activeDocument.entities = [];
+      this.source.activeDocument._entities = [];
       this.source.activeDocument.properties!.text = text;
       this.source.activeDocument.properties!.doc = json;
       this.source.parseDocument(this.source.activeDocument).then((d) => {
         if (this.source?.activeDocument && d.properties?.doc) {
           this.source!.activeDocument!.properties!.doc = d.properties.doc;
-
-          // this.createTextEntities();
-
-          // this.syncDocumentState();
-
           this.updateContent();
-          DocUtils.syncEntities(this.source!.activeDocument!, this.source!.activeDocument!.doc.content, true, this.source!);
-          // this.source.activeDocument.visibleEntityTypes = Object.values(this.source.activeDocument.entityTypes);
-          // this.source!.activeDocument!.refreshViewTypes();
+          DocUtils.syncEntities(this.source!.activeDocument!, this.source, this.source!.activeDocument!.properties!.doc, true);
         }
       });
     }
@@ -778,6 +776,11 @@ export default class DocumentViewer extends WidgetBase {
     this.source = source;
     this.updateContextMenu();
     console.log('content loaded');
+    this.busManager.subscribe(this.source!.bus,  DocDatasource.DOCUMENT_ENTITIES, (a: string, d: any) => {
+      if (a === DocDatasource.ENTITIES_UPDATED) {
+        this.$forceUpdate();
+      }
+    }); 
     this.busManager.subscribe(this.source!.bus, 'document', (a: string, d: any) => {
       this.updateEditor();
       this.updateContent();
@@ -793,11 +796,9 @@ export default class DocumentViewer extends WidgetBase {
     this.initTools();
     this.initDragging();
   }
-
  
 
-  private checkDocumentIdQuery() {
-    console.log('check document query');
+  private checkDocumentIdQuery() {    
     if (!$cs.router || !this.source) {
       return;
     }
@@ -846,63 +847,63 @@ export default class DocumentViewer extends WidgetBase {
 
   private initializeDragDrop() {
     const position = { x: 0, y: 0 };
-    interact('.entity-drag')
-      .draggable({
-        manualStart: true,
-        listeners: {
-          start(event) {
-            const { currentTarget, interaction } = event;
-            let element = currentTarget;
-            var clientRect = element.getBoundingClientRect();
-            position.x = clientRect.left + document.body.scrollLeft;
-            position.y = clientRect.top + document.body.scrollTop;
-          },
-          move(event) {
-            position.x += event.dx;
-            position.y += event.dy;
-            event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-          },
-        },
-      })
-      .on('move', (event) => {
-        const { currentTarget, interaction } = event;
-        let element = currentTarget;
+  //   interact('.entity-drag')
+  //     .draggable({
+  //       manualStart: true,
+  //       listeners: {
+  //         start(event) {
+  //           const { currentTarget, interaction } = event;
+  //           let element = currentTarget;
+  //           var clientRect = element.getBoundingClientRect();
+  //           position.x = clientRect.left + document.body.scrollLeft;
+  //           position.y = clientRect.top + document.body.scrollTop;
+  //         },
+  //         move(event) {
+  //           position.x += event.dx;
+  //           position.y += event.dy;
+  //           event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+  //         },
+  //       },
+  //     })
+  //     .on('move', (event) => {
+  //       const { currentTarget, interaction } = event;
+  //       let element = currentTarget;
 
-        // If we are dragging an item from the sidebar, its transform value will be ''
-        // We need to clone it, and then start moving the clone
-        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
-          element = currentTarget.cloneNode(true);
-          var clientRect = element.getBoundingClientRect();
+  //       // If we are dragging an item from the sidebar, its transform value will be ''
+  //       // We need to clone it, and then start moving the clone
+  //       if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
+  //         element = currentTarget.cloneNode(true);
+  //         var clientRect = element.getBoundingClientRect();
 
-          // Add absolute positioning so that cloned object lives
-          // right on top of the original object
-          element.style.position = 'absolute';
-          element.style.left = 0;
-          element.style.top = 0;
+  //         // Add absolute positioning so that cloned object lives
+  //         // right on top of the original object
+  //         element.style.position = 'absolute';
+  //         element.style.left = 0;
+  //         element.style.top = 0;
 
-          // Add the cloned object to the document
-          const container = document.querySelector('.document-editor');
-          container && container.appendChild(element);
+  //         // Add the cloned object to the document
+  //         const container = document.querySelector('.document-editor');
+  //         container && container.appendChild(element);
 
-          const { offsetTop, offsetLeft } = currentTarget;
-          position.x = offsetLeft;
-          position.y = offsetTop;
+  //         const { offsetTop, offsetLeft } = currentTarget;
+  //         position.x = offsetLeft;
+  //         position.y = offsetTop;
 
-          // If we are moving an already existing item, we need to make sure
-          // the position object has the correct values before we start dragging it
-        } else if (interaction.pointerIsDown && !interaction.interacting()) {
-          const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
-          const transform = regex.exec(currentTarget.style.transform);
+  //         // If we are moving an already existing item, we need to make sure
+  //         // the position object has the correct values before we start dragging it
+  //       } else if (interaction.pointerIsDown && !interaction.interacting()) {
+  //         const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+  //         const transform = regex.exec(currentTarget.style.transform);
 
-          if (transform && transform.length > 1) {
-            position.x = Number(transform[1]);
-            position.y = Number(transform[2]);
-          }
-        }
+  //         if (transform && transform.length > 1) {
+  //           position.x = Number(transform[1]);
+  //           position.y = Number(transform[2]);
+  //         }
+  //       }
 
-        // Start the drag event
-        interaction.start({ name: 'drag' }, event.interactable, element);
-      });
+  //       // Start the drag event
+  //       interaction.start({ name: 'drag' }, event.interactable, element);
+  //     });
   }
 
   public initTools() {
@@ -1086,57 +1087,57 @@ export default class DocumentViewer extends WidgetBase {
     //     // event.target.classList.add('drop-activated')
     //   });
 
-    interact('.drag-type')
-      .draggable({
-        manualStart: true,
-        listeners: {
-          move(event) {
-            position.x += event.dx;
-            position.y += event.dy;
-            event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-          },
-        },
-      })
+    // interact('.drag-type')
+    //   .draggable({
+    //     manualStart: true,
+    //     listeners: {
+    //       move(event) {
+    //         position.x += event.dx;
+    //         position.y += event.dy;
+    //         event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
+    //       },
+    //     },
+    //   })
 
-      // This only gets called when we trigger it below using interact.start(...)
-      .on('move', (event) => {
-        const { currentTarget, interaction } = event;
-        let element = currentTarget;
+    //   // This only gets called when we trigger it below using interact.start(...)
+    //   .on('move', (event) => {
+    //     const { currentTarget, interaction } = event;
+    //     let element = currentTarget;
 
-        // If we are dragging an item from the sidebar, its transform value will be ''
-        // We need to clone it, and then start moving the clone
-        if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
-          element = currentTarget.cloneNode(true);
+    //     // If we are dragging an item from the sidebar, its transform value will be ''
+    //     // We need to clone it, and then start moving the clone
+    //     if (interaction.pointerIsDown && !interaction.interacting() && currentTarget.style.transform === '') {
+    //       element = currentTarget.cloneNode(true);
 
-          // Add absolute positioning so that cloned object lives right on top of the original object
-          element.style.position = 'absolute';
-          element.style.left = 0;
-          element.style.top = 0;
-          event.interactable.featureType = 'testje';
+    //       // Add absolute positioning so that cloned object lives right on top of the original object
+    //       element.style.position = 'absolute';
+    //       element.style.left = 0;
+    //       element.style.top = 0;
+    //       event.interactable.featureType = 'testje';
 
-          // Add the cloned object to the document
-          const container = document.querySelector('.drag-types-container');
-          container && container.appendChild(element);
+    //       // Add the cloned object to the document
+    //       const container = document.querySelector('.drag-types-container');
+    //       container && container.appendChild(element);
 
-          const { offsetTop, offsetLeft } = currentTarget;
-          position.x = offsetLeft;
-          position.y = offsetTop;
+    //       const { offsetTop, offsetLeft } = currentTarget;
+    //       position.x = offsetLeft;
+    //       position.y = offsetTop;
 
-          // If we are moving an already existing item, we need to make sure the position object has
-          // the correct values before we start dragging it
-        } else if (interaction.pointerIsDown && !interaction.interacting()) {
-          const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
-          const transform = regex.exec(currentTarget.style.transform);
+    //       // If we are moving an already existing item, we need to make sure the position object has
+    //       // the correct values before we start dragging it
+    //     } else if (interaction.pointerIsDown && !interaction.interacting()) {
+    //       const regex = /translate\(([\d]+)px, ([\d]+)px\)/i;
+    //       const transform = regex.exec(currentTarget.style.transform);
 
-          if (transform && transform.length > 1) {
-            position.x = Number(transform[1]);
-            position.y = Number(transform[2]);
-          }
-        }
+    //       if (transform && transform.length > 1) {
+    //         position.x = Number(transform[1]);
+    //         position.y = Number(transform[2]);
+    //       }
+    //     }
 
-        // Start the drag event
-        interaction.start({ name: 'drag' }, event.interactable, element);
-      });
+    //     // Start the drag event
+    //     interaction.start({ name: 'drag' }, event.interactable, element);
+    //   });
   }
 
   public mounted() {

@@ -536,7 +536,7 @@ export default class SelectionPopup extends WidgetBase {
         // position_start: this.from,
         // position_end: this.to,
       };
-      this.document!.entities?.push(this.entity);
+      this.document!._entities?.push(this.entity);
     }
     switch (this.searchMode) {
       case "KG":
@@ -599,8 +599,8 @@ export default class SelectionPopup extends WidgetBase {
           this.entity.id = this.newEntityNode.id;
           this.entity.spacy_label = this.newEntityNode.classId;
           this.entity._node = this.newEntityNode;          
-          if (!this.document.entities?.includes(this.entity)) {
-            this.document.entities?.push(this.entity);
+          if (!this.document._entities?.includes(this.entity)) {
+            this.document._entities?.push(this.entity);
           }
           if (!this.entity._node._alternatives) {
             this.entity._node._alternatives = [];
@@ -657,16 +657,16 @@ export default class SelectionPopup extends WidgetBase {
     }
     DocUtils.syncEntities(
       this.source.activeDocument,
+      this.source,
       this.source.activeDocument.properties!.doc!.content,
-      true,
-      this.source
+      true
     );
     this.$forceUpdate();
   }
 
   public async deleteEntity() {
-    if (this.source && this.entity && this.document && this.document.entities) {
-      this.document.entities = this.document.entities.filter(
+    if (this.source && this.entity && this.document && this.document._entities) {
+      this.document._entities = this.document._entities.filter(
         (e) => e !== this.entity
       );
       try {

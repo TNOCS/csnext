@@ -1,50 +1,73 @@
 import { GraphElement } from '@csnext/cs-data'
 import { VueRenderer } from '@tiptap/vue-2'
 import tippy from 'tippy.js'
-import { DocDatasource, Suggestions } from '../../..'
+import Vue from 'vue'
+import { DocDatasource, DocUtils, GraphDocument, Suggestions } from '../../..'
 import MentionList  from './mention-list.vue'
 
 export default {
+  name: 'text-entity',
+  char: '@',
   items: (props) => {
     const source = props.editor.view._props.source as DocDatasource;
     const query = props.query;
         let res : any[]= [];
         if (query && source?.fuse) {
-            res = source.fuse.search(query);
+            res = source.fuse.search(query).slice(0, 10);
+            console.log(res.length)
             return res;            
         } else 
         {
             return [];
         }    
   },
- 
+
+  command: (a) => {
+    console.log(a);
+    Vue.nextTick(()=>{
+      a.editor.chain().focus().setTextSelection(a.range).setTextEntity(a.props).run();
+      const source = a?.editor?.view?._props?.source;
+    if (source && a?.editor?.view?._props?.document) {
+      DocUtils.syncEntities(a.editor.view._props.document as GraphDocument, source, undefined, true);      
+    }
+    })
+    
+    
+    return;
+    
+    
+    // return {};
+  },
 
   render: () => {
-    let component
+    let component: VueRenderer
     let popup
     let source: DocDatasource
 
     return {
-        
+
       onStart: props => {
           
         
         source = props.editor.view._props.source as DocDatasource;
-        props.source = source;
+        props.source = source;        
+        
         // props.items = source.getClassElements('country');
-        component = new VueRenderer(MentionList, {
-          // using vue 2:
-          // parent: this,
-          // propsData: props,
-          props,
-          editor: props.editor,
-          source
+        component = new VueRenderer(MentionList,  {
+                      parent: this,
+                      propsData: props,
         })
+        
+        
+
+        // window.document.body.append(component.element);
+        
+
         
 
         popup = tippy('body', {
           getReferenceClientRect: props.clientRect,
-          appendTo: () => document.body,
+          appendTo: () => document.getElementById('app') as HTMLElement,
           content: component.element,
           showOnCreate: true,
           interactive: true,
@@ -55,12 +78,7 @@ export default {
 
       onUpdate(props) {
         component.updateProps(props)
-        // const query = props.query;
-        // let res : any[]= [];
-        // if (query && source?.fuse) {
-        //     res = source.fuse.search(query);
-        //     console.log(res);
-        // }
+        
         popup[0].setProps({
           getReferenceClientRect: props.clientRect          
         })
@@ -72,12 +90,15 @@ export default {
 
           return true
         }
-        return false; // component.ref?.onKeyDown(props)
+        return (component.ref! as any).onKeyDown(props)
+        
       },
 
       onExit() {
         popup[0].destroy()
-        component.destroy()
+        if (component) {
+          component.destroy()
+        }
       },
     }
   },

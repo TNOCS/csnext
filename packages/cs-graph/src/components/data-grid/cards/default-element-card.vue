@@ -1,7 +1,7 @@
 <template>
   <div class="element-card">
-    <template v-if="element._featureType.icon">
-      <v-icon class="element-icon">{{ element._featureType.icon }}</v-icon>
+    <template v-if="element._featureType && element._featureType.icon">
+      <v-icon :color="element._featureType.color" class="element-icon">{{ element._featureType.icon }}</v-icon>
     </template>
     <!-- <img class="element-icon" v-if="element._featureType.icon" :src="element._featureType.icon" /> -->
     <!-- {{ element._featureType.infoPanels.popup}} -->
@@ -62,5 +62,6 @@ export default class DefaultElementCard extends Vue {
 
   @Prop({ default: null })
   public element!: GraphElement | null;
+
 }
 </script>

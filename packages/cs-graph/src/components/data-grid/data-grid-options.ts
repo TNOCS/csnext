@@ -6,6 +6,8 @@ export enum GridView {
   cards = 'cards',
   calendar = 'calendar',
   tree = 'tree',
+  news = 'news',
+  kanban = 'kanban'
 }
 
 export class NewRelation {
@@ -25,6 +27,22 @@ export class DataGridRelationToggle {
 
 export class DataGridCalendarOptions {
   public type?: string;
+}
+
+export class DataGridNewsOptions {
+  sourceElement?: string;
+  sourceProperty?: string;
+  dateProperty?: string;
+}
+
+export class DataGridKanbanOptions {
+  public columnProperty?: string;  
+  public columnRelation?: string;
+  public undefinedSupported?: boolean;
+  public columnPropertySelection?: string[];
+  public componentView?: boolean;
+  public columnWidth?: string | number;
+  public cardHeight?: string | number;
 }
 
 export class DataGridOptions extends WidgetOptions {
@@ -47,11 +65,14 @@ export class DataGridOptions extends WidgetOptions {
   public groupId?: string;
   public canDelete? = true;
   public canAdd?: boolean;
+  public canEdit? = true;
   public canGraph? = true;
   public relationToggle?: DataGridRelationToggle;
   public calendarOptions?: DataGridCalendarOptions;
   public checkboxProperty?: string;
   public syncMode?: 'normal' | 'follow' = 'normal';
+  public newsOptions?: DataGridNewsOptions;
+  public kanbanOptions?: DataGridKanbanOptions;
 
   public filter?: GraphFilter;
   public newItem?: any;

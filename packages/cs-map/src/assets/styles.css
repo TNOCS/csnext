@@ -5,9 +5,21 @@
 }
 
 .simple-list-item {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .prop-node-link {
     margin-left: 5px;
+}
+
+.link-chip {
+    margin-bottom: 2px;
+}
+
+.simple-list-item .link-chip {
+    text-decoration: none !important;    
+}
+
+.element-prop-value {
+    bottom: 4px;
 }

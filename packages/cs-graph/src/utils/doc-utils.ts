@@ -5,11 +5,11 @@ import { DocDatasource, GraphDocument, Observation } from '..';
 export class DocUtils {
     // returns a clone list with clean set of document entities
   public static getSimplifiedEntities(doc: GraphDocument): TextEntity[] {
-    if (!doc.entities) {
+    if (!doc._entities) {
       return [];
     }
     let entities: TextEntity[] = [];
-    for (const ent of doc.entities) {
+    for (const ent of doc._entities) {
       let entity = Object.assign({}, ent);
       for (const key of Object.keys(entity)) {
         if (key.startsWith('_') && entity.hasOwnProperty(key)) {
@@ -24,19 +24,20 @@ export class DocUtils {
 
   public static syncEntities(
     document: GraphDocument,
-    content: any,
-    triggerUpdated = false,
     source: DocDatasource,
+    content?: any,
+    triggerUpdated?,    
     key?: string
     
   ) {
+    if (!content) { content = document.properties?.doc?.content};    
     if (!document || !content || !Array.isArray(content)) {
       return;
     }
 
-    // const res = [];
-    if (!document.entities) {
-      document.entities = [];
+        // const res = [];
+    if (!document._entities) {
+      document._entities = [];
     }
 
     for (const node of content) {
@@ -44,24 +45,16 @@ export class DocUtils {
         if (!node.attrs.id) {
           node.attrs.id = guidGenerator();
         }
-
-        const e = {
-          text: node.attrs.text,
-          id: node.attrs.id,
-          spacy_label: node.attrs.spacy_label,
-          kg_id: node.attrs.kg_id,
-          // entity_class: node.attrs.type,
-          // _key: key,
-        } as TextEntity;
-        if (e.kg_id && source.graph.hasOwnProperty(e.kg_id)) {
+        const e = node.attrs as TextEntity;
+        if (!e._node && e.kg_id && source.graph.hasOwnProperty(e.kg_id)) {
           e._node = source.graph[e.kg_id];
         }
-        document.entities.push(e);
+        document._entities.push(e);
         node.entity = e;
         // e._docEntity = node;
       }
       if (node.content) {
-        DocUtils.syncEntities(document, node.content, false, source, key);
+        DocUtils.syncEntities(document, source, node.content, false, key);
       }
     }
     if (triggerUpdated) {

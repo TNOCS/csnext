@@ -9,12 +9,10 @@ import {
 import compression from 'compression';
 import { Logger } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
-// import { FeatureType } from '@csnext/cs-data';
 export { LayerController } from './layers/layers.controller';
 export { LayerSource } from './classes';
 export { LayerService } from './layers/layers.service';
 export { EnvController } from './env/env.controller';
-// export { FeatureType } from '@csnext/cs-data';
 
 export { SourceController } from './sources/sources.controller';
 export { TypesController } from './types/types.controller';
@@ -25,9 +23,6 @@ export * from './server/server-basic-auth-config';
 export * from './classes/layer-definition';
 export * from './classes/mapbox-style';
 export * from './classes/layer-source';
-// export * from './classes/feature-type';
-// export * from './classes/feature-collection';
-// export * from './classes/property-type';
 export * from './classes/layer-meta';
 export * from './classes/layer-style';
 export * from './classes/log-definition';

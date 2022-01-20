@@ -28,12 +28,13 @@
      </v-layout>
        <v-timeline
         align-top
-        dense
+        dense        
+        fill-dot        
       >
         <v-timeline-item
-          :color="item.color"
-          small
+          :color="item.color"          
           v-for="(item,i) in items" :key="i"
+          :icon="item.icon"
         >
           <v-row class="pt-1">
             <v-col cols="3">
@@ -41,7 +42,7 @@
               {{item.dateString}}
             </v-col>
             <v-col>
-              <strong><node-link v-if="item.element" :node="item.element" :source="source"/></strong>
+              <strong><node-chip :node="item.element" :source="source"></node-chip></strong>
               <div class="text-caption">
                 {{item.action}} by <span v-if="item.agent"><node-span :node="item.agent" :source="source"/></span>
               </div>
@@ -66,7 +67,7 @@ import { WidgetBase } from "@csnext/cs-client";
 import simplebar from "simplebar-vue";
 // import { DocDatasource } from "@csnext/cs-graph";
 import { DocDatasource} from "./../..";
-import { NodeLink, NodeSpan } from "@csnext/cs-map";
+import { NodeChip, NodeSpan } from "@csnext/cs-map";
 import { GraphDatasource, GraphElement } from "@csnext/cs-data";
 import Vue from "vue";
 import moment from "moment";
@@ -79,10 +80,11 @@ export class TimelineItem {
   public time?: number;
   public action?: string;
   public color?: string;
+  public icon?: string;
 }
 
 @Component({
-  components: { simplebar, NodeLink, NodeSpan },
+  components: { simplebar, NodeChip, NodeSpan },
 })
 export default class RecentList extends WidgetBase {
   
@@ -111,7 +113,7 @@ export default class RecentList extends WidgetBase {
     
     let maxTime = new Date().getTime() - 100 * 60 * 60 * 24 * 1;
     let i = [] as TimelineItem[];
-    const createItem = (time: number, action: string, element, agent) => {
+    const createItem = (time: number, action: string, element : GraphElement, agent) => {
       const m = moment(time);
       let include = true;
       if (this.agentsFilter && this.agentsFilter.length > 0 && !this.agentsFilter.includes(agent)) { include = false}
@@ -124,7 +126,8 @@ export default class RecentList extends WidgetBase {
           time,
           timeString: m.format("HH:mm"),
           dateString: m.format("MM-DD"),
-          color: 'blue'
+          color: element?._featureType?.color,
+          icon: element?._featureType?.icon
         });
       }
     }
@@ -142,14 +145,14 @@ export default class RecentList extends WidgetBase {
       }
     }
     
-    i.sort((a, b) => b.time! - a.time!);
+    this.items = this.items.sort((a, b) => b.time! - a.time!);
     Vue.set(this, 'items', i.slice(0,100) );
 
   }
 
   public contentLoaded() {
     if (!this.source?.graph) { return; }
-    this.agents = this.source.getClassElements('agent');
+    this.agents = this.source.getClassElements('agent', true);
     this.updateTimeline();
     this.busManager.subscribe(
       this.source!.events,
@@ -163,6 +166,7 @@ export default class RecentList extends WidgetBase {
 
   mounted() {
     this.updateTimeline();
+    this.contentLoaded();
   }
 }
 </script>
