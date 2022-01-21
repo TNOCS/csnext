@@ -174,7 +174,7 @@ export class CrossGraphManager extends DashboardManagerBase {
       {
         component: CsTimeline,
         id: "timeline",
-        datasource: "isrdTime",
+        datasource: this.dashboard.datasource,
         options: {
           logSource: "calendar",
           // class: 'widget-full-height',

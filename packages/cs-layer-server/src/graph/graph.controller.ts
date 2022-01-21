@@ -442,19 +442,19 @@ export class GraphController {
   }
 
   @Get('/type/:type')
-  public allFromType(@Param('type') type: string): Promise<Boolean> {
+  public allFromType(@Param('type') type: string, @Param('traversal') traversal?: string): Promise<Boolean> {
     return new Promise((resolve, reject) => {
       if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
-        resolve(this.graph.db.all({ type: type, flat: true, object: true }));
+        resolve(this.graph.db.all({ type: type, flat: true, object: true, traversal: traversal === 'yes' }));
       }
     });
   }
 
   @Get('/types/:type')
-  public allFromTypes(@Param('type') type: string): Promise<{ [id: string]: GraphElement }> {
+  public allFromTypes(@Param('type') type: string, @Query('traversal') traversal? : string): Promise<{ [id: string]: GraphElement }> {
     return new Promise((resolve, reject) => {
       if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
-        this.graph.db.all({ type: type, flat: true, object: true }).then((r) => {
+        this.graph.db.all({ type: type, flat: true, object: true, traversal: traversal === 'yes' }).then((r) => {
           const res: { [id: string]: GraphElement } = {};
           for (const el of r) {
             res[el.id] = el;

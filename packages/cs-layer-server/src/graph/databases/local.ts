@@ -204,7 +204,7 @@ export class LocalStorage implements IDatabase {
                     list = [this.source.graph[options.id]];
                 }
             } else if (options?.type) {
-                list = this.source.getClassElements(options.type);
+                list = this.source.getClassElements(options.type, options.traversal);
             } else {
                 list = Object.values(this.source.graph);
             }            

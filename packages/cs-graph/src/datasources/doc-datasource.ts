@@ -1801,22 +1801,6 @@ export class DocDatasource extends GraphDatasource {
     this.searchEntities = [...this.searchEntities!, ...[]];
   }
 
-  public async removeReports() {
-    let rec = this.getClassElements('aerial_reconnaissance');
-    if (rec) {
-      for (const r of rec) {
-        await this.removeNode(r, true);
-      }
-    }
-    let reports = this.getClassElements('airint_report');
-    if (reports) {
-      for (const report of reports) {
-        await this.removeNode(report);
-        // this.graph.rem
-      }
-    }
-  }
-
   public setQueryParams() {
     if (!$cs.project.rightSidebar?.open) {
       $cs.removeRouteQueryParam('nodedetails');
