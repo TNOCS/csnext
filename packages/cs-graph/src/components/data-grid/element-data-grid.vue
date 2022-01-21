@@ -193,7 +193,7 @@
       > -->
       <simplebar class="full-widget">
         <v-list>
-          <v-list-item three-line v-for="(element, indx) of items" :key="indx" class="news-card" @click="selectEntityCard(element)">
+          <v-list-item three-line v-for="(element, indx) of items" :key="indx" class="news-card" @click="selectEntityCard(element, true)">
             <v-list-item-content>
               <div
                 class="text-overline mb-4"
@@ -741,11 +741,16 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  public selectEntityCard(element: GraphElement) {
+  public selectEntityCard(element: GraphElement, viewer: boolean = false) {
+    if (!this.source) { return; }
     if (this.options.onSelect) {
       this.options.onSelect(element);
     } else {
-      this.source?.selectElement(element, false);
+      if (viewer) {
+        this.source?.openViewer(element, element);
+      } else {
+        this.source?.selectElement(element, false);
+      }
       // this.editEntity(element);
     }
   }
@@ -1318,7 +1323,7 @@ export default class ElementDataGrid extends WidgetBase {
     const kanban = this.options.kanbanOptions;
     const columns: KanBanColumn[] = [];
     if (kanban.undefinedSupported) {
-      columns.push({ title: 'unknown', prop: undefined, elements: [], collapsed: true });
+      columns.push({ title: 'unknown', prop: undefined, elements: [], collapsed: false });
     }
     if (kanban.columnProperty && this.potentialProperties.hasOwnProperty(kanban.columnProperty)) {
       const propType = this.potentialProperties[kanban.columnProperty];

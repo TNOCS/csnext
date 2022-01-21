@@ -18,12 +18,11 @@ import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from '../plugins/EntityParser';
 import { EntityList } from '../components/document/node-entities';
 import { TimeDataSource, guidGenerator, IFormOptions, IWidget } from '@csnext/cs-core';
-
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 import RelationEditor from './../components/document-management/relation-editor.vue';
 import { Editor } from '@tiptap/vue-2';
-import { AppState } from '@csnext/cs-client';
+import { AppState, HtmlWidget } from '@csnext/cs-client';
 import FeatureTypeEditor from './../components/datamodel/feature-type-editor.vue';
 import { EmptyDocumentImport } from '../plugins/empty-document-import';
 import {
@@ -731,12 +730,22 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public openViewer(element: GraphElement, document: GraphElement) {
-    if (element.properties?.format && this.viewerPlugins) {
+    if (!this.viewerPlugins) { return; }
+    if (element.properties?.format) {
       const viewer = this.viewerPlugins.find((v) => v.formats && v.formats.includes(element.properties?.format));
       if (viewer) {
         viewer.call(element, document, this);
+        return;
       }
     }
+  for (const viewer of this.viewerPlugins) {
+    if (viewer.check && viewer.check(element)) {
+      viewer.call(element, element, this);
+    }
+    
+  }
+  
+  
   }
 
   public linkDocumentObservations(doc: GraphDocument) {
@@ -1649,6 +1658,8 @@ export class DocDatasource extends GraphDatasource {
   //     element._included = !element._included;
   //     this.bus.publish("filter", "_included", element);
   // }
+
+ 
 
   public selectElement(element: GraphElement | undefined, open = false) {
     if (!element) {
