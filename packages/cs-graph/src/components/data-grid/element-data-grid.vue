@@ -515,8 +515,9 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 .source-property {
   font-weight: 600;
 }
+
 .data-grid-component {
-  height: calc(100% - 120px);
+  height: 100%;
 }
 
 .calendar-view {
@@ -564,12 +565,9 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .entity-card.Timeseries,
-.entity-card.elementarray {
-  width: 608px;
-  height: 248px;
-}
-
+.entity-card.elementarray,
 .entity-card.Trends {
+  width: 608px;
   height: 248px;
 }
 
@@ -578,7 +576,7 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .full-widget {
-  height: calc(100em - 200px);
+  height: calc(100% - 164px);
 }
 
 .kanban-card {
@@ -1389,8 +1387,6 @@ export default class ElementDataGrid extends WidgetBase {
       }
     }
 
-    
-
     Vue.set(this, 'kanbanColumns', columns);
     this.$forceUpdate();
 
@@ -1407,10 +1403,10 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
 
-    let items: any[] | undefined = [];
+    let items: GraphElement[] = [];
     if (base) {
       if (base._incomming) {
-        items = [...base._incomming.filter((o) => o.classId === this.options.parentProperty).map((o) => o.from)];
+        items = [...base._incomming!.filter((o) => o.classId === this.options.parentProperty && o.from).map((o) => o.from!)];
       }
       // if (base._outgoing)
     } else {
@@ -1419,13 +1415,17 @@ export default class ElementDataGrid extends WidgetBase {
       items = this.source.getClassElements(this.options!.baseType, true)?.filter((i) => {
         return !i._outgoing || i._outgoing.findIndex((p) => p.classId === this.options.parentProperty) === -1;
       });
+      if (this.options.addNodesWithTimeseries) {
+        const timeSeriesItems = this.source.getElementsByPropertyAndOperator('hasTimeseries', true, "==");
+        items = [...items, ...timeSeriesItems];
+      }
     }
     if (items) {
       for (const item of items) {
         if (item.id) {
           const treeItem = {
             id: item.id,
-            name: item.properties.name,
+            name: item.properties?.name || `${item.id}`,
             entity: item,
             children: [],
           };
@@ -1490,6 +1490,11 @@ export default class ElementDataGrid extends WidgetBase {
       });
     } else {
       this.items = this.source.getClassElements(baseType, true, this.options.filter);
+      if (this.options.addNodesWithTimeseries) {
+        const timeSeriesItems = this.source.getElementsByPropertyAndOperator('hasTimeseries', true, "==")
+        .filter(e => e._isLinked && e._isLinked.fromId);
+        this.items = [...this.items, ...timeSeriesItems];
+      }
     }
 
     if (this.options.defaultView === GridView.table) {
@@ -1605,6 +1610,9 @@ export default class ElementDataGrid extends WidgetBase {
     const id = element.classId;
     if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
       return ElementCardManager.cards[id];
+    }
+    if (element.properties && element.properties.hasTimeseries) {
+      return ElementCardManager.cards['indicator'];
     }
     return 'default-element-card';
   }

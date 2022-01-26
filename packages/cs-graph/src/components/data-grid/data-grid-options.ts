@@ -47,6 +47,7 @@ export class DataGridKanbanOptions {
 
 export class DataGridOptions extends WidgetOptions {
   public baseType?: string;
+  public addNodesWithTimeseries?: boolean;
   public askForName?: boolean;
   public askForNewForm?: boolean;
   public graphSelect?: boolean;
