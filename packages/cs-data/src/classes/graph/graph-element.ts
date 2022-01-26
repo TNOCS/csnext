@@ -58,6 +58,7 @@ export class GraphElement<T = BaseElementProperties> {
   public _search?: string;
   public _group?: string;
   public _isEditting?: boolean;
+  public _isLinked?: GraphElement;
   public _featureType?: FeatureType;
   public _derivatives?: GraphElement[];
   public _incomming?: GraphElement[];
