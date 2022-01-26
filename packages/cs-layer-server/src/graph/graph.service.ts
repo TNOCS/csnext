@@ -71,7 +71,7 @@ export class GraphService {
           elements: [GraphElement.getFlat(element)]            
         } as IGraphElementAction);
       }
-
+      this.source.triggerUpdateGraph(element);
 
       return Promise.resolve(element);
     } catch {
