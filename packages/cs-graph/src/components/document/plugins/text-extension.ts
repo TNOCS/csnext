@@ -1,5 +1,5 @@
-import { Node, mergeAttributes } from '@tiptap/core'
-import { Command, VueNodeViewRenderer } from '@tiptap/vue-2'
+import { mergeAttributes } from '@tiptap/core'
+import { VueNodeViewRenderer } from '@tiptap/vue-2'
 import EntityComponent from './text-entity-component.vue'
 import { TextSelection } from 'prosemirror-state'
 import { guidGenerator } from '@csnext/cs-core'

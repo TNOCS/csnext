@@ -90,6 +90,7 @@
         value="LEARN"
       ></v-radio>
     </v-radio-group>
+    
     <!-- v-if="source.activeDocument.properties.learn_mode === 'LEARN'"  -->
       <v-select v-model="source.activeDocument.activeLearningType" :items="Object.values(source.featureTypes)" item-text="title" item-value="id">
 
@@ -121,6 +122,7 @@
         </v-layout>
         <template v-slot:extension v-if="source.activeDocument.properties.editor_mode === 'EDIT'">
           <div>
+            
             <v-btn-toggle dense group>
               <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
                 <v-icon>mdi-format-bold</v-icon>
@@ -238,7 +240,7 @@
 
 
 <script lang="ts">
-import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 import { TextEntity } from '@csnext/cs-data';
 import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/vue-2';
@@ -440,6 +442,8 @@ export default class DocumentViewer extends WidgetBase {
         entityType._selected = true;        
       }
     }
+
+    this.$forceUpdate();
   }
 
   private dynamicSort(property) {
@@ -767,6 +771,15 @@ export default class DocumentViewer extends WidgetBase {
     this.syncDocumentState();
     console.log(JSON.stringify(this.source?.activeDocument?.doc));
     this.source.saveDocument(this.source.activeDocument);
+  }
+
+  @Watch('widget.data.document')
+  public dataChanged() {
+    if (this.source) {
+      const doc = this.source.getElement(this.widget.data.document) as GraphDocument;
+      this.loadDocument(doc);
+      
+    }
   }
 
   public contentLoaded(source: DocDatasource) {
@@ -1173,6 +1186,7 @@ export default class DocumentViewer extends WidgetBase {
 }
 
 .editor-grid {
+  /* padding: 5px; */
   /* display: grid;
   grid-template-rows: 115px 100%; */
   /* padding: 5px;
@@ -1189,6 +1203,7 @@ export default class DocumentViewer extends WidgetBase {
   /* grid-row: 2; */
 }
 .editor-row {
+  padding: 5px;
   /* grid-row: 3; */
   /* overflow-x:hidden;
 overflow-y: auto; */
