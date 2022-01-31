@@ -47,6 +47,7 @@ export class DataGridKanbanOptions {
 
 export class DataGridOptions extends WidgetOptions {
   public baseType?: string;
+  public addNodesWithTimeseries?: boolean;
   public askForName?: boolean;
   public askForNewForm?: boolean;
   public graphSelect?: boolean;
@@ -61,6 +62,7 @@ export class DataGridOptions extends WidgetOptions {
   public treeStructure?: string[];
   public parentProperty?: string;
   public graphPresetId?: string;
+  public customSort?: (a: GraphElement, b: GraphElement) => number;
   public baseTreeItem?: GraphElement;
   public groupId?: string;
   public canDelete? = true;

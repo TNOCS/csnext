@@ -249,9 +249,9 @@ export class GraphDatasource extends DataSource {
       el.properties.end = `${date[2]}-${date[1]}-${date[0]}`;
     }
     if (el.properties.hasOwnProperty('location')) {
-      if (el.id === 'Q9186375') {
-        debugger;
-      }
+      // if (el.id === 'Q9186375') {
+      //   debugger;
+      // }
       const values = WktUtils.PointParser(el.properties['location']);
       if (values && values.length === 2) {
         el.properties['lat'] = values[0];
@@ -426,7 +426,7 @@ export class GraphDatasource extends DataSource {
     list?: GraphElement[]
   ): GraphElement[] {
     let relationVals: GraphElement[] = [];
-    if (!list) { list = Object.values(this); }
+    if (!list) { list = Object.values(this.graph); }
     let res: GraphElement[] = list.filter((c) => {
       let propVal = this.getValueFromElement(property, c);
       // if (propVal != undefined) {

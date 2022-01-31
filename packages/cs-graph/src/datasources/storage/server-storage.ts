@@ -149,10 +149,10 @@ export class ServerStorage implements IGraphStorage {
           case 'update':            
             if (data.elements && this.source) {
               for (const el of data.elements) {
-                if (el.id && el.properties?.hash_) {
+                if (el.id) {
                   const existing = this.source.getElement(el.id);
-                  if (existing) {
-                    if (existing?.properties && existing.properties.hash_ !== el.properties.hash_) {                    
+                  if (existing && (!el.properties?.hash_ || existing.properties?.hash_ !== el.properties?.hash_)) {
+                    if (existing?.properties) {                    
                       existing.properties = el.properties;
                       this.source.updateElementProperties(existing);
                       this.source.triggerUpdateGraph(existing);

@@ -71,7 +71,7 @@ export class GraphService {
           elements: [GraphElement.getFlat(element)]            
         } as IGraphElementAction);
       }
-
+      this.source.triggerUpdateGraph(element);
 
       return Promise.resolve(element);
     } catch {
@@ -125,6 +125,7 @@ export class GraphService {
 
   public sendSocketUpdateForElements(elements: GraphElement<BaseElementProperties>[]) {
     if (this.socket?.server) {          
+      console.log('sending socket updates', elements.length)
       this.socket.server.emit("graphelement",{
         action: 'update',
         elements: elements.map(e => GraphElement.getFlat(e))   

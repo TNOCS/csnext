@@ -45,6 +45,18 @@
           </v-list-item>
         </v-list>
       </v-menu>
+
+      <v-btn class="ml-2 search-button" elevation="0" color="primary" v-if="sortOptions">
+      <v-autocomplete  class="mt-4 search-autocomplete" dark flat single-line dense label="Sort" clearable prepend-icon="mdi-sort" @change="updateSort()" v-model="sort" :items="sortOptions" return-object item-text="label">
+        <template v-slot:prepend>
+          <v-icon @click="toggleSort()" v-if="inverseSort === true">mdi-sort-ascending</v-icon>
+          <v-icon @click="toggleSort()" v-else>mdi-sort-descending</v-icon>                  
+  </template>
+      </v-autocomplete>
+      </v-btn>
+
+
+
       <v-btn
         @keydown.native.alt.78="addEntity(classTypes[0])"
         @click="addEntity(classTypes[0])"
@@ -56,6 +68,9 @@
         <v-icon>mdi-plus</v-icon>
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
+
+
+      
 
       <template v-if="options.defaultView == 'kanban' && options.kanbanOptions.columnPropertySelection">
       <v-menu offset-y >
@@ -92,23 +107,7 @@
         {{ $cs.Translate('COLLAPSE_ALL') }}
       </v-btn>
 
-      <!-- <v-menu offset-y v-if="options.defaultView !== 'calendar'">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" class="ml-2" elevation="0" v-on="on">
-            <v-icon>sort</v-icon>
-            {{ sort.label }}
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in sortOptions"
-            :key="index"
-            @click="setSort(item)"
-          >
-            <v-list-item-title>{{ item.label }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu> -->
+      
       <!-- <v-menu offset-y v-if="options.defaultView === 0">
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-bind="attrs" class="ma-2" v-on="on">
@@ -193,7 +192,10 @@
       > -->
       <simplebar class="full-widget">
         <v-list>
-          <v-list-item three-line v-for="(element, indx) of items" :key="indx" class="news-card" @click="selectEntityCard(element, true)">
+          <template v-for="(element, indx) of items" >
+          
+            <component :key="indx" v-if="source.newsCardSelector" :is="source.newsCardSelector(element)" :element="element" :source="source"></component>
+            <v-list-item v-else :key="indx" three-line  class="news-card" @click="selectEntityCard(element, true)">
             <v-list-item-content>
               <div
                 class="text-overline mb-4"
@@ -211,10 +213,11 @@
                 {{ element.properties.description }}</v-list-item-subtitle
               >
             </v-list-item-content>
-            <v-list-item-avatar v-if="element.properties.image" tile size="50">
+            <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
               <v-img class="feed-image" :src="element.properties.image"></v-img>
-            </v-list-item-avatar>
+            </v-list-item-avatar> -->
           </v-list-item>
+          </template>
         </v-list>
       </simplebar>
       <!-- </v-virtual-scroll> -->
@@ -506,6 +509,14 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   /* margin-bottom: 10px; */
 }
 
+.search-button {
+  max-width: 200px;
+}
+
+.search-autocomplete {
+  max-width: 190px;
+}
+
 .data-grid-title {
   font-size: 26px;
   font-weight: 600;
@@ -515,8 +526,9 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 .source-property {
   font-weight: 600;
 }
+
 .data-grid-component {
-  height: calc(100% - 120px);
+  height: 100%;
 }
 
 .calendar-view {
@@ -564,12 +576,9 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .entity-card.Timeseries,
-.entity-card.elementarray {
-  width: 608px;
-  height: 248px;
-}
-
+.entity-card.elementarray,
 .entity-card.Trends {
+  width: 608px;
   height: 248px;
 }
 
@@ -578,7 +587,7 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .full-widget {
-  height: calc(100em - 200px);
+  height: calc(100% - 164px);
 }
 
 .kanban-card {
@@ -650,12 +659,13 @@ export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
   public featureType: FeatureType | null = null;
   public potentialProperties: { [key: string]: PropertyType } = {};
-  public sort: PropertyType | undefined = undefined;
+  public sort: PropertyType | null = null;
   public group: PropertyType | undefined | null = null;
   public classTypes: FeatureType[] = [];
   public sortOptions?: PropertyType[] | null = null;
   public groupOptions?: PropertyType[] | null = null;
   public groupKey?: null | string = null;
+  public inverseSort?: boolean = false;
   public focus = '';
   public search: string = '';
   public selectedTree?: any = [];
@@ -1059,14 +1069,22 @@ export default class ElementDataGrid extends WidgetBase {
     this.$forceUpdate();
   }
 
-  public setSort(prop: PropertyType) {
+  public toggleSort() {
+    this.inverseSort = !this.inverseSort;
+    this.updateEntities(true);
+  }
+
+  public updateSort() {
     if (this.iso) {
       this.iso.sort('name');
       this.iso.sort('custom');
     }
-    this.sort = prop;
+    // this.sort = prop;
     this.update();
+    this.updateEntities(true);
   }
+
+ 
 
   public setGroup(prop?: PropertyType | string) {
     if (typeof prop === 'string' && this.groupOptions) {
@@ -1389,8 +1407,6 @@ export default class ElementDataGrid extends WidgetBase {
       }
     }
 
-    
-
     Vue.set(this, 'kanbanColumns', columns);
     this.$forceUpdate();
 
@@ -1407,10 +1423,10 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
 
-    let items: any[] | undefined = [];
+    let items: GraphElement[] = [];
     if (base) {
       if (base._incomming) {
-        items = [...base._incomming.filter((o) => o.classId === this.options.parentProperty).map((o) => o.from)];
+        items = [...base._incomming!.filter((o) => o.classId === this.options.parentProperty && o.from).map((o) => o.from!)];
       }
       // if (base._outgoing)
     } else {
@@ -1419,13 +1435,17 @@ export default class ElementDataGrid extends WidgetBase {
       items = this.source.getClassElements(this.options!.baseType, true)?.filter((i) => {
         return !i._outgoing || i._outgoing.findIndex((p) => p.classId === this.options.parentProperty) === -1;
       });
+      if (this.options.addNodesWithTimeseries) {
+        const timeSeriesItems = this.source.getElementsByPropertyAndOperator('hasTimeseries', true, "==");
+        items = [...items, ...timeSeriesItems];
+      }
     }
     if (items) {
       for (const item of items) {
         if (item.id) {
           const treeItem = {
             id: item.id,
-            name: item.properties.name,
+            name: item.properties?.name || `${item.id}`,
             entity: item,
             children: [],
           };
@@ -1490,6 +1510,32 @@ export default class ElementDataGrid extends WidgetBase {
       });
     } else {
       this.items = this.source.getClassElements(baseType, true, this.options.filter);
+
+      if (this.sort?.key && this.items) {       
+        if (this.sort.type === PropertyValueType.string)  {
+          this.items.sort((a,b) => { 
+            
+            if (this.sort?.key && a?.properties && a.properties.hasOwnProperty(this.sort.key) && b?.properties && b.properties.hasOwnProperty(this.sort.key)) {
+               return (a.properties[this.sort.key].toLowerCase() < b.properties![this.sort.key].toLowerCase()) ? (this.inverseSort) ? -1 : 1 : (this.inverseSort) ? 1 : -1; 
+            }          
+            return 0;
+            }            
+            )            
+        } else {
+          this.items.sort((a,b) => { return (this.sort?.key && a?.properties && b?.properties && a.properties.hasOwnProperty(this.sort.key) && b.properties.hasOwnProperty(this.sort.key) && a.properties![this.sort.key]! > b.properties![this.sort.key]!) ? (this.inverseSort!) ? -1 : 1 : (this.inverseSort!) ? 1 : -1 })          
+        }
+
+      } else if (this.items && this.options.customSort) {
+        this.items.sort((a,b) => { return this.options.customSort!(a!,b!)});
+      } else if (this.items && this.options.defaultView === 'news') {
+        this.items.sort((a,b) => { return b?.properties?.point_in_time - a?.properties?.point_in_time});
+      }
+
+      if (this.options.addNodesWithTimeseries) {
+        const timeSeriesItems = this.source.getElementsByPropertyAndOperator('hasTimeseries', true, "==")
+        .filter(e => e._isLinked && e._isLinked.fromId);
+        this.items = [...this.items, ...timeSeriesItems];
+      }
     }
 
     if (this.options.defaultView === GridView.table) {
@@ -1605,6 +1651,9 @@ export default class ElementDataGrid extends WidgetBase {
     const id = element.classId;
     if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
       return ElementCardManager.cards[id];
+    }
+    if (element.properties && element.properties.hasTimeseries) {
+      return ElementCardManager.cards['indicator'];
     }
     return 'default-element-card';
   }

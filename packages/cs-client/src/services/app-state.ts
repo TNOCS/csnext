@@ -830,7 +830,7 @@ export class AppState extends AppStateBase {
     return false;
   }
 
-  public addRightSidebarKey(key: string, open: boolean = false) {
+  public addRightSidebarKey(key: string, open: boolean = false, expanded = false, tab : string | undefined = undefined) {
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) {
         this.project.rightSidebar.sidebars = {};
@@ -839,14 +839,19 @@ export class AppState extends AppStateBase {
         this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
       const d = this.project.rightSidebar.sidebars[key];
-      d.hide = false;
+    
+      if (expanded) {
+        if (!d.options) d.options = {};
+        d.options.sidebarExpanded = expanded;
+      }
+        d.hide = false;
       if (open) {
         this.openRightSidebar(d);
       }
     }
   }
 
-  public openRightSidebarKey(key: string) {
+  public openRightSidebarKey(key: string, expanded = false, tab : string | undefined = undefined) {
     this.addRightSidebarKey(key, true);
   }
 

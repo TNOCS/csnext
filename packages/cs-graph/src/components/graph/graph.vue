@@ -941,9 +941,9 @@ export default class NetworkGraph extends WidgetBase {
 
     if (this.graph) {
       this.graph.data(this.data);
-
+      this.graph.refresh();
       this.graph.render();
-      //   this.graph.paint();
+      this.graph.paint();
     }
   }
 
@@ -1849,16 +1849,16 @@ export default class NetworkGraph extends WidgetBase {
     this.graph.on('nodeselectchange', (e: any) => {
       console.log(e.selectedItems, e.select);
       const sel: any[] = [];
-      if (this.activePreset && e.selectedItems?.nodes) {
-        for (const node of e.selectedItems?.nodes) {
-          if (node._cfg?.id) {
-            sel.push(node._cfg.id);
-          }
-        }
+      // if (this.activePreset && e.selectedItems?.nodes) {
+      //   for (const node of e.selectedItems?.nodes) {
+      //     if (node._cfg?.id) {
+      //       sel.push(node._cfg.id);
+      //     }
+      //   }
 
-        this.activePreset._selectedElements = sel;
-        this.$forceUpdate();
-      }
+      //   this.activePreset._selectedElements = sel;
+      //   this.$forceUpdate();
+      // }
     });
 
     this.graph.on('aftercreateedge', async (e: any) => {
@@ -1873,13 +1873,17 @@ export default class NetworkGraph extends WidgetBase {
         const source = this.source.getElement(sourceId);
         const target = this.source.getElement(targetId);
         if (source && target) {
+          let classId = 'LINKED_TO';
+          classId = this.activePreset?.properties?.graphLayout?.defaultEdgeType || classId;
+          classId = source._featureType?.attributes?.graph_link_property || classId 
           await this.source.addNewEdge({
             fromId: sourceId,
             toId: targetId,
-            classId: this.activePreset?.properties?.graphLayout?.defaultEdgeType ?? 'LINKED_TO',
+            classId,
             properties: {},
           });
-          this.updateGraph(this.source!.graph);
+          this.updateGraph(this.source!.graph, false);
+          this.$forceUpdate();
         }
       }
 
