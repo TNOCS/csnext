@@ -20,8 +20,9 @@
                   <v-card-subtitle v-if="tool.subtitle">{{ tool.subtitle }}</v-card-subtitle>
                   <v-card-actions><v-btn outlined rounded :disabled="tool.busy" @click="startTool(tool)">run</v-btn> </v-card-actions>
                 </div>
-                <v-avatar class="ma-3" size="50" tile v-if="tool.image">
-                  <v-img :src="tool.image"></v-img>
+                <v-avatar class="ma-3" size="50" tile >
+                  <v-img v-if="tool.image" :src="tool.image"></v-img>
+                  <v-icon v-if="tool.icon">{{tool.icon}}</v-icon>
                 </v-avatar>
               </div>
             </v-card>
@@ -75,6 +76,7 @@ export default class Suggestions extends WidgetBase {
     if (tool.action && typeof tool.action === 'function') {
       try {
         tool.busy = true;
+        await tool.action();
         tool.busy = false;
       } catch (e) {}
     }
