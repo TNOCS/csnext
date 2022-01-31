@@ -17,6 +17,11 @@ export * from './filters/cross-graph-options';
 export * from './components/data-grid/cards/element-card-manager';
 export * from './utils/doc-utils';
 export * from './utils/cache-requests';
+export * from './components/document/plugins/text-mention';
+import TextExtension from './components/document/plugins/text-extension';
+import ParagraphExtension from './components/document/plugins/paragraph-extension';
+import suggestion from './components/document/plugins/suggestion';
+
 
 import NetworkGraph from './components/graph/graph.vue';
 import GraphElements from './components/entity-management/graph-elements.vue';
@@ -41,6 +46,13 @@ import mdiFont from './assets/mdfont.json';
 import Suggestions from './components/insights/suggestions.vue';
 import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
+import MentionList from './components/document/plugins/mention-list.vue';
+import SelectionPopup from './components/document/selection-popup.vue';
+
+
+
+
+
 Vue.use(VueScrollStop);
 
 import './assets/styles.css';
@@ -59,6 +71,7 @@ export {
   Suggestions,
   GraphMap,
   User,
+  suggestion,
   Management,
   IndicatorElementCard,
   RecentList,
@@ -69,10 +82,14 @@ export {
   GraphElements,
   ElementValue,
   GraphSettings,
+  SelectionPopup,
   ClassOverview,
   ClassViewer,
   ElementInfo,
   DocumentViewer,
   DocumentEditor,
   DocumentEntities,
+  MentionList,
+  ParagraphExtension,
+  TextExtension
 };

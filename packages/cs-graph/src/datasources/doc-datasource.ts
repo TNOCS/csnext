@@ -42,6 +42,7 @@ export interface ITool {
   subtitle?: string;
   id: string;
   image?: string;
+  icon?: string;
   component?: Component;
   disbled?: boolean;
 
@@ -80,10 +81,12 @@ export class DocDatasource extends GraphDatasource {
   public bookmarks: string[] = [];
   public filters: FilterGraphElement[] = [];
   public graphShapeDefinitions: GraphShapeDefinitions = new GraphShapeDefinitions();
+  public newsCardSelector?: (el: GraphElement) => Component;
 
   public entityParser = new EntityParser();
   public layers: { [type: string]: GeojsonPlusLayer } = {};
   public tools: ITool[] = [];
+  
 
   constructor(public base_url: string, public timesourceId: string) {
     super();
@@ -1127,9 +1130,10 @@ export class DocDatasource extends GraphDatasource {
                   type: 'selection',
                   keyText: 'properties.name',
                   keyValue: 'id',
+                  // selectedText: node!._elements![pt.key]!.properties?.name,
                   options: () => {
                     if (pt.elementType) {
-                      return this.getClassElements(pt.elementType);
+                      return this.getClassElements(pt.elementType, true);
                     }
                     return [];
                   },
@@ -1641,10 +1645,10 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public selectElementId(id: string, open = false) {
+  public selectElementId(id: string, open = false, expanded = false, tab : string | undefined = undefined) {
     const e = this.getElement(id);
     if (e) {
-      this.selectElement(e, open);
+      this.selectElement(e, open, expanded, tab);
     }
   }
 
@@ -1661,14 +1665,14 @@ export class DocDatasource extends GraphDatasource {
 
  
 
-  public selectElement(element: GraphElement | undefined, open = false) {
+  public selectElement(element: GraphElement | undefined, open = false, expanded = false, tab : string | undefined = undefined) {
     if (!element) {
       return;
     }
     this.activeElement = element;
     element._collapsed = !element._collapsed;
     if (open) {
-      this.openElement(element);
+      this.openElement(element, expanded, tab);
     }
     this.bus.publish('focus', 'element', element);
   }
@@ -1755,7 +1759,7 @@ export class DocDatasource extends GraphDatasource {
     this.triggerUpdateGraph();
   }
 
-  public openElement(node: GraphElement | string) {
+  public openElement(node: GraphElement | string, expanded = false, tab : string | undefined = undefined) {
     if (typeof node === 'string') {
       const n = this.getElement(node);
       if (!n) {
@@ -1770,7 +1774,7 @@ export class DocDatasource extends GraphDatasource {
     this.activeElement = node;
     $cs.updateRouteQuery({ nodedetails: node.id });
     this.bus.publish('element', 'select-element', node);
-    $cs.openRightSidebarKey('details');
+    $cs.openRightSidebarKey('details', expanded, tab);
     this.addElementToHistory(node.id);
   }
 
