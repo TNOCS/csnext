@@ -100,7 +100,9 @@
     <simplebar class="full-height">
       <v-tabs-items v-model="tab" style="margin-bottom: 200px">
         <v-tab-item v-if="specialTab" value="tab-SPECIAL">
+          <cs-widget v-if="specialTab.id" :widget="specialTab" :element="activeElement"></cs-widget>
           <component
+            v-else
             :is="specialTab"
             :element="activeElement"
             :source="dataSource"
