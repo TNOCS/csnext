@@ -666,11 +666,15 @@ export class GraphController {
   }
 
   @Post('/loadgraph')
-  loadGraph(@Body() body: { [key: string]: GraphElement }, @Query('agent') agent?: string) {
+  loadGraph(@Body() body: { [key: string]: GraphElement }, @Query('agent') agent?: string, @Query('islive') islive?: string) {
     return new Promise(async (resolve, reject) => {
       this.graph.db
         .loadGraph(body, agent)
         .then((r) => {
+          console.log('islive', islive)
+          if (islive === '1') {
+            this.graph.sendSocketUpdateForElements(Object.values(body));
+          }
           console.log('saving');
           this.graph.db.persist();
           resolve(true);
