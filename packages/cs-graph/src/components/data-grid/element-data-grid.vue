@@ -45,6 +45,17 @@
           </v-list-item>
         </v-list>
       </v-menu>
+        <v-btn
+        @keydown.native.alt.78="addEntity(classTypes[0])"
+        @click="addEntity(classTypes[0])"
+        v-else-if="options.canAdd"
+        color="primary"
+        class="ml-2"
+        elevation="0"
+      >
+        <v-icon>mdi-plus</v-icon>
+        {{ $cs.Translate('NEW_ITEM') }}
+      </v-btn>
 
       <v-btn class="ml-2 search-button" elevation="0" color="primary" v-if="sortOptions">
       <v-autocomplete  class="mt-4 search-autocomplete" dark flat single-line dense label="Sort" clearable prepend-icon="mdi-sort" @change="updateSort()" v-model="sort" :items="sortOptions" return-object item-text="label">
