@@ -57,7 +57,7 @@
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
 
-      <v-btn class="ml-2 search-button" elevation="0" color="primary" v-if="sortOptions">
+      <v-btn class="ml-2 search-button" elevation="0" color="primary" v-if="options.canSort && sortOptions">
       <v-autocomplete  class="mt-4 search-autocomplete" dark flat single-line dense label="Sort" clearable prepend-icon="mdi-sort" @change="updateSort()" v-model="sort" :items="sortOptions" return-object item-text="label">
         <template v-slot:prepend>
           <v-icon @click="toggleSort()" v-if="inverseSort === true">mdi-sort-ascending</v-icon>
@@ -67,18 +67,6 @@
       </v-btn>
 
 
-
-      <v-btn
-        @keydown.native.alt.78="addEntity(classTypes[0])"
-        @click="addEntity(classTypes[0])"
-        v-else-if="options.canAdd"
-        color="primary"
-        class="ml-2"
-        elevation="0"
-      >
-        <v-icon>mdi-plus</v-icon>
-        {{ $cs.Translate('NEW_ITEM') }}
-      </v-btn>
 
 
       
@@ -237,6 +225,37 @@
     <template v-if="options.defaultView === 'kanban'">
       <simplebar class="full-widget">
         <v-layout v-if="kanbanColumns" class="kanban-board">
+          <v-menu
+      v-model="showKanbanContextmenu"
+      :position-x="contextMenuX"
+      :position-y="contextMenuY"
+      absolute
+      :close-on-content-click="false"
+      offset-y
+    >
+      <v-list>
+      
+        <v-list-group v-for="(item, i) in kanbanMenuItems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="item.action">
+          <template v-slot:appendIcon>
+            <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
+            <span v-else></span>
+          </template>
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item v-if="item.items" v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+              
+      </v-list>
+    </v-menu>
+          
           <v-card
             v-for="column in kanbanColumns"
             :key="column.title"
@@ -252,16 +271,30 @@
             <v-icon>mdi-card-multiple-outline</v-icon><span class="kanban-column-header-indicator">{{column.elements.length}}</span>
             <v-btn v-if="!column.collapsed && options.canAdd" icon @click="addKanbanColumnElement(column)"><v-icon>mdi-plus</v-icon></v-btn>
             </v-layout>
+            <v-card
+                class="kanban-card ma-2 primary pa-3"
+                outlined             
+                v-if="column.newCard && !column.collapsed"                                  
+              >
+                <v-text-field v-model="column.newTitle" solo clearable label="name"></v-text-field>
+                <v-layout>
+                
+                <v-btn  outlined @click="removeKanbanColumnElement(column)">cancel</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn class="ml-4" @click="createKanbanItem(column)">create</v-btn>
+                </v-layout>
+              </v-card>
             <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
             <draggable class="kanban-column-items" v-if="!column.collapsed" :list="column.elements" :animation="200" ghost-class="ghost-card" group="kanban" @end="movedKanbanCard">
               <v-card
-                class="kanban-card"
+                class="kanban-card "
                 outlined
                 :style="getKanbanCardStyle(element)"
                 v-for="element in column.elements"
                 :key="element.id"
                 @click="selectEntityCard(element)"
                 :data-elementid="element.id"
+                @contextmenu="showKanbanMenu"
               >
                 <component v-if="options.kanbanOptions.componentView" :is="getElementCard(element)" :source="source" :element="element"></component>
                 <span v-else>{{ element.properties.name }}</span>
@@ -645,7 +678,7 @@ import draggable from 'vuedraggable';
 // import Placeholder from "@tiptap/extension-placeholder";
 require('isotope-packery');
 
-export class KanBanColumn { title?: string; prop?: string; elements?: GraphElement[]; element?: GraphElement; collapsed?: boolean };
+export class KanBanColumn { title?: string; prop?: string; elements?: GraphElement[]; element?: GraphElement; collapsed?: boolean; newCard?: boolean; newTitle?: string };
 
 @Component({
   name: 'element-data-grid',
@@ -688,6 +721,11 @@ export default class ElementDataGrid extends WidgetBase {
   @Ref('treeView')
   public treeView?: any;
 
+  private showKanbanContextmenu? = false;
+  private contextMenuX = 0;
+  private contextMenuY = 0;
+  private kanbanMenuItems : any[] = [];
+
   public gridApi?: GridApi;
   public columnApi: any | null = null;
 
@@ -720,6 +758,33 @@ export default class ElementDataGrid extends WidgetBase {
 
   public isLinked(element: GraphElement) {
     return true;
+  }
+
+  private showKanbanMenu(e: any) {
+    e.preventDefault()
+        this.showKanbanContextmenu = false;
+        this.contextMenuX = e.clientX;
+        this.contextMenuY = e.clientY;
+        this.kanbanMenuItems = [];
+        if (this.options?.kanbanOptions?.columnPropertySelection) {
+          for (const column of this.options.kanbanOptions.columnPropertySelection) {
+            this.kanbanMenuItems.push({
+              title: column,
+              active: true,
+              icon: 'mdi-arrow-right',
+              items: [{
+                title: 'unkown',
+                action: ()=> {
+                  alert('added')
+                }
+              }]
+            })
+            
+          }
+        }
+        this.$nextTick(() => {
+          this.showKanbanContextmenu = true
+        })
   }
 
   public onCellValueChanged(event: CellValueChangedEvent) {
@@ -1154,17 +1219,18 @@ export default class ElementDataGrid extends WidgetBase {
     await this.addEntity(type, parent);
   }
 
-  public async addEntity(type: FeatureType, parent?: GraphElement) {
+  public async addEntity(type: FeatureType, parent?: GraphElement, properties?: any) {
     if (!this.source) {
       return;
     }
     let placeholder = `new ${type.title}`;
-    if (this.options.askForName) {
-      $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder).then((name) => {
+    let name = properties?.name || await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder);
+    
+    if (name && name.length>0) {      
         this.source
           ?.addNewNode({
             id: `${type.type}-${guidGenerator()}`,
-            properties: { ...this.options.newItem, classId: type.type, name },
+            properties: { ...properties, ...this.options.newItem, classId: type.type, name },
             classId: type.type,
           })
           .then(async (e) => {
@@ -1239,7 +1305,7 @@ export default class ElementDataGrid extends WidgetBase {
           .catch((e) => {
             alert('error creating entity');
           });
-      });
+      
     }
   }
 
@@ -1332,7 +1398,38 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public addKanbanColumnElement(column: KanBanColumn) {
+    column.newCard = true;
+    column.newTitle = '';
+    this.$forceUpdate();
+  }
 
+  public removeKanbanColumnElement(column: KanBanColumn) {
+    column.newCard = false;
+    column.newTitle = '';
+    this.$forceUpdate();
+  }
+
+  public async createKanbanItem(column: KanBanColumn) {
+    if (!this.options?.kanbanOptions) { return; }
+    const kanban = this.options.kanbanOptions;
+    if (kanban.columnProperty && this.potentialProperties.hasOwnProperty(kanban.columnProperty)) {
+      const propType = this.potentialProperties[kanban.columnProperty];
+      if (propType.type === PropertyValueType.relation) {
+
+      }
+      else if (propType.type === PropertyValueType.element) {
+        if (propType?.key && this.classTypes && this.classTypes.length > 0) {
+          const type = this.classTypes[0];
+          const props = {};
+          props['name'] = column.newTitle;
+          props[propType.key] = column.prop;          
+          await this.addEntity(type, undefined, props);
+        }        
+      } else {
+
+      }
+    };
+    column.newCard = false;
   }
   
 
@@ -1362,12 +1459,12 @@ export default class ElementDataGrid extends WidgetBase {
           // get elements
           const elements = this.source.getClassElements(propType.elementType);          
           for (const element of elements) {
-            columns.push({ prop: element.id, title: element.properties?.name ?? propType.elementType!, elements: [], element });                    
+            columns.push({ newCard: false, newTitle: '', prop: element.id, title: element.properties?.name ?? propType.elementType!, elements: [], element });                    
           }
         } else if (propType.type === PropertyValueType.options) {
           if (propType.options) {            
             for (const option of propType.options) {              
-              columns.push({ prop: option, title: option, elements: [] });              
+              columns.push({ prop: option, title: option, elements: [], newCard: false, newTitle: '', });              
             }
           }
         }
@@ -1377,7 +1474,7 @@ export default class ElementDataGrid extends WidgetBase {
             for (const text in propType.mapping) {
               if (Object.prototype.hasOwnProperty.call(propType.mapping, text)) {
                 const value = propType.mapping[text];
-                columns.push({ prop: value, title: text, elements: [] });
+                columns.push({ prop: value, title: text, elements: [], newCard: false, newTitle: '' });
               }
             }
           }
@@ -1520,6 +1617,9 @@ export default class ElementDataGrid extends WidgetBase {
         }
       });
     } else {
+      if (this.options?.filter?.hasObjectRelation === '{{activeElement}}') {
+        this.options.filter.hasObjectRelation = this.source.activeElement?.id;
+      }
       this.items = this.source.getClassElements(baseType, true, this.options.filter);
 
       if (this.sort?.key && this.items) {       

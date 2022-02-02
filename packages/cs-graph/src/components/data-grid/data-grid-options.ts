@@ -68,7 +68,9 @@ export class DataGridOptions extends WidgetOptions {
   public canDelete? = true;
   public canAdd?: boolean;
   public canEdit? = true;
+  public canSort? = false;
   public canGraph? = true;
+  public canFilter? = false;
   public relationToggle?: DataGridRelationToggle;
   public calendarOptions?: DataGridCalendarOptions;
   public checkboxProperty?: string;
