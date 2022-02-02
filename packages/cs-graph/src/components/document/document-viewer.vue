@@ -667,6 +667,18 @@ export default class DocumentViewer extends WidgetBase {
         this.updateEditor();
       }
 
+      if (this.source.activeDocument.properties?.doc) {
+      this.source.activeDocument.properties.doc = JSON.parse(
+      JSON.stringify(this.source.activeDocument.properties.doc, (key, value: any) => {
+        if (value === null) {
+          return undefined;
+        }
+        return value;
+      }))
+      }
+    
+  
+
       this.editor?.chain().clearContent().setContent(this.source.activeDocument.properties?.doc, false).run();
       this.updateEntityTypes();
     });
@@ -754,6 +766,7 @@ export default class DocumentViewer extends WidgetBase {
     plugin
       .callImport(this.source.activeDocument, this.source)
       .then((r) => {
+        // this.source.activeDocument.properties = r.properties;
         this.updateContent();
       })
       .catch((e) => {})
