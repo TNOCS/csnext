@@ -32,8 +32,7 @@
           <draggable
             v-model="activePreset._stats"
             :options="availableItems"
-            :sort="false"            
-            
+            :sort="false"  
           >
             <v-chip
               @click="toggleFeatureType(id)"
@@ -584,13 +583,12 @@ export default class GraphMap extends WidgetBase {
               // if (fall.length > 0) {
               let sum = 0;
               // fall.map((i) => i.properties?.count).forEach((i) => (sum += i));
-              let color = Math.max(0, Math.min(sum / 100, 7)).toString();
-              console.log(color);
+              let color = Math.max(0, Math.min(sum / 100, 7)).toString();              
               switch (style.type) {
                 case 'fill':
                   if (element.properties?.shape) {
                     stat.locations += 1;
-                    const collection = JSON.parse(element.properties.shape);
+                    const collection = element.properties.shape;
                     if (collection?.features && collection.features.length > 0) {
                       features.push({
                         type: 'Feature',

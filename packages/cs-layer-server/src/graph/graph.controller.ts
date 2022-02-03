@@ -246,7 +246,7 @@ export class GraphController {
         let edges: any[] = [];
         for (const s of all) {
           if (s.properties?.id && s.classId === shape && s.properties.hasOwnProperty('shape')) {
-            const fc = JSON.parse(s.properties.shape) as any;
+            const fc = s.properties.shape as any;
 
             // if (node.properties.)
             if (fc && fc.features.length > 0) {
@@ -367,11 +367,9 @@ export class GraphController {
   @Get('/check-geoshapes')
   checkGeoshapes(): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      this.allData().then(async (all) => {
-        let res: { [id: string]: string } = {};
-        for (const node of all) {
-          
-          if (node.properties!.hasOwnProperty('geoshape')) {
+      let res: { [id: string]: string } = {};
+      for (const node of Object.values(this.graph.source.graph)) {        
+          if (node.properties && node.properties.hasOwnProperty('geoshape')) {
             if (node.properties.geoshape.length > 0 && !node.properties.shape) {
               res[node.id] = node.properties.geoshape;
               try {
@@ -391,14 +389,15 @@ export class GraphController {
 
                     console.log(node.classId);
 
-                    node.properties.shape = JSON.stringify(mgjs);
+                    node.properties.shape = mgjs;
+                    console.log(node.properties.shape);
                     // console.log(JSON.stringify(shape.data).length + ' - ' + JSON.stringify(mgjs).length);
-                    await this.graph.db?.store({
-                      type: 'n',
-                      document: node.properties,
-                      id: node.id,
-                      class: node.classId,
-                    });
+                    // await this.graph.db?.store({
+                    //   type: 'n',
+                    //   document: node.properties,
+                    //   id: node.id,
+                    //   class: node.classId,
+                    // });
                   }
 
                   // await sleep(5000);
@@ -436,10 +435,22 @@ export class GraphController {
 
           }
         }
+        await this.graph.persist();
         resolve(res);
-      });
+      
     });
   }
+
+  @Get('/clean')
+  public clean(): Promise<Boolean> {
+    return new Promise((resolve, reject) => {
+      resolve(true);
+      // if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
+      //   resolve(this.graph.db.all({ type: type, flat: true, object: true, traversal: traversal === 'yes' }));
+      // }
+    });
+  }
+
 
   @Get('/type/:type')
   public allFromType(@Param('type') type: string, @Param('traversal') traversal?: string): Promise<Boolean> {
