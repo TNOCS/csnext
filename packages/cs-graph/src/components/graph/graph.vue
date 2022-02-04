@@ -263,6 +263,7 @@ import {
   IGraphNodeDefinition,
   IGraphFilter,
   FilterGraphElement,
+  GraphLayout,
 } from '@csnext/cs-data';
 import { IMenu } from '@csnext/cs-core';
 import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig } from '@antv/g6';
@@ -1236,7 +1237,7 @@ export default class NetworkGraph extends WidgetBase {
                 outgoingMenu.items.push({
                   title: relationtitle!,
                   action: () => {
-                    if (element && this.activePreset?.id && relation?.classId) {
+                    if (element && this.activePreset?.id && relation?.classId) {                      
                       this.source?.addRelationsToPreset(element, this.activePreset.id, relation.classId);
                     }
                   },
@@ -1666,6 +1667,7 @@ export default class NetworkGraph extends WidgetBase {
 
   public async initGraph(reset = false) {
     console.log('init graph');
+    
 
     // if (!this.activePreset) {
     //     if (typeof this.options.preset === 'string') {
@@ -1698,6 +1700,14 @@ export default class NetworkGraph extends WidgetBase {
     }
     if (!this.activePreset.properties.editor_mode) {
       this.activePreset.properties.editor_mode = 'EDIT';
+    }
+
+    if (!this.activePreset.properties.graphLayout) {
+      this.activePreset.properties.graphLayout = new GraphLayout();
+    }
+
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = [];
     }
 
     // if (!this.activePreset) {
@@ -1872,8 +1882,13 @@ export default class NetworkGraph extends WidgetBase {
       if (sourceId && targetId) {
         const source = this.source.getElement(sourceId);
         const target = this.source.getElement(targetId);
-        if (source && target) {
+        if (source?._featureType && target?._featureType) {
+          // find potential classId
+          
           let classId = 'LINKED_TO';
+          classId = source._featureType.properties!.find(r => r.type! === 'relation' && r?.relation?.objectType && target?._featureType?._inheritedTypes && target._featureType._inheritedTypes.includes(r.relation.objectType))!.relation!.type || classId;
+          
+
           classId = this.activePreset?.properties?.graphLayout?.defaultEdgeType || classId;
           classId = source._featureType?.attributes?.graph_link_property || classId 
           await this.source.addNewEdge({
