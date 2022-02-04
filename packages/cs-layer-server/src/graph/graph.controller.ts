@@ -5,7 +5,7 @@ import { LayerService } from '../layers/layers.service';
 import { GraphService } from './graph.service';
 const simplify = require('simplify-geojson');
 import { Injectable, Module } from '@nestjs/common';
-import { parse } from 'wellknown';
+import { parse, stringify } from 'wellknown';
 import { etl } from './etl';
 
 import { ApiTags, ApiOperation, ApiQuery, ApiParam, ApiResponse } from '@nestjs/swagger';
@@ -245,8 +245,9 @@ export class GraphController {
       this.allData().then(async (all) => {
         let edges: any[] = [];
         for (const s of all) {
-          if (s.properties?.id && s.classId === shape && s.properties.hasOwnProperty('shape')) {
-            const fc = s.properties.shape as any;
+          if (s.properties?.id && s.classId === shape) {
+
+            const fc = this.graph.source!.getElementGeometry(s.properties);
 
             // if (node.properties.)
             if (fc && fc.features.length > 0) {
@@ -381,16 +382,25 @@ export class GraphController {
                 if (file) {
                   let shape = JSON.parse(file.toString('utf-8'));
 
+                  
+
                   if (shape?.data?.features) {
-                    let mgjs = new simplify(shape.data, 0.01);
+                    try {
+                    let mgjs = new simplify(shape.data, 0.01);                    
                     for (const f of mgjs.features) {
                       f.properties = {};
                     }
+                    if (mgjs.features && mgjs.features.length>0) {
+                      node.properties.coordinate = stringify(mgjs.features[0]);
+                    }
+                    console.log(mgjs.features.length);
 
-                    console.log(node.classId);
 
-                    node.properties.shape = mgjs;
-                    console.log(node.properties.shape);
+                    // node.properties.coordinate = stringify(mgjs);
+                  } catch (e) {
+                    console.log(e);
+                  }
+                    // node.properties.shape = mgjs;                    
                     // console.log(JSON.stringify(shape.data).length + ' - ' + JSON.stringify(mgjs).length);
                     // await this.graph.db?.store({
                     //   type: 'n',

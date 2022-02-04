@@ -2,7 +2,7 @@
   <div style="height: 100%" id="map-container">
     <v-toolbar v-if="source && widget && activePreset" flat class="graph-menu">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
-        <v-menu offset-y>
+        <v-menu offset-y v-if="activePreset.properties.editor_mode">
           <template v-slot:activator="{ on, attrs }">
             <v-btn depressed fab icon outlined v-bind="attrs" v-on="on" raised>
               <v-icon v-if="activePreset.properties.editor_mode === 'EDIT'">mdi-pencil</v-icon>
@@ -371,6 +371,10 @@ export default class GraphMap extends WidgetBase {
 
     if (this.activePreset && !this.activePreset._stats) {
       this.activePreset._stats = {};
+    }    
+
+    if (!this.activePreset.properties!.hasOwnProperty('editor_mode')) {
+        this.activePreset.properties!['editor_mode'] = 'EDIT';
     }
   }
 
@@ -583,22 +587,24 @@ export default class GraphMap extends WidgetBase {
               // if (fall.length > 0) {
               let sum = 0;
               // fall.map((i) => i.properties?.count).forEach((i) => (sum += i));
+              let geometry = this.source.getElementGeometry(element);
               let color = Math.max(0, Math.min(sum / 100, 7)).toString();              
+              if (geometry) {
               switch (style.type) {
                 case 'fill':
-                  if (element.properties?.shape) {
+                  if (element.properties?._shape) {
                     stat.locations += 1;
-                    const collection = element.properties.shape;
-                    if (collection?.features && collection.features.length > 0) {
+                    
+                    if (geometry)                    
                       features.push({
                         type: 'Feature',
                         properties: {
                           id: element.id,
                           color: color,
                         },
-                        geometry: collection.features[0].geometry,
+                        geometry
                       });
-                    }
+                    // }
                   }
                   paint = { ...{ 'fill-opacity': 0.5, 'fill-color': featureType.color }, ...(style as any).mapbox.fillPaint };
                   break;
@@ -611,11 +617,7 @@ export default class GraphMap extends WidgetBase {
                         id: element.id,
                         color: color,
                       },
-                      geometry: {
-                        type: 'Point',
-                        coordinates: [element.properties.lat, element.properties.lon],
-                        sum,
-                      },
+                      geometry
                     });
                   }
                   paint = {
@@ -658,6 +660,7 @@ export default class GraphMap extends WidgetBase {
               // }
               // }
             }
+          }
           }
 
           const geojson = { type: 'FeatureCollection', features };

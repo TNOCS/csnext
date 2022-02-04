@@ -20,6 +20,7 @@ import {
 } from '../';
 import throttle from 'lodash/throttle';
 import Fuse from 'fuse.js';
+import { parse } from 'wellknown';
 
 export type GraphObject = { [key: string]: GraphElement };
 
@@ -150,6 +151,23 @@ export class GraphDatasource extends DataSource {
     }
   }
 
+  public getElementGeometry(el: GraphElement) : any {    
+    if (!el.properties) { return; }
+    if (el.properties.hasOwnProperty('coordinate') && !el.properties.hasOwnProperty('_shape')) {
+      el.properties._shape = parse(el.properties['coordinate']);
+    }
+    if (el.properties._shape) {
+      return el.properties._shape;
+    }
+    if (el.properties.lat && el.properties.lon) {
+      return {
+        "type": "Point",
+        "coordinates": [el.properties.lat, el.properties.lon]
+      }
+    }
+    
+  }
+
   public updateFeatureTypeStats() {
     if (!this.featureTypes) {
       return;
@@ -260,6 +278,8 @@ export class GraphDatasource extends DataSource {
         // console.log(el.properties['coordinate_location']);
       }
     }
+
+    
 
     if (el.properties.hasOwnProperty('coordinate') && !el.properties.hasOwnProperty('lat')) {      
       // only take first
