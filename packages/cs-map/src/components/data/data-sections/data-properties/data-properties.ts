@@ -90,7 +90,7 @@ export class DataProperties extends WidgetBase {
 
             /** lookup all properties */
             for (const key in this.data) {
-                if (key[0] !== '_') {
+                if (!key.startsWith('_') && !key.endsWith('_')) {
                     let pt: PropertyType | string = key;
                     /** find property type */
                     if (ft && ft.propertyMap && ft.propertyMap.hasOwnProperty(key)) {
