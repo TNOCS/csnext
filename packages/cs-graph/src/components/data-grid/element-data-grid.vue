@@ -276,12 +276,12 @@
                 outlined             
                 v-if="column.newCard && !column.collapsed"                                  
               >
-                <v-text-field v-model="column.newTitle" solo clearable label="name"></v-text-field>
+                <v-text-field :id="'input-column-' + column.prop" v-model="column.newTitle" solo clearable label="name" @keydown.enter="createKanbanItem(column, $event)"></v-text-field>
                 <v-layout>
                 
-                <v-btn  outlined @click="removeKanbanColumnElement(column)">cancel</v-btn>
+                <v-btn  outlined @click="removeKanbanColumnElement(column)"><v-icon>mdi-delete</v-icon></v-btn>
                 <v-spacer></v-spacer>
-                <v-btn class="ml-4" @click="createKanbanItem(column)">create</v-btn>
+                <v-btn class="ml-4" @click="createKanbanItem(column)"><v-icon>mdi-plus</v-icon>create</v-btn>
                 </v-layout>
               </v-card>
             <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
@@ -762,6 +762,10 @@ export default class ElementDataGrid extends WidgetBase {
 
   private showKanbanMenu(e: any) {
     e.preventDefault()
+    const elementId = e.path[3].dataset.elementid;
+    if (!elementId || !this.source?.graph || !this.source.graph.hasOwnProperty(elementId)) { return; }
+    const element = this.source.graph[elementId];
+
         this.showKanbanContextmenu = false;
         this.contextMenuX = e.clientX;
         this.contextMenuY = e.clientY;
@@ -771,6 +775,7 @@ export default class ElementDataGrid extends WidgetBase {
             this.kanbanMenuItems.push({
               title: column,
               active: true,
+              action: () => {},
               icon: 'mdi-arrow-right',
               items: [{
                 title: 'unkown',
@@ -778,10 +783,20 @@ export default class ElementDataGrid extends WidgetBase {
                   alert('added')
                 }
               }]
-            })
-            
+            })            
           }
         }
+        this.kanbanMenuItems.push({
+              title: $cs.Translate('DELETE'),
+              active: true,
+              icon: 'mdi-delete',
+              action: async () => {
+                await this.source!.removeNode(element);    
+                this.updateEntities(true);
+                this.$forceUpdate();
+                this.showKanbanContextmenu = false;                            
+              }
+            })
         this.$nextTick(() => {
           this.showKanbanContextmenu = true
         })
@@ -1401,6 +1416,14 @@ export default class ElementDataGrid extends WidgetBase {
     column.newCard = true;
     column.newTitle = '';
     this.$forceUpdate();
+    Vue.nextTick(()=> {
+      const fieldId = `input-column-${column.prop}`;
+      const field = document.getElementById(fieldId);
+      if (field) { field.focus(); }
+    })
+    
+    
+    
   }
 
   public removeKanbanColumnElement(column: KanBanColumn) {
@@ -1409,7 +1432,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.$forceUpdate();
   }
 
-  public async createKanbanItem(column: KanBanColumn) {
+  public async createKanbanItem(column: KanBanColumn, event: any) {    
     if (!this.options?.kanbanOptions) { return; }
     const kanban = this.options.kanbanOptions;
     if (kanban.columnProperty && this.potentialProperties.hasOwnProperty(kanban.columnProperty)) {
@@ -1417,7 +1440,7 @@ export default class ElementDataGrid extends WidgetBase {
       if (propType.type === PropertyValueType.relation) {
 
       }
-      else if (propType.type === PropertyValueType.element) {
+      else {
         if (propType?.key && this.classTypes && this.classTypes.length > 0) {
           const type = this.classTypes[0];
           const props = {};
@@ -1425,11 +1448,18 @@ export default class ElementDataGrid extends WidgetBase {
           props[propType.key] = column.prop;          
           await this.addEntity(type, undefined, props);
         }        
-      } else {
-
-      }
+      } 
     };
-    column.newCard = false;
+    if (event) {
+      event.preventDefault();
+      setTimeout(()=> {
+        this.addKanbanColumnElement(column);
+      }, 1000)
+      
+    } else {
+      column.newCard = false;
+      this.$forceUpdate();
+    }    
   }
   
 
