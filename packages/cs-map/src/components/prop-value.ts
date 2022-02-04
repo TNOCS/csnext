@@ -8,13 +8,14 @@ export default Vue.extend({
 
   render(createElement: CreateElement): VNode  {
     let proptype = this.proptype;
+    let val = this.value;
 
     if (!proptype && this.prop && this.element?._featureType?.propertyMap && this.element._featureType.propertyMap.hasOwnProperty(this.prop)) {
       proptype = this.element._featureType.propertyMap[this.prop];
     }
 
-    if (!this.value && this.proptype && this.element?.properties && this.element.properties.hasOwnProperty(this.proptype)) {
-      this.value = this.element.properties[this.proptype.key];
+    if (!val && this.proptype && this.element?.properties && this.element.properties.hasOwnProperty(this.proptype)) {
+      val = this.element.properties[this.proptype.key];
     }
 
     if (!proptype?.type) {
@@ -37,7 +38,7 @@ export default Vue.extend({
 
               } else {
 
-              let value = n.toFixed(proptype.decimals || 0);
+              value = n.toFixed(proptype.decimals || 0);
               if (this.showUnit && proptype.unit) {
                 value += ' ' + proptype.unit;
               }       
@@ -132,11 +133,11 @@ export default Vue.extend({
           return createElement('span', { class: 'info-prop-text' }, value);
       }
     };
-    if (proptype?.array && Array.isArray(this.value)) {
-        if (this.value.length === 1) {
-            return getElement(this.value[0])
+    if (proptype?.array && Array.isArray(val)) {
+        if (val.length === 1) {
+            return getElement(val[0])
         }   
     }
-    return getElement(this.value);  
+    return getElement(val);  
   },
 });
