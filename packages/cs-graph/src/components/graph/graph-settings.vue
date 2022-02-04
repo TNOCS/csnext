@@ -210,7 +210,7 @@ export default class GraphSettings extends WidgetBase {
           array: true,
           multiple: true,
           readonly: false,
-          options: ()=>{ return (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : [] }
+          options: (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : []
         },
         // {
         //   title: 'ANIMATE',

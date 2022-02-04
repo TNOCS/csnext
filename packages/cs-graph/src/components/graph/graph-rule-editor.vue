@@ -323,8 +323,7 @@ export default class GraphRuleEditor extends Vue {
       case 'INCOMMING_TYPE':
       case 'TYPE':
         if (this.source.featureTypes) {
-          this.availableTypes = Object.values(this.source.featureTypes).filter((t) => !t.isEdge && t.title);
-          console.log(this.availableTypes);
+          this.availableTypes = Object.values(this.source.featureTypes).filter((t) => !t.isEdge && t.title);          
         }
         break;
       case 'RELATION':
