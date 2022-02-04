@@ -668,13 +668,13 @@ export default class DocumentViewer extends WidgetBase {
       }
 
       if (this.source.activeDocument.properties?.doc) {
-      this.source.activeDocument.properties.doc = JSON.parse(
-      JSON.stringify(this.source.activeDocument.properties.doc, (key, value: any) => {
-        if (value === null) {
-          return undefined;
-        }
-        return value;
-      }))
+      // this.source.activeDocument.properties.doc = JSON.parse(
+      // JSON.stringify(this.source.activeDocument.properties.doc, (key, value: any) => {
+      //   if (value === null) {
+      //     return undefined;
+      //   }
+      //   return value;
+      // }))
       }
     
   
