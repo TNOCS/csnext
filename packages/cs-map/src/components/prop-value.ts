@@ -8,9 +8,15 @@ export default Vue.extend({
 
   render(createElement: CreateElement): VNode  {
     let proptype = this.proptype;
+
     if (!proptype && this.prop && this.element?._featureType?.propertyMap && this.element._featureType.propertyMap.hasOwnProperty(this.prop)) {
       proptype = this.element._featureType.propertyMap[this.prop];
     }
+
+    if (!this.value && this.proptype && this.element?.properties && this.element.properties.hasOwnProperty(this.proptype)) {
+      this.value = this.element.properties[this.proptype.key];
+    }
+
     if (!proptype?.type) {
       return createElement('span', '');
     }
@@ -20,11 +26,24 @@ export default Vue.extend({
           if (value) {
             let n = parseInt(value);
             if (n) {              
+              if (proptype.mapping) {
+                let indx = Object.values(proptype.mapping).findIndex(v => v === n);
+                if (indx>=0) {
+                  return createElement('span', Object.keys(proptype.mapping)[indx]);            
+
+                } else {
+                  return createElement('span', '');            
+                }
+
+              } else {
+
               let value = n.toFixed(proptype.decimals || 0);
               if (this.showUnit && proptype.unit) {
                 value += ' ' + proptype.unit;
-              }              
+              }       
+                   
               return createElement('span', value);            
+            }
             }
           } else {
             return createElement('span', '');
