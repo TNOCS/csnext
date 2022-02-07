@@ -64,12 +64,13 @@ export class GraphDatasource extends DataSource {
     super();
     this.fuse = new Fuse([], {
       ignoreLocation: true,
-      threshold: 0.3,
+      threshold: 0.6,
+      shouldSort: true,
       keys: [
         { name: 'properties.name', weight: 1 },
-        { name: 'properties.description', weight: 0.7 },
+        { name: 'properties.description', weight: 0.5 },
         { name: 'properties.tags', weight: 0.5 },
-        { name: 'properties.aliases', weight: 0.5 },
+        { name: 'properties.aliases', weight: 0.6 },
         { name: 'properties.motto_text', weight: 0.4 },
         { name: 'properties.wikipedia', weight: 0.3 },
       ],
