@@ -146,18 +146,12 @@ export class ServerStorage implements IGraphStorage {
       AppState.Instance.socket.on('graphelement', (data: IGraphElementAction) => {
         console.log(data);
         switch (data.action) {
-          case 'update':            
+          case 'update':      
             if (data.elements && this.source) {
               for (const el of data.elements) {
                 if (el.id) {
                   const existing = this.source.getElement(el.id);
-                  if (existing && (!el.properties?.hash_ || existing.properties?.hash_ !== el.properties?.hash_)) {
-                    if (existing?.properties) {                    
-                      existing.properties = el.properties;
-                      this.source.updateElementProperties(existing);
-                      this.source.triggerUpdateGraph(existing);
-                    }
-                  } else {
+                  if (!existing) {
                     if (el.type === 'edge') {
                       this.source.addEdge(el);
                     } else {
@@ -165,6 +159,13 @@ export class ServerStorage implements IGraphStorage {
                     }
                     this.source.triggerUpdateGraph(el);                  
                   }
+                  else if ((!el.properties?.hash_ || existing.properties?.hash_ !== el.properties?.hash_)) {
+                    if (existing.properties) {                    
+                      existing.properties = el.properties;
+                      this.source.updateElementProperties(existing);
+                      this.source.triggerUpdateGraph(existing);
+                    }
+                  } 
                 }                
               }
             }            
