@@ -178,6 +178,9 @@
               <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
                 ><v-icon>mdi-format-paragraph</v-icon></v-btn
               >
+              <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"
+                ><v-icon>mdi-card</v-icon></v-btn
+              >
             </v-btn-toggle>
           </div>
         </template>
@@ -247,20 +250,24 @@ import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/v
 import SelectionPopup from './selection-popup.vue';
 // import Mention from '@tiptap/extension-mention';
 import simplebar from 'simplebar-vue';
-import { TextMention } from './plugins/text-mention';
+import { TextMention, SnippetMention } from './plugins/text-mention';
 import { DocDatasource, ITool } from './../../datasources/doc-datasource';
 import { GraphDocument } from './../../classes/document/graph-document';
 import StarterKit from '@tiptap/starter-kit';
 import TextExtension from './plugins/text-extension';
 import ParagraphExtension from './plugins/paragraph-extension';
+import ElementCardExtension from './plugins/element-card-extension';
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import { FeatureType } from '@csnext/cs-data';
 import { IImportPlugin } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
 import Dropcursor from '@tiptap/extension-dropcursor'
-import suggestion from './plugins/suggestion'
+import suggestion from './plugins/suggestion';
+import snipppet from './plugins/snippet';
 import MentionList from './plugins/mention-list.vue';
+import SnippetList from './plugins/snippet-list.vue';
+
 
 @Component({
   components: {
@@ -269,7 +276,7 @@ import MentionList from './plugins/mention-list.vue';
     BubbleMenu,
     FloatingMenu,
     MentionList,
-
+    SnippetList,
     // EditorMenuBubble,
     SelectionPopup,
   },
@@ -328,8 +335,19 @@ export default class DocumentViewer extends WidgetBase {
 
   public setEditorMode(mode: string) {
     Vue.set(this.source!.activeDocument!.properties!, 'editor_mode', mode);
-    this.editor!.setEditable(mode === 'EDIT');
+    if (this.editor) {
+      this.editor!.setEditable(mode === 'EDIT');
+    }
+    this.$forceUpdate();
     // this.source!.activeDocument!.properties!.edit_mode = mode;
+  }
+
+  public setElementCard() {
+    if (!this.source?.activeDocument || !this.editor) {
+      return;
+    }
+
+    this.editor.chain().focus().toggleElementCard().run();
   }
 
   public setNodeParagraph() {
@@ -337,7 +355,7 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    this.editor.chain().focus().toggleNodeParagraph().run();
+    this.editor.chain().focus().toggleElementCard().run();
     // this.syncDocumentState();
     // this.source.syncEntities(
     //   this.source.activeDocument,
@@ -492,6 +510,7 @@ export default class DocumentViewer extends WidgetBase {
           TextExtension,
           Dropcursor,
           ParagraphExtension,
+          ElementCardExtension,
           Highlight,
           Placeholder,
           TextMention.configure({
@@ -504,6 +523,16 @@ export default class DocumentViewer extends WidgetBase {
             },
             suggestion                        
           }),
+          // SnippetMention.configure({            
+          //   // renderLabel: (props) => {
+          //   //   return 'text-entity'
+          //   // },
+          //    HTMLAttributes: {
+          //     class: 'element-card',
+          //     name: 'element-card'
+          //   },
+          //   snipppet                        
+          // }),
           // BubbleMenu.configure({
           //   element: document.querySelector('.menu'),
           // }),
@@ -839,12 +868,13 @@ export default class DocumentViewer extends WidgetBase {
         this.loadDocument(this.source.activeDocument);
       }
     } else {
-      if (this.source.activeDocument) {
-        this.loadDocument(this.source.activeDocument);
+      let d : GraphDocument = this.source.activeElement as GraphDocument || this.source.activeDocument;
+      if (d) {
+        this.loadDocument(d);
 
         const combined = {
           ...$cs.router!.currentRoute.query,
-          ...{ id: this.source.activeDocument.id },
+          ...{ id: d.id },
         };
         $cs.router.replace(
           { path: $cs.router!.currentRoute.params[0], query: combined },

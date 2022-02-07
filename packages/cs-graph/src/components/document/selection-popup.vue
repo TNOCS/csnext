@@ -35,9 +35,6 @@
               panel="popup"
             ></data-info-panel>
 
-            
-
-
             <div class="entity-node-actions">
               <v-btn icon @click="graphNode(entity)"
                 ><v-icon>mdi-scatter-plot</v-icon></v-btn
@@ -119,13 +116,33 @@
         <v-card flat>
           <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title>
           <v-card-text v-if="suggestions">
-            <div class="suggestion-item" v-for="(s, i) in suggestions" :key="i">
+            <v-list two-line>
+              <v-list-item @click="useSuggestion(s.item)"  v-for="(s, i) in suggestions" :key="i">
+                <v-list-item-avatar>
+                  <v-icon v-if="s.item._featureType.icon">{{s.item._featureType.icon}}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{s.item.properties.name}}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{s.item._featureType.title}}, {{getScore(s.score)}}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+          <!-- <v-btn icon>
+            <v-icon  color="grey lighten-1">mdi-link</v-icon>
+          </v-btn> -->
+        </v-list-item-action>
+              </v-list-item>
+            </v-list>
+            <!-- <div class="suggestion-item" >
               <v-layout
                 >{{ s.item.properties.name }} ({{getScore(s.score)}})<v-btn v-if="!entity._node" icon @click="useSuggestion(s.item)"
                   ><v-icon>mdi-link-plus</v-icon></v-btn
                 ></v-layout
               >
-            </div>
+            </div> -->
           </v-card-text>
         </v-card>
       </v-tab-item>
@@ -424,13 +441,13 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   private getScore(value: number) {
-    return value.toFixed(2);
+    return ((1-value) * 100).toFixed(0) + '%';
   }
 
   public updateSuggestions() {
     if (this.entity?.text && this.source?.fuse) {
       this.suggestions = this.source.fuse
-        .search(this.entity.text)        
+        .search(this.entity.text, { limit: 8})        
     }
   }
 
@@ -730,12 +747,17 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   mounted() {
+    
     if (this.entity?.spacy_label === "location") {
       this.viewtab = 1;
     }
     this.updateAgents();
     this.updatePotentialTypes();
     this.updateSuggestions();
+    if (!this.entity?._node && this.entity?.spacy_label && !['CARDINAL','DATE', 'ORDINAL', 'QUANTITY'].includes(this.entity.spacy_label) && this.suggestions && this.suggestions.length > 0) {
+      this.viewtab = 1;
+    }
+
   }
 }
 </script>

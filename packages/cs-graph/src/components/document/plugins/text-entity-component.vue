@@ -1,10 +1,11 @@
-<template>
+<template>  
   <node-view-wrapper
     v-if="node"
     class="text-entity-component"
     :style="style"
     :class="{ highlight: entity && entity._highlight, excluded: entity && !entity._included && !entity._highlight, hide: !visible }"
   >
+ 
     <v-menu offset-y open-on-hover v-model="openMenu" :close-on-content-click="false" open-delay="10">
       <template v-slot:activator="{ on, attrs }">
         <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
@@ -66,8 +67,15 @@
         </v-list> 
           </v-card>        -->
     </v-menu>
-  </node-view-wrapper>
+
+  </node-view-wrapper>  
 </template>
+
+<style scoped>
+.draggable-entity {
+  display: inline;
+}
+</style>
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
@@ -79,10 +87,11 @@ import { DocDatasource } from '../../../datasources/doc-datasource';
 import { GraphDocument } from '../../../classes/document/graph-document';
 import { DocUtils } from '../../../utils/doc-utils';
 
+
 @Component({
   components: {
     NodeViewWrapper,
-    SelectionPopup,
+    SelectionPopup
   },
 })
 export default class TextEntityComponent extends Vue {

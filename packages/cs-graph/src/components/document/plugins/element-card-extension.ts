@@ -1,34 +1,32 @@
 import { mergeAttributes } from '@tiptap/core'
 import { VueNodeViewRenderer } from '@tiptap/vue-2'
-import ParagraphComponent from './paragraph-component.vue'
+import ElementCardComponent from './element-card-component.vue'
 import { GraphElement } from '@csnext/cs-data'
 import Paragraph from '@tiptap/extension-paragraph';
 
 declare module '@tiptap/core' {
     interface Commands<ReturnType> {
-        nodeParagraph: {
+        elementCard: {
             /**
              * Add a text entity
              */
-             setNodeParagraph: (entity?: GraphElement) => any,            
-             toggleNodeParagraph: (attributes?: any) => ReturnType;
+             setElementCard: (entity?: GraphElement) => any,            
+             toggleElementCard: (attributes?: any) => ReturnType;
         }
     }
 }
 
 
 export default Paragraph.extend({
-    name: 'node-paragraph',
+    name: 'element-card',
 
     draggable: true,
     group: 'block',
-    content: 'inline*',
-    // content: 'inline*',
-
+    atom: true,
+    
     addAttributes() {
         return {            
-            language_code: { default: 'en' },            
-            language_score: { default: 0 }
+            elementId: { default: undefined}            
         }
         
     },
@@ -36,22 +34,22 @@ export default Paragraph.extend({
     parseHTML() {
         return [
           {
-            tag: 'node-paragraph',
+            tag: 'element-card',
           },
         ]
       },
     
     
       renderHTML({ HTMLAttributes }) {
-        return ['node-paragraph', mergeAttributes(HTMLAttributes), 0]
+        return ['element-card', mergeAttributes(HTMLAttributes), 0]
       },
 
     addCommands() {
         return {     
-            toggleNodeParagraph: attributes => ({ commands }) => {
-                return commands.toggleNode('node-paragraph', 'paragraph', attributes)
+            toggleElementCard: attributes => ({ commands }) => {
+                return commands.toggleNode('element-card', 'paragraph', attributes)
               },       
-            setNodeParagraph: (entity?: GraphElement) => ({ tr, dispatch }) => {
+              setElementCard: (entity?: GraphElement) => ({ tr, dispatch }) => {
                 // debugger;
                 if (dispatch) {                    
                     
@@ -72,6 +70,6 @@ export default Paragraph.extend({
 
     
     addNodeView() {
-        return VueNodeViewRenderer(ParagraphComponent)
+        return VueNodeViewRenderer(ElementCardComponent)
     },
 })
