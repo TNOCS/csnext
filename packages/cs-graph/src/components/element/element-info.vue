@@ -18,6 +18,7 @@
               @click="dataSource.openElement(elementId)"
             >
               {{ dataSource.graph[elementId].properties.name }}
+              {{ activeElement.classId }}
             </v-list-item>
           </template>
         </v-list>
@@ -25,9 +26,7 @@
       
       <v-toolbar-title
         ><v-icon v-if="activeElement._featureType.icon">{{activeElement._featureType.icon}}</v-icon> {{ activeElement.properties.name }}</v-toolbar-title>
-        <!-- <br />
-        <div class="type-sub-title">{{ activeElement._featureType.title }}</div>
-      </v-toolbar-title> -->
+
 
       <v-spacer></v-spacer>
 
@@ -59,26 +58,6 @@
         <v-icon>mdi-scatter-plot</v-icon>
       </v-btn>
 
-      <!-- <v-menu :close-on-content-click="false" offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-group>
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>follow</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item>            
-            </v-list-item>
-          </v-list-group>
-        </v-list>
-      </v-menu> -->
-
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
           <v-tabs-slider></v-tabs-slider>
@@ -88,11 +67,7 @@
           <v-tab v-for="tab in tabs" :key="tab" :href="`#tab-${tab}`">
             {{ $cs.Translate(tab) }}
           </v-tab>
-          <!-- <v-tab href="#tab-properties">{{ $cs.Translate('PROPERTIES') }}</v-tab>
-          <v-tab href="#tab-editor">{{ $cs.Translate('EDITOR')}}</v-tab>
-          <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
-          <!-- <v-tab href="#tab-instances">{{ $cs.Translate('INSTANCES') }}</v-tab> -->
-          <!-- <v-tab href="#tab-documents">{{ $cs.Translate('DOCUMENTS') }}</v-tab> -->
+
         </v-tabs>
       </template>
     </v-toolbar>
@@ -171,53 +146,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
-        </v-tab-item>
-        <v-tab-item value="tab-EEI">
-          <cs-widget :widget="eeiWidget"></cs-widget>
-        </v-tab-item>
+        </v-tab-item>        
       </v-tabs-items>
-    </simplebar>
-
-    <!-- <v-card-actions>
-        <v-btn color="orange" text>Share</v-btn>
-
-        <v-btn color="orange" text>Explore</v-btn>
-    </v-card-actions>-->
-
-    <br />
-
-    <br />
-    <!-- <div v-if="activeElement._derivatives && activeElement._derivatives.length>0">
-      <h1>derivatives</h1>
-      <div v-for="d in activeElement._derivatives" :key="d.id" class="feature-property">
-        <v-layout>
-          <div class="link-avatar" :style="{'background': getColor(d.to)}"></div>
-          {{ d.from.title }} - {{ d.class.title }} - {{ d.to.title }}
-          <v-spacer></v-spacer>
-          <span v-if="d.properties.hasOwnProperty('reliability')">
-            {{ d.properties.reliability}}
-            <v-icon>remove_red_eye</v-icon>
-          </span>
-        </v-layout>
-      </div>
-
-      {{ JSON.stringify(link.element.properties)}} 
-    
-
-     <div v-if="element._incomming && element._incomming.length>0">
-      <h1>incomming</h1>
-      <div v-for="d in element._incomming" :key="d.id" class="feature-property">
-        {{ d.from.title }} - {{ d.class.title }} - {{ d.to.title }}       
-        </div>
-    </div>
-
-    
-    <div v-if="element._outgoing && element._outgoing.length>0">
-      <h1>_outgoing</h1>
-      <div v-for="d in element._outgoing" :key="d.id" class="feature-property">
-        {{ d.from.title }} - {{ d.class.title }} - {{ d.to.title }}        
-        </div>
-    </div>-->
+    </simplebar>   
   </div>
 </template>
 
@@ -302,15 +233,14 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { WidgetBase, IframeWidget } from "@csnext/cs-client";
 import {
-  FeatureType,
   GraphDatasource,
   GraphElement,
   LinkInfo,
 } from "@csnext/cs-data";
 import simplebar from "simplebar-vue";
-import { PropertyType, PropertyValueType } from "@csnext/cs-data";
+import { PropertyType } from "@csnext/cs-data";
 import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
-import { IFormOptions, IWidget } from "@csnext/cs-core";
+import { IFormOptions } from "@csnext/cs-core";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes";
 import { InfoTabManager } from "../../classes/info-tab-manager";
@@ -330,13 +260,12 @@ export class PropertyValue {
 })
 export default class ElementInfo extends WidgetBase {
   public instancesCount = 0;
-  public tabs = ["PROPERTIES", "EDITOR", "RELATIONS", "DOCUMENTS", "INDICATOR"];
+  public tabs = ["PROPERTIES", "EDITOR", "RELATIONS", "DOCUMENTS"];
   public tab = "EDITOR";
   public componentKey = 0;
   public history: string[] = [];
   public formDef: IFormOptions | null = null;
-  public props: PropertyValue[] = [];
-  public eeiWidget: IWidget | null = null;
+  public props: PropertyValue[] = [];  
   public isDocument?: boolean = false;
   private indicatorElements: GraphElement[] = [];
 
@@ -598,8 +527,9 @@ export default class ElementInfo extends WidgetBase {
     if (!this.activeElement?.classId) {
       this.specialTab = null;
       return;
-    }
+    }    
     this.specialTab = InfoTabManager.tabs[this.activeElement.classId] || null;
+    this.$forceUpdate();
   }
 
   public mounted() {
