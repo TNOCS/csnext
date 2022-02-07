@@ -18,7 +18,13 @@
                 <div>
                   <v-card-title>{{ tool.title }}</v-card-title>
                   <v-card-subtitle v-if="tool.subtitle">{{ tool.subtitle }}</v-card-subtitle>
-                  <v-card-actions><v-btn outlined rounded :disabled="tool.busy" @click="startTool(tool)">run</v-btn> </v-card-actions>
+                  <v-card-actions><v-btn outlined rounded :loading="tool.busy" :disabled="tool.busy" @click="startTool(tool)"><v-icon>mdi-play</v-icon> run
+                    <template v-slot:loader>
+        <span class="custom-loader">
+          <v-icon light>mdi-cached</v-icon>
+        </span>
+      </template>
+      </v-btn> </v-card-actions>
                 </div>
                 <v-avatar class="ma-3" size="50" tile >
                   <v-img v-if="tool.image" :src="tool.image"></v-img>
@@ -76,8 +82,15 @@ export default class Suggestions extends WidgetBase {
     if (tool.action && typeof tool.action === 'function') {
       try {
         tool.busy = true;
+        try {
         await tool.action();
-        tool.busy = false;
+        } catch (e) {
+
+        }
+        finally {
+          tool.busy = false;
+        }
+        
       } catch (e) {}
     }
   }
