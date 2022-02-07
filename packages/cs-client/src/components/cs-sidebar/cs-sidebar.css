@@ -13,6 +13,7 @@
 .sidebar-expand-button {
   position: fixed !important;
   top: 50%;
+  z-index: -1;
   left: -35px;
 }
 
