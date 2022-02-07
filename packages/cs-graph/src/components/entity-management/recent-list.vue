@@ -145,7 +145,7 @@ export default class RecentList extends WidgetBase {
       }
     }
     
-    this.items = this.items.sort((a, b) => b.time! - a.time!);
+    i.sort((a, b) => (b.time! - a.time!) > 0 ? 1 : -1);
     Vue.set(this, 'items', i.slice(0,100) );
 
   }
