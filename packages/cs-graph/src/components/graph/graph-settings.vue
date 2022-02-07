@@ -1,7 +1,8 @@
 <template>
-  <div v-if="activePreset">
-    <v-toolbar flat color="primary" dark>
-      <v-toolbar-title>{{ activePreset.title }} </v-toolbar-title>
+  <div class="graph-settings"  v-if="activePreset">
+    
+    <v-toolbar class="graph-settings-toolbar" flat color="primary" dark>
+      <v-toolbar-title>{{ activePreset.title || 'Settings' }} </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -13,7 +14,8 @@
         <v-tabs v-model="tab" class="elevation-2">
           <v-tab href="#tab-RULES">{{ $cs.Translate('RULES') }}</v-tab>
           <v-tab href="#tab-ELEMENTS">{{ $cs.Translate('ELEMENTS') }}</v-tab>
-          <v-tab href="#tab-LAYOUT">{{ $cs.Translate('LAYOUT') }}</v-tab>
+          <v-tab href="#tab-GRAPH">{{ $cs.Translate('GRAPH') }}</v-tab>
+          <v-tab href="#tab-MAP">{{ $cs.Translate('MAP') }}</v-tab>
 
           <!-- <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
           <!-- <v-tab href="#tab-instances">{{ $cs.Translate('INSTANCES') }}</v-tab> -->
@@ -21,13 +23,15 @@
         </v-tabs>
       </template>
     </v-toolbar>
-
-    <v-tabs-items v-model="tab" style="margin-bottom: 200px">
-      <v-tab-item value="tab-RULES">
+    
+    
+    <v-tabs-items v-model="tab" class="graph-settings-tabs">
+      <v-tab-item grow value="tab-RULES">
             <v-layout class="rules-editor">
               <span class="content-expansion-header">Rules</span>
               <v-spacer></v-spacer>
-              <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_RULE" /></v-chip>
+              <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_TYPE" /></v-chip>
+              <v-chip class="add-rule-button" @click.native.stop="addElementRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_ELEMENT" /></v-chip>
             </v-layout>
               <graph-rule-editor
                 v-for="(rule, i) in activePreset.properties.graphLayout.nodeRules"
@@ -36,6 +40,10 @@
                 :activePreset="activePreset"
                 :rule="rule"
               ></graph-rule-editor>
+
+              <!-- <div class="quick-add-menu">
+      quick
+    </div> -->
          
       </v-tab-item>
       <v-tab-item value="tab-ELEMENTS">
@@ -57,26 +65,66 @@
                 </v-list-item>
               </v-list>
       </v-tab-item>
-      <v-tab-item value="tab-LAYOUT">
+      <v-tab-item value="tab-GRAPH">
         <v-container fluid>
           <v-row>
             <v-col>
-              <cs-form :data="activePreset.properties.graphLayout" :formdef="formDef" class="pt-2 pa-3" @saved="updateGraph"></cs-form>
+              <cs-form :data="activePreset.properties.graphLayout" :formdef="graphFormDef" class="pt-2 pa-3" @saved="updatePreset"></cs-form>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-tab-item>
+      <v-tab-item value="tab-MAP">
+        <v-container fluid>
+          <v-row>
+            <v-col>
+              <cs-form :data="activePreset.properties.graphLayout" :formdef="mapFormDef" class="pt-2 pa-3" @saved="updatePreset"></cs-form>
             </v-col>
           </v-row>
         </v-container>
       </v-tab-item>
     </v-tabs-items>
+   
   </div>
 </template>
 
 <style scoped>
+
+.graph-settings-toolbar {
+
+}
+
+.graph-settings-tabs {
+  
+
+}
+
+.quick-add-menu {
+  background-color: red;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.graph-settings-tab {
+  height: 100%;
+}
+
+.graph-settings {
+  display: grid;
+  background-color: green;
+  grid-template-rows: auto 100%;
+  
+}
+
 .rules-editor
 {
   padding: 6px;
 }
 .add-rule-button {
   max-width: 125px;
+  margin-right: 6px;
 }
 
 .content-expansion-header {
@@ -124,8 +172,7 @@ export default class GraphSettings extends WidgetBase {
       .catch((e) => {});
   }
 
-  public updateGraph() {
-    console.log('update graph');
+  public updatePreset() {
     if (!this.source?.events || !this.activePreset) {
       return;
     }
@@ -166,6 +213,22 @@ export default class GraphSettings extends WidgetBase {
     return GraphElement.getBackgroundColor(el);
   }
 
+  public addElementRule() {
+    if (!this.activePreset?.properties?.graphLayout) {
+      return;
+    }
+
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = []
+    }
+    this.activePreset.properties.graphLayout.nodeRules.push({
+      type: 'ELEMENT',
+      _editMode: true,
+    });
+
+    this.$forceUpdate();
+  }
+
   public addTypeRule() {
     if (!this.activePreset?.properties?.graphLayout) {
       return;
@@ -182,7 +245,7 @@ export default class GraphSettings extends WidgetBase {
     this.$forceUpdate();
   }
 
-  public get formDef(): IFormObject {
+  public get graphFormDef(): IFormObject {
     const isLayout = (config: GraphLayout, layout: string | string[]) => {
       if (typeof layout === 'string') {
         return config.layout && config.layout === layout;
@@ -370,6 +433,33 @@ export default class GraphSettings extends WidgetBase {
           _key: 'hideEdgeLabel',
           type: 'checkbox',
         },
+      ],
+    } as IFormObject;
+  }
+
+  public get mapFormDef(): IFormObject {
+    const isLayout = (config: GraphLayout, layout: string | string[]) => {
+      if (typeof layout === 'string') {
+        return config.layout && config.layout === layout;
+      }
+
+      return config.layout && layout.includes(config.layout);
+    };
+
+    return {
+      hideTitle: true,
+      isPanel: false,
+
+      fields: [  
+        {
+          title: 'PINNED_TYPES',
+          _key: 'pinnedFeatureTypes',
+          type: 'selection',
+          array: true,
+          multiple: true,
+          readonly: false,
+          options: (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : []
+        }       
       ],
     } as IFormObject;
   }

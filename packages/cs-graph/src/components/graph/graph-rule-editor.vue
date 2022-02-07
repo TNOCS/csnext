@@ -16,7 +16,15 @@
         <span v-else class="rule-type">{{ rule._featureType.title }}</span>
       </div>
       <div v-if="rule.type === 'ELEMENT'">
-        <span class="rule-element-id" v-if="rule._element">{{ rule._element.properties.name }}</span>
+        <v-autocomplete
+          @change="saveElement()"
+          v-if="rule && rule._editMode"
+          v-model="rule.elementId"
+          :items="Object.values(source.graph)"
+          item-text="properties.name"
+          item-value="id"
+        ></v-autocomplete>        
+        <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
       <div v-if="rule.type === 'RELATION' || rule.type === 'INCOMMING_RELATION'">
         <v-autocomplete
@@ -51,11 +59,20 @@
       <div v-for="(outgoing, i) in rule.outgoingRules" :key="i">
         <graph-rule-editor :source="source" :activePreset="activePreset" :rule="outgoing" :parent="rule"></graph-rule-editor>
       </div>
-    </div>
+    </div>    
   </div>
 </template>
 
 <style scoped>
+
+.quick-add-menu {
+  background-color: red;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .rule-line {
   margin-left: 6px;
   margin-top: 5px;
@@ -121,6 +138,7 @@ export default class GraphRuleEditor extends Vue {
 
   public availableRelations?: PropertyType[] | null = null;
   public availableTypes?: FeatureType[] | null = null;
+  
 
   private hover?: null | boolean = false;
 
@@ -149,6 +167,17 @@ export default class GraphRuleEditor extends Vue {
     if (this.rule.featureType) {
       this.rule._editMode = false;
       this.rule._featureType = this.source.getFeatureTypeById(this.rule.featureType);
+      // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
+      this.source.updateRules(this.activePreset, this.rule);
+      this.$forceUpdate();
+    }
+  }
+
+    public saveElement() {
+    if (this.rule.elementId) {
+      this.rule._editMode = false;
+      this.rule._element = this.source.getElement(this.rule.elementId);
+      // this.rule._featureType = this.source.getFeatureTypeById(this.rule.featureType);
       // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
       this.source.updateRules(this.activePreset, this.rule);
       this.$forceUpdate();
