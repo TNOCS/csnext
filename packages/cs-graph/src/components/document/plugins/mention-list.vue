@@ -2,13 +2,8 @@
   <v-card>    
     <v-list ref="menu" two-line >
       <v-list-item v-for="(item, index) in _props.items" :key="index" @click="selectItem(index)" :class="{ 'is-selected': index === selectedIndex }">
-        <!-- <v-list-item-avatar v-if="item.item._featureType.icon">
-          <v-icon>{{item.item._featureType.icon}}</v-icon>
-          </v-list-item-avatar> -->
+         
         <v-list-item-content>
-        <!-- <v-list-item-icon>
-          <v-icon v-text="item.item._featureType.icon"></v-icon>
-        </v-list-item-icon> -->
         <v-list-item-title>
           {{ item.item.properties.name }}
         </v-list-item-title>
@@ -185,9 +180,9 @@ export default class MentionList extends Vue {
   }
 
 </script>
-<style>
+<style scoped>
 .is-selected {
-  background-color: red;
+  background-color: #1976d2;
 }
 
 </style>

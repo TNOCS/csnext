@@ -87,7 +87,7 @@ export default class SnippetList extends Vue {
   }
 
 </script>
-<style>
+<style scoped>
 .is-selected {
   background-color: red;
 }

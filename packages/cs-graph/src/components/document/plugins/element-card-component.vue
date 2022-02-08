@@ -5,12 +5,14 @@
    <v-layout>
   <v-card class="element-card-component" elevation="2">
     <component v-if="element !== null" :is="getComponentCard(element)" :element="element" :source="source" />
-    <v-btn @click="selectElement()" v-else class="primary">select - {{node.attrs.elementId}} {{elementId}}</v-btn>
-    
+    <v-autocomplete v-else :items="Object.values(source.graph)" item-text="properties.name" v-model="elementId" item-value="id" label="Select element" class="ma-5" @change="selectElement()" ></v-autocomplete>
+    <!-- <v-btn class="primary">select - {{node.attrs.elementId}} {{elementId}}</v-btn>
+     -->
     <!-- <v-card-title><node-view-content class="paragraph-content" /></v-card-title> -->
 
   </v-card>
-  <div><v-btn icon @click="removeCard()"><v-icon>mdi-delete</v-icon></v-btn>
+  <div><v-btn icon @click="openElement()"><v-icon>mdi-information-outline</v-icon></v-btn>
+    <v-btn icon @click="removeCard()"><v-icon>mdi-delete</v-icon></v-btn>
   </div>
   </v-layout>
 
@@ -62,9 +64,6 @@ export default class ElementCardComponent extends Vue {
   private editor?: Editor;
 
   private selectElement() {
-    (this as any).updateAttributes({
-      elementId: 'news_article-1fb56cae'
-    });
     this.checkElement();
     // this.$forceUpdate());
   }
@@ -75,9 +74,22 @@ export default class ElementCardComponent extends Vue {
 
   }
 
-  private get elementId() {
+  private set elementId(id: string) {    
+    (this as any).updateAttributes({
+      elementId: id    
+    })    
+  }
+
+  private get elementId() : string {
     if (this.node?.attrs?.elementId) {
       return this.node.attrs.elementId;
+    }
+    return '';
+  }
+
+  private openElement() {
+    if (this.source && this.element) {
+      this.source.selectElement(this.element, true);
     }
   }
 
@@ -93,7 +105,7 @@ export default class ElementCardComponent extends Vue {
   }
 
   private checkElement() {
-    if (this.elementId && this.source) {
+    if (this.elementId !== '' && this.source) {
       this.element = this.source.getElement(this.elementId) as GraphElement
     }
   }
