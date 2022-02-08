@@ -26,6 +26,39 @@
         ></v-autocomplete>        
         <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
+        <div v-if="rule.type === 'DOCUMENT'">
+        <v-autocomplete
+          @change="saveElement()"
+          v-if="rule && rule._editMode"
+          v-model="rule.elementId"
+          :items="getDocuments()"
+          item-text="properties.name"
+          item-value="id"
+        ></v-autocomplete>        
+        <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
+      </div>
+      <div v-if="rule.type === 'INDICATOR'">
+        <v-autocomplete
+          @change="saveElement()"
+          v-if="rule && rule._editMode"
+          v-model="rule.elementId"
+          :items="getIndicators()"
+          item-text="properties.name"
+          item-value="id"
+        ></v-autocomplete>        
+        <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
+      </div>
+        <div v-if="rule.type === 'WORKSPACE'">
+        <v-autocomplete
+          @change="saveElement()"
+          v-if="rule && rule._editMode"
+          v-model="rule.elementId"
+          :items="getWorkspaces()"
+          item-text="properties.name"
+          item-value="id"
+        ></v-autocomplete>        
+        <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
+      </div>
       <div v-if="rule.type === 'RELATION' || rule.type === 'INCOMMING_RELATION'">
         <v-autocomplete
           @change="saveRelation()"
@@ -115,7 +148,7 @@
 import { Component, Prop } from 'vue-property-decorator';
 import { DocDatasource } from '../..';
 import Vue from 'vue';
-import { FeatureType, GraphPreset, GraphFilter, NodeRule, PropertyType, GraphPropertyFilter } from '@csnext/cs-data';
+import { FeatureType, GraphPreset, GraphFilter, NodeRule, PropertyType, GraphPropertyFilter, GraphElement } from '@csnext/cs-data';
 import { IMenu } from '@csnext/cs-core';
 import { CsToolbarMenus } from '@csnext/cs-client';
 import GraphRuleFilter from './graph-rule-filter.vue';
@@ -172,6 +205,22 @@ export default class GraphRuleEditor extends Vue {
       this.$forceUpdate();
     }
   }
+
+  public getDocuments() : GraphElement[] | undefined {
+    if (!this.source) { return; }
+    return this.source.getClassElements('input', true);
+  }
+
+  public getIndicators() : GraphElement[] | undefined {
+    if (!this.source) { return; }
+    return this.source.getClassElements('indicator', true);
+  }
+
+  public getWorkspaces() : GraphElement[] | undefined {
+    if (!this.source) { return; }
+    return this.source.getClassElements('workspace', true);
+  }
+
 
     public saveElement() {
     if (this.rule.elementId) {

@@ -22,6 +22,7 @@ export class GraphLayout {
   radius?: number;
   hideNodeLabel?: boolean = false;
   hideEdgeLabel?: boolean = false;
+  disableCustomNodes?: boolean = false;
   layout?: string = 'circular';
   showAllOnTimeline? = false;
   nodeStrenth?: number;
@@ -100,7 +101,7 @@ export class GraphFilterProperties extends BaseElementProperties {
   
   export class NodeRule {
     public title?: string;
-    public type?: 'TYPE' | 'INCOMMING_TYPE' | 'ELEMENT' | 'RELATION' | 'INCOMMING_RELATION' | 'PROPERTY_ELEMENT' | 'CURRENT_ELEMENT';
+    public type?: 'TYPE' | 'INCOMMING_TYPE' | 'ELEMENT' | 'DOCUMENT' | 'RELATION' | 'INDICATOR' | 'WORKSPACE' | 'INCOMMING_RELATION' | 'PROPERTY_ELEMENT' | 'CURRENT_ELEMENT';
     public featureType?: string;
     public relationType?: string;
     public elementType?: string;

@@ -468,7 +468,7 @@ export default class NetworkGraph extends WidgetBase {
     let graphShapeAttr: string | undefined = undefined;
     let graphShape: GraphShape | undefined = undefined;
 
-    if (e._featureType?.attributes!['graph:node'] && this.source?.graphShapeDefinitions?.nodes) {
+    if (!this.activePreset?.properties?.graphLayout?.disableCustomNodes && e._featureType?.attributes!['graph:node'] && this.source?.graphShapeDefinitions?.nodes) {
       graphShapeAttr = e._featureType?.attributes!['graph:node'];
       graphShape = this.source.graphShapeDefinitions.nodes.find((s) => s.name === graphShapeAttr);
     }
@@ -1432,73 +1432,73 @@ export default class NetworkGraph extends WidgetBase {
         extendType: 'line',
       });
 
-      this.source.graphShapeDefinitions.edges.push({
-        name: 'dialog-relation',
-        shape: {
-          afterDraw: (cfg: any, group: any) => {
-            const children = group.get('children');
-            if (this.source && cfg.id && children && children.length > 0) {
-              const shape = children[0];
-              const element = this.source.graph[cfg.id]!;
-              if (element) {
-                // console.log(element?.id)
+      // this.source.graphShapeDefinitions.edges.push({
+      //   name: 'dialog-relation',
+      //   shape: {
+      //     afterDraw: (cfg: any, group: any) => {
+      //       const children = group.get('children');
+      //       if (this.source && cfg.id && children && children.length > 0) {
+      //         const shape = children[0];
+      //         const element = this.source.graph[cfg.id]!;
+      //         if (element) {
+      //           // console.log(element?.id)
 
-                // const useOpacity = this.followedGoal ?? this.followedAction;
+      //           // const useOpacity = this.followedGoal ?? this.followedAction;
 
-                const fromPoint = shape.getPoint(0.65);
+      //           const fromPoint = shape.getPoint(0.65);
 
-                group.addShape('circle', {
-                  attrs: {
-                    r: 15,
-                    stroke: '#333',
-                    fill: '#ffffff',
-                    x: fromPoint.x,
-                    y: fromPoint.y,
-                    action: 'toggleCondition',
-                  },
-                });
+      //           group.addShape('circle', {
+      //             attrs: {
+      //               r: 15,
+      //               stroke: '#333',
+      //               fill: '#ffffff',
+      //               x: fromPoint.x,
+      //               y: fromPoint.y,
+      //               action: 'toggleCondition',
+      //             },
+      //           });
 
-                let icon = '';
-                switch (element.properties?.relation_type) {
-                  case 'increases':
-                    icon = '+';
-                    break;
-                  case 'decreases':
-                    icon = '-';
-                    break;
-                }
+      //           let icon = '';
+      //           switch (element.properties?.relation_type) {
+      //             case 'increases':
+      //               icon = '+';
+      //               break;
+      //             case 'decreases':
+      //               icon = '-';
+      //               break;
+      //           }
 
-                group.addShape('text', {
-                  attrs: {
-                    text: icon,
-                    fontSize: 26,
-                    fontWeight: 600,
-                    textAlign: 'center',
-                    textBaseline: 'middle',
-                    fill: '#000000',
-                    x: fromPoint.x,
-                    y: fromPoint.y + 2,
-                    action: 'toggleCondition',
-                  },
-                });
-              }
-            }
-          },
-          update: undefined,
-        },
-        actions: {
-          toggleCondition: (element: GraphElement, source: DocDatasource) => {
-            source.selectElement(element, false);
-            if (element.properties) {
-              element.properties['relation_type'] =
-                element.properties?.relation_type && element.properties['relation_type'] === 'increases' ? 'decreases' : 'increases';
-            }
+      //           group.addShape('text', {
+      //             attrs: {
+      //               text: icon,
+      //               fontSize: 26,
+      //               fontWeight: 600,
+      //               textAlign: 'center',
+      //               textBaseline: 'middle',
+      //               fill: '#000000',
+      //               x: fromPoint.x,
+      //               y: fromPoint.y + 2,
+      //               action: 'toggleCondition',
+      //             },
+      //           });
+      //         }
+      //       }
+      //     },
+      //     update: undefined,
+      //   },
+      //   actions: {
+      //     toggleCondition: (element: GraphElement, source: DocDatasource) => {
+      //       source.selectElement(element, false);
+      //       if (element.properties) {
+      //         element.properties['relation_type'] =
+      //           element.properties?.relation_type && element.properties['relation_type'] === 'increases' ? 'decreases' : 'increases';
+      //       }
 
-            return Promise.resolve(true);
-          },
-        },
-        extendType: 'line',
-      });
+      //       return Promise.resolve(true);
+      //     },
+      //   },
+      //   extendType: 'line',
+      // });
 
       this.source.graphShapeDefinitions.edges.push({
         name: 'weighted-indicator-relation',
@@ -1634,7 +1634,7 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.options?.preset && this.source.activeDocument) {
       this.options.preset = this.source.activeDocument as unknown as GraphPreset;
       if (!this.options.preset.properties!.graphLayout) {
-        this.options.preset.properties!.graphLayout = { layout: 'force', nodeRules: [{ type: 'ELEMENT', elementId: this.source.activeDocument.id }] };
+        this.options.preset.properties!.graphLayout = { layout: 'force', nodeRules: [{ type: 'DOCUMENT', elementId: this.source.activeDocument.id }] };
       }
     }
 
@@ -1886,7 +1886,8 @@ export default class NetworkGraph extends WidgetBase {
           // find potential classId
           
           let classId = 'LINKED_TO';
-          classId = source._featureType.properties!.find(r => r.type! === 'relation' && r?.relation?.objectType && target?._featureType?._inheritedTypes && target._featureType._inheritedTypes.includes(r.relation.objectType))!.relation!.type || classId;
+          const rel = source._featureType.properties!.find(r => r.type! === 'relation' && r?.relation?.objectType && target?._featureType?._inheritedTypes && target._featureType._inheritedTypes.includes(r.relation.objectType));
+          classId = rel?.relation?.type || classId;
           
 
           classId = this.activePreset?.properties?.graphLayout?.defaultEdgeType || classId;

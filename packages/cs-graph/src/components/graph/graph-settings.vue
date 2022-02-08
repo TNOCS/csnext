@@ -28,10 +28,13 @@
     <v-tabs-items v-model="tab" class="graph-settings-tabs">
       <v-tab-item grow value="tab-RULES">
             <v-layout class="rules-editor">
-              <span class="content-expansion-header">Rules</span>
-              <v-spacer></v-spacer>
+
               <v-chip class="add-rule-button" @click.native.stop="addTypeRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_TYPE" /></v-chip>
               <v-chip class="add-rule-button" @click.native.stop="addElementRule()"><v-icon left>mdi-plus</v-icon><cs-label label="ADD_ELEMENT" /></v-chip>
+              <v-chip class="add-rule-button" @click.native.stop="addDocumentRule()"><v-icon left>mdi-file-document-outline</v-icon><cs-label label="ADD_DOCUMENT" /></v-chip>
+              <v-chip class="add-rule-button" @click.native.stop="addIndicatorRule()"><v-icon left>mdi-calculator-variant</v-icon><cs-label label="ADD_INDICATOR" /></v-chip>
+              <v-chip class="add-rule-button" @click.native.stop="addWorkspaceRule()"><v-icon left>mdi-view-dashboard</v-icon><cs-label label="ADD_WORKSPACE" /></v-chip>
+              
             </v-layout>
               <graph-rule-editor
                 v-for="(rule, i) in activePreset.properties.graphLayout.nodeRules"
@@ -212,6 +215,56 @@ export default class GraphSettings extends WidgetBase {
   public getColor(el: GraphElement): string {
     return GraphElement.getBackgroundColor(el);
   }
+
+  public addIndicatorRule() {
+    if (!this.activePreset?.properties?.graphLayout) {
+      return;
+    }
+
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = []
+    }
+    this.activePreset.properties.graphLayout.nodeRules.push({
+      type: 'INDICATOR',
+      _editMode: true,
+    });
+
+    this.$forceUpdate();
+  }
+
+  public addDocumentRule() {
+     if (!this.activePreset?.properties?.graphLayout) {
+      return;
+    }
+
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = []
+    }
+    this.activePreset.properties.graphLayout.nodeRules.push({
+      type: 'DOCUMENT',
+      _editMode: true,
+    });
+
+    this.$forceUpdate();
+  }
+
+  public addWorkspaceRule() {
+    if (!this.activePreset?.properties?.graphLayout) {
+      return;
+    }
+
+    if (!this.activePreset.properties.graphLayout.nodeRules) {
+      this.activePreset.properties.graphLayout.nodeRules = []
+    }
+    this.activePreset.properties.graphLayout.nodeRules.push({
+      type: 'WORKSPACE',
+      _editMode: true,
+    });
+
+    this.$forceUpdate();
+  }
+
+  
 
   public addElementRule() {
     if (!this.activePreset?.properties?.graphLayout) {
@@ -433,6 +486,11 @@ export default class GraphSettings extends WidgetBase {
           _key: 'hideEdgeLabel',
           type: 'checkbox',
         },
+        {
+          title: 'DISABLED_CUSTOM_NODES',
+          _key: 'disableCustomNodes',
+          type: 'checkbox'
+        }
       ],
     } as IFormObject;
   }

@@ -503,6 +503,34 @@ export class DocDatasource extends GraphDatasource {
       preset._visibleNodes = [];
     }
 
+    let newRules : NodeRule[] = [];
+
+    const addElement = (element?: GraphElement, outgoingLocations: boolean = false) => {
+      if (!element) { return; }
+      if (!preset!._visibleNodes!.includes(element)) {
+        this.addVisibleElement(preset, element);
+        if (outgoingLocations && element._outgoing) {
+          for (const rel of element._outgoing) {
+            if (rel.to?._featureType?._inheritedTypes && rel.to._featureType._inheritedTypes.includes('location')) {
+              addElement(rel.to);
+            }            
+          }          
+        }
+      }
+    }
+
+    const addNewRule = (rule: NodeRule) => {
+      if (rules.findIndex(r => (r.type === rule.type && r.elementId === rule.elementId)) === -1) {
+        {
+          if (newRules.findIndex(r => (r.type === rule.type && r.elementId === rule.elementId)) === -1) {
+      newRules.push(rule);
+        }
+      }
+    }
+  }
+
+    
+
     for (const rule of rules) {
       switch (rule.type) {
         case 'INCOMMING_TYPE':
@@ -581,6 +609,69 @@ export class DocDatasource extends GraphDatasource {
             }
           }
           break;
+          case 'DOCUMENT':
+          if (rule.elementId && !rule.disabled) {
+            let doc = rule._element = this.getElement(rule.elementId)  as GraphDocument;            
+            addElement(doc);
+            
+            if (doc._entities) {
+              for (const o of doc._entities) {
+                if (o._node) {
+                  addElement(o._node, true);
+                }
+              }
+            }
+            
+            if (doc._outgoing) {
+              for (const o of doc._outgoing) {
+                addElement(o.to, true);
+              }
+            }
+
+            if (doc._incomming) {
+              for (const o of doc._incomming) {
+                addElement(o.from, true);
+              }
+            }
+          }
+          break;
+        case 'INDICATOR':
+          if (rule.elementId && !rule.disabled) {            
+            rule._element = this.getElement(rule.elementId);
+            if (rule._element?._elements?.results_array) {
+              for (const res of (rule._element._elements.results_array as GraphElement[])) {
+                addElement(res, true);                
+                
+              }
+            }
+            if (rule._element) {
+              if (!preset!._visibleNodes!.includes(rule._element)) {
+                this.addVisibleElement(preset, rule._element);
+              }
+              if (rule.outgoingRules) {
+                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element);
+              }
+            }
+          }          
+          break;
+          case 'WORKSPACE':
+            if (rule.elementId && !rule.disabled) {            
+              rule._element = this.getElement(rule.elementId);
+              // find indicators
+              if (rule._element?._outgoing) {
+                for (const rel of rule._element._outgoing.filter(r => r.classId === 'HAS_INDICATOR')) {
+                  if (rel.to?.id) {
+                    addNewRule({
+                      elementId: rel.to?.id,
+                      type: 'INDICATOR'      
+                  });
+                }                
+                }
+              }
+
+              
+            }          
+            break;
         case 'ELEMENT':
           if (rule.elementId && !rule.disabled) {
             rule._element = this.getElement(rule.elementId);
@@ -607,6 +698,11 @@ export class DocDatasource extends GraphDatasource {
           }
           break;
       }
+    }
+
+    if (newRules.length > 0 && preset.properties?.graphLayout?.nodeRules) {
+      preset.properties.graphLayout.nodeRules = preset.properties.graphLayout.nodeRules.concat(newRules);
+      this.applyGraphPresetRules(preset, preset.properties.graphLayout.nodeRules, element, list )
     }
     // this.activePreset!._visibleNodes = [...this.activePreset!._visibleNodes, ...nodes];
     // const toBeDeleted = this.activePreset._visibleNodes.filter(n => nodes.includes(n));
@@ -1574,10 +1670,15 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async saveEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
-    $cs.loader.addLoader(`saveedge-${edge.id}`);
+    const i = guidGenerator();
+    $cs.loader.addLoader(`saveedge-${i}`);
     if (this.storage?.saveElement) {
       try {
+        edge.type = 'edge';
         const r = await this.storage.saveElement(edge);
+        if (r?.id)
+        {
+          edge.id = r.id;
         await this.addEdge(edge);
         if (updateEdges) {
           if (edge) {
@@ -1588,11 +1689,12 @@ export class DocDatasource extends GraphDatasource {
           }
         }
         this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);
+      }
         return Promise.resolve(edge);
       } catch (err) {
         return Promise.reject(err);
       } finally {
-        $cs.loader.removeLoader(`saveedge-${edge.id}`);
+        $cs.loader.removeLoader(`saveedge-${i}`);
       }
     }
     return Promise.reject();
