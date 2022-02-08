@@ -327,13 +327,15 @@ export class AppState extends AppStateBase {
     this.initSocket();
   }
 
-  public addDashboard(dashboard: IDashboard, parent?: IDashboard): IDashboard {
+  public addDashboard(dashboard: IDashboard, parent?: IDashboard, index?: number): IDashboard {
     this.initializeDashboards([dashboard]);
     if (parent) {
       if (!parent.dashboards) {
         parent.dashboards = [];
       }
       parent.dashboards.push(dashboard);
+    } else if (index && this.project.dashboards && this.project.dashboards.length >= index) {
+      this.project.dashboards.splice(index, 0, dashboard);
     } else {
       if (!this.project.dashboards) {
         this.project.dashboards = [];
