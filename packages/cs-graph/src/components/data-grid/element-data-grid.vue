@@ -1743,7 +1743,7 @@ export default class ElementDataGrid extends WidgetBase {
     const selected = element._outgoing.filter((r) => r.classId === this.options.relationToggle!.relationClassId);
     if (this.items && selected) {
       for (const item of this.items) {
-        (item as any).entity!._isLinked = selected.find((i) => i.toId === item.id);
+          (item as any)._isLinked = selected.find((i) => i.toId === item.id);
       }
     }
   }
