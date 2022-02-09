@@ -22,14 +22,14 @@
     },
     "dependencies": {
         "@csnext/cs-core": "^0.0.131",
-        "axios": "^0.23.0",
+        "axios": "^0.25.0",
         "simplebar-vue": "1.6.8",
         "socket.io-client": "^4.4.1",
-        "vue-i18n": "^8.26.8",
+        "vue-i18n": "^8.27.0",
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
         "vue-router": "^3.5.3",
-        "vuetify": "2.6.2",
+        "vuetify": "2.6.3",
         "v-snackbars": "3.2.4",
         "@vueuse/core": "6.7.3"
     },
