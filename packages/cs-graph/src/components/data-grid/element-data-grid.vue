@@ -915,12 +915,25 @@ export default class ElementDataGrid extends WidgetBase {
 
   public async editLinked(entity: GraphElement) {}
 
-  public async linkAll() {
+  private async linkTree (item: any, value: boolean) {
+    if (value) {
+      await this.link(item.entity, false);  
+    } else {
+      await this.unlink(item.entity, false);  
+    }
+      if (item.children) {
+        for (const child of item.children) {
+          await this.linkTree(child, value);        
+      }
+    }
+  }
+
+  public async linkAll() {    
     if (!this.treeItems) {
       return;
     }
     for (const item of this.treeItems) {
-      await this.link(item, false);
+      await this.linkTree(item, true);
     }
     this.updateEntities(true);
   }
@@ -930,18 +943,18 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     for (const item of this.treeItems) {
-      await this.unlink(item, false);
+      await this.linkTree(item, false);
     }
     this.updateEntities(true);
   }
 
   public async unlink(entity: GraphElement, update = true): Promise<boolean> {
-    if (!this.source) {
-      return Promise.reject();
+    if (!this.source || !entity._isLinked) {
+      return Promise.resolve(false);
     }
     try {
       await this.source.removeEdge((entity as any)._isLinked);
-      Vue.set(entity, '_isLinked', undefined);
+      entity._isLinked = undefined;      
       if (update) {
         this.updateEntities(true);
       }
@@ -965,7 +978,7 @@ export default class ElementDataGrid extends WidgetBase {
           } as GraphElement,
           false
         );
-        Vue.set(entity, '_isLinked', linkEdge);
+        entity._isLinked = linkEdge;        
         if (update) {
           this.updateEntities(true);
         }
@@ -1730,7 +1743,7 @@ export default class ElementDataGrid extends WidgetBase {
     const selected = element._outgoing.filter((r) => r.classId === this.options.relationToggle!.relationClassId);
     if (this.items && selected) {
       for (const item of this.items) {
-        (item as any)._isLinked = selected.find((i) => i.toId === item.id);
+        (item as any).entity!._isLinked = selected.find((i) => i.toId === item.id);
       }
     }
   }
