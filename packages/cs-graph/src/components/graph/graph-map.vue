@@ -108,6 +108,9 @@
     >
       <!-- <div style="width: 100%; height: 100%"></div> -->
     </draggable>
+    <v-card v-if="activeElement"  class="preview-element-card" >
+    <component :is="getElementCard(activeElement)" :source="source" :element="activeElement"></component>
+    </v-card>
     <v-menu v-model="showMenu" :position-x="menux" :position-y="menuy" absolute :close-on-content-click="false" open-on-hover offset-y>
       <v-list>
         <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="item.action">
@@ -138,6 +141,15 @@
 
 <style scoped>
 .map-container {
+}
+
+.preview-element-card {
+  position: absolute;
+  left: 25px;
+  max-width: 300px;
+  max-height: 200px;
+
+  bottom: 25px;
 }
 
 .mapbox-map {
@@ -194,10 +206,10 @@ import { Component } from 'vue-property-decorator';
 import { AppState, WidgetBase } from '@csnext/cs-client';
 import mapboxgl, { MapboxOptions, GeoJSONSource, GeoJSONSourceRaw, SymbolLayer, LngLat } from 'mapbox-gl';
 import { ILayerStyle, MapboxStyleDefinition, MapboxStyleSwitcherControl, MapOptions } from '@csnext/cs-map';
-// import { GraphMapOptions, GraphSettings, ITool, DefaultElementCard, DocDatasource } from '@csnext/cs-graph';
+// import { GraphMapOptions, GraphSettings, ITool, DefaultElementCard, DocDatasource, ElementCardManager } from '@csnext/cs-graph';
 // import interact from 'interactjs';
-import GraphSettings from './graph-settings.vue';
-import { ITool, DefaultElementCard, DocDatasource, GraphMapOptions } from '../..';
+// import GraphSettings from './graph-settings.vue';
+import { ITool, DefaultElementCard, DocDatasource, GraphMapOptions, ElementCardManager, GraphSettings } from '../..';
 
 import Vue from 'vue';
 import { FilterGraphElement, GraphDatasource, GraphElement, GraphPreset, IGraphFilter } from '@csnext/cs-data';
@@ -208,6 +220,7 @@ import draggable from 'vuedraggable';
 @Component({
   components: {
     draggable,
+    DefaultElementCard
   },
 })
 export default class GraphMap extends WidgetBase {
@@ -223,7 +236,7 @@ export default class GraphMap extends WidgetBase {
   private menux = 200;
   public contextMenuitems: any[] = [];
   private menuy = 200;
-  private activeElement?: GraphElement;
+  private activeElement?: GraphElement;  
 
   public get options(): GraphMapOptions {
     if (this.widget && this.widget.options) {
@@ -564,8 +577,7 @@ export default class GraphMap extends WidgetBase {
   public initFeatureTypeLayer(featureTypeId: string) {
     if (!this.source || !this.map || !this.activePreset?._visibleNodes || !this.activePreset?._stats) {
       return;
-    }
-    console.log('init ' + featureTypeId);
+    }    
     const featureType = this.source.findObservation(featureTypeId);
 
     if (featureType) {
@@ -711,15 +723,11 @@ export default class GraphMap extends WidgetBase {
                 const id = e.features[0].properties?.id;
                 const feature = e.features[0];
 
-                if (this.source && this.map && this.source.graph.hasOwnProperty(id)) {
-                  this.activeElement = this.source.graph[id];
-                  const app = new DefaultElementCard();
-                  (app as any).source = this.source;
-                  (app as any).element = this.activeElement;
-
-                  // let popupContainer = document.createElement('span');
-                  // app.$mount(popupContainer);
-                  // this.popup = new mapboxgl.Popup({ closeOnClick: false }).setLngLat(e.lngLat).setDOMContent(app.$el).addTo(this.map);
+                if (this.source && this.map && feature.properties?.id) {
+                  let element = this.source.getElement(feature.properties.id);                  
+                  if (element?.properties?.name) {                
+                    this.popup = new mapboxgl.Popup({ closeOnClick: false }).setLngLat(e.lngLat).setHTML(element.properties.name).addTo(this.map);
+                  }
                 }
               }
 
@@ -744,16 +752,35 @@ export default class GraphMap extends WidgetBase {
             this.map.on('click', layerId, (e: mapboxgl.MapLayerMouseEvent) => {
               if (this.map && source && e.features && e.features.length > 0) {
                 const feature = e.features[0];
-                this.map.flyTo({
-                  center: e.lngLat,
-                });
-                this.source!.selectElementId(feature.properties!.id!, false);
+                if (this.source && feature.properties?.id) {
+                  this.activeElement = this.source.getElement(feature.properties.id);
+                                  this.$forceUpdate();
+                                  this.source!.selectElementId(feature.properties!.id!, false);
+
+                }
+
+                
+                // this.map.flyTo({
+                //   center: e.lngLat,
+                // });
+                
               }
             });
           }
         }
       }
     }
+  }
+
+  private getElementCard(element: GraphElement) {
+    const id = element.classId;
+    if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
+      return ElementCardManager.cards[id];
+    }
+    if (element.properties && element.properties.hasTimeseries) {
+      return ElementCardManager.cards['indicator'];
+    }
+    return 'default-element-card';
   }
 
   public initLayers() {
