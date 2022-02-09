@@ -127,15 +127,14 @@
   </div>
 
   <v-btn
-    outlined   
-    fab 
+    outlined        
     elevation="0"
     v-if="sideBar.right"
-    icon
-    :class="{'rotated-button':isExpanded}"
+    icon    
     @click="expandSidebar()"
     class="sidebar-expand-button">
-    <v-icon>mdi-chevron-triple-left</v-icon>
+    <v-icon v-if="isExpanded">mdi-chevron-triple-right</v-icon>
+    <v-icon v-else>mdi-chevron-triple-left</v-icon>
   </v-btn>
 
 </v-navigation-drawer>
