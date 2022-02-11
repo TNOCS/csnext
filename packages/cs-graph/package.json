@@ -21,9 +21,9 @@
         "access": "public"
     },
     "dependencies": {
-        "@ag-grid-community/core": "26.2.1",
-        "@ag-grid-community/vue": "26.2.0",
-        "@antv/g6": "4.5.3",
+        "@ag-grid-community/core": "27.0.0",
+        "@ag-grid-community/vue": "27.0.0",
+        "@antv/g6": "4.5.5",
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-core": "^0.0.131",
         "@csnext/cs-crossfilter": "0.0.131",
@@ -52,7 +52,7 @@
         "vueisotope": "3.1.2",
         "webpack": "4.46.0",
         "vuedraggable": "2.24.3",
-        "idb-keyval": "6.0.3"
+        "idb-keyval": "6.1.0"
     },
     "devDependencies": {
         "@interactjs/types": "1.10.11",

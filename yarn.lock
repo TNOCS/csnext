@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@ag-grid-community/core@26.2.1":
-  version "26.2.1"
-  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-26.2.1.tgz#b0c3478b0df14b3145c7d126b4da34a5f55a44ad"
-  integrity sha512-E2e3rZoZ90QtgO320kmlrm7kFbzFkCyrvCWYUQshJJU/UzCqr6DffVAXTaeehPNLzHBybANxWbSbFab9LQLIwQ==
+"@ag-grid-community/core@27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-27.0.0.tgz#92b5b22f0e058f9ae3165771aa17f3d0701d6aa2"
+  integrity sha512-GIKemZ/nkLk8psSlpIsQ5a6+0GpoA4u1ENgxlyTfLC3Qk3u+6fkozLYvZCHG9pK3p66qZ6Bslrz4Hi7xqAccqg==
 
-"@ag-grid-community/vue@26.2.0":
-  version "26.2.0"
-  resolved "https://registry.yarnpkg.com/@ag-grid-community/vue/-/vue-26.2.0.tgz#9108ac3868cd1d976d115eb459350848c0f9a92d"
-  integrity sha512-QYJ/aSdMm2vEbwQ+urYZsSOGi2gvGMHIM+iKCmxBLaZRRuqn6o42uQB+NiN0sxaBeDMMAr1XVeB6+qeA/8/vYA==
+"@ag-grid-community/vue@27.0.0":
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/vue/-/vue-27.0.0.tgz#aafc0d59c4f955d9ad4865896682c00f88508de5"
+  integrity sha512-aYEIEZ0n8/rPj6RX/1h2kICnQZrQTnj51dDRS5D9PQLV270caobjqDjZ8HI/MNQdUCYwGbowThc3YW9dKxjbcg==
 
 "@ant-design/colors@^4.0.5":
   version "4.0.5"
@@ -134,10 +134,10 @@
     probe.gl "^3.1.1"
     reflect-metadata "^0.1.13"
 
-"@antv/g6-core@*", "@antv/g6-core@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@antv/g6-core/-/g6-core-0.5.3.tgz#e93ffa974a6b19e4a9e4c7bac4fc1a9067460d6a"
-  integrity sha512-qvLMOxIhauwx2scza//++60tkUSnwlDHH8WUQE2AdeSmf6HKWd0Bilxkuux65v2Ta/lquf/gcjJa6EcX5VFdzw==
+"@antv/g6-core@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6-core/-/g6-core-0.5.5.tgz#b83a1751e6ad17cea147ab09bfac1a36c2098e45"
+  integrity sha512-DrGfvpO2hYql/86KxXNecfqMT7RQS+Unk4lTAeID62d7ZcyR/W6En6g1zuoWm0Ny0X+qKgmWfHVBeKvG5CKYmA==
   dependencies:
     "@antv/algorithm" "^0.1.8"
     "@antv/dom-util" "^2.0.1"
@@ -150,19 +150,19 @@
     ml-matrix "^6.5.0"
     tslib "^2.1.0"
 
-"@antv/g6-element@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@antv/g6-element/-/g6-element-0.5.3.tgz#358ac75aa13c85a72f8e90eb88fe248e2e75131b"
-  integrity sha512-uX3ef/S6IDDjcGsEwir2/yHe+8EUahN1oQMEkxNZ6NM4o+DzYA80LQcDrTZ0FKU6zR4SSENTvI49R03uhZiCxg==
+"@antv/g6-element@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6-element/-/g6-element-0.5.5.tgz#67c30f9271c39ab76281209d298689ee4f533a89"
+  integrity sha512-x6e/iOqRviAdxBUqrTig3q4q0rDB2udKsVkLZuWujzkWdaH3wp4B0ewPoAfqdX+mz2L9vRYtT3AIaLGZvAtn5g==
   dependencies:
     "@antv/g-base" "^0.5.1"
-    "@antv/g6-core" "0.5.3"
+    "@antv/g6-core" "0.5.5"
     "@antv/util" "~2.0.5"
 
-"@antv/g6-pc@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@antv/g6-pc/-/g6-pc-0.5.3.tgz#64ce0a4dc2f7833d4b51eee93119543a588d129d"
-  integrity sha512-tCVxR45OP99N31meiJ+UGtdvxPJMP2674QcT8jOC1Urz37U4sha9zxh3mObIxMc2LCLzUjBn05J/Ar6jiPGpFA==
+"@antv/g6-pc@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6-pc/-/g6-pc-0.5.5.tgz#43bb2d1829f346b4e0fc1201286f05dd8f894b83"
+  integrity sha512-AniC8NjXvLbkKTl4ogT6+xXMh7j9pT6y8yg2Or/InQBGL73ZnNCnwRcR0T0nHxLZ08gib1kVWpWsEoMLX+Z5XQ==
   dependencies:
     "@ant-design/colors" "^4.0.5"
     "@antv/algorithm" "^0.1.8"
@@ -172,9 +172,9 @@
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-math" "^0.1.1"
     "@antv/g-svg" "^0.5.1"
-    "@antv/g6-core" "0.5.3"
-    "@antv/g6-element" "0.5.3"
-    "@antv/g6-plugin" "0.5.3"
+    "@antv/g6-core" "0.5.5"
+    "@antv/g6-element" "0.5.5"
+    "@antv/g6-plugin" "0.5.5"
     "@antv/hierarchy" "^0.6.7"
     "@antv/layout" "^0.1.22"
     "@antv/matrix-util" "^3.1.0-beta.3"
@@ -186,27 +186,27 @@
     insert-css "^2.0.0"
     ml-matrix "^6.5.0"
 
-"@antv/g6-plugin@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@antv/g6-plugin/-/g6-plugin-0.5.3.tgz#578734af9bd137c6d07b51ad1578755319c79204"
-  integrity sha512-sFG5Bau6wwjyN1a0gKkCodlfLUsFvM6iO5V0t/pfCRgOySFUusYkND5CYoWgMC6kwvmSIKoauq177AORWZwDHg==
+"@antv/g6-plugin@0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6-plugin/-/g6-plugin-0.5.5.tgz#744400b87ec6a04ebf483b5c77dfadb0b1010e5e"
+  integrity sha512-1X7Q7aEFNY2iIM9GrsKKqp6lgb0kceUI9Dqib3VjXm/hhos3zBp4i8UgkkIlDaKT8bXo1IJapbE4eWfVHDSgaw==
   dependencies:
     "@antv/dom-util" "^2.0.2"
     "@antv/g-base" "^0.5.1"
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-svg" "^0.5.2"
-    "@antv/g6-core" "*"
+    "@antv/g6-core" "0.5.5"
     "@antv/matrix-util" "^3.1.0-beta.3"
     "@antv/scale" "^0.3.4"
     "@antv/util" "^2.0.9"
     insert-css "^2.0.0"
 
-"@antv/g6@4.5.3":
-  version "4.5.3"
-  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.5.3.tgz#25187b52e4145a8d62a2cf512701c2414daa6278"
-  integrity sha512-9QXs8/klcjcpLHpR5EX/MXPO4mklGGfGasxpuiVY9UKchWi0moaCoiGNE5sEY1QIvTF/XB8wKHuyMHT0LArpoA==
+"@antv/g6@4.5.5":
+  version "4.5.5"
+  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.5.5.tgz#0a85a3ceb572b0e32c4845c05fdc1c2b77d6ee17"
+  integrity sha512-rSe1j4ihrV6HfgL/fFs4T9VtycMc/OqZKZx6RAVRviQZA1VNblvddY+2ERPTbNwaljM+XQODCUFRHY3CspT7vg==
   dependencies:
-    "@antv/g6-pc" "0.5.3"
+    "@antv/g6-pc" "0.5.5"
 
 "@antv/hierarchy@^0.6.7":
   version "0.6.8"
@@ -11156,10 +11156,10 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
-idb-keyval@6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-6.0.3.tgz#e47246a15e55d0fff9fa204fd9ca06f90ff30c52"
-  integrity sha512-yh8V7CnE6EQMu9YDwQXhRxwZh4nv+8xm/HV4ZqK4IiYFJBWYGjJuykADJbSP+F/GDXUBwCSSNn/14IpGL81TuA==
+idb-keyval@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-6.1.0.tgz#e659cff41188e6097d7fadd69926f6adbbe70041"
+  integrity sha512-u/qHZ75rlD3gH+Zah8dAJVJcGW/RfCnfNrFkElC5RpRCnpsCXXhqjVk+6MoVKJ3WhmNbRYdI6IIVP88e+5sxGw==
   dependencies:
     safari-14-idb-fix "^3.0.0"
 
