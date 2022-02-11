@@ -468,7 +468,11 @@ export default class NetworkGraph extends WidgetBase {
     let graphShapeAttr: string | undefined = undefined;
     let graphShape: GraphShape | undefined = undefined;
 
-    if (!this.activePreset?.properties?.graphLayout?.disableCustomNodes && e._featureType?.attributes!['graph:node'] && this.source?.graphShapeDefinitions?.nodes) {
+    if (
+      !this.activePreset?.properties?.graphLayout?.disableCustomNodes &&
+      e._featureType?.attributes!['graph:node'] &&
+      this.source?.graphShapeDefinitions?.nodes
+    ) {
       graphShapeAttr = e._featureType?.attributes!['graph:node'];
       graphShape = this.source.graphShapeDefinitions.nodes.find((s) => s.name === graphShapeAttr);
     }
@@ -1121,7 +1125,9 @@ export default class NetworkGraph extends WidgetBase {
     if (this.source && a.item?._cfg?.id) {
       this.contextMenuitems = [];
       const element = this.source.getElement(a.item._cfg.id);
-      if (!element) { return; }
+      if (!element) {
+        return;
+      }
       if (!element.properties) {
         element.properties = {};
       }
@@ -1237,7 +1243,7 @@ export default class NetworkGraph extends WidgetBase {
                 outgoingMenu.items.push({
                   title: relationtitle!,
                   action: () => {
-                    if (element && this.activePreset?.id && relation?.classId) {                      
+                    if (element && this.activePreset?.id && relation?.classId) {
                       this.source?.addRelationsToPreset(element, this.activePreset.id, relation.classId);
                     }
                   },
@@ -1634,7 +1640,10 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.options?.preset && this.source.activeDocument) {
       this.options.preset = this.source.activeDocument as unknown as GraphPreset;
       if (!this.options.preset.properties!.graphLayout) {
-        this.options.preset.properties!.graphLayout = { layout: 'force', nodeRules: [{ type: 'DOCUMENT', elementId: this.source.activeDocument.id }] };
+        this.options.preset.properties!.graphLayout = {
+          layout: 'force',
+          nodeRules: [{ type: 'DOCUMENT', elementId: this.source.activeDocument.id }],
+        };
       }
     }
 
@@ -1667,7 +1676,6 @@ export default class NetworkGraph extends WidgetBase {
 
   public async initGraph(reset = false) {
     console.log('init graph');
-    
 
     // if (!this.activePreset) {
     //     if (typeof this.options.preset === 'string') {
@@ -1884,14 +1892,19 @@ export default class NetworkGraph extends WidgetBase {
         const target = this.source.getElement(targetId);
         if (source?._featureType && target?._featureType) {
           // find potential classId
-          
+
           let classId = 'LINKED_TO';
-          const rel = source._featureType.properties!.find(r => r.type! === 'relation' && r?.relation?.objectType && target?._featureType?._inheritedTypes && target._featureType._inheritedTypes.includes(r.relation.objectType));
+          const rel = source._featureType.properties!.find(
+            (r) =>
+              r.type! === 'relation' &&
+              r?.relation?.objectType &&
+              target?._featureType?._inheritedTypes &&
+              target._featureType._inheritedTypes.includes(r.relation.objectType)
+          );
           classId = rel?.relation?.type || classId;
-          
 
           classId = this.activePreset?.properties?.graphLayout?.defaultEdgeType || classId;
-          classId = source._featureType?.attributes?.graph_link_property || classId 
+          classId = source._featureType?.attributes?.graph_link_property || classId;
           await this.source.addNewEdge({
             fromId: sourceId,
             toId: targetId,
@@ -2060,6 +2073,40 @@ export default class NetworkGraph extends WidgetBase {
           classId: ft.type,
         });
 
+        if (this.source && this.options.newRelations) {
+          for (const relation of this.options.newRelations) {
+            // new relation to other id
+            if (relation.toId && ft.propertyMap) {
+              try {
+                const newEdge = await this.source.addNewEdge(
+                  {
+                    fromId: newNode.id,
+                    toId: relation.toId,
+                    classId: relation.relationClassId,
+                  } as GraphElement,
+                  true
+                );
+              } catch (e) {
+                console.log('Error adding relation edge');
+              }
+            } else if (relation.fromId) {
+              // create relation from other id
+              const fromId = typeof relation.fromId === 'function' ? relation.fromId() : relation.fromId;
+              const fromNode = this.source.getElement(fromId);
+
+              const newEdge = await this.source.addNewEdge(
+                {
+                  fromId: fromId,
+                  toId: newNode.id,
+                  classId: relation.relationClassId,
+                } as GraphElement,
+                true
+              );
+            }
+          }
+          await this.source.updateEdges();
+        }
+
         if (newNode?.id && this.activePreset?.properties?.graphLayout) {
           if (!this.activePreset.properties.graphLayout.nodes) {
             this.activePreset.properties.graphLayout.nodes = {};
@@ -2070,6 +2117,7 @@ export default class NetworkGraph extends WidgetBase {
           };
 
           this.addElement(newNode);
+
           this.updateGraph(this.source!.graph);
           this.source.selectElement(newNode, this.options.openElementDetails);
           this.$forceUpdate();
