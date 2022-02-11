@@ -542,8 +542,8 @@ export class DocDatasource extends GraphDatasource {
             if (element) {
               if (element._incomming)
                 for (const incomming of element._incomming) {
-                  if (incomming.from?._featureType?._inheritedTypes && incomming.from._featureType._inheritedTypes.includes(rule.featureType)) {
-                    this.addVisibleElement(preset, incomming.from);
+                  if (incomming.from?._featureType?._inheritedTypes && incomming.from._featureType._inheritedTypes.includes(rule.featureType)) {                    
+                    this.addVisibleElement(preset, incomming.from);                    
                     if (rule.outgoingRules) {
                       this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from);
                     }
@@ -585,8 +585,8 @@ export class DocDatasource extends GraphDatasource {
           if (rule.relationType && !rule.disabled) {
             if (element?._incomming) {
               for (const o of element._incomming) {
-                if (o.classId === rule.relationType && o.from) {
-                  this.addVisibleElement(preset, o.from);
+                if (o.classId === rule.relationType && o.from) {                  
+                    this.addVisibleElement(preset, o.from);                  
                   if (rule.outgoingRules) {
                     this.applyGraphPresetRules(preset, rule.outgoingRules, o.from);
                   }
@@ -611,8 +611,10 @@ export class DocDatasource extends GraphDatasource {
           break;
           case 'DOCUMENT':
           if (rule.elementId && !rule.disabled) {
-            let doc = rule._element = this.getElement(rule.elementId)  as GraphDocument;            
-            addElement(doc);
+            let doc = rule._element = this.getElement(rule.elementId)  as GraphDocument;     
+            if (!rule.hideSelf) {       
+              addElement(doc);
+            }
             
             if (doc._entities) {
               for (const o of doc._entities) {
@@ -645,7 +647,7 @@ export class DocDatasource extends GraphDatasource {
               }
             }
             if (rule._element) {
-              if (!preset!._visibleNodes!.includes(rule._element)) {
+              if (!rule.hideSelf && !preset!._visibleNodes!.includes(rule._element)) {
                 this.addVisibleElement(preset, rule._element);
               }
               if (rule.outgoingRules) {
@@ -676,7 +678,7 @@ export class DocDatasource extends GraphDatasource {
           if (rule.elementId && !rule.disabled) {
             rule._element = this.getElement(rule.elementId);
             if (rule._element) {
-              if (!preset!._visibleNodes!.includes(rule._element)) {
+              if (!rule.hideSelf && !preset!._visibleNodes!.includes(rule._element)) {
                 this.addVisibleElement(preset, rule._element);
               }
               if (rule.outgoingRules) {

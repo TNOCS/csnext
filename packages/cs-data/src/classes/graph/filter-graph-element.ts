@@ -105,6 +105,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     public featureType?: string;
     public relationType?: string;
     public elementType?: string;
+    public hideSelf?: boolean;
     public id?: string;    
     public elementId?: string;
     public disabled?: boolean;
