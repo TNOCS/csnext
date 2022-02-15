@@ -2,7 +2,7 @@ import {
   TimeDataSource,
   MessageBusManager,
   Topics,
-  guidGenerator  
+  idGenerator
 } from '@csnext/cs-core';
 import {
   DataSource,
@@ -683,7 +683,7 @@ export class GraphDatasource extends DataSource {
     }
 
     if (!element.id) {
-      element.id = 'edge-' + guidGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
+      element.id = 'edge-' + idGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
     }
     element.properties.id = element.id;
     if (element.toId && !element.to) {
@@ -905,7 +905,7 @@ export class GraphDatasource extends DataSource {
     )) {
       const v = e.properties[props.key!];
       if (this.graph.hasOwnProperty(v)) {
-        e._elements[props.key!] = this.graph[v] as GraphElement;
+        e._elements[props.key!] = this.graph[v] as GraphElement;        
       }
     }
     for (const props of e._featureType?.properties.filter(
