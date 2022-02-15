@@ -43,7 +43,8 @@
 .sidebar-header-button {
     margin: 0px !important;
     padding: 0px !important;
-    min-width: 75px !important;
+    min-width: 70px !important;
     height: 100% !important;
     border-left: 0px darkgray solid;
+    opacity: 0.5;
 }
