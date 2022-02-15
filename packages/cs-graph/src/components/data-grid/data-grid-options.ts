@@ -45,6 +45,13 @@ export class DataGridKanbanOptions {
   public cardHeight?: string | number;
 }
 
+export type NewRelationDefinition = {
+  key: string;
+  relationClassId?: string;
+  toId?: string;
+  fromId?: Function | string;
+}
+
 export class DataGridOptions extends WidgetOptions {
   public baseType?: string;
   public addNodesWithTimeseries?: boolean;
@@ -78,9 +85,18 @@ export class DataGridOptions extends WidgetOptions {
   public newsOptions?: DataGridNewsOptions;
   public kanbanOptions?: DataGridKanbanOptions;
 
+  /* This is a list of potential properties that are used to filter the data. */
+  public filterProperties?: string[];
+  public filterProperty?: string;
+  public filterValue?: any
+  
+  public radialProperty?: string;
+  public horizontalProperty?: string;
+  
+
   public filter?: GraphFilter;
   public newItem?: any;
-  public newRelations?: any[];
+  public newRelations?: NewRelationDefinition[];
   public additionalActions?: IMenu[];
 }
 
