@@ -28,6 +28,12 @@ html {
     top: -100em;
 }
 
+.notification-icon {
+    margin-right: 3px;
+    margin-top: -3px;
+}
+
+
 .dialog-widget {
     height: 100%;
     width: 100%;

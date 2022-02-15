@@ -72,7 +72,7 @@
     </v-snackbar>
     <v-snackbars :messages.sync="$cs.notifications" bottom right>
         <template v-slot:default="{ message }">
-            <h3 class="mb-2">{{ message.title}}</h3>
+            <v-layout><v-icon class="notification-icon" v-if="message.icon">{{ message.icon }}</v-icon><h3 class="mb-2">{{ message.title}}</h3></v-layout>
             {{ message.text }}
           </template>
         <template v-slot:action="{ close, message }">
@@ -86,7 +86,7 @@
                 :size="25"
               ></v-progress-circular> -->
             </div>
-            <v-btn text @click="close()">Close</v-btn>
+            <v-btn icon @click="close()"><v-icon>mdi-close</v-icon></v-btn>
           </template>
     </v-snackbars>
 </v-app>
