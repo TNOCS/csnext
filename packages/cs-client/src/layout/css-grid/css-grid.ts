@@ -6,7 +6,8 @@ import {
   CssGridDashboardOptions,
   CssGridWidgetOptions,
   IWidget,
-  guidGenerator
+  guidGenerator,
+  idGenerator
 } from '@csnext/cs-core';
 import { LayoutManager } from '../..';
 
@@ -74,7 +75,7 @@ LayoutManager.add({
 
 export function CssGridDashboard(definition?: IDashboard, options?: CssGridDashboardOptions): IDashboard {
   if (definition) {
-    return { ...{ id: guidGenerator(), layout: CssGrid.id, options }, ...definition };
+    return { ...{ id: idGenerator(), layout: CssGrid.id, options }, ...definition };
   } else {
     return {};
   }

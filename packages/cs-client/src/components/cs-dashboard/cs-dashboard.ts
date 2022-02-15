@@ -3,9 +3,9 @@ import Component from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import {
   IDashboard,
-  IWidget,
-  guidGenerator,
+  IWidget,  
   MessageBusService,
+  idGenerator,
 } from "@csnext/cs-core";
 import "./cs-dashboard.css";
 import {
@@ -148,7 +148,7 @@ export class CsDashboard extends Vue {
       dashboard._loading = true;
     }
     if (!dashboard.id) {
-      dashboard.id = guidGenerator();
+      dashboard.id = idGenerator();
     }
     if (!dashboard.events) {
       dashboard.events = new MessageBusService();

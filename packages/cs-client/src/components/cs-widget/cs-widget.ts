@@ -8,6 +8,7 @@ import {
   guidGenerator,
   WidgetOptions,
   Topics,
+  idGenerator,
 } from "@csnext/cs-core";
 import resize from "vue-resize-directive";
 import "./cs-widget.css";
@@ -221,14 +222,14 @@ export class CsWidget extends Vue {
     if (this.widget.widgets && this.widget.widgets.length > 0) {
       this.activeWidget = this.widget.widgets[0];
       const toggleMenu: IMenu = {
-        id: guidGenerator(),
+        id: idGenerator(),
         title: this.activeWidget.title,
         items: [],
         outlined: true,
       };
       for (const w of this.widget.widgets) {
         toggleMenu.items!.push({
-          id: guidGenerator(),
+          id: idGenerator(),
           title: this.$cs.Translate(w.title || ""),
           action: () => {
             this.setActiveWidget(w);
