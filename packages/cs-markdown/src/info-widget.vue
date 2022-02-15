@@ -52,7 +52,6 @@ import { Component } from 'vue-property-decorator';
 import { AppState, WidgetBase } from '@csnext/cs-client';
 import simplebar from 'simplebar-vue';
 import { IDashboard, IDatasource, IMessageBusCallback, Info } from '@csnext/cs-core';
-import Vue from 'vue';
 import axios from 'axios';
 import { CsMarkdown } from './index';
 
@@ -90,12 +89,10 @@ export default class InfoWidget extends WidgetBase {
       if (u && u.data) {
         const processedData = u.data.replace(/(!\[.*?\]\()(.+?)(\))/g, (wholeData: string, a: string, b: string, c: string) => {
           return `${a}${markdownUrl}/${b}${c}`;
-        });
-        console.log(processedData);
+        });        
         return processedData;
       } else {
-        return '';
-        // Vue.set(this, 'mdContent', `Could not load ${fileUrl}`);
+        return '';        
       }
     } catch (e) {
       return '';
