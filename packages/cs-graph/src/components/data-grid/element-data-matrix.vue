@@ -1,5 +1,6 @@
 <template>
   <simplebar>
+    Matrtix
     <v-btn @click="toggleAxis()">toggle</v-btn>
     <div class="matrix" :style="matrixStyle" v-if="boxes !== null">
       <div
@@ -8,7 +9,7 @@
         :style="getHorCellStyle(hor, indh)"
         :class="{ 'focus-hor': focus_hor === indh }"
       >
-        {{ hor.properties.name }}
+        {{ getTitle(hor, 'horizontal') }}
         <strong>{{ hor.properties[options.horizontalParentProperty] }}</strong>
       </div>
 
@@ -18,7 +19,7 @@
         :style="getVerCellStyle(ver, indh)"
         :class="{ 'focus-ver': focus_ver === indh }"
       >
-        {{ ver.properties.name }}
+        {{ getTitle(ver, 'vertical') }}
       </div>
 
       <!-- matrix {{ boxes.length}} -->
@@ -28,7 +29,7 @@
         class="matrix-box"
         :style="getCellStyle(box)"
         :class="{
-          'focus-hor': focus_hor === box.pos_hor || focus_ver === box.pos_ver
+          'focus-hor': focus_hor === box.pos_hor || focus_ver === box.pos_ver,
         }"
         @mouseenter="enterBox(box)"
         @mouseleave="leaveBox(box)"
@@ -102,12 +103,18 @@ import { AppState, WidgetBase } from '@csnext/cs-client';
 import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
 
 // import { FeatureType } from "../../classes";
-import { FeatureType, GraphDatasource, GraphElement, PropertyType, PropertyValueType } from '@csnext/cs-data';
+import {
+  FeatureType,
+  GraphDatasource,
+  GraphElement,
+  PropertyType,
+  PropertyValueType,
+} from '@csnext/cs-data';
 import simplebar from 'simplebar-vue';
 
 import { AppStateBase, guidGenerator, WidgetOptions } from '@csnext/cs-core';
 import Vue from 'vue';
-import { DocDatasource, DataMatrixOptions, GridView } from '../..';
+import { DocDatasource, DataMatrixOptions, GridView } from '@csnext/cs-graph';
 
 // import Placeholder from "@tiptap/extension-placeholder";
 
@@ -124,8 +131,8 @@ export type Box = {
   components: {
     simplebar,
     DataInfoPanel,
-    NodeLink
-  }
+    NodeLink,
+  },
 })
 export default class ElementDataGrid extends WidgetBase {
   public featureType: FeatureType | null = null;
@@ -157,6 +164,13 @@ export default class ElementDataGrid extends WidgetBase {
     this.updateItems();
   }
 
+  private getTitle(el: GraphElement, axis: 'horizontal' | 'vertical') {
+    if (el.type === 'edge') {
+      return el.to?.properties?.name;
+    }
+    return el.properties?.name;
+  }
+
   public enterBox(box: Box) {
     this.focus_hor = box.pos_hor;
     this.focus_ver = box.pos_ver;
@@ -168,20 +182,22 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public get options(): DataMatrixOptions {
-    return (this.widget?.options as DataMatrixOptions) || new DataMatrixOptions();
+    return (
+      (this.widget?.options as DataMatrixOptions) || new DataMatrixOptions()
+    );
   }
 
   public getHorCellStyle(hor: GraphElement, pos: number) {
     return {
       'grid-row': 1,
-      'grid-column': pos + 2
+      'grid-column': pos + 2,
     };
   }
 
   public getVerCellStyle(ver: GraphElement, pos: number) {
     return {
       'grid-row': pos + 2,
-      'grid-column': 1
+      'grid-column': 1,
     };
   }
 
@@ -190,29 +206,29 @@ export default class ElementDataGrid extends WidgetBase {
       'grid-row': box.pos_ver + 2,
       'grid-column': box.pos_hor + 2,
       border: 1,
-      padding: 2
+      padding: 2,
     };
   }
 
   public updateItems() {
     if (
       !this.source ||
-      !this.options?.horizontalFilter ||
-      !this.options.verticalFilter ||
+      // !this.options?.horizontalFilter ||
+      // !this.options.verticalFilter ||
       !this.options.horizontalType ||
       !this.options.verticalType
     ) {
       return;
     }
-    console.log('update items');
+    console.log('update matrix');
     this.verticals = this.source.getClassElements(
       this.options.horizontalType,
-      true,
+      false,
       this.options.horizontalFilter
     );
     this.horizontals = this.source.getClassElements(
       this.options.verticalType,
-      true,
+      false,
       this.options.verticalFilter
     );
     // this.boxes = [];
@@ -220,19 +236,35 @@ export default class ElementDataGrid extends WidgetBase {
     let verpos = 0;
     let horpos = 0;
 
-    for (const ver of this.verticals) {
-      for (const hor of this.horizontals) {
-        b.push({
-          title: '',
-          pos_ver: verpos,
-          pos_hor: horpos,
-          el_ver: ver,
-          el_hor: hor
-        });
-        horpos += 1;
+    
+
+    if (this.options.matrixStyle === 'relation' && this.options.valueType) {
+
+      // find all relations
+      let relations = this.source.getClassElements(this.options.valueType);
+
+      for (const ver of this.verticals) {
+        for (const hor of this.horizontals) {
+
+          // find value elements
+          let value = relations.find(r => {
+            // return (r._outgoing?.)
+
+          })
+          
+              b.push({
+            title: '',
+            pos_ver: verpos,
+            pos_hor: horpos,
+            el_ver: ver,
+            el_hor: hor,
+          });
+          
+          horpos += 1;
+        }
+        horpos = 0;
+        verpos += 1;
       }
-      horpos = 0;
-      verpos += 1;
     }
 
     Vue.set(this, 'boxes', b);

@@ -21,7 +21,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@ag-grid-community/core": "27.0.0",
+        "@ag-grid-community/core": "27.0.1",
         "@ag-grid-community/vue": "27.0.0",
         "@antv/g6": "4.5.5",
         "@csnext/cs-client": "^0.0.131",
@@ -41,7 +41,7 @@
         "@tiptap/suggestion": "2.0.0-beta.90",
         "@tiptap/vue-2": "2.0.0-beta.77",
         "@turf/distance": "^6.5.0",
-        "ag-grid-community": "27.0.0",
+        "ag-grid-community": "27.0.1",
         "ag-grid-vue": "27.0.0",
         "global": "^4.4.0",
         "vue-scroll-stop": "0.1.5",

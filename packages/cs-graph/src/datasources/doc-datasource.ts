@@ -17,7 +17,7 @@ import EntityEditor from '../components/entity-management/entity-editor.vue';
 import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from '../plugins/EntityParser';
 import { EntityList } from '../components/document/node-entities';
-import { TimeDataSource, guidGenerator, IFormOptions, IWidget } from '@csnext/cs-core';
+import { TimeDataSource, IFormOptions, IWidget, idGenerator } from '@csnext/cs-core';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 import RelationEditor from './../components/document-management/relation-editor.vue';
@@ -559,6 +559,20 @@ export class DocDatasource extends GraphDatasource {
 
           if (rule._featureType && rule.featureType && !rule.disabled) {
             if (element) {
+              if (element?._elements) {
+                for (const o of Object.values(element._elements)) {
+                  let elements = Array.isArray(o) ? o : [o];
+                  for (const el of elements) {                  
+                    if (el.classId === rule.featureType) {
+                      this.addVisibleElement(preset, el);
+                      if (rule.outgoingRules) {
+                        this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                      }
+                    }
+                  }
+                }
+              }
+
               if (element._outgoing)
                 for (const out of element._outgoing) {
                   if (out.to?._featureType?._inheritedTypes && out.to._featureType._inheritedTypes.includes(rule.featureType)) {
@@ -597,6 +611,7 @@ export class DocDatasource extends GraphDatasource {
           break;
         case 'RELATION':
           if (rule.relationType && !rule.disabled) {
+            
             if (element?._outgoing) {
               for (const o of element._outgoing) {
                 if (o.classId === rule.relationType && o.to) {
@@ -1099,7 +1114,7 @@ export class DocDatasource extends GraphDatasource {
 
   public async initUser() {
     // get all users of type person
-    const users = this.getClassElements('user', true, {
+    const users = this.getClassElements('agent', true, {
       hasObjectProperties: [{ property: 'agent_type', operator: '==', value: 'person' }],
     });
 
@@ -1107,7 +1122,7 @@ export class DocDatasource extends GraphDatasource {
     if (users.length === 0) {
       try {
         const newUser = await this.addNewNode({
-          classId: 'user',
+          classId: 'agent',
           properties: {
             name: 'default',
             agent_type: 'person',
@@ -1455,7 +1470,7 @@ export class DocDatasource extends GraphDatasource {
       name = await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder);
     }
     const node = await this.addNewNode({
-      id: `${type.type}-${guidGenerator()}`,
+      id: `${type.type}-${idGenerator()}`,
       properties: { ...newItem, name },
       classId: type.type,
     });
@@ -1552,6 +1567,7 @@ export class DocDatasource extends GraphDatasource {
           if (notify) {
             $cs.triggerNotification({
               title: 'Node removed',
+              icon: "mdi-delete",
               text: element.properties?.name,
             });
           }
@@ -1610,6 +1626,7 @@ export class DocDatasource extends GraphDatasource {
         title: $cs.Translate('NODE_SAVED'),
         text: element.properties?.name,
         timeout: 500,
+        icon: "mdi-content-save",
         group: true,
       });
     } catch (err) {
@@ -1672,7 +1689,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public async saveEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
-    const i = guidGenerator();
+    const i = idGenerator();
     $cs.loader.addLoader(`saveedge-${i}`);
     if (this.storage?.saveElement) {
       try {
@@ -1713,7 +1730,7 @@ export class DocDatasource extends GraphDatasource {
   public async addNewNode(element: GraphElement): Promise<GraphElement> {
     let res = this;
     if (!element.id) {
-      element.id = element.classId + '-' + guidGenerator();
+      element.id = element.classId + '-' + idGenerator();
     }
     if (!element.properties) {
       element.properties = {};
