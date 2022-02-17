@@ -208,8 +208,8 @@ import mapboxgl, { MapboxOptions, GeoJSONSource, GeoJSONSourceRaw, SymbolLayer, 
 import { ILayerStyle, MapboxStyleDefinition, MapboxStyleSwitcherControl, MapOptions } from '@csnext/cs-map';
 // import { GraphMapOptions, GraphSettings, ITool, DefaultElementCard, DocDatasource, ElementCardManager } from '@csnext/cs-graph';
 // import interact from 'interactjs';
-// import GraphSettings from './graph-settings.vue';
-import { ITool, DefaultElementCard, DocDatasource, GraphMapOptions, ElementCardManager, GraphSettings } from '../..';
+import GraphSettings from './graph-settings.vue';
+import { ITool, DefaultElementCard, ElementCardManager, DocDatasource, GraphMapOptions } from '../..';
 
 import Vue from 'vue';
 import { FilterGraphElement, GraphDatasource, GraphElement, GraphPreset, IGraphFilter } from '@csnext/cs-data';
@@ -628,6 +628,7 @@ export default class GraphMap extends WidgetBase {
                       properties: {
                         id: element.id,
                         color: color,
+                        'icon-image': featureType.icon
                       },
                       geometry
                     });
@@ -702,14 +703,7 @@ export default class GraphMap extends WidgetBase {
                 'text-color': '#FFFF00',
               },
               layout: {
-                'text-line-height': 1, // this is to avoid any padding around the "icon"
-                'text-padding': 0,
-                'text-anchor': 'bottom', // change if needed, "bottom" is good for marker style icons like in my screenshot,
-                'text-allow-overlap': true, // assuming you want this, you probably do
-                'text-field': String.fromCodePoint(0xe592), //\F03EB   '\f073', // IMPORTANT SEE BELOW: -- this should be the unicode character you're trying to render as a string -- NOT the character code but the actual character,
-                'icon-optional': true, // since we're not using an icon, only text.
-                'text-font': ['Material Design Icons'], // see step 1 -- whatever the icon font name,
-                'text-size': 18, // or whatever you want -- dont know if this can be data driven...
+                'icon-image': ['get', 'icon-image']
               },
             } as SymbolLayer;
 
@@ -746,8 +740,21 @@ export default class GraphMap extends WidgetBase {
               }
             });
 
+            this.map.on('styleimagemissing', (e: any) => {
+              console.log('missing image');              
+              if (this.map && e.id && e.id.startsWith('mdi-')) {
+                this.map.loadImage(`images/mdi/${e.id}.png`, (error: any, image: any) => {
+                if (error) throw error;
+                if (this.map && !this.map.hasImage(e.id)) { this.map.addImage(e.id, image); }
+              });              
+
+              }
+              
+            });
+
+
             this.map.addLayer(layer);
-            // this.map.addLayer(symbolLayer);
+            this.map.addLayer(symbolLayer);
 
             this.map.on('click', layerId, (e: mapboxgl.MapLayerMouseEvent) => {
               if (this.map && source && e.features && e.features.length > 0) {
