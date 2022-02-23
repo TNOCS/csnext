@@ -714,9 +714,9 @@ export class GraphController {
   }
 
   @Post('/storewithinterval')
-  storewithinterval(@Body() body: any[], @Query('interval') interval?: number | string, @Query('agent') agent?: string) {
+  storewithinterval(@Body() body: any[], @Query('interval') interval?: number | string, @Query('burst') burst?: number | string, @Query('agent') agent?: string) {
     return new Promise(async (resolve, reject) => {
-      resolve(this.graph.storeWithInterval(body, +interval || 1000, agent));
+      resolve(this.graph.storeWithInterval(body, +interval || 1000, +burst || 1, agent));
     });
   }
 
