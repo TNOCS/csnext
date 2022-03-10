@@ -312,9 +312,9 @@ export default class FeatureTypeEditor extends WidgetBase {
           canAdd: true,
           canDelete: true,
           arrayFieldType: 'object',
-          // arrayFilter: (v: PropertyType[]) => {
-          //   return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
-          //   },
+          arrayFilter: (v: PropertyType[]) => {
+            return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
+            },
           newItem: () => {
             return new PropertyType();
           },

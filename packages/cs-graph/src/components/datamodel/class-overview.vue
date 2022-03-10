@@ -1,12 +1,12 @@
 <template>
   <simplebar class="full-page" v-if="source">
-    <v-data-table :headers="headers" sort-by="count" @click:row="editEntity" sort-desc show-group-by :search="search" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
+    <v-data-table :headers="headers" sort-by="count" @click:row="editEntity" sort-desc show-group-by :search="source.dataModelFilter" :disable-pagination="true" :items="Object.values(source.featureTypes)" item-key="type" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>{{$cs.Translate('FEATURE_TYPES')}}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
+          <v-text-field          
+            v-model="source.dataModelFilter"
             style="margin-right: 10px"
             append-icon="mdi-magnify"
             label="Search"
@@ -61,8 +61,7 @@ import { FeatureType } from "@csnext/cs-data";
 @Component({
   components: { simplebar }
 })
-export default class ClassOverview extends WidgetBase {
-  public search = "";
+export default class ClassOverview extends WidgetBase {  
   public showNodes = true;
   public showEdges = true;
   public headers = [
@@ -127,6 +126,12 @@ export default class ClassOverview extends WidgetBase {
   }
 
   public contentLoaded() {
+    if (!this.source) {
+      return;
+    }
+    if (!this.source.dataModelFilter) {
+      this.source.dataModelFilter = '';
+    }
     if (this.widget.options) {
       // let selectionSizePlugin = new Plugin({
       //   view(editorView) {
