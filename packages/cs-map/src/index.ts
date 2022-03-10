@@ -34,6 +34,8 @@ export * from './components/data/data-info-panel/data-info-panel';
 export * from './components/data/data-sections/node-link';
 export * from './components/data/data-sections/relation-line-section';
 export * from './components/data/data-sections/relation-list-sections';
+export * from './components/data/data-sections/simple-relation-list-section';
+export * from './components/data/data-sections/simple-relation-line-section';
 export * from './controls/style-switcher/style-switcher';
 import PropValue from './components/prop-value';
 export { PropValue }
