@@ -1,11 +1,13 @@
-<div v-if="field">
-    <template v-if="field.type === 'component'">
+<div v-if="field" class="form-field-item" >
+  <div class="field-icon"><v-icon>{{field.icon || 'mdi-pencil'}}</v-icon></div>
+  <div class="field-editor">
+  <template v-if="field.type === 'component'">
     <component :is="getComponent(field)" :target="target" :field="field" @updated="fieldUpdated(field)"></component>
   </template>
-    <template v-if="field.type === 'button-trigger'">
+  <template v-if="field.type === 'button-trigger'">
     <v-btn icon @click="triggerClick(field)"><v-icon>{{field.icon}}</v-icon></v-btn>
   </template>
-    <template v-if="field.type === 'imagelist'">
+  <template v-if="field.type === 'imagelist'">
     <v-combobox
       :items="items"
       v-model="target[field._key]"
@@ -29,8 +31,8 @@
         >
       </template>
     </v-combobox>
-    </template>
-    <template v-if="field.type === 'colorpicker'">
+  </template>
+  <template v-if="field.type === 'colorpicker'">
     <!-- <v-text-field v-model="target[field._key]"></v-text-field> -->
     <v-menu :close-on-content-click="false" max-width="290">
       <template v-slot:activator="{ on }">
@@ -38,10 +40,10 @@
           <v-icon slot="append" :color="ColorValue">color_lens</v-icon>
         </v-text-field>
       </template>
-    <v-color-picker v-model="ColorValue" show-swatches mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>
+      <v-color-picker v-model="ColorValue" show-swatches mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>
     </v-menu>
-    </template>
-    <template v-if="field.type === 'rating'">
+  </template>
+  <template v-if="field.type === 'rating'">
     <div>{{ $cs.Translate(field.title) }}</div>
     <v-rating v-model="target[field._key]" :clearable="field.clearable" :length="field.max-field.min+1" @input="fieldUpdated(field)">
       <!-- <template v-slot:item="props">
@@ -50,9 +52,9 @@
                     </v-icon>
                 </template> -->
     </v-rating>
-    </template>
+  </template>
 
-    <template v-if="field.type === 'datepicker'">
+  <template v-if="field.type === 'datepicker'">
     <v-layout>
       <v-menu v-model="dateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
@@ -61,13 +63,19 @@
             <v-text-field v-model="DateValue" :label="$cs.Translate(field.title)" @blur="fieldUpdated(field)" type="date"></v-text-field>
           </v-layout>
         </template>
-    <v-date-picker v-model="DateValue" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
-    </v-menu>
+        <v-date-picker
+          v-model="DateValue"
+          @input="dateMenu = false;fieldUpdated(field)"
+          color="primary"
+          header-color="primary"
+          :locale="field.locale"
+        ></v-date-picker>
+      </v-menu>
     </v-layout>
     <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
                 v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>    -->
-    </template>
-    <template v-if="field.type === 'datetimepicker'">
+  </template>
+  <template v-if="field.type === 'datetimepicker'">
     <v-layout>
       <v-menu v-model="dateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
@@ -82,9 +90,17 @@
             ></v-text-field>
           </v-layout>
         </template>
-    <v-date-picker v-if="!field.readonly" v-model="DateValue" value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
-    </v-menu>
-    <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+        <v-date-picker
+          v-if="!field.readonly"
+          v-model="DateValue"
+          value="YY-mm-dd"
+          @input="dateMenu = false;fieldUpdated(field)"
+          color="primary"
+          header-color="primary"
+          :locale="field.locale"
+        ></v-date-picker>
+      </v-menu>
+      <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
           <v-layout>
             <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-clock-outline</v-icon></v-btn>
@@ -97,13 +113,21 @@
             ></v-text-field>
           </v-layout>
         </template>
-        <v-time-picker v-if="!field.readonly" v-model="TimeValue" format="24hr" @click:minute="timeMenu = false;fieldUpdated(field)" color="primary" header-color="primary" scrollable></v-time-picker>
-    </v-menu>
+        <v-time-picker
+          v-if="!field.readonly"
+          v-model="TimeValue"
+          format="24hr"
+          @click:minute="timeMenu = false;fieldUpdated(field)"
+          color="primary"
+          header-color="primary"
+          scrollable
+        ></v-time-picker>
+      </v-menu>
     </v-layout>
     <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
                 v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>    -->
-    </template>
-    <template v-if="field.type === 'epochdatetimepicker'">
+  </template>
+  <template v-if="field.type === 'epochdatetimepicker'">
     <v-layout>
       <v-menu v-model="dateMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
@@ -118,9 +142,17 @@
             ></v-text-field>
           </v-layout>
         </template>
-    <v-date-picker v-if="!field.readonly" v-model="DateValue" value="YY-mm-dd" @input="dateMenu = false;fieldUpdated(field)" color="primary" header-color="primary" :locale="field.locale"></v-date-picker>
-    </v-menu>
-    <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
+        <v-date-picker
+          v-if="!field.readonly"
+          v-model="DateValue"
+          value="YY-mm-dd"
+          @input="dateMenu = false;fieldUpdated(field)"
+          color="primary"
+          header-color="primary"
+          :locale="field.locale"
+        ></v-date-picker>
+      </v-menu>
+      <v-menu v-model="timeMenu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="290px">
         <template v-slot:activator="{ on }">
           <v-layout>
             <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-clock-outline</v-icon></v-btn>
@@ -133,13 +165,21 @@
             ></v-text-field>
           </v-layout>
         </template>
-        <v-time-picker v-if="!field.readonly" v-model="TimeValue" format="24hr" @click:minute="timeMenu = false;fieldUpdated(field)" color="primary" header-color="primary" scrollable></v-time-picker>
-    </v-menu>
+        <v-time-picker
+          v-if="!field.readonly"
+          v-model="TimeValue"
+          format="24hr"
+          @click:minute="timeMenu = false;fieldUpdated(field)"
+          color="primary"
+          header-color="primary"
+          scrollable
+        ></v-time-picker>
+      </v-menu>
     </v-layout>
     <!-- <v-datetime-picker :required="field.required" :dateLabel="$cs.Translate(c)" :timeLabel="$cs.Translate(field.subTitle)"
             v-model="target[field._key]" @change="fieldUpdated(field)"></v-datetime-picker>    -->
-    </template>
-    <template v-if="field.type === 'boolean'">
+  </template>
+  <template v-if="field.type === 'boolean'">
     <v-checkbox
       v-model="target[field._key]"
       :label="$cs.Translate(field.title)"
@@ -150,18 +190,18 @@
       @change="fieldUpdated(field)"
     ></v-checkbox>
   </template>
-    <template v-if="field.type === 'selection'">
+  <template v-if="field.type === 'selection'">
     <v-autocomplete
       v-if="field.array"
-                :items="items"
-                v-model="target[field._key]"
-                multiple
-                :search-input.sync="search"
-                :label="$cs.Translate(field.title)"
-                :disabled="field.readonly"
-                @change="fieldUpdated(field)"
-            ></v-autocomplete>
-    
+      :items="items"
+      v-model="target[field._key]"
+      multiple
+      :search-input.sync="search"
+      :label="$cs.Translate(field.title)"
+      :disabled="field.readonly"
+      @change="fieldUpdated(field)"
+    ></v-autocomplete>
+
     <v-autocomplete
       v-else
       :items="items"
@@ -174,7 +214,7 @@
       @change="fieldUpdated(field)"
     ></v-autocomplete>
   </template>
-    <template v-if="field.type === 'combobox'">
+  <template v-if="field.type === 'combobox'">
     <v-combobox
       :items="items"
       v-model="target[field._key]"
@@ -192,7 +232,7 @@
                     
                 item-value="value"  -->
   </template>
-    <template v-if="field.type === 'combobox-objects'">
+  <template v-if="field.type === 'combobox-objects'">
     <v-combobox
       :items="items"
       v-model="selectedObject"
@@ -211,7 +251,7 @@
                         
                     item-value="value"  -->
   </template>
-    <template v-if="field.type === 'textarea'">
+  <template v-if="field.type === 'textarea'">
     <v-textarea
       v-if="field._key"
       v-model="target[field._key]"
@@ -238,7 +278,7 @@
       @change="fieldUpdated(field)"
     ></v-textarea>
   </template>
-    <template v-if="field.type === 'slider'">
+  <template v-if="field.type === 'slider'">
     <v-slider
       enabled
       :hint="field.hint"
@@ -252,7 +292,7 @@
       @change="fieldUpdated(field)"
     ></v-slider>
   </template>
-    <template v-if="field.type === 'checkbox'">
+  <template v-if="field.type === 'checkbox'">
     <v-checkbox
       :label="$cs.Translate(field.title)"
       :hint="field.hint"
@@ -262,7 +302,18 @@
       @change="fieldUpdated(field)"
     ></v-checkbox>
   </template>
-    <template v-if="field.type === 'checkboxes-horizontal'">
+  <template v-if="field.type === 'switch'">
+    <v-switch
+      inset
+      :label="$cs.Translate(field.title)"
+      :hint="field.hint"
+      :persistentHint="field.persistentHint"
+      v-model="target[field._key]"
+      :disabled="field.readonly"
+      @change="fieldUpdated(field)"
+    ></v-switch>
+  </template>
+  <template v-if="field.type === 'checkboxes-horizontal'">
     {{ $cs.Translate(field.title) }}
     <v-layout>
       <v-checkbox
@@ -276,7 +327,7 @@
       ></v-checkbox>
     </v-layout>
   </template>
-    <template v-if="field.type === 'number'">
+  <template v-if="field.type === 'number'">
     <v-text-field
       v-if="field._key"
       v-model.number="target[field._key]"
@@ -303,7 +354,7 @@
       @change="fieldUpdated(field)"
     ></v-text-field>
   </template>
-    <template v-if="field.type === 'array'">
+  <template v-if="field.type === 'array'">
     <template>
       {{ field.title }}
       <v-btn icon text v-if="field.canAdd" @click="addObject(field)">
@@ -326,56 +377,56 @@
         </v-card>
       </v-hover>
     </template>
-    </template>
-    <template v-if="field.type === 'keyvalue'">
+  </template>
+  <template v-if="field.type === 'keyvalue'">
     <template v-for="(item,index) in target[field._key]">
       <cs-form :data="target[item]" :formdef.sync="field.arrayType"></cs-form>
     </template>
-    </template>
-    <div v-if="field.type === 'keysobject'" class="keys-object-form-field">
-        <v-layout>
-            <span v-if="!field.hideTitle">{{ $cs.Translate(field.title) }}</span>
-            <v-spacer></v-spacer>
-            <!-- <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)">
+  </template>
+  <div v-if="field.type === 'keysobject'" class="keys-object-form-field">
+    <v-layout>
+      <span v-if="!field.hideTitle">{{ $cs.Translate(field.title) }}</span>
+      <v-spacer></v-spacer>
+      <!-- <v-btn icon text v-if="field.canAdd" @click="addKeyObject(field)">
                 <v-icon>mdi-plus</v-icon>
             </v-btn> -->
-        </v-layout>
-        <div>
-            <v-expansion-panels multiple :accordion="true">
-                <v-expansion-panel v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" :key="key">
-                    <v-expansion-panel-header class="form-title">
-                        <v-layout>
-                            <template v-if="field.canEditKey">
+    </v-layout>
+    <div>
+      <v-expansion-panels multiple :accordion="true">
+        <v-expansion-panel v-for="(item,key, index) in target[field._key]" class="keys-object-form-fields" :key="key">
+          <v-expansion-panel-header class="form-title">
+            <v-layout>
+              <template v-if="field.canEditKey">
                 <!-- {{ target[field._key] }} -->
                 <v-layout>
                   <v-text-field :value="key" :label="$cs.Translate(field.title)" @change="keyObjectChange(field, key, $event)"></v-text-field>
                   <!-- <v-btn icon text right @click="updateKey(key, field)"><v-icon>save</v-icon></v-btn> -->
                 </v-layout>
               </template>
-                            <template v-else> {{ $cs.Translate(field.title) }} </template>
-                            <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)">
-                                <v-icon>mdi-delete</v-icon>
-                            </v-btn>
-                        </v-layout>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <cs-form :data="target[field._key][key]"></cs-form>
-                    </v-expansion-panel-content>
-                </v-expansion-panel>
-            </v-expansion-panels>
-        </div>
+              <template v-else> {{ $cs.Translate(field.title) }} </template>
+              <v-btn icon text right v-if="field.canDelete" @click="deleteKeyFromObject(key, field)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-layout>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <cs-form :data="target[field._key][key]"></cs-form>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </div>
-    <template v-if="field.type === 'object'">
+  </div>
+  <template v-if="field.type === 'object'">
     <cs-form :data="target[field._key]" :formdef.sync="field.form" @saved="fieldUpdated(field)"></cs-form>
   </template>
-    <template v-if="field.type === 'form'">
+  <template v-if="field.type === 'form'">
     <div>
       {{ $cs.Translate(field.title) }}
       <cs-form :data="target[field._key]"></cs-form>
     </div>
   </template>
-    <div v-else>
-        <template v-if="field.array && field.type !== 'selection'">
+  <div v-else>
+    <template v-if="field.array && field.type !== 'selection'">
       <v-layout v-for="(row, ri) in target[field._key]" :key="ri"
         ><component
           class="input-component"
@@ -389,12 +440,14 @@
         <v-tooltip v-if="ri === target[field._key].length-1">
           <template v-slot:activator="{ on }">
             <v-btn icon @click="addArrayItem()"><v-icon>mdi-plus</v-icon></v-btn>
-          </template> {{ $cs.Translate("ADD_EXTRA_ENTRY") }}
+          </template>
+          {{ $cs.Translate("ADD_EXTRA_ENTRY") }}
         </v-tooltip>
-        </v-layout>
-        </template>
-        <template v-else>
+      </v-layout>
+    </template>
+    <template v-else>
       <component :is="getEditor()" :target="target" @changed="fieldUpdated(field)" :field="field"></component>
     </template>
-    </div>
+  </div>
+</div>
 </div>

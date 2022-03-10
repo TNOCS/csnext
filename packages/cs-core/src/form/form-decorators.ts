@@ -9,6 +9,7 @@ export interface IFormOptions {
   showToolbar?: boolean;
   toolbarClass?: string;
   showPanels?: boolean;
+  icon?: string;
   verbose?: boolean;
   isPanelOpen?: boolean;
   optionalSupport?: boolean;
@@ -57,11 +58,13 @@ export interface IFormFieldOptions extends IFormFieldBaseOptions {
   | 'object'
   | 'selection'  
   | 'keyvalue'
+  | 'switch'
   | 'form'
   | 'union'
   | 'keysobject'
   | 'datetimepicker'
   | 'url'
+  | 'group-buttons'
   | 'epochdatetimepicker'
   | 'datepicker'
   | 'button-trigger'

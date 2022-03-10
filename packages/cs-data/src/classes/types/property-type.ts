@@ -29,6 +29,8 @@ export class PropertyType {
     public description?: string;
     @FormField({ title: 'Hint', type: 'string', optional: true })
     public hint?: string;
+    @FormField({ title: 'Icon', type: 'string', optional: true })
+    public icon?: string;
     public count?: number;
     @FormField({ title: 'Default', type: 'number', group: 'number', optional: true })
     public default?: any;

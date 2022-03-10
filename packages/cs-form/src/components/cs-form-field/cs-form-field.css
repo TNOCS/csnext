@@ -1,6 +1,23 @@
 .timeline-container {
-    align-content: stretch;
-    height: 100%;
+  align-content: stretch;
+  height: 100%;
+}
+
+.form-field-item {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: left;
+}
+
+.field-icon {
+  width: 50px;
+  margin-top: 5px;
+}
+
+.field-editor {
+  width: 100%;
+  padding-right: 5px;
 }
 
 .form-array-card-item {
@@ -17,86 +34,83 @@
 }
 
 .v-input--checkbox {
-    margin-top: 0px;
-    padding-top: 0px;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
-
-    .v-color-picker__controls {
-      .v-color-picker__preview {
-        .v-color-picker__sliders {
-          .v-color-picker__alpha {
-            display: none;
-          }
-        }
-      }
-      .v-color-picker__edit {
-        .v-color-picker__input:last-child {
-          display: none;
-        }
+.v-color-picker__controls {
+  .v-color-picker__preview {
+    .v-color-picker__sliders {
+      .v-color-picker__alpha {
+        display: none;
       }
     }
-
+  }
+  .v-color-picker__edit {
+    .v-color-picker__input:last-child {
+      display: none;
+    }
+  }
+}
 
 .form-title {
-    font-weight: 600;
-    font-size: 125%;
+  font-weight: 600;
+  font-size: 125%;
 }
 
 .keys-object-form-field {
-    /* margin-left: 15px; */
+  /* margin-left: 15px; */
 }
 
 .keys-object-form-fields:hover {
-  border-left-style: solid;    
-    border-left-color: gray;
-    border-left-width: 4px;
-    margin-left:8px;
+  border-left-style: solid;
+  border-left-color: gray;
+  border-left-width: 4px;
+  margin-left: 8px;
 }
 
 .keys-object-form-fields {
-  padding-left:3px;
-  margin-left: 12px;  
+  padding-left: 3px;
+  margin-left: 12px;
 }
 
-
 .cs-form-base .v-expansion-panel__header {
-    padding: 0 !important;
+  padding: 0 !important;
 }
 
 .high-timeline-item {
-    background-color: red;
+  background-color: red;
 }
 
 .medium-timeline-item {
-    background-color: orange;
+  background-color: orange;
 }
 
 .low-timeline-item {
-    background-color: green;
+  background-color: green;
 }
 
 .nan-timeline-item {
-    background-color: gray;
+  background-color: gray;
 }
 
 .vis-item-content {
-    color: black;
+  color: black;
 }
 
 .vis-custom-time {
-    width: 6px;
+  width: 6px;
 }
 
 .timeline-custom-header {
-    width: 80px;
-    height: 50px;
-    background: black;
-    color: white;
-    position: fixed;
-    margin-left: 100px;
-    bottom: 100px;
-    transform: translateY(-25px);
-    left: 300px;
-    z-index: 100;
+  width: 80px;
+  height: 50px;
+  background: black;
+  color: white;
+  position: fixed;
+  margin-left: 100px;
+  bottom: 100px;
+  transform: translateY(-25px);
+  left: 300px;
+  z-index: 100;
 }

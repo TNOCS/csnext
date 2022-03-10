@@ -10,6 +10,7 @@ import format from 'date-fns/format';
 import StringEditor from '../fields/string-editor.vue';
 import ChipsEditor from '../fields/chips-editor.vue';
 import UrlEditor from '../fields/url-editor.vue';
+import GroupButtonsEditor from '../fields/group-buttons-editor.vue';
 @Component({
   name: 'cs-formfield',
   template: require('./cs-form-field.html'),
@@ -42,6 +43,7 @@ export class CsFormField extends Vue {
       case 'string': return StringEditor;
       case 'chips': return ChipsEditor;
       case 'url': return UrlEditor;
+      case 'group-buttons': return GroupButtonsEditor;
     }    
   }
 
