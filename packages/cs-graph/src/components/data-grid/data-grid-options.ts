@@ -2,12 +2,14 @@ import { IMenu, WidgetOptions } from '@csnext/cs-core';
 import { GraphElement, GraphFilter, IGraphFilter } from '@csnext/cs-data';
 
 export enum GridView {
+  list = 'list',
   table = 'table',
   cards = 'cards',
   calendar = 'calendar',
   tree = 'tree',
   news = 'news',
-  kanban = 'kanban'
+  kanban = 'kanban',
+  timeline_vertical = 'timeline_vertical'
 }
 
 export class NewRelation {
@@ -35,6 +37,7 @@ export class DataGridNewsOptions {
   dateProperty?: string;
 }
 
+
 export class DataGridKanbanOptions {
   public columnProperty?: string;  
   public columnRelation?: string;
@@ -45,11 +48,29 @@ export class DataGridKanbanOptions {
   public cardHeight?: string | number;
 }
 
+export class TimelineOptions {
+
+}
+
 export type NewRelationDefinition = {
   key: string;
   relationClassId?: string;
   toId?: string;
   fromId?: Function | string;
+}
+
+
+export class DataGridTableOptions {
+  public selectedHeaders?: DataGridHeader[];
+  public showHeader = true;
+  public showRowIcon? = true;
+  
+}
+
+export class DataGridTreeOptions {
+  public treeStructure?: string[];
+  public parentProperty?: string;
+  public baseTreeItem?: GraphElement;
 }
 
 export class DataGridOptions extends WidgetOptions {
@@ -58,32 +79,35 @@ export class DataGridOptions extends WidgetOptions {
   public askForName?: boolean;
   public askForNewForm?: boolean;
   public graphSelect?: boolean;
-  public selectedHeaders?: DataGridHeader[];
-  public showHeader = true;
+  
   public hideFilter? = false;
   public hideViewSwitch? = false;
-  public showRowIcon? = true;
   public onSelect?: (element: GraphElement) => {};
   public onAfterAdded?: (element: GraphElement) => Promise<any>;
   public defaultView: GridView = GridView.table;
-  public treeStructure?: string[];
-  public parentProperty?: string;
+  
+
   public graphPresetId?: string;
   public customSort?: (a: GraphElement, b: GraphElement) => number;
-  public baseTreeItem?: GraphElement;
+  
   public groupId?: string;
   public canDelete? = true;
   public canAdd?: boolean;
   public canEdit? = true;
+  public canSearch? = true;
+  public searchFilter?: string;
   public canSort? = false;
   public canGraph? = true;
   public canFilter? = false;
   public relationToggle?: DataGridRelationToggle;
   public calendarOptions?: DataGridCalendarOptions;
+  public tableOptions?: DataGridTableOptions;
   public checkboxProperty?: string;
   public syncMode?: 'normal' | 'follow' = 'normal';
   public newsOptions?: DataGridNewsOptions;
   public kanbanOptions?: DataGridKanbanOptions;
+  public timelineOptions?: TimelineOptions;
+  public treeOptions?: DataGridTreeOptions;
 
   /* This is a list of potential properties that are used to filter the data. */
   public filterProperties?: string[];
@@ -92,9 +116,9 @@ export class DataGridOptions extends WidgetOptions {
   
   public radialProperty?: string;
   public horizontalProperty?: string;
-  
+  public preset?: string;
 
-  public filter?: GraphFilter;
+  public filter?: GraphFilter;  
   public newItem?: any;
   public newRelations?: NewRelationDefinition[];
   public additionalActions?: IMenu[];
