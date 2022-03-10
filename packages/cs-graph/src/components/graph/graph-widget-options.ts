@@ -6,4 +6,5 @@ export class GraphWidgetOptions extends WidgetOptions {
     public preset?: string | GraphPreset;
     public openElementDetails?: boolean;
     public newRelations?: NewRelationDefinition[];
+    public enableFollowOptions?: boolean;
 }

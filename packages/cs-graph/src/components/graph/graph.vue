@@ -1,22 +1,12 @@
 <template>
-  <div v-if="source" style="position: aboslute; left: 0; right: 0; top: 0; bottom: 0">
-    <!-- <span v-if="activePreset._visibleNodes">{{activePreset._visibleNodes.length}}</span> -->
-    <!-- <v-tabs v-if="showTabs" v-model="tab">
-      <v-tab
-        v-for="(preset, pindx) in source.graphPresets"
-        :value="tab"
-        :key="pindx"
-      >
-        {{ preset.title }}
-      </v-tab>
-    </v-tabs> -->
-    <!-- <div id="kg-vis" class="graph-canvas"></div> -->
+  <div v-if="widget && source" style="position: aboslute; left: 0; right: 0; top: 0; bottom: 0">
+   
 
     <draggable @add="onDrop" :disabled="!dropEnabled" :sort="false" :options="dropOptions" class="landing-area">
-      <div id="kg-vis" class="graph-canvas"></div>
+      <div :id="'graph-' + widget.id" class="graph-canvas"></div>
     </draggable>
 
-    <cs-widget v-if="options.showInfoWidget && $cs.activeInfoWidget" class="graph-info-widget" :widget="$cs.activeInfoWidget"></cs-widget>
+    <!-- <cs-widget v-if="options.showInfoWidget && $cs.activeInfoWidget" class="graph-info-widget" :widget="$cs.activeInfoWidget"></cs-widget> -->
 
     <v-toolbar flat class="graph-menu" v-if="activePreset">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
@@ -38,31 +28,29 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <!-- <v-text-field
-            filled
-            rounded
+
+        <div  v-if="activePreset.properties.editor_mode === 'EDIT'">
+          <v-autocomplete
+            outlined
+            dense            
+            item-value="id"
+            v-model="defaultEdgeType"            
+            @change="selectDefaultEdge($event)"
+            class="default-edge-selection"
+            return-object
+            label="Edge"
+            item-text="title"
+            :items="edgeTypes"
+          >          
+          </v-autocomplete>
+          </div>
       
-            dense
-            class="graph-search"
-            prepend-inner-icon="mdi-magnify"
-          ></v-text-field> -->
         <v-layout v-if="activePreset && activePreset._stats" class="drag-types-container">
-          <!-- <v-menu v-model="pinMenu" :close-on-content-click="false" :nudge-width="200" offset-x>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-pin</v-icon>
-              </v-btn>
-            </template>
-
-            <v-card>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn text @click="pinMenu = false"> Cancel </v-btn>
-                <v-btn color="primary" text @click="pinMenu = false"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-menu> -->
+         
+         <v-slide-group
+      multiple
+      show-arrows
+    >
           <draggable v-model="activePreset._stats" @start="dropEnabled = true" @end="dropEnabled = false" :options="availableItems" :sort="false">
             <v-chip
               @click="toggleFeatureType(id)"
@@ -83,6 +71,7 @@
               </v-avatar>
             </v-chip>
           </draggable>
+         </v-slide-group>
         </v-layout>
         <v-spacer></v-spacer>
         <v-btn text>
@@ -105,24 +94,6 @@
           <v-icon>mdi-refresh</v-icon>
         </v-btn>
 
-        <!-- <v-btn @click="openEditor()" icon>
-          <v-icon>mdi-format-list-bulleted-type</v-icon>
-        </v-btn> -->
-        <!-- <v-overflow-btn      
-      :items="featureTypes"
-      label="Overflow Btn w/ segmented"
-      segmented
-      target="#dropdown-example-2"
-    ></v-overflow-btn> -->
-
-        <!-- <v-text-field
-            label="Outlined"
-            placeholder="Placeholder"
-            outlined
-            dense
-            prepend-inner-icon="mdi-magnify"
-          ></v-text-field> -->
-        <!-- <span v-if="activePreset">{{ activePreset.id }} - </span> -->
       </v-layout>
     </v-toolbar>
 
@@ -147,6 +118,9 @@
         </v-list-group>
       </v-list>
     </v-menu>
+    <v-card v-if="activeElement"  class="preview-element-card" >
+    <component :is="getElementCard(activeElement)" :source="source" :element="activeElement"></component>
+    </v-card>
   </div>
 </template>
 
@@ -160,12 +134,16 @@
   max-height: 100px;
 }
 
+.preview-element-card {
+  position: absolute;
+  left: 25px;
+  min-width: 300px;
+  min-height: 150px;
+  bottom: 25px;
+}
+
 .left-right-template {
   position: relative;
-  /* display: grid; */
-  /* background: red;
-  grid-template-columns: 50% 50%;
-  grid-template-areas: 'left right'; */
 }
 .graph-focus-date {
   position: absolute;
@@ -176,6 +154,11 @@
 
 .graph-toolbar-menu {
   align-items: center;
+}
+
+.default-edge-selection {
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
 .graph-menu {
@@ -264,6 +247,9 @@ import {
   IGraphFilter,
   FilterGraphElement,
   GraphLayout,
+  FeatureCollection,
+  FeatureType,
+  FeatureTypes,
 } from '@csnext/cs-data';
 import { IMenu } from '@csnext/cs-core';
 import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig } from '@antv/g6';
@@ -272,15 +258,16 @@ import { guidGenerator } from '@csnext/cs-core';
 import Vue from 'vue';
 import debounce from 'lodash/debounce';
 import { GraphWidgetOptions } from './graph-widget-options';
-import { DefaultElementCard, DocDatasource, GraphShape, mdiFont } from '../..';
+import { DefaultElementCard,  ElementCardManager, DocDatasource, GraphShape, mdiFont } from '../..';
 import GraphSettings from './graph-settings.vue';
 import draggable from 'vuedraggable';
 
-// import { GraphWidgetOptions, DefaultElementCard, DocDatasource, mdiFont, GraphSettings, GraphShape } from '@csnext/cs-graph';
+// import { ElementCardManager, GraphWidgetOptions, DefaultElementCard, DocDatasource, mdiFont, GraphSettings, GraphShape } from '@csnext/cs-graph';
 
 @Component({
   components: {
     draggable,
+    DefaultElementCard
   },
 })
 export default class NetworkGraph extends WidgetBase {
@@ -293,6 +280,9 @@ export default class NetworkGraph extends WidgetBase {
   public pinMenu = false;
   public activePreset?: FilterGraphElement | null = null;
   public dragInitialized = false;
+  public edgeTypes: FeatureType[] | null = null;
+  public defaultEdgeType: FeatureType | null = null;
+  private activeElement: GraphElement | null = null;  
 
   public dropEnabled = false;
   // private featureTypes?: string[] | null = null;
@@ -468,11 +458,7 @@ export default class NetworkGraph extends WidgetBase {
     let graphShapeAttr: string | undefined = undefined;
     let graphShape: GraphShape | undefined = undefined;
 
-    if (
-      !this.activePreset?.properties?.graphLayout?.disableCustomNodes &&
-      e._featureType?.attributes!['graph:node'] &&
-      this.source?.graphShapeDefinitions?.nodes
-    ) {
+    if (e._featureType?.attributes!['graph:node'] && this.source?.graphShapeDefinitions?.nodes) {
       graphShapeAttr = e._featureType?.attributes!['graph:node'];
       graphShape = this.source.graphShapeDefinitions.nodes.find((s) => s.name === graphShapeAttr);
     }
@@ -487,6 +473,7 @@ export default class NetworkGraph extends WidgetBase {
 
       let node = {
         id: e.id,
+        date: '2022', //e.properties?.created_time ?? new Date().getTime(),
         label:
           this.activePreset?.properties?.graphLayout?.hideNodeLabel || graphShape?.hideLabel
             ? undefined
@@ -527,7 +514,7 @@ export default class NetworkGraph extends WidgetBase {
         this.data?.nodes?.push(node);
         if (e._elements) {
           for (const el of Object.values(e._elements)) {
-            const checkElementLink = (el) => {
+            const checkElementLink = (el: GraphElement) => {
               const toElement = this.activePreset!._visibleNodes!.includes(el);
               if (toElement) {
                 console.log('create link ' + el.id);
@@ -565,6 +552,9 @@ export default class NetworkGraph extends WidgetBase {
             }
           }
         }
+
+        
+
       } else {
         this.graph.update(node.id, node);
         this.data.nodes![existingIndex] = node;
@@ -574,7 +564,55 @@ export default class NetworkGraph extends WidgetBase {
     }
   }
 
+  private updatePropEdge(from: GraphElement, to: GraphElement) {
+    
+    if (!this.data || !this.graph || !this.source || !this.activePreset || !from.id || !to.id) {
+      return;
+    }
+
+    let id = from.id + '-' + to.id;
+
+    let existing = this.data.edges!.find((n) => n.id === id);
+
+    if (!existing) {
+      let edge = {
+        id,
+        source: from.id,
+        target: to.id,
+        type: 'default',
+        style: {
+          endArrow: {
+            path: G6.Arrow.triangle(),
+          },
+          lineWidth: 6,
+        },
+        labelCfg: {
+          autoRotate: true,
+          // refY: 10,
+          style: {
+            autoRotate: true,
+            fill: '#1890ff',
+            background: {
+              fill: '#ffffff',
+              stroke: '#9EC9FF',
+              padding: [2, 2, 2, 2],
+              radius: 2,
+            },
+            fontSize: this.activePreset?.properties?.graphLayout?.globalFontSize,
+          },
+        },
+        // hidden: this.source.getHidden(e, this.activePreset),        
+        // label: this.activePreset?.properties?.graphLayout?.hideEdgeLabel
+        //   ? undefined
+        //   : this.fittingString(label ?? '', 80, this.activePreset?.properties?.graphLayout?.globalFontSize ?? 12),
+        arrows: 'to',
+      } as any;
+      this.data?.edges?.push(edge);
+    }
+  }
+
   private updateEdge(e: GraphElement) {
+    
     if (!this.data || !this.graph || !this.source || !this.activePreset || !e.id) {
       return;
     }
@@ -616,7 +654,7 @@ export default class NetworkGraph extends WidgetBase {
         label: this.activePreset?.properties?.graphLayout?.hideEdgeLabel
           ? undefined
           : this.fittingString(label ?? '', 80, this.activePreset?.properties?.graphLayout?.globalFontSize ?? 12),
-        arrows: 'to',
+        // arrows: 'to',
       } as any;
       this.data?.edges?.push(edge);
     }
@@ -671,6 +709,10 @@ export default class NetworkGraph extends WidgetBase {
     }
     let layout: LayoutConfig = {
       type: this.activePreset.properties?.graphLayout.layout,
+      center: [500, 500],
+   tick: () => {
+              this.graph!.refreshPositions();
+            },
       preventOverlap,
     };
     switch (this.activePreset.properties.graphLayout.layout) {
@@ -681,6 +723,16 @@ export default class NetworkGraph extends WidgetBase {
           ...layout,
           ...{
             type: 'force',
+        //     gravity: 10,
+        // preventOverlap: true,
+        // speed: 25,
+        // nodeStrength: 100,
+        // nodeSpacing: 150,
+        // nodeSize: 15,
+        // clustering: false,
+        // collideStrength: 0.1,
+        // workerEnabled: false,
+        // linkDistance: 150,        
             gravity: this.activePreset.properties.graphLayout.gravity ?? 10,
             preventOverlap,
             speed: this.activePreset.properties.graphLayout.speed ?? 25,
@@ -689,20 +741,8 @@ export default class NetworkGraph extends WidgetBase {
             clustering: this.activePreset.properties.graphLayout.clustering ?? false,
             collideStrength: this.activePreset?.properties?.graphLayout.collideStrength ?? 0.1,
             workerEnabled: false,
-            linkDistance: this.activePreset?.properties?.graphLayout.linkDistance ?? 150,
-          },
-          // ...{
-          //   linkDistance: 50, // Edge length
-          //   nodeStrength: 30,
-          //   edgeStrength: 0.1,
-          //   collideStrength: 0.8,
-          //   preventOverlap: false,
-          //   nodeSize: 30,
-          //   alpha: 0.3,
-          //   alphaDecay: 0.028,
-          //   alphaMin: 0.01,
-          //   forceSimulation: null,
-          // },
+            linkDistance: this.activePreset?.properties?.graphLayout.linkDistance ?? 150            
+          }
         };
         break;
       case 'dagre':
@@ -727,33 +767,16 @@ export default class NetworkGraph extends WidgetBase {
       case 'gForce':
         layout = {
           ...layout,
-          ...{
-            // preventOverlap,
+          ...{            
             linkDistance: this.activePreset.properties.graphLayout.linkDistance ?? 1,
-            // maxIteration: this.activePreset.properties.graphLayout.maxIteration ?? 500,
-            // nodeStrength: this.activePreset.properties.graphLayout.nodeStrength ?? 1000,
-            // edgeStrength: this.activePreset.properties.graphLayout.edgeStrength ?? 200,
-            // gpuEnabled: true,
-            // workerEnabled: true,
             type: 'gForce',
-            gpuEnabled: true,
-            animate: false,
+            gpuEnabled: true,            
             maxIteration: 500,
-            gatherDiscrete: true,
-            // descreteGravity: 200,
-            // linkDistanceFunc: (e) => {
-            //   if (e.source === '0') return 10;
-            //   return 10;
-            // },
+            gatherDiscrete: true,            
             getMass: (d: any) => {
               if (d.id === '0') return 100;
               return 1;
-            },
-
-            // linkDistance: (e) => {
-            //   if (e.source === '0') return 100;
-            //   return 1;
-            // },
+            }
           },
         };
         break;
@@ -816,10 +839,13 @@ export default class NetworkGraph extends WidgetBase {
             clustering: this.activePreset.properties.graphLayout.clustering ?? false,
             clusterGravity: this.activePreset.properties.graphLayout.clusterGravity ?? 10,
             speed: this.activePreset.properties.graphLayout.speed ?? 5,
+            workerEnabled: false,
+            
             // maxIteration: 1000,
-            tick: () => {
-              this.graph!.refreshPositions();
-            },
+            // gpuEnabled: true
+            // tick: () => {
+            //   this.graph!.refreshPositions();
+            // },
           },
         };
         break;
@@ -930,6 +956,18 @@ export default class NetworkGraph extends WidgetBase {
           }
         }
       }
+
+      if (e._elements) {
+          for (const el of Object.values(e._elements)) {
+            if (Array.isArray(el)) {
+              for (const l of el) {
+                this.updatePropEdge(e, l);
+              }
+            } else {
+              this.updatePropEdge(e, el);
+            }
+          }
+        }
     }
 
     if (this.data.nodes) {
@@ -941,14 +979,14 @@ export default class NetworkGraph extends WidgetBase {
     }
 
     if (this.data.edges && this.source?.graph) {
-      this.data.edges = this.data.edges.filter((e) => e.id !== undefined && this.source!.graph!.hasOwnProperty(e.id!.toString()));
+      // this.data.edges = this.data.edges.filter((e) => e.id !== undefined && this.source!.graph!.hasOwnProperty(e.id!.toString()));
     }
 
     if (this.graph) {
       this.graph.data(this.data);
-      this.graph.refresh();
+    //   this.graph.refresh();
       this.graph.render();
-      this.graph.paint();
+    //   this.graph.paint();
     }
   }
 
@@ -960,6 +998,11 @@ export default class NetworkGraph extends WidgetBase {
     }
     this.initGraph(true);
     console.log(this.graph);
+  }
+
+  public initDefaultEdgeTypes() {
+    if (!this.source?.featureTypes) { return; }
+    this.edgeTypes = Object.values(this.source.featureTypes).filter(ft => ft.isEdge);
   }
 
   public contentLoaded() {
@@ -979,10 +1022,9 @@ export default class NetworkGraph extends WidgetBase {
 
     this.loaded = true;
 
-    this.registerShapes();
-    this.registerBehaviors();
-    this.initPreset();
-    // this.initDragging();
+    this.registerShapes();    
+    this.initPreset();    
+    this.initDefaultEdgeTypes();
 
     setTimeout(() => {
       console.log('content loaded');
@@ -1088,10 +1130,22 @@ export default class NetworkGraph extends WidgetBase {
           }
         });
       }
-    }, 100);
+    }, 200);
   }
 
-  public refresh() {
+   private getElementCard(element?: GraphElement) {
+     if (!element) { return undefined; }
+    const id = element.classId;
+    if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
+      return ElementCardManager.cards[id];
+    }
+    if (element.properties && element.properties.hasTimeseries) {
+      return ElementCardManager.cards['indicator'];
+    }
+    return 'default-element-card';
+  }
+
+  public refresh() {    
     if (!this.options || !this.source) {
       return;
     }
@@ -1125,9 +1179,7 @@ export default class NetworkGraph extends WidgetBase {
     if (this.source && a.item?._cfg?.id) {
       this.contextMenuitems = [];
       const element = this.source.getElement(a.item._cfg.id);
-      if (!element) {
-        return;
-      }
+      if (!element) { return; }
       if (!element.properties) {
         element.properties = {};
       }
@@ -1243,7 +1295,7 @@ export default class NetworkGraph extends WidgetBase {
                 outgoingMenu.items.push({
                   title: relationtitle!,
                   action: () => {
-                    if (element && this.activePreset?.id && relation?.classId) {
+                    if (element && this.activePreset?.id && relation?.classId) {                      
                       this.source?.addRelationsToPreset(element, this.activePreset.id, relation.classId);
                     }
                   },
@@ -1261,9 +1313,9 @@ export default class NetworkGraph extends WidgetBase {
           if (createMenu.items.length > 0) {
             this.contextMenuitems.push(createMenu);
           }
-          if (linkMenu.items.length > 0) {
-            this.contextMenuitems.push(linkMenu);
-          }
+          // if (linkMenu.items.length > 0) {
+          //   this.contextMenuitems.push(linkMenu);
+          // }
           this.contextMenuitems.push({
             title: 'delete',
             icon: 'mdi-delete',
@@ -1399,34 +1451,6 @@ export default class NetworkGraph extends WidgetBase {
     };
   }
 
-  public registerBehaviors() {
-    //   G6.registerBehavior('click-add-node', {
-    //     getEvents() {return { 'canvas:click': 'onClick'} },
-    //     onClick(ev: any) {
-    //   const self = this;
-    //   const node = ev.item;
-    //   const graph = self.graph;
-    //   // The position where the mouse clicks
-    //   const point = { x: ev.x, y: ev.y };
-    //   const model = node.getModel();
-    //   if (self.addingEdge && self.edge) {
-    //     graph.updateItem(self.edge, {
-    //       target: model.id,
-    //     });
-    //     self.edge = null;
-    //     self.addingEdge = false;
-    //   } else {
-    //     // Add anew edge, the end node is the current node user clicks
-    //     self.edge = graph.addItem('edge', {
-    //       source: model.id,
-    //       target: model.id,
-    //     });
-    //     self.addingEdge = true;
-    //   }
-    // },
-    //   });
-  }
-
   public registerShapes() {
     if (!this.source) {
       return;
@@ -1437,6 +1461,14 @@ export default class NetworkGraph extends WidgetBase {
         shape: {},
         extendType: 'line',
       });
+
+      this.source.graphShapeDefinitions.edges.push({
+        name: 'prop-edge',
+        shape: {},
+        extendType: 'line',
+      });
+
+      
 
       // this.source.graphShapeDefinitions.edges.push({
       //   name: 'dialog-relation',
@@ -1549,11 +1581,15 @@ export default class NetworkGraph extends WidgetBase {
       });
 
       for (const nd of this.source.graphShapeDefinitions.nodes) {
-        G6.registerNode(nd.name, nd.shape, nd.extendType);
+          if (nd.shape) {
+            G6.registerNode(nd.name, nd.shape as any, nd.extendType);
+          }
       }
 
       for (const ed of this.source.graphShapeDefinitions.edges) {
-        G6.registerEdge(ed.name, ed.shape, ed.extendType);
+          if (ed.shape) {
+            G6.registerEdge(ed.name, ed.shape as any, ed.extendType);
+          }
       }
     }
   }
@@ -1577,21 +1613,7 @@ export default class NetworkGraph extends WidgetBase {
       {
         // update: undefined,
         afterDraw: (cfg: any, group: any) => {
-          // if (e) {
-          //   if (e._outgoing && e._outgoing.length > 0) {
-          //     group.addShape('circle', {
-          //     attrs: {
-          //       r: 10,
-          //       stroke: '#333',
-          //       fill: '#ffffff',
-          //       x: 0,
-          //       y: (cfg.size / 2) + 5,
-          //       action: 'toggleCondition',
-          //     },
-          //   });
-          //   }
 
-          // }
           if (cfg.iconText) {
             group.addShape('text', {
               attrs: {
@@ -1611,18 +1633,6 @@ export default class NetworkGraph extends WidgetBase {
 
           return group;
         },
-        //     update: undefined;
-        //     const icon = group.addShape('text', {
-        // attrs: {
-        //   x: 0,
-        //   y: 0,
-        //   textAlign: 'center',
-        //   textBaseline: 'middle',
-        //   fontSize: 20,
-        //   fontFamily: 'Roboto, sans-serif',
-        //   text: 'test'
-
-        // must be assigned in G6 3.3 and later versions. it can be any value you want
       },
       'circle'
     );
@@ -1640,10 +1650,7 @@ export default class NetworkGraph extends WidgetBase {
     if (!this.options?.preset && this.source.activeDocument) {
       this.options.preset = this.source.activeDocument as unknown as GraphPreset;
       if (!this.options.preset.properties!.graphLayout) {
-        this.options.preset.properties!.graphLayout = {
-          layout: 'force',
-          nodeRules: [{ type: 'DOCUMENT', elementId: this.source.activeDocument.id }],
-        };
+        this.options.preset.properties!.graphLayout = { layout: 'force', nodeRules: [{ type: 'ELEMENT', elementId: this.source.activeDocument.id }] };
       }
     }
 
@@ -1667,33 +1674,11 @@ export default class NetworkGraph extends WidgetBase {
 
     if (!this.activePreset._stats) {
       this.activePreset._stats = {};
-    }
-    // this.activePreset = this.options.preset;
-    // if (!this.activePreset.id) { this.activePreset.id = guidGenerator()}
-    // this.source.addGraphPreset(this.activePreset, true);
-    // this.activePreset = this.source.graphPresets.find(p => p.id);
+    }    
   }
 
   public async initGraph(reset = false) {
-    console.log('init graph');
-
-    // if (!this.activePreset) {
-    //     if (typeof this.options.preset === 'string') {
-    //       this.activePreset = this.source.graphPresets.find(p => p.title === this.options.preset);
-    //       if (!this.activePreset) {
-    //         this.activePreset = new GraphPreset(this.source);
-    //         this.activePreset.id = this.options.preset;
-    //       }
-    //     } else {
-    //       this.activePreset = { ...new GraphPreset(this.source), ...this.options.preset };
-
-    //     }
-    //   // this.source.addGraphPreset(this.activePreset);
-    // }
-    // if (this.activePreset) { this.source.applyGraphPreset(this.activePreset); }
-    // if (this.activePreset && this.activePreset !== this.source.activeGraphPreset) {
-    //   this.source.applyGraphPreset(this.activePreset)
-    // }
+    console.log('init graph');   
 
     if (!this.activePreset && this.source?.activeGraphPreset) {
       this.activePreset = this.source.activeGraphPreset;
@@ -1718,11 +1703,6 @@ export default class NetworkGraph extends WidgetBase {
       this.activePreset.properties.graphLayout.nodeRules = [];
     }
 
-    // if (!this.activePreset) {
-    //   this.activePreset =
-    // }
-
-    // var container = document.getElementById("kg-vis");
     if (this.graph && reset) {
       this.graph.destroy();
       this.graph = undefined;
@@ -1772,15 +1752,24 @@ export default class NetworkGraph extends WidgetBase {
       itemTypes: ['node'],
     });
 
+    const timebar = new G6.TimeBar({
+      width: 500,
+      height: 150,
+      padding: 10,
+      type: 'simple'      
+    });
+
     this.graph = new G6.Graph({
-      container: 'kg-vis',
+      container: `graph-${this.widget?.id}`,
       width: dWidth, //(this as any).widget._size.width,
       linkCenter: false,
-      plugins: [contextMenu],
-      animate: this.activePreset?.properties?.graphLayout?.animate ?? false,
+      plugins: [contextMenu],      
       height: dHeight, // (this as any).widget._size.height,
       layout: this.getLayout(),
-      autoPaint: true,
+      // autoPaint: true,
+      // animate: false, //this.activePreset?.properties?.graphLayout?.animate ?? false,
+      // fitView:  true, //this.activePreset?.properties?.graphLayout?.fitAll
+      // fitViewPadding: 20,
       // renderer: 'svg',
 
       modes: {
@@ -1791,7 +1780,7 @@ export default class NetworkGraph extends WidgetBase {
           {
             type: 'drag-canvas',
             enableOptimize: true,
-          },
+          },          
           { type: 'zoom-canvas', enableOptimize: true },
           'shortcuts-call',
           {
@@ -1807,19 +1796,8 @@ export default class NetworkGraph extends WidgetBase {
               return true;
             },
           },
-
-          // {
-          //   type: "edge-tooltip",
-          //   formatText: (model) => {
-          //     if (model.node) {
-          //     }
-          //     return "Geen informatie nog beschikbaar";
-          //   },
-          //   offset: 30,
-          // },
         ],
 
-        // addEdge: ["click-add-edge", "click-select"],
       },
       defaultNode: this.getNodeStyle(),
       defaultEdge: {
@@ -1844,6 +1822,8 @@ export default class NetworkGraph extends WidgetBase {
         },
       },
     });
+
+    
 
     this.graph.on('keyup', (e) => {
       // console.log('key up')
@@ -1892,19 +1872,13 @@ export default class NetworkGraph extends WidgetBase {
         const target = this.source.getElement(targetId);
         if (source?._featureType && target?._featureType) {
           // find potential classId
-
+          
           let classId = 'LINKED_TO';
-          const rel = source._featureType.properties!.find(
-            (r) =>
-              r.type! === 'relation' &&
-              r?.relation?.objectType &&
-              target?._featureType?._inheritedTypes &&
-              target._featureType._inheritedTypes.includes(r.relation.objectType)
-          );
-          classId = rel?.relation?.type || classId;
+          classId = source._featureType.properties!.find(r => r.type! === 'relation' && r?.relation?.objectType && target?._featureType?._inheritedTypes && target._featureType._inheritedTypes.includes(r.relation.objectType))!.relation!.type || classId;
+          
 
           classId = this.activePreset?.properties?.graphLayout?.defaultEdgeType || classId;
-          classId = source._featureType?.attributes?.graph_link_property || classId;
+          classId = source._featureType?.attributes?.graph_link_property || classId 
           await this.source.addNewEdge({
             fromId: sourceId,
             toId: targetId,
@@ -1990,6 +1964,7 @@ export default class NetworkGraph extends WidgetBase {
                 clicked = true;
                 await shape.actions[act](element, this.source);
                 this.graph!.refreshItem(evt.item);
+                this.graph!.render();
               }
             }
           }
@@ -2002,6 +1977,8 @@ export default class NetworkGraph extends WidgetBase {
     this.graph.on('node:click', async (evt: any) => {
       if (evt.item?._cfg?.model?.id) {
         const element = this.source?.getElement(evt.item._cfg.model.id);
+        Vue.set(this, 'activeElement', element);        
+        this.$forceUpdate();
         if (this.source?.graphShapeDefinitions?.nodes) {
           const shape = this.source.graphShapeDefinitions.nodes.find((e) => e.name === evt.item._cfg.currentShape);
           // find node
@@ -2011,6 +1988,7 @@ export default class NetworkGraph extends WidgetBase {
             if (element && shape.actions && shape.actions.hasOwnProperty(act)) {
               await shape.actions[act]!(element, this.source!);
               this.graph!.refreshItem(evt.item);
+              this.graph!.render();
             }
           }
         }
@@ -2073,40 +2051,6 @@ export default class NetworkGraph extends WidgetBase {
           classId: ft.type,
         });
 
-        if (this.source && this.options.newRelations) {
-          for (const relation of this.options.newRelations) {
-            // new relation to other id
-            if (relation.toId && ft.propertyMap) {
-              try {
-                const newEdge = await this.source.addNewEdge(
-                  {
-                    fromId: newNode.id,
-                    toId: relation.toId,
-                    classId: relation.relationClassId,
-                  } as GraphElement,
-                  true
-                );
-              } catch (e) {
-                console.log('Error adding relation edge');
-              }
-            } else if (relation.fromId) {
-              // create relation from other id
-              const fromId = typeof relation.fromId === 'function' ? relation.fromId() : relation.fromId;
-              const fromNode = this.source.getElement(fromId);
-
-              const newEdge = await this.source.addNewEdge(
-                {
-                  fromId: fromId,
-                  toId: newNode.id,
-                  classId: relation.relationClassId,
-                } as GraphElement,
-                true
-              );
-            }
-          }
-          await this.source.updateEdges();
-        }
-
         if (newNode?.id && this.activePreset?.properties?.graphLayout) {
           if (!this.activePreset.properties.graphLayout.nodes) {
             this.activePreset.properties.graphLayout.nodes = {};
@@ -2117,7 +2061,6 @@ export default class NetworkGraph extends WidgetBase {
           };
 
           this.addElement(newNode);
-
           this.updateGraph(this.source!.graph);
           this.source.selectElement(newNode, this.options.openElementDetails);
           this.$forceUpdate();

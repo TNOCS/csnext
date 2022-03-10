@@ -15,6 +15,7 @@
           <v-tab href="#tab-RULES">{{ $cs.Translate('RULES') }}</v-tab>
           <v-tab href="#tab-ELEMENTS">{{ $cs.Translate('ELEMENTS') }}</v-tab>
           <v-tab href="#tab-GRAPH">{{ $cs.Translate('GRAPH') }}</v-tab>
+          <v-tab href="#tab-LIST">{{ $cs.Translate('LIST') }}</v-tab>
           <v-tab href="#tab-MAP">{{ $cs.Translate('MAP') }}</v-tab>
 
           <!-- <v-tab href="#tab-facts">{{ $cs.Translate('FACTS') }}</v-tab> -->
@@ -75,6 +76,12 @@
               <cs-form :data="activePreset.properties.graphLayout" :formdef="graphFormDef" class="pt-2 pa-3" @saved="updatePreset"></cs-form>
             </v-col>
           </v-row>
+        </v-container>
+      </v-tab-item>
+            <v-tab-item value="tab-LIST">
+        <v-container fluid>
+          list
+          <cs-widget :widget="listWidget" :source="source"></cs-widget>
         </v-container>
       </v-tab-item>
       <v-tab-item value="tab-MAP">
@@ -144,10 +151,12 @@
 import { Component } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 import { GraphElement, GraphPreset, GraphDatasource, FilterGraphElement, GraphFilterProperties, GraphLayout } from '@csnext/cs-data';
-import { DocDatasource } from '../..';
-import { IFormObject } from '@csnext/cs-core';
+import { DataGridOptions, DocDatasource, ElementDataGrid } from '../..';
+import { IFormObject, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 import GraphRuleEditor from './graph-rule-editor.vue';
+
+
 
 @Component({
   components: { GraphRuleEditor },
@@ -162,6 +171,7 @@ export default class GraphSettings extends WidgetBase {
   public tab = 'CONTENT';
   public contentPanel: number[] = [1, 2];
   public activePreset?: FilterGraphElement | null = null;
+  public listWidget: IWidget | null = null;
 
   public addPreset() {
     $cs
@@ -328,11 +338,16 @@ export default class GraphSettings extends WidgetBase {
           readonly: false,
           options: (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : []
         },
-        // {
-        //   title: 'ANIMATE',
-        //   _key: 'animate',
-        //   type: 'checkbox'
-        // },
+        {
+          title: 'ANIMATE',
+          _key: 'animate',
+          type: 'checkbox'
+        },
+          {
+          title: 'FIT_VIEW',
+          _key: 'fitAll',
+          type: 'checkbox'
+        },
         {
           title: 'NODE_SIZE',
           _key: 'nodeSize',
@@ -537,6 +552,18 @@ export default class GraphSettings extends WidgetBase {
       return;
     }
     Vue.set(this, 'activePreset', this.source.getElement(this.widget.data.preset));
+    this.listWidget = {
+      component: ElementDataGrid,
+      content: this.source,
+      options: {        
+        syncMode: 'follow',
+        showHeader: false,
+        defaultView: 'list', 
+        preset: this.activePreset?.id       
+        // graphPresetId: this.
+
+      } as DataGridOptions
+    }
 
     if (!this.activePreset) {
       return;
