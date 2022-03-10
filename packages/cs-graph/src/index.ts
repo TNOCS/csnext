@@ -18,6 +18,7 @@ export * from './components/data-grid/cards/element-card-manager';
 export * from './utils/doc-utils';
 export * from './utils/cache-requests';
 export * from './components/document/plugins/text-mention';
+export * from './utils/graph-utils';
 import TextExtension from './components/document/plugins/text-extension';
 import ParagraphExtension from './components/document/plugins/paragraph-extension';
 import suggestion from './components/document/plugins/suggestion';

@@ -123,7 +123,6 @@
 <script lang="ts">
 import { GraphElement } from '@csnext/cs-data';
 import { Component, Prop } from 'vue-property-decorator';
-import { DocDatasource } from '../../..';
 
 import DefaultElementCard from './default-element-card.vue';
 
