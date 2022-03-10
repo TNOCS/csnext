@@ -11,13 +11,14 @@ import {
   GraphFilterProperties,
   IGraphNodeDefinition,
   NodeRule,
+  GraphLayout,
 } from '@csnext/cs-data';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
 import { IDocumentPlugin } from '../plugins/document-plugin';
 import { EntityParser } from '../plugins/EntityParser';
 import { EntityList } from '../components/document/node-entities';
-import { TimeDataSource, IFormOptions, IWidget, idGenerator } from '@csnext/cs-core';
+import { TimeDataSource, IFormOptions, IWidget, idGenerator, IFormFieldOptions } from '@csnext/cs-core';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 import RelationEditor from './../components/document-management/relation-editor.vue';
@@ -450,7 +451,25 @@ export class DocDatasource extends GraphDatasource {
   //#region presets
 
   public getGraphPreset(id: string): FilterGraphElement | undefined {
-    return this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
+    const preset = this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
+    if (preset) {
+      if (!preset.properties) {
+        preset.properties = {};
+      }
+      if (!preset.properties.graphLayout) {
+        preset.properties.graphLayout = new GraphLayout();
+      }
+
+      if (!preset.properties.graphLayout.nodeRules) {
+        preset.properties.graphLayout.nodeRules = [];
+      }
+      
+      if (preset._stats) {
+        preset._stats = {};
+      }
+    
+    }
+    return preset;
   }
 
   public emptyGraph(trigger = true, preset?: string) {
@@ -1180,6 +1199,7 @@ export class DocDatasource extends GraphDatasource {
           let section = pt.section;
           let hint = pt.hint;
           let array = pt.array;
+          let icon = pt.icon;
 
           if (!editOnly || !pt.readonly) {
             switch (pt.type) {
@@ -1194,6 +1214,7 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon: icon || 'mdi-calendar-range'
                 });
                 break;
               case PropertyValueType.url:
@@ -1207,7 +1228,8 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   hint,
                   group,
-                  section,
+                  section,                  
+                  icon: icon || 'mdi-open-in-new'
                 });
                 break;
               case PropertyValueType.string:
@@ -1220,7 +1242,8 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   hint,
                   group,
-                  section,
+                  section,                  
+                  icon
                 });
                 break;
               case PropertyValueType.image:
@@ -1234,9 +1257,11 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   group,
                   section,
+                  icon: icon || 'mdi-image'
                 });
                 break;
               case PropertyValueType.element:
+                const et = (pt.elementType) ? this.getFeatureTypeById(pt.elementType) : undefined;
                 form.fields?.push({
                   title: pt.label!,
                   _key: pt.key,
@@ -1257,13 +1282,15 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon: et?.icon || icon || 'mdi-link'
                 });
                 break;
               case PropertyValueType.options:
+                
                 form.fields?.push({
                   title: pt.label!,
                   _key: pt.key,
-                  type: 'selection',
+                  type: (pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'selection') as any,
                   options: pt.options,
                   readonly: pt.readonly,
                   hint,
@@ -1271,6 +1298,7 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon
                 });
                 break;
               case PropertyValueType.wkt:
@@ -1284,19 +1312,21 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon
                 });
                 break;
               case PropertyValueType.boolean:
                 form.fields?.push({
                   title: pt.label!,
                   _key: pt.key,
-                  type: 'checkbox',
+                  type: 'switch',
                   readonly: pt.readonly,
                   hint,
                   array,
                   required,
                   group,
                   section,
+                  icon: icon || 'mdi-checkbox-marked-outline'
                 });
                 break;
               case PropertyValueType.number:
@@ -1313,6 +1343,7 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon: icon || 'mdi-counter'
                 });
                 break;
               case PropertyValueType.tags:
@@ -1326,6 +1357,7 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon: icon || 'mdi-tag'
                 });
                 break;
               case PropertyValueType.epoch:
@@ -1339,9 +1371,11 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  icon: icon || 'mdi-calendar-range'
                 });
                 break;
-              case PropertyValueType.relation:
+              case PropertyValueType.relation:                
+                const ft = (pt.relation?.objectType) ? this.getFeatureTypeById(pt.relation.objectType) : undefined;
                 form.fields?.push({
                   title: pt.label!,
                   _key: pt.key,
@@ -1360,6 +1394,7 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   hint,
                   section,
+                  icon: ft?.icon || 'mdi-link'
                 });
                 break;
             }
