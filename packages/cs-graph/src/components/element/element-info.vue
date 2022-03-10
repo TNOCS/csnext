@@ -10,10 +10,7 @@
         <v-list>
           <template v-for="elementId in dataSource.elementHistory">
             <v-list-item
-              v-if="
-                elementId !== activeElement.id &&
-                dataSource.graph.hasOwnProperty(elementId)
-              "
+              v-if="elementId !== activeElement.id && dataSource.graph.hasOwnProperty(elementId)"
               :key="elementId"
               @click="dataSource.openElement(elementId)"
             >
@@ -23,18 +20,15 @@
           </template>
         </v-list>
       </v-menu>
-      
-      <v-toolbar-title
-        ><v-icon v-if="activeElement._featureType.icon">{{activeElement._featureType.icon}}</v-icon> {{ activeElement.properties.name }}</v-toolbar-title>
 
+      <v-toolbar-title
+        ><v-icon v-if="activeElement._featureType.icon">{{ activeElement._featureType.icon }}</v-icon>
+        {{ activeElement.properties.name }}</v-toolbar-title
+      >
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        v-if="activeElement._originals && activeElement._originals.length > 0"
-        icon
-        @click="openOriginal()"
-      >
+      <v-btn v-if="activeElement._originals && activeElement._originals.length > 0" icon @click="openOriginal()">
         <v-icon>image</v-icon>
       </v-btn>
 
@@ -67,7 +61,6 @@
           <v-tab v-for="tab in tabs" :key="tab" :href="`#tab-${tab}`">
             {{ $cs.Translate(tab) }}
           </v-tab>
-
         </v-tabs>
       </template>
     </v-toolbar>
@@ -76,12 +69,7 @@
       <v-tabs-items v-model="tab" style="margin-bottom: 200px">
         <v-tab-item v-if="specialTab" value="tab-SPECIAL">
           <cs-widget v-if="specialTab.id" :widget="specialTab" :element="activeElement"></cs-widget>
-          <component
-            v-else
-            :is="specialTab"
-            :element="activeElement"
-            :source="dataSource"
-          ></component>
+          <component v-else :is="specialTab" :element="activeElement" :source="dataSource"></component>
         </v-tab-item>
 
         <v-tab-item value="tab-PROPERTIES">
@@ -96,36 +84,18 @@
           ></data-info-panel>
         </v-tab-item>
         <v-tab-item value="tab-EDITOR">
-          <cs-form
-            :data="activeElement.properties"
-            :formdef="formDef"
-            class="pa-2"
-            id="detailcsform"
-            @saved="updateEntity"
-          ></cs-form>
+          <cs-form :data="activeElement.properties" :formdef="formDef" class="pa-2" id="detailcsform" @saved="updateEntity"></cs-form>
         </v-tab-item>
         <v-tab-item value="tab-RELATIONS" class="full-height">
-          <relation-list-sections
-            class="ma-2"
-            :node="activeElement"
-            :source="dataSource"
-          >
-          </relation-list-sections>
+          <relation-list-sections class="ma-2" :node="activeElement" :source="dataSource"> </relation-list-sections>
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
-          <v-list two-line subheader>
-            <v-list-item
-              v-for="item in getDocuments()"
-              :key="item.id"
-              @click="openDocument(item.id)"
-            >
+          <cs-widget :widget="documentsWidget" v-if="documentsWidget" ref="docWidget"></cs-widget>
+          <!-- <v-list two-line subheader>
+            <v-list-item v-for="item in getDocuments()" :key="item.id" @click="openDocument(item.id)">
               <v-list-item-content>
-                <v-list-item-title
-                  v-text="item.properties.title"
-                ></v-list-item-title>
-                <v-list-item-subtitle v-if="item._source">
-                  {{ item._source.properties.name }}</v-list-item-subtitle
-                >
+                <v-list-item-title v-text="item.properties.title"></v-list-item-title>
+                <v-list-item-subtitle v-if="item._source"> {{ item._source.properties.name }}</v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-action>
@@ -134,7 +104,7 @@
                 </v-btn>
               </v-list-item-action>
             </v-list-item>
-          </v-list>
+          </v-list> -->
         </v-tab-item>
         <v-tab-item value="tab-INDICATOR">
           <v-list two-line subheader>
@@ -146,9 +116,9 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
-        </v-tab-item>        
+        </v-tab-item>
       </v-tabs-items>
-    </simplebar>   
+    </simplebar>
   </div>
 </template>
 
@@ -228,24 +198,21 @@
 }
 </style>
 
-
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { WidgetBase, IframeWidget } from "@csnext/cs-client";
-import {
-  GraphDatasource,
-  GraphElement,
-  LinkInfo,
-} from "@csnext/cs-data";
-import simplebar from "simplebar-vue";
-import { PropertyType } from "@csnext/cs-data";
-import { DataInfoPanel, RelationListSections } from "@csnext/cs-map";
-import { IFormOptions } from "@csnext/cs-core";
-import { DocDatasource } from "../../datasources/doc-datasource";
-import { GraphDocument } from "../../classes";
-import { InfoTabManager } from "../../classes/info-tab-manager";
-import Axios from "axios";
-import { Component as VueComponent } from "vue";
+import { Component, Ref, Vue, Watch } from 'vue-property-decorator';
+import { WidgetBase, IframeWidget } from '@csnext/cs-client';
+import { GraphDatasource, GraphElement, LinkInfo } from '@csnext/cs-data';
+import simplebar from 'simplebar-vue';
+import { PropertyType } from '@csnext/cs-data';
+import { DataInfoPanel, RelationListSections } from '@csnext/cs-map';
+import { IFormOptions, IWidget } from '@csnext/cs-core';
+import { DocDatasource } from '../../datasources/doc-datasource';
+import { GraphDocument } from '../../classes';
+import { InfoTabManager } from '../../classes/info-tab-manager';
+import Axios from 'axios';
+import { Component as VueComponent } from 'vue';
+import ElementDataGrid from '../data-grid/element-data-grid.vue';
+import { DataGridOptions } from '../data-grid/data-grid-options';
 
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
@@ -260,25 +227,39 @@ export class PropertyValue {
 })
 export default class ElementInfo extends WidgetBase {
   public instancesCount = 0;
-  public tabs = ["PROPERTIES", "EDITOR", "RELATIONS", "DOCUMENTS"];
-  public tab = "EDITOR";
+  public tabs = ['PROPERTIES', 'EDITOR', 'RELATIONS', 'DOCUMENTS'];
+  public tab = 'EDITOR';
   public componentKey = 0;
   public history: string[] = [];
   public formDef: IFormOptions | null = null;
-  public props: PropertyValue[] = [];  
+  public props: PropertyValue[] = [];
   public isDocument?: boolean = false;
   private indicatorElements: GraphElement[] = [];
+  private documentsWidget: IWidget | null = null;
 
   public activeElement: GraphElement | null = null;
   private specialTab: VueComponent | null = null;
+  private elementInfoTab = 'eitab';
 
-  @Watch("activeElement")
+  @Ref('docWidget')
+  private docWidget: HTMLElement | null = null;
+
+  @Watch('activeElement')
   public async updateIndicatorResults() {
     this.getIndicatorResults();
   }
 
   constructor() {
     super();
+  }
+
+  @Watch('tab')
+  public updateTab() {
+    if (this.tab === null) {
+      $cs.removeRouteQueryParam(this.elementInfoTab);
+    } else {
+      $cs.addRouteQueryParam(this.elementInfoTab, this.tab.toString());
+    }
   }
 
   public get dataSource(): DocDatasource | undefined {
@@ -311,7 +292,7 @@ export default class ElementInfo extends WidgetBase {
   //     if (!this.widget._dashboard.options) {
   //       this.widget._dashboard.options = {};
   //     }
-  //     this.widget._dashboard.options.sidebarExpanded = true;      
+  //     this.widget._dashboard.options.sidebarExpanded = true;
   //   }
   // }
 
@@ -336,7 +317,7 @@ export default class ElementInfo extends WidgetBase {
 
   public deleteNode() {
     $cs.triggerYesNoQuestionDialog(`DELETE_NODE`, `ARE_YOU_SURE`).then((r) => {
-      if (r === "YES" && this.dataSource && this.activeElement) {
+      if (r === 'YES' && this.dataSource && this.activeElement) {
         (this.dataSource as DocDatasource).removeNode(this.activeElement, true);
         $cs.closeRightSidebar();
       } else {
@@ -348,8 +329,6 @@ export default class ElementInfo extends WidgetBase {
   public getColor(el: GraphElement): string {
     return GraphElement.getBackgroundColor(el);
   }
-
-  
 
   public saveNode() {
     if (this.activeElement && this.dataSource) {
@@ -364,24 +343,16 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public async getIndicatorResults() {
-    if (
-      !this.activeElement?.properties?.indicator_definition?.indicatorId ||
-      !this.dataSource?.base_url
-    ) {
+    if (!this.activeElement?.properties?.indicator_definition?.indicatorId || !this.dataSource?.base_url) {
       this.indicatorElements = [];
       return;
     }
-    const indicatorId =
-      this.activeElement!.properties!.indicator_definition!.indicatorId!;
-    const results = (
-      await Axios.get<any>(
-        `${this.dataSource!.base_url!}/indicators/results/${indicatorId}`
-      )
-    ).data;
-    if (results.hasOwnProperty("error") || !results.hasOwnProperty("array")) {
+    const indicatorId = this.activeElement!.properties!.indicator_definition!.indicatorId!;
+    const results = (await Axios.get<any>(`${this.dataSource!.base_url!}/indicators/results/${indicatorId}`)).data;
+    if (results.hasOwnProperty('error') || !results.hasOwnProperty('array')) {
       this.indicatorElements = [];
     } else {
-      this.indicatorElements = results["array"] as GraphElement[];
+      this.indicatorElements = results['array'] as GraphElement[];
     }
   }
 
@@ -392,11 +363,7 @@ export default class ElementInfo extends WidgetBase {
     let res: GraphElement[] = [];
     if (this.activeElement._incomming) {
       res = this.activeElement
-        ._incomming!.filter(
-          (e) =>
-            e.from?._featureType?._inheritedTypes &&
-            e.from?._featureType?._inheritedTypes.includes("input")
-        )
+        ._incomming!.filter((e) => e.from?._featureType?._inheritedTypes && e.from?._featureType?._inheritedTypes.includes('input'))
         .map((e) => e.from) as GraphElement[];
     }
     // if (this.activeElement._outgoing) {
@@ -418,7 +385,7 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public selectExternal(e: GraphElement) {
-    let win = window.open(e.id, "_blank");
+    let win = window.open(e.id, '_blank');
     if (win) {
       win.focus();
     }
@@ -442,18 +409,37 @@ export default class ElementInfo extends WidgetBase {
       return;
     }
 
-    this.isDocument =
-      this.activeElement._featureType?._inheritedTypes &&
-      this.activeElement._featureType?._inheritedTypes.includes("input");
+    
+    const docWidget = {
+      component: ElementDataGrid,
+      datasource: this.dataSource.id,
+      options: {
+        defaultView: 'table',
+        baseType: 'input',
+        canAdd: true,
+        canSearch: true,
+        filter: { hasObjectTypeRelation: { HAS_REFERENCE: this.activeElement.id } },
+        newRelations: [
+          {
+            key: "reference",
+            toId: this.activeElement.id,
+          },
+        ],
+      
+      } as DataGridOptions
+    }
+
+    Vue.set(this, 'documentsWidget', null);
+  
+    Vue.set(this, 'documentsWidget', docWidget);
+
+    this.isDocument = this.activeElement._featureType?._inheritedTypes && this.activeElement._featureType?._inheritedTypes.includes('input');
 
     console.log(this.activeElement);
 
     this.widget.title = this.activeElement.properties?.name;
-    if (this.activeElement.type === "edge") {
-      this.widget.options.title =
-        this.activeElement.from!.properties?.name +
-        " -> " +
-        this.activeElement.to!.properties?.name;
+    if (this.activeElement.type === 'edge') {
+      this.widget.options.title = this.activeElement.from!.properties?.name + ' -> ' + this.activeElement.to!.properties?.name;
     } else {
       this.widget.options.title = this.activeElement.properties?.name;
     }
@@ -480,9 +466,9 @@ export default class ElementInfo extends WidgetBase {
     let res: LinkInfo[] = [];
     Object.values(this.dataSource!.graph).forEach((e: GraphElement) => {
       if (e.toId === element.id) {
-        if (e.classId === "INSTANCE_OF") {
+        if (e.classId === 'INSTANCE_OF') {
           res.push({
-            direction: "to",
+            direction: 'to',
             element: e.from,
             link: e,
           });
@@ -490,7 +476,7 @@ export default class ElementInfo extends WidgetBase {
       }
     });
     element._instances = res;
-    Vue.set(this, "instancesCount", element._instances.length);
+    Vue.set(this, 'instancesCount', element._instances.length);
     return res;
   }
 
@@ -498,9 +484,9 @@ export default class ElementInfo extends WidgetBase {
     let res: LinkInfo[] = [];
     Object.values(this.dataSource!.graph).forEach((e) => {
       if (e.toId === element.id) {
-        if (e.classId !== "INSTANCE_OF") {
+        if (e.classId !== 'INSTANCE_OF') {
           res.push({
-            direction: "to",
+            direction: 'to',
             element: e.from,
             link: e,
           });
@@ -508,7 +494,7 @@ export default class ElementInfo extends WidgetBase {
       }
       if (e.fromId === element.id) {
         res.push({
-          direction: "from",
+          direction: 'from',
           element: e.to,
           link: e,
         });
@@ -527,12 +513,19 @@ export default class ElementInfo extends WidgetBase {
     if (!this.activeElement?.classId) {
       this.specialTab = null;
       return;
-    }    
+    }
     this.specialTab = InfoTabManager.tabs[this.activeElement.classId] || null;
     this.$forceUpdate();
   }
 
   public mounted() {
+
+    
+
+    let qtab = $cs.getRouteQuery(this.elementInfoTab);
+    if (qtab && qtab !== this.tab) {
+      this.tab = qtab;
+    }
     if (this.dataSource) {
       if (this.dataSource.activeElement) {
         this.activeElement = this.dataSource.activeElement;
@@ -540,27 +533,20 @@ export default class ElementInfo extends WidgetBase {
         this.updateForm();
       }
 
-      this.busManager.subscribe(
-        this.dataSource.events,
-        GraphDatasource.GRAPH_EVENTS,
-        (a: string, e: GraphElement) => {
-          if (a === GraphDatasource.ELEMENT_UPDATED) {
-            if (e.id === this.activeElement?.id) {
-              this.updateElement();
-            }
+      this.busManager.subscribe(this.dataSource.events, GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
+        if (a === GraphDatasource.ELEMENT_UPDATED) {
+          if (e.id === this.activeElement?.id) {
+            this.updateElement();
           }
         }
-      );
+      });
 
-      this.dataSource.bus.subscribe(
-        "element",
-        (a: string, data: GraphElement) => {
-          this.activeElement = data;
-          this.updateElement();
-          this.updateTabs();
-        }
-      );
-      this.dataSource.bus.subscribe("focus", (a: string, data: any) => {
+      this.dataSource.bus.subscribe('element', (a: string, data: GraphElement) => {
+        this.activeElement = data;
+        this.updateElement();
+        this.updateTabs();
+      });
+      this.dataSource.bus.subscribe('focus', (a: string, data: any) => {
         this.activeElement = data;
         this.updateElement();
         this.updateTabs();
