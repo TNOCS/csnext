@@ -16,6 +16,7 @@ export class GraphLayout {
   filterStep? = false;
   showExternal? = false;
   focusDate?: Date;
+  fitAll?: boolean = false;
   autoFocus? = true;
   showAllOnMap? = true;
   nodeSize?: number;

@@ -23,7 +23,7 @@
     "dependencies": {
         "@ag-grid-community/core": "27.0.1",
         "@ag-grid-community/vue": "27.0.0",
-        "@antv/g6": "4.5.5",
+        "@antv/g6": "4.6.1",
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-core": "^0.0.131",
         "@csnext/cs-crossfilter": "0.0.131",
