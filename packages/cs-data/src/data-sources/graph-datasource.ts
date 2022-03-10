@@ -51,6 +51,7 @@ export class GraphDatasource extends DataSource {
   public fuse?: Fuse<any>;
   public fuseOptions?: Fuse.IFuseOptions<any> = {};
   public activeGraphPreset?: GraphPreset;
+  public dataModelFilter : string | null = null;
 
   public get featureTypes(): FeatureTypes | undefined {
     return this._meta;
