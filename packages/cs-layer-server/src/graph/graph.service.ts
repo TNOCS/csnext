@@ -204,7 +204,7 @@ export class GraphService {
     });
   }
 
-  public storeWithInterval(body: any[], intervalMillis: number, agentId?: string) {
+  public storeWithInterval(body: any[], intervalMillis: number, burst: number, agentId?: string) {
     return new Promise(async (resolve, reject) => {
       if (this.db && this.source && body && Array.isArray(body) && body.length > 0) {
         for (const el of body) {
@@ -227,26 +227,28 @@ export class GraphService {
           this.storeWithIntervalData.length = 0;
         }
         this.storeWithIntervalInterval = setInterval(async () => {
-          let storeData = this.storeWithIntervalData.shift();
-          if (storeData) {
-            Logger.log(`Storing node ${storeData.node.id}`, 'GraphService');
-            await this.source.addNode(
-              { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
-              storeData.node.class,
-              true
-            );
-            for (const edge of storeData.edges) {
-              await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
+            for (let i = 0; i < burst; i++) {
+              let storeData = this.storeWithIntervalData.shift();
+              if (storeData) {
+                Logger.log(`Storing node ${storeData.node.id}`, 'GraphService');
+                await this.source.addNode(
+                  { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
+                  storeData.node.class,
+                  true
+                );
+                for (const edge of storeData.edges) {
+                  await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
+                }
+                await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
+              } else {
+                clearInterval(this.storeWithIntervalInterval);
+                this.storeWithIntervalInterval = undefined;
+                Logger.log('Stopped storing elements on interval', 'GraphService');
+              }
             }
-            await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
             this.source.triggerUpdateGraph();
-          } else {
-            clearInterval(this.storeWithIntervalInterval);
-            this.storeWithIntervalInterval = undefined;
-            Logger.log('Stopped storing elements on interval', 'GraphService');
-          }
         }, intervalMillis);
-        Logger.log(`Start storing elements on interval of ${intervalMillis}ms`, 'GraphService');
+        Logger.log(`Start storing elements on interval of ${intervalMillis}ms with burst of ${burst}`, 'GraphService');
         resolve({ result: 'ok' });
       }
       reject();
