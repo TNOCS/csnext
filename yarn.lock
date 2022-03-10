@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@ag-grid-community/core@27.0.0":
-  version "27.0.0"
-  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-27.0.0.tgz#92b5b22f0e058f9ae3165771aa17f3d0701d6aa2"
-  integrity sha512-GIKemZ/nkLk8psSlpIsQ5a6+0GpoA4u1ENgxlyTfLC3Qk3u+6fkozLYvZCHG9pK3p66qZ6Bslrz4Hi7xqAccqg==
+"@ag-grid-community/core@27.0.1":
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-27.0.1.tgz#63d31266d2cf595707fb6d64581592cc97969640"
+  integrity sha512-ar4N+SNzXDGjMyT/2GkYJYPhi7wCdOUcCuOwWQR0I0nK0li1ELLrg0bPaUuPws/GkzhWpSGws8sOubpFwPl6Tw==
 
 "@ag-grid-community/vue@27.0.0":
   version "27.0.0"
@@ -134,10 +134,10 @@
     probe.gl "^3.1.1"
     reflect-metadata "^0.1.13"
 
-"@antv/g6-core@0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@antv/g6-core/-/g6-core-0.5.5.tgz#b83a1751e6ad17cea147ab09bfac1a36c2098e45"
-  integrity sha512-DrGfvpO2hYql/86KxXNecfqMT7RQS+Unk4lTAeID62d7ZcyR/W6En6g1zuoWm0Ny0X+qKgmWfHVBeKvG5CKYmA==
+"@antv/g6-core@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@antv/g6-core/-/g6-core-0.6.1.tgz#538e660ae6a9bde08a18c0861e5f4af17785d93f"
+  integrity sha512-+2h+CsN62KmdRw8TahOsMoiZuH9ueaAb+qf0dMrFpSEVIQN0hKq9iTbn1rDBcd1tjDroMgKU8degT/0KjIcENw==
   dependencies:
     "@antv/algorithm" "^0.1.8"
     "@antv/dom-util" "^2.0.1"
@@ -150,19 +150,19 @@
     ml-matrix "^6.5.0"
     tslib "^2.1.0"
 
-"@antv/g6-element@0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@antv/g6-element/-/g6-element-0.5.5.tgz#67c30f9271c39ab76281209d298689ee4f533a89"
-  integrity sha512-x6e/iOqRviAdxBUqrTig3q4q0rDB2udKsVkLZuWujzkWdaH3wp4B0ewPoAfqdX+mz2L9vRYtT3AIaLGZvAtn5g==
+"@antv/g6-element@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@antv/g6-element/-/g6-element-0.6.1.tgz#b0f6164548b06237c6f58ffaca9792daf713db74"
+  integrity sha512-U5CRuzepyL0GWxHNGzOkl/bXaxwFfb+I+8bBSEcq6Dhns7NW6sjlyHbIbVZExRolqBvGq5cDVEYduWljLKg8fw==
   dependencies:
     "@antv/g-base" "^0.5.1"
-    "@antv/g6-core" "0.5.5"
+    "@antv/g6-core" "^0.6.1"
     "@antv/util" "~2.0.5"
 
-"@antv/g6-pc@0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@antv/g6-pc/-/g6-pc-0.5.5.tgz#43bb2d1829f346b4e0fc1201286f05dd8f894b83"
-  integrity sha512-AniC8NjXvLbkKTl4ogT6+xXMh7j9pT6y8yg2Or/InQBGL73ZnNCnwRcR0T0nHxLZ08gib1kVWpWsEoMLX+Z5XQ==
+"@antv/g6-pc@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@antv/g6-pc/-/g6-pc-0.6.1.tgz#e4a8d106aaca76991f9cca32a61aec395dfcf18a"
+  integrity sha512-mLd9gw4kG/9Nl2NFIiEYPmeKffI8wTT185XjSrWY66lvTmJdkxCIorxFgX1ioiX0+IwFtGcn5MVvtfjQS0p7RQ==
   dependencies:
     "@ant-design/colors" "^4.0.5"
     "@antv/algorithm" "^0.1.8"
@@ -172,11 +172,10 @@
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-math" "^0.1.1"
     "@antv/g-svg" "^0.5.1"
-    "@antv/g6-core" "0.5.5"
-    "@antv/g6-element" "0.5.5"
-    "@antv/g6-plugin" "0.5.5"
+    "@antv/g6-element" "^0.6.1"
+    "@antv/g6-plugin" "^0.6.1"
     "@antv/hierarchy" "^0.6.7"
-    "@antv/layout" "^0.1.22"
+    "@antv/layout" "^0.2.0"
     "@antv/matrix-util" "^3.1.0-beta.3"
     "@antv/path-util" "^2.0.3"
     "@antv/util" "~2.0.5"
@@ -186,27 +185,27 @@
     insert-css "^2.0.0"
     ml-matrix "^6.5.0"
 
-"@antv/g6-plugin@0.5.5":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@antv/g6-plugin/-/g6-plugin-0.5.5.tgz#744400b87ec6a04ebf483b5c77dfadb0b1010e5e"
-  integrity sha512-1X7Q7aEFNY2iIM9GrsKKqp6lgb0kceUI9Dqib3VjXm/hhos3zBp4i8UgkkIlDaKT8bXo1IJapbE4eWfVHDSgaw==
+"@antv/g6-plugin@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@antv/g6-plugin/-/g6-plugin-0.6.1.tgz#8ba5b2bbbabe7ef0d5fee7c351f4e9b08e56fea4"
+  integrity sha512-dt6EGC8bTu9/WA6QroUXDJzfi9YreTjv4sKWJ4Jbs0efGF0JQijS5S9sgfddKPM8ZIP+tcgTyjY9ZSEAt9vccA==
   dependencies:
     "@antv/dom-util" "^2.0.2"
     "@antv/g-base" "^0.5.1"
     "@antv/g-canvas" "^0.5.2"
     "@antv/g-svg" "^0.5.2"
-    "@antv/g6-core" "0.5.5"
+    "@antv/g6-core" "^0.6.1"
     "@antv/matrix-util" "^3.1.0-beta.3"
     "@antv/scale" "^0.3.4"
     "@antv/util" "^2.0.9"
     insert-css "^2.0.0"
 
-"@antv/g6@4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.5.5.tgz#0a85a3ceb572b0e32c4845c05fdc1c2b77d6ee17"
-  integrity sha512-rSe1j4ihrV6HfgL/fFs4T9VtycMc/OqZKZx6RAVRviQZA1VNblvddY+2ERPTbNwaljM+XQODCUFRHY3CspT7vg==
+"@antv/g6@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@antv/g6/-/g6-4.6.1.tgz#1175c8fac4029ce5fbe9c095f6df0ca516c4abf3"
+  integrity sha512-1e2/WLbMqbujerAXXL8TXzB+Q9wIl5M4oqPmwzdjoNBAhTqjGMJ6p+KmXbPX0MHpzmv+k9/XrStxgFglmWf0tw==
   dependencies:
-    "@antv/g6-pc" "0.5.5"
+    "@antv/g6-pc" "^0.6.1"
 
 "@antv/hierarchy@^0.6.7":
   version "0.6.8"
@@ -215,14 +214,15 @@
   dependencies:
     "@antv/util" "^2.0.7"
 
-"@antv/layout@^0.1.22":
-  version "0.1.31"
-  resolved "https://registry.yarnpkg.com/@antv/layout/-/layout-0.1.31.tgz#458e26fc6fab13a9a47079fb3d7c7fa5740983b7"
-  integrity sha512-iz9i19dOJGiZr5xBWI5sfG+2K3QVMNAGOBrbjWKH2RGLvGpf2TSFySidhz0siDrcQA46cDsjLmGstezQdgeGzA==
+"@antv/layout@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@antv/layout/-/layout-0.2.0.tgz#999dcc8a822410f1641d147695193c8f7b15f1e3"
+  integrity sha512-oPNR5SuT8l7tpJMJxcirKYqhawTP6I+vATz9vhAhEeb3gnf7inan+U5FIvT4M9jdIRvmI2HdoOzyJpLtSy9MDg==
   dependencies:
     "@antv/g-webgpu" "0.5.5"
     "@dagrejs/graphlib" "2.1.4"
     d3-force "^2.0.1"
+    dagre-compound "^0.0.11"
     ml-matrix "^6.5.0"
 
 "@antv/matrix-util@^3.0.4":
@@ -5624,10 +5624,10 @@ after@0.8.2:
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
-ag-grid-community@27.0.0:
-  version "27.0.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-27.0.0.tgz#f1de34157238382622108cb62e3764f299357c67"
-  integrity sha512-uT2iFQ8Euu+e0QeAIrUB5pv/m4c2hPVVRQS7sS2RTYcax9P7jSOn1jHcPGh4t58zPw+fPwBnDFHvwVOFLY+Zhw==
+ag-grid-community@27.0.1:
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-27.0.1.tgz#7ce5c000d321ba2c22447837e793b1d8366f4cdb"
+  integrity sha512-wV3CLLJWet0I7lmlVjVjACVWQ1WmGYflEyc2nKK3u5CDKa9ewQGYcwZW92i+E+9rmGH6R7oaL3DFKzNWD6C56w==
 
 ag-grid-vue@27.0.0:
   version "27.0.0"
@@ -8520,6 +8520,11 @@ d3@^6.6.2:
     d3-timer "2"
     d3-transition "2"
     d3-zoom "2"
+
+dagre-compound@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/dagre-compound/-/dagre-compound-0.0.11.tgz#8d3d1004d756f420582d29f28c92045375018987"
+  integrity sha512-UrSgRP9LtOZCYb9e5doolZXpc7xayyszgyOs7uakTK4n4KsLegLVTRRtq01GpQd/iZjYw5fWMapx9ed+c80MAQ==
 
 dagre@^0.8.5:
   version "0.8.5"
