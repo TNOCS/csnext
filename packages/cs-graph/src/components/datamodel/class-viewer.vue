@@ -397,7 +397,7 @@ export default class ClassViewer extends WidgetBase {
       this.updateGraph();
       if (this.graphSource.events) {
         this.busManager.subscribe(this.graphSource.events, DocDatasource.FEATURE_TYPES, (a: string, b: FeatureType) => {
-          if (a === DocDatasource.FEATURE_TYPE_SELECTED && this.graph && b?.type) {
+          if (a === DocDatasource.FEATURE_TYPE_SELECTED && this.graph && b?.type && !b.isEdge) {
             this.graph.focusItem(b.type, true);
           }
         });
