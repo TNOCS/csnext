@@ -26,9 +26,19 @@
         <v-icon>note_mdi-plus</v-icon>
       </v-btn> -->
 
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <v-menu bottom left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="deleteAllInstances()">
+            <v-list-item-title>Delete all instances</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
@@ -57,20 +67,13 @@
       </v-tab-item>
       <v-tab-item value="tab-items">
         <simplebar style="background: red !important; height: 100%">
-          <cs-widget
-            :widget="elementsWidget"
-            style="height: calc(100em - 465px)"
-          ></cs-widget>
+          <cs-widget :widget="elementsWidget" style="height: calc(100em - 465px)"></cs-widget>
         </simplebar>
       </v-tab-item>
       <v-tab-item value="tab-template">
         <simplebar style="height: 100%">
           <h2>Keywords</h2>
-          <v-combobox
-            multiple
-            small-chips
-            v-model="type.attributes.keywords"
-          ></v-combobox>
+          <v-combobox multiple small-chips v-model="type.attributes.keywords"></v-combobox>
 
           <h2>Relations</h2>
 
@@ -78,11 +81,7 @@
             <h3>{{ prop.key }}</h3>
 
             <div v-if="prop.attributes && prop.attributes.keywords">
-              <v-combobox
-                multiple
-                small-chips
-                v-model="prop.attributes.keywords"
-              ></v-combobox>
+              <v-combobox multiple small-chips v-model="prop.attributes.keywords"></v-combobox>
             </div>
           </div>
         </simplebar>
@@ -146,7 +145,6 @@
 }
 
 .link-avatar {
-  background: red;
   width: 10px;
   height: 10px;
   margin-right: 10px;
@@ -206,21 +204,27 @@ import { WidgetBase } from '@csnext/cs-client';
 import { DocDatasource } from '../../datasources/doc-datasource';
 import simplebar from 'simplebar-vue';
 import { SearchEntity } from '../../classes/document/search-entity';
-import { IFormObject, IWidget } from '@csnext/cs-core';
 import { FeatureType, PropertyType, PropertyValueType } from '@csnext/cs-data';
-import { GraphElements } from '../..';
+import { GraphElements, DataGridOptions, ElementDataGrid, GridView } from '../..';
+import { IFormObject, IWidget } from '@csnext/cs-core';
 
 @Component({
   components: { simplebar, GraphElements },
 })
 export default class FeatureTypeEditor extends WidgetBase {
-  public elementsWidget = {
-    component: GraphElements,
-    datasource: this.widget?.datasource,
-    data: {
-      classFilter: this.type?.type,
-    },
-  } as IWidget;
+  public elementsWidget: IWidget = {
+    component: ElementDataGrid,
+    datasource: this.widget.datasource,
+    options: {
+      askForName: true,
+      defaultView: GridView.list,
+      canAdd: true,
+      canDelete: true,
+      canGraph: true,
+      baseType: this.type?.type,
+      canEdit: true,
+    } as DataGridOptions,
+  };
 
   public tab = '';
 
@@ -233,6 +237,14 @@ export default class FeatureTypeEditor extends WidgetBase {
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
       return this.widget.content as DocDatasource;
+    }
+  }
+
+  public async deleteAllInstances() {
+    if (this.type?.type && this.source) {
+      if ((await $cs.triggerYesNoQuestionDialog('REMOVE_ELEMENTS', 'REMOVE_ALL_INSTANCES_OF_TYPE')) === 'YES') {
+        this.source!.removeNodeByType(this.type!.type!);
+      }
     }
   }
 
@@ -301,9 +313,7 @@ export default class FeatureTypeEditor extends WidgetBase {
           _key: 'baseType',
           type: 'chips',
           options: () => {
-            return this.source?.featureTypes
-              ? Object.keys(this.source.featureTypes)
-              : [];
+            return this.source?.featureTypes ? Object.keys(this.source.featureTypes) : [];
           },
         },
         {
@@ -313,8 +323,8 @@ export default class FeatureTypeEditor extends WidgetBase {
           canDelete: true,
           arrayFieldType: 'object',
           arrayFilter: (v: PropertyType[]) => {
-            return v.filter(pt => pt._originalType === undefined || pt._originalType === this.type?.type)
-            },
+            return v.filter((pt) => pt._originalType === undefined || pt._originalType === this.type?.type);
+          },
           newItem: () => {
             return new PropertyType();
           },
@@ -410,9 +420,7 @@ export default class FeatureTypeEditor extends WidgetBase {
                       title: 'object type',
                       group: 'relation-def',
                       options: () => {
-                        return this.source?.featureTypes
-                          ? Object.keys(this.source.featureTypes)
-                          : [];
+                        return this.source?.featureTypes ? Object.keys(this.source.featureTypes) : [];
                       },
                     },
                     {

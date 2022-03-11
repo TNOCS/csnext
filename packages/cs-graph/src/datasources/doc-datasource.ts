@@ -1340,7 +1340,7 @@ export class DocDatasource extends GraphDatasource {
                   readonly: pt.readonly,
                   hint,
                   array,
-                  required,
+                  required,                  
                   group,
                   section,
                   icon: icon || 'mdi-counter'
@@ -1568,6 +1568,15 @@ export class DocDatasource extends GraphDatasource {
       return;
     }
     GraphElement.updateOriginals(doc);
+  }
+
+  public removeNodeByType(classId: string) : Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      const elements = this.getClassElements(classId);
+      for (const el of elements) {
+        await this.removeNode(el, true, false);        
+      }
+    })
   }
 
   public removeNode(element: GraphElement, relations = false, notify = false): Promise<boolean> {
