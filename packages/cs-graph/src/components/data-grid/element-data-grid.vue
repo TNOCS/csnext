@@ -3,7 +3,7 @@
     <div v-if="featureType" class="data-grid-title">
       <span v-if="featureType.icon" class="mr-4"
         ><v-icon>{{ featureType.icon }}</v-icon></span
-      >{{ $cs.Translate(options.title) }}<span v-if="_filterTitle"> : {{ _filterTitle }}</span>
+      >{{ $cs.Translate(options.title) }}<span v-if="filterTitle"> : {{ filterTitle }}</span>
     </div>
     <v-layout class="ma-2">
       <v-btn-toggle dense v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
@@ -121,13 +121,13 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
               <v-icon>mdi-filter-check</v-icon>
-              <span v-if="_filterProperty">{{ _filterProperty.label }}</span>
+              <span v-if="filterProperty">{{ filterProperty.label }}</span>
               <span v-else><v-icon>mdi-plus</v-icon></span>
             </v-btn>
           </template>
           <v-list>
             <v-list-item @click="setFilterProperty(undefined)"><v-list-item-title>[all]</v-list-item-title></v-list-item>
-            <v-list-item v-for="(prop, pi) in _filterProperties" :key="pi" @click="setFilterProperty(prop.key)"
+            <v-list-item v-for="(prop, pi) in filterProperties" :key="pi" @click="setFilterProperty(prop.key)"
               ><v-list-item-title>{{ prop.label }}</v-list-item-title></v-list-item
             >
             <!-- <v-list-item v-for="(prop, index) in options.kanbanOptions.columnPropertySelection" :key="index" @click="selectKanbanProperty(prop)">
@@ -135,17 +135,17 @@
           </v-list-item> -->
           </v-list>
         </v-menu>
-        <v-menu offset-y v-if="_filterProperty">
+        <v-menu offset-y v-if="filterProperty">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
-              <span v-if="_filterTitle">{{ _filterTitle }}</span>
+              <span v-if="filterTitle">{{ filterTitle }}</span>
               <span v-else>[select]</span>
             </v-btn>
           </template>
-          <v-list v-if="_filterValues">
+          <v-list v-if="filterValues">
             <v-list-item @click="setFilterValue(undefined)"><v-list-item-title>[all]</v-list-item-title></v-list-item>
-            <v-list-item v-for="(value, key) in Object.keys(_filterValues)" :key="key" @click="setFilterValue(value)"
-              ><v-list-item-title>{{ _filterValues[value] }}</v-list-item-title></v-list-item
+            <v-list-item v-for="(value, key) in Object.keys(filterValues)" :key="key" @click="setFilterValue(value)"
+              ><v-list-item-title>{{ filterValues[value] }}</v-list-item-title></v-list-item
             >
             <!-- <v-list-item v-for="(prop, index) in options.kanbanOptions.columnPropertySelection" :key="index" @click="selectKanbanProperty(prop)">
             <v-list-item-title>{{ prop }}</v-list-item-title>
@@ -878,10 +878,10 @@ export default class ElementDataGrid extends WidgetBase {
   private contextMenuY = 0;
   private kanbanMenuItems: any[] = [];
 
-  private _filterProperty: PropertyType | null = null;
-  private _filterProperties?: PropertyType[] = [];
-  private _filterTitle?: string | null = null;
-  private _filterValues?: { [key: string]: string } = {};
+  private filterProperty: PropertyType | null = null;
+  private filterProperties?: PropertyType[] = [];
+  private filterTitle?: string | null = null;
+  private filterValues?: { [key: string]: string } = {};
 
   public gridApi?: GridApi;
   public columnApi: any | null = null;
@@ -1892,16 +1892,16 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public setFilterValue(value: string) {
-    this._filterTitle = undefined;
+    this.filterTitle = undefined;
     this.options.filterValue = value;
     this.storeFilterQuery();
     this.updateEntities(true);
   }
 
   public setFilterProperty(prop: string) {
-    this._filterProperty = null;
-    this._filterTitle = undefined;
-    this._filterValues = undefined;
+    this.filterProperty = null;
+    this.filterTitle = undefined;
+    this.filterValues = undefined;
     this.options.filterProperty = prop;
     this.options.filterValue = undefined;
     this.storeFilterQuery();
@@ -1977,14 +1977,14 @@ export default class ElementDataGrid extends WidgetBase {
     this.checkQueryParams();
 
     if (this.options.filterProperty && this.potentialProperties.hasOwnProperty(this.options.filterProperty)) {
-      this._filterProperty = this.potentialProperties[this.options.filterProperty];
+      this.filterProperty = this.potentialProperties[this.options.filterProperty];
     }
 
     if (this.options.filterProperties) {
-      this._filterProperties = [];
+      this.filterProperties = [];
       for (const filterProperty of this.options.filterProperties) {
         if (this.potentialProperties.hasOwnProperty(filterProperty)) {
-          this._filterProperties.push(this.potentialProperties[filterProperty]);
+          this.filterProperties.push(this.potentialProperties[filterProperty]);
         }
       }
     }
@@ -2005,16 +2005,16 @@ export default class ElementDataGrid extends WidgetBase {
       filterItems();
 
       // check if items should be filtered
-      if (this._filterProperty?.key) {
-        this._filterValues = {};
+      if (this.filterProperty?.key) {
+        this.filterValues = {};
         this.items = this.items.filter((i) => {
-          if (i.properties && this._filterValues && this._filterProperty?.key && i.properties.hasOwnProperty(this._filterProperty.key)) {
-            if (!this._filterValues.hasOwnProperty(i.properties[this._filterProperty.key])) {
+          if (i.properties && this.filterValues && this.filterProperty?.key && i.properties.hasOwnProperty(this.filterProperty.key)) {
+            if (!this.filterValues.hasOwnProperty(i.properties[this.filterProperty.key])) {
               // find title for this category
-              let title = i.properties[this._filterProperty.key!];
-              let key = i.properties[this._filterProperty.key!];
+              let title = i.properties[this.filterProperty.key!];
+              let key = i.properties[this.filterProperty.key!];
               if (key && this.source) {
-                switch (this._filterProperty.type) {
+                switch (this.filterProperty.type) {
                   case PropertyValueType.element:
                     let el = this.source.getElement(key);
                     title = el?.properties?.name || key;
@@ -2024,15 +2024,15 @@ export default class ElementDataGrid extends WidgetBase {
 
               // check if this is current title
               if (this.options.filterValue === key) {
-                this._filterTitle = title;
+                this.filterTitle = title;
               }
-              this._filterValues[i.properties[this._filterProperty.key!]!] = title;
+              this.filterValues[i.properties[this.filterProperty.key!]!] = title;
             }
             if (this.options.filterValue === undefined) {
               return true;
             }
             if (this.options.filterValue) {
-              return i.properties[this._filterProperty.key!] === this.options.filterValue;
+              return i.properties[this.filterProperty.key!] === this.options.filterValue;
             }
           }
           if (!this.options.filterValue) {
