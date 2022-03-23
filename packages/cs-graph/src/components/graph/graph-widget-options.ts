@@ -7,4 +7,6 @@ export class GraphWidgetOptions extends WidgetOptions {
     public openElementDetails?: boolean;
     public newRelations?: NewRelationDefinition[];
     public enableFollowOptions?: boolean;
+    public canSearch?: boolean = true;
+    public searchFilter?: string;
 }

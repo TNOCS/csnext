@@ -83,6 +83,9 @@
         </v-btn>
         <v-btn v-if="activePreset.elementsEnabled" @click="emptyGraph()" icon>
           <v-icon>mdi-delete</v-icon>
+        </v-btn>        
+        <v-btn @click="downloadGraph()" icon>
+          <v-icon>mdi-download</v-icon>
         </v-btn>
         <v-btn @click="openSettings()" icon>
           <v-icon>mdi-cog</v-icon>
@@ -252,7 +255,7 @@ import {
   FeatureTypes,
 } from '@csnext/cs-data';
 import { IMenu } from '@csnext/cs-core';
-import G6, { Graph, NodeConfig, GraphData, Menu, LayoutConfig } from '@antv/g6';
+import G6, { Graph, NodeConfig, GraphData, DataUrlType, Menu, LayoutConfig } from '@antv/g6';
 import { guidGenerator } from '@csnext/cs-core';
 
 import Vue from 'vue';
@@ -1003,6 +1006,43 @@ export default class NetworkGraph extends WidgetBase {
   public initDefaultEdgeTypes() {
     if (!this.source?.featureTypes) { return; }
     this.edgeTypes = Object.values(this.source.featureTypes).filter(ft => ft.isEdge);
+  }
+
+  
+  private debugBase64(base64URL: string) {
+    let win = window.open();
+    var image = new Image();
+    image.src = base64URL;
+    setTimeout(() => {
+      win!.document.write(image.outerHTML);
+    });
+  }
+
+
+    public downloadGraph() {
+    if (!this.graph) {
+      return;
+    }
+    this.graph.toFullDataURL(
+      // The first parameter: callback, required
+      (res: any) => {
+        this.debugBase64(res);
+        // window.location.href = res;
+        // ... something
+        //   console.log(res); // e.g. print the result
+      }, 
+      'image/png',
+      // The second and third parameter is not required      
+      {
+        backgroundColor: "#fff",
+        padding: 10,
+      }
+    );
+    // const img = this.graph.downloadFullImage('dialog', {
+    //     type: 'image/png',
+    //     backgroundColor: '#ddd'
+    //   });
+    // console.log(img);
   }
 
   public contentLoaded() {

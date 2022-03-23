@@ -9,6 +9,7 @@ export * from './components/graph/graph-widget-options';
 export * from './plugins/document-plugin';
 export * from './plugins/import-plugin';
 export * from './plugins/viewer-plugin';
+export * from './plugins/search-plugin';
 export * from './classes/';
 export * from './filters/graph-cross-filter';
 export * from './filters/cross-graph-manager';
@@ -19,6 +20,8 @@ export * from './utils/doc-utils';
 export * from './utils/cache-requests';
 export * from './components/document/plugins/text-mention';
 export * from './utils/graph-utils';
+export * from "./components/search/search-manager";
+
 import TextExtension from './components/document/plugins/text-extension';
 import ParagraphExtension from './components/document/plugins/paragraph-extension';
 import suggestion from './components/document/plugins/suggestion';
@@ -49,6 +52,7 @@ import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
 import MentionList from './components/document/plugins/mention-list.vue';
 import SelectionPopup from './components/document/selection-popup.vue';
+import Search from "./components/search/search.vue";
 
 
 
@@ -92,5 +96,6 @@ export {
   DocumentEntities,
   MentionList,
   ParagraphExtension,
-  TextExtension
+  TextExtension,
+  Search
 };

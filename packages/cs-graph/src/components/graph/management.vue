@@ -70,6 +70,7 @@
                     ><v-icon class="mr-2">mdi-folder-outline</v-icon>reload</v-btn
                   >
 
+                  <v-btn class="primary mr-4" @click="download()"><v-icon class="mr-2">mdi-download</v-icon>download</v-btn>
                   <v-btn class="primary mr-4" @click="openFile()"><v-icon class="mr-2">mdi-folder-outline</v-icon>open new file</v-btn>
 
                   <v-btn v-if="folderSelected && validDatamodel && validDatabase" class="primary" @click="loadFolder()"
@@ -168,6 +169,10 @@ export default class Management extends WidgetBase {
     if (this.source) {
       this.source.openServerStorage();
     }
+  }
+
+  public download() {
+    alert('download')
   }
 
   private isSelected(db: any) {
