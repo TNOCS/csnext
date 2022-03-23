@@ -9,6 +9,7 @@ export interface IGraphStorage {
   loadTypes(): Promise<boolean>;
   saveTypes(): Promise<boolean>;
   loadGraph(): Promise<boolean>;
+  saveMultiple?(element: GraphElement[]): Promise<GraphElement[]>;
   saveEdge?(element: GraphElement): Promise<GraphElement | undefined>;
   saveElement?(element: GraphElement): Promise<GraphElement>;
   removeEdge?(id: string): Promise<boolean>;

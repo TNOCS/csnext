@@ -37,6 +37,7 @@ import {
   DeviceStorage,
 } from '..';
 import Vue, { Component } from 'vue';
+import { ISearchPlugin } from '../plugins/search-plugin';
 
 export interface ITool {
   title: string;
@@ -71,7 +72,7 @@ export class DocDatasource extends GraphDatasource {
   public searchEntities?: SearchEntity[] = [];
 
   public documentPlugins: IDocumentPlugin[] = [];
-
+  public searchPlugins: ISearchPlugin[] = [];
   public importPlugins: IImportPlugin[] = [];
   public viewerPlugins: IDocumentViewerPlugin[] = [];
 
@@ -157,6 +158,15 @@ export class DocDatasource extends GraphDatasource {
     this.crossFilter = new GraphCrossFilter(this);
   }
 
+  
+  public addSearchPlugin(plugin: ISearchPlugin) {
+    const existing = this.searchPlugins.findIndex((t) => t.id === plugin.id);
+    if (existing !== -1) {
+      this.searchPlugins.splice(existing, 1);
+    }
+    this.searchPlugins.push(plugin);
+  }
+
   //#region tools
 
   public addTool(tool: ITool) {
@@ -190,6 +200,27 @@ export class DocDatasource extends GraphDatasource {
     } else {
       return this.addBookmark(bookmark);
     }
+  }
+
+  public async importNodes(nodes: GraphElement[]) : Promise<GraphElement[] | undefined> {
+    const importedNodes = await this.saveMultiple(nodes);    
+    return Promise.resolve(importedNodes);
+
+  }
+
+  public async importNode(node: GraphElement, notify = true) : Promise<GraphElement> {
+    
+    const element = await this.saveNode(node, undefined, notify);
+    if (node.relations) {
+      for (const relation of node.relations) {
+        if (relation.toId && this.graph.hasOwnProperty(relation.toId)) {
+          const to = this.graph[relation.toId];
+          await this.saveEdge({ from: element, to: to, classId: relation.classId || 'edge' });
+        }        
+      }
+    }
+    return Promise.resolve(element);
+    
   }
 
   public addBookmark(bookmark: GraphElement): boolean {
@@ -1656,7 +1687,37 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public async saveNode(element: GraphElement, user?: GraphElement): Promise<GraphElement> {
+  public async saveMultiple(elements: GraphElement[], user?: GraphElement, notify = true) : Promise<GraphElement[] | undefined> {
+    if (!this.storage?.saveMultiple) {
+      return Promise.reject();
+    }
+    const loaderId = idGenerator();
+    try {      
+      $cs.loader.addLoader(loaderId);
+      for (const element of elements) {
+        this.updateProvanance(element, user);
+      }
+      const res = await this.storage.saveMultiple(elements);
+      if (notify) {
+        $cs.triggerNotification({
+          title: $cs.Translate('NODE_SAVED'),
+          text: `${elements.length} items saved `,
+          timeout: 500,
+          icon: "mdi-content-save",
+          group: true,
+        });}
+      return Promise.resolve(res);
+      }
+    catch (e){
+      console.log(e);
+    }
+    finally {
+      $cs.loader.removeLoader(loaderId);
+
+    }
+  }
+
+  public async saveNode(element: GraphElement, user?: GraphElement, notify = true): Promise<GraphElement> {
     if (!this.storage?.saveElement) {
       return Promise.reject();
     }
@@ -1666,13 +1727,14 @@ export class DocDatasource extends GraphDatasource {
     try {
       await this.storage.saveElement(element);
       this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, element);
+      if (notify) {
       $cs.triggerNotification({
         title: $cs.Translate('NODE_SAVED'),
         text: element.properties?.name,
         timeout: 500,
         icon: "mdi-content-save",
         group: true,
-      });
+      });}
     } catch (err) {
     } finally {
       $cs.loader.removeLoader(`store-${element.id}`);

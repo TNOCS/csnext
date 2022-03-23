@@ -10,9 +10,6 @@ import Axios from 'axios';
 import { DocDatasource, GraphDocument } from '../..';
 import { IGraphStorage, StorageTypes } from './graph-storage';
 
-
-
-
 export class ServerStorage implements IGraphStorage {
   public source!: DocDatasource;
 
@@ -24,6 +21,21 @@ export class ServerStorage implements IGraphStorage {
     this.source = source;
     return Promise.resolve(true);
   }
+
+  // public async saveMultiple(elements: GraphElement[]) : Promise<GraphElement[]> {
+    
+  //   try {
+  //     const r = await Axios.post(`${this.base_url}/graph/storemultiple`, elements);
+  //     if (r.data && Array.isArray(r.data) && r.data.length === 1) {
+  //       return Promise.resolve(r.data[0]);
+  //     } else {
+  //       return Promise.reject();
+  //     }      
+  //   } catch (e) {
+  //     return Promise.reject(e);
+  //   }
+  //   return Promise.reject();
+  // }
 
   public async loadGraph(): Promise<boolean> {
     const url = `${this.base_url}/graph/all`;
@@ -231,22 +243,24 @@ export class ServerStorage implements IGraphStorage {
   }
 
   public async saveElement(element: GraphElement): Promise<GraphElement> {
-    if (!element.properties) { element.properties = {}}
-    element.properties.hash_ = GraphElement.getHash(element);
+    const res = await this.saveMultiple([element]);    
+    return Promise.resolve(res[0]);    
+  }
 
+  public async saveMultiple(elements: GraphElement[]): Promise<GraphElement[]> {
+    let body: any[] = [];
+    for (const element of elements) {
+      if (!element.properties) { element.properties = {}}
+      element.properties.hash_ = GraphElement.getHash(element);      
+      this.source.updateElementProperties(element);  
+      const b = GraphElement.getFlat(element);
+      body.push(b);
+    }
     
-    let body = GraphElement.getFlat(element);
-    
-    
-    // delete body.class;
-    this.source.updateElementProperties(element);
-    
-    // body.properties.hash_ = element.properties.hash_;
-
     try {
-      const r = await Axios.post(`${this.base_url}/graph/save`, [body]);
-      if (r.data && Array.isArray(r.data) && r.data.length === 1) {
-        return Promise.resolve(r.data[0]);
+      const r = await Axios.post(`${this.base_url}/graph/save`, body);
+      if (r.data && Array.isArray(r.data)) {
+        return Promise.resolve(r.data);
       } else {
         return Promise.reject();
       }      

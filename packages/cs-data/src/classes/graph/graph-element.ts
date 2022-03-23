@@ -19,6 +19,12 @@ export interface IGraphElementAction {
   elements: GraphElement[];
 }
 
+export class RelationInfo {
+  public toId?: string;
+  public classId?: string;
+  public label?: string;
+}
+
 export class GraphElement<T = BaseElementProperties> {
   public id?: string;  
   public type?: 'node' | 'edge' = 'node';
@@ -37,6 +43,7 @@ export class GraphElement<T = BaseElementProperties> {
   public kb_time?: number;
   public backgroundColor?: string;
   public properties?: T;
+  public relations?: RelationInfo[];
   public timeseries?: Record<string, number[][]>;
 
   public _flat?: {
