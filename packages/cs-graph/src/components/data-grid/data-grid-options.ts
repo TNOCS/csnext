@@ -90,7 +90,7 @@ export class DataGridOptions extends WidgetOptions {
   
   public hideFilter? = false;
   public hideViewSwitch? = false;
-  public onSelect?: (element: GraphElement) => {};
+  public onSelect?: (element: GraphElement) => void;
   public onAfterAdded?: (element: GraphElement) => Promise<any>;
   public defaultView: GridView = GridView.table;
   
