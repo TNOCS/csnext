@@ -1,4 +1,4 @@
-import { IMenu, WidgetOptions } from '@csnext/cs-core';
+import { IMenu, IWidget, WidgetOptions } from '@csnext/cs-core';
 import { GraphElement, GraphFilter, IGraphFilter } from '@csnext/cs-data';
 
 export enum GridView {
@@ -10,6 +10,12 @@ export enum GridView {
   news = 'news',
   kanban = 'kanban',
   timeline_vertical = 'timeline_vertical'
+}
+
+export enum SplitView {
+  disabled = 'disabled',
+  horizontal = 'horizontal',
+  vertical = 'vertical'
 }
 
 export class NewRelation {
@@ -62,7 +68,7 @@ export type NewRelationDefinition = {
 
 export class DataGridTableOptions {
   public selectedHeaders?: DataGridHeader[];
-  public showHeader = true;
+  public showHeader? = true;
   public showRowIcon? = true;
   
 }
@@ -79,6 +85,8 @@ export class DataGridOptions extends WidgetOptions {
   public askForName?: boolean;
   public askForNewForm?: boolean;
   public graphSelect?: boolean;
+  public splitView?: SplitView = SplitView.disabled;
+  public splitWidget?: IWidget;
   
   public hideFilter? = false;
   public hideViewSwitch? = false;
