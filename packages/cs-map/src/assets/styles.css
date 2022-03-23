@@ -12,6 +12,14 @@
     margin-left: 5px;
 }
 
+.prop-node-url {
+    text-overflow: ellipsis;
+    width: 300px !important;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+
 .link-chip {
     margin-bottom: 2px;
 }
