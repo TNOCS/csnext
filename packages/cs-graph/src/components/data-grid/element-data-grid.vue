@@ -62,6 +62,7 @@
         </template>
         <v-list>
           <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)">
+            <v-list-item-icon><v-icon>{{ item.icon }}</v-icon></v-list-item-icon>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -208,7 +209,7 @@
       </v-list>
     </v-menu> -->
     </v-layout>
-    <div class="grid-component-content">
+    <div class="grid-component-content" :class="'splitview-' + options.splitView">
       <template v-if="options.defaultView === 'list'">
         <v-virtual-scroll v-if="items" :items="items" :item-height="60" clientHeight="100%">
           <template v-slot="{ item }">
@@ -569,6 +570,8 @@
         </simplebar>
       </template>
 
+      <cs-widget v-if="options.splitWidget" :widget="options.splitWidget"></cs-widget>
+
       <!-- <v-grid
     class="list"
     theme="material"
@@ -586,6 +589,7 @@
   min-width: 320px;
   width: 320px;
 }
+
 /* Unfortunately @apply cannot be setup in codesandbox, 
 but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 .ghost-card {
@@ -594,8 +598,24 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   border: 1px solid #4299e1;
 }
 
+.splitview-horizontal {
+  
+  grid-template-rows: 50% 50%;
+  grid-template-areas: 
+    'top'
+    'bottom';
+}
+
+.splitview-vertical {
+  grid-template-columns: 50% 50%;
+  grid-template-areas: 'left right';
+  
+}
+
 .grid-component-content {
   height: calc(100% - 96px);
+   position: relative;
+  display: grid;
 }
 
 .kanban-board {
@@ -805,7 +825,7 @@ import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphF
 import moment from 'moment';
 import simplebar from 'simplebar-vue';
 import isotope from 'vueisotope';
-import { guidGenerator } from '@csnext/cs-core';
+import { guidGenerator, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 // import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { DocDatasource, DataGridOptions, GridView } from '../..';
@@ -1006,10 +1026,25 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+  public selectSplitWidget(element: GraphElement) {
+    if (this.options.splitWidget) {
+      if (!this.options.splitWidget.data)  { this.options.splitWidget.data = {}; }
+      this.options.splitWidget.data.elementId = element?.id;
+      if (this.options.splitWidget._component?.selectElement) {
+        this.options.splitWidget._component.selectElement(element, this.options);
+      }      
+    }
+  }
+
   public selectEntity(element: GraphElement) {
     if (this.options.onSelect) {
       this.options.onSelect(element);
-    } else {
+    }
+    
+    if (this.options.splitWidget) {
+      this.selectSplitWidget(element);    
+    }
+    else {
       this.editEntity(element);
     }
   }
@@ -1054,6 +1089,24 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     this.source.createKGView([element], this.options.graphPresetId);
+  }
+
+  @Watch('widget')
+  private async widgetChanged(widget: IWidget) {
+    this.widget = widget;
+    if (!this.source)
+    { 
+      if (widget.datasource) {
+        const source = await $cs.loadDatasource<DocDatasource>(widget.datasource);
+        this.contentLoaded(source);
+      }
+    } else {
+      this.contentLoaded(this.source);
+    }
+     
+    console.log(`data-grid-widget changed: ${widget.id} - ${widget.component}`);
+    
+   
   }
 
   @Watch('options.filter')
@@ -1133,6 +1186,15 @@ export default class ElementDataGrid extends WidgetBase {
   public updateSearchFilter() {
     this.updateEntities(true);
     this.$forceUpdate();
+  }
+
+  public getWidget() {
+    if (this.options.splitWidget) {
+      if (!this.options.splitWidget.data) {
+        this.options.splitWidget.data = {};
+      }
+      return this.options.splitWidget;
+    }
   }
 
   public async unLinkAll() {
@@ -1216,14 +1278,16 @@ export default class ElementDataGrid extends WidgetBase {
   private filterDataTable(value: string, search: string) {
     return value != null && search != null && typeof value === 'string' && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1;
   }
-  public get source(): DocDatasource | undefined {
-    if (this.widget?.content) {
-      return this.widget.content as DocDatasource;
-    }
-    // if (this.options?.datasource) {
-      //  $cs.loadDatasource<DocDatasource>(this.options.datasource);
-    // }
-  }
+
+  public source : DocDatasource | undefined = undefined;
+  // public get source(): DocDatasource | undefined {
+  //   if (this.widget?.content) {
+  //     return this.widget.content as DocDatasource;
+  //   }
+  //   // if (this.options?.datasource) {
+  //     //  $cs.loadDatasource<DocDatasource>(this.options.datasource);
+  //   // }
+  // }
 
   public selectElement(element: GraphElement, selected: boolean) {
     alert('selected');
@@ -1543,6 +1607,9 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source) {
       return;
     }
+    if (this.options.splitWidget?.data?.elementId === entity.id) {
+      this.selectSplitWidget(undefined);      
+    }
     this.source
       .removeNode(entity, true, true)
       .then((r) => {
@@ -1787,6 +1854,9 @@ export default class ElementDataGrid extends WidgetBase {
               }
             }
           }
+        } else if (propType.type === PropertyValueType.boolean) {
+          columns.push({ prop: 'true', title: 'true', collapsed: false, elements: [], newCard: false, newTitle: '' });
+          columns.push({ prop: 'false', title: 'false', collapsed: false, elements: [], newCard: false, newTitle: '' });
         }
 
         for (const item of this.items) {
@@ -2174,6 +2244,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public contentLoaded(source: DocDatasource) {
+    if (!this.source && source) { this.source = source; }
     this.updateEntities(true);
     this.update();
 
@@ -2220,6 +2291,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   mounted() {
+    if (!this.source && this.widget?.content) { this.source = this.widget.content; }
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();

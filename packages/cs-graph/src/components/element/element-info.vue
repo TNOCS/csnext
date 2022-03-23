@@ -514,7 +514,17 @@ export default class ElementInfo extends WidgetBase {
       this.specialTab = null;
       return;
     }
-    this.specialTab = InfoTabManager.tabs[this.activeElement.classId] || null;
+
+    let tabs = InfoTabManager.tabs[this.activeElement.classId];
+    if (Array.isArray(tabs)) {
+      this.specialTab = InfoTabManager.tabs[this.activeElement.classId][0] || null;
+    } else {
+      let tab = InfoTabManager.tabs[this.activeElement.classId] as IWidget;
+      this.specialTab = tab;
+    }
+
+
+    
     this.$forceUpdate();
   }
 
@@ -541,16 +551,15 @@ export default class ElementInfo extends WidgetBase {
         }
       });
 
-      this.dataSource.bus.subscribe('element', (a: string, data: GraphElement) => {
+      this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {
         this.activeElement = data;
         this.updateElement();
-        this.updateTabs();
+        this.updateTabs();        
       });
-      this.dataSource.bus.subscribe('focus', (a: string, data: any) => {
+      this.busManager.subscribe(this.dataSource.bus, 'focus', (a: string, data: any) => {
         this.activeElement = data;
         this.updateElement();
-        this.updateTabs();
-        this.$forceUpdate();
+        this.updateTabs();        
       });
     }
     this.updateElement();
