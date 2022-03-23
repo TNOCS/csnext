@@ -686,7 +686,7 @@ export class GraphDatasource extends DataSource {
     if (!element.id) {
       element.id = 'edge-' + idGenerator(); //element.fromId + '-' + element.toId + '-' + element.classId;
     }
-    element.properties.id = element.id;
+    // element.properties.id = element.id;
     if (element.toId && !element.to) {
       element.to = this.getElement(element.toId);
     }
