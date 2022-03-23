@@ -2,8 +2,8 @@
   <div v-if="activePreset && rule" class="rule-line">
     <v-layout>
       <span class="rule-legend" :style="getRuleStyle(rule)">
-        <v-icon dark class="rule-legend-icon" v-if="rule._featureType && rule._featureType.icon">{{rule._featureType.icon}}</v-icon>
-      </span>      
+        <v-icon dark class="rule-legend-icon" v-if="rule._featureType && rule._featureType.icon">{{ rule._featureType.icon }}</v-icon>
+      </span>
       <div v-if="rule.type === 'TYPE' || rule.type === 'INCOMMING_TYPE'">
         <v-autocomplete
           @change="saveType()"
@@ -23,10 +23,10 @@
           :items="Object.values(source.graph)"
           item-text="properties.name"
           item-value="id"
-        ></v-autocomplete>        
+        ></v-autocomplete>
         <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
-        <div v-if="rule.type === 'DOCUMENT'">
+      <div v-if="rule.type === 'DOCUMENT'">
         <v-autocomplete
           @change="saveElement()"
           v-if="rule && rule._editMode"
@@ -34,7 +34,7 @@
           :items="getDocuments()"
           item-text="properties.name"
           item-value="id"
-        ></v-autocomplete>        
+        ></v-autocomplete>
         <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
       <div v-if="rule.type === 'INDICATOR'">
@@ -45,10 +45,10 @@
           :items="getIndicators()"
           item-text="properties.name"
           item-value="id"
-        ></v-autocomplete>        
+        ></v-autocomplete>
         <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
-        <div v-if="rule.type === 'WORKSPACE'">
+      <div v-if="rule.type === 'WORKSPACE'">
         <v-autocomplete
           @change="saveElement()"
           v-if="rule && rule._editMode"
@@ -56,7 +56,7 @@
           :items="getWorkspaces()"
           item-text="properties.name"
           item-value="id"
-        ></v-autocomplete>        
+        ></v-autocomplete>
         <span class="rule-element-id" v-else>{{ rule._element.properties.name }}</span>
       </div>
       <div v-if="rule.type === 'RELATION' || rule.type === 'INCOMMING_RELATION'">
@@ -81,23 +81,17 @@
       <v-btn icon @click="toggleRule(rule)"> <v-icon v-if="rule.disabled === true">mdi-eye-off-outline</v-icon><v-icon v-else>mdi-eye</v-icon></v-btn>
     </v-layout>
     <div v-if="rule.filter">
-      <graph-rule-filter        
-        :rule="rule"
-        :parent="parent"
-        :preset="activePreset"
-        :source="source"        
-      ></graph-rule-filter>
+      <graph-rule-filter :rule="rule" :parent="parent" :preset="activePreset" :source="source"></graph-rule-filter>
     </div>
     <div class="outgoing-rules-list" v-if="rule.outgoingRules">
       <div v-for="(outgoing, i) in rule.outgoingRules" :key="i">
         <graph-rule-editor :source="source" :activePreset="activePreset" :rule="outgoing" :parent="rule"></graph-rule-editor>
       </div>
-    </div>    
+    </div>
   </div>
 </template>
 
 <style scoped>
-
 .quick-add-menu {
   background-color: red;
   position: absolute;
@@ -171,7 +165,6 @@ export default class GraphRuleEditor extends Vue {
 
   public availableRelations?: PropertyType[] | null = null;
   public availableTypes?: FeatureType[] | null = null;
-  
 
   private hover?: null | boolean = false;
 
@@ -206,23 +199,28 @@ export default class GraphRuleEditor extends Vue {
     }
   }
 
-  public getDocuments() : GraphElement[] | undefined {
-    if (!this.source) { return; }
+  public getDocuments(): GraphElement[] | undefined {
+    if (!this.source) {
+      return;
+    }
     return this.source.getClassElements('input', true);
   }
 
-  public getIndicators() : GraphElement[] | undefined {
-    if (!this.source) { return; }
+  public getIndicators(): GraphElement[] | undefined {
+    if (!this.source) {
+      return;
+    }
     return this.source.getClassElements('indicator', true);
   }
 
-  public getWorkspaces() : GraphElement[] | undefined {
-    if (!this.source) { return; }
+  public getWorkspaces(): GraphElement[] | undefined {
+    if (!this.source) {
+      return;
+    }
     return this.source.getClassElements('workspace', true);
   }
 
-
-    public saveElement() {
+  public saveElement() {
     if (this.rule.elementId) {
       this.rule._editMode = false;
       this.rule._element = this.source.getElement(this.rule.elementId);
@@ -306,16 +304,20 @@ export default class GraphRuleEditor extends Vue {
   }
 
   public addFilter() {
-    if (!this.rule.featureType) { return; }
-    if (!this.rule.filter) { Vue.set(this.rule, 'filter', { hasObjectProperties: []}); };
+    if (!this.rule.featureType) {
+      return;
+    }
+    if (!this.rule.filter) {
+      Vue.set(this.rule, 'filter', { hasObjectProperties: [] });
+    }
     this.rule.filter!.hasObjectProperties!.push({
-      property: 'population',
-          operator: '>',
-          value: 100000
-    } as GraphPropertyFilter);    
-      
-      this.source.updateRules(this.activePreset, this.rule);
-        
+      property: undefined,
+      operator: '>',
+      value: undefined,
+    } as GraphPropertyFilter);
+
+    this.source.updateRules(this.activePreset, this.rule);
+
     this.$forceUpdate();
   }
 
@@ -401,7 +403,7 @@ export default class GraphRuleEditor extends Vue {
       case 'INCOMMING_TYPE':
       case 'TYPE':
         if (this.source.featureTypes) {
-          this.availableTypes = Object.values(this.source.featureTypes).filter((t) => !t.isEdge && t.title);          
+          this.availableTypes = Object.values(this.source.featureTypes).filter((t) => !t.isEdge && t.title);
         }
         break;
       case 'RELATION':
@@ -409,7 +411,7 @@ export default class GraphRuleEditor extends Vue {
           this.availableRelations = this.parent._featureType.properties.filter((r) => r.type === 'relation');
         }
         break;
-      case 'INCOMMING_RELATION':        
+      case 'INCOMMING_RELATION':
         const inc: PropertyType[] = [];
         for (const ft in this.source.featureTypes) {
           if (Object.prototype.hasOwnProperty.call(this.source.featureTypes, ft)) {
@@ -428,16 +430,14 @@ export default class GraphRuleEditor extends Vue {
         this.availableRelations = inc;
         break;
     }
-
   }
 
   mounted() {
-    this.updateMenu()
-    
+    this.updateMenu();
   }
 
   public editStyle() {
-    alert('edit style')
+    alert('edit style');
   }
 
   constructor() {

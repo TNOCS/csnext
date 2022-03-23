@@ -326,6 +326,7 @@ export default class GraphSettings extends WidgetBase {
           title: 'LAYOUT',
           _key: 'layout',
           type: 'selection',
+          icon: 'mdi-graph-outline',
           readonly: false,
           options: ['manual', 'circular', 'radial', 'concentric', 'grid', 'mds', 'fruchterman', 'force', 'forceAtlas2', 'gForce', 'dagre'],
         },
@@ -334,6 +335,7 @@ export default class GraphSettings extends WidgetBase {
           _key: 'pinnedFeatureTypes',
           type: 'selection',
           array: true,
+          icon: 'mdi-pin',
           multiple: true,
           readonly: false,
           options: (this.source?.featureTypes) ? Object.keys(this.source.featureTypes) : []
@@ -341,17 +343,20 @@ export default class GraphSettings extends WidgetBase {
         {
           title: 'ANIMATE',
           _key: 'animate',
+          icon: 'mdi-animation',
           type: 'checkbox'
         },
           {
           title: 'FIT_VIEW',
           _key: 'fitAll',
-          type: 'checkbox'
+          type: 'checkbox',
+          icon: 'mdi-fit-to-screen'
         },
         {
           title: 'NODE_SIZE',
           _key: 'nodeSize',
           type: 'slider',
+          icon: 'mdi-arrow-top-right-thin-circle-outline',
           min: 10,
           max: 300,
         },
@@ -359,6 +364,7 @@ export default class GraphSettings extends WidgetBase {
           title: 'GRAVITY',
           _key: 'gravity',
           type: 'slider',
+          icon: 'mdi-earth',
           min: 0,
           max: 10,
           step: 0.1,
@@ -368,6 +374,7 @@ export default class GraphSettings extends WidgetBase {
           title: 'SPEED',
           _key: 'speed',
           type: 'slider',
+          icon: 'mdi-speedometer',
           min: 0,
           max: 50,
           step: 0.1,
@@ -376,6 +383,7 @@ export default class GraphSettings extends WidgetBase {
         {
           title: 'CLUSTERING',
           _key: 'clustering',
+          icon: 'mdi-select-group',
           type: 'checkbox',
           requirements: [(v: GraphLayout) => isLayout(v, ['fruchterman', 'froce'])],
         },
@@ -383,6 +391,7 @@ export default class GraphSettings extends WidgetBase {
           title: 'CLUSTER_GRAVITY',
           _key: 'clusterGravity',
           type: 'slider',
+          icon: 'mdi-earth',
           min: 0,
           max: 20,
           step: 0.1,
@@ -390,14 +399,16 @@ export default class GraphSettings extends WidgetBase {
         },
         {
           title: 'DIRECTION',
+          icon: 'mdi-arrow-right',
           _key: 'rankdir',
-          type: 'selection',
+          type: 'selection',        
           options: ['TB', 'BT', 'LR', 'RL'],
           requirements: [(v: GraphLayout) => isLayout(v, 'dagre')],
         },
         {
           title: 'ALIGN',
           _key: 'align',
+          icon: 'mdi-align-horizontal-center',
           type: 'selection',
           options: ['UL', 'UR', 'DL', 'DR'],
           requirements: [(v: GraphLayout) => isLayout(v, 'dagre')],
@@ -486,6 +497,7 @@ export default class GraphSettings extends WidgetBase {
         {
           title: 'FONT_SIZE',
           _key: 'globalFontSize',
+          icon: 'mdi-format-size',
           type: 'slider',
           min: 8,
           max: 24,
