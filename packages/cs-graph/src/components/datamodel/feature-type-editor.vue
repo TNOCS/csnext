@@ -277,23 +277,27 @@ export default class FeatureTypeEditor extends WidgetBase {
           title: 'TYPE',
           _key: 'type',
           type: 'string',
+          icon: 'mdi-bulletin-board',
           readonly: true,
         },
         {
           title: 'IS EDGE',
           _key: 'isEdge',
+          icon: 'mdi-arrow-bottom-right-thick',
           type: 'boolean',
         },
         {
           title: 'TITLE',
           _key: 'title',
           type: 'string',
+
           hint: 'title',
         },
         {
           title: 'ICON',
           _key: 'icon',
           type: 'string',
+          icon: 'mdi-image'
         },
         {
           title: 'ICON_PROPERTY',
@@ -307,6 +311,7 @@ export default class FeatureTypeEditor extends WidgetBase {
           title: 'BASE_URI',
           _key: 'baseUri',
           type: 'string',
+          
         },
         {
           title: 'BASETYPES',
