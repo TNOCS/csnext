@@ -1,6 +1,6 @@
 import tippy from 'tippy.js'
-import { VueRenderer } from '@tiptap/vue-2'
-import CommandsList from './commands-list.vue'
+import { VueRenderer } from '@tiptap/vue-2';
+// import CommandsList from './commands-list.vue';
 
 export default {
   items: ({ query }) => {
@@ -58,13 +58,13 @@ export default {
 
     return {
       onStart: props => {
-        component = new VueRenderer(CommandsList, {
-          // using vue 2:
-          parent: this,
-          propsData: props,
-          props,
-          editor: props.editor,
-        })
+        // component = new VueRenderer(CommandsList, {
+        //   // using vue 2:
+        //   parent: this,
+        //   propsData: props,
+        //   props,
+        //   editor: props.editor,
+        // })
 
         popup = tippy('body', {
           getReferenceClientRect: props.clientRect,

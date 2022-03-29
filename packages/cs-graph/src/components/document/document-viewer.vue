@@ -234,9 +234,8 @@ import { IImportPlugin } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import suggestion from './plugins/suggestion';
-import Commands from './plugins/commands'
-import commandSuggestion from './plugins/commands-suggestion'
-
+import Commands from './plugins/commands/commands'
+import commandSuggestion from './plugins/commands/commands-suggestion'
 
 import MentionList from './plugins/mention-list.vue';
 import SnippetList from './plugins/snippet-list.vue';
@@ -423,6 +422,13 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public currentDocument: GraphDocument | undefined;
+
+  public openElement(document: GraphDocument) {
+    this.loadDocument(document);
+    this.updateEditor();
+      this.updateContent();
+      this.initTools();    
+  }
     
 
   public testEntity() {
@@ -549,8 +555,27 @@ export default class DocumentViewer extends WidgetBase {
 
   public loadDocument(doc: GraphDocument) {
     if (this.source && doc) {
+      if (!doc.properties) { doc.properties = {}; }
+      if (!doc.properties.doc) { doc.properties.doc = {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: '',
+              },
+            ],
+          },
+        ]
+      }
+
+        }
       this.currentDocument = doc;      
+      
       this.loaded = true;
+      
 
       // this.source.activateDocument(doc).then(() => {
       //   this.widget.options!.title = doc.name;
@@ -728,10 +753,10 @@ export default class DocumentViewer extends WidgetBase {
     this.source.saveDocument(this.currentDocument);
   }
 
-  @Watch('widget.data.document')
+  @Watch('widget.data.elementId')
   public dataChanged() {
     if (this.source) {
-      const doc = this.source.getElement(this.widget.data.document) as GraphDocument;
+      const doc = this.source.getElement(this.widget.data.elementId) as GraphDocument;
       this.loadDocument(doc);
     }
   }
@@ -753,8 +778,8 @@ export default class DocumentViewer extends WidgetBase {
       this.updateContent();
       this.initTools();
     });
-    if (this.widget.data?.document) {
-      const doc = this.source.getElement(this.widget.data.document) as GraphDocument;
+    if (this.widget.data?.elementId) {
+      const doc = this.source.getElement(this.widget.data.elementId) as GraphDocument;
       this.loadDocument(doc);
       this.updateEditor();
       this.updateContent();

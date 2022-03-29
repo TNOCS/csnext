@@ -71,8 +71,9 @@ export default class ParagraphComponent extends Vue {
     if (this.node?.attrs) {
       console.log(this.node.attrs);
     }
-    const a = annotate( '.paragraph-content', { type: 'bracket', color:'blue'});
-    a.show();
+
+    // const a = annotate( '.paragraph-content', { type: 'bracket', color:'blue'});
+    // a.show();
   }
 }
 </script>
