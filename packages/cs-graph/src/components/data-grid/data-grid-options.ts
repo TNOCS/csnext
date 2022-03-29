@@ -41,6 +41,7 @@ export class DataGridNewsOptions {
   sourceElement?: string;
   sourceProperty?: string;
   dateProperty?: string;
+  itemHeight?: number;
 }
 
 
@@ -87,6 +88,7 @@ export class DataGridOptions extends WidgetOptions {
   public graphSelect?: boolean;
   public splitView?: SplitView = SplitView.disabled;
   public splitWidget?: IWidget;
+  public splitWidgetLocations?: string[];
   
   public hideFilter? = false;
   public hideViewSwitch? = false;

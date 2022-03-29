@@ -62,8 +62,7 @@ export default class NodeLinkCellEditor extends Vue {
           fromId: this.element.id,
           toId: value.id,
           classId: this.relation.type
-        } as GraphElement,
-        true
+        } as GraphElement
       )
       .then(async (e: any) => {})
       .catch((e: any) => {})

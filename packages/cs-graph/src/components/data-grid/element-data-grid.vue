@@ -295,32 +295,33 @@
         height="300"
         item-height="64"
       > -->
-        <simplebar class="full-widget">
-          <v-list>
-            <template v-for="(element, indx) of items">
+        
+          <v-virtual-scroll v-if="items" :items="items" :item-height="options.newsOptions.itemHeight" clientHeight="100%">
+          <template v-slot="{ item }">
+            
               <component
-                :key="indx"
+
                 v-if="source.newsCardSelector"
-                :is="source.newsCardSelector(element)"
-                :element="element"
+                :is="source.newsCardSelector(item)"
+                :element="item"
                 :source="source"
               ></component>
-              <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(element, true)">
+              <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(item, true)">
                 <v-list-item-content>
                   <div
                     class="text-overline mb-4"
-                    v-if="options.newsOptions.sourceElement && element._elements.hasOwnProperty(options.newsOptions.sourceElement)"
+                    v-if="options.newsOptions.sourceElement && item._elements.hasOwnProperty(options.newsOptions.sourceElement)"
                   >
-                    {{ element._elements[options.newsOptions.sourceElement].properties.name }}
+                    {{ item._elements[options.newsOptions.sourceElement].properties.name }}
                   </div>
                   <v-list-item-title class="text-h5 mb-1">
-                    {{ element.properties.name }}
+                    {{ item.properties.name }}
                   </v-list-item-title>
                   <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
-                    <span class="source-property" v-if="element.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
-                      element.properties[options.newsOptions.sourceProperty]
+                    <span class="source-property" v-if="item.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
+                      item.properties[options.newsOptions.sourceProperty]
                     }}</span>
-                    {{ element.properties.description }}</v-list-item-subtitle
+                    {{ item.properties.description }}</v-list-item-subtitle
                   >
                 </v-list-item-content>
                 <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
@@ -328,8 +329,9 @@
             </v-list-item-avatar> -->
               </v-list-item>
             </template>
-          </v-list>
-        </simplebar>
+          
+        </v-virtual-scroll>
+        
         <!-- </v-virtual-scroll> -->
       </template>
 
@@ -598,9 +600,8 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   border: 1px solid #4299e1;
 }
 
-.splitview-horizontal {
-  
-  grid-template-rows: 50% 50%;
+.splitview-horizontal {  
+  grid-template-rows: 25% 75%;
   grid-template-areas: 
     'top'
     'bottom';
@@ -1026,7 +1027,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  public selectSplitWidget(element: GraphElement) {
+  public selectSplitWidget(element?: GraphElement) {
     if (this.options.splitWidget) {
       if (!this.options.splitWidget.data)  { this.options.splitWidget.data = {}; }
       this.options.splitWidget.data.elementId = element?.id;
@@ -1042,6 +1043,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
     
     if (this.options.splitWidget) {
+      this.source!.selectElement(element, false);
       this.selectSplitWidget(element);    
     }
     else {
@@ -1053,6 +1055,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source) {
       return;
     }
+    this.selectSplitWidget(element);
     if (this.options.onSelect) {
       this.options.onSelect(element);
     } else {
@@ -1172,6 +1175,21 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+   public get splitWidgetLayout() : any {
+    if (this.options.splitView) {
+      switch (this.options.splitView) {
+        case 'horizontal':
+          return { 'grid-template-rows': '25% 75%;' };
+          
+        case 'vertical':
+          return { 'grid-template-columns': '50% 50%;' };
+          
+      }
+
+
+    }
+  }
+
   public async linkAll() {
     if (!this.treeItems) {
       return;
@@ -1234,8 +1252,7 @@ export default class ElementDataGrid extends WidgetBase {
             fromId: this.options.relationToggle.fromId,
             toId: entity.id,
             classId: this.options.relationToggle.relationClassId,
-          } as GraphElement,
-          false
+          } as GraphElement
         );
         entity._isLinked = linkEdge;
         if (update) {
@@ -1532,8 +1549,7 @@ export default class ElementDataGrid extends WidgetBase {
                   fromId: e.id,
                   toId: parent.id,
                   classId: this.options.treeOptions.parentProperty,
-                } as GraphElement,
-                true
+                } as GraphElement
               );
               if (parentEdge) {
                 try {
@@ -1559,8 +1575,7 @@ export default class ElementDataGrid extends WidgetBase {
                         fromId: e.id,
                         toId: relation.toId,
                         classId: this.potentialProperties[relation.key].relation?.type,
-                      } as GraphElement,
-                      true
+                      } as GraphElement, true
                     );
                   } catch (e) {
                     console.log('Error adding relation edge');
@@ -1577,8 +1592,7 @@ export default class ElementDataGrid extends WidgetBase {
                       fromId: fromId,
                       toId: e.id,
                       classId: prop.relation?.type,
-                    } as GraphElement,
-                    true
+                    } as GraphElement, true
                   );
                 }
               }
