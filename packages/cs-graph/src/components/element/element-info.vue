@@ -40,9 +40,9 @@
         <v-icon>mdi-delete</v-icon>
       </v-btn>
 
-      <!-- <v-btn icon @click="editNode()">
+      <v-btn icon @click="editFeatureType()">
         <v-icon>mdi-pencil</v-icon>
-      </v-btn> -->
+      </v-btn>
 
       <!-- <v-btn icon @click="toggleBookmark()">
         <v-icon>mdi-bookmark</v-icon>
@@ -88,6 +88,9 @@
         </v-tab-item>
         <v-tab-item value="tab-RELATIONS" class="full-height">
           <relation-list-sections class="ma-2" :node="activeElement" :source="dataSource"> </relation-list-sections>
+        </v-tab-item>
+        <v-tab-item value="tab-WRITE">
+          <cs-widget :widget="editorWidget" v-if="editorWidget"></cs-widget>
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
           <cs-widget :widget="documentsWidget" v-if="documentsWidget" ref="docWidget"></cs-widget>
@@ -213,7 +216,7 @@ import Axios from 'axios';
 import { Component as VueComponent } from 'vue';
 import ElementDataGrid from '../data-grid/element-data-grid.vue';
 import { DataGridOptions } from '../data-grid/data-grid-options';
-
+import DocumentViewer from './../document/document-viewer.vue';
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
 export class PropertyValue {
@@ -227,7 +230,7 @@ export class PropertyValue {
 })
 export default class ElementInfo extends WidgetBase {
   public instancesCount = 0;
-  public tabs = ['PROPERTIES', 'EDITOR', 'RELATIONS', 'DOCUMENTS'];
+  public tabs = ['PROPERTIES', 'EDITOR', 'RELATIONS', 'WRITE', 'DOCUMENTS'];
   public tab = 'EDITOR';
   public componentKey = 0;
   public history: string[] = [];
@@ -236,6 +239,7 @@ export default class ElementInfo extends WidgetBase {
   public isDocument?: boolean = false;
   private indicatorElements: GraphElement[] = [];
   private documentsWidget: IWidget | null = null;
+  private editorWidget: IWidget | null = null;
 
   public activeElement: GraphElement | null = null;
   private specialTab: VueComponent | null = null;
@@ -284,6 +288,12 @@ export default class ElementInfo extends WidgetBase {
   public updateEntity() {
     if (this.dataSource && this.activeElement) {
       this.dataSource.saveNode(this.activeElement);
+    }
+  }
+
+  public editFeatureType() {
+    if (this.dataSource && this.activeElement?._featureType) {      
+      this.dataSource.openFeatureTypeEditor(this.activeElement._featureType);
     }
   }
 
@@ -409,13 +419,41 @@ export default class ElementInfo extends WidgetBase {
       return;
     }
 
+    if (!this.editorWidget) {
+
+    
+
+    this.editorWidget = {
+  id: 'problem-description',
+  component: DocumentViewer,
+  datasource: this.dataSource.id,
+  data: {
+    elementId: this.activeElement.id
+  },options: {            
+    showToolbar: false,
+    
+    toolbarOptions: {
+      dense: true,
+      hideIcon: true,
+      elevation: 0,
+    }
+  }
+    };
+    } else if (this.editorWidget?._component?.openElement) {
+          this.editorWidget._component?.openElement(this.activeElement);
+        }
+  
     
     const docWidget = {
       component: ElementDataGrid,
       datasource: this.dataSource.id,
+      data: {
+        elementId: this.activeElement.id,
+      },
       options: {
         defaultView: 'table',
         baseType: 'input',
+        title: 'Related documents',
         canAdd: true,
         canSearch: true,
         filter: { hasObjectTypeRelation: { HAS_REFERENCE: this.activeElement.id } },
@@ -432,6 +470,7 @@ export default class ElementInfo extends WidgetBase {
     Vue.set(this, 'documentsWidget', null);
   
     Vue.set(this, 'documentsWidget', docWidget);
+    
 
     this.isDocument = this.activeElement._featureType?._inheritedTypes && this.activeElement._featureType?._inheritedTypes.includes('input');
 
@@ -522,16 +561,11 @@ export default class ElementInfo extends WidgetBase {
       let tab = InfoTabManager.tabs[this.activeElement.classId] as IWidget;
       this.specialTab = tab;
     }
-
-
     
     this.$forceUpdate();
   }
 
   public mounted() {
-
-    
-
     let qtab = $cs.getRouteQuery(this.elementInfoTab);
     if (qtab && qtab !== this.tab) {
       this.tab = qtab;
@@ -553,8 +587,8 @@ export default class ElementInfo extends WidgetBase {
 
       this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {
         this.activeElement = data;
-        this.updateElement();
-        this.updateTabs();        
+        this.updateElement();        
+        this.updateTabs();           
       });
       this.busManager.subscribe(this.dataSource.bus, 'focus', (a: string, data: any) => {
         this.activeElement = data;
