@@ -84,6 +84,8 @@ export default Vue.extend({
           
         case PropertyValueType.wkt:
           return createElement('span', '[location]');
+        case PropertyValueType.document:
+          return createElement('span', '[document]');
         case PropertyValueType.element:
           // find relation
           const linkres: VNode[] = [];
@@ -123,11 +125,11 @@ export default Vue.extend({
         case PropertyValueType.json:
           return createElement('span', '[json]');
         case PropertyValueType.url:
-          let url = !value.startsWith('http') ? 'https://' + value : value;
+          let url = (value.startsWith && !value.startsWith('http')) ? 'https://' + value : value;
           if (proptype.urlTemplate) {
             url = proptype.urlTemplate.replace('$1', value);
           }
-          return createElement('span', [createElement('a', { attrs: { target: '_blank', href: url } }, value), createElement('v-icon','mdi-open-in-new')]);
+          return createElement('span', [createElement('a', { class: 'prop-node-url', attrs: { target: '_blank', href: url } }, value), createElement('v-icon','mdi-open-in-new')]);
           // return createElement('a', { attrs: { target: '_blank', href: url } }, value);
         default:
           return createElement('span', { class: 'info-prop-text' }, value);
