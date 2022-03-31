@@ -74,7 +74,6 @@ export class RowChart implements IChartType {
         }
       );
 
-
       let el = dc.rowChart('#' + options._elementId);
       el
         .width(widget._size!.width)
@@ -84,7 +83,7 @@ export class RowChart implements IChartType {
         .elasticX(true)
         // .ordering(pluck(options.key!))
         .group(options._group)
-        .valueAccessor( d=> {
+        .valueAccessor( d=> {          
           return d.value.total; })    
         .on('filtered', () => {
           let f = this.getFilters(options);
@@ -92,6 +91,10 @@ export class RowChart implements IChartType {
         });
       if (options.orderByName) {
         el.ordering(pluck(options.key!));
+      } else {
+        el.ordering((d) => {          
+          return -d.value.count; }
+          )
       }
       if (options.top) {
         el.cap(options.top);
