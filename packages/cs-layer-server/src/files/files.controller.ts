@@ -1,14 +1,12 @@
-import { Get, Controller, Param, Logger, Post, Body, Query, Put, Delete, Header, Res } from '@nestjs/common';
+import { Get, Controller, Param, Logger, Post, Query, Header, Res } from '@nestjs/common';
 import { FileDefinitionList, FileDefinition } from './../classes/file';
 import { FilesService } from './files.service';
 import { Response } from 'express';
-import { UseInterceptors, NestInterceptor, UploadedFile } from  '@nestjs/common';
-import { diskStorage } from  'multer';
+import { UseInterceptors, UploadedFile } from  '@nestjs/common';
 
 import {
     ApiTags,
     ApiOperation,
-    ApiQuery,
     ApiParam,
     ApiResponse
 } from '@nestjs/swagger';
