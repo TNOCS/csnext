@@ -23,8 +23,10 @@ export interface IMenu {
   items?: IMenu[];
   action?: (menu: IMenu, dashboard?: IDashboard) => void;
   component?: any;
+  plugin?: any;
   widget?: IWidget;
   closeOnContentClick?: boolean;
   data?: any;
+  location?: 'sidebar' | 'header' | 'footer' | 'floating';
   _dashboard?: IDashboard;
 }
