@@ -191,8 +191,7 @@ export default class RelationEditor extends Vue {
             fromId: this.node!.id,
             toId: newNode.id,
             classId: this.relation!.type,
-          } as GraphElement,
-          true
+          } as GraphElement
         )
           .then(async (e) => {
             this.$forceUpdate();
@@ -222,8 +221,7 @@ export default class RelationEditor extends Vue {
                 fromId: this.node!.id,
                 toId: currentLink.element.id,
                 classId: this.relation!.type,
-              } as GraphElement,
-              true
+              } as GraphElement
             );
           } catch {
           } finally {
@@ -312,8 +310,7 @@ export default class RelationEditor extends Vue {
             fromId: this.node!.id,
             toId: n.id,
             classId: this.relation!.type,
-          } as GraphElement,
-          true
+          } as GraphElement
         )
           .then(async (e) => {
             if (this.graph) {
@@ -374,8 +371,7 @@ export default class RelationEditor extends Vue {
           fromId: this.node.id,
           toId: this.newRelation.id,
           classId: this.relation.type,
-        } as GraphElement,
-        true
+        } as GraphElement
       )
       .then(async (e) => {})
       .catch((e) => {})

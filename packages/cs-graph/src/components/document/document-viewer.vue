@@ -153,6 +153,7 @@
     </v-toolbar>
 
     <!-- <div > -->
+   
     <simplebar class="editor-row" v-if="currentDocument && currentDocument.properties">
       <div class="document-container">
         <div class="document-title">
@@ -195,8 +196,7 @@
             filled
           ></v-autocomplete>
         </bubble-menu> -->
-        <editor-content
-          id="doc-editor"
+        <editor-content          
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
@@ -240,6 +240,7 @@ import commandSuggestion from './plugins/commands/commands-suggestion'
 import MentionList from './plugins/mention-list.vue';
 import SnippetList from './plugins/snippet-list.vue';
 
+
 @Component({
   components: {
     simplebar,
@@ -268,6 +269,8 @@ export default class DocumentViewer extends WidgetBase {
       this.source.editor = value;
     }
   }
+
+    
 
   @Prop()
   public content?: any;
@@ -564,7 +567,7 @@ export default class DocumentViewer extends WidgetBase {
             content: [
               {
                 type: 'text',
-                text: '',
+                text: ' ',
               },
             ],
           },
@@ -783,7 +786,7 @@ export default class DocumentViewer extends WidgetBase {
       this.loadDocument(doc);
       this.updateEditor();
       this.updateContent();
-      this.initTools();
+      this.initTools();      
     } else {
       this.checkDocumentIdQuery();
        this.updateEditor();
@@ -1137,6 +1140,7 @@ export default class DocumentViewer extends WidgetBase {
     //   });
   }
 
+
   public mounted() {
     if (this.widget.content) {
       this.contentLoaded(this.widget.content);
@@ -1179,6 +1183,11 @@ export default class DocumentViewer extends WidgetBase {
 }
 
 .editor-grid {
+  /* position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0; */
   /* padding: 5px; */
   /* display: grid;
   grid-template-rows: 115px 100%; */
@@ -1198,11 +1207,11 @@ export default class DocumentViewer extends WidgetBase {
 .editor-row {
   
       padding: 0px;
-    position: absolute;
+    /* position: absolute;
     top: 120px;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0; */
   /* grid-row: 3; */
   /* overflow-x:hidden;
 overflow-y: auto; */

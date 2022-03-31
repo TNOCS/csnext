@@ -21,6 +21,7 @@ export class GraphLayout {
   showAllOnMap? = true;
   nodeSize?: number;
   radius?: number;
+  hiddenTags?: string[];
   hideNodeLabel?: boolean = false;
   hideEdgeLabel?: boolean = false;
   disableCustomNodes?: boolean = false;
@@ -51,6 +52,7 @@ export class GraphLayout {
   rulesEnabled?: boolean;
   elementsEnabled?: boolean;
   pinnedFeatureTypes?: string[];
+  visibleTags?: string[];  
   nodes?: { [id: string] : IGraphNodeDefinition};
 }
 
@@ -60,9 +62,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     editor_mode?: 'VIEW' | 'EDIT';
     graphLayout?: GraphLayout;    
     layers?: string[];
-    geoFilter?: Number[][];
-
-  
+    geoFilter?: Number[][];    
   }
 
   
@@ -74,14 +74,19 @@ export class GraphFilterProperties extends BaseElementProperties {
     public _visibleNodes: GraphElement[] = [];
     public _selectedElements: string[] = [];
     
-
     public _stats?: {[key: string]: GraphFeatureTypeStat};
+    public _tags?: {[key: string]: TagStat}
 
     constructor(graphSource?: GraphDatasource) {
       super();    
       this._graphSource = graphSource;
     }
   
+  }
+
+  export class TagStat {
+    public count?: number;
+    public hide?: boolean;
   }
 
   export class GraphFeatureTypeStat {

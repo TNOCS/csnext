@@ -12,6 +12,7 @@ import {
   IGraphNodeDefinition,
   NodeRule,
   GraphLayout,
+  GraphPreset,
 } from '@csnext/cs-data';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
@@ -494,8 +495,12 @@ export class DocDatasource extends GraphDatasource {
       if (!preset.properties.graphLayout.nodeRules) {
         preset.properties.graphLayout.nodeRules = [];
       }
+
+      if (!preset._tags) {
+        preset._tags = {};
+      }
       
-      if (preset._stats) {
+      if (!preset._stats) {
         preset._stats = {};
       }
     
@@ -781,6 +786,7 @@ export class DocDatasource extends GraphDatasource {
     }
 
     preset._stats = {};
+    preset._tags = {};
 
     for (const e of preset._visibleNodes) {
       if (preset?._stats &&  !preset._stats.hasOwnProperty(e.classId!)) {
@@ -792,6 +798,21 @@ export class DocDatasource extends GraphDatasource {
         };        
       }
       preset!._stats[e.classId!].count! += 1;
+
+      if (e.properties?.tags) {
+        for (const tag of e.properties.tags) {
+          if (preset?._tags && !preset._tags.hasOwnProperty(tag)) {
+            preset._tags[tag] = {
+              count: 0,
+              hide: false
+            };
+          }
+          preset!._tags[tag].count! += 1;          
+        }
+      }
+
+
+      
       
     }
   }
@@ -802,6 +823,9 @@ export class DocDatasource extends GraphDatasource {
     }
     if (!preset._stats) {
       preset._stats = {};
+    }
+    if (!preset._tags) {
+      preset._tags = {};
     }
     if (!preset!._visibleNodes!.includes(e)) {
       preset!._visibleNodes!.push(e);
@@ -814,6 +838,20 @@ export class DocDatasource extends GraphDatasource {
         };
       }
       preset._stats[e.classId].count! += 1;
+
+      
+      if (e.properties?.tags) {
+        for (const tag of e.properties.tags) {
+          if (preset?._tags && !preset._tags.hasOwnProperty(tag)) {
+            preset._tags[tag] = {
+              count: 0,
+              hide: preset?.properties?.graphLayout?.hiddenTags?.includes(tag)           
+            };
+          }
+          preset!._tags[tag].count! += 1;          
+        }
+      }
+
       return true;
     }
     return false;
@@ -1020,8 +1058,7 @@ export class DocDatasource extends GraphDatasource {
           fromId: doc.id,
           toId: entity._node.id,
           classId: 'CONTAINS',
-        } as GraphElement,
-        false
+        } as GraphElement
       )
         .then(async (e) => {
           entity._edge = e;
@@ -1061,8 +1098,7 @@ export class DocDatasource extends GraphDatasource {
           suggested_time,
           toId: entity.node.id,
           classId: 'CONTAINS',
-        } as GraphElement,
-        false
+        } as GraphElement
       )
         .then(async (e) => {
           entity.edge = e;
@@ -1828,7 +1864,13 @@ export class DocDatasource extends GraphDatasource {
   /**
    * adds a new edge to the graph, based on a edge GraphElement and call graph api to store it
    */
-  public async addNewEdge(edge: GraphElement, updateEdges = true): Promise<GraphElement> {
+  public async addNewEdge(edge: GraphElement, skipExisting = false): Promise<GraphElement> {
+    if (skipExisting) {
+      const existing = Object.values(this.graph).find(e => e.classId === edge.classId && e.toId === edge.toId && e.fromId === edge.fromId);
+      if (existing) {
+        return Promise.resolve(existing);
+      }
+    }
     edge = this.createEdge(edge);
     return this.saveEdge(edge);
   }
@@ -1928,6 +1970,8 @@ export class DocDatasource extends GraphDatasource {
       this.triggerUpdateGraph();
     }
   }
+
+  
 
   public addElementToPreset(el: GraphElement, preset: string, trigger = true, pos?: IGraphNodeDefinition) {
     let p = this.getGraphPreset(preset);

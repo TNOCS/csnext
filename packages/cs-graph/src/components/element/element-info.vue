@@ -66,7 +66,7 @@
     </v-toolbar>
 
     <simplebar class="full-height">
-      <v-tabs-items v-model="tab" style="margin-bottom: 200px">
+      <v-tabs-items v-model="tab" class="info-tab-items">
         <v-tab-item v-if="specialTab" value="tab-SPECIAL">
           <cs-widget v-if="specialTab.id" :widget="specialTab" :element="activeElement"></cs-widget>
           <component v-else :is="specialTab" :element="activeElement" :source="dataSource"></component>
@@ -89,7 +89,7 @@
         <v-tab-item value="tab-RELATIONS" class="full-height">
           <relation-list-sections class="ma-2" :node="activeElement" :source="dataSource"> </relation-list-sections>
         </v-tab-item>
-        <v-tab-item value="tab-WRITE">
+        <v-tab-item value="tab-WRITE"  class="full-height">
           <cs-widget :widget="editorWidget" v-if="editorWidget"></cs-widget>
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
@@ -167,6 +167,14 @@
   background: lightgray;
 }
 
+.info-tab-items {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .feature-property-value {
   font-size: 16px;
   text-align: right;
@@ -194,6 +202,8 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+
 
 .info-image {
   /* width: 28px; */
@@ -424,7 +434,7 @@ export default class ElementInfo extends WidgetBase {
     
 
     this.editorWidget = {
-  id: 'problem-description',
+  id: `${this.activeElement.id}-viewer`,
   component: DocumentViewer,
   datasource: this.dataSource.id,
   data: {
