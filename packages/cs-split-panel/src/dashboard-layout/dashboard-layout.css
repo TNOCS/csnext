@@ -2,3 +2,11 @@
     min-width: 300px;
     min-height: 300px;
 }
+
+.panel-list-item {
+    margin: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    ;
+}
