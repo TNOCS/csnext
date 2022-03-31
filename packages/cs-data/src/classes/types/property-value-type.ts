@@ -20,4 +20,5 @@ export enum PropertyValueType {
     featurecollection = "featurecollection",
     tags = 'tags',
     json = 'json',
+    document = 'document'
 }

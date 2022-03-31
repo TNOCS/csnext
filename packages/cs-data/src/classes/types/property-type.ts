@@ -22,6 +22,7 @@ export class PropertyType {
     static isListItem = [ (v: any) => { return v.type && v.type === PropertyValueType.listitem}];
     static isRelation = [ (v: any) => { return v.type && v.type === PropertyValueType.relation}];
     static isUrl = [ (v: any) => { return v.type && v.type === PropertyValueType.url}];
+    static isDocument = [ (v: any) => { return v.type && v.type === PropertyValueType.document}];
     
     @FormField({ title: 'Label', type: 'string' })
     public label?: string;
