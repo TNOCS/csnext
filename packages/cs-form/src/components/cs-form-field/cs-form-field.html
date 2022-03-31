@@ -37,7 +37,7 @@
     <v-menu :close-on-content-click="false" max-width="290">
       <template v-slot:activator="{ on }">
         <v-text-field v-model="ColorValue" :label="$cs.Translate(field.title)" v-on="on">
-          <v-icon slot="append" :color="ColorValue">color_lens</v-icon>
+          <v-icon slot="append" :color="ColorValue">mdi-format-color-fill</v-icon>
         </v-text-field>
       </template>
       <v-color-picker v-model="ColorValue" show-swatches mode="rgba" @input="fieldUpdatedDebounce(field)"></v-color-picker>
@@ -279,11 +279,12 @@
     ></v-textarea>
   </template>
   <template v-if="field.type === 'slider'">
+    <div>
+      <div v-if="field.title">{{$cs.Translate(field.title)}}</div>
     <v-slider
       enabled
       :hint="field.hint"
-      :persistentHint="field.persistentHint"
-      :label="$cs.Translate(field.title)"
+      :persistentHint="field.persistentHint"      
       v-model="target[field._key]"
       :min="field.min"
       :step="field.step"
@@ -291,6 +292,7 @@
       :disabled="field.readonly"
       @change="fieldUpdated(field)"
     ></v-slider>
+  </div>
   </template>
   <template v-if="field.type === 'checkbox'">
     <v-checkbox
