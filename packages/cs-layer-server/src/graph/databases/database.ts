@@ -24,6 +24,7 @@ export interface IAllOptions {
     object?: boolean;
     id?: string;
     traversal?: boolean;
+    skipclasses?: string[];
 }
 
 export interface IDatabase {

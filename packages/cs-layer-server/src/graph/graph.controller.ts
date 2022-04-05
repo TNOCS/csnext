@@ -16,6 +16,7 @@ import * as turf from '@turf/turf';
 import { idGenerator } from '@csnext/cs-core';
 import type { OverpassJson } from "overpass-ts";
 import { overpass } from "overpass-ts";
+import { IAllOptions } from './databases/database';
 
 @ApiTags()
 @Controller('graph')
@@ -497,10 +498,14 @@ export class GraphController {
   }
 
   @Get('/all')
-  allData(): Promise<any> {
+  allData(@Query('skipclasses') skipclasses?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
-        resolve(this.graph.db.all());
+        let options : IAllOptions = {};
+        if (skipclasses) {
+          options.skipclasses = skipclasses.split(',');
+        }
+        resolve(this.graph.db.all(options));
       } else {
         reject(false);
       }
