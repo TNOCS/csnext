@@ -64,8 +64,9 @@ import { Component } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 
 import simplebar from 'simplebar-vue';
-import { DocDatasource, ITool } from '../../../';
 import { NodeLink } from '@csnext/cs-map';
+import { DocDatasource } from '../../datasources/doc-datasource';
+import { ITool } from '../../classes/tool';
 
 @Component({
   components: { simplebar, NodeLink },

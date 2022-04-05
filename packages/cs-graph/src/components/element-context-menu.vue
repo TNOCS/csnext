@@ -28,9 +28,9 @@
 <script lang="ts">
 import { Component, Emit, Prop } from 'vue-property-decorator';
 import { IMenu } from '@csnext/cs-core';
-import { DocDatasource, ITool } from '../../';
 import { GraphElement } from '@csnext/cs-data';
 import Vue from 'vue';
+import { DocDatasource } from '../datasources/doc-datasource';
 
 @Component({
   components: {},
