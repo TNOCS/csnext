@@ -1,4 +1,4 @@
-import { FeatureType, GraphElement } from '../..';
+import { FeatureType, GraphElement, MetaEntity } from '../..';
 
 export class TextRelation {
     public triple_subject?: string;
@@ -14,31 +14,14 @@ export class TextRelation {
     public _observation?: FeatureType;
 }
 
-export class TextEntity {
-    public text?: string;    
-    public id?: string;
-    public spacy_label?: string;
-    public kg_id?: string;
-
-    // public position_start?: number;
-    // public position_end?: number;
-    // public entity_class?: string;
-    // public entity_idx?: string;
-    // public class?: string;
-    // public view_class?: string;
-    // public node_id?: string;    
+export class TextEntity extends MetaEntity {
+    public spacy_label?: string; 
     public projection?: string;
     public converted?: string;
     public suggested_by?: string;
     public suggested_time?: number;
     public _highlight?: boolean;
-    public _node?: GraphElement;
-    public _edge?: GraphElement;
-    
-    public _key?: string;
-    public _included?: boolean;
-    public _approved?: boolean;    
-    public _relations?: TextRelation[];    
+    public _key?: string;    
     public _location?: string;
     public _date?: string;
 }
