@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="showContextMenu" :position-x="x" :position-y="y" absolute :close-on-content-click="true" open-on-hover offset-y>
+  <v-menu v-if="source" v-model="showContextMenu" :position-x="x" :position-y="y" absolute :close-on-content-click="true" open-on-hover offset-y>
     <v-list>
       <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="item.action">
         <template v-slot:appendIcon>
@@ -60,6 +60,7 @@ export default class ElementContextMenu extends Vue {
   public contextMenuitems: IMenu[] = [];
 
   public initMenu() {
+    if (!this.source) { return; }
     this.contextMenuitems.push({
       title: 'duplicate',
       icon: 'mdi-plus-circle-multiple-outline',
