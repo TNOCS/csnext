@@ -2325,6 +2325,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
     this.updateEntities(true);
     this.update();
+    this.registerWidgetConfig();
 
     if (this.source?.events) {
       console.log('create subscription');
@@ -2395,7 +2396,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();
-    this.registerWidgetConfig();
+    
   }
 }
 </script>
