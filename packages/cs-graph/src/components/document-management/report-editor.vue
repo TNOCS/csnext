@@ -126,19 +126,19 @@ export default class DocumentEditor extends WidgetBase {
   }
 
   public approvedObservations() {
-    if (!this.source || !this.source.activeDocument?._outgoing) {
+    if (!this.source || !this.document?._outgoing) {
       return;
     }
-    return this.source.activeDocument._outgoing
+    return this.document._outgoing
       .filter((o) => o.classId === "CONTAINS_OBSERVATION" && o.to)
       .map((o) => o.to);
   }
 
   public approvedElements() {
-    if (!this.source || !this.source.activeDocument?._outgoing) {
+    if (!this.source || !this.document?._outgoing) {
       return;
     }
-    return this.source.activeDocument._outgoing
+    return this.document._outgoing
       .filter((o) => o.classId === "CONTAINS" && o.to)
       .map((o) => o.to);
   }
@@ -225,11 +225,16 @@ export default class DocumentEditor extends WidgetBase {
     
   }
 
+  @Watch("data.element")
+  public documentChanged() {
+    alert('new document');
+  }
+
   public contentLoaded() {
-    if (!this.source) {
+    if (!this.source || !this.state?.element) {
       return;
     }
-    this.document = this.source.activeDocument;
+    this.document = this.state.element;
     this.updateForm();
 
     // this.document.updateOriginals();
@@ -246,7 +251,7 @@ export default class DocumentEditor extends WidgetBase {
   }
 
   mounted() {
-    if (this.source?.activeDocument) {
+    if (this.source) {
       this.contentLoaded();
     }
     // this.updateForm();

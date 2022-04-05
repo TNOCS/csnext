@@ -39,20 +39,10 @@ import {
 } from '..';
 import Vue, { Component } from 'vue';
 import { ISearchPlugin } from '../plugins/search-plugin';
+import { ITool } from '../classes/tool';
+import { IActionPlugin } from '../plugins/action-plugin';
 
-export interface ITool {
-  title: string;
-  subtitle?: string;
-  id: string;
-  image?: string;
-  icon?: string;
-  component?: Component;
-  disbled?: boolean;
 
-  busy?: boolean;
-  widget?: IWidget;
-  action?: () => Promise<boolean>;
-}
 
 export class DocDatasource extends GraphDatasource {
   public id = 'doc';
@@ -76,6 +66,7 @@ export class DocDatasource extends GraphDatasource {
   public searchPlugins: ISearchPlugin[] = [];
   public importPlugins: IImportPlugin[] = [];
   public viewerPlugins: IDocumentViewerPlugin[] = [];
+  public actionPlugins: IActionPlugin[] = [];
 
   public editor?: Editor | null = null;
   public elementHistory?: string[];
@@ -1751,6 +1742,16 @@ export class DocDatasource extends GraphDatasource {
       $cs.loader.removeLoader(loaderId);
 
     }
+  }
+
+  public async duplicateNode(element: GraphElement, newName?: string) : Promise<GraphElement> {
+    if (!newName) { newName = element.properties?.name + ' (copy)'; }
+    let flatElement = GraphElement.getFlat(element);
+    flatElement.id = undefined;
+    flatElement.properties = { ...flatElement.properties, ...{ name: newName}};
+    let newElement = await this.addNewNode(flatElement);
+    return newElement;
+
   }
 
   public async saveNode(element: GraphElement, user?: GraphElement, notify = true): Promise<GraphElement> {

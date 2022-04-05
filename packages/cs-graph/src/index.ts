@@ -21,6 +21,7 @@ export * from './utils/cache-requests';
 export * from './components/document/plugins/text-mention';
 export * from './utils/graph-utils';
 export * from "./components/search/search-manager";
+export * from './classes/tool';
 
 import TextExtension from './components/document/plugins/text-extension';
 import ParagraphExtension from './components/document/plugins/paragraph-extension';
@@ -53,6 +54,7 @@ import Vue from "vue";
 import MentionList from './components/document/plugins/mention-list.vue';
 import SelectionPopup from './components/document/selection-popup.vue';
 import Search from "./components/search/search.vue";
+import ElementContextMenu from "./components/element-context-menu.vue"
 
 
 
@@ -97,5 +99,6 @@ export {
   MentionList,
   ParagraphExtension,
   TextExtension,
-  Search
+  Search,
+  ElementContextMenu
 };

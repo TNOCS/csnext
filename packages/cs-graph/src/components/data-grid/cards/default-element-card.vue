@@ -63,5 +63,12 @@ export default class DefaultElementCard extends Vue {
   @Prop({ default: null })
   public element!: GraphElement | null;
 
+  public getCardBackgroundImage() {
+    if (this.element?._featureType?.attributes?.cardImageProperty && this.element.properties && this.element.properties.hasOwnProperty(this.element._featureType.attributes.cardImageProperty)) {
+      return this.element.properties[this.element._featureType.attributes.cardImageProperty];
+    }
+
+  }
+
 }
 </script>

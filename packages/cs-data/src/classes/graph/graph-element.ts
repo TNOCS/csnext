@@ -1,5 +1,6 @@
 import { generateHash } from '@csnext/cs-core';
 import { FeatureType, GraphDatasource, LinkInfo } from '../..';
+import { StringUtils } from '../../utils/string-utils';
 
 export class BaseElementProperties {
   [key: string]: any;
@@ -97,6 +98,8 @@ export class GraphElement<T = BaseElementProperties> {
     }
   }
 
+  
+
   public static updateOriginals(e: GraphElement) {
     if (e._outgoing) {
       e._originals = e
@@ -146,6 +149,16 @@ export class GraphElement<T = BaseElementProperties> {
     if (result.to) { delete result.to; }
     if (result.from) { delete result.from; }
     return result;
+  }
+
+  public static getClassTitle(e: GraphElement) : string {
+    if (e._featureType?.title){
+      return e._featureType.title;
+    }
+    if (e.classId) {
+      return StringUtils.SentenceCase(e.classId.replaceAll('_', ' '))
+    }
+    return '(unknown)';    
   }
 
   public static getTimeVisibility(e: GraphElement, date: Date): boolean {

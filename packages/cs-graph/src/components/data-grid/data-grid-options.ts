@@ -8,7 +8,7 @@ export enum GridView {
   calendar = 'calendar',
   tree = 'tree',
   news = 'news',
-  kanban = 'kanban',
+  kanban = 'kanban',  
   timeline_vertical = 'timeline_vertical'
 }
 
@@ -70,9 +70,10 @@ export type NewRelationDefinition = {
 export class DataGridTableOptions {
   public selectedHeaders?: DataGridHeader[];
   public showHeader? = true;
-  public showRowIcon? = true;
-  
+  public showRowIcon? = true;  
 }
+
+
 
 export class DataGridTreeOptions {
   public treeStructure?: string[];
@@ -118,6 +119,7 @@ export class DataGridOptions extends WidgetOptions {
   public kanbanOptions?: DataGridKanbanOptions;
   public timelineOptions?: TimelineOptions;
   public treeOptions?: DataGridTreeOptions;
+  
 
   /* This is a list of potential properties that are used to filter the data. */
   public filterProperties?: string[];

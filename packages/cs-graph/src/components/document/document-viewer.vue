@@ -3,7 +3,7 @@
     <div class="start-menu-title">
       {{ $cs.Translate('START_DOCUMENT_TITLE') }}
     </div>
-    <v-layout justify-center class="doc-action-cards">
+    <v-container class="doc-action-cards d-flex flex-wrap">
       <v-hover class="doc-action-card" v-for="ip in source.importPlugins" :key="ip.id">
         <template v-slot:default="{ hover }">
           <v-card :elevation="hover ? 16 : 2" width="200" height="200" @click="doImport(ip)">
@@ -11,8 +11,8 @@
             <v-btn class="doc-action-btn" text>{{ $cs.Translate(ip.title) }}</v-btn>
           </v-card>
         </template>
-      </v-hover>      
-    </v-layout>
+      </v-hover>
+    </v-container>
   </v-container>
 
   <div v-else-if="loaded && currentDocument" class="editor-grid" v-show="!startMenu">
@@ -49,12 +49,7 @@
             </v-radio-group>
 
             <!-- v-if="currentDocument.properties.learn_mode === 'LEARN'"  -->
-            <v-select
-              v-model="currentDocument.activeLearningType"
-              :items="Object.values(source.featureTypes)"
-              item-text="title"
-              item-value="id"
-            >
+            <v-select v-model="currentDocument.activeLearningType" :items="Object.values(source.featureTypes)" item-text="title" item-value="id">
             </v-select>
           </v-layout>
         </template>
@@ -153,7 +148,7 @@
     </v-toolbar>
 
     <!-- <div > -->
-   
+
     <simplebar class="editor-row" v-if="currentDocument && currentDocument.properties">
       <div class="document-container">
         <div class="document-title">
@@ -161,8 +156,8 @@
         </div>
         <div class="document-source">
           Created {{ publishedDate() }} ago,
-        <simple-relation-line-section :source="source" :section="{direction: 'outgoing', relation: 'HAS_SOURCE'}" :node="currentDocument">
-        </simple-relation-line-section>
+          <simple-relation-line-section :source="source" :section="{ direction: 'outgoing', relation: 'HAS_SOURCE' }" :node="currentDocument">
+          </simple-relation-line-section>
         </div>
         <!-- <floating-menu :editor="editor" v-if="editor && currentDocument.properties.editor_mode === 'EDIT'">
           <button
@@ -196,7 +191,7 @@
             filled
           ></v-autocomplete>
         </bubble-menu> -->
-        <editor-content          
+        <editor-content
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
@@ -220,9 +215,8 @@ import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/v
 import SelectionPopup from './selection-popup.vue';
 // import Mention from '@tiptap/extension-mention';
 import simplebar from 'simplebar-vue';
-import { TextMention, SnippetMention } from './plugins/text-mention';
-import { DocDatasource, ITool } from './../../datasources/doc-datasource';
-import { GraphDocument } from './../../classes/document/graph-document';
+import { TextMention } from './plugins/text-mention';
+import { DocDatasource, ITool, GraphDocument } from './../../';
 import StarterKit from '@tiptap/starter-kit';
 import TextExtension from './plugins/text-extension';
 import ParagraphExtension from './plugins/paragraph-extension';
@@ -234,12 +228,11 @@ import { IImportPlugin } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import suggestion from './plugins/suggestion';
-import Commands from './plugins/commands/commands'
-import commandSuggestion from './plugins/commands/commands-suggestion'
+import Commands from './plugins/commands/commands';
+import commandSuggestion from './plugins/commands/commands-suggestion';
 
 import MentionList from './plugins/mention-list.vue';
 import SnippetList from './plugins/snippet-list.vue';
-
 
 @Component({
   components: {
@@ -269,8 +262,6 @@ export default class DocumentViewer extends WidgetBase {
       this.source.editor = value;
     }
   }
-
-    
 
   @Prop()
   public content?: any;
@@ -429,10 +420,9 @@ export default class DocumentViewer extends WidgetBase {
   public openElement(document: GraphDocument) {
     this.loadDocument(document);
     this.updateEditor();
-      this.updateContent();
-      this.initTools();    
+    this.updateContent();
+    this.initTools();
   }
-    
 
   public testEntity() {
     if (!this.editor) {
@@ -478,11 +468,21 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+  public updateStartMenu() {
+    if (!this.currentDocument?.properties?.doc) {
+        this.startMenu = true;
+      } else {
+        this.startMenu = false;
+      }
+  }
+
   public updateEditor(destroy = true) {
     console.log('update editor');
     if (!this.source || !this.currentDocument) {
       return;
     }
+
+    
     // this.highlight = new Highlight({
     //   disableRegex: false,
     //   // entities: this.currentDocument?.entities
@@ -493,9 +493,7 @@ export default class DocumentViewer extends WidgetBase {
       this.source.editor = undefined;
     }
     if (!this.editor) {
-      if (!this.currentDocument.properties?.text || this.currentDocument.properties.text.length === 0) {
-        this.startMenu = true;
-      }
+      
       this.editor = new Editor({
         extensions: [
           StarterKit,
@@ -507,7 +505,7 @@ export default class DocumentViewer extends WidgetBase {
           Highlight,
           Placeholder,
           Commands.configure({
-            commandSuggestion
+            commandSuggestion,
           }),
           TextMention.configure({
             // renderLabel: (props) => {
@@ -518,7 +516,7 @@ export default class DocumentViewer extends WidgetBase {
               name: 'text-entity',
             },
             suggestion,
-          }),         
+          }),
         ],
         onTransaction({ transaction }) {
           //  transaction.
@@ -558,27 +556,30 @@ export default class DocumentViewer extends WidgetBase {
 
   public loadDocument(doc: GraphDocument) {
     if (this.source && doc) {
-      if (!doc.properties) { doc.properties = {}; }
-      if (!doc.properties.doc) { doc.properties.doc = {
-        type: 'doc',
-        content: [
-          {
-            type: 'paragraph',
-            content: [
-              {
-                type: 'text',
-                text: ' ',
-              },
-            ],
-          },
-        ]
+      if (!doc.properties) {
+        doc.properties = {};
       }
+      if (!doc.properties.doc) {
+        doc.properties.doc = {
+          type: 'doc',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: ' ',
+                },
+              ],
+            },
+          ],
+        };
+      }
+      this.currentDocument = doc;
+      
+      this.state.element = doc;
 
-        }
-      this.currentDocument = doc;      
-      
       this.loaded = true;
-      
 
       // this.source.activateDocument(doc).then(() => {
       //   this.widget.options!.title = doc.name;
@@ -756,14 +757,6 @@ export default class DocumentViewer extends WidgetBase {
     this.source.saveDocument(this.currentDocument);
   }
 
-  @Watch('widget.data.elementId')
-  public dataChanged() {
-    if (this.source) {
-      const doc = this.source.getElement(this.widget.data.elementId) as GraphDocument;
-      this.loadDocument(doc);
-    }
-  }
-
   public contentLoaded(source: DocDatasource) {
     if (this.source !== undefined || !source) {
       return;
@@ -781,15 +774,15 @@ export default class DocumentViewer extends WidgetBase {
       this.updateContent();
       this.initTools();
     });
-    if (this.widget.data?.elementId) {
-      const doc = this.source.getElement(this.widget.data.elementId) as GraphDocument;
+    if (this.state && this.state.elementId) {
+      const doc = this.source.getElement(this.state.elementId) as GraphDocument;
       this.loadDocument(doc);
       this.updateEditor();
       this.updateContent();
-      this.initTools();      
+      this.initTools();
     } else {
       this.checkDocumentIdQuery();
-       this.updateEditor();
+      this.updateEditor();
       this.updateContent();
       this.initTools();
     }
@@ -910,6 +903,7 @@ export default class DocumentViewer extends WidgetBase {
     if (!this.source) {
       return;
     }
+    this.updateStartMenu();
     this.source.addTool({
       id: 'article_importer',
       title: 'Article Importer',
@@ -1140,7 +1134,6 @@ export default class DocumentViewer extends WidgetBase {
     //   });
   }
 
-
   public mounted() {
     if (this.widget.content) {
       this.contentLoaded(this.widget.content);
@@ -1150,7 +1143,6 @@ export default class DocumentViewer extends WidgetBase {
 </script>
 
 <style>
-
 .document-container {
   margin-top: 5px;
   margin-left: 20px;
@@ -1205,9 +1197,8 @@ export default class DocumentViewer extends WidgetBase {
   /* grid-row: 2; */
 }
 .editor-row {
-  
-      padding: 0px;
-    /* position: absolute;
+  padding: 0px;
+  /* position: absolute;
     top: 120px;
     bottom: 0;
     left: 0;
@@ -1288,7 +1279,6 @@ overflow-y: auto; */
 } */
 
 .document-editor {
-  
   /* border: 1px solid black; */
   /* width: 50%; */
 }

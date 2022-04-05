@@ -1,68 +1,24 @@
 <template>
   <div class="data-grid-component">
-    <div v-if="featureType" class="data-grid-title">
-      <span v-if="featureType.icon" class="mr-4"
-        ><v-icon>{{ featureType.icon }}</v-icon></span
-      >{{ $cs.Translate(options.title) }}<span v-if="filterTitle"> : {{ filterTitle }}</span>
-    </div>
-    <v-layout class="ma-2">
-      <v-btn-toggle dense v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
-        <v-btn value="list">
-          <v-icon>mdi-format-list-bulleted</v-icon>
-        </v-btn>
-
-        <v-btn value="table" v-if="options.tableOptions">
-          <v-icon>mdi-table</v-icon>
-        </v-btn>
-
-        <v-btn value="cards">
-          <v-icon>mdi-view-dashboard</v-icon>
-        </v-btn>
-
-        <v-btn v-if="options.calendarOptions" value="calendar">
-          <v-icon>mdi-calendar</v-icon>
-        </v-btn>
-
-        <v-btn value="timeline_vertical">
-          <v-icon>mdi-timeline</v-icon>
-        </v-btn>
-
-        <v-btn v-if="options.treeOptions" value="tree">
-          <v-icon>mdi-file-tree</v-icon>
-        </v-btn>
-
-        <v-btn v-if="options.newsOptions" value="news">
-          <v-icon>mdi-newspaper-variant</v-icon>
-        </v-btn>
-
-        <v-btn v-if="options.kanbanOptions" value="kanban">
-          <v-icon>mdi-format-columns</v-icon>
-        </v-btn>
-      </v-btn-toggle>
-
-      <v-text-field
-        label="search"
-        dense
-        v-if="options.canSearch"
-        class="small-search"
-        :class="{ 'full-search': options.searchFilter }"
-        single-line
-        outlined
-        @input="updateSearchFilter()"
-        v-model="options.searchFilter"
-        prepend-inner-icon="mdi-magnify"
-      ></v-text-field>
-
+    <v-layout class="ma-4">   
+      <div v-if="featureType" class="data-grid-title">
+        <span v-if="featureType.icon" class="mr-4"
+          ><v-icon>{{ featureType.icon }}</v-icon></span
+        >{{ $cs.Translate(options.title) }}<span v-if="filterTitle"> : {{ filterTitle }}</span>
+      </div>
+   
       <v-menu offset-y v-if="options.canAdd && classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])">
+          <v-btn depressed v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])">
             <v-icon>mdi-plus</v-icon>
             {{ $cs.Translate('NEW_ITEM') }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)">
-            <v-list-item-icon><v-icon>{{ item.icon }}</v-icon></v-list-item-icon>
+            <v-list-item-icon
+              ><v-icon>{{ item.icon }}</v-icon></v-list-item-icon
+            >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -71,41 +27,17 @@
         @keydown.native.alt.78="addEntity(classTypes[0])"
         @click="addEntity(classTypes[0])"
         v-else-if="options.canAdd"
-        color="primary"
+        depressed
         class="ml-2"
         elevation="0"
       >
         <v-icon>mdi-plus</v-icon>
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
-
-      <v-btn class="ml-2 search-button" elevation="0" color="primary" v-if="options.canSort && sortOptions">
-        <v-autocomplete
-          class="mt-4 search-autocomplete"
-          dark
-          flat
-          single-line
-          dense
-          label="Sort"
-          clearable
-          prepend-icon="mdi-sort"
-          @change="updateSort()"
-          v-model="sort"
-          :items="sortOptions"
-          return-object
-          item-text="label"
-        >
-          <template v-slot:prepend>
-            <v-icon @click="toggleSort()" v-if="inverseSort === true">mdi-sort-ascending</v-icon>
-            <v-icon @click="toggleSort()" v-else>mdi-sort-descending</v-icon>
-          </template>
-        </v-autocomplete>
-      </v-btn>
-
       <template v-if="options.defaultView == 'kanban' && options.kanbanOptions.columnPropertySelection">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
+            <v-btn depressed v-bind="attrs" class="ml-2" elevation="0" v-on="on">
               <v-icon>mdi-blur</v-icon>
               {{ options.kanbanOptions.columnProperty }}
             </v-btn>
@@ -120,7 +52,7 @@
       <template v-if="options.canFilter">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
+            <v-btn depressed v-bind="attrs" class="ml-2" elevation="0" v-on="on">
               <v-icon>mdi-filter-check</v-icon>
               <span v-if="filterProperty">{{ filterProperty.label }}</span>
               <span v-else><v-icon>mdi-plus</v-icon></span>
@@ -138,7 +70,7 @@
         </v-menu>
         <v-menu offset-y v-if="filterProperty">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" class="ml-2" elevation="0" v-on="on">
+            <v-btn depressed v-bind="attrs" class="ml-2" elevation="0" v-on="on">
               <span v-if="filterTitle">{{ filterTitle }}</span>
               <span v-else>[select]</span>
             </v-btn>
@@ -171,6 +103,92 @@
         <v-icon>mdi-chevron-down</v-icon>
         {{ $cs.Translate('COLLAPSE_ALL') }}
       </v-btn>
+      
+      
+      <v-spacer></v-spacer>
+      <template v-if="searchEnabled">
+      <v-text-field
+        label="search"
+        dense
+        filled
+        focus        
+        rounded
+        hide-details="auto"
+        ref="searchInput"
+        
+        class="full-search"        
+        single-line
+        @click:append="closeSearch()"
+        append-icon="mdi-close"
+        
+        @input="updateSearchFilter()"
+        v-model="options.searchFilter"
+        prepend-inner-icon="mdi-magnify"
+      ></v-text-field>
+      </template>
+      <div class="grid-action-buttons">
+        <v-btn v-if="options.canSearch && !searchEnabled" @click="openSearch()" tile icon class="grid-action-button">
+        <v-icon>mdi-magnify</v-icon>        
+        </v-btn>
+      </div>
+      
+      
+      <v-btn-toggle borderless tile group v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
+        <v-btn value="list" class="default-view-button">
+          <v-icon>mdi-format-list-bulleted</v-icon>
+        </v-btn>
+
+        <v-btn value="table" v-if="options.tableOptions" class="default-view-button">
+          <v-icon>mdi-table</v-icon>
+        </v-btn>
+
+        <v-btn value="cards" class="default-view-button">
+          <v-icon>mdi-view-dashboard</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.calendarOptions" value="calendar" class="default-view-button">
+          <v-icon>mdi-calendar</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.timelineOptions" value="timeline_vertical" class="default-view-button">
+          <v-icon>mdi-timeline</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.treeOptions" value="tree" class="default-view-button">
+          <v-icon>mdi-file-tree</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.newsOptions" value="news" class="default-view-button">
+          <v-icon>mdi-newspaper-variant</v-icon>
+        </v-btn>
+
+        <v-btn v-if="options.kanbanOptions" value="kanban" class="default-view-button">
+          <v-icon>mdi-format-columns</v-icon>
+        </v-btn>
+      </v-btn-toggle>
+
+      <v-btn class="ml-2 search-button" elevation="0" depressed v-if="options.canSort && sortOptions">
+        <v-autocomplete
+          class="mt-4 search-autocomplete"
+          dark
+          flat
+          single-line
+          dense
+          label="Sort"
+          clearable
+          prepend-icon="mdi-sort"
+          @change="updateSort()"
+          v-model="sort"
+          :items="sortOptions"
+          return-object
+          item-text="label"
+        >
+          <template v-slot:prepend>
+            <v-icon @click="toggleSort()" v-if="inverseSort === true">mdi-sort-ascending</v-icon>
+            <v-icon @click="toggleSort()" v-else>mdi-sort-descending</v-icon>
+          </template>
+        </v-autocomplete>
+      </v-btn>
 
       <!-- <v-menu offset-y v-if="options.defaultView === 0">
         <template v-slot:activator="{ on, attrs }">
@@ -189,7 +207,7 @@
           </v-list-item>
         </v-list>
       </v-menu> -->
-      <v-spacer></v-spacer>
+
       <!-- <v-btn icon @click="updateEntities(true)"><v-icon>refresh</v-icon></v-btn> -->
       <!-- <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
@@ -213,7 +231,7 @@
       <template v-if="options.defaultView === 'list'">
         <v-virtual-scroll v-if="items" :items="items" :item-height="60" clientHeight="100%">
           <template v-slot="{ item }">
-            <v-list-item @click="selectEntity(item)" class="drag-element">
+            <v-list-item @click="selectEntity(item)" class="drag-element" :data-elementid="item.id" @contextmenu="openContextMenu">
               <v-list-item-avatar>
                 <v-avatar :color="getColor(item)" size="56" class="white--text">
                   <v-icon v-if="item._featureType.icon">{{ item._featureType.icon }}</v-icon>
@@ -280,6 +298,8 @@
                 class="entity-card"
                 :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
                 @click="selectEntityCard(element)"
+                :data-elementid="element.id"
+                @contextmenu="openContextMenu"
               >
                 <component :is="getElementCard(element)" :source="source" :element="element"></component>
               </v-card>
@@ -295,43 +315,35 @@
         height="300"
         item-height="64"
       > -->
-        
-          <v-virtual-scroll v-if="items" :items="items" :item-height="options.newsOptions.itemHeight" clientHeight="100%">
-          <template v-slot="{ item }">
-            
-              <component
 
-                v-if="source.newsCardSelector"
-                :is="source.newsCardSelector(item)"
-                :element="item"
-                :source="source"
-              ></component>
-              <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(item, true)">
-                <v-list-item-content>
-                  <div
-                    class="text-overline mb-4"
-                    v-if="options.newsOptions.sourceElement && item._elements.hasOwnProperty(options.newsOptions.sourceElement)"
-                  >
-                    {{ item._elements[options.newsOptions.sourceElement].properties.name }}
-                  </div>
-                  <v-list-item-title class="text-h5 mb-1">
-                    {{ item.properties.name }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
-                    <span class="source-property" v-if="item.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
-                      item.properties[options.newsOptions.sourceProperty]
-                    }}</span>
-                    {{ item.properties.description }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-                <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
+        <v-virtual-scroll v-if="items" :items="items" :item-height="options.newsOptions.itemHeight" clientHeight="100%">
+          <template v-slot="{ item }">
+            <component v-if="source.newsCardSelector" :is="source.newsCardSelector(item)" :element="item" :source="source"></component>
+            <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(item, true)">
+              <v-list-item-content>
+                <div
+                  class="text-overline mb-4"
+                  v-if="options.newsOptions.sourceElement && item._elements.hasOwnProperty(options.newsOptions.sourceElement)"
+                >
+                  {{ item._elements[options.newsOptions.sourceElement].properties.name }}
+                </div>
+                <v-list-item-title class="text-h5 mb-1">
+                  {{ item.properties.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
+                  <span class="source-property" v-if="item.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
+                    item.properties[options.newsOptions.sourceProperty]
+                  }}</span>
+                  {{ item.properties.description }}</v-list-item-subtitle
+                >
+              </v-list-item-content>
+              <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
               <v-img class="feed-image" :src="element.properties.image"></v-img>
             </v-list-item-avatar> -->
-              </v-list-item>
-            </template>
-          
+            </v-list-item>
+          </template>
         </v-virtual-scroll>
-        
+
         <!-- </v-virtual-scroll> -->
       </template>
 
@@ -443,9 +455,7 @@
         </simplebar>
       </template>
 
-      <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">
-        timeline vertical
-      </div>      
+      <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">timeline vertical</div>
 
       <div class="calendar-view" v-if="options.defaultView === 'calendar'">
         <v-toolbar flat>
@@ -583,6 +593,8 @@
     :columns="columns"
   ></v-grid> -->
     </div>
+    <element-context-menu @listUpdated="updateEntities(true)" @itemUpdated="updateEntities(true)" :showContextMenu="showContextMenu" v-if="source" :x="contextMenuX" :y="contextMenuY" :source="source" :element="activeElement"></element-context-menu>
+
   </div>
 </template>
 
@@ -600,22 +612,21 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   border: 1px solid #4299e1;
 }
 
-.splitview-horizontal {  
+.splitview-horizontal {
   grid-template-rows: 25% 75%;
-  grid-template-areas: 
+  grid-template-areas:
     'top'
     'bottom';
 }
 
 .splitview-vertical {
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 25% 75%;
   grid-template-areas: 'left right';
-  
 }
 
 .grid-component-content {
   height: calc(100% - 96px);
-   position: relative;
+  position: relative;
   display: grid;
 }
 
@@ -722,7 +733,7 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 .data-grid-title {
   font-size: 26px;
   font-weight: 600;
-  padding: 10px;
+  margin-right: 10px;
 }
 
 .source-property {
@@ -731,6 +742,23 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 
 .data-grid-component {
   height: 100%;
+}
+
+.grid-action-button {
+  display: flex;
+}
+
+.grid-action-buttons {
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-right-color: lightgray;
+  margin-right: 4px;
+
+}
+
+.default-view-button {
+  height: 36px !important;
+  margin: 0 !important;
 }
 
 .calendar-view {
@@ -755,7 +783,7 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .full-search {
-  max-width: 300px !important;
+  max-width: 200px !important;
 }
 
 .scroll {
@@ -830,6 +858,7 @@ import { guidGenerator, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 // import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { DocDatasource, DataGridOptions, GridView } from '../..';
+import ElementContextMenu from './../element-context-menu.vue';
 import { PropValue } from '@csnext/cs-map';
 import GridPropValue from './grid-prop-value';
 import OptionsCellEditor from './options-cell-editor.vue';
@@ -841,6 +870,7 @@ import DateCellEditor from './date-cell-editor.vue';
 import DefaultElementCard from './cards/default-element-card.vue';
 import { ElementCardManager } from './cards/element-card-manager';
 import draggable from 'vuedraggable';
+
 require('isotope-packery');
 
 export class KanBanColumn {
@@ -869,12 +899,14 @@ export class KanBanColumn {
     NodeLink,
     isotope,
     draggable,
+    ElementContextMenu,
     DefaultElementCard,
   },
 })
 export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
   public featureType: FeatureType | null = null;
+  public activeElement: GraphElement | null = null;
   public potentialProperties: { [key: string]: PropertyType } = {};
   public sort: PropertyType | null = null;
   public group: PropertyType | undefined | null = null;
@@ -897,6 +929,7 @@ export default class ElementDataGrid extends WidgetBase {
   private showKanbanContextmenu? = false;
   private contextMenuX = 0;
   private contextMenuY = 0;
+  private showContextMenu? = false;
   private kanbanMenuItems: any[] = [];
 
   private filterProperty: PropertyType | null = null;
@@ -910,6 +943,10 @@ export default class ElementDataGrid extends WidgetBase {
   public rowData: any | null = [];
 
   public columnDefs: ColDef[] | null = null;
+
+  public searchEnabled = false;
+
+  
 
   public typeToLabel = {
     month: 'Month',
@@ -938,6 +975,18 @@ export default class ElementDataGrid extends WidgetBase {
     return true;
   }
 
+  private openContextMenu(e: any) {
+    e.preventDefault();
+    const elementId = e.currentTarget?.dataset.elementid || e.path[3].dataset.elementid;
+    if (!elementId || !this.source?.graph || !this.source.graph.hasOwnProperty(elementId)) {
+      return;
+    }
+    this.activeElement = this.source.graph[elementId];
+
+    this.showContextMenu = true;
+    this.contextMenuX = e.clientX;
+    this.contextMenuY = e.clientY;
+  }
   private showKanbanMenu(e: any) {
     e.preventDefault();
     const elementId = e.currentTarget?.dataset.elementid || e.path[3].dataset.elementid;
@@ -1029,11 +1078,13 @@ export default class ElementDataGrid extends WidgetBase {
 
   public selectSplitWidget(element?: GraphElement) {
     if (this.options.splitWidget) {
-      if (!this.options.splitWidget.data)  { this.options.splitWidget.data = {}; }
+      if (!this.options.splitWidget.data) {
+        this.options.splitWidget.data = {};
+      }
       this.options.splitWidget.data.elementId = element?.id;
       if (this.options.splitWidget._component?.selectElement) {
         this.options.splitWidget._component.selectElement(element, this.options);
-      }      
+      }
     }
   }
 
@@ -1041,12 +1092,11 @@ export default class ElementDataGrid extends WidgetBase {
     if (this.options.onSelect) {
       this.options.onSelect(element);
     }
-    
+
     if (this.options.splitWidget) {
       this.source!.selectElement(element, false);
-      this.selectSplitWidget(element);    
-    }
-    else {
+      this.selectSplitWidget(element);
+    } else {
       this.editEntity(element);
     }
   }
@@ -1097,8 +1147,7 @@ export default class ElementDataGrid extends WidgetBase {
   @Watch('widget')
   private async widgetChanged(widget: IWidget) {
     this.widget = widget;
-    if (!this.source)
-    { 
+    if (!this.source) {
       if (widget.datasource) {
         const source = await $cs.loadDatasource<DocDatasource>(widget.datasource);
         this.contentLoaded(source);
@@ -1106,10 +1155,8 @@ export default class ElementDataGrid extends WidgetBase {
     } else {
       this.contentLoaded(this.source);
     }
-     
+
     console.log(`data-grid-widget changed: ${widget.id} - ${widget.component}`);
-    
-   
   }
 
   @Watch('options.filter')
@@ -1121,8 +1168,7 @@ export default class ElementDataGrid extends WidgetBase {
         this.widget.content = ds;
         this.updateEntities(true);
       });
-    } 
-    
+    }
   }
 
   @Watch('selectedTree')
@@ -1175,18 +1221,15 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-   public get splitWidgetLayout() : any {
+  public get splitWidgetLayout(): any {
     if (this.options.splitView) {
       switch (this.options.splitView) {
         case 'horizontal':
           return { 'grid-template-rows': '25% 75%;' };
-          
+
         case 'vertical':
           return { 'grid-template-columns': '50% 50%;' };
-          
       }
-
-
     }
   }
 
@@ -1204,6 +1247,20 @@ export default class ElementDataGrid extends WidgetBase {
   public updateSearchFilter() {
     this.updateEntities(true);
     this.$forceUpdate();
+  }
+
+  public openSearch() {
+    this.searchEnabled = true;
+    this.$nextTick(()=> {
+(this.$refs.searchInput as any).focus();
+    })
+    
+    
+  }
+
+  public closeSearch() {
+    this.options.searchFilter = '';
+    this.searchEnabled = false;
   }
 
   public getWidget() {
@@ -1247,13 +1304,11 @@ export default class ElementDataGrid extends WidgetBase {
     }
     if (entity.id && this.options.relationToggle?.fromId && this.options.relationToggle.relationClassId) {
       try {
-        const linkEdge = await this.source.addNewEdge(
-          {
-            fromId: this.options.relationToggle.fromId,
-            toId: entity.id,
-            classId: this.options.relationToggle.relationClassId,
-          } as GraphElement
-        );
+        const linkEdge = await this.source.addNewEdge({
+          fromId: this.options.relationToggle.fromId,
+          toId: entity.id,
+          classId: this.options.relationToggle.relationClassId,
+        } as GraphElement);
         entity._isLinked = linkEdge;
         if (update) {
           this.updateEntities(true);
@@ -1296,7 +1351,7 @@ export default class ElementDataGrid extends WidgetBase {
     return value != null && search != null && typeof value === 'string' && value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1;
   }
 
-  public source : DocDatasource | undefined = undefined;
+  public source: DocDatasource | undefined = undefined;
   // public get source(): DocDatasource | undefined {
   //   if (this.widget?.content) {
   //     return this.widget.content as DocDatasource;
@@ -1531,7 +1586,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     let placeholder = `new ${type.title}`;
-    
+
     let name = properties?.name || (await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder));
 
     if (name && name.length > 0) {
@@ -1544,13 +1599,11 @@ export default class ElementDataGrid extends WidgetBase {
         .then(async (e) => {
           if (this.source && parent && this.options.treeOptions?.parentProperty) {
             try {
-              const parentEdge = await this.source.addNewEdge(
-                {
-                  fromId: e.id,
-                  toId: parent.id,
-                  classId: this.options.treeOptions.parentProperty,
-                } as GraphElement
-              );
+              const parentEdge = await this.source.addNewEdge({
+                fromId: e.id,
+                toId: parent.id,
+                classId: this.options.treeOptions.parentProperty,
+              } as GraphElement);
               if (parentEdge) {
                 try {
                   await this.source.addEdge(parentEdge);
@@ -1575,7 +1628,8 @@ export default class ElementDataGrid extends WidgetBase {
                         fromId: e.id,
                         toId: relation.toId,
                         classId: this.potentialProperties[relation.key].relation?.type,
-                      } as GraphElement, true
+                      } as GraphElement,
+                      true
                     );
                   } catch (e) {
                     console.log('Error adding relation edge');
@@ -1592,7 +1646,8 @@ export default class ElementDataGrid extends WidgetBase {
                       fromId: fromId,
                       toId: e.id,
                       classId: prop.relation?.type,
-                    } as GraphElement, true
+                    } as GraphElement,
+                    true
                   );
                 }
               }
@@ -1622,7 +1677,7 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     if (this.options.splitWidget?.data?.elementId === entity.id) {
-      this.selectSplitWidget(undefined);      
+      this.selectSplitWidget(undefined);
     }
     this.source
       .removeNode(entity, true, true)
@@ -1993,6 +2048,7 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public updateEntities(force = false) {
+    this.showContextMenu = false;
     if (!this.options || !this.source) {
       return;
     }
@@ -2061,7 +2117,13 @@ export default class ElementDataGrid extends WidgetBase {
     this.checkQueryParams();
 
     if (this.options.filterProperty && this.potentialProperties.hasOwnProperty(this.options.filterProperty)) {
+      // this.setFilterProperty(this.options.filterProperty);
       this.filterProperty = this.potentialProperties[this.options.filterProperty];
+    }
+
+    if (this.options.filterValue) {
+      // this.filter
+      // this.setFilterValue(this.options.filterValue); // = this.potentialProperties[this.options.filterProperty];
     }
 
     if (this.options.filterProperties) {
@@ -2258,7 +2320,9 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public contentLoaded(source: DocDatasource) {
-    if (!this.source && source) { this.source = source; }
+    if (!this.source && source) {
+      this.source = source;
+    }
     this.updateEntities(true);
     this.update();
 
@@ -2305,7 +2369,9 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   mounted() {
-    if (!this.source && this.widget?.content) { this.source = this.widget.content; }
+    if (!this.source && this.widget?.content) {
+      this.source = this.widget.content;
+    }
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();

@@ -1,7 +1,7 @@
 <template>
   <simplebar
     style="margin-left: 5px; margin-top: -25px; height: calc(100%-80px)"
-    v-if="source && source.activeDocument && nodeGroups"
+    v-if="source && document && nodeGroups"
   >
     <!-- <v-row v-masonry transition-duration="0.3s" cols="3"  column-width="300" item-selector=".group-column" style="margin-left: 5px; margin-right: 10px"> -->
     <isotope
@@ -250,8 +250,8 @@ export default class DocumentEntities extends WidgetBase {
   }
 
   public clearHighlight() {
-    if (this.source?.activeDocument?._entities) {
-      for (const entity of this.source.activeDocument._entities) {
+    if (this.document?._entities) {
+      for (const entity of this.document._entities) {
         Vue.set(entity, '_highlight', false);
         // entity._highlight = false;        
       }
@@ -286,8 +286,8 @@ export default class DocumentEntities extends WidgetBase {
   }
 
   public get document(): GraphDocument | undefined {
-    if (this.source && this.source.activeDocument) {
-      return this.source.activeDocument;
+    if (this.state?.element) {
+      return this.state.element;
     }
   }
 
@@ -320,17 +320,17 @@ export default class DocumentEntities extends WidgetBase {
   }
 
   private async toggleApproveEntity(list?: EntityList) {
-    if (!list?.node || !this.source || !this.source.activeDocument) {
+    if (!list?.node || !this.source || !this.document) {
       return;
     }
     if (list._approved && list.node) {
       list._approved = false;
-      await this.source.removeEntityListFromDocument(list, this.source.activeDocument);
+      await this.source.removeEntityListFromDocument(list, this.document);
       // this.source.removeEdge()
       // delete link
     } else {
       list._approved = true;
-      await this.source.linkEntityListToDocument(list, this.source.activeDocument);      
+      await this.source.linkEntityListToDocument(list, this.document);      
       // add link
     }
     this.updateGroups();
@@ -349,31 +349,31 @@ export default class DocumentEntities extends WidgetBase {
 
   public deleteEntities(list: EntityList) : Promise<boolean> {    
     return new Promise(async (resolve, reject) => {
-      if (!this.source?.activeDocument?._entities || !list.instances) {
+      if (!this.source || !this.document || !this.document._entities || !list.instances) {
         reject();
         return;
       }
       
-      await this.source.removeEntityListFromDocument(list, this.source.activeDocument, true);
-      await this.source.saveDocument(this.source.activeDocument);
+      await this.source.removeEntityListFromDocument(list, this.document, true);
+      await this.source.saveDocument(this.document);
       this.updateGroups();
       this.source!.bus.publish("document-entities", "update");
       resolve(true);
     })
   }
 
-  @Watch("source.activeDocument._entityTypes")
-  @Watch("source.activeDocument.properties.hide_unknowns")
+  @Watch("document._entityTypes")
+  @Watch("document.properties.hide_unknowns")
   public updateGroups() {
     if (!this.source) {
       return;
     }
-    if (!this.source?.activeDocument?._entities) {
+    if (!this.document?._entities) {
       return;
     }
     let res: NodeEntities[] = [];
-    for (const entity of this.source.activeDocument._entities) {     
-      if (!this.source.activeDocument?.properties?.hide_unknowns || entity._node?._featureType)  {
+    for (const entity of this.document._entities) {     
+      if (!this.document?.properties?.hide_unknowns || entity._node?._featureType)  {
       const c = entity._node?.classId ?? entity.spacy_label;
       if (c) {
         let group = res.find((g) => g.id === c);
@@ -392,17 +392,17 @@ export default class DocumentEntities extends WidgetBase {
         const ent = group.entities.find((e) => e.id === entityId);
 
         if (!ent) {
-          let edge = this.source.activeDocument._outgoing?.find(
+          let edge = this.document._outgoing?.find(
             (o) => o.toId === entityId
           );
-          // console.log(this.source.activeDocument._node?._outgoing?.map(f => f.toId));
+          // console.log(this.document._node?._outgoing?.map(f => f.toId));
           let el = {
             id: entityId,
             _hover: false,
             _approved: edge !== undefined,
             edge,
             node: entity._node,
-            _relations: entity._relations ? entity._relations.length : 0,
+            // _relations: entity._relations ? entity._relations.length : 0,
             _togglemore: false,
             instances: [entity],
           } as EntityList;
@@ -412,15 +412,15 @@ export default class DocumentEntities extends WidgetBase {
           group.entities.push(el);
         } else {
           ent.instances.push(entity);
-          ent._relations+=entity._relations ? entity._relations.length : 0;
+          // ent._relations+=entity._relations ? entity._relations.length : 0;
         }
       }
       }
     }
 
     // find all contains relations without entities
-    if (this.source.activeDocument._outgoing) {
-      for (const relation of this.source.activeDocument._outgoing
+    if (this.document._outgoing) {
+      for (const relation of this.document._outgoing
         .filter((r) => r.classId === "CONTAINS")
         .map((r) => r)) {
         if (relation && relation.to) {

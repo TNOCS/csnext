@@ -89,7 +89,7 @@
         <v-tab-item value="tab-RELATIONS" class="full-height">
           <relation-list-sections class="ma-2" :node="activeElement" :source="dataSource"> </relation-list-sections>
         </v-tab-item>
-        <v-tab-item value="tab-WRITE"  class="full-height">
+        <v-tab-item value="tab-WRITE" class="full-height">
           <cs-widget :widget="editorWidget" v-if="editorWidget"></cs-widget>
         </v-tab-item>
         <v-tab-item value="tab-DOCUMENTS">
@@ -182,10 +182,6 @@
   justify-content: flex-end;
 }
 
-.feature-property {
-  /* height: 100%;   */
-}
-
 .feature-property-key {
   position: absolute;
   cursor: pointer;
@@ -202,8 +198,6 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
-
 
 .info-image {
   /* width: 28px; */
@@ -302,7 +296,7 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public editFeatureType() {
-    if (this.dataSource && this.activeElement?._featureType) {      
+    if (this.dataSource && this.activeElement?._featureType) {
       this.dataSource.openFeatureTypeEditor(this.activeElement._featureType);
     }
   }
@@ -430,30 +424,27 @@ export default class ElementInfo extends WidgetBase {
     }
 
     if (!this.editorWidget) {
+      this.editorWidget = {
+        id: `${this.activeElement.id}-viewer`,
+        component: DocumentViewer,
+        datasource: this.dataSource.id,
+        data: {
+          elementId: this.activeElement.id,
+        },
+        options: {
+          showToolbar: false,
 
-    
-
-    this.editorWidget = {
-  id: `${this.activeElement.id}-viewer`,
-  component: DocumentViewer,
-  datasource: this.dataSource.id,
-  data: {
-    elementId: this.activeElement.id
-  },options: {            
-    showToolbar: false,
-    
-    toolbarOptions: {
-      dense: true,
-      hideIcon: true,
-      elevation: 0,
-    }
-  }
-    };
+          toolbarOptions: {
+            dense: true,
+            hideIcon: true,
+            elevation: 0,
+          },
+        },
+      };
     } else if (this.editorWidget?._component?.openElement) {
-          this.editorWidget._component?.openElement(this.activeElement);
-        }
-  
-    
+      this.editorWidget._component.openElement(this.activeElement);
+    }
+
     const docWidget = {
       component: ElementDataGrid,
       datasource: this.dataSource.id,
@@ -469,18 +460,14 @@ export default class ElementInfo extends WidgetBase {
         filter: { hasObjectTypeRelation: { HAS_REFERENCE: this.activeElement.id } },
         newRelations: [
           {
-            key: "reference",
+            key: 'reference',
             toId: this.activeElement.id,
           },
         ],
-      
-      } as DataGridOptions
-    }
+      } as DataGridOptions,
+    };
 
-    Vue.set(this, 'documentsWidget', null);
-  
-    Vue.set(this, 'documentsWidget', docWidget);
-    
+    this.documentsWidget = docWidget;
 
     this.isDocument = this.activeElement._featureType?._inheritedTypes && this.activeElement._featureType?._inheritedTypes.includes('input');
 
@@ -571,7 +558,7 @@ export default class ElementInfo extends WidgetBase {
       let tab = InfoTabManager.tabs[this.activeElement.classId] as IWidget;
       this.specialTab = tab;
     }
-    
+
     this.$forceUpdate();
   }
 
@@ -597,13 +584,13 @@ export default class ElementInfo extends WidgetBase {
 
       this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {
         this.activeElement = data;
-        this.updateElement();        
-        this.updateTabs();           
+        this.updateElement();
+        this.updateTabs();
       });
       this.busManager.subscribe(this.dataSource.bus, 'focus', (a: string, data: any) => {
         this.activeElement = data;
         this.updateElement();
-        this.updateTabs();        
+        this.updateTabs();
       });
     }
     this.updateElement();

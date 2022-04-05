@@ -66,8 +66,7 @@ export default class ParagraphComponent extends Vue {
   @Prop()
   node: any;
 
-  mounted() {
-    console.log(this);
+  mounted() {    
     if (this.node?.attrs) {
       console.log(this.node.attrs);
     }
