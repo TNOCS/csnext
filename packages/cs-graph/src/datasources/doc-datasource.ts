@@ -46,6 +46,7 @@ import { IActionPlugin } from '../plugins/action-plugin';
 
 export class DocDatasource extends GraphDatasource {
   public id = 'doc';
+  public static sourceId = 'doc';
 
   public static DOCUMENT = 'document';
   public static DOCUMENT_UPDATED = 'document_updated';
@@ -80,7 +81,7 @@ export class DocDatasource extends GraphDatasource {
   public entityParser = new EntityParser();
   public layers: { [type: string]: GeojsonPlusLayer } = {};
   public tools: ITool[] = [];
-  
+  public slideConfigs: IWidget[] = [];
 
   constructor(public base_url: string, public timesourceId: string) {
     super();
@@ -158,6 +159,31 @@ export class DocDatasource extends GraphDatasource {
     }
     this.searchPlugins.push(plugin);
   }
+
+  //#region slide
+
+  public addSlideConfig(config: IWidget) {
+    const existing = this.slideConfigs.findIndex((t) => t.id! === config.id!);
+    if (existing !== -1) {
+      this.slideConfigs.splice(existing, 1);
+    }
+    this.slideConfigs.push(config);
+  }
+
+  public removeSlideConfig(id: string) {
+    const existing = this.slideConfigs.findIndex((t) => t.id! === id!);
+    if (existing !== -1) {
+      this.slideConfigs.splice(existing, 1);
+    }
+  }
+
+  public removeAllSlideConfigs() {
+    for (const config of this.slideConfigs) {
+      this.removeSlideConfig(config.id!);
+    }
+  }
+
+  //#endregion
 
   //#region tools
 

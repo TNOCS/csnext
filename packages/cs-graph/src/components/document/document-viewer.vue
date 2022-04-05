@@ -1135,8 +1135,8 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public mounted() {
-    if (this.widget.content) {
-      this.contentLoaded(this.widget.content);
+    if (this.widget?.content) {
+      this.contentLoaded(this.widget?.content);
     }
   }
 }

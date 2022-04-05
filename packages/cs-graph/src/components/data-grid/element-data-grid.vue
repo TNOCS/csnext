@@ -2357,6 +2357,7 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+
   private getElementCard(element: GraphElement) {
     const id = element.classId;
     if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
@@ -2368,6 +2369,25 @@ export default class ElementDataGrid extends WidgetBase {
     return 'default-element-card';
   }
 
+  private registerWidgetConfig() {
+    if (!this.source) return;
+    let w: IWidget = {
+      component: ElementDataGrid,
+      id: `slide-${this.widget.id || guidGenerator()}`,
+      datasource: this.source.id,
+      data: {
+        title: 'Element data grid'
+      },
+      options: {...this.widget.options || {}},
+    };
+    this.source.addSlideConfig(w);
+  }
+
+  beforeDestroy() {
+    if (!this.source) return;
+    this.source.removeAllSlideConfigs();
+  }
+
   mounted() {
     if (!this.source && this.widget?.content) {
       this.source = this.widget.content;
@@ -2375,6 +2395,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();
+    this.registerWidgetConfig();
   }
 }
 </script>
