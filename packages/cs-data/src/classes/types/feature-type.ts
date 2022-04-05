@@ -1,6 +1,12 @@
 import { Form, FormField } from '@csnext/cs-core';
 import { InfoPanel, InfoTemplate, PropertyValueType, FeatureTypes, PropertyCollection, PropertyType, GraphElement, TextEntity, TextRelation } from './../..';
 
+export class FeatureTypeAttributes {
+    [key: string]: any;
+    public cardImageProperty?: string;
+
+}
+
 @Form({ title: 'Feature', hideTitle: true })
 export class FeatureType {
     @FormField({ title: 'Title', type: 'string' })
@@ -49,7 +55,7 @@ export class FeatureType {
      */
     public propertyTypeKeys?: string;
     /** list of parameters that e.g. can be used for import tasks */
-    public attributes?: {[key: string]: any};
+    public attributes?: FeatureTypeAttributes;
     public infoTemplate?: InfoTemplate;
     public infoPanels?: {[key : string]:InfoPanel};
     public style?: any;    
@@ -155,6 +161,10 @@ export class FeatureType {
                 }
             }            
         
+    }
+
+    public static isType(element: GraphElement, type: string) : boolean | undefined {
+        return (element?._featureType?._inheritedTypes && element._featureType._inheritedTypes.includes(type))
     }
 
     public static mergeBaseType(baseType: string, ft: FeatureType, types: FeatureTypes) : FeatureTypes

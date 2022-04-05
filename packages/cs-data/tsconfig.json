@@ -4,7 +4,7 @@
   "compilerOptions": {
     /* Basic Options */
     "outDir": "./dist",
-    "lib": ["DOM"]
+    "lib": ["DOM", "es2021"]
   },
   "exclude": ["./dist"],
   "include": ["./src"],
