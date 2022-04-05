@@ -50,4 +50,5 @@ export class WidgetOptions {
   public hideSidebarButton?: boolean;
   /** if using a cssgrid dashboard with area defintions, you can define the area defintition here */
   public area?: string;
+  public sync?: 'widget' | 'dashboard' | 'manager' | 'datasource' | 'global';
 }

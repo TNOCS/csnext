@@ -1,7 +1,9 @@
 <v-card>
   <v-app-bar
     v-if="!$cs.project.header.hideToolbar"
-    :floating="$cs.isFloatingHeader"
+    :floating="$cs.isFloatingHeader"    
+    class="headerColor"
+    tile
     :class="{'floating-toolbar': $cs.isFloatingHeader, 'compact-header': $cs.project.navigation === 'mobile-compact'}"
     id="main-toolbar"
     :clipped-left="leftSidebar && leftSidebar.visible && leftSidebar.clipped"

@@ -198,6 +198,7 @@ export class CsWidget extends Vue {
       return;
     }
 
+
     if (!this.widget.events) {
       this.widget.events = new MessageBusService();
     }

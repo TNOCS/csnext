@@ -14,9 +14,23 @@ export class WidgetBase extends Vue {
   /** access the original widget from configuration */
   public widget!: IWidget;
   public busManager = new MessageBusManager();
-
+  
   constructor() {
     super();
+  }
+
+  public get state() : any {
+    console.log('get data')
+    console.log(this);
+    if (this.widget?.options?.sync) {
+      switch (this.widget.options.sync) {
+        case 'dashboard': return this.widget?._dashboard?.data;
+        case 'manager': return this.widget?._dashboard?._manager?.data;
+        case 'datasource': return this.widget?.content?.data;
+        case 'global': return $cs.data;        
+      }
+    }
+    return this.widget?.data;
   }
 
   public subscribe(bus: IMessageBusService | undefined, topic: string, callback: IMessageBusCallback, id?: string) {
