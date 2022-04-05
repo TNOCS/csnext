@@ -86,7 +86,7 @@
 }
 
 .feature-property {
-    border-bottom: solid 1px #ccc;
+    /* border-bottom: solid 1px #ccc; */
     padding: 8px 0px;
     min-height: 40px;
     margin-right: 15px !important;

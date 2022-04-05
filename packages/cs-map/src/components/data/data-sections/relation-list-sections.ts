@@ -1,6 +1,6 @@
 import { BaseSection } from "./base-section";
 import { Component } from "vue-property-decorator";
-import { FeatureType, InfoPanelSection, PropertyType } from "@csnext/cs-data";
+import { FeatureType, GraphElement, InfoPanelSection, PropertyType } from "@csnext/cs-data";
 import { SimpleRelationListSection } from "./simple-relation-list-section";
 @Component({
     name: "relation-list-sections",
@@ -48,22 +48,15 @@ export class RelationListSections extends BaseSection {
             let incoming = this.node._incomming.filter(
                 i => i.classId && i.from?._featureType
             );
-            for (const i of incoming) {
-                // const pt = this.findRelationPropertyType(
-                //     i.from!._featureType!,
-                //     i.classId!
-                // );
+            for (const i of incoming) {                
                 if (
-                    i.classId &&
-                    // pt &&
+                    i.classId &&                    
                     res.findIndex(r => r.relation === i.classId) === -1
                 ) {                    
                     res.push({
                         sectionType: "simple-relation-list-section",
-                        direction: 'incoming',
-                        // title: `${i.from._featureType?.title}` || pt.label,
-                        title: i.classId,
-                        // filter: i.from.classId
+                        direction: 'incoming',                        
+                        title: GraphElement.getClassTitle(i),                        
                         relation: i.classId
                     });
                 }
@@ -72,18 +65,14 @@ export class RelationListSections extends BaseSection {
 
         if (this.node._outgoing) {
             let outgoing = this.node._outgoing.filter(i => i.classId && i.to);
-            for (const o of outgoing) {
-                // const pt = this.findRelationPropertyType(
-                //     this.node._featureType,
-                //     o.classId!
-                // );
+            for (const o of outgoing) {                
                 if (res.findIndex(r => r.relation === o.classId) === -1) {
                     res.push({
                         direction: 'outgoing',
                         sectionType: "simple-relation-list-section",
-                        title: o.classId,                         // pt.label ?? 
+                        title: GraphElement.getClassTitle(o),                         
                         relation: o.classId
-                    }); // filter: o.to!.classId })
+                    });
                 }
             }
         }

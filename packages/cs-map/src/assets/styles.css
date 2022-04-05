@@ -20,6 +20,13 @@
 
 }
 
+.node-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
 .link-chip {
     margin-bottom: 2px;
 }

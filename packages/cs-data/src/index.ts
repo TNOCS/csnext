@@ -1,6 +1,7 @@
 export * from './utils/meta-utils';
 export * from './utils/wkt';
 export * from './utils/date-utils';
+export * from './utils/string-utils';
 
 export * from './interfaces/datapackage';
 export * from './interfaces/tableschema';
@@ -19,6 +20,7 @@ export * from './classes/info-panel/info-panel';
 export * from './classes/info-panel/info-panel-section';
 export * from './classes/info-panel/info-template';
 
+export * from './classes/types/meta-entity';
 export * from './classes/types/feature-type';
 export * from './classes/types/relation-type';
 export * from './classes/types/feature-types';
@@ -31,6 +33,7 @@ export * from './classes/graph/graph-element';
 export * from './classes/graph/filter-graph-element';
 export * from './classes/graph/link-info';
 export * from './classes/graph/search-result';
+
 
 export * from './classes/list/list';
 export * from './classes/list/list-item';
