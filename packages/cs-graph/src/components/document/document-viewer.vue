@@ -16,7 +16,7 @@
   </v-container>
 
   <div v-else-if="loaded && currentDocument" class="editor-grid" v-show="!startMenu">
-    <v-toolbar flat outlined class="graph-menu" v-if="currentDocument">
+    <v-toolbar flat outlined class="graph-menu" v-if="currentDocument && !hideHeader">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -261,6 +261,10 @@ export default class DocumentViewer extends WidgetBase {
     if (this.source) {
       this.source.editor = value;
     }
+  }
+
+  public get hideHeader(): boolean {
+    return ((this.widget?.options) as any).hideHeader || false;
   }
 
   @Prop()
