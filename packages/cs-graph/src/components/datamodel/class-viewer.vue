@@ -268,10 +268,12 @@ export default class ClassViewer extends WidgetBase {
       height: 1200, // (this as any).widget._size.height,
       layout: {
         type: 'force',
-        gravity: 10,
+        
         preventOverlap: true,
-        speed: 25,
+        speed: 500,
+        gravity: 10,
         nodeStrength: 100,
+        alphaDecay: 0.5,
         nodeSpacing: 150,
         nodeSize: 15,
         clustering: false,
