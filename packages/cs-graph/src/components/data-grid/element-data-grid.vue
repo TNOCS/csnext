@@ -1,6 +1,6 @@
 <template>
   <div class="data-grid-component">
-    <v-layout class="ma-4">
+    <v-layout class="ma-4" v-if="!options.hideHeader">
       <div v-if="featureType" class="data-grid-title">
         <span v-if="featureType.icon" class="mr-4"
           ><v-icon>{{ featureType.icon }}</v-icon></span
@@ -400,12 +400,13 @@
                       <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item-content>
                   </template>
-
-                  <v-list-item v-if="item.items" v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
+                  <template v-if="item.items">
+                  <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
                     <v-list-item-content>
                       <v-list-item-title v-text="subItem.title"></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
+                  </template>
                 </v-list-group>
               </v-list>
             </v-menu>
@@ -2405,13 +2406,13 @@ export default class ElementDataGrid extends WidgetBase {
   private registerWidgetConfig() {
     if (!this.source) return;
     let w: IWidget = {
-      component: ElementDataGrid,
+      component: `element-data-grid`,
       id: `slide-${this.widget.id || guidGenerator()}`,
       datasource: this.source.id,
       data: {
         title: 'Element data grid',
       },
-      options: { ...(this.widget.options || {}) },
+      options: { ...(this.widget.options || {}), hideHeader: true } as DataGridOptions,
     };
     this.source.addSlideConfig(w);
   }

@@ -766,6 +766,11 @@ export default class DocumentViewer extends WidgetBase {
     console.log('document content loaded');
     this.busManager.subscribe(this.source!.bus, DocDatasource.DOCUMENT_ENTITIES, (a: string, d: any) => {
       if (a === DocDatasource.ENTITIES_UPDATED) {
+        console.log('document content updated from messagebus');
+        this.checkDocumentIdQuery();
+        this.updateEditor();
+        this.updateContent();
+        this.initTools();
         this.$forceUpdate();
       }
     });

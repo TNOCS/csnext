@@ -130,6 +130,7 @@ export class DataGridOptions extends WidgetOptions {
   public treeOptions?: DataGridTreeOptions;
   public gridOptions?: DataGridGridOptions;
   
+  public hideHeader?: boolean = false;
 
   /* This is a list of potential properties that are used to filter the data. */
   public filterProperties?: string[];
