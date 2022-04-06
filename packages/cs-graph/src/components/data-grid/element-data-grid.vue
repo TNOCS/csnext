@@ -1,12 +1,12 @@
 <template>
   <div class="data-grid-component">
-    <v-layout class="ma-4">   
+    <v-layout class="ma-4" v-if="!options.hideHeader">
       <div v-if="featureType" class="data-grid-title">
         <span v-if="featureType.icon" class="mr-4"
           ><v-icon>{{ featureType.icon }}</v-icon></span
         >{{ $cs.Translate(options.title) }}<span v-if="filterTitle"> : {{ filterTitle }}</span>
       </div>
-   
+
       <v-menu offset-y v-if="options.canAdd && classTypes.length > 1">
         <template v-slot:activator="{ on, attrs }">
           <v-btn depressed v-bind="attrs" class="ml-2" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])">
@@ -103,36 +103,32 @@
         <v-icon>mdi-chevron-down</v-icon>
         {{ $cs.Translate('COLLAPSE_ALL') }}
       </v-btn>
-      
-      
+
       <v-spacer></v-spacer>
       <template v-if="searchEnabled">
-      <v-text-field
-        label="search"
-        dense
-        filled
-        focus        
-        rounded
-        hide-details="auto"
-        ref="searchInput"
-        
-        class="full-search"        
-        single-line
-        @click:append="closeSearch()"
-        append-icon="mdi-close"
-        
-        @input="updateSearchFilter()"
-        v-model="options.searchFilter"
-        prepend-inner-icon="mdi-magnify"
-      ></v-text-field>
+        <v-text-field
+          label="search"
+          dense
+          filled
+          focus
+          rounded
+          hide-details="auto"
+          ref="searchInput"
+          class="full-search"
+          single-line
+          @click:append="closeSearch()"
+          append-icon="mdi-close"
+          @input="updateSearchFilter()"
+          v-model="options.searchFilter"
+          prepend-inner-icon="mdi-magnify"
+        ></v-text-field>
       </template>
       <div class="grid-action-buttons">
         <v-btn v-if="options.canSearch && !searchEnabled" @click="openSearch()" tile icon class="grid-action-button">
-        <v-icon>mdi-magnify</v-icon>        
+          <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </div>
-      
-      
+
       <v-btn-toggle borderless tile group v-model="options.defaultView" mandatory v-if="!options.hideViewSwitch">
         <v-btn value="list" class="default-view-button">
           <v-icon>mdi-format-list-bulleted</v-icon>
@@ -593,8 +589,16 @@
     :columns="columns"
   ></v-grid> -->
     </div>
-    <element-context-menu @listUpdated="updateEntities(true)" @itemUpdated="updateEntities(true)" :showContextMenu="showContextMenu" v-if="source" :x="contextMenuX" :y="contextMenuY" :source="source" :element="activeElement"></element-context-menu>
-
+    <element-context-menu
+      @listUpdated="updateEntities(true)"
+      @itemUpdated="updateEntities(true)"
+      :showContextMenu="showContextMenu"
+      v-if="source"
+      :x="contextMenuX"
+      :y="contextMenuY"
+      :source="source"
+      :element="activeElement"
+    ></element-context-menu>
   </div>
 </template>
 
@@ -753,7 +757,6 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
   border-right-width: 1px;
   border-right-color: lightgray;
   margin-right: 4px;
-
 }
 
 .default-view-button {
@@ -945,8 +948,6 @@ export default class ElementDataGrid extends WidgetBase {
   public columnDefs: ColDef[] | null = null;
 
   public searchEnabled = false;
-
-  
 
   public typeToLabel = {
     month: 'Month',
@@ -1251,11 +1252,9 @@ export default class ElementDataGrid extends WidgetBase {
 
   public openSearch() {
     this.searchEnabled = true;
-    this.$nextTick(()=> {
-(this.$refs.searchInput as any).focus();
-    })
-    
-    
+    this.$nextTick(() => {
+      (this.$refs.searchInput as any).focus();
+    });
   }
 
   public closeSearch() {
@@ -2358,7 +2357,6 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-
   private getElementCard(element: GraphElement) {
     const id = element.classId;
     if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
@@ -2373,13 +2371,13 @@ export default class ElementDataGrid extends WidgetBase {
   private registerWidgetConfig() {
     if (!this.source) return;
     let w: IWidget = {
-      component: ElementDataGrid,
+      component: `element-data-grid`,
       id: `slide-${this.widget.id || guidGenerator()}`,
       datasource: this.source.id,
       data: {
-        title: 'Element data grid'
+        title: 'Element data grid',
       },
-      options: {...this.widget.options || {}},
+      options: { ...(this.widget.options || {}), hideHeader: true } as DataGridOptions,
     };
     this.source.addSlideConfig(w);
   }
@@ -2396,7 +2394,6 @@ export default class ElementDataGrid extends WidgetBase {
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;
     this.updateEntities();
-    
   }
 }
 </script>

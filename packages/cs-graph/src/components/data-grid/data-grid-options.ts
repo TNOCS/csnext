@@ -119,7 +119,7 @@ export class DataGridOptions extends WidgetOptions {
   public kanbanOptions?: DataGridKanbanOptions;
   public timelineOptions?: TimelineOptions;
   public treeOptions?: DataGridTreeOptions;
-  
+  public hideHeader?: boolean = false;
 
   /* This is a list of potential properties that are used to filter the data. */
   public filterProperties?: string[];
