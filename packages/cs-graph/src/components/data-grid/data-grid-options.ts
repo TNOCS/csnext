@@ -8,6 +8,7 @@ export enum GridView {
   calendar = 'calendar',
   tree = 'tree',
   news = 'news',
+  grid = 'grid',
   kanban = 'kanban',  
   timeline_vertical = 'timeline_vertical'
 }
@@ -42,6 +43,14 @@ export class DataGridNewsOptions {
   sourceProperty?: string;
   dateProperty?: string;
   itemHeight?: number;
+}
+
+export class DataGridGridOptions {
+  public display?: 'card' | 'media';  
+  public cols?: number;
+  public imageProperty?: string;
+  public contentTypeProperty?: string;
+  public imagePreviewProperty?: string;
 }
 
 
@@ -119,6 +128,7 @@ export class DataGridOptions extends WidgetOptions {
   public kanbanOptions?: DataGridKanbanOptions;
   public timelineOptions?: TimelineOptions;
   public treeOptions?: DataGridTreeOptions;
+  public gridOptions?: DataGridGridOptions;
   
 
   /* This is a list of potential properties that are used to filter the data. */
