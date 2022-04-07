@@ -18,8 +18,16 @@ export class FilesController {
     constructor(private readonly filesService: FilesService) { }
 
     @Get('/image')
-    @Header('Content-Type', 'image/svg+xml')
+    @Header('Content-Type', 'image/jpeg')
     public async imageHash(@Query('url') url: string, @Res() response: Response )  {        
+        const id = FilesService.getFileId(url);
+        const file = await this.filesService.getFile(id, url);
+        response.send(file);            
+    }
+
+    @Get('/video')
+    @Header('Content-Type', 'image/mp4')
+    public async videoRequest(@Query('url') url: string, @Res() response: Response )  {        
         const id = FilesService.getFileId(url);
         const file = await this.filesService.getFile(id, url);
         response.send(file);            
