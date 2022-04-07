@@ -1017,6 +1017,18 @@ export class GraphDatasource extends DataSource {
     );
   }
 
+  public searchFuse(query: string, featureType?: string, traversal = false) {
+    if (!this.fuse) {
+      return [];
+    }
+    
+    let res = this.fuse.search<GraphElement>(query);
+    if (featureType) {
+      res = res.filter(r => r.item._featureType?._inheritedTypes && r.item._featureType._inheritedTypes.includes(featureType));
+    }
+    return res;
+  }
+
   public execute(): Promise<GraphDatasource> {
     return new Promise((resolve) => {
       resolve(this);
