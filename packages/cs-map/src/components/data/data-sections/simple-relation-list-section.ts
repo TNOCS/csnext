@@ -44,7 +44,7 @@ export class SimpleRelationListSection extends BaseSection {
       } 
       else if (this.section?.direction === 'outgoing' && this.section?.relation && this.node?._outgoing) {      
         res = this.node._outgoing?.filter(r => r.classId === this.section?.relation).map(r => r.to);      
-      } else if (this.section?.direction === 'property') {
+      } else if (this.section?.direction === 'property' && this.node?._elements && this.section?.property) {
         const p = this.node._elements![this.section.property];
         res = Array.isArray(p) ? p : [p];
       }

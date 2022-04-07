@@ -79,7 +79,7 @@ export class RelationListSections extends BaseSection {
 
         if (this.node._elements) {
             for (const prop in this.node._elements) {
-                let pt = this.node!._featureType!.propertyMap[prop]
+                let pt = this.node!._featureType!.propertyMap![prop]
                 if (pt) {
                     res.push({
                         sectionType: "simple-relation-list-section",
