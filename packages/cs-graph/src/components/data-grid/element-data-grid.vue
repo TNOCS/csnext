@@ -1,5 +1,5 @@
 <template>
-  <div class="data-grid-component">
+  <div class="data-grid-component" v-if="source">
     <v-layout class="ma-4" v-if="!options.hideHeader">
       <div v-if="featureType" class="data-grid-title">
         <span v-if="featureType.icon" class="mr-4"
