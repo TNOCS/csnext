@@ -10,7 +10,7 @@ import Vue from 'vue';
   <div class="list-section" v-if="node">        
       <v-layout>
         <div @click="toggleExpand()" class="section-title" v-if="section.title">
-        {{section.direction}} {{section.title}}({{total}})</div><v-spacer></v-spacer>
+        {{section.title}} <span v-if="total>1">({{total}})</span></div><v-spacer></v-spacer>
         <v-btn icon v-if="node && node._isEditting"><v-icon>mdi-plus</v-icon></v-btn>
         <v-btn v-if="expanded" @click="toggleExpand()" icon><v-icon>mdi-chevron-up</v-icon></v-btn>
         <v-btn v-else @click="toggleExpand()" icon><v-icon>mdi-chevron-down</v-icon></v-btn>
@@ -44,8 +44,9 @@ export class SimpleRelationListSection extends BaseSection {
       } 
       else if (this.section?.direction === 'outgoing' && this.section?.relation && this.node?._outgoing) {      
         res = this.node._outgoing?.filter(r => r.classId === this.section?.relation).map(r => r.to);      
-      } else {
-        res = [];
+      } else if (this.section?.direction === 'property') {
+        const p = this.node._elements![this.section.property];
+        res = Array.isArray(p) ? p : [p];
       }
       Vue.set(this, 'total', res!.length);
       // this.total = res!.length;

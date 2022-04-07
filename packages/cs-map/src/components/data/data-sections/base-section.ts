@@ -1,5 +1,5 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { GraphElement, FeatureType, InfoPanel, InfoPanelSection } from '@csnext/cs-data';
+import { GraphElement, FeatureType, InfoPanel, InfoPanelSection, GraphDatasource } from '@csnext/cs-data';
 import { NodeLink } from './node-link';
 import { IDatasource } from '@csnext/cs-core';
 @Component({
@@ -14,6 +14,7 @@ export class BaseSection extends Vue {
     public infoPanel?: InfoPanel;
     public panel?: InfoPanel;
     public node?: GraphElement;
-    public source?: IDatasource;
+    public source?: GraphDatasource;
+    public property?: string;
 
 }

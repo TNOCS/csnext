@@ -8,5 +8,5 @@ export class InfoPanelSection
     public filter?: string;
     public relation?: string;
     public incomming?: boolean;
-    public direction?: 'incoming' | 'outgoing';
+    public direction?: 'incoming' | 'outgoing' | 'property' | 'reverse-prop';
 }
