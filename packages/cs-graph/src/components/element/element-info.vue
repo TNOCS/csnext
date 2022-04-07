@@ -267,6 +267,10 @@ export default class ElementInfo extends WidgetBase {
       $cs.removeRouteQueryParam(this.elementInfoTab);
     } else {
       $cs.addRouteQueryParam(this.elementInfoTab, this.tab.toString());
+
+      if (this.tab === 'WRITE') {
+        this.updateEditor();
+      }
     }
   }
 
@@ -417,12 +421,10 @@ export default class ElementInfo extends WidgetBase {
     // );
   }
 
-  private updateElement() {
-    this.componentKey += 1;
-    if (!this.widget.options || !this.dataSource || !this.activeElement) {
+  private updateEditor() {
+    if (!this.activeElement || !this.dataSource) {
       return;
     }
-
     if (!this.editorWidget) {
       this.editorWidget = {
         id: `${this.activeElement.id}-viewer`,
@@ -444,6 +446,15 @@ export default class ElementInfo extends WidgetBase {
     } else if (this.editorWidget?._component?.openElement) {
       this.editorWidget._component.openElement(this.activeElement);
     }
+  }
+
+  private updateElement() {
+    this.componentKey += 1;
+    if (!this.widget.options || !this.dataSource || !this.activeElement) {
+      return;
+    }
+
+    this.updateEditor();
 
     const docWidget = {
       component: ElementDataGrid,
