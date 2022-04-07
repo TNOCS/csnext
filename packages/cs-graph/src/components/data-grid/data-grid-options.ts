@@ -1,5 +1,5 @@
 import { IMenu, IWidget, WidgetOptions } from '@csnext/cs-core';
-import { GraphElement, GraphFilter, IGraphFilter } from '@csnext/cs-data';
+import { GraphElement, GraphFilter, IGraphFilter, NodeRule } from '@csnext/cs-data';
 
 export enum GridView {
   list = 'list',
@@ -131,6 +131,8 @@ export class DataGridOptions extends WidgetOptions {
   public gridOptions?: DataGridGridOptions;
   
   public hideHeader?: boolean = false;
+
+  public nodeRules?: NodeRule[] = [];
 
   /* This is a list of potential properties that are used to filter the data. */
   public filterProperties?: string[];

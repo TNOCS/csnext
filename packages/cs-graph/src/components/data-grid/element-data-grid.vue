@@ -953,6 +953,7 @@ export default class ElementDataGrid extends WidgetBase {
   public groupOptions?: PropertyType[] | null = null;
   public groupKey?: null | string = null;
   public inverseSort?: boolean = false;
+  public localPreset?: FilterGraphElement;
   public focus = '';
   public search: string = '';
   public selectedTree?: any = [];
@@ -2101,6 +2102,19 @@ export default class ElementDataGrid extends WidgetBase {
       }
     };
 
+    if (this.source && this.options.nodeRules) {
+      
+      this.localPreset = { classId: 'graph_preset', properties: { graphLayout: { nodeRules: this.options.nodeRules }}} as FilterGraphElement;
+      this.source.applyGraphPresetRules(this.localPreset as FilterGraphElement, this.options.nodeRules);      
+      this.items = this.localPreset._visibleNodes;
+      filterItems();
+      this.update();
+      this.$forceUpdate();
+      return;
+
+
+    }
+
     if (this.source && this.options?.preset && this.options.syncMode === 'follow') {
       {
         const preset = this.source.getGraphPreset(this.options.preset);
@@ -2412,7 +2426,12 @@ export default class ElementDataGrid extends WidgetBase {
       data: {
         title: 'Element data grid',
       },
-      options: { ...(this.widget.options || {}), hideHeader: true } as DataGridOptions,
+      options: { ...(this.widget.options || {}), ...{ nodeRules: [
+        {
+          type: 'ELEMENT',
+          elementIds: (this.items) ? this.items.map((i) => i.id) : []
+        }
+      ]}, hideHeader: true } as DataGridOptions,
     };
     this.source.addSlideConfig(w);
   }

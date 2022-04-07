@@ -130,6 +130,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     public hideSelf?: boolean;
     public id?: string;    
     public elementId?: string;
+    public elementIds?: string[];
     public disabled?: boolean;
     public _featureType?: FeatureType;
     public traversal?: boolean;

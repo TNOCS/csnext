@@ -763,7 +763,18 @@ export class DocDatasource extends GraphDatasource {
             }          
             break;
         case 'ELEMENT':
-          if (rule.elementId && !rule.disabled) {
+          if (rule.disabled) { break;}
+          if (rule.elementIds) {
+            for (const elid of rule.elementIds) {
+              const el = this.getElement(elid);
+              if (el) {
+                this.addVisibleElement(preset, el);
+                if (rule.outgoingRules) {
+                  this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                }
+              }              
+            }
+          } else if (rule.elementId) {
             rule._element = this.getElement(rule.elementId);
             if (rule._element) {
               if (!rule.hideSelf && !preset!._visibleNodes!.includes(rule._element)) {
