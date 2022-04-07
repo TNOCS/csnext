@@ -1,7 +1,7 @@
 <template>
-  <v-menu v-if="source" v-model="showContextMenu" :position-x="x" :position-y="y" absolute :close-on-content-click="true" open-on-hover offset-y>
+  <v-menu v-if="source" v-model="showContextMenu" :position-x="x" :position-y="y" absolute :close-on-content-click="false" open-on-hover offset-y>
     <v-list>
-      <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="item.action">
+      <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="callAction(item)">
         <template v-slot:appendIcon>
           <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
           <span v-else></span>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Emit, Prop } from 'vue-property-decorator';
 import { IMenu } from '@csnext/cs-core';
-import { GraphElement } from '@csnext/cs-data';
+import { GraphElement, FilterGraphElement } from '@csnext/cs-data';
 import Vue from 'vue';
 import { DocDatasource } from '../datasources/doc-datasource';
 
@@ -59,6 +59,12 @@ export default class ElementContextMenu extends Vue {
 
   public contextMenuitems: IMenu[] = [];
 
+  private async callAction(i: IMenu) {
+    if (i.action && typeof i.action === 'function') {
+      await i.action(i);
+    }
+  }
+
   public initMenu() {
     if (!this.source) { return; }
     this.contextMenuitems.push({
@@ -69,6 +75,29 @@ export default class ElementContextMenu extends Vue {
         const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
         await this.source.duplicateNode(this.element, name);
         this.listUpdated();
+      },
+    });
+    this.contextMenuitems.push({
+      title: 'add to visualisation',
+      icon: 'mdi-playlist-plus',
+      action: async (i: IMenu) => {
+        i.items = [];
+        // this.showContextMenu = false;
+        let presets = this.source.getClassElements('graph_preset', true);
+        presets.forEach(p => {
+          i.items!.push({
+            title: p.properties?.name,
+            icon: p._featureType?.icon,
+            action: async () => {
+              FilterGraphElement.addElementRule(p as FilterGraphElement, this.element);
+              // alert(`add to ${p.properties.name}`)
+            }
+          });
+        })
+        console.log(presets);
+        // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
+        // await this.source.duplicateNode(this.element, name);
+        // this.listUpdated();
       },
     });
     this.contextMenuitems.push({
