@@ -502,6 +502,7 @@ export class DocDatasource extends GraphDatasource {
   public getGraphPreset(id: string): FilterGraphElement | undefined {
     const preset = this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
     if (preset) {
+      preset.classId = 'graph_preset';
       if (!preset.properties) {
         preset.properties = {};
       }
