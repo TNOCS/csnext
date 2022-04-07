@@ -81,6 +81,22 @@ export class GraphFilterProperties extends BaseElementProperties {
       super();    
       this._graphSource = graphSource;
     }
+
+    public static addElementRule(preset: FilterGraphElement, element?: GraphElement) {
+      if (!preset?.properties?.graphLayout) {
+        return;
+      }
+  
+      if (!preset.properties.graphLayout.nodeRules) {
+        preset.properties.graphLayout.nodeRules = [];
+      }
+      preset.properties.graphLayout.nodeRules.unshift({
+        type: "ELEMENT",
+        _editMode: true,
+        elementId: element?.id
+      });
+  
+    }
   
   }
 
