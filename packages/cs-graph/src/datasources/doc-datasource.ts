@@ -30,7 +30,6 @@ import { EmptyDocumentImport } from '../plugins/empty-document-import';
 import {
   IImportPlugin,
   IDocumentViewerPlugin,
-  GraphCrossFilter,
   DocUtils,
   GraphShapeDefinitions,
   ServerStorage,
@@ -41,8 +40,6 @@ import Vue, { Component } from 'vue';
 import { ISearchPlugin } from '../plugins/search-plugin';
 import { ITool } from '../classes/tool';
 import { IActionPlugin } from '../plugins/action-plugin';
-
-
 
 export class DocDatasource extends GraphDatasource {
   public id = 'doc';
@@ -71,7 +68,6 @@ export class DocDatasource extends GraphDatasource {
 
   public editor?: Editor | null = null;
   public elementHistory?: string[];
-  public crossFilter?: GraphCrossFilter;
   public activeUser?: GraphElement;
   public bookmarks: string[] = [];
   public filters: FilterGraphElement[] = [];
@@ -146,11 +142,6 @@ export class DocDatasource extends GraphDatasource {
     this.activeElement = undefined;
     return Promise.resolve(true);
   }
-
-  public initCrossFilter() {
-    this.crossFilter = new GraphCrossFilter(this);
-  }
-
   
   public addSearchPlugin(plugin: ISearchPlugin) {
     const existing = this.searchPlugins.findIndex((t) => t.id === plugin.id);

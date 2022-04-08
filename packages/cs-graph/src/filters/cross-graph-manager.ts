@@ -15,6 +15,7 @@ import {
 } from "@csnext/cs-data";
 import { DragLayout, DragLayoutOptions } from "@csnext/cs-drag-grid";
 import { DataGridOptions, DocDatasource, GridView } from "../";
+import NetworkGraph from "../components/graph/graph.vue";
 import { CsTimeline, TimelineWidgetOptions } from "@csnext/cs-timeline";
 import {
   ChartOptions,
@@ -33,8 +34,8 @@ import {
 import { CrossGraphOptions } from "./cross-graph-options";
 import { GraphCrossFilter } from "./graph-cross-filter";
 import ElementDataGrid from "../components/data-grid/element-data-grid.vue";
-import GraphMap from "../components/graph/graph-map.vue";
-import { GraphMapOptions } from "../components/graph/graph-map-options";
+// import GraphMap from "../components/graph/graph-map.vue";
+// import { GraphMapOptions } from "../components/graph/graph-map-options";
 
 export class CrossGraphManager extends DashboardManagerBase {
   public static id = "cross-graph-manager";
@@ -47,7 +48,9 @@ export class CrossGraphManager extends DashboardManagerBase {
   public featureType?: FeatureType;
   // public chartManagerId = "chart-dashboard-manager"
 
-  public start(dashboard: IDashboard) {
+  public start(dashboard: IDashboard) { 
+    console.log('start manager')   ;
+    console.log(this);
     this.dashboard = dashboard;
     this.initChartTypes();
     this.initDashboard();
@@ -99,6 +102,7 @@ export class CrossGraphManager extends DashboardManagerBase {
       },
     } as IDashboardOptions;
   }
+  
 
   public initWidgets() {
     let dragOptions = new DragLayoutOptions(({
@@ -114,13 +118,16 @@ export class CrossGraphManager extends DashboardManagerBase {
     } as unknown) as DragLayoutOptions);
     this.dashboard.widgets = [
       {
-        component: GraphMap,
+        component: NetworkGraph,
         title: "map",
         id: "graph-map",
         options: {
           area: "left",
+          //@ts-ignore
+          defaultView: "map",
           flat: true,
           class: "data-map-container",
+          mapOptions: {
           token: this.dashboard.data?.mapboxToken,            
           mbOptions: {
             style: "mapbox://styles/mapbox/satellite-streets-v10",
@@ -146,7 +153,8 @@ export class CrossGraphManager extends DashboardManagerBase {
             this.dashboard.data?.peliasToken,
           },
           filter: this.dashboard.data?.filter,
-        } as GraphMapOptions,
+        }
+        }
       },
 
       {
@@ -161,7 +169,8 @@ export class CrossGraphManager extends DashboardManagerBase {
           hideViewSwitch: true,
           syncMode: "follow",
           canGraph: false,
-          filter: this.dashboard.data?.filter,
+          //@ts-ignore
+          filter: this.dashboard.data2?.filter,
           canAdd: false,
           hideFilter: true,
           selectedHeaders: [
@@ -171,21 +180,21 @@ export class CrossGraphManager extends DashboardManagerBase {
           ],
         } as DataGridOptions,
       },
-      {
-        component: CsTimeline,
-        id: "timeline",
-        datasource: this.dashboard.datasource,
-        options: {
-          logSource: "calendar",
-          // class: 'widget-full-height',
-          showToolbar: false,
-          showFocusTime: true,
-          showGroupSelectionButton: true,
-          toggleSmallButton: true,
-          showFitButton: true,
-          timelineOptions: { height: "100%", locale: "nl" },
-        } as TimelineWidgetOptions,
-      },
+      // {
+      //   component: CsTimeline,
+      //   id: "timeline",
+      //   datasource: this.dashboard.datasource,
+      //   options: {
+      //     logSource: "calendar",
+      //     // class: 'widget-full-height',
+      //     showToolbar: false,
+      //     showFocusTime: true,
+      //     showGroupSelectionButton: true,
+      //     toggleSmallButton: true,
+      //     showFitButton: true,
+      //     timelineOptions: { height: "100%", locale: "nl" },
+      //   } as TimelineWidgetOptions,
+      // },
 
       {
         id: "views",
@@ -500,7 +509,7 @@ export class CrossGraphManager extends DashboardManagerBase {
   }
 
   public get crossDashboardOptions() {
-    return this.dashboard.data as CrossGraphOptions;
+    return (this.dashboard as any).data2 as CrossGraphOptions;
   }
 
   private getTitle(key: string): string | undefined {
@@ -621,13 +630,15 @@ export class CrossGraphManager extends DashboardManagerBase {
   }
 
   public initFilter() {
-    if (this.source && this.dashboard?.data?.filter) {
+    // @ts-ignore:next-line
+    if (this.source && this.dashboard?.data2?.filter) {
       // let filter = this.source.getGraphPreset(
       //   this.dashboard.data.filter
       // ) as GraphCrossFilter;
       // if (filter === undefined) {
         this.filter = new GraphCrossFilter(this.source);
-        this.filter.id = this.dashboard.data.filter;
+        // @ts-ignore:next-line
+        this.filter.id = this.dashboard.data2.filter;
         this.filter.properties = {
           editor_mode: 'VIEW',
           graphLayout: {            
@@ -645,6 +656,7 @@ export class CrossGraphManager extends DashboardManagerBase {
     }
   }
   public contentLoaded(source: DocDatasource) {
+    
     this.source = source;    
     this.initFilter();
     this.initData();
