@@ -151,22 +151,26 @@ export class CrossFilterUtils {
             return d.properties[key];
         }
 
-        if (d.hasOwnProperty('_flat') && d._flat.hasOwnProperty(key)) {
-          return d._flat[key];
-      }
+        if (d.hasOwnProperty('_flat'))
+        {
+          if (d._flat.hasOwnProperty(key)) {
+            if (d._flat.hasOwnProperty(`${key}:element`)) {
+              return d._flat[key]+'|'+d._flat[`${key}:element`].id;	
+            }
+            else {
+              return d._flat[key];
+            }
+          }
 
-        // if (!d.hasOwnProperty(key)) {
-        //   return 'test';
-        // }
-        if (c.enums && c.enums.length > 0) {
-          return d[key];
-          // let index = c.enums.indexOf(d[c.key]);
-          // if (index >= 0) return index; return c.enums.length;
-        }
-        if (d.hasOwnProperty(key)) {
-          return d[key];
-        }
-        return 'unknown';
+        } 
+
+      if (c.enums && c.enums.length > 0) {
+        return d[key];
       }
+      if (d.hasOwnProperty(key)) {
+        return d[key];
+      }
+      return 'unknown';
+    }
 
 }

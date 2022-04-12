@@ -11,5 +11,8 @@ export { ScatterPlot } from './components/charts/scatterplot';
 export { Stat } from './components/charts/stat';
 export { TimeChart } from './components/charts/timechart';
 export { TimeRange } from './time-range';
-
+export { BarChart } from './components/charts/barchart';
+export { TableChart } from './components/charts/tablechart';
+export { SearchChart } from './components/charts/searchchart';
+export { TagChart } from './components/charts/tagchart';
 export { CrossChart } from './components/chart/chart';

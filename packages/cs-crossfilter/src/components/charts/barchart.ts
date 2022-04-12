@@ -5,10 +5,10 @@ import * as d3 from 'd3';
 import { IChartType, ChartOptions, CrossFilterUtils, CrossDashboardManager, CrossFilterDatasource } from './../..';
 import { GraphCrossFilter } from '../../../cross-filter';
 
-export class TimeChart implements IChartType {
-  id = 'time';
-  title = 'Time';
-  static type = 'time';
+export class BarChart implements IChartType {
+  id = 'bar';
+  title = 'bar';
+  static type = 'bar';
 
   verify(widget: IWidget, option: ChartOptions) {
     return true;
@@ -56,28 +56,12 @@ export class TimeChart implements IChartType {
       let max = 0;
 
       options._dimension = filter.ndx.dimension((d: any) => {
+        // let value = d.properties; // CrossFilterUtils.getValue(options, d);
+
+        // let r = [CrossFilterUtils.getValue(options, d, options.keyX ), 1]; // CrossFilterUtils.getValue(options, d, options.keyY)];
+        // console.log(r);
         
-        switch (options.timeAggregation) {
-          case 'hour':
-            return d._flat?.hourStart;
-          case 'day':
-            return d._flat?.dayStart;
-          case 'week':
-            return d._flat?.weekStart;
-          case 'month':
-            return d._flat?.monthStart;
-          // case 'quarter': return value.quarterStart;
-          case 'year':
-            return d._flat?.yearStart;
-          default:
-            return undefined;
-            // if (
-            //   options.timeAggregation &&
-            //   value.hasOwnProperty(options.timeAggregation)
-            // )
-            //   return d[options.timeAggregation];
-        }
-        // return [+value.time, CrossFilterUtils.getValue(options, d)];
+        return d._flat?.dayStart; // CrossFilterUtils.getValue(options, d, options.keyX );
       });
 
 
@@ -156,8 +140,8 @@ export class TimeChart implements IChartType {
       );
 
       let el = dc
-      .barChart('#' + options._elementId)
-      // .lineChart('#' + options._elementId)      
+      // .barChart('#' + options._elementId)
+      .barChart('#' + options._elementId)      
       .colors(['#00890c'])
       .brushOn(options.disableFilter === false);
 
@@ -169,66 +153,75 @@ export class TimeChart implements IChartType {
         });
       }
 
-      switch (options.timeAggregation) {
-        case 'hour':
-          el.xUnits(d3.timeHours).x(
-            d3
-              .scaleTime()
-              .domain([
-                filter.timeRange.start,
-                filter.timeRange.end
-              ])
-          );
-          break;
-        case 'day':
-          el.xUnits(d3.timeDays).x(
-            d3
-              .scaleTime()
-              .domain([
-                filter.timeRange.start,
-                filter.timeRange.end
-              ])
-          );
-          break;
-        case 'week':
-          el.xUnits(d3.timeWeeks).x(
-            d3
-              .scaleTime()
-              .domain([
-                filter.timeRange.start,
-                filter.timeRange.end
-              ])
-          );
-          break;
-        case 'month':
-          el.xUnits(d3.timeMonths).x(
-            d3
-              .scaleTime()
-              .domain([
-                filter.timeRange.start,
-                filter.timeRange.end
-              ])
-          );
-          break;
-        //   case 'quarter':
-        //     el.round(d3.time.quarters.round)
-        //       .xUnits(d3.time.quarters)
-        //       .x(d3.scaleTime().domain([options._view.timeRange.start, options._view.timeRange.end]))
-        //     break;
-        case 'year':
-          el.xUnits(d3.timeYears).x(
-            d3
-              .scaleTime()
-              .domain([
-                filter.timeRange.start,
-                filter.timeRange.end
-              ])
-          );
-          break;
-        default:
-          el.xUnits(d3.scaleLinear).x(d3.scaleLinear().domain([0, 100]));
-      }
+      // switch (options.timeAggregation) {
+      //   case 'hour':
+      //     el.xUnits(d3.timeHours).x(
+      //       d3
+      //         .scaleTime()
+      //         .domain([
+      //           filter.timeRange.start,
+      //           filter.timeRange.end
+      //         ])
+      //     );
+      //     break;
+      //   case 'day':
+      //     el.xUnits(d3.timeDays).x(
+      //       d3
+      //         .scaleTime()
+      //         .domain([
+      //           filter.timeRange.start,
+      //           filter.timeRange.end
+      //         ])
+      //     );
+      //     break;
+      //   case 'week':
+      //     el.xUnits(d3.timeWeeks).x(
+      //       d3
+      //         .scaleTime()
+      //         .domain([
+      //           filter.timeRange.start,
+      //           filter.timeRange.end
+      //         ])
+      //     );
+      //     break;
+      //   case 'month':
+      //     el.xUnits(d3.timeMonths).x(
+      //       d3
+      //         .scaleTime()
+      //         .domain([
+      //           filter.timeRange.start,
+      //           filter.timeRange.end
+      //         ])
+      //     );
+      //     break;
+      //   //   case 'quarter':
+      //   //     el.round(d3.time.quarters.round)
+      //   //       .xUnits(d3.time.quarters)
+      //   //       .x(d3.scaleTime().domain([options._view.timeRange.start, options._view.timeRange.end]))
+      //   //     break;
+      //   case 'year':
+      //     el.xUnits(d3.timeYears).x(
+      //       d3
+      //         .scaleTime()
+      //         .domain([
+      //           filter.timeRange.start,
+      //           filter.timeRange.end
+      //         ])
+      //     );
+      //     break;
+      //   default:
+      //     el.xUnits(d3.scaleLinear).x(d3.scaleLinear().domain([0, 100]));
+      // }
 
+      // el.xUnits(d3.scaleLinear).x(d3.scaleLinear().domain([10, 20]));
+      el.xUnits(d3.timeDays).x(
+        d3
+          .scaleTime()
+          .domain([
+            filter.timeRange.start,
+            filter.timeRange.end
+          ])
+      );
 
       // switch (options.lineCurve) {
       //   case 'curve':

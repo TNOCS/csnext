@@ -2,8 +2,6 @@ import Component from 'vue-class-component';
 import { WidgetBase } from '@csnext/cs-client';
 import './chart.css';
 import { ChartOptions, CrossFilterDatasource } from './../../';
-import Vue from 'vue';
-import crossfilter from 'crossfilter2';
 import { GraphCrossFilter } from '../../../cross-filter';
 
 @Component({
@@ -19,12 +17,22 @@ export class CrossChart extends WidgetBase {
   public filter!: GraphCrossFilter;
   
   public clear() {
-    Vue.nextTick(()=> {      
-      // this.options?._dimension?.groupAll();
-      this.options?._chart?.filterAll();      
-      this.options?._chart?.redraw();
+    if (this.widget?.data?.filter) {
+      this.widget.data.filter.resetAllFilters();
+    }
+    // Vue.nextTick(()=> {      
+    //   // this.options?._dimension?.groupAll();
+    //   this.options?._chart?.filterAll();      
+    //   this.options?._chart?.redraw();
       
-    })        
+    // })        
+  }
+
+  public togglemap() {
+    if (!this.options) { return; }
+
+    this.options.showOnMap = !this.options.showOnMap;
+    this.updateChart();
   }
 
   public updateChart() { 

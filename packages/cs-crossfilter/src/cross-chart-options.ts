@@ -22,6 +22,8 @@ export class ChartOptions
   public secondaryKey?: string;
   public enums?: string[];
   public type?: string;
+  public featureType?: string;
+  public showOnMap?: boolean; 
   public chartId?: string;
   public x?: number;
   public y?: number;

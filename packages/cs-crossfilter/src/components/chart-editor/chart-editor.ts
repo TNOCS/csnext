@@ -73,8 +73,20 @@ export class ChartEditor extends WidgetBase {
             title: 'TYPE',
             _key: 'type',
             type: 'selection',
+            icon: 'mdi-chart-bar',
             readonly: false,
             options: ['histogram', 'rowchart', 'scatter', 'heatmap', 'stat', 'time']             
+          },
+          {
+            title: 'FEATURETYPE',
+            _key: 'featureType',
+            type: 'string'                        
+          },
+          {
+            title: 'SHOW_ON_MAP',
+            _key: 'showOnMap',
+            icon: 'mdi-map',
+            type: 'checkbox'                        
           },
           {
             title: 'TITLE',

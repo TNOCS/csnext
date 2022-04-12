@@ -56,7 +56,7 @@ export class RowChart implements IChartType {
 
       options._group = options._dimension.group()
       .reduce(
-        (p: any, v: any) => {
+        (p: any, v: any) => {          
           p.count+=1;          
           p.total += 1; //CrossFilterUtils.getValue(options.key!, options, v); //v[options.key!];                    
           return p;
@@ -68,6 +68,7 @@ export class RowChart implements IChartType {
         },
         () => {
           return {
+            kid: null, 
             count: 0,
             total: 0
           };
@@ -83,6 +84,15 @@ export class RowChart implements IChartType {
         .elasticX(true)
         // .ordering(pluck(options.key!))
         .group(options._group)
+        .label((d) => {
+          try {
+            let t = (d.key.toString().indexOf('|') !== -1) ? d.key.toString().split('|')[0] : d.key;          
+            return t;
+          } catch (e) {
+            console.log('error');
+          }
+        })
+
         .valueAccessor( d=> {          
           return d.value.total; })    
         .on('filtered', () => {
