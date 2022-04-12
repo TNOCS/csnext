@@ -30,7 +30,7 @@ export class FeatureType {
     public notification?: string;
     public array?: boolean;
     public isEdge?: boolean;
-    public _entities?: TextEntity[];
+    
     // public featureType?: string;
     // public _featureType?: FeatureType;
     // public patterns?: ObservationPattern[];

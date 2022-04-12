@@ -1,4 +1,5 @@
 import { FeatureType, GraphDatasource, GraphFilter } from '../..';
+import { TimeRange } from '../types/time-range';
 import { BaseElementProperties, GraphElement } from './graph-element';
 
 
@@ -53,6 +54,10 @@ export class GraphLayout {
   elementsEnabled?: boolean;
   pinnedFeatureTypes?: string[];
   visibleTags?: string[];  
+
+  mapStyle?: string;
+  locationInfo?: string;
+
   nodes?: { [id: string] : IGraphNodeDefinition};
 }
 
@@ -73,6 +78,7 @@ export class GraphFilterProperties extends BaseElementProperties {
     public static RULES_CHANGED = 'rules-changed';
     public _visibleNodes: GraphElement[] = [];
     public _selectedElements: string[] = [];
+    public _timeRange?: TimeRange;
     
     public _stats?: {[key: string]: GraphFeatureTypeStat};
     public _tags?: {[key: string]: TagStat}
