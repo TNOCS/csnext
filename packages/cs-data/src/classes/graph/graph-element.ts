@@ -1,5 +1,5 @@
 import { generateHash } from '@csnext/cs-core';
-import { FeatureType, GraphDatasource, LinkInfo } from '../..';
+import { FeatureType, GraphDatasource, LinkInfo, MetaEntity } from '../..';
 import { StringUtils } from '../../utils/string-utils';
 
 export class BaseElementProperties {
