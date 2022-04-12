@@ -1,6 +1,7 @@
 import { PropertyType, PropertyValueType } from '@csnext/cs-data';
 import Vue, { VNode, CreateElement } from 'vue';
 import { NodeChip } from '..';
+import { MetaEntityChip } from './data/data-sections/node-link';
 
 export default Vue.extend({
   name: 'prop-value',
@@ -81,6 +82,26 @@ export default Vue.extend({
             return createElement('span', chips);
           } 
           return createElement('span', '');
+
+        case PropertyValueType.metalist:
+            if (value && Array.isArray(value)) {
+              const chips : VNode[] = [];              
+              for (const meta of value) {
+                chips.push(
+                  createElement(MetaEntityChip, {
+                    props: {
+                      node: this.element,
+                      source: this.source,
+                      entity: meta
+                    },
+                    class: 'element-prop-value',
+                  })
+                );
+                // chips.push(createElement('v-chip', meta.text));              
+              }
+              return createElement('span', chips);
+            } 
+            return createElement('span', '');
           
         case PropertyValueType.wkt:
           return createElement('span', '[location]');
@@ -98,7 +119,7 @@ export default Vue.extend({
                   node: link,
                   source: this.source,
                 },
-                class: 'element-prop-value',
+                class: 'element-prop-value mr-2',
               })
             );
             // <span class="link-title" @click.stop="activate()" v-on="on">{{node.title}}</span>
