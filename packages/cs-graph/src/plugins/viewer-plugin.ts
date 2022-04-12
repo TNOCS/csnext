@@ -8,7 +8,7 @@ export interface IDocumentViewerPlugin {
     description: string;
     options: any;
     check?(element: GraphElement): boolean;
-    call(element: GraphElement, doc: GraphElement, source: DocDatasource);
+    call(element: GraphElement, doc: GraphElement | undefined, source: DocDatasource);
 }
 
 

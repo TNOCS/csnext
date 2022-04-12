@@ -65,6 +65,27 @@ export default class ElementContextMenu extends Vue {
     }
   }
 
+  
+  public async linkToTarget(target: GraphElement, type: string) {
+    if (this.source && target.id && this.element.id)
+    {
+      const edge = {
+        fromId: this.element.id,
+        toId: target.id,
+        classId: 'LINKED_TO',
+        properties: {
+          "relation_type": type
+        }
+      } as GraphElement
+      try {
+        await this.source.addNewEdge(edge);   
+      } catch (e) {
+        console.error(e);
+      }
+      
+    }
+  }
+
   public initMenu() {
     if (!this.source) { return; }
     this.contextMenuitems.push({
@@ -95,6 +116,31 @@ export default class ElementContextMenu extends Vue {
           });
         })
         console.log(presets);
+        // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
+        // await this.source.duplicateNode(this.element, name);
+        // this.listUpdated();
+      },
+    });
+    this.contextMenuitems.push({
+      title: 'link to',
+      icon: 'mdi-playlist-plus',
+      action: async (i: IMenu) => {
+        i.items = [];
+        // this.showContextMenu = false;
+        let targets = this.source.getClassElements('indicator', true);
+        targets.forEach(p => {
+          i.items!.push({
+            title: p.properties?.name,
+            icon: p._featureType?.icon,
+            action: async () => {
+              this.linkToTarget(p, 'supports');
+              
+              // FilterGraphElement.addElementRule(p as FilterGraphElement, this.element);
+              // alert(`add to ${p.properties.name}`)
+            }
+          });
+        })
+        console.log(targets);
         // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
         // await this.source.duplicateNode(this.element, name);
         // this.listUpdated();

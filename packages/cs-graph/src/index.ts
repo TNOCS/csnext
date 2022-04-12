@@ -13,7 +13,6 @@ export * from './plugins/search-plugin';
 export * from './classes/';
 export * from './filters/graph-cross-filter';
 export * from './filters/cross-graph-manager';
-export * from './components/graph/graph-map-options';
 export * from './filters/cross-graph-options';
 export * from './components/data-grid/cards/element-card-manager';
 export * from './utils/doc-utils';

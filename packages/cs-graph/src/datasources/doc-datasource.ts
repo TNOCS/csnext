@@ -217,6 +217,12 @@ export class DocDatasource extends GraphDatasource {
 
   }
 
+  public async importNodesMap(nodes: {[id: string]: GraphElement}) : Promise<GraphElement[] | undefined> {
+    const importedNodes = await this.saveMultiple(Object.values(nodes));    
+    return Promise.resolve(importedNodes);
+
+  }
+
   public async importNode(node: GraphElement, notify = true) : Promise<GraphElement> {
     
     const element = await this.saveNode(node, undefined, notify);
@@ -849,6 +855,9 @@ export class DocDatasource extends GraphDatasource {
     }
     if (!preset!._visibleNodes!.includes(e)) {
       preset!._visibleNodes!.push(e);
+
+      // preset
+
       if (!preset!._stats.hasOwnProperty(e.classId)) {
         preset._stats[e.classId] = {
           _featureType: e._featureType,
@@ -953,7 +962,7 @@ export class DocDatasource extends GraphDatasource {
     this.documentPlugins = [];
   }
 
-  public openViewer(element: GraphElement, document: GraphElement) {
+  public openViewer(element: GraphElement, document?: GraphElement) {
     if (!this.viewerPlugins) { return; }
     if (element.properties?.format) {
       const viewer = this.viewerPlugins.find((v) => v.formats && v.formats.includes(element.properties?.format));

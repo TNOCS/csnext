@@ -7,11 +7,11 @@
     
   >
   </v-img>
-  <v-btn @click.stop="openDetails()" class="media-details" fab elevation="0" x-small><v-icon>mdi-image</v-icon></v-btn>
+  <v-btn @click.stop="openViewer()" class="media-details" fab elevation="0" x-small><v-icon>mdi-image</v-icon></v-btn>
   </div>
   <div v-else class="media-element">
   
-    <v-btn @click.stop="openDetails()" class="media-details" fab elevation="0" x-small><v-icon>mdi-video</v-icon></v-btn>
+    <v-btn @click.stop="openViewer()" class="media-details" fab elevation="0" x-small><v-icon>mdi-video</v-icon></v-btn>
   
   </div>
     
@@ -55,9 +55,14 @@ export default class MediaElement extends Vue {
   @Prop()
   public gridOptions!: DataGridGridOptions;
 
+  public openViewer() {
+    if (!this.source) {}
+    this.source.openViewer(this.element);    
+  }
+
   public openDetails() {
     if (!this.source) {}
-    this.source.selectElement(this.element, true);    
+    this.source.openElement(this.element, true);    
   }
 
   public getType(): 'image' | 'video' {

@@ -52,6 +52,19 @@
         <v-icon>mdi-scatter-plot</v-icon>
       </v-btn>
 
+      <v-btn icon @click="openContextMenu()">
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+
+      <element-context-menu
+      @listUpdated="updateEntities(true)"
+      @itemUpdated="updateEntities(true)"
+      :showContextMenu="showContextMenu"
+  
+      :source="source"
+      :element="activeElement"
+    ></element-context-menu>
+
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
           <v-tabs-slider></v-tabs-slider>
@@ -278,6 +291,13 @@ export default class ElementInfo extends WidgetBase {
     if (this.widget.content) {
       return this.widget.content as DocDatasource;
     }
+  }
+
+  public showContextMenu = false;
+
+  public openContextMenu(e) {
+    this.showContextMenu = true;
+
   }
 
   public setLegend(p: any) {

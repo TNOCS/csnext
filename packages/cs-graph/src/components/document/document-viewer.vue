@@ -75,6 +75,9 @@
         </template>
         <v-spacer></v-spacer>
         <v-switch v-model="currentDocument.properties.hide_unknowns"> </v-switch>
+        <v-btn @click="startMenu = !startMenu" icon>
+          <v-icon>mdi-import</v-icon>
+        </v-btn>
         <v-btn @click="save()" icon>
           <v-icon>mdi-content-save</v-icon>
         </v-btn>

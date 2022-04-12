@@ -2125,12 +2125,19 @@ export default class ElementDataGrid extends WidgetBase {
           this.$forceUpdate();
         }
 
-        // this.busManager.subscribe(this.source.events, IGraphFilter.GRAPH_FILTER, (a: string, f: FilterGraphElement) => {
-        //   if (this.options.filter && f.id === this.options.filter) {
-        //     Vue.set(this, 'rowData', f._visibleNodes);
-        //     // this.items = f._visibleNodes;
-        //   }
-        // });
+        this.busManager.subscribe(this.source.events, IGraphFilter.GRAPH_FILTER, (a: string, f: FilterGraphElement) => {
+          if (this.options.preset && f.id === this.options.preset) {
+            // this.updateEntities();
+            // this.items = f._visibleNodes;
+            //         filterItems();
+            //         this.update();
+            //         this.$forceUpdate();
+            // Vue.set(this, 'rowData', f._visibleNodes);
+            // this.items = f._visibleNodes;
+            // this.$forceUpdate();
+            // this.items = f._visibleNodes;
+          }
+        });
         return;
       }
     }

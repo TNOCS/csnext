@@ -361,34 +361,34 @@ export default class GraphMap extends WidgetBase {
       return;
     }
 
-    if (!this.options?.preset && this.source.activeDocument) {
-      this.options.preset = this.source.activeDocument as unknown as GraphPreset;
-    }
+    // if (!this.options?.preset && this.source.activeDocument) {
+    //   this.options.preset = this.source.activeDocument as unknown as GraphPreset;
+    // }
 
-    if (!this.options.preset) {
-      return;
-    }
+    // if (!this.options.preset) {
+    //   return;
+    // }
 
-    if (typeof this.options.preset === 'string') {
-      this.activePreset = this.source.getGraphPreset(this.options.preset);
-      if (!this.activePreset) {
-        this.activePreset = new GraphPreset(this.source);
-        this.activePreset.id = this.options.preset;
-      }
-    } else {
-      this.activePreset = {
-        ...new GraphPreset(this.source),
-        ...this.options.preset,
-      };
-    }
+    // if (typeof this.options.preset === 'string') {
+    //   this.activePreset = this.source.getGraphPreset(this.options.preset);
+    //   if (!this.activePreset) {
+    //     this.activePreset = new GraphPreset(this.source);
+    //     this.activePreset.id = this.options.preset;
+    //   }
+    // } else {
+    //   this.activePreset = {
+    //     ...new GraphPreset(this.source),
+    //     ...this.options.preset,
+    //   };
+    // }
 
-    if (this.activePreset && !this.activePreset._stats) {
-      this.activePreset._stats = {};
-    }    
+    // if (this.activePreset && !this.activePreset._stats) {
+    //   this.activePreset._stats = {};
+    // }    
 
-    if (!this.activePreset.properties!.hasOwnProperty('editor_mode')) {
-        this.activePreset.properties!['editor_mode'] = 'EDIT';
-    }
+    // if (!this.activePreset.properties!.hasOwnProperty('editor_mode')) {
+    //     this.activePreset.properties!['editor_mode'] = 'EDIT';
+    // }
   }
 
   private getRouteOptions(): mapboxgl.MapboxOptions {

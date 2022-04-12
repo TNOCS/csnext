@@ -51,6 +51,8 @@ import { GraphElement } from '@csnext/cs-data';
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 import { DocDatasource } from '../../..';
+import distanceToNow from 'date-fns/formatDistanceToNow';
+import format from 'date-fns/format';
 
 @Component({
   name: 'default-element-card',
@@ -62,6 +64,28 @@ export default class DefaultElementCard extends Vue {
 
   @Prop({ default: null })
   public element!: GraphElement | null;
+
+   public getImage() {
+    if (this.element?.properties?.image) {
+      return this.element.properties.image;
+    }   
+  }
+
+   public distanceDateString() {
+    if (this.element?.properties?.point_in_time) {
+      return distanceToNow(this.element.properties.point_in_time);
+    } else {
+      return '';
+    }
+  }
+
+  public dateString() {
+    if (this.element?.properties?.point_in_time) {
+      return format(this.element.properties.point_in_time, 'dd/MM/yyyy');
+    } else {
+      return '';
+    }
+  }
 
   public getCardBackgroundImage() {
     if (this.element?._featureType?.attributes?.cardImageProperty && this.element.properties && this.element.properties.hasOwnProperty(this.element._featureType.attributes.cardImageProperty)) {
