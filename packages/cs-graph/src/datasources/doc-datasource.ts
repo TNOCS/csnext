@@ -1969,6 +1969,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public startEditElement(element: GraphElement) {    
+    if (!element?.id) { return;}
     this.activeElement = element;
     $cs.updateRouteQuery({ nodedetails: element.id, eitab: 'tab-EDITOR' });
     this.bus.publish('element', 'edit-element', element);

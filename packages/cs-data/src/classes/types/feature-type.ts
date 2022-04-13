@@ -30,7 +30,6 @@ export class FeatureType {
     public notification?: string;
     public array?: boolean;
     public isEdge?: boolean;
-    
     // public featureType?: string;
     // public _featureType?: FeatureType;
     // public patterns?: ObservationPattern[];
@@ -61,6 +60,57 @@ export class FeatureType {
     public style?: any;    
     public _originalFeatureType?: FeatureType;
     public _inheritedTypes?: string[];
+
+
+    public static checkPropertyIcon(prop: PropertyType, value?: any) {
+        if (!prop._icon) {
+          if (prop.icon) {
+            prop._icon = prop.icon;
+          } else {
+            switch (prop.type) {
+              case PropertyValueType.datetime:
+                prop._icon = 'mdi-calendar-range';
+                break;
+              case PropertyValueType.url:
+                prop._icon = 'mdi-open-in-new';
+                break;
+              case PropertyValueType.string:
+                prop._icon = 'mdi-information';
+                break;
+              case PropertyValueType.image:
+                prop._icon = 'mdi-image';
+                break;
+              case PropertyValueType.element:
+                prop._icon = 'mdi-link';
+                break;
+              case PropertyValueType.options:
+                prop._icon = 'mdi-filter-variant';
+                break;
+              case PropertyValueType.wkt:
+                prop._icon = 'mdi-crosshairs-gps';
+                break;
+              case PropertyValueType.boolean:
+                prop._icon = 'mdi-checkbox-marked-outline';
+                break;
+              case PropertyValueType.number:
+                prop._icon = 'mdi-counter';
+                break;
+              case PropertyValueType.tags:
+                prop._icon = 'mdi-tag';
+                break;
+              case PropertyValueType.epoch:
+                prop._icon = 'mdi-calendar-range';
+                break;
+              case PropertyValueType.relation:
+                prop._icon = 'mdi-link';
+                break;
+    
+              default:
+                prop._icon = 'mdi-information';
+            }
+          }
+        }
+      }
 
     public static initFeatureTypes(types: FeatureTypes) {
         for (const type in types) {

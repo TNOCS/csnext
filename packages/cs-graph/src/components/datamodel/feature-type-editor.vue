@@ -297,13 +297,13 @@ export default class FeatureTypeEditor extends WidgetBase {
           title: 'ICON',
           _key: 'icon',
           type: 'string',
-          icon: 'mdi-image'
+          icon: 'mdi-image',
         },
         {
           title: 'COLOR',
           _key: 'color',
           type: 'colorpicker',
-          icon: 'mdi-format-color-fill'
+          icon: 'mdi-format-color-fill',
         },
         {
           title: 'ICON_PROPERTY',
@@ -317,8 +317,7 @@ export default class FeatureTypeEditor extends WidgetBase {
           title: 'BASE_URI',
           _key: 'baseUri',
           type: 'string',
-          icon: 'mdi-link'
-          
+          icon: 'mdi-link',
         },
         {
           title: 'BASETYPES',
@@ -395,7 +394,7 @@ export default class FeatureTypeEditor extends WidgetBase {
                 group: 'number',
                 optional: false,
                 requirements: PropertyType.isNumber,
-              },
+              },              
               {
                 title: 'url template',
                 _key: 'urlTemplate',
@@ -449,7 +448,7 @@ export default class FeatureTypeEditor extends WidgetBase {
                 // requirements: PropertyType.isOptions,
                 title: 'OPTIONS',
                 _key: 'options',
-                icon: 'mdi-format-list-bulleted',              
+                icon: 'mdi-format-list-bulleted',
                 requirements: PropertyType.isOptions,
                 // canAdd: true,
                 // canDelete: true,
