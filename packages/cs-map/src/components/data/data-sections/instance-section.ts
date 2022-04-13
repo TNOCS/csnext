@@ -11,8 +11,7 @@ export default class InstanceSection extends BaseSection {
   public instances() {    
     if (this.node?._outgoing) {      
       let res = this.node._outgoing.filter(r => r.classId === 'INSTANCE_OF' && r.to).map(r => r.to);
-      if (this.node.class) { res.concat(this.node.class); }
-      console.log(res);
+      if (this.node.class) { res.concat(this.node.class); }      
       return res;
     } else {
       return [];

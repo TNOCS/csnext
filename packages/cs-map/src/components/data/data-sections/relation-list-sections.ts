@@ -42,7 +42,6 @@ export class RelationListSections extends BaseSection {
             return [];
         }
         let res: InfoPanelSection[] = [];
-        console.log("Get lists");
 
         if (this.node._incomming) {
             let incoming = this.node._incomming.filter(
