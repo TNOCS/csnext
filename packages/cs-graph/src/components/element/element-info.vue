@@ -282,6 +282,10 @@ export default class ElementInfo extends WidgetBase {
   private specialTab: VueComponent | null = null;
   private elementInfoTab = 'eitab';
 
+  
+  public showContextMenu = false;
+  public contextMenuitems :IMenu[] = [];
+
   @Ref('docWidget')
   private docWidget: HTMLElement | null = null;
 
@@ -315,13 +319,12 @@ export default class ElementInfo extends WidgetBase {
     }
   }
 
-  public showContextMenu = false;
-  public contextMenuitems :IMenu[] = []
 
   public openContextMenu(e) {
-    this.showContextMenu = true;
+    if (!this.activeElement || !this.dataSource) { return; }
+    this.showContextMenu = true;    
     this.contextMenuitems = ElementActions.getElementActions(this.activeElement, this.dataSource, undefined, (i,m) => {      
-      this.$forceUpdate();
+      this.$forceUpdate();      
     });
 
   }
@@ -536,8 +539,6 @@ export default class ElementInfo extends WidgetBase {
 
     this.isDocument = this.activeElement._featureType?._inheritedTypes && this.activeElement._featureType?._inheritedTypes.includes('input');
 
-    console.log(this.activeElement);
-
     this.widget.title = this.activeElement.properties?.name;
     if (this.activeElement.type === 'edge') {
       this.widget.options.title = this.activeElement.from!.properties?.name + ' -> ' + this.activeElement.to!.properties?.name;
@@ -647,8 +648,11 @@ export default class ElementInfo extends WidgetBase {
         }
       });
 
-      this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {
+      this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {        
         this.activeElement = data;
+        if (a === 'edit-element') {
+          this.tab = 'tab-EDITOR';
+        }
         this.updateElement();
         this.updateTabs();
       });

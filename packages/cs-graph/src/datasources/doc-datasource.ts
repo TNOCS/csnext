@@ -1968,11 +1968,12 @@ export class DocDatasource extends GraphDatasource {
     this.bus.publish('focus', 'element', element);
   }
 
-  public startEditElement(element: GraphElement) {
-    this.selectElement(element, true);
-
-    // element._isEditting = true;
-    // this.bus.publish('element', 'start-editing', element);
+  public startEditElement(element: GraphElement) {    
+    this.activeElement = element;
+    $cs.updateRouteQuery({ nodedetails: element.id, eitab: 'tab-EDITOR' });
+    this.bus.publish('element', 'edit-element', element);
+    $cs.openRightSidebarKey('details', true);
+    this.addElementToHistory(element.id);
   }
 
   public stopEditElement(element: GraphElement) {
@@ -2063,7 +2064,7 @@ export class DocDatasource extends GraphDatasource {
       return;
     }
     this.activeElement = node;
-    $cs.updateRouteQuery({ nodedetails: node.id });
+    $cs.updateRouteQuery({ nodedetails: node.id, eitab: 'tab-EDITOR' });
     this.bus.publish('element', 'select-element', node);
     $cs.openRightSidebarKey('details', expanded, tab);
     this.addElementToHistory(node.id);

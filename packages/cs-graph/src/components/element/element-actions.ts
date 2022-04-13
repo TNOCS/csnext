@@ -16,6 +16,15 @@ export class ElementActions {
 
     let showContextMenu = false;
     menuItems.push({
+      title: 'edit',
+      icon: 'mdi-pencil',
+      action: async (i) => {
+        callBefore(i);
+        source.startEditElement(element);
+        callAfter(i);
+      },
+    });
+    menuItems.push({
       title: 'duplicate',
       icon: 'mdi-plus-circle-multiple-outline',
       action: async (i) => {

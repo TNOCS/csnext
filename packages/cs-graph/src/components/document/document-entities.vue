@@ -462,9 +462,7 @@ export default class DocumentEntities extends WidgetBase {
       g.entities = g.entities.sort((a, b) => {
         return b.instances?.length - a.instances?.length;
       });
-    }
-    console.log("groups");
-    console.log(res);
+    }    
     Vue.set(this, "nodeGroups", res);
   }
 

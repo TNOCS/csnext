@@ -68,7 +68,7 @@ export default class ElementContextMenu extends Vue {
 
   
   public async linkToTarget(target: GraphElement, type: string) {
-    if (this.source && target.id && this.element.id)
+    if (this.source && target.id && this.element?.id)
     {
       const edge = {
         fromId: this.element.id,
