@@ -41,7 +41,7 @@ export class LocalStorage implements IDatabase {
 
   public async reset(): Promise<boolean> {
     try {
-      Logger.log('Reset local storage db');
+      Logger.log('Reset local storage db', 'local-storage');
       // remove all entities
       this.debounceSave();
 
@@ -60,7 +60,7 @@ export class LocalStorage implements IDatabase {
       link.type = 'n';
     }
     try {
-      Logger.log(`Creating ${link.type} relationship between ${link.from} => ${link.to}`);
+      Logger.log(`Creating ${link.type} relationship between ${link.from} => ${link.to}`, 'local-storage');
       let props = { from: link.from, to: link.to, props: { from: link.from, to: link.to, ...link.properties } };
       // console.log(props);
       this.debounceSave();
@@ -73,7 +73,7 @@ export class LocalStorage implements IDatabase {
 
   public async unlinkId(id: string): Promise<any> {
     try {
-      console.log(`Removing relationship with id ${id}`);
+      Logger.log(`Removing relationship with id ${id}`, 'local-storage');
       this.debounceSave();
 
       return Promise.resolve({ result: 'ok', data: undefined });
@@ -133,8 +133,6 @@ export class LocalStorage implements IDatabase {
   public async storeMultiple(data: IData[], agentId?: string, updatedTime?: number): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const res: any[] = [];
-      // console.log(this);
-      // console.log(data);
       this.debounceSave();
       resolve(res);
     });
@@ -175,7 +173,7 @@ export class LocalStorage implements IDatabase {
                 properties: element.properties,
               });
             } catch (e) {
-              Logger.error(e);
+              Logger.error(e, 'local-storage');
             }
           }
         }
@@ -264,7 +262,7 @@ export class LocalStorage implements IDatabase {
 
   public save(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      Logger.log(`Saving local storage to file : ${this.file}`);
+      Logger.log(`Saving local storage to file : ${this.file}`, 'local-storage');
       if (!this.source?.graph) {
         reject();
         return;
@@ -278,11 +276,10 @@ export class LocalStorage implements IDatabase {
         },
         2
       );
-      try {
-        console.log(this.file);
+      try {        
         fs.writeFileSync(this.file, res, { encoding: 'utf8' });
       } catch (e) {
-        Logger.error(e);
+        Logger.error(e, 'local-storage');
         reject();
       }
       resolve(true);
@@ -291,11 +288,11 @@ export class LocalStorage implements IDatabase {
 
   public loadFile(): Promise<{ [key: string]: GraphElement }> {
     return new Promise((resolve, reject) => {
-      Logger.log(`Loading local storage from file : ${this.file}`);
+      Logger.log(`Loading local storage from file : ${this.file}`, 'local-storage');
       // const absfile = join(__dirname, this.file);
       if (!fs.existsSync(this.file)) {
         const data = {};
-        Logger.error('Database does not exist');
+        Logger.error('Database does not exist', 'local-storage');
         resolve(data);
       } else {
         const json = fs.readFileSync(this.file, { encoding: 'utf-8' });
@@ -303,18 +300,14 @@ export class LocalStorage implements IDatabase {
           const data = JSON.parse(json);
           resolve(data);
         } else {
+          Logger.log('Database is empty', 'local-storage');
           reject('No data loaded');
         }
       }
     });
   }
 
-  public async store(data: IData, agentId?: string, updatedTime?: number): Promise<any> {
-    // if (!data.id) { Promise.reject('document contains no id'); }
-    // console.log('storing ' + data.document.id);
-    // if (updatedTime) {
-    //     this.checkDates(data, updatedTime);
-    // }
+  public async store(data: IData, agentId?: string, updatedTime?: number): Promise<any> {    
     try {
       this.debounceSave();
       return Promise.resolve({ result: 'ok' });

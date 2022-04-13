@@ -18,14 +18,14 @@ export class GraphService {
   public socket?: DefaultWebSocketGateway;
 
   public async init(databaseName?: string, folder?: string) {
-    Logger.log('Initalizing Graph Data Source', 'GraphService');
+    Logger.log('Initalizing Graph Data Source', 'graph-service');
     this.source = new GraphDatasource();
 
     // load data model
     switch (this.database) {
       case 'local':
         this.source.title = 'local';
-        Logger.log('Initializing LocalStorage');
+        Logger.log('Initializing LocalStorage', 'graph-service');
         this.db = new LocalStorage(databaseName, folder);
         break;
     }
@@ -34,7 +34,7 @@ export class GraphService {
       try {
         await this.db.init(this.source);
       } catch (e) {
-        Logger.error(e);
+        Logger.error(e, 'graph-service');
       }
     }
   }
@@ -230,7 +230,7 @@ export class GraphService {
             for (let i = 0; i < burst; i++) {
               let storeData = this.storeWithIntervalData.shift();
               if (storeData) {
-                Logger.log(`Storing node ${storeData.node.id}`, 'GraphService');
+                Logger.log(`Storing node ${storeData.node.id}`, 'graph-service');
                 await this.source.addNode(
                   { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
                   storeData.node.class,
@@ -243,12 +243,12 @@ export class GraphService {
               } else {
                 clearInterval(this.storeWithIntervalInterval);
                 this.storeWithIntervalInterval = undefined;
-                Logger.log('Stopped storing elements on interval', 'GraphService');
+                Logger.log('Stopped storing elements on interval', 'graph-service');
               }
             }
             this.source.triggerUpdateGraph();
         }, intervalMillis);
-        Logger.log(`Start storing elements on interval of ${intervalMillis}ms with burst of ${burst}`, 'GraphService');
+        Logger.log(`Start storing elements on interval of ${intervalMillis}ms with burst of ${burst}`, 'graph-service');
         resolve({ result: 'ok' });
       }
       reject();

@@ -101,7 +101,7 @@ export class NestServer {
 
             if (globalPrefix) {
                 this.app.setGlobalPrefix(globalPrefix);
-                Logger.log(`SetGlobalPrefix '${globalPrefix}`);
+                Logger.log(`SetGlobalPrefix '${globalPrefix}`, 'cs-server');
             }
 
             if (this.config && this.config.basicAuth && this.config.basicAuth.enabled) {
@@ -128,15 +128,15 @@ export class NestServer {
                 if (this.config.staticPath) {
                     const publicDirectory: string = this.config.staticFolder;
                     this.app.use(this.config.staticPath, express.static(publicDirectory));
-                    Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
-                    Logger.log(`Hosting static files from '${publicDirectory}'`);
+                    Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`, 'cs-server');
+                    Logger.log(`Hosting static files from '${publicDirectory}'`, 'cs-server');
                 }
 
                 if (this.config.assetsPath) {
                     const assetsDirectory: string = path.join(this.config.staticFolder, this.config.assetsPath);
                     this.app.use(this.config.assetsPath, express.static(assetsDirectory));
-                    Logger.log(`Asset hosting is available at '${host}:${port}${this.config.assetsPath}'.`);
-                    Logger.log(`Hosting static files from '${assetsDirectory}'`);
+                    Logger.log(`Asset hosting is available at '${host}:${port}${this.config.assetsPath}'.`, 'cs-server');
+                    Logger.log(`Hosting static files from '${assetsDirectory}'`, 'cs-server');
                 }
 
                 if (this.config.hbsViewFolder) {
@@ -145,7 +145,7 @@ export class NestServer {
                     this.app.setViewEngine('html');
                     this.app.engine('html', require('hbs').__express);
                 }
-                Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`);
+                Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`, 'cs-server');
             }
 
             this.initOpenApi(swaggerConfig, title);
@@ -156,8 +156,8 @@ export class NestServer {
                 
 
                 // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
-                Logger.log(`Server is listening on port ${port}.`);
-                Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`);
+                Logger.log(`Server is listening on port ${port}.`, 'cs-server');
+                Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`, 'cs-server');
                 resolve(true);
             });
         });
@@ -180,8 +180,7 @@ export class NestServer {
                         .addTag('layer')
                         .build();
                 }
-                // console.log(this.app);
-                console.log(JSON.stringify(this.swaggerConfig));
+                
                 this.openAPI = SwaggerModule.createDocument(
                     this.app,
                     this.swaggerConfig
@@ -191,7 +190,7 @@ export class NestServer {
             }
         } catch(e) {
             console.log(e);
-            Logger.error(`Error creating open api endpoint`)
+            Logger.error(`Error creating open api endpoint`, 'cs-server')
         }
     }
 }

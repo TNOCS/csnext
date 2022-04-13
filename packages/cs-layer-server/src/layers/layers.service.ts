@@ -62,7 +62,7 @@ export class LayerService extends AggregateRoot {
 
     public handleConnection(d: Socket) {
         // this.server.emit('buttonCount',AppService.buttonCount);
-        Logger.log(`Connection received from ${d.id}`);
+        Logger.log(`Connection received from ${d.id}`, 'layer-server');
     }
 
     public async init(configFile?: string, serverPath?: string) { 
@@ -73,7 +73,7 @@ export class LayerService extends AggregateRoot {
             );
             // check if config file exists
             if (fs.existsSync(this.absoluteConfigPath)) {
-                Logger.log(`Loading config file: ${this.absoluteConfigPath}`);
+                Logger.log(`Loading config file: ${this.absoluteConfigPath}`, 'layer-server');
                 // read config file
                 const file = path.join(serverPath ? serverPath : '', configFile);                
                 const configString = fs.readFileSync(file, 'utf8');
@@ -97,11 +97,11 @@ export class LayerService extends AggregateRoot {
                     this.config.serverPath = serverPath || this.config.serverPath;
                     // }
                     Logger.log(
-                        `Config file loaded: ${this.absoluteConfigPath}`
+                        `Config file loaded: ${this.absoluteConfigPath}`, 'layer-server'
                     );
                 } else {
                     Logger.log(
-                        `Error opening config file: ${this.absoluteConfigPath}`
+                        `Error opening config file: ${this.absoluteConfigPath}`, 'layer-server'
                     );
                     // no config found, start fresh
                 }
@@ -111,10 +111,10 @@ export class LayerService extends AggregateRoot {
                 await this.importLayers();
                 await this.initLayers();
             } else {
-                Logger.log(`Config file not found: ${this.absoluteConfigPath}`);
+                Logger.log(`Config file not found: ${this.absoluteConfigPath}`, 'layer-server');
             }
         } else {
-            Logger.log('No config file specified');
+            Logger.log('No config file specified', 'layer-server');
         }
     }
 
@@ -131,7 +131,7 @@ export class LayerService extends AggregateRoot {
                 try {
                     fs.mkdirSync(absoluteImportPath);
                 } catch (e) {
-                    Logger.error('Error creating import path');
+                    Logger.error('Error creating import path', 'layer-server');
                 }
             }
 
@@ -143,11 +143,11 @@ export class LayerService extends AggregateRoot {
 
             // make sure it exists
             if (!fs.existsSync(absoluteImportCompletedPath)) {
-                Logger.log(`Creating import completed folder: ${absoluteImportPath}`);
+                Logger.log(`Creating import completed folder: ${absoluteImportPath}`, 'layer-server');
                 fs.mkdirSync(absoluteImportCompletedPath);
             }
             Logger.log(
-                `Import path specified, loading sources from: ${absoluteImportPath}`
+                `Import path specified, loading sources from: ${absoluteImportPath}`, 'layer-server'
             );
             fs.readdirSync(absoluteImportPath).forEach(async file => {
                 const absoluteImportFile = path.join(absoluteImportPath, file);
@@ -189,7 +189,7 @@ export class LayerService extends AggregateRoot {
                                 JSON.stringify(sourceImport)
                             );
                             Logger.log(
-                                `Import succeeded, saved to: ${absoluteSourcePath}`
+                                `Import succeeded, saved to: ${absoluteSourcePath}`, 'layer-server'
                             );
 
                             // move original file
@@ -211,7 +211,7 @@ export class LayerService extends AggregateRoot {
                             //   .then(l => {})
                             //   .catch(r => {});
                         }).catch(e => {
-                            Logger.log(`Import failed for ${id}`);
+                            Logger.log(`Import failed for ${id}`, 'layer-server');
                         });
                 }
             });
@@ -269,7 +269,7 @@ export class LayerService extends AggregateRoot {
 
     /** save active server config */
     public saveServerConfig() {
-        Logger.log(`Saving server config: ${this.absoluteConfigPath}`);
+        Logger.log(`Saving server config: ${this.absoluteConfigPath}`, 'layer-server');
 
         // create a duplicate without underscores;
         const duplicate = JSON.parse(
@@ -311,12 +311,12 @@ export class LayerService extends AggregateRoot {
     /** initialize all layers */
     public initLayers(): Promise<boolean> {
         return new Promise(async resolve => {
-            Logger.log(`Initialize all layers`);
+            Logger.log(`Initialize all layers`, 'layer-server');
             for (let layer of this.config.layers) {
                 try {
                     layer = await this.initLayer(layer);
                 } catch (e) {
-                    Logger.warn(`Error initializing ${layer.id}: ${e}`);
+                    Logger.warn(`Error initializing ${layer.id}: ${e}`, 'layer-server');
                 }
             }
             this.saveServerConfig();
@@ -354,8 +354,8 @@ export class LayerService extends AggregateRoot {
                         layer.color = this.findColor(s);
                     }
                 } catch (e) {
-                    Logger.error(`Error getting layer source ${layer.id}`);
-                    Logger.error(`${e}`);
+                    Logger.error(`Error getting layer source ${layer.id}`, 'layer-server');
+                    Logger.error(`${e}`, 'layer-server');
                 }
             }
             resolve(layer);
@@ -389,7 +389,7 @@ export class LayerService extends AggregateRoot {
                     feature
                 };
             }).catch((e: Error) => {
-                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id}) ${e.message}`);
+                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
             })
         }
     }
@@ -404,14 +404,14 @@ export class LayerService extends AggregateRoot {
                     feature: feature
                 };
             }).catch((e: Error) => {
-                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id}) ${e.message}`);
+                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
             });
         }
     }
 
     private getThrottleFnc() {
         const interval = (this.config && this.config.socketFlushInterval) || 2000;
-        Logger.log(`Flush socket queue every ${interval} ms.`)
+        Logger.log(`Flush socket queue every ${interval} ms.`, 'layer-server')
         return throttle(() => {
             this._flushSocketQueues();
         }, interval);
@@ -431,7 +431,7 @@ export class LayerService extends AggregateRoot {
                                 address,
                                 source._socketQueue
                             );
-                            console.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`);
+                            Logger.log(`Sending queue ${Object.keys(source._socketQueue).length} to ${address}`, 'layer-server');
                         }
                         source._socketQueue = {};
                     });
@@ -633,7 +633,7 @@ export class LayerService extends AggregateRoot {
         body: LayerDefinition
     ): Promise<LayerDefinition> {
         return new Promise(async (resolve, reject) => {
-            Logger.log(`Updating layer definition for layer ${id}`);
+            Logger.log(`Updating layer definition for layer ${id}`, 'layer-server');
             const defIndex = this.config.layers.findIndex(l => l.id === id);
             if (defIndex >= 0) {
                 // update layer definition in config
@@ -660,12 +660,13 @@ export class LayerService extends AggregateRoot {
                             );
                             newLayerDef = newSource.def;
                         } catch (e) {
-                            Logger.log(`Error creating definition for ${id}`);
+                            Logger.log(`Error creating definition for ${id}`, 'layer-server');
                         }
                     }
                     this.saveServerConfig();
                     resolve(newLayerDef);
                 } catch (e) {
+                    Logger.error(`Error creating definition for ${id}`, 'layer-server');
                     reject();
                 }
             }
@@ -687,7 +688,7 @@ export class LayerService extends AggregateRoot {
 
     public triggerLayerRefresh(id: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            Logger.log(`Triggering layer refresh for ${id}`);
+            Logger.log(`Triggering layer refresh for ${id}`, 'layer-server');
             resolve(true);
         });
     }
@@ -700,7 +701,7 @@ export class LayerService extends AggregateRoot {
                     if (def) {
                         // check if it has an external url, get it and proxy it
                         if (def.externalUrl !== undefined) {
-                            Logger.log(`Loading external source for ${id}`);
+                            Logger.log(`Loading external source for ${id}`, 'layer-server');
                             // check if cache is valid and available
                             if (
                                 def.externalCacheDuration > 0 &&
@@ -727,7 +728,7 @@ export class LayerService extends AggregateRoot {
                                                             meta.featureTypes;
                                                     }
                                                 } catch (e) {
-                                                    Logger.error(`Error creating meta for ${def.externalUrl}`);
+                                                    Logger.error(`Error creating meta for ${def.externalUrl}`, 'layer-server');
                                                 }
                                             }
                                             resolve(response.data);
@@ -834,8 +835,8 @@ export class LayerService extends AggregateRoot {
                         return;
                     }
                 } catch (e) {
-                    Logger.log(`Error loading: ${def.source}`);
-                    Logger.log(e);
+                    Logger.log(`Error loading: ${def.source}`, 'layer-server');
+                    Logger.log(e, 'layer-server');
                     reject();
                 }
             } else if (plugin && typeof plugin.load === 'function') {
@@ -875,8 +876,8 @@ export class LayerService extends AggregateRoot {
                         return;
                     }
                 } catch (e) {
-                    Logger.log(`Error loading: ${def.source}`);
-                    Logger.log(e);
+                    Logger.log(`Error loading: ${def.source}`, 'layer-server');
+                    Logger.log(e, 'layer-server');
                     reject();
                 }
             }
@@ -918,7 +919,7 @@ export class LayerService extends AggregateRoot {
                     }
                 })
                 .catch(e => {
-                    Logger.error(`Error saving source ${id} - ${e}`);
+                    Logger.error(`Error saving source ${id} - ${e}`, 'layer-server');
                 });
             resolve(true);
         });
