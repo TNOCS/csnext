@@ -3,7 +3,7 @@
 
     <!-- <v-col class="cs-dashboard-col pa-0" v-if="options.showToolbar && options.toolbarOptions"> -->
     <v-flex v-if="options.showToolbar && options.toolbarOptions" shrink class="dashboard-toolbar-flex">
-        <v-toolbar class="widget-toolbar" :absolute="options.toolbarOptions.absolute" :prominent="options.toolbarOptions.prominent" :color="options.toolbarOptions.backgroundColor" :elevation="options.toolbarOptions.elevation" :dense="options.toolbarOptions.dense"
+        <v-toolbar class="widget-toolbar" :absolute="options.toolbarOptions.absolute" :prominent="options.toolbarOptions.prominent" :color="options.toolbarOptions.backgroundColor" :elevation="options.toolbarOptions.elevation" :dense="options.toolbarOptions.dense" :outlined="options.toolbarOptions.outlined"
             :collapse="options.toolbarOptions.collapse" :flat="options.toolbarOptions.flat">
             <v-icon v-if="options.icon && !options.toolbarOptions.hideIcon" class="pr-3">{{ options.icon }}</v-icon>
             <v-toolbar-title v-if="!options.toolbarOptions || !options.toolbarOptions.hideTitle">{{ $cs.Translate(options.title) }}</v-toolbar-title>

@@ -14,6 +14,8 @@ export class ToolbarOptions {
     public hideTitle?: boolean;
     @FormField({ title: 'Prominent', type: 'checkbox' })
     public prominent?: boolean;
+    @FormField({ title: 'Outlined', type: 'checkbox' })
+    public outlined?: boolean;
     @FormField({ title: 'Collapse', type: 'checkbox' })
     public collapse?: boolean;
     @FormField({ title: 'Absolute', type: 'checkbox' })

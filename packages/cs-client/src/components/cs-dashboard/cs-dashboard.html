@@ -23,6 +23,7 @@
       :dense="dashboard.options.toolbarOptions.dense"
       :collapse="dashboard.options.toolbarOptions.collapse"
       :flat="dashboard.options.toolbarOptions.flat"
+      :outlined="dashboard.options.toolbarOptions.outlined"
     >
       <v-icon
         v-if="dashboard.options.icon && !dashboard.options.toolbarOptions.hideIcon"
@@ -53,6 +54,7 @@
         :dense="dashboard.parent.options.toolbarOptions.dense"
         :collapse="dashboard.parent.options.toolbarOptions.collapse"
         :flat="dashboard.parent.options.toolbarOptions.flat"
+        :outlined="dashboard.parent.options.toolbarOptions.outlined"
       >
         <v-stepper
           :value="selectedStepper"
@@ -85,6 +87,7 @@
         :dense="dashboard.parent.options.toolbarOptions.dense"
         :collapse="dashboard.parent.options.toolbarOptions.collapse"
         :flat="dashboard.parent.options.toolbarOptions.flat"
+        :outlined="dashboard.parent.options.toolbarOptions.outlined"
       >
         <template
           v-if="dashboard.parent.options.toolbarOptions.navigation === 'stepper'"
