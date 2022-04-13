@@ -52,18 +52,37 @@
         <v-icon>mdi-scatter-plot</v-icon>
       </v-btn>
 
-      <v-btn icon @click="openContextMenu()">
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+<v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn depressed v-bind="attrs" icon elevation="0" v-on="on" @click="openContextMenu()">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+           <v-list>
+      <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="callContextAction(item)">
+        <template v-slot:appendIcon>
+          <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
+          <span v-else></span>
+        </template>
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title :color="item.color" v-text="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <template v-if="item.items">
+          <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list-group>
+    </v-list>
+</v-menu>
 
-      <element-context-menu
-      @listUpdated="updateEntities(true)"
-      @itemUpdated="updateEntities(true)"
-      :showContextMenu="showContextMenu"
-  
-      :source="source"
-      :element="activeElement"
-    ></element-context-menu>
+
+
+      
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
@@ -225,7 +244,7 @@ import { GraphDatasource, GraphElement, LinkInfo } from '@csnext/cs-data';
 import simplebar from 'simplebar-vue';
 import { PropertyType } from '@csnext/cs-data';
 import { DataInfoPanel, RelationListSections } from '@csnext/cs-map';
-import { IFormOptions, IWidget } from '@csnext/cs-core';
+import { IFormOptions, IMenu, IWidget } from '@csnext/cs-core';
 import { DocDatasource } from '../../datasources/doc-datasource';
 import { GraphDocument } from '../../classes';
 import { InfoTabManager } from '../../classes/info-tab-manager';
@@ -234,6 +253,7 @@ import { Component as VueComponent } from 'vue';
 import ElementDataGrid from '../data-grid/element-data-grid.vue';
 import { DataGridOptions } from '../data-grid/data-grid-options';
 import DocumentViewer from './../document/document-viewer.vue';
+import { ElementActions } from './element-actions';
 // import IndicatorEditor from "../indicator/indicator-editor.vue";
 
 export class PropertyValue {
@@ -274,6 +294,8 @@ export default class ElementInfo extends WidgetBase {
     super();
   }
 
+  
+
   @Watch('tab')
   public updateTab() {
     if (this.tab === null) {
@@ -294,10 +316,22 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public showContextMenu = false;
+  public contextMenuitems :IMenu[] = []
 
   public openContextMenu(e) {
     this.showContextMenu = true;
+    this.contextMenuitems = ElementActions.getElementActions(this.activeElement, this.dataSource, undefined, (i,m) => {      
+      this.$forceUpdate();
+    });
 
+  }
+
+  public async callContextAction(i: IMenu) {
+    this.showContextMenu = false;
+    if (i.action && typeof i.action === 'function') {
+      await i.action(i);
+    }
+    ;
   }
 
   public setLegend(p: any) {

@@ -894,7 +894,7 @@ import { guidGenerator, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
 // import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { DocDatasource, DataGridOptions, GridView } from '../..';
-import ElementContextMenu from './../element-context-menu.vue';
+import ElementContextMenu from '../element/element-context-menu.vue';
 import { PropValue } from '@csnext/cs-map';
 import GridPropValue from './grid-prop-value';
 import OptionsCellEditor from './options-cell-editor.vue';
@@ -2382,9 +2382,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.update();
     this.registerWidgetConfig();
 
-    if (this.source?.events) {
-      console.log('create subscription');
-
+    if (this.source?.events) {      
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED) {
           this.updateEntities(true);
