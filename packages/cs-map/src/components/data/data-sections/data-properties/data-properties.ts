@@ -9,10 +9,11 @@ import { Prop, Watch } from 'vue-property-decorator';
 import { IDatasource } from '@csnext/cs-core';
 import { PropertySection } from './property-section';
 import { PropertyDetails} from './property-details';
+import PropertyInfoCard from './property-info-card.vue';
 
 @Component({
     name: 'data-properties',
-    components: { simplebar },
+    components: { simplebar, PropertyInfoCard },
     props: ['data', 'section', 'panel', 'source', 'feature', 'layer', 'featureType'],
     template: require('./data-properties.html')
 } as any)

@@ -7,7 +7,7 @@ import Vue from 'vue';
   components: { NodeChip },
   props: ['source'],
   template: `<span v-if="node">
-      <node-chip class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-chip>           
+      <node-chip light class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-chip>           
     </span>`
 })
 

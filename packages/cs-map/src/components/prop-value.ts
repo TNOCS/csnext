@@ -117,6 +117,7 @@ export default Vue.extend({
               createElement(NodeChip, {
                 props: {
                   node: link,
+                  light: true,
                   source: this.source,
                 },
                 class: 'element-prop-value mr-2',

@@ -32,6 +32,8 @@ export class PropertyType {
     public hint?: string;
     @FormField({ title: 'Icon', type: 'string', optional: true })
     public icon?: string;
+    /// actual calculated icon. used for missing icon defintion or dynamic icons
+    public _icon?: string;
     public count?: number;
     @FormField({ title: 'Default', type: 'number', group: 'number', optional: true })
     public default?: any;

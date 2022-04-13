@@ -20,6 +20,11 @@
     right: 0; */
 }
 
+.info-icon {
+    width: 40px;
+    /* color: gray; */
+}
+
 .feature-component-title {
     padding: 5px;
     background-color: rgba(0,0,0,0.65);

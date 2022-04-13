@@ -16,7 +16,7 @@ import Vue from 'vue';
         <v-btn v-else @click="toggleExpand()" icon><v-icon>mdi-chevron-down</v-icon></v-btn>
       </v-layout>
       <div class="d-flex flex-wrap" v-if="expanded">
-        <node-chip class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-chip>
+        <node-chip light class="mr-2 simple-list-item" v-for="(relation,inx) in list()" :source="source" :key="inx" :node="relation"></node-chip>
         <v-btn v-if="total>5" text class="mr-2 list-item" @click="showMore = !showMore"><span v-if="showMore">show less</span><span v-else>show more</span></v-btn>
       </div>
       
