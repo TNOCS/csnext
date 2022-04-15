@@ -511,6 +511,8 @@ export default class ElementInfo extends WidgetBase {
       return;
     }
 
+    $cs.updateRouteQuery({ nodedetails: this.activeElement.id });
+
     this.updateEditor();
 
     const docWidget = {
