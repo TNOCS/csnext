@@ -291,7 +291,7 @@ export class DeviceStorage implements IGraphStorage {
 
   public async saveTypes(): Promise<boolean> {
     try {      
-      if (this.source?.featureTypes && this.dbPermission) {                        
+      if (this.storage && this.source?.featureTypes && this.dbPermission) {                        
           this.storage.featureTypes = FeatureTypeHelpers.SlimTypes(this.source.featureTypes);
           this.saveDatabaseDebounce();        
         // const r = await Axios.post(`${this.base_url}/types`, updateJSON);
