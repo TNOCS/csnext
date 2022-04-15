@@ -210,32 +210,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
+import { DateUtils, FeatureType, TextEntity } from '@csnext/cs-data';
 import { SimpleRelationLineSection } from '@csnext/cs-map';
-
-import { Editor, EditorContent, Node, BubbleMenu, FloatingMenu } from '@tiptap/vue-2';
-import SelectionPopup from './selection-popup.vue';
-// import Mention from '@tiptap/extension-mention';
-import simplebar from 'simplebar-vue';
-import { TextMention } from './plugins/text-mention';
-import { DocDatasource, ITool, GraphDocument } from './../../';
-import StarterKit from '@tiptap/starter-kit';
-import TextExtension from './plugins/text-extension';
-import ParagraphExtension from './plugins/paragraph-extension';
-import ElementCardExtension from './plugins/element-card-extension';
+import Dropcursor from '@tiptap/extension-dropcursor';
+import Mention from "@tiptap/extension-mention";
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
-import { FeatureType, TextEntity, DateUtils } from '@csnext/cs-data';
+import StarterKit from '@tiptap/starter-kit';
+import { BubbleMenu, Editor, EditorContent, FloatingMenu, Node } from '@tiptap/vue-2';
+import simplebar from 'simplebar-vue';
+import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import { IImportPlugin } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
-import Dropcursor from '@tiptap/extension-dropcursor';
-import suggestion from './plugins/suggestion';
+import { DocDatasource, GraphDocument, ITool } from './../../';
 import Commands from './plugins/commands/commands';
 import commandSuggestion from './plugins/commands/commands-suggestion';
-
-import MentionList from './plugins/mention-list.vue';
+import ElementCardExtension from './plugins/element-card-extension';
+import ParagraphExtension from './plugins/paragraph-extension';
 import SnippetList from './plugins/snippet-list.vue';
+import SuggestionList from './plugins/text-entity-suggestion/suggestion-list.vue';
+import suggestion from './plugins/text-entity-suggestion/suggestion';
+
+import ActionList from './plugins/text-action/text-action-list.vue';
+import textAction from './plugins/text-action/text-action';
+
+import TextExtension from './plugins/text-extension';
+import { TextMention } from './plugins/text-mention';
+import SelectionPopup from './selection-popup.vue';
+
 
 @Component({
   components: {
@@ -244,7 +247,8 @@ import SnippetList from './plugins/snippet-list.vue';
     BubbleMenu,
     FloatingMenu,
     SimpleRelationLineSection,
-    MentionList,
+    SuggestionList,
+    ActionList,
     SnippetList,
     // EditorMenuBubble,
     SelectionPopup,
@@ -489,6 +493,8 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
+   
+
     
     // this.highlight = new Highlight({
     //   disableRegex: false,
@@ -514,7 +520,11 @@ export default class DocumentViewer extends WidgetBase {
           Commands.configure({
             commandSuggestion,
           }),
-          TextMention.configure({
+          Mention.extend({
+            name: 'text-action'}).configure({
+              suggestion: textAction
+            }),
+              TextMention.configure({
             // renderLabel: (props) => {
             //   return 'text-entity'
             // },
@@ -701,11 +711,6 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    // if (this.currentDocument.entities && this.currentDocument.entities.length > 0) {
-    //   $cs.triggerNotification({
-    //     title: 'currently re-running the pipeline is not supported',
-    //   });
-    //   return;
     if (
       !this.currentDocument._entities ||
       this.currentDocument._entities.length === 0 ||
@@ -743,8 +748,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     plugin
       .callImport(this.currentDocument, this.source)
-      .then((r) => {
-        // this.currentDocument.properties = r.properties;
+      .then((r) => {        
         this.updateContent();
       })
       .catch((e) => {})

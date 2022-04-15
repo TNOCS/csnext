@@ -25,7 +25,7 @@ export * from './components/element/element-actions'
 
 import TextExtension from './components/document/plugins/text-extension';
 import ParagraphExtension from './components/document/plugins/paragraph-extension';
-import suggestion from './components/document/plugins/suggestion';
+import suggestion from './components/document/plugins/text-entity-suggestion/suggestion';
 
 
 import NetworkGraph from './components/graph/graph.vue';
@@ -51,13 +51,10 @@ import mdiFont from './assets/mdfont.json';
 import Suggestions from './components/insights/suggestions.vue';
 import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
-import MentionList from './components/document/plugins/mention-list.vue';
+
 import SelectionPopup from './components/document/selection-popup.vue';
 import Search from "./components/search/search.vue";
 import ElementContextMenu from "./components/element/element-context-menu.vue"
-
-
-
 
 
 Vue.use(VueScrollStop);
@@ -95,8 +92,7 @@ export {
   ElementInfo,
   DocumentViewer,
   DocumentEditor,
-  DocumentEntities,
-  MentionList,
+  DocumentEntities,  
   ParagraphExtension,
   TextExtension,
   Search,

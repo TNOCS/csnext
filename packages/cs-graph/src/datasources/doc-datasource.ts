@@ -2065,7 +2065,6 @@ export class DocDatasource extends GraphDatasource {
       return;
     }
     this.activeElement = node;
-    $cs.updateRouteQuery({ nodedetails: node.id, eitab: 'tab-EDITOR' });
     this.bus.publish('element', 'select-element', node);
     $cs.openRightSidebarKey('details', expanded, tab);
     this.addElementToHistory(node.id);

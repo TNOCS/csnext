@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { guidGenerator, idGenerator } from '@csnext/cs-core';
+import { idGenerator } from '@csnext/cs-core';
 import Vue from 'vue';
 import { Prop, Component, Watch } from 'vue-property-decorator';
 
