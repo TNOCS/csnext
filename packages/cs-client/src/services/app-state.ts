@@ -719,6 +719,22 @@ export class AppState extends AppStateBase {
     });
   }
 
+  public triggerFileDownload(fileName: string, content: any, contentType: string): Promise<boolean> {    
+    return new Promise((resolve, reject) => {
+      try {
+        const a = document.createElement("a");
+        const file = new Blob([content], { type: contentType });
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
+        resolve(true);
+      } catch (e) {
+        reject();
+      }
+
+    });
+  }
+
   /** if rightsidebar exists, clear component and close */
   public clearRightSidebar() {
     if (
