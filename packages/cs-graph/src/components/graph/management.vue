@@ -29,7 +29,9 @@
                   <v-text-field label="Base Url" disabled v-if="source" v-model="source.base_url" placeholder="Placeholder"></v-text-field>
                 </v-container>
                 <v-layout class="action-buttons">
-                  <v-btn @click="openServer()" class="primary"><v-icon class="mr-2">mdi-web</v-icon>connect</v-btn>
+                  <v-btn class="primary mr-4" @click="importkg()"><v-icon class="mr-2">mdi-import</v-icon>import</v-btn>
+                  <v-btn class="primary mr-4" @click="downloadkg()"><v-icon class="mr-2">mdi-download</v-icon>download</v-btn>
+                  <v-btn @click="openServer()" class="primary"><v-icon class="mr-2">mdi-web</v-icon></v-btn>
                 </v-layout>
                 <!-- <v-card-text v-text="text"></v-card-text> -->
               </v-card>
@@ -70,7 +72,7 @@
                     ><v-icon class="mr-2">mdi-folder-outline</v-icon>reload</v-btn
                   >
 
-                  <v-btn class="primary mr-4" @click="download()"><v-icon class="mr-2">mdi-download</v-icon>download</v-btn>
+                  <v-btn class="primary mr-4" @click="downloadkg()"><v-icon class="mr-2">mdi-download</v-icon>download</v-btn>
                   <v-btn class="primary mr-4" @click="openFile()"><v-icon class="mr-2">mdi-folder-outline</v-icon>open new file</v-btn>
 
                   <v-btn v-if="folderSelected && validDatamodel && validDatabase" class="primary" @click="loadFolder()"
@@ -170,9 +172,25 @@ export default class Management extends WidgetBase {
       this.source.openServerStorage();
     }
   }
+  
+  public downloadkg() {
+    if (this.source) {
+      const storage = DeviceStorage.getStorage(this.source);
+      if (storage) {
+        $cs.triggerFileDownload('kg.json', JSON.stringify(storage), 'application/json').then(() => {
+          $cs.triggerNotification({ title: 'Downloaded', color: 'green', text: 'Downloaded Knowledge Graph', icon: 'mdi-download' });          
+        }).catch(()=> {
+          $cs.triggerNotification({ title: 'Error', color: 'red', text: 'Error downloading Knowledge Graph', icon: 'mdi-download' });          
+        })
+      }
+    }
 
-  public download() {
-    alert('download')
+  }
+
+  public importkg() {
+    if (!this.source) { return; }
+    // $cs.triggerFileUpload()
+    alert('import');
   }
 
   private isSelected(db: any) {
