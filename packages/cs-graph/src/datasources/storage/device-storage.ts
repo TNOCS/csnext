@@ -9,6 +9,11 @@ export class RecentEntry {
   public handle?: any;
 }
 
+export class KGStorage {
+  public kg?: GraphElement[];
+  public featureTypes?: FeatureTypes;
+}
+
 export class DeviceStorage implements IGraphStorage {
   public static DATA_MODEL_FILE = 'server.config.json';
   public static DATA_GRAPH_FILE = 'database2.json';  
@@ -18,7 +23,7 @@ export class DeviceStorage implements IGraphStorage {
   public directoryHandle?: any;
   public files: { [name: string]: any } = {};
   public dbPermission: boolean = false;
-  private storage?: any;
+  private storage?: KGStorage;
   
 
   public databaseHandle?: any | null = null;
@@ -247,6 +252,19 @@ export class DeviceStorage implements IGraphStorage {
   }
 
   private saveDatabaseDebounce = debounce(this.saveDatabase, 10000);
+
+  public static getStorage(source: DocDatasource) : KGStorage | undefined {
+    if (!source?.graph || !source.featureTypes ) return;
+    let storage: KGStorage = {
+      kg: JSON.parse(JSON.stringify(source.graph, (k, v) => {
+        if (k.startsWith('_')) return undefined;
+        if (['to', 'from'].includes(k)) return undefined;
+        return v;
+      })),
+      featureTypes: FeatureTypeHelpers.SlimTypes(source.featureTypes)
+    }
+    return storage;
+  }
   
   private async saveDatabase()  {
     console.log('save Database');
@@ -274,7 +292,7 @@ export class DeviceStorage implements IGraphStorage {
   public async saveTypes(): Promise<boolean> {
     try {      
       if (this.source?.featureTypes && this.dbPermission) {                        
-          this.storage.featureTypes = FeatureTypeHelpers.SlimTypes(this.source!.featureTypes);
+          this.storage.featureTypes = FeatureTypeHelpers.SlimTypes(this.source.featureTypes);
           this.saveDatabaseDebounce();        
         // const r = await Axios.post(`${this.base_url}/types`, updateJSON);
       }
