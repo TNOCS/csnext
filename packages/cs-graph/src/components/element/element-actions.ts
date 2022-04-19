@@ -34,6 +34,14 @@ export class ElementActions {
         callAfter(i);
       },
     });
+    for (const tool of source.tools) {
+      if (tool.elementActions) {
+      const actions = tool.elementActions(element);
+      if (actions && actions.length > 0) {
+        menuItems = menuItems.concat(actions);
+      }      
+    }
+    }
     menuItems.push({
       title: 'add to visualisation',
       icon: 'mdi-playlist-plus',
