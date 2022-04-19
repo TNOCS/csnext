@@ -146,6 +146,12 @@ export default class ElementContextMenu extends Vue {
         // this.listUpdated();
       },
     });
+    for (const tool of this.source.tools) {
+      const actions = tool.elementActions(this.element);
+      if (actions && actions.length > 0) {
+        this.contextMenuitems = this.contextMenuitems.concat(actions);
+      }      
+    }
     this.contextMenuitems.push({
       title: 'rename',
       icon: 'mdi-form-textbox',

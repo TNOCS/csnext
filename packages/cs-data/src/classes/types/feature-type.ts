@@ -30,6 +30,7 @@ export class FeatureType {
     public notification?: string;
     public array?: boolean;
     public isEdge?: boolean;
+    public descriptiveProperties?: string[];
     // public featureType?: string;
     // public _featureType?: FeatureType;
     // public patterns?: ObservationPattern[];

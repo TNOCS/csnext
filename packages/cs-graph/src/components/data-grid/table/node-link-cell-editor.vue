@@ -33,7 +33,7 @@
 </style>
 <script lang="ts">
 import { GraphElement, PropertyType, RelationType } from '@csnext/cs-data';
-import { DocDatasource } from '../..';
+import { DocDatasource } from '../../..';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 

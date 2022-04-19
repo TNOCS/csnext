@@ -15,7 +15,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)">
+          <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)" >
             <v-list-item-icon
               ><v-icon>{{ item.icon }}</v-icon></v-list-item-icon
             >
@@ -87,21 +87,23 @@
         </v-menu>
       </template>
 
+     
+
       <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="linkAll()" elevation="0">
         <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
-        {{ $cs.Translate('LINK_ALL') }}
+        <!-- {{ $cs.Translate('LINK_ALL') }} -->
       </v-btn>
       <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="unLinkAll()" elevation="0">
         <v-icon>mdi-checkbox-multiple-blank-circle-outline</v-icon>
-        {{ $cs.Translate('UNLINK_ALL') }}
+        <!-- {{ $cs.Translate('UNLINK_ALL') }} -->
       </v-btn>
       <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="expandTree()" elevation="0">
-        <v-icon>mdi-chevron-up</v-icon>
-        {{ $cs.Translate('EXPAND_ALL') }}
+        <v-icon>mdi-chevron-down</v-icon>
+        <!-- {{ $cs.Translate('EXPAND_ALL') }} -->
       </v-btn>
       <v-btn v-if="options.defaultView == 'tree'" class="ml-2" @click="collapseTree()" elevation="0">
-        <v-icon>mdi-chevron-down</v-icon>
-        {{ $cs.Translate('COLLAPSE_ALL') }}
+        <v-icon>mdi-chevron-up</v-icon>
+        <!-- {{ $cs.Translate('COLLAPSE_ALL') }} -->
       </v-btn>
 
       <v-spacer></v-spacer>
@@ -242,16 +244,11 @@
               <v-list-item-content>
                 <v-list-item-title>{{ item.properties.name }}</v-list-item-title>
                 <!-- {{ item.score }} -->
-                <v-list-item-subtitle v-if="item._featureType">
-                  {{ item._featureType.title }}
-                  <!-- <span v-if="item.item._incomming">
-                  <v-icon small>arrow_forward</v-icon>
-                  {{ item.item._incomming.length}}
-                </span>
-                <span v-if="item.item._outgoing">
-                  <v-icon small>mdi-arrow-left</v-icon>
-                  {{ item.item._outgoing.length}}
-                </span> -->
+                <v-list-item-subtitle v-if="item._featureType && item._featureType.descriptiveProperties">
+                  <prop-value v-for="(p, pi) of item._featureType.descriptiveProperties" :key="pi" :value="item.properties[p]" :prop="p" :source="source" :element="item"></prop-value>                  
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-else-if="item._featureType">
+                  {{ item._featureType.title }}                  
                 </v-list-item-subtitle>
               </v-list-item-content>
 
@@ -280,7 +277,7 @@
             :columnDefs="columnDefs"
             :defaultColDef="defaultColDef"
             :rowData="rowData"
-            rowSelection="single"
+            rowSelection="single"                        
             @selection-changed="onGridSelection"
             @cell-value-changed="onCellValueChanged"
             @grid-ready="onGridReady"
@@ -551,7 +548,7 @@
             ref="treeView"
             selection-type="independent"
             :items="treeItems"
-            activatable
+            activatable            
             @input="openTreeItem()"
             @click="selectTableItem(item.entity)"
           >
@@ -880,35 +877,43 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 import { Component, Ref, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
-import OptionsFilter from './options-filter.vue';
+
 
 // import { FeatureType } from "../../classes";
 import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import moment from 'moment';
 import simplebar from 'simplebar-vue';
-import isotope from 'vueisotope';
 import { guidGenerator, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
-// import { DocDatasource, DataGridOptions, GridView } from "./../../index";
 import { DocDatasource, DataGridOptions, GridView } from '../..';
 import ElementContextMenu from '../element/element-context-menu.vue';
 import { PropValue } from '@csnext/cs-map';
-import GridPropValue from './grid-prop-value';
-import OptionsCellEditor from './options-cell-editor.vue';
-import NodeLinkCellEditor from './node-link-cell-editor.vue';
-import { AgGridVue } from 'ag-grid-vue';
-import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
-import GridRowActions from './grid-row-actions.vue';
-import DateCellEditor from './date-cell-editor.vue';
-import DefaultElementCard from './cards/default-element-card.vue';
-import { ElementCardManager } from './cards/element-card-manager';
+
+// kanban
 import draggable from 'vuedraggable';
+
+// media
 import MediaElement from './media-element.vue';
 
+// cards
+import isotope from 'vueisotope';
+import DefaultElementCard from './cards/default-element-card.vue';
+import { ElementCardManager } from './cards/element-card-manager';
 require('isotope-packery');
+
+// table components
+import { AgGridVue } from 'ag-grid-vue';
+import { CellValueChangedEvent, ColDef, GridApi } from 'ag-grid-community';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine-dark.css';
+import GridRowActions from './table/grid-row-actions.vue';
+import DateCellEditor from './table/date-cell-editor.vue';
+import GridPropValue from './table/grid-prop-value';
+import OptionsCellEditor from './table/options-cell-editor.vue';
+import NodeLinkCellEditor from './table/node-link-cell-editor.vue';
+import OptionsFilter from './table/options-filter.vue';
+
 
 export class KanBanColumn {
   title?: string;
@@ -933,7 +938,7 @@ export class KanBanColumn {
     AgGridVue,
     simplebar,
     DataInfoPanel,
-    NodeLink,
+    NodeLink,    
     MediaElement,
     isotope,
     draggable,
@@ -1134,7 +1139,7 @@ export default class ElementDataGrid extends WidgetBase {
       this.source!.selectElement(element, false);
       this.selectSplitWidget(element);
     } else {
-      this.editEntity(element);
+      this.source!.openElement(element);
     }
   }
 
@@ -1704,7 +1709,8 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public editEntity(element: GraphElement) {
-    this.source?.openElement(element);
+    if (!this.source) { return; }
+    this.source.startEditElement(element);
   }
 
   public removeEntity(entity: GraphElement) {
