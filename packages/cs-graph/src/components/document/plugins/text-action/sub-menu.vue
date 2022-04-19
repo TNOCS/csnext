@@ -12,14 +12,11 @@
       <template
         v-slot:activator="{ on }"
       >
-        <v-btn
-          
+        <v-btn          
           v-if='icon'
           v-on="on"
         >
-          <v-icon>
-            {{ icon }}
-          </v-icon>
+          <v-icon>mdi-pencil</v-icon>
         </v-btn>
         <v-list-item
           class='d-flex justify-space-between'
@@ -96,7 +93,18 @@ export default class SubMenu extends Vue {
   @Prop()
   command!: Function;
 
+  @Prop()
+  dark!: boolean;
+
   public menuOpened = true;
+
+  isDark () {
+      // if (this.dark != null || this.light != null) {
+      //   return Themeable.options.computed.isDark.call(this)
+      // }
+
+      return this.$vuetify.theme.dark
+    }
 
 @Prop()
   public name!: String;

@@ -89,6 +89,12 @@
         <div v-if="editor">
           <v-slide-group show-arrows>
             <v-btn-toggle dense group>
+              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
+              <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"><v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn>
+              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
+                ><v-icon>mdi-format-paragraph</v-icon></v-btn
+              >
               <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
                 <v-icon>mdi-format-bold</v-icon>
               </v-btn>
@@ -139,11 +145,7 @@
               <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
               <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
 
-              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
-              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                ><v-icon>mdi-format-paragraph</v-icon></v-btn
-              >
-              <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn>
+              
             </v-btn-toggle>
           </v-slide-group>
         </div>
@@ -155,7 +157,15 @@
     <simplebar class="editor-row" v-if="currentDocument && currentDocument.properties">
       <div class="document-container">
         <div class="document-title">
-          {{ currentDocument.properties.name }}
+          <v-layout>
+            <v-btn icon @click="toggleTitle()">
+              <v-icon v-if="editTitle">mdi-content-save</v-icon>
+              <v-icon v-else>mdi-pencil</v-icon>
+            </v-btn>
+            <v-text-field v-if="editTitle" single-line v-model="currentDocument.properties.name" label="title"></v-text-field>
+            <span v-else>{{ currentDocument.properties.name }}</span>
+          </v-layout>
+          
         </div>
         <div class="document-source">
           Created {{ publishedDate() }} ago,
@@ -221,22 +231,24 @@ import StarterKit from '@tiptap/starter-kit';
 import { BubbleMenu, Editor, EditorContent, FloatingMenu, Node } from '@tiptap/vue-2';
 import simplebar from 'simplebar-vue';
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
-import { IImportPlugin } from '../..';
+import { IImportPlugin, suggestion } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
 import { DocDatasource, GraphDocument, ITool } from './../../';
 import Commands from './plugins/commands/commands';
 import commandSuggestion from './plugins/commands/commands-suggestion';
-import ElementCardExtension from './plugins/element-card-extension';
-import ParagraphExtension from './plugins/paragraph-extension';
-import SnippetList from './plugins/snippet-list.vue';
-import SuggestionList from './plugins/text-entity-suggestion/suggestion-list.vue';
-import suggestion from './plugins/text-entity-suggestion/suggestion';
+import ElementCardExtension from './nodes/element-card/element-card-extension';
+
+import ParagraphExtension from './nodes/node-paragraph/paragraph-extension';
+import ElementPropertyExtension from './nodes/element-property/element-property-extension';
+
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
+
 
 import ActionList from './plugins/text-action/text-action-list.vue';
 import textAction from './plugins/text-action/text-action';
 
-import TextExtension from './plugins/text-extension';
-import { TextMention } from './plugins/text-mention';
+import TextExtension from './nodes/text-entity/text-extension';
 import SelectionPopup from './selection-popup.vue';
 
 
@@ -246,10 +258,8 @@ import SelectionPopup from './selection-popup.vue';
     EditorContent,
     BubbleMenu,
     FloatingMenu,
-    SimpleRelationLineSection,
-    SuggestionList,
+    SimpleRelationLineSection,    
     ActionList,
-    SnippetList,
     // EditorMenuBubble,
     SelectionPopup,
   },
@@ -274,6 +284,13 @@ export default class DocumentViewer extends WidgetBase {
     return ((this.widget?.options) as any).hideHeader || false;
   }
 
+  public toggleTitle() {
+    this.editTitle = !this.editTitle;
+    if (!this.editTitle && this.source && this.currentDocument) {
+      this.source.saveNode(this.currentDocument);
+    }
+  }
+
   @Prop()
   public content?: any;
   @Ref()
@@ -290,6 +307,7 @@ export default class DocumentViewer extends WidgetBase {
   public isLoading?: boolean;
   public showPopup = true;
   public extendedToolbar = false;
+  public editTitle = false;
   // public document?: GraphDocument;
   public node?: Node;
   // v-if="selectionTo !== undefined && selectionFrom !== undefined"
@@ -306,8 +324,6 @@ export default class DocumentViewer extends WidgetBase {
     this.editor.chain().focus().setTextEntity({ spacy_label: this.entityBubbleSelection?.type }).run();
     this.syncDocumentState();
     DocUtils.syncEntities(this.currentDocument, this.source, this.currentDocument.properties?.doc?.content, true);
-
-    // alert(this.entityBubbleSelection?.title);
   }
 
   public setEditorMode(mode: string) {
@@ -315,8 +331,7 @@ export default class DocumentViewer extends WidgetBase {
     if (this.editor) {
       this.editor!.setEditable(mode === 'EDIT');
     }
-    this.$forceUpdate();
-    // this.currentDocument!.properties!.edit_mode = mode;
+    this.$forceUpdate();    
   }
 
   public setElementCard() {
@@ -339,22 +354,8 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    this.editor.chain().focus().toggleNodeParagraph().run();
-    // this.syncDocumentState();
-    // this.source.syncEntities(
-    //   this.currentDocument,
-    //   this.currentDocument.doc.content,
-    //   true
-    // );
-
-    // alert(this.entityBubbleSelection?.title);
+    this.editor.chain().focus().toggleNodeParagraph().run();    
   }
-
-  // public get document(): GraphDocument | undefined {
-  //   if (this.currentDocument) {
-  //     return this.currentDocument;
-  //   }
-  // }
 
   public updateContextMenu() {
     this.contextMenuitems = [];
@@ -394,19 +395,6 @@ export default class DocumentViewer extends WidgetBase {
     this.syncDocumentState();
     DocUtils.syncEntities(this.currentDocument, this.source, this.currentDocument.properties?.doc?.content, true);
   }
-
-  // public setTextParagraph() {
-  //   if (!this.currentDocument || !this.editor) {
-  //     return;
-  //   }
-  //   this.editor.chain().focus().setTextParagraph().run();
-  //   this.syncDocumentState();
-  //   this.source.syncEntities(
-  //     this.currentDocument,
-  //     this.currentDocument.doc.content,
-  //     true
-  //   );
-  // }
 
   public beforeDestroy() {
     if (!this.editor) {
@@ -493,14 +481,6 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-   
-
-    
-    // this.highlight = new Highlight({
-    //   disableRegex: false,
-    //   // entities: this.currentDocument?.entities
-    // });
-
     if (this.editor && destroy) {
       this.editor.destroy();
       this.source.editor = undefined;
@@ -515,19 +495,20 @@ export default class DocumentViewer extends WidgetBase {
           Dropcursor,
           ParagraphExtension,
           ElementCardExtension,
+          ElementPropertyExtension,
+          TaskList,
+          TaskItem,
           Highlight,
           Placeholder,
           Commands.configure({
             commandSuggestion,
           }),
           Mention.extend({
+            document: this.currentDocument,
             name: 'text-action'}).configure({
               suggestion: textAction
             }),
-              TextMention.configure({
-            // renderLabel: (props) => {
-            //   return 'text-entity'
-            // },
+          Mention.configure({            
             HTMLAttributes: {
               class: 'text-entity',
               name: 'text-entity',
@@ -535,25 +516,8 @@ export default class DocumentViewer extends WidgetBase {
             suggestion,
           }),
         ],
-        onTransaction({ transaction }) {
-          //  transaction.
-          //   if (transaction.steps) {
-          //       for (const step of transaction.steps) {
-          //         console.log(step);
-          //       }
-          //   }
-          //   console.log(transaction);
-          // debugger;
-        },
-        // content: `
-        //   <p>
-        //     This is still the text editor you’re used to, but enriched with node views.
-        //   </p>
-        //   <text-entity id="Q1773">component 1</text-entity>
-        //   <p>
-        //     Did you see that? That’s a Vue component. We are really living in the future.
-        //   </p>
-        // `,
+        onTransaction({ transaction }) {          
+        },        
         content: this.currentDocument?.properties?.doc,
         editable: true,
         editorProps: {
@@ -581,7 +545,7 @@ export default class DocumentViewer extends WidgetBase {
           type: 'doc',
           content: [
             {
-              type: 'paragraph',
+              type: 'node-paragraph',
               content: [
                 {
                   type: 'text',
@@ -596,24 +560,7 @@ export default class DocumentViewer extends WidgetBase {
       
       this.state.element = doc;
 
-      this.loaded = true;
-
-      // this.source.activateDocument(doc).then(() => {
-      //   this.widget.options!.title = doc.name;
-      //   if (this.currentDocument) {
-      //     // this.source?.openDocumentDetails(this.currentDocument, false);
-      //     if (this.currentDocument._entities) {
-      //       for (const ent of this.currentDocument._entities) {
-      //         if (ent._node) {
-      //           // ent._node._included = true;
-      //         }
-      //       }
-      //     }
-
-      //     this.loaded = true;
-      //     this.busManager.subscribe(this.source!.bus, 'document-entities', () => {});
-      //   }
-      // });
+      this.loaded = true;      
     }
   }
 
@@ -656,16 +603,6 @@ export default class DocumentViewer extends WidgetBase {
       DocUtils.syncEntities(this.currentDocument, this.source, this.currentDocument.properties?.doc.content, false);
       if (!this.editor) {
         this.updateEditor();
-      }
-
-      if (this.currentDocument.properties?.doc) {
-        // this.currentDocument.properties.doc = JSON.parse(
-        // JSON.stringify(this.currentDocument.properties.doc, (key, value: any) => {
-        //   if (value === null) {
-        //     return undefined;
-        //   }
-        //   return value;
-        // }))
       }
 
       this.editor?.chain().clearContent().setContent(this.currentDocument.properties?.doc, false).run();
@@ -1157,6 +1094,33 @@ export default class DocumentViewer extends WidgetBase {
   }
 }
 </script>
+
+
+<style lang="scss">
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+
+    > label {
+      flex: 0 0 auto;
+      margin-right: 0.5rem;
+      user-select: none;
+    }
+
+    > div {
+      flex: 1 1 auto;
+    }
+  }
+
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+}
+</style>
 
 <style>
 .document-container {
