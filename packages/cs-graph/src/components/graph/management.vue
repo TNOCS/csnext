@@ -189,8 +189,14 @@ export default class Management extends WidgetBase {
 
   public importkg() {
     if (!this.source) { return; }
-    // $cs.triggerFileUpload()
-    alert('import');
+    $cs.triggerFileUpload('.json').then(async f => {
+      if (f && f.has("file")) {
+          const storage = f?.get("file") as File;
+          const d = JSON.parse(await storage.text());
+          $cs.triggerNotification({ title: 'Uploaded', color: 'green', text: 'Uploaded Knowledge Graph, processing ... ', icon: 'mdi-upload' });                    
+      }                 
+    })
+    
   }
 
   private isSelected(db: any) {
