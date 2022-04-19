@@ -17,14 +17,13 @@ export * from './filters/cross-graph-options';
 export * from './components/data-grid/cards/element-card-manager';
 export * from './utils/doc-utils';
 export * from './utils/cache-requests';
-export * from './components/document/plugins/text-mention';
 export * from './utils/graph-utils';
 export * from "./components/search/search-manager";
 export * from './classes/tool';
 export * from './components/element/element-actions'
 
-import TextExtension from './components/document/plugins/text-extension';
-import ParagraphExtension from './components/document/plugins/paragraph-extension';
+import TextExtension from './components/document/nodes/text-entity/text-extension';
+import ParagraphExtension from './components/document/nodes/node-paragraph/paragraph-extension';
 import suggestion from './components/document/plugins/text-entity-suggestion/suggestion';
 
 
