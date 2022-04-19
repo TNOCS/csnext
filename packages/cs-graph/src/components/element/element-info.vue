@@ -36,53 +36,56 @@
         <v-icon>mdi-folder-outline</v-icon>
       </v-btn>
 
-      <v-btn icon @click="deleteNode()">
+      <!-- <v-btn icon @click="deleteNode()">
         <v-icon>mdi-delete</v-icon>
       </v-btn>
 
       <v-btn icon @click="editFeatureType()">
         <v-icon>mdi-pencil</v-icon>
-      </v-btn>
+      </v-btn> -->
 
       <!-- <v-btn icon @click="toggleBookmark()">
         <v-icon>mdi-bookmark</v-icon>
       </v-btn> -->
 
-      <v-btn icon @click="graphNode()">
+      <!-- <v-btn icon @click="graphNode()">
         <v-icon>mdi-scatter-plot</v-icon>
-      </v-btn>
+      </v-btn> -->
 
-<v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn depressed v-bind="attrs" icon elevation="0" v-on="on" @click="openContextMenu()">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-           <v-list>
-      <v-list-group v-for="(item, i) in contextMenuitems" :key="i" v-model="item.active" :prepend-icon="item.icon" no-action @click="callContextAction(item)">
-        <template v-slot:appendIcon>
-          <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
-          <span v-else></span>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn depressed v-bind="attrs" icon elevation="0" v-on="on" @click="openContextMenu()">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
         </template>
-        <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title :color="item.color" v-text="item.title"></v-list-item-title>
-          </v-list-item-content>
-        </template>
-        <template v-if="item.items">
-          <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
-            <v-list-item-content>
-              <v-list-item-title v-text="subItem.title"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-list-group>
-    </v-list>
-</v-menu>
-
-
-
-      
+        <v-list>
+          <v-list-group
+            v-for="(item, i) in contextMenuitems"
+            :key="i"
+            v-model="item.active"
+            :prepend-icon="item.icon"
+            no-action
+            @click="callContextAction(item)"
+          >
+            <template v-slot:appendIcon>
+              <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
+              <span v-else></span>
+            </template>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title :color="item.color" v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <template v-if="item.items">
+              <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
+                <v-list-item-content>
+                  <v-list-item-title v-text="subItem.title"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+          </v-list-group>
+        </v-list>
+      </v-menu>
 
       <template v-slot:extension>
         <v-tabs v-model="tab" class="elevation-2">
@@ -282,9 +285,8 @@ export default class ElementInfo extends WidgetBase {
   private specialTab: VueComponent | null = null;
   private elementInfoTab = 'eitab';
 
-  
   public showContextMenu = false;
-  public contextMenuitems :IMenu[] = [];
+  public contextMenuitems: IMenu[] = [];
 
   @Ref('docWidget')
   private docWidget: HTMLElement | null = null;
@@ -297,8 +299,6 @@ export default class ElementInfo extends WidgetBase {
   constructor() {
     super();
   }
-
-  
 
   @Watch('tab')
   public updateTab() {
@@ -319,14 +319,14 @@ export default class ElementInfo extends WidgetBase {
     }
   }
 
-
   public openContextMenu(e) {
-    if (!this.activeElement || !this.dataSource) { return; }
-    this.showContextMenu = true;    
-    this.contextMenuitems = ElementActions.getElementActions(this.activeElement, this.dataSource, undefined, (i,m) => {      
-      this.$forceUpdate();      
+    if (!this.activeElement || !this.dataSource) {
+      return;
+    }
+    this.showContextMenu = true;
+    this.contextMenuitems = ElementActions.getElementActions(this.activeElement, this.dataSource, undefined, (i, m) => {
+      this.$forceUpdate();
     });
-
   }
 
   public async callContextAction(i: IMenu) {
@@ -334,7 +334,6 @@ export default class ElementInfo extends WidgetBase {
     if (i.action && typeof i.action === 'function') {
       await i.action(i);
     }
-    ;
   }
 
   public setLegend(p: any) {
@@ -650,7 +649,7 @@ export default class ElementInfo extends WidgetBase {
         }
       });
 
-      this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {        
+      this.busManager.subscribe(this.dataSource.bus, 'element', (a: string, data: GraphElement) => {
         this.activeElement = data;
         if (a === 'edit-element') {
           this.tab = 'tab-EDITOR';
