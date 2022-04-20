@@ -20,7 +20,7 @@
           max-width="48"
           style="float: left; margin-right: 10px"
         ></v-img
-        >{{ props.item.title }}</span
+        >{{ props.item.properties.name }}</span
       >
     </template>
   </v-combobox>

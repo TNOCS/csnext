@@ -3,17 +3,18 @@
     <v-btn v-if="params.options.canDelete" small icon @click.stop="deleteRow"
       ><v-icon>mdi-delete</v-icon></v-btn
     >
-    <v-btn v-if="params.options.canGraph" small icon @click.stop="graphRow"
+    <!-- <v-btn v-if="params.options.canGraph" small icon @click.stop="graphRow"
       ><v-icon>mdi-scatter-plot</v-icon></v-btn
-    >
-    <v-btn v-if="params.options.canEdit" small icon @click.stop="editRow"
+    > -->
+    <!-- v-if="params.options.canEdit" -->
+    <v-btn  small icon @click.stop="editRow"
       ><v-icon>mdi-pencil</v-icon></v-btn
     >
   </v-layout>
 </template>
 <script lang="ts">
-import { GraphElement, PropertyValueType } from "@csnext/cs-data";
-import Vue, { VNode, CreateElement } from "vue";
+import { GraphElement } from "@csnext/cs-data";
+import Vue, {  } from "vue";
 import { Component } from "vue-property-decorator";
 
 @Component({
