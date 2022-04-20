@@ -2,8 +2,8 @@
   <div class="data-grid-component" v-if="source">
     <v-layout class="ma-4" v-if="!options.hideHeader">
       <div v-if="featureType" class="data-grid-title">
-        <span v-if="featureType.icon" class="mr-4"
-          ><v-icon>{{ featureType.icon }}</v-icon></span
+        <v-btn icon @click="toggleSettings()" v-if="featureType.icon" class="mr-4"
+          ><v-icon>{{ featureType.icon }}</v-icon></v-btn
         >{{ $cs.Translate(options.title) }}<span v-if="filterTitle"> : {{ filterTitle }}</span>
       </div>
 
@@ -15,7 +15,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)" >
+          <v-list-item v-for="(item, index) in classTypes" :key="index" @click="addEntity(item)">
             <v-list-item-icon
               ><v-icon>{{ item.icon }}</v-icon></v-list-item-icon
             >
@@ -34,6 +34,17 @@
         <v-icon>mdi-plus</v-icon>
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
+      <template v-if="options.defaultView == 'table'">
+        <v-btn v-if="selectedElements" depressed class="ml-4" elevation="0" @click="deleteSelection()">
+          <v-icon>mdi-delete</v-icon>
+          {{ selectedElements.length }}
+        </v-btn>
+
+        <v-btn v-if="selectedElements" depressed class="ml-4" elevation="0" @click="unselectAll()">
+          <v-icon>mdi-select</v-icon>
+          {{ selectedElements.length }}
+        </v-btn>
+      </template>
       <template v-if="options.defaultView == 'kanban' && options.kanbanOptions.columnPropertySelection">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -87,8 +98,6 @@
         </v-menu>
       </template>
 
-     
-
       <v-btn v-if="options.defaultView == 'tree' && options.relationToggle" class="ml-2" @click="linkAll()" elevation="0">
         <v-icon>mdi-checkbox-multiple-marked-circle-outline</v-icon>
         <!-- {{ $cs.Translate('LINK_ALL') }} -->
@@ -128,6 +137,9 @@
       <div class="grid-action-buttons">
         <v-btn v-if="options.canSearch && !searchEnabled" @click="openSearch()" tile icon class="grid-action-button">
           <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+        <v-btn @click="toggleSettings()" tile icon class="grid-action-button">
+          <v-icon>mdi-tune</v-icon>
         </v-btn>
       </div>
 
@@ -229,380 +241,434 @@
       </v-list>
     </v-menu> -->
     </v-layout>
-    <div class="grid-component-content" :class="'splitview-' + options.splitView">
-      <template v-if="options.defaultView === 'list'">
-        <v-virtual-scroll v-if="items" :items="items" :item-height="60" clientHeight="100%">
-          <template v-slot="{ item }">
-            <v-list-item @click="selectEntity(item)" class="drag-element" :data-elementid="item.id" @contextmenu="openContextMenu">
-              <v-list-item-avatar>
-                <v-avatar :color="getColor(item)" size="56" class="white--text">
-                  <v-icon v-if="item._featureType.icon">{{ item._featureType.icon }}</v-icon>
-                  <!-- {{ item.initials }} -->
-                </v-avatar>
-              </v-list-item-avatar>
 
-              <v-list-item-content>
-                <v-list-item-title>{{ item.properties.name }}</v-list-item-title>
-                <!-- {{ item.score }} -->
-                <v-list-item-subtitle v-if="item._featureType && item._featureType.descriptiveProperties">
-                  <prop-value v-for="(p, pi) of item._featureType.descriptiveProperties" :key="pi" :value="item.properties[p]" :prop="p" :source="source" :element="item"></prop-value>                  
-                </v-list-item-subtitle>
-                <v-list-item-subtitle v-else-if="item._featureType">
-                  {{ item._featureType.title }}                  
-                </v-list-item-subtitle>
-              </v-list-item-content>
+    <v-container fluid class="align-start px-0 d-flex flex-row grid-component-content" :class="'splitview-' + options.splitView">
+      <v-navigation-drawer v-model="settingsOpen" class="mr-2" hide-overlay :width="settingsOpen ? 256 : 0">
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-icon>mdi-tune</v-icon>
+          </v-list-item-avatar>
 
-              <v-list-item-action>
-                <v-layout>
-                  <!-- <v-btn @click.stop="showInfo(item.item)" icon>
+          <v-list-item-content>
+            <v-list-item-title>{{ $cs.Translate('SETTINGS') }}</v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-btn icon @click="toggleSettings()"><v-icon>mdi-close</v-icon></v-btn>
+          </v-list-item-action>
+        </v-list-item>
+
+        <v-divider></v-divider>
+        <v-btn @click="exportCsv()" depressed class="ma-2" icon>
+          <v-icon>mdi-file-export</v-icon>
+        </v-btn>
+        <v-divider></v-divider>
+        <v-expansion-panels multiple>
+          <v-expansion-panel v-for="(fp, ifp) in filterPanels" :key="ifp">
+            <v-expansion-panel-header>{{ fp.title }}</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-container v-if="fp.propertyType">
+                <template v-if="fp.propertyType.type === 'options'" v-for="(option, i) in fp.propertyType.options">
+                  <v-checkbox :key="i" :label="option" :value="option" multiple v-model="fp.selectedOptions"></v-checkbox>
+                </template>
+                {{ fp.selectedOptions }}
+              </v-container>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-navigation-drawer>
+      <div class="grow full-height">
+        <template v-if="options.defaultView === 'list'">
+          <v-virtual-scroll v-if="items" :items="items" :item-height="60" clientHeight="100%">
+            <template v-slot="{ item }">
+              <v-list-item @click="selectEntity(item)" class="drag-element" :data-elementid="item.id" @contextmenu="openContextMenu">
+                <v-list-item-avatar>
+                  <v-avatar :color="getColor(item)" size="56" class="white--text">
+                    <v-icon v-if="item._featureType.icon">{{ item._featureType.icon }}</v-icon>
+                    <!-- {{ item.initials }} -->
+                  </v-avatar>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.properties.name }}</v-list-item-title>
+                  <!-- {{ item.score }} -->
+                  <v-list-item-subtitle v-if="item._featureType && item._featureType.descriptiveProperties">
+                    <prop-value
+                      v-for="(p, pi) of item._featureType.descriptiveProperties"
+                      :key="pi"
+                      :value="item.properties[p]"
+                      :prop="p"
+                      :source="source"
+                      :element="item"
+                    ></prop-value>
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-else-if="item._featureType">
+                    {{ item._featureType.title }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-action>
+                  <v-layout>
+                    <!-- <v-btn @click.stop="showInfo(item.item)" icon>
                   <v-icon color="darken-4">mdi-information-outline</v-icon>
                 </v-btn>
                 <v-btn @click.stop="toggleInclude(item.item)" icon>
                   <v-icon color="darken-4">mdi-scatter-plot</v-icon>
                 </v-btn> -->
-                </v-layout>
-              </v-list-item-action>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
-      </template>
-      <template v-if="options.defaultView === 'table'">
-        <div style="display: flex; flex-direction: row; height: 100%">
-          <ag-grid-vue
-            class="table-grid"
-            :class="{
-              'ag-theme-alpine-dark': $cs.project.theme.dark,
-              'ag-theme-alpine': !$cs.project.theme.dark,
-            }"
-            :columnDefs="columnDefs"
-            :defaultColDef="defaultColDef"
-            :rowData="rowData"
-            rowSelection="single"                        
-            @selection-changed="onGridSelection"
-            @cell-value-changed="onCellValueChanged"
-            @grid-ready="onGridReady"
-          >
-          </ag-grid-vue>
-        </div>
-      </template>
-
-      <template v-if="options.defaultView === 'cards'">
-        <simplebar class="full-widget">
-          <isotope :options="getIsoOptions()" ref="iso" :list="items" class="isotope-grid">
-            <template v-for="(element, indx) of items">
-              <v-card
-                :key="indx"
-                class="entity-card"
-                :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
-                @click="selectEntityCard(element)"
-                :data-elementid="element.id"
-                @contextmenu="openContextMenu"
-              >
-                <component :is="getElementCard(element)" :source="source" :element="element"></component>
-              </v-card>
+                  </v-layout>
+                </v-list-item-action>
+              </v-list-item>
             </template>
-          </isotope>
-        </simplebar>
-      </template>
+          </v-virtual-scroll>
+        </template>
+        <template v-if="options.defaultView === 'table'">
+          <div style="display: flex; flex-direction: row; width: 100%; height: 100%">
+            <ag-grid-vue
+              class="table-grid"
+              :class="{
+                'ag-theme-alpine-dark': $cs.project.theme.dark,
+                'ag-theme-alpine': !$cs.project.theme.dark,
+              }"
+              :columnDefs="columnDefs"
+              :defaultColDef="defaultColDef"
+              :rowData="rowData"
+              rowSelection="multiple"
+              :checkboxSelection="true"
+              @selection-changed="onGridSelection"
+              @cell-value-changed="onCellValueChanged"
+              @grid-ready="onGridReady"
+            >
+            </ag-grid-vue>
+          </div>
+        </template>
 
-      <template v-if="options.defaultView === 'grid'">
-        <simplebar class="full-widget grid-view">
-          <v-row>
-            <v-col v-for="(element, indx) of items" :cols="options.gridOptions.cols" :key="indx">
-              <div :data-elementid="element.id" @contextmenu="openContextMenu">
-              <media-element  v-if="options.gridOptions.display === 'media'" :element="element" :source="source" :gridOptions="options.gridOptions"></media-element>
-              <v-card
-                v-else
-                class="entity-card"
-                :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
-                @click="selectEntityCard(element)"
-                :data-elementid="element.id"
-                @contextmenu="openContextMenu"
-              >
-                <component :is="getElementCard(element)" :source="source" :element="element"></component>
-              </v-card>
-              </div>
-            </v-col>
-          </v-row>
-        </simplebar>
-      </template>
+        <template v-if="options.defaultView === 'cards'">
+          <simplebar class="full-widget">
+            <isotope :options="getIsoOptions()" ref="iso" :list="items" class="isotope-grid">
+              <template v-for="(element, indx) of items">
+                <v-card
+                  :key="indx"
+                  class="entity-card"
+                  :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
+                  @click="selectEntityCard(element)"
+                  :data-elementid="element.id"
+                  @contextmenu="openContextMenu"
+                >
+                  <component :is="getElementCard(element)" :source="source" :element="element"></component>
+                </v-card>
+              </template>
+            </isotope>
+          </simplebar>
+        </template>
 
-      <template v-if="options.defaultView === 'news'">
-        <!-- <v-virtual-scroll
+        <template v-if="options.defaultView === 'grid'">
+          <simplebar class="full-widget grid-view">
+            <v-row>
+              <v-col v-for="(element, indx) of items" :cols="options.gridOptions.cols" :key="indx">
+                <div :data-elementid="element.id" @contextmenu="openContextMenu">
+                  <media-element
+                    v-if="options.gridOptions.display === 'media'"
+                    :element="element"
+                    :source="source"
+                    :gridOptions="options.gridOptions"
+                  ></media-element>
+                  <v-card
+                    v-else
+                    class="entity-card"
+                    :class="[element.properties.value_type, element.properties.layout, 'class-' + element.classId]"
+                    @click="selectEntityCard(element)"
+                    :data-elementid="element.id"
+                    @contextmenu="openContextMenu"
+                  >
+                    <component :is="getElementCard(element)" :source="source" :element="element"></component>
+                  </v-card>
+                </div>
+              </v-col>
+            </v-row>
+          </simplebar>
+        </template>
+
+        <template v-if="options.defaultView === 'news'">
+          <!-- <v-virtual-scroll
         :bench="10"
         :items="items"
         height="300"
         item-height="64"
       > -->
 
-        <v-virtual-scroll v-if="items" :items="items" :item-height="options.newsOptions.itemHeight" clientHeight="100%">
-          <template v-slot="{ item }">
-            <div :data-elementid="item.id" @contextmenu="openContextMenu">
-            <component v-if="source.newsCardSelector" :is="source.newsCardSelector(item)" :element="item"  :source="source"></component>
-            <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(item, true)" :data-elementid="item.id" >
-              <v-list-item-content>
-                <div
-                  class="text-overline mb-4"
-                  v-if="options.newsOptions.sourceElement && item._elements.hasOwnProperty(options.newsOptions.sourceElement)"
-                >
-                  {{ item._elements[options.newsOptions.sourceElement].properties.name }}
-                </div>
-                <v-list-item-title class="text-h5 mb-1">
-                  {{ item.properties.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
-                  <span class="source-property" v-if="item.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
-                    item.properties[options.newsOptions.sourceProperty]
-                  }}</span>
-                  {{ item.properties.description }}</v-list-item-subtitle
-                >
-              </v-list-item-content>
-              <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
+          <v-virtual-scroll v-if="items" :items="items" :item-height="options.newsOptions.itemHeight" clientHeight="100%">
+            <template v-slot="{ item }">
+              <div :data-elementid="item.id" @contextmenu="openContextMenu">
+                <component v-if="source.newsCardSelector" :is="source.newsCardSelector(item)" :element="item" :source="source"></component>
+                <v-list-item v-else :key="indx" three-line class="news-card" @click="selectEntityCard(item, true)" :data-elementid="item.id">
+                  <v-list-item-content>
+                    <div
+                      class="text-overline mb-4"
+                      v-if="options.newsOptions.sourceElement && item._elements.hasOwnProperty(options.newsOptions.sourceElement)"
+                    >
+                      {{ item._elements[options.newsOptions.sourceElement].properties.name }}
+                    </div>
+                    <v-list-item-title class="text-h5 mb-1">
+                      {{ item.properties.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle v-if="options.newsOptions.sourceProperty">
+                      <span class="source-property" v-if="item.properties.hasOwnProperty(options.newsOptions.sourceProperty)">{{
+                        item.properties[options.newsOptions.sourceProperty]
+                      }}</span>
+                      {{ item.properties.description }}</v-list-item-subtitle
+                    >
+                  </v-list-item-content>
+                  <!-- <v-list-item-avatar v-if="element.properties.image" tile size="50">
               <v-img class="feed-image" :src="element.properties.image"></v-img>
             </v-list-item-avatar> -->
-            </v-list-item>
-            </div>
-          </template>
-        </v-virtual-scroll>
+                </v-list-item>
+              </div>
+            </template>
+          </v-virtual-scroll>
 
-        <!-- </v-virtual-scroll> -->
-      </template>
+          <!-- </v-virtual-scroll> -->
+        </template>
 
-      <template v-if="options.defaultView === 'kanban'">
-        <simplebar class="full-widget">
-          <v-layout v-if="kanbanColumns" class="kanban-board">
-            <v-menu
-              v-model="showKanbanContextmenu"
-              :position-x="contextMenuX"
-              :position-y="contextMenuY"
-              absolute
-              :close-on-content-click="false"
-              offset-y
-            >
-              <v-list>
-                <v-list-group
-                  v-for="(item, i) in kanbanMenuItems"
-                  :key="i"
-                  v-model="item.active"
-                  :prepend-icon="item.icon"
-                  no-action
-                  @click="item.action"
-                >
-                  <template v-slot:appendIcon>
-                    <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
-                    <span v-else></span>
-                  </template>
-                  <template v-slot:activator>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.title"></v-list-item-title>
-                    </v-list-item-content>
-                  </template>
-                  <template v-if="item.items">
-                  <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="subItem.title"></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-                  </template>
-                </v-list-group>
-              </v-list>
-            </v-menu>
-
-            <v-card
-              v-for="column in kanbanColumns"
-              :key="column.title"
-              outlined
-              class="kanban-column"
-              :data-prop="column.prop"
-              :style="getKanbanColumnStyle(column)"
-            >
-              <v-layout class="kanban-column-header" :class="{ 'kanban-column-rotated': column.collapsed }">
-                <v-btn icon @click="toggleKanbanColumn(column)"
-                  ><v-icon v-if="column.collapsed">mdi-chevron-down</v-icon><v-icon v-else>mdi-chevron-right</v-icon></v-btn
-                >
-                <span class="kanban-column-title">{{ column.title }}</span>
-                <v-spacer v-if="!column.collapsed" />
-                <v-icon>mdi-card-multiple-outline</v-icon><span class="kanban-column-header-indicator">{{ column.elements.length }}</span>
-                <v-btn v-if="!column.collapsed && options.canAdd" icon @click="addKanbanColumnElement(column)"><v-icon>mdi-plus</v-icon></v-btn>
-              </v-layout>
-              <v-card class="kanban-card ma-2 primary pa-3" outlined v-if="column.newCard && !column.collapsed">
-                <v-text-field
-                  :id="'input-column-' + column.prop"
-                  v-model="column.newTitle"
-                  solo
-                  clearable
-                  label="name"
-                  @keydown.enter="createKanbanItem(column, $event)"
-                ></v-text-field>
-                <v-layout>
-                  <v-btn outlined @click="removeKanbanColumnElement(column)"><v-icon>mdi-delete</v-icon></v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn class="ml-4" @click="createKanbanItem(column)"><v-icon>mdi-plus</v-icon>create</v-btn>
-                </v-layout>
-              </v-card>
-              <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-              <draggable
-                class="kanban-column-items"
-                v-if="!column.collapsed"
-                :list="column.elements"
-                :animation="200"
-                ghost-class="ghost-card"
-                group="kanban"
-                @end="movedKanbanCard"
+        <template v-if="options.defaultView === 'kanban'">
+          <simplebar class="full-widget">
+            <v-layout v-if="kanbanColumns" class="kanban-board">
+              <v-menu
+                v-model="showKanbanContextmenu"
+                :position-x="contextMenuX"
+                :position-y="contextMenuY"
+                absolute
+                :close-on-content-click="false"
+                offset-y
               >
-                <v-card
-                  class="kanban-card"
-                  outlined
-                  :style="getKanbanCardStyle(element)"
-                  v-for="element in column.elements"
-                  :key="element.id"
-                  @click="selectEntityCard(element)"
-                  :data-elementid="element.id"
-                  @contextmenu="showKanbanMenu"
-                >
-                  <component v-if="options.kanbanOptions.componentView" :is="getElementCard(element)" :source="source" :element="element"></component>
-                  <span v-else>{{ element.properties.name }}</span>
+                <v-list>
+                  <v-list-group
+                    v-for="(item, i) in kanbanMenuItems"
+                    :key="i"
+                    v-model="item.active"
+                    :prepend-icon="item.icon"
+                    no-action
+                    @click="item.action"
+                  >
+                    <template v-slot:appendIcon>
+                      <span v-if="item.items && item.items.length > 0">{{ item.items.length }}</span>
+                      <span v-else></span>
+                    </template>
+                    <template v-slot:activator>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="item.title"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                    <template v-if="item.items">
+                      <v-list-item v-for="(subItem, si) in item.items" :key="si" :prepend-icon="subItem.icon" @click="subItem.action">
+                        <v-list-item-content>
+                          <v-list-item-title v-text="subItem.title"></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-list-group>
+                </v-list>
+              </v-menu>
+
+              <v-card
+                v-for="column in kanbanColumns"
+                :key="column.title"
+                outlined
+                class="kanban-column"
+                :data-prop="column.prop"
+                :style="getKanbanColumnStyle(column)"
+              >
+                <v-layout class="kanban-column-header" :class="{ 'kanban-column-rotated': column.collapsed }">
+                  <v-btn icon @click="toggleKanbanColumn(column)"
+                    ><v-icon v-if="column.collapsed">mdi-chevron-down</v-icon><v-icon v-else>mdi-chevron-right</v-icon></v-btn
+                  >
+                  <span class="kanban-column-title">{{ column.title }}</span>
+                  <v-spacer v-if="!column.collapsed" />
+                  <v-icon>mdi-card-multiple-outline</v-icon><span class="kanban-column-header-indicator">{{ column.elements.length }}</span>
+                  <v-btn v-if="!column.collapsed && options.canAdd" icon @click="addKanbanColumnElement(column)"><v-icon>mdi-plus</v-icon></v-btn>
+                </v-layout>
+                <v-card class="kanban-card ma-2 primary pa-3" outlined v-if="column.newCard && !column.collapsed">
+                  <v-text-field
+                    :id="'input-column-' + column.prop"
+                    v-model="column.newTitle"
+                    solo
+                    clearable
+                    label="name"
+                    @keydown.enter="createKanbanItem(column, $event)"
+                  ></v-text-field>
+                  <v-layout>
+                    <v-btn outlined @click="removeKanbanColumnElement(column)"><v-icon>mdi-delete</v-icon></v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="ml-4" @click="createKanbanItem(column)"><v-icon>mdi-plus</v-icon>create</v-btn>
+                  </v-layout>
                 </v-card>
-                <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
-                <!-- <task-card
+                <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
+                <draggable
+                  class="kanban-column-items"
+                  v-if="!column.collapsed"
+                  :list="column.elements"
+                  :animation="200"
+                  ghost-class="ghost-card"
+                  group="kanban"
+                  @end="movedKanbanCard"
+                >
+                  <v-card
+                    class="kanban-card"
+                    outlined
+                    :style="getKanbanCardStyle(element)"
+                    v-for="element in column.elements"
+                    :key="element.id"
+                    @click="selectEntityCard(element)"
+                    :data-elementid="element.id"
+                    @contextmenu="showKanbanMenu"
+                  >
+                    <component
+                      v-if="options.kanbanOptions.componentView"
+                      :is="getElementCard(element)"
+                      :source="source"
+                      :element="element"
+                    ></component>
+                    <span v-else>{{ element.properties.name }}</span>
+                  </v-card>
+                  <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
+                  <!-- <task-card
               v-for="(task) in column.tasks"
               :key="task.id"
               :task="task"
               class="mt-3 cursor-move"
             ></task-card> -->
-                <!-- </transition-group> -->
-              </draggable>
-            </v-card>
-          </v-layout>
-        </simplebar>
-      </template>
+                  <!-- </transition-group> -->
+                </draggable>
+              </v-card>
+            </v-layout>
+          </simplebar>
+        </template>
 
-      <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">timeline vertical</div>
+        <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">timeline vertical</div>
 
-      <div class="calendar-view" v-if="options.defaultView === 'calendar'">
-        <v-toolbar flat>
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="prev">
-            <v-icon small>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="next">
-            <v-icon small>mdi-chevron-right</v-icon>
-          </v-btn>
-          <v-toolbar-title v-if="$refs.calendar">
-            {{ $refs.calendar.title }}
-          </v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-menu bottom right>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
-                <span>{{ typeToLabel[options.calendarOptions.type] }}</span>
-                <v-icon right>mdi-expand-more</v-icon>
-              </v-btn>
+        <div class="calendar-view" v-if="options.defaultView === 'calendar'">
+          <v-toolbar flat>
+            <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
+            <v-btn fab text small color="grey darken-2" @click="prev">
+              <v-icon small>mdi-chevron-left</v-icon>
+            </v-btn>
+            <v-btn fab text small color="grey darken-2" @click="next">
+              <v-icon small>mdi-chevron-right</v-icon>
+            </v-btn>
+            <v-toolbar-title v-if="$refs.calendar">
+              {{ $refs.calendar.title }}
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu bottom right>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
+                  <span>{{ typeToLabel[options.calendarOptions.type] }}</span>
+                  <v-icon right>mdi-expand-more</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click="options.calendarOptions.type = 'day'">
+                  <v-list-item-title>Day</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="options.calendarOptions.type = 'week'">
+                  <v-list-item-title>Week</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="options.calendarOptions.type = 'month'">
+                  <v-list-item-title>Month</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="options.calendarOptions.type = '4day'">
+                  <v-list-item-title>4 days</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-toolbar>
+          <v-calendar
+            v-if="options.calendarOptions"
+            ref="calendar"
+            v-model="focus"
+            color="primary"
+            event-timed="timed"
+            :events="items"
+            event-name="id"
+            event-start="_startDate"
+            event-stop="_endDate"
+            @click:date="viewDay"
+            @click:event="clickCalendarItem"
+            :type="options.calendarOptions.type"
+          >
+            <template v-slot:event="{ event }">
+              {{ event.properties.name }}
             </template>
-            <v-list>
-              <v-list-item @click="options.calendarOptions.type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="options.calendarOptions.type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="options.calendarOptions.type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="options.calendarOptions.type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-toolbar>
-        <v-calendar
-          v-if="options.calendarOptions"
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          event-timed="timed"
-          :events="items"
-          event-name="id"
-          event-start="_startDate"
-          event-stop="_endDate"
-          @click:date="viewDay"
-          @click:event="clickCalendarItem"
-          :type="options.calendarOptions.type"
-        >
-          <template v-slot:event="{ event }">
-            {{ event.properties.name }}
-          </template>
-        </v-calendar>
-        <!-- :events="items" -->
-        <!-- @click:event="showEvent"
+          </v-calendar>
+          <!-- :events="items" -->
+          <!-- @click:event="showEvent"
           @click:more="viewDay"
           
           @change="updateRange" -->
-      </div>
-      <template v-if="options.defaultView === 'tree'">
-        <simplebar class="full-widget">
-          <v-treeview
-            v-model="selectedTree"
-            return-object
-            open-on-click
-            ref="treeView"
-            selection-type="independent"
-            :items="treeItems"
-            activatable            
-            @input="openTreeItem()"
-            @click="selectTableItem(item.entity)"
-          >
-            <!-- selectable
+        </div>
+        <template v-if="options.defaultView === 'tree'">
+          <simplebar class="full-widget">
+            <v-treeview
+              v-model="selectedTree"
+              return-object
+              open-on-click
+              ref="treeView"
+              selection-type="independent"
+              :items="treeItems"
+              activatable
+              @input="openTreeItem()"
+              @click="selectTableItem(item.entity)"
+            >
+              <!-- selectable
           selection-type="leaf" -->
-            <template v-slot:append="{ item }">
-              <v-layout>
-                <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"><v-icon>mdi-delete</v-icon></v-btn>
-                <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
-                <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"><v-icon>mdi-scatter-plot</v-icon></v-btn>
-                <v-menu offset-y v-if="options.defaultView === 'tree'">
-                  <template v-slot:activator="{ on }">
-                    <v-btn v-on="on" icon><v-icon>mdi-plus</v-icon></v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item v-for="(itemtype, index) in classTypes" :key="index" @click.stop="addChildEntity(itemtype, item.entity)">
-                      <v-list-item-title>{{ itemtype.title }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-layout>
-            </template>
-            <template v-slot:label="{ item }">
-              <span v-if="options.relationToggle">
-                <v-btn icon @click.stop="toggleLinked(item.entity)">
-                  <v-icon v-if="item.entity._isLinked">mdi-check-circle-outline</v-icon>
+              <template v-slot:append="{ item }">
+                <v-layout>
+                  <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"><v-icon>mdi-delete</v-icon></v-btn>
+                  <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
+                  <!-- <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"><v-icon>mdi-scatter-plot</v-icon></v-btn> -->
+                  <v-menu offset-y v-if="options.defaultView === 'tree'">
+                    <template v-slot:activator="{ on }">
+                      <v-btn v-on="on" icon><v-icon>mdi-plus</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item v-for="(itemtype, index) in classTypes" :key="index" @click.stop="addChildEntity(itemtype, item.entity)">
+                        <v-list-item-title>{{ itemtype.title }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-layout>
+              </template>
+              <template v-slot:label="{ item }">
+                <span v-if="options.relationToggle">
+                  <v-btn icon @click.stop="toggleLinked(item.entity)">
+                    <v-icon v-if="item.entity._isLinked">mdi-check-circle-outline</v-icon>
+                    <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
+                  </v-btn>
+                  <v-btn v-if="item.entity._isLinked" icon @click.stop="selectTableItem(item.entity._isLinked)">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </span>
+                <v-btn icon @click.stop="toggleCheckbox(item.entity)" v-if="options.checkboxProperty">
+                  {{ item.entity[options.checkboxProperty] }}
+                  <v-icon v-if="item.entity.properties[options.checkboxProperty]">mdi-check-circle-outline</v-icon>
                   <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
                 </v-btn>
-                <v-btn v-if="item.entity._isLinked" icon @click.stop="selectTableItem(item.entity._isLinked)">
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </span>
-              <v-btn icon @click.stop="toggleCheckbox(item.entity)" v-if="options.checkboxProperty">
-                {{ item.entity[options.checkboxProperty] }}
-                <v-icon v-if="item.entity.properties[options.checkboxProperty]">mdi-check-circle-outline</v-icon>
-                <v-icon v-else>mdi-checkbox-blank-circle-outline</v-icon>
-              </v-btn>
-              <span @click="selectTableItem(item.entity)">
-                {{ item.entity.properties.name }}
-              </span>
-              <!-- </v-btn> :value="item.entity._isLinked !== undefined" class="mt-3 ml-3 pa-0" :label="item.name"></v-checkbox> -->
-              <!-- {{ item.entity._isLinked !== undefined}} -->
-              <!-- <span class="tree-item-label" @click="selectEntity(item.entity)">{{item.name}}</span> -->
-              <!-- <v-btn>{{ item.name }}</v-btn> -->
-              <!-- <v-icon v-if="!item.file">
+                <span @click="selectTableItem(item.entity)">
+                  {{ item.entity.properties.name }}
+                </span>
+                <!-- </v-btn> :value="item.entity._isLinked !== undefined" class="mt-3 ml-3 pa-0" :label="item.name"></v-checkbox> -->
+                <!-- {{ item.entity._isLinked !== undefined}} -->
+                <!-- <span class="tree-item-label" @click="selectEntity(item.entity)">{{item.name}}</span> -->
+                <!-- <v-btn>{{ item.name }}</v-btn> -->
+                <!-- <v-icon v-if="!item.file">
               {{ open ? "mdi-folder-open" : "mdi-folder" }}
             </v-icon>
             <v-icon v-else>
               {{ files[item.file] }}
             </v-icon> -->
-            </template>
-          </v-treeview>
-        </simplebar>
-      </template>
+              </template>
+            </v-treeview>
+          </simplebar>
+        </template>
+      </div>
 
       <cs-widget v-if="options.splitWidget" :widget="options.splitWidget"></cs-widget>
 
@@ -614,7 +680,7 @@
     :source="rows"
     :columns="columns"
   ></v-grid> -->
-    </div>
+    </v-container>
     <element-context-menu
       @listUpdated="updateEntities(true)"
       @itemUpdated="updateEntities(true)"
@@ -783,6 +849,8 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 }
 
 .grid-action-buttons {
+  display: flex;
+  flex-flow: row;
   border-right-style: solid;
   border-right-width: 1px;
   border-right-color: lightgray;
@@ -878,7 +946,6 @@ import { Component, Ref, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
 import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
 
-
 // import { FeatureType } from "../../classes";
 import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import moment from 'moment';
@@ -913,7 +980,7 @@ import GridPropValue from './table/grid-prop-value';
 import OptionsCellEditor from './table/options-cell-editor.vue';
 import NodeLinkCellEditor from './table/node-link-cell-editor.vue';
 import OptionsFilter from './table/options-filter.vue';
-
+import Papa from 'papaparse';
 
 export class KanBanColumn {
   title?: string;
@@ -923,6 +990,12 @@ export class KanBanColumn {
   collapsed?: boolean;
   newCard?: boolean;
   newTitle?: string;
+}
+
+export class FilterPanel {
+  title?: string;
+  propertyType?: PropertyType;
+  selectedOptions?: string[];
 }
 
 @Component({
@@ -938,7 +1011,7 @@ export class KanBanColumn {
     AgGridVue,
     simplebar,
     DataInfoPanel,
-    NodeLink,    
+    NodeLink,
     MediaElement,
     isotope,
     draggable,
@@ -950,6 +1023,7 @@ export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
   public featureType: FeatureType | null = null;
   public activeElement: GraphElement | null = null;
+  public selectedElements: GraphElement[] | null = null;
   public potentialProperties: { [key: string]: PropertyType } = {};
   public sort: PropertyType | null = null;
   public group: PropertyType | undefined | null = null;
@@ -961,6 +1035,8 @@ export default class ElementDataGrid extends WidgetBase {
   public localPreset?: FilterGraphElement;
   public focus = '';
   public search: string = '';
+  public filterPanels: FilterPanel[] = [];
+  public settingsOpen?: boolean = false;
   public selectedTree?: any = [];
   public items: GraphElement[] | undefined = []; // this.generateFakeDataRows(100);
   @Ref('iso')
@@ -1015,6 +1091,20 @@ export default class ElementDataGrid extends WidgetBase {
 
   public isLinked(element: GraphElement) {
     return true;
+  }
+
+  private updateFilterPanels() {
+    this.filterPanels.splice(0, this.filterPanels.length);
+    if (this.featureType?.properties) {
+      this.filterProperties = this.featureType.properties.filter((p) => p.type === PropertyValueType.options);
+      this.filterProperties.forEach((p) => {
+        const panel = new FilterPanel();
+        panel.title = p.label;
+        panel.propertyType = p;
+        panel.selectedOptions = [];
+        this.filterPanels.push(panel);
+      });
+    }
   }
 
   private openContextMenu(e: any) {
@@ -1099,8 +1189,17 @@ export default class ElementDataGrid extends WidgetBase {
       return;
     }
     const rows = this.gridApi.getSelectedRows();
+    this.selectedElements = [];
+    if (!rows) {
+      return;
+    }
     if (rows.length === 1) {
       this.selectEntity(rows[0]);
+    }
+    if (rows.length > 0) {
+      for (const row of rows) {
+        this.selectedElements.push(row);
+      }
     }
   }
 
@@ -1263,6 +1362,52 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+  public exportCsv() {
+    if (!this.source || !this.items) {
+      return;
+    }
+    // const csv = this.source.exportCsv();
+    const exportItems: any[] = [];
+    for (const i of this.items) {
+      let flat = GraphElement.getFlat(i);
+      if (!flat.properties) { return; }
+      delete flat.properties.id;
+      delete flat.properties.classId;
+      let id = flat.id;
+      let classId = flat.classId;
+      if (i._featureType?.properties) {
+        for (const pt of i._featureType.properties) {
+          if (pt.required && pt.key) {
+            if (pt.type === PropertyValueType.relation) {
+              if (i._outgoing) {
+                const rel = i._outgoing.filter((r) => r.classId === pt.relation!.type);
+                if (!rel || rel.length === 0) {
+                  flat.properties[pt.key] = flat.properties[pt.key]?.id;
+                } else {
+                  flat.properties[pt.key] = rel.map((r) => r.to?.properties?.name).join(',');
+                }
+              } else {
+                flat.properties[pt.key] = flat.properties[pt.key]?.id;
+              }
+            } else {
+              if (!flat.properties.hasOwnProperty(pt.key)) {
+                flat.properties[pt.key] = '';
+              }
+            }
+          }
+        }
+      }
+
+      exportItems.push({ ...{ id, classId }, ...flat.properties });
+    }
+
+    let data = Papa.unparse(exportItems, {
+      header: true,
+    });
+
+    $cs.triggerFileDownload(this.options?.defaultView, data, 'applications/csv');
+  }
+
   public get splitWidgetLayout(): any {
     if (this.options.splitView) {
       switch (this.options.splitView) {
@@ -1289,6 +1434,13 @@ export default class ElementDataGrid extends WidgetBase {
   public updateSearchFilter() {
     this.updateEntities(true);
     this.$forceUpdate();
+  }
+
+  public toggleSettings() {
+    this.settingsOpen = !this.settingsOpen;
+    if (this.settingsOpen) {
+      this.updateFilterPanels();
+    }
   }
 
   public openSearch() {
@@ -1431,6 +1583,24 @@ export default class ElementDataGrid extends WidgetBase {
     this.$forceUpdate();
   }
 
+  public unselectAll() {
+    if (this.gridApi) {
+      this.gridApi.deselectAll();
+    }
+  }
+
+  public deleteSelection() {
+    $cs.triggerYesNoQuestionDialog('Delete selected items?', 'Are you sure you want to delete the selected items?').then(async (s: string) => {
+      if (this.source && s === 'YES' && this.selectedElements) {
+        for (const el of this.selectedElements) {
+          await this.source.removeNodeById(el.id!);
+        }
+        this.updateEntities(true);
+        // this.source?.deleteSelection();
+      }
+    });
+  }
+
   public updateHeaders() {
     if (!this.featureType?.properties || !this.options?.tableOptions) {
       return;
@@ -1525,7 +1695,7 @@ export default class ElementDataGrid extends WidgetBase {
         this.columnDefs.push(column);
       }
     }
-    if (this.options.canDelete || this.options.canGraph) {
+    if (this.options.canDelete || this.options.canEdit) {
       this.columnDefs.push({
         floatingFilter: false,
         sortable: false,
@@ -1533,9 +1703,9 @@ export default class ElementDataGrid extends WidgetBase {
         cellRenderer: 'grid-row-actions',
         cellRendererParams: {
           options: this.options,
-          graphNode: (row: GraphElement) => {
-            this.graphNode(row);
-          },
+          // graphNode: (row: GraphElement) => {
+          //   this.graphNode(row);
+          // },
           editNode: (row: GraphElement) => {
             this.editNode(row);
           },
@@ -1619,6 +1789,8 @@ export default class ElementDataGrid extends WidgetBase {
 
   public async addChildEntity(type: FeatureType, parent?: GraphElement) {
     await this.addEntity(type, parent);
+    this.updateEntities(true);
+    this.$forceUpdate();
   }
 
   public async addEntity(type: FeatureType, parent?: GraphElement, properties?: any) {
@@ -1709,7 +1881,9 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public editEntity(element: GraphElement) {
-    if (!this.source) { return; }
+    if (!this.source) {
+      return;
+    }
     this.source.startEditElement(element);
   }
 
@@ -2109,16 +2283,13 @@ export default class ElementDataGrid extends WidgetBase {
     };
 
     if (this.source && this.options.nodeRules) {
-      
-      this.localPreset = { classId: 'graph_preset', properties: { graphLayout: { nodeRules: this.options.nodeRules }}} as FilterGraphElement;
-      this.source.applyGraphPresetRules(this.localPreset as FilterGraphElement, this.options.nodeRules);      
+      this.localPreset = { classId: 'graph_preset', properties: { graphLayout: { nodeRules: this.options.nodeRules } } } as FilterGraphElement;
+      this.source.applyGraphPresetRules(this.localPreset as FilterGraphElement, this.options.nodeRules);
       this.items = this.localPreset._visibleNodes;
       filterItems();
       this.update();
       this.$forceUpdate();
       return;
-
-
     }
 
     if (this.source && this.options?.preset && this.options.syncMode === 'follow') {
@@ -2338,6 +2509,9 @@ export default class ElementDataGrid extends WidgetBase {
     }
 
     this.update();
+    if (this.options.defaultView === 'table') {
+      this.onGridSelection();
+    }
     this.$forceUpdate();
   }
 
@@ -2388,7 +2562,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.update();
     this.registerWidgetConfig();
 
-    if (this.source?.events) {      
+    if (this.source?.events) {
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED) {
           this.updateEntities(true);
@@ -2409,6 +2583,8 @@ export default class ElementDataGrid extends WidgetBase {
         // this.options.defaultView = GridView.table;
       }
 
+      this.updateFilterPanels();
+
       // let selectionSizePlugin = new Plugin({
       //   view(editorView) {
       //     return new SelectionSizeTooltip(editorView);
@@ -2425,6 +2601,9 @@ export default class ElementDataGrid extends WidgetBase {
     if (element.properties && element.properties.hasTimeseries) {
       return ElementCardManager.cards['indicator'];
     }
+    if (ElementCardManager.cards?.hasOwnProperty('node')) {
+      return ElementCardManager.cards['node'];
+    }
     return 'default-element-card';
   }
 
@@ -2437,12 +2616,18 @@ export default class ElementDataGrid extends WidgetBase {
       data: {
         title: 'Element data grid',
       },
-      options: { ...(this.widget.options || {}), ...{ nodeRules: [
-        {
-          type: 'ELEMENT',
-          elementIds: (this.items) ? this.items.map((i) => i.id) : []
-        }
-      ]}, hideHeader: true } as DataGridOptions,
+      options: {
+        ...(this.widget.options || {}),
+        ...{
+          nodeRules: [
+            {
+              type: 'ELEMENT',
+              elementIds: this.items ? this.items.map((i) => i.id) : [],
+            },
+          ],
+        },
+        hideHeader: true,
+      } as DataGridOptions,
     };
     this.source.addSlideConfig(w);
   }
