@@ -35,14 +35,18 @@
         {{ $cs.Translate('NEW_ITEM') }}
       </v-btn>
       <template v-if="options.defaultView == 'table'">
-        <v-btn v-if="selectedElements" depressed class="ml-4" elevation="0" @click="deleteSelection()">
+        <v-btn v-if="selectedElements && selectedElements.length>0" depressed class="ml-4" elevation="0" @click="deleteSelection()">
           <v-icon>mdi-delete</v-icon>
           {{ selectedElements.length }}
         </v-btn>
 
-        <v-btn v-if="selectedElements" depressed class="ml-4" elevation="0" @click="unselectAll()">
+        <v-btn v-if="selectedElements && selectedElements.length>0" depressed class="ml-4" elevation="0" @click="unselectAll()">
           <v-icon>mdi-select</v-icon>
           {{ selectedElements.length }}
+        </v-btn>
+
+        <v-btn v-if="selectedElements && selectedElements.length < items.length" depressed class="ml-4" elevation="0" @click="selectAll()">
+          <v-icon>mdi-check-all</v-icon>          
         </v-btn>
       </template>
       <template v-if="options.defaultView == 'kanban' && options.kanbanOptions.columnPropertySelection">
@@ -1023,7 +1027,7 @@ export default class ElementDataGrid extends WidgetBase {
   public toggle_view = 0;
   public featureType: FeatureType | null = null;
   public activeElement: GraphElement | null = null;
-  public selectedElements: GraphElement[] | null = null;
+  public selectedElements: GraphElement[] = [];
   public potentialProperties: { [key: string]: PropertyType } = {};
   public sort: PropertyType | null = null;
   public group: PropertyType | undefined | null = null;
@@ -1589,13 +1593,21 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+  public selectAll() {
+    if (this.gridApi) {
+      this.gridApi.selectAll();
+    }
+  }
+
   public deleteSelection() {
     $cs.triggerYesNoQuestionDialog('Delete selected items?', 'Are you sure you want to delete the selected items?').then(async (s: string) => {
       if (this.source && s === 'YES' && this.selectedElements) {
+        const count = this.selectedElements.length;
         for (const el of this.selectedElements) {
-          await this.source.removeNodeById(el.id!);
+          await this.removeEntity(el, true, false);          
         }
         this.updateEntities(true);
+        $cs.triggerNotification({ title: 'Selected deleted', text: `${count} items deleted` });
         // this.source?.deleteSelection();
       }
     });
@@ -1887,7 +1899,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.source.startEditElement(element);
   }
 
-  public removeEntity(entity: GraphElement) {
+  public removeEntity(entity: GraphElement, relations = true, notify = true) {
     if (!this.source) {
       return;
     }
@@ -1895,7 +1907,7 @@ export default class ElementDataGrid extends WidgetBase {
       this.selectSplitWidget(undefined);
     }
     this.source
-      .removeNode(entity, true, true)
+      .removeNode(entity, relations, notify)
       .then((r) => {
         this.updateEntities(true);
 
