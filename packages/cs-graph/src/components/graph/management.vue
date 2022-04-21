@@ -134,7 +134,6 @@
 }
 </style>
 
-
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
@@ -172,31 +171,41 @@ export default class Management extends WidgetBase {
       this.source.openServerStorage();
     }
   }
-  
-  public downloadkg() {
+
+  public async downloadkg() {
     if (this.source) {
       const storage = DeviceStorage.getStorage(this.source);
       if (storage) {
-        $cs.triggerFileDownload('kg.json', JSON.stringify(storage), 'application/json').then(() => {
-          $cs.triggerNotification({ title: 'Downloaded', color: 'green', text: 'Downloaded Knowledge Graph', icon: 'mdi-download' });          
-        }).catch(()=> {
-          $cs.triggerNotification({ title: 'Error', color: 'red', text: 'Error downloading Knowledge Graph', icon: 'mdi-download' });          
-        })
+        try {
+          const name = await $cs.triggerInputDialog('Please enter a name for the file', 'file name', $cs.project?.title ?? 'kg');
+          if (name && name.length > 0) {
+            $cs
+              .triggerFileDownload(`${name}.json`, JSON.stringify(storage), 'application/json')
+              .then(() => {
+                $cs.triggerNotification({ title: 'Downloaded', color: 'green', text: 'Downloaded Knowledge Graph', icon: 'mdi-download' });
+              })
+              .catch(() => {
+                $cs.triggerNotification({ title: 'Error', color: 'red', text: 'Error downloading Knowledge Graph', icon: 'mdi-download' });
+              });
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
     }
-
   }
 
   public importkg() {
-    if (!this.source) { return; }
-    $cs.triggerFileUpload('.json').then(async f => {
-      if (f && f.has("file")) {
-          const storage = f?.get("file") as File;
-          const d = JSON.parse(await storage.text());
-          $cs.triggerNotification({ title: 'Uploaded', color: 'green', text: 'Uploaded Knowledge Graph, processing ... ', icon: 'mdi-upload' });                    
-      }                 
-    })
-    
+    if (!this.source) {
+      return;
+    }
+    $cs.triggerFileUpload('.json').then(async (f) => {
+      if (f && f.has('file')) {
+        const storage = f?.get('file') as File;
+        const d = JSON.parse(await storage.text());
+        $cs.triggerNotification({ title: 'Uploaded', color: 'green', text: 'Uploaded Knowledge Graph, processing ... ', icon: 'mdi-upload' });
+      }
+    });
   }
 
   private isSelected(db: any) {
@@ -285,7 +294,7 @@ export default class Management extends WidgetBase {
 
     // open file picker
     try {
-      const handle = await this.getFileHandle();      
+      const handle = await this.getFileHandle();
       if (this.source && handle) {
         await this.source.openDeviceStorage(handle);
       }
