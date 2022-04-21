@@ -74,7 +74,11 @@
           </v-layout>
         </template>
         <v-spacer></v-spacer>
-        <v-switch v-model="currentDocument.properties.hide_unknowns"> </v-switch>
+        <!-- <v-switch v-model="currentDocument.properties.hide_unknowns"> </v-switch> -->
+
+        <v-btn icon @click="selectDocumentTool(tool)" v-for="tool in documentToolsMenu" :key="tool.id">
+          <v-icon>{{ tool.icon }}</v-icon>
+        </v-btn>
         <v-btn @click="startMenu = !startMenu" icon>
           <v-icon>mdi-import</v-icon>
         </v-btn>
@@ -90,7 +94,9 @@
           <v-slide-group show-arrows>
             <v-btn-toggle dense group>
               <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
-              <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"><v-icon>mdi-pencil</v-icon></v-btn>
+              <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"
+                ><v-icon>mdi-pencil</v-icon></v-btn
+              >
               <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn>
               <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
                 ><v-icon>mdi-format-paragraph</v-icon></v-btn
@@ -144,8 +150,6 @@
               </v-btn>
               <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
               <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
-
-              
             </v-btn-toggle>
           </v-slide-group>
         </div>
@@ -165,7 +169,6 @@
             <v-text-field v-if="editTitle" single-line v-model="currentDocument.properties.name" label="title"></v-text-field>
             <span v-else>{{ currentDocument.properties.name }}</span>
           </v-layout>
-          
         </div>
         <div class="document-source">
           Created {{ publishedDate() }} ago,
@@ -224,7 +227,7 @@ import { WidgetBase } from '@csnext/cs-client';
 import { DateUtils, FeatureType, TextEntity } from '@csnext/cs-data';
 import { SimpleRelationLineSection } from '@csnext/cs-map';
 import Dropcursor from '@tiptap/extension-dropcursor';
-import Mention from "@tiptap/extension-mention";
+import Mention from '@tiptap/extension-mention';
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
@@ -241,16 +244,15 @@ import ElementCardExtension from './nodes/element-card/element-card-extension';
 import ParagraphExtension from './nodes/node-paragraph/paragraph-extension';
 import ElementPropertyExtension from './nodes/element-property/element-property-extension';
 
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
-
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
 
 import ActionList from './plugins/text-action/text-action-list.vue';
 import textAction from './plugins/text-action/text-action';
 
 import TextExtension from './nodes/text-entity/text-extension';
 import SelectionPopup from './selection-popup.vue';
-
+import { IMenu } from '@csnext/cs-core';
 
 @Component({
   components: {
@@ -258,7 +260,7 @@ import SelectionPopup from './selection-popup.vue';
     EditorContent,
     BubbleMenu,
     FloatingMenu,
-    SimpleRelationLineSection,    
+    SimpleRelationLineSection,
     ActionList,
     // EditorMenuBubble,
     SelectionPopup,
@@ -273,6 +275,7 @@ export default class DocumentViewer extends WidgetBase {
 
   public dragInitialized = false;
   public contextMenuitems: any[] = [];
+  public documentToolsMenu: IMenu[] = [];
 
   public set editor(value: Editor | undefined | null) {
     if (this.source) {
@@ -281,13 +284,36 @@ export default class DocumentViewer extends WidgetBase {
   }
 
   public get hideHeader(): boolean {
-    return ((this.widget?.options) as any).hideHeader || false;
+    return (this.widget?.options as any).hideHeader || false;
   }
 
   public toggleTitle() {
     this.editTitle = !this.editTitle;
     if (!this.editTitle && this.source && this.currentDocument) {
       this.source.saveNode(this.currentDocument);
+    }
+  }
+
+  public async selectDocumentTool(tool: IMenu) {
+    if (tool.action && this.currentDocument) {
+      await tool.action(tool);
+    }
+  }
+
+  public updateDocumentActions() {
+    if (!this.source?.tools || !this.currentDocument) {
+      return;
+    }
+    this.documentToolsMenu.splice(0, this.documentToolsMenu.length);
+    for (const tool of this.source.tools) {      
+      if (tool.documentActions && typeof tool.documentActions === 'function') {
+        let actions = tool.documentActions(this.currentDocument);
+        if (actions) {
+          for (const mi of actions) {
+            this.documentToolsMenu.push(mi);
+          }
+        }
+      }
     }
   }
 
@@ -331,7 +357,7 @@ export default class DocumentViewer extends WidgetBase {
     if (this.editor) {
       this.editor!.setEditable(mode === 'EDIT');
     }
-    this.$forceUpdate();    
+    this.$forceUpdate();
   }
 
   public setElementCard() {
@@ -354,7 +380,7 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
 
-    this.editor.chain().focus().toggleNodeParagraph().run();    
+    this.editor.chain().focus().toggleNodeParagraph().run();
   }
 
   public updateContextMenu() {
@@ -469,10 +495,10 @@ export default class DocumentViewer extends WidgetBase {
 
   public updateStartMenu() {
     if (!this.currentDocument?.properties?.doc) {
-        this.startMenu = true;
-      } else {
-        this.startMenu = false;
-      }
+      this.startMenu = true;
+    } else {
+      this.startMenu = false;
+    }
   }
 
   public updateEditor(destroy = true) {
@@ -486,7 +512,6 @@ export default class DocumentViewer extends WidgetBase {
       this.source.editor = undefined;
     }
     if (!this.editor) {
-      
       this.editor = new Editor({
         extensions: [
           StarterKit,
@@ -505,10 +530,11 @@ export default class DocumentViewer extends WidgetBase {
           }),
           Mention.extend({
             document: this.currentDocument,
-            name: 'text-action'}).configure({
-              suggestion: textAction
-            }),
-          Mention.configure({            
+            name: 'text-action',
+          }).configure({
+            suggestion: textAction,
+          }),
+          Mention.configure({
             HTMLAttributes: {
               class: 'text-entity',
               name: 'text-entity',
@@ -516,8 +542,7 @@ export default class DocumentViewer extends WidgetBase {
             suggestion,
           }),
         ],
-        onTransaction({ transaction }) {          
-        },        
+        onTransaction({ transaction }) {},
         content: this.currentDocument?.properties?.doc,
         editable: true,
         editorProps: {
@@ -557,10 +582,10 @@ export default class DocumentViewer extends WidgetBase {
         };
       }
       this.currentDocument = doc;
-      
+
       this.state.element = doc;
 
-      this.loaded = true;      
+      this.loaded = true;
     }
   }
 
@@ -685,7 +710,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     plugin
       .callImport(this.currentDocument, this.source)
-      .then((r) => {        
+      .then((r) => {
         this.updateContent();
       })
       .catch((e) => {})
@@ -887,6 +912,18 @@ export default class DocumentViewer extends WidgetBase {
       widget: this.widget,
       subtitle: 'Entity Recognition, Search, Linking, Geo/time recognition',
       image: 'images/entity_analysis.png',
+      documentActions: (e) => {
+        return [
+          {
+            icon: 'mdi-sim-outline',
+            title: 'Entity Recognition',
+            action: async () => {
+              this.updateEntityTypes();
+              await this.refresh();
+            },
+          },
+        ];
+      },
       action: async () => {
         try {
           this.updateEntityTypes();
@@ -897,55 +934,7 @@ export default class DocumentViewer extends WidgetBase {
         }
       },
     } as ITool);
-    this.source.addTool({
-      id: 'observation_extraction',
-      title: 'Observation Extraction',
-      subtitle: 'find observations',
-      widget: this.widget,
-      disabled: true,
-      // subtitle: 'Entity Recognition, Search, Linking',
-      // image: 'images/entity_analysis.png',
-      action: async () => {
-        try {
-          // await this.refresh();
-          this.updateEntityTypes();
-          return Promise.resolve(true);
-        } catch (e) {
-          return Promise.resolve(false);
-        }
-      },
-    } as ITool);
-    this.source.addTool({
-      id: 'geo_time_extraction',
-      title: 'Geo & time extraction',
-      subtitle: 'Recognize locations and time entities',
-      widget: this.widget,
-      disabled: true,
-      // subtitle: 'Entity Recognition, Search, Linking',
-      // image: 'images/entity_analysis.png',
-      action: async () => {
-        try {
-          await this.refresh();
-          return Promise.resolve(true);
-        } catch (e) {
-          return Promise.resolve(false);
-        }
-      },
-    } as ITool);
-    this.source.addTool({
-      id: 'language_detection',
-      title: 'Language Detection',
-      disabled: true,
-      widget: this.widget,
-      action: async () => {
-        try {
-          await this.refresh();
-          return Promise.resolve(true);
-        } catch (e) {
-          return Promise.resolve(false);
-        }
-      },
-    } as ITool);
+    this.updateDocumentActions();
   }
 
   initDragging() {
@@ -1095,9 +1084,8 @@ export default class DocumentViewer extends WidgetBase {
 }
 </script>
 
-
 <style lang="scss">
-ul[data-type="taskList"] {
+ul[data-type='taskList'] {
   list-style: none;
   padding: 0;
 
@@ -1116,7 +1104,7 @@ ul[data-type="taskList"] {
     }
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     cursor: pointer;
   }
 }
@@ -1358,3 +1346,7 @@ overflow-y: auto; */
   /* margin: 4px; */
 }
 </style>
+
+function async(arg0: (e: any) => { icon: string; title: string; action: any; }[]): (element:
+import("@csnext/cs-data").GraphElement<import("@csnext/cs-data").BaseElementProperties>) => import("@csnext/cs-core").IMenu[] { throw new
+Error('Function not implemented.'); }

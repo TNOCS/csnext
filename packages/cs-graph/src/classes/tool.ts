@@ -10,6 +10,7 @@ export interface ITool {
     component?: Component;
     disbled?: boolean;
     elementActions?: (element: GraphElement) => IMenu[] | undefined;
+    documentActions?: (element: GraphElement) => IMenu[] | undefined;
     busy?: boolean;
     widget?: IWidget;
     action?: () => Promise<boolean>;
