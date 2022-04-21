@@ -513,6 +513,8 @@ export class GraphDatasource extends DataSource {
         return (propVal !== undefined && propVal !== null);
       case 'not set':
         return (propVal === undefined || propVal === null);
+      case 'includes':
+        return propVal !== undefined && propVal.includes(propVal);
       default:
         console.log(`Unknown ValueOperatorType ${operator}`);
         return false;

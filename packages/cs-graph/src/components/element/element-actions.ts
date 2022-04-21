@@ -81,11 +81,8 @@ export class ElementActions {
             title: p.properties?.name,
             icon: p._featureType?.icon,
             action: async () => {
-                callAfter(i);
-              //   this.linkToTarget(p, 'supports');
-              // FilterGraphElement.addElementRule(p as FilterGraphElement, element);
-              // alert(`add to ${p.properties.name}`)
-            },
+              this.linkToTarget(element, p, 'supports', source);  
+              callAfter(i);           },
           });
         });
         console.log(targets);
@@ -124,22 +121,23 @@ export class ElementActions {
 
   }
 
-  //   public async linkToTarget(target: GraphElement, type: string) {
-  //     if (source && target.id && element.id)
-  //     {
-  //       const edge = {
-  //         fromId: element.id,
-  //         toId: target.id,
-  //         classId: 'LINKED_TO',
-  //         properties: {
-  //           "relation_type": type
-  //         }
-  //       } as GraphElement
-  //       try {
-  //         await source.addNewEdge(edge);
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
+    public static async linkToTarget(element: GraphElement, target: GraphElement, type: string, source: DocDatasource) {
+      if (source && target.id && element.id)
+      {
+        const edge = {
+          fromId: element.id,
+          toId: target.id,
+          classId: 'LINKED_TO',
+          properties: {
+            "relation_type": type
+          }
+        } as GraphElement
+        try {
+          await source.addNewEdge(edge);
+        } catch (e) {
+          console.error(e);
+        }
 
-  //     }
+      }
+    }
 }
