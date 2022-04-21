@@ -1,6 +1,6 @@
 import { PropertyType } from '../..';
 
-export type ValueOperatorType = ">" | ">=" | "<" | "<=" | "==" | "!=" | 'set' | 'not set';
+export type ValueOperatorType = ">" | ">=" | "<" | "<=" | "==" | "!=" | 'set' | 'not set' | 'includes';
 
 export class GraphFilter {
     public hasIncomingTypeRelation?: any;
@@ -18,6 +18,6 @@ export class GraphElementFilter {
 export class GraphPropertyFilter {
     public property?: any;
     public operator!: ValueOperatorType;
-    public value?: any;
+    public value?: any | any[];
     public _property?: PropertyType;
 }
