@@ -30,8 +30,8 @@
         "@turf/centroid": "^6.5.0",
         "@turf/length": "^6.5.0",
         "lodash": "4.17.21",
-        "mapbox-gl": "1.13.0",
-        "mapbox-gl-controls": "^1.6.5",
+        "mapbox-gl": "1.13.2",
+        "mapbox-gl-controls": "^1.8.0",
         "numeral": "^2.0.6",
         "@mapbox/mapbox-gl-draw": "1.2.2",
         "@mapbox/mapbox-gl-geocoder": "^4.7.4",
@@ -39,17 +39,17 @@
     },
     "devDependencies": {
         "@types/geojson": "^7946.0.7",
-        "@types/lodash": "4.14.177",
-        "@types/mapbox-gl": "^1.13.2",
+        "@types/lodash": "4.14.182",
+        "@types/mapbox-gl": "^1.13.3",
+        "@types/osmtogeojson": "^2.2.30",
         "@types/polylabel": "^1.0.5",
         "@types/turf": "^3.5.32",
-        "vue-template-compiler": "2.6.14",
-        "@types/osmtogeojson": "2.2.29"
+        "vue-template-compiler": "2.6.14"
     },
     "peerDependencies": {
-        "vega": "^5.17.0",
-        "vega-embed": "^6.13.0",
-        "vega-lite": "^4.17.0",
+        "vega": "^5.22.1",
+        "vega-embed": "^6.20.8",
+        "vega-lite": "^5.2.0",
         "osmtogeojson": "^3.0.0-beta.4"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"

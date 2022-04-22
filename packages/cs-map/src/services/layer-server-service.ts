@@ -14,10 +14,11 @@ import {
 } from '..';
 import axios from 'axios';
 import { DataSource, FeatureTypes } from '@csnext/cs-data';
+import { Socket } from 'socket.io-client';
 
 export class LayerServerService implements ILayerService, IStartStopService {
 
-    public get socket(): SocketIOClient.Socket | undefined {
+    public get socket(): Socket | undefined {
         if (this.manager && this.manager.MapWidget) {
             return this.manager.MapWidget.$cs.socket;
         }

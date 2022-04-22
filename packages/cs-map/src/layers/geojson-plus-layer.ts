@@ -41,7 +41,7 @@ export class GeojsonPlusLayer extends GeojsonLayer implements IMapLayer {
     public iconZoomLevel?: number;
     public isEditable?: boolean;
     public isLive?: boolean;
-    public socketEmitters: { [key: string]: SocketIOClient.Emitter } = {};
+    // public socketEmitters: { [key: string]: SocketIOClient.Emitter } = {};
     public type?: 'poi';
     public bookmarks: mapboxgl.MapboxGeoJSONFeature[] = [];
     public featureTypes?: FeatureTypes;
