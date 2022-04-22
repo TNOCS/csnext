@@ -29,7 +29,7 @@ import {
 import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
-import { Socket } from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
