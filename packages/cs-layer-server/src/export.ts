@@ -144,17 +144,14 @@ export class NestServer {
                     this.app.setBaseViewsDir(indexDirectory);
                     this.app.setViewEngine('html');
                     this.app.engine('html', require('hbs').__express);
+                    Logger.log(`HBS index directory: '${indexDirectory}'`, 'cs-server');
                 }
-                Logger.log(`Static hosting is available at '${host}:${port}${this.config.staticPath}'.`, 'cs-server');
             }
 
             this.initOpenApi(swaggerConfig, title);
 
             await this.app.listen(port, host, () => {
                 this.app.useWebSocketAdapter(new WsAdapter());
-
-                
-
                 // this.app.useStaticAssets(join(__dirname, '..', 'dashboard'));
                 Logger.log(`Server is listening on port ${port}.`, 'cs-server');
                 Logger.log(`Swagger documentation is available at '${host}:${port}/api'.`, 'cs-server');
