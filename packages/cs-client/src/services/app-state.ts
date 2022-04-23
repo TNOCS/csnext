@@ -29,7 +29,7 @@ import {
 import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
@@ -95,7 +95,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public socket?: SocketIOClient.Socket;
+  public socket?: Socket;
   /** Manages active project */
   // public projectManager?: ProjectManager;
   /** Logger */
@@ -191,7 +191,7 @@ export class AppState extends AppStateBase {
     ) {
       this.socket = io(this.project.server.socketServerUrl, {});
 
-      this.socket.on('connect', (e) => {
+      this.socket.on('connect', () => {
         this.bus.publish(
           AppState.SOCKET,
           AppState.SOCKET_CONNECTED,
