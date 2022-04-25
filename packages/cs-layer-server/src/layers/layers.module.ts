@@ -6,8 +6,7 @@ import { FeatureController, SourceController, TypesController } from '../export'
 
 @Module({
   controllers: [LayerController, FeatureController, SourceController, TypesController ],
-  providers: [LayerService],
-  imports: [LayerService],
-  exports: [LayerService]
+  providers: [LayerService, DefaultWebSocketGateway],
+  exports: [LayerService, DefaultWebSocketGateway]
 })
 export class LayersModule {}

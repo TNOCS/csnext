@@ -1,10 +1,9 @@
-import { Req, Request, Get, Controller, Query, Inject, Render, Param, Post, Body, Logger } from '@nestjs/common';
+import { Req, Request, Get, Controller, Query, Inject, Render, Param, Post, Body, Logger, forwardRef, Optional } from '@nestjs/common';
 import { LayerDefinition } from '../classes';
 import { Link } from './databases/link';
 import { LayerService } from '../layers/layers.service';
 import { GraphService } from './graph.service';
 const simplify = require('simplify-geojson');
-import { Injectable, Module } from '@nestjs/common';
 import { parse, stringify } from 'wellknown';
 import { etl } from './etl';
 
@@ -14,8 +13,8 @@ import { FeatureType, FeatureTypes, GraphElement, SearchResult } from '@csnext/c
 import { DefaultWebSocketGateway, FilesService, OfflineService } from '../export';
 import * as turf from '@turf/turf';
 import { idGenerator } from '@csnext/cs-core';
-import type { OverpassJson } from "overpass-ts";
-import { overpass } from "overpass-ts";
+import type { OverpassJson } from 'overpass-ts';
+import { overpass } from 'overpass-ts';
 import { IAllOptions } from './databases/database';
 
 @ApiTags()
@@ -24,11 +23,11 @@ export class GraphController {
   private variables: { [key: string]: string } = {};
 
   constructor(
-    @Inject('DB') public readonly graph: GraphService,
-    @Inject('LayerService') private layerService: LayerService,
-    @Inject('FilesService') private filesService: FilesService,
-    @Inject('OfflineService') private offlineService: OfflineService,
-    @Inject('DefaultWebSocketGateway') private readonly socket: DefaultWebSocketGateway
+    @Optional() @Inject(forwardRef(() => 'DB')) public readonly graph: GraphService,
+    @Inject(forwardRef(() => LayerService)) private layerService: LayerService,
+    @Inject(forwardRef(() => FilesService)) private filesService: FilesService,
+    @Inject(forwardRef(() => OfflineService)) private offlineService: OfflineService,
+    @Inject(forwardRef(() => DefaultWebSocketGateway)) private readonly socket: DefaultWebSocketGateway
   ) {}
 
   public loadData(): Promise<any> {
@@ -247,7 +246,6 @@ export class GraphController {
         let edges: any[] = [];
         for (const s of all) {
           if (s.properties?.id && s.classId === shape) {
-
             const fc = this.graph.source!.getElementGeometry(s.properties);
 
             // if (node.properties.)
@@ -370,85 +368,75 @@ export class GraphController {
   checkGeoshapes(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       let res: { [id: string]: string } = {};
-      for (const node of Object.values(this.graph.source.graph)) {        
-          if (node.properties && node.properties.hasOwnProperty('geoshape')) {
-            if (node.properties.geoshape.length > 0 && !node.properties.shape) {
-              res[node.id] = node.properties.geoshape;
-              try {
-                let url = node.properties.geoshape.split('+').join('_');
-                // this.graph.init
+      for (const node of Object.values(this.graph.source.graph)) {
+        if (node.properties && node.properties.hasOwnProperty('geoshape')) {
+          if (node.properties.geoshape.length > 0 && !node.properties.shape) {
+            res[node.id] = node.properties.geoshape;
+            try {
+              let url = node.properties.geoshape.split('+').join('_');
+              // this.graph.init
 
-                // console.log(`url: ${url}`);
-                let file = await this.filesService.getUrl(url); //await etl.downloadFileCache(url, undefined, 5000);
-                if (file) {
-                  let shape = JSON.parse(file.toString('utf-8'));
+              // console.log(`url: ${url}`);
+              let file = await this.filesService.getUrl(url); //await etl.downloadFileCache(url, undefined, 5000);
+              if (file) {
+                let shape = JSON.parse(file.toString('utf-8'));
 
-                  
-
-                  if (shape?.data?.features) {
-                    try {
-                    let mgjs = new simplify(shape.data, 0.01);                    
+                if (shape?.data?.features) {
+                  try {
+                    let mgjs = new simplify(shape.data, 0.01);
                     for (const f of mgjs.features) {
                       f.properties = {};
                     }
-                    if (mgjs.features && mgjs.features.length>0) {
+                    if (mgjs.features && mgjs.features.length > 0) {
                       node.properties.coordinate = stringify(mgjs.features[0]);
                     }
                     console.log(mgjs.features.length);
-
 
                     // node.properties.coordinate = stringify(mgjs);
                   } catch (e) {
                     console.log(e);
                   }
-                    // node.properties.shape = mgjs;                    
-                    // console.log(JSON.stringify(shape.data).length + ' - ' + JSON.stringify(mgjs).length);
-                    // await this.graph.db?.store({
-                    //   type: 'n',
-                    //   document: node.properties,
-                    //   id: node.id,
-                    //   class: node.classId,
-                    // });
-                  }
-
-                  // await sleep(5000);
+                  // node.properties.shape = mgjs;
+                  // console.log(JSON.stringify(shape.data).length + ' - ' + JSON.stringify(mgjs).length);
+                  // await this.graph.db?.store({
+                  //   type: 'n',
+                  //   document: node.properties,
+                  //   id: node.id,
+                  //   class: node.classId,
+                  // });
                 }
-              } catch (e) {
-                console.log('here');
-                Logger.error(`Error downloading ${node.properties.geoshape}`);
+
+                // await sleep(5000);
               }
-            }
-          } 
-          else if (node.properties!.hasOwnProperty('coordinate')) {
-            // already coordinate, skip
-          }
-          else if (node.properties!.hasOwnProperty('openstreetmaprelationid') && (node.properties['openstreetmaprelationid'] !== undefined)) {
-            try { 
-              console.log(`${node.properties.name} - ${node.properties.id}`);
-              const url = `https://overpass-api.de/api/interpreter?data=[out:json]; rel(${node.properties['openstreetmaprelationid']}); out body;>;out skel qt;`;
-              if (url.indexOf('undefined') === -1) {
-                let file = await this.filesService.getUrl(url);           
-                if (file) {
-                  const rawJson = file.toString('utf-8');
-                  if (rawJson && rawJson.length>0) {
-                    let res = JSON.parse(rawJson);
-                  }
-                  // if (res.elements) { console.log(res.elements.length)}
-                }
-                console.log(url);
-            }
             } catch (e) {
-              console.log(e);
-
+              console.log('here');
+              Logger.error(`Error downloading ${node.properties.geoshape}`);
             }
-
-
-
+          }
+        } else if (node.properties!.hasOwnProperty('coordinate')) {
+          // already coordinate, skip
+        } else if (node.properties!.hasOwnProperty('openstreetmaprelationid') && node.properties['openstreetmaprelationid'] !== undefined) {
+          try {
+            console.log(`${node.properties.name} - ${node.properties.id}`);
+            const url = `https://overpass-api.de/api/interpreter?data=[out:json]; rel(${node.properties['openstreetmaprelationid']}); out body;>;out skel qt;`;
+            if (url.indexOf('undefined') === -1) {
+              let file = await this.filesService.getUrl(url);
+              if (file) {
+                const rawJson = file.toString('utf-8');
+                if (rawJson && rawJson.length > 0) {
+                  let res = JSON.parse(rawJson);
+                }
+                // if (res.elements) { console.log(res.elements.length)}
+              }
+              console.log(url);
+            }
+          } catch (e) {
+            console.log(e);
           }
         }
-        await this.graph.persist();
-        resolve(res);
-      
+      }
+      await this.graph.persist();
+      resolve(res);
     });
   }
 
@@ -462,7 +450,6 @@ export class GraphController {
     });
   }
 
-
   @Get('/type/:type')
   public allFromType(@Param('type') type: string, @Param('traversal') traversal?: string): Promise<Boolean> {
     return new Promise((resolve, reject) => {
@@ -473,7 +460,7 @@ export class GraphController {
   }
 
   @Get('/types/:type')
-  public allFromTypes(@Param('type') type: string, @Query('traversal') traversal? : string): Promise<{ [id: string]: GraphElement }> {
+  public allFromTypes(@Param('type') type: string, @Query('traversal') traversal?: string): Promise<{ [id: string]: GraphElement }> {
     return new Promise((resolve, reject) => {
       if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
         this.graph.db.all({ type: type, flat: true, object: true, traversal: traversal === 'yes' }).then((r) => {
@@ -501,7 +488,7 @@ export class GraphController {
   allData(@Query('skipclasses') skipclasses?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.graph && this.graph.db?.all && typeof this.graph.db?.all === 'function') {
-        let options : IAllOptions = {};
+        let options: IAllOptions = {};
         if (skipclasses) {
           options.skipclasses = skipclasses.split(',');
         }
@@ -697,7 +684,7 @@ export class GraphController {
       this.graph.db
         .loadGraph(body, agent)
         .then((r) => {
-          console.log('islive', islive)
+          console.log('islive', islive);
           if (islive === '1') {
             this.graph.sendSocketUpdateForElements(Object.values(body));
           }
@@ -719,7 +706,12 @@ export class GraphController {
   }
 
   @Post('/storewithinterval')
-  storewithinterval(@Body() body: any[], @Query('interval') interval?: number | string, @Query('burst') burst?: number | string, @Query('agent') agent?: string) {
+  storewithinterval(
+    @Body() body: any[],
+    @Query('interval') interval?: number | string,
+    @Query('burst') burst?: number | string,
+    @Query('agent') agent?: string
+  ) {
     return new Promise(async (resolve, reject) => {
       resolve(this.graph.storeWithInterval(body, +interval || 1000, +burst || 1, agent));
     });
@@ -737,18 +729,15 @@ export class GraphController {
   // }
 
   @Post('/save')
-  async save(
-    @Body() body: GraphElement[]
-  ) :  Promise<GraphElement[] | undefined> {
-    
-    const res : GraphElement[] = [];
+  async save(@Body() body: GraphElement[]): Promise<GraphElement[] | undefined> {
+    const res: GraphElement[] = [];
     for (const element of body) {
       try {
         const r = await this.graph.save(element);
         res.push(r);
-      } catch(e) {
-        console.log(e)
-      }      
+      } catch (e) {
+        console.log(e);
+      }
     }
     return Promise.resolve(res);
   }

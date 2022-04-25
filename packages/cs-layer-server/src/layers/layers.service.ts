@@ -1,4 +1,4 @@
-import { Injectable, Module } from '@nestjs/common';
+import { forwardRef, Injectable, Module } from '@nestjs/common';
 import path from 'path';
 import fs from 'fs';
 import { Logger } from '@nestjs/common';
@@ -47,7 +47,7 @@ export class LayerService extends AggregateRoot {
     private socketSources: Record<string, LayerSource> = {};
 
     constructor(
-        @Inject('DefaultWebSocketGateway')
+        @Inject(forwardRef(() => DefaultWebSocketGateway))
         private readonly socket: DefaultWebSocketGateway
     ) {
         super();
