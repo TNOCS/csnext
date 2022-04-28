@@ -21,6 +21,7 @@ export interface IMenu {
   toolTip?: string;
   method?: string;
   items?: IMenu[];
+  isActive?: boolean | Function;
   action?: (menu: IMenu, dashboard?: IDashboard) => void;
   component?: any;
   plugin?: any;
