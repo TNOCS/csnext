@@ -542,7 +542,8 @@ export class GraphDatasource extends DataSource {
   public getClassElements(
     classId: string,
     traversal?: boolean,
-    filter?: GraphFilter
+    filter?: GraphFilter,
+    state?: any
   ): GraphElement[] {
     let res: GraphElement[] = [];
     if (traversal) {
@@ -617,8 +618,8 @@ export class GraphDatasource extends DataSource {
                   )
                 ) {
                   const value = filter.hasIncomingTypeRelation[field];
-                  const v = typeof value === 'function' ? value() : value;
-                  if (r.classId === field && r.from?.id === v) {
+                  const v = typeof value === 'function' ? value(r, state) : value;
+                  if (r.classId === field && r.fromId === v) {
                     return true;
                   }
                 }
@@ -1019,13 +1020,15 @@ export class GraphDatasource extends DataSource {
     );
   }
 
-  public searchFuse(query: string, featureType?: string, traversal = false) {
+  public searchFuse(query: string, featureType?: string, traversal = false, options?: { nlp?: string}) {
     if (!this.fuse) {
       return [];
     }
     
     let res = this.fuse.search<GraphElement>(query);
-    if (featureType) {
+    if (options?.nlp) {
+      res = res.filter(r => r.item._featureType?.attributes && r.item._featureType.attributes['nlp:entity_class'] && r.item._featureType.attributes['nlp:entity_class'] === options.nlp);
+    } else if (featureType) {
       res = res.filter(r => r.item._featureType?._inheritedTypes && r.item._featureType._inheritedTypes.includes(featureType));
     }
     return res;
