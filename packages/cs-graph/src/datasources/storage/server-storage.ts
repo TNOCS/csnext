@@ -270,6 +270,12 @@ export class ServerStorage implements IGraphStorage {
     return Promise.reject();
   }
 
+  public async removeMultiple(ids: string[]): Promise<boolean> {
+
+    return Promise.resolve(true);
+
+  }
+
   public async removeElement(id: string): Promise<boolean> {
     try {
       await Axios.post(`${this.base_url}/graph/remove`, undefined, {

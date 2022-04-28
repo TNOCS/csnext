@@ -15,4 +15,5 @@ export interface IGraphStorage {
   removeEdge?(id: string): Promise<boolean>;
   loadGraphElement?(id: string): Promise<GraphElement | undefined>;
   removeElement(id: string): Promise<boolean>;
+  removeMultiple?(id: string[]): Promise<boolean>;
 }

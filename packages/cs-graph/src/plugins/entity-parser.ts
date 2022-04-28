@@ -17,34 +17,39 @@ export class EntityParser implements IDocumentPlugin
     {
         return new Promise((resolve, reject) =>
         {
+            if (!doc._entities) { doc._entities = []; }
             if (doc._entities && source)
             {
                 let ids : (string | undefined) [] = [];
+
+                console.log('entity parser');
                 
                 // clear entity types
                 Vue.set(doc, '_entityTypes', {})
                 
-
                 // find existing entities
                 let containingEntities = doc._outgoing?.filter(o => o.classId === 'CONTAINS');
 
+                for (const entity of doc._entities) {
+                    entity._linked = false;                    
+                }
+
                 if (containingEntities && doc._entities) {
                     ids = [...new Set(containingEntities!.map(o => o.toId))] as string[];
+
                     for (const entityEdge of containingEntities) {
                         // find entity
                         const entity = doc._entities.find(i => i.kg_id === entityEdge.toId);
                         if (entity) {
+                            
+                            entity._linked = true;
                             entity._edge = entityEdge;
                             entity._node = entityEdge.to;
                         }
                     }
-
-
                 }
                 
                 // get list of approved entities
-
-
                 for (const et of Object.values(doc._entityTypes)) {
                     et.count = 0;                    
                 }
@@ -52,7 +57,13 @@ export class EntityParser implements IDocumentPlugin
 
                 for (const entity of doc._entities)
                 {
-                    entity._included = (entity.id !== undefined) && ids.includes(entity.kg_id);
+
+                    
+                    Vue.set(entity, '_linked', (entity.id !== undefined) && ids.includes(entity.kg_id));
+                    if (entity._linked) {
+                        console.log(`${entity.text} ${entity._linked}`);
+                    }
+
                     if (entity._node?._featureType?.type)
                     {
                         entity.spacy_label = entity._node._featureType.type as string;
@@ -80,8 +91,7 @@ export class EntityParser implements IDocumentPlugin
                         if (!doc._entityTypes[entity.spacy_label].count) {
                             doc._entityTypes[entity.spacy_label]!.count = 1;
                         } else {
-                            doc._entityTypes[entity.spacy_label].count! += 1;
-                            console.log('Add 1' + ' - ' + entity.spacy_label);
+                            doc._entityTypes[entity.spacy_label].count! += 1;                            
                         }
                     }
 
@@ -99,37 +109,7 @@ export class EntityParser implements IDocumentPlugin
                       }                    
                     }
                 
-            }
-            // if (doc.relations && doc.entities)
-            // {
-            //     for (const relation of doc.relations)
-            //     {
-            //         relation._subject_entity = doc.entities.find(e => e.entity_idx?.toString() === relation.subj_entity_id);
-            //         relation._object_entity = doc.entities.find(e => e.entity_idx?.toString() === relation.obj_entity_id);
-
-            //         if (relation._object_entity)
-            //         {
-            //             if (!relation._object_entity._relations)
-            //             {
-            //                 relation._object_entity._relations = [relation];
-            //             } else
-            //             {
-            //                 relation._object_entity._relations.push(relation);
-            //             }
-            //         }
-
-            //         if (relation._subject_entity)
-            //         {
-            //             if (!relation._subject_entity._relations)
-            //             {
-            //                 relation._subject_entity._relations = [relation];
-            //             } else
-            //             {
-            //                 relation._subject_entity._relations.push(relation);
-            //             }
-            //         }
-            //     }
-            // }
+            }            
             resolve({ document: doc });
         });
     }

@@ -30,6 +30,7 @@ export class DocUtils {
     key?: string
     
   ) {
+    
     if (!content) { content = document.properties?.doc?.content};    
     if (!document || !content || !Array.isArray(content)) {
       return;
@@ -45,12 +46,17 @@ export class DocUtils {
         if (!node.attrs.id) {
           node.attrs.id = guidGenerator();
         }
-        const e = node.attrs as TextEntity;
+        if (!node.attrs.source) {
+          node.attrs.source = 'document';
+        }
+        const e = { ...node.attrs} as TextEntity;
         if (!e._node && e.kg_id && source.graph.hasOwnProperty(e.kg_id)) {
           e._node = source.graph[e.kg_id];
         }
-        document._entities.push(e);
-        node.entity = e;
+        if (document._entities.findIndex(i => i.id === e.id) === -1) {
+          document._entities.push(e);
+        }
+        // node.entity = e;
         // e._docEntity = node;
       }
       if (node.content) {
