@@ -1,5 +1,6 @@
-import { IMenu, IWidget, WidgetOptions } from '@csnext/cs-core';
+import { IMenu, IWidget, WidgetOptions, CardSize } from '@csnext/cs-core';
 import { GraphElement, GraphFilter, IGraphFilter, NodeRule } from '@csnext/cs-data';
+import { DocDatasource } from '../..';
 
 export enum GridView {
   list = 'list',
@@ -82,12 +83,19 @@ export class DataGridTableOptions {
   public showRowIcon? = true;  
 }
 
-
+export class GroupOptions {
+  public enabled?: boolean;
+  public property?: string;
+}
 
 export class DataGridTreeOptions {
   public treeStructure?: string[];
   public parentProperty?: string;
   public baseTreeItem?: GraphElement;
+}
+
+export class DataGridCardsOptions {
+  public cardSize?: 'small' | 'medium' | 'large';  
 }
 
 export class DataGridOptions extends WidgetOptions {
@@ -106,15 +114,18 @@ export class DataGridOptions extends WidgetOptions {
   public onAfterAdded?: (element: GraphElement) => Promise<any>;
   public defaultView: GridView = GridView.table;
   
-
   public graphPresetId?: string;
   public customSort?: (a: GraphElement, b: GraphElement) => number;
   
-  public groupId?: string;
+  public grouping?: GroupOptions;
+  
   public canDelete? = true;
   public canAdd?: boolean;
+  public editNewItem?: boolean;
+  public editorDialog?: IWidget;
   public canEdit? = true;
   public canSearch? = true;
+  public canLink? = false;
   public searchFilter?: string;
   public canSort? = false;
   public canGraph? = true;
@@ -129,6 +140,7 @@ export class DataGridOptions extends WidgetOptions {
   public timelineOptions?: TimelineOptions;
   public treeOptions?: DataGridTreeOptions;
   public gridOptions?: DataGridGridOptions;
+  public cardOptions?: DataGridCardsOptions;
   
   public hideHeader?: boolean = false;
 
@@ -146,8 +158,14 @@ export class DataGridOptions extends WidgetOptions {
   public filter?: GraphFilter;  
   public newItem?: any;
   public newRelations?: NewRelationDefinition[];
-  public additionalActions?: IMenu[];
+  // ids of actions that will be visible on card or list
+  public prominentActions?: string[];
+
+  // list of additional actions available within datagrid
+  public additionalActions?: IMenu[] | getActions;
 }
+
+export type getActions = (e: GraphElement, src: DocDatasource) => IMenu[];
 
 export class DataGridHeader {
   public key?: string;
