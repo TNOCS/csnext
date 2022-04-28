@@ -19,9 +19,7 @@ export class WidgetBase extends Vue {
     super();
   }
 
-  public get state() : any {
-    console.log('get data')
-    console.log(this);
+  public get state() : any {    
     if (this.widget?.options?.sync) {
       switch (this.widget.options.sync) {
         case 'dashboard': return this.widget?._dashboard?.data;

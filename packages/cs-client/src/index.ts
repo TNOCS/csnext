@@ -17,7 +17,7 @@ export * from './datasources/log/log-manager';
 // layout managers
 export * from './layout/layout-component';
 export * from './layout/single/single';
-export * from './layout/grid-layout/grid-layout';
+// export * from './layout/grid-layout/grid-layout';
 export * from './layout/css-grid/css-grid';
 export * from './layout/css-grid/css-grid-templates';
 export * from './layout/flex-grid/flex-grid';
@@ -28,25 +28,24 @@ export * from './layout/mobile-flow/mobile-flow';
 // export * from './layout/drag-grid/drag-layout';
 // export * from './layout/drag-grid/drag-layout-options';
 export * from './layout/flex-grid/flex-widget-options';
+export * from './utils/constants'
 
 // components
-import { CsApp } from './components/cs-app/cs-app';
-import { CsWidget } from './components/cs-widget/cs-widget';
-import { CsDashboard } from './components/cs-dashboard/cs-dashboard';
+import CsApp  from './components/cs-app/cs-app.vue';
+// import { CsWidget } from './components/cs-widget/cs-widget';
+import CsDashboard from './components/cs-dashboard/cs-dashboard.vue';
+import CsWidget from './components/cs-widget/cs-widget.vue';
+import GridLayout from "./layout/grid-layout/grid-layout.vue";
 import { CsSidebar } from './components/cs-sidebar/cs-sidebar';
 import Vue, { VueConstructor } from 'vue';
-import { VegaWidget } from './widgets/vega/vega-widget';
 import { CardWidget } from './widgets/card/card-widget';
 import { HtmlWidget } from './widgets/html-widget/html-widget';
 
 import './components/cs-label';
-
 import '@mdi/font/css/materialdesignicons.css';
 
 // export components
-export * from './components/cs-app/cs-app';
-export * from './components/cs-widget/cs-widget';
-export * from './components/cs-dashboard/cs-dashboard';
+// export * from './components/cs-app/cs-app';
 export * from './components/cs-settings/cs-settings';
 export * from './components/cs-language-switch/cs-language-switch';
 export * from './components/cs-toolbar-menus/cs-toolbar-menus';
@@ -66,18 +65,16 @@ export * from './widgets/intro/intro-widget-options';
 export * from './widgets/card/card-widget';
 export * from './widgets/card/card-widget-options';
 export * from './components/cs-label';
+export { CsApp, CsDashboard, CsWidget, GridLayout };
 
-
-
+  
 export const CsNext = {
   install: (vue: VueConstructor): void => {
     const a = AppState.Instance;
     vue.component('cs-dashboard', CsDashboard);
     vue.component('cs-widget', CsWidget);
     vue.component('cs-app', CsApp);
-    vue.component('cs-sidebar', CsSidebar);
-    vue.component('cs-widget', CsWidget);
-    vue.component('vega-widget', VegaWidget);
+    vue.component('cs-sidebar', CsSidebar);        
     vue.component('vega-widget', HtmlWidget);
     vue.component('card-widget', CardWidget);    
   }

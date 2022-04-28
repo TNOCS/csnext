@@ -1,3 +1,100 @@
+<template>
+ <v-app v-resize="onResize" v-if="$cs.isInitialized" :dark="$cs.project.theme.dark" :light="!$cs.project.theme.dark" @keydown.esc="$cs.closeRightSidebar()">
+    <input class="input-file" ref="uploader" type="file" @change="
+        filesChange($event.target.name, $event.target.files);        
+      " accept="*.*" />
+
+    <cs-header :leftSidebar="leftSidebar" :rightSidebar="rightSidebar" v-if="$cs.project.navigation.style !== 'bottom'"></cs-header>
+
+    <!-- side bars -->
+    <cs-sidebar v-if="leftSidebar.visible" id="left-sidebar" class="sidebar" :sideBar="leftSidebar"></cs-sidebar>
+    <cs-sidebar v-if="rightSidebar.visible" id="right-sidebar" class="sidebar" :sideBar="rightSidebar"></cs-sidebar>
+
+    <!-- dialogs -->
+    <v-dialog v-model="dialog.visible" :fullscreen="dialog.fullscreen" no-click-animation :persistent="dialog.persistent" @keydown.esc="dialog=false" :width="dialog.width" @click:outside="closeDialog()">
+        <v-card>
+            <cs-widget class="dialog-widget" v-if="dialog.widget" :widget="dialog.widget"></cs-widget>
+            <div v-else>
+                <v-card-title class="headline" primary-title>
+                    {{ dialog.title }}
+                </v-card-title>
+                <v-card-text>
+                    <component v-if="dialog.component" :is="dialog.component" :data="dialog.data"></component>
+                    <div v-if="dialog.textInput">
+                        <v-text-field v-model="dialog.input" :placeholder="dialog.placeholder" required autofocus :label="dialog.text" @keydown.enter="actionCallback(dialog.input)"></v-text-field>
+                        <v-layout>
+                            <v-btn class="error" @click="actionCallback(undefined)">{{ $cs.Translate('CANCEL')}}</v-btn>
+                            <v-spacer></v-spacer>
+                            <v-btn class="primary" @click="actionCallback(dialog.input)">{{ $cs.Translate('OK')}}</v-btn>
+                        </v-layout>
+
+                    </div>
+                    <div v-else>
+                        <span v-if="dialog.text" v-html="dialog.text"></span>
+                    </div>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions v-if="dialog.actions && dialog.actions.length>0">
+                    <v-spacer></v-spacer>
+                    <v-btn v-for="action in dialog.actions" :key="action" text @click="actionCallback(action)">
+                        {{ action }}
+                    </v-btn>
+                </v-card-actions>
+                <div style="flex: 1 1 auto;"></div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- content -->
+    <v-main fluid class="" v-bind:class="{ 'floating': $cs.isFloatingHeader }" v-touch="{left: () => swipe('Left'),right: () => swipe('Right')}">
+        <router-view :key="$route.path"> </router-view>
+    </v-main>
+
+    <!-- mobile navigation -->
+    <v-bottom-navigation app router v-if="$cs.isBottomNavigation" :value="true">
+        <v-btn v-for="dashboard in $cs.project.dashboards" :key="dashboard.id" color="teal" text @click="openMobileDashboard(dashboard)">
+            <span>{{ dashboard.title }}</span>
+            <v-icon>{{ dashboard.icon }}</v-icon>
+        </v-btn>
+    </v-bottom-navigation>
+    <!-- footer -->
+    <cs-footer v-if="footer.visible" :footer="footer"></cs-footer>
+
+    <!-- snackbar -->
+    <v-snackbar :timeout="lastNotification.timeout" :top="true" :multi-line="true" :color="lastNotification.color" v-model="lastNotification._visible">
+        <v-layout>
+            <v-icon v-if="lastNotification.icon">{{lastNotification.icon}}</v-icon>
+            <span class="notification-title">
+        {{ $cs.Translate(lastNotification.title) }}
+      </span>
+            <v-btn text @click="clickNotification()">
+                {{ $cs.Translate(lastNotification.buttonText) }}</v-btn>
+        </v-layout>
+    </v-snackbar>
+    <v-snackbars :messages.sync="$cs.notifications" bottom right>
+        <template v-slot:default="{ message }">
+            <v-layout><v-icon class="notification-icon" v-if="message.icon">{{ message.icon }}</v-icon><h3 class="mb-2">{{ message.title}}</h3></v-layout>
+            {{ message.text }}
+          </template>
+        <template v-slot:action="{ close, message }">
+            <div
+              style="width: 76px"
+              class="text-center"              
+            >
+              <!-- <v-progress-circular
+                indeterminate
+                :width="2"
+                :size="25"
+              ></v-progress-circular> -->
+            </div>
+            <v-btn icon @click="close()"><v-icon>mdi-close</v-icon></v-btn>
+          </template>
+    </v-snackbars>
+</v-app>
+
+</template>
+
+<script lang="ts">
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Vuetify, { UserVuetifyPreset } from 'vuetify';
@@ -29,7 +126,7 @@ import 'vuetify/dist/vuetify.min.css';
 import { CsHeader } from '../cs-header/cs-header';
 
 import './../../assets/fonts/fonts.css';
-import './cs-app.css';
+
 
 
 Vue.use(VueRouter);
@@ -51,7 +148,6 @@ const router = AppState.Instance.router; // new VueRouter({ routes: [] });
   router,
   i18n,
   vuetify: new Vuetify({}),
-  template: require('./cs-app.html'),
   components: {
     'cs-sidebar': CsSidebar,
     'cs-footer': CsFooter,
@@ -59,9 +155,8 @@ const router = AppState.Instance.router; // new VueRouter({ routes: [] });
     "v-snackbars": VSnackbars
   }
 } as any)
-export class CsApp extends Vue {
-  public static LANGUAGE_SWITCH_ID = 'switch_language';
-  public static LOADING_MENU_ID = 'loading_menu';
+export default class CsApp extends Vue {
+  
   public app = AppState.Instance;  
 
   public settingsDialog = false;
@@ -505,3 +600,125 @@ export class CsApp extends Vue {
   }
 
 }
+
+
+</script>
+
+<style lang="css" scoped>
+.cstabs {
+    margin-top: 0px;
+}
+
+html {
+    /* overflow-y: hidden !important; */
+}
+
+.v-toolbar--clipped {
+    z-index: 4 !important;
+}
+
+.cs-navigation-tabbar {
+    margin-left: 20px;
+}
+
+.cs-navigation-tabbar .v-tabs__div {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.cs-navigation-tabbar .tabs__bar {
+    /* background-color: transparent !important; */
+}
+
+.input-file {
+    position: fixed;
+    top: -100em;
+}
+
+.notification-icon {
+    margin-right: 3px;
+    margin-top: -3px;
+}
+
+
+.dialog-widget {
+    height: 100%;
+    width: 100%;
+}
+
+.menu {
+    background-color: red;
+}
+
+.app-menu {
+    color: red !important;
+    /** margin-left:5px; */
+}
+
+@media only screen and (max-width: 480px) {
+    .header-breadcrumbs {
+        display: none !important;
+    }
+}
+
+.notification-title {
+    align-self: center;
+    margin-left: 10px;
+}
+
+.sidebar {
+    /* z-index:200 !important; */
+}
+
+.right-sidebar-title {
+    margin-right: 10px;
+}
+
+.header-breadcrumbs {
+    padding: 0 !important;
+}
+
+.header-breadcrumbs>li {
+    padding: 0 !important;
+}
+
+.floating {
+    margin-top: -64px !important;
+}
+
+.leftsidebar-pin {
+    float: right;
+    margin: 4px;
+}
+
+.leftsidebar-minify {
+    position: absolute;
+    right: 4px;
+    bottom: 5px;
+    z-index: 300;
+}
+
+.content--wrap {
+    height: 100%;
+}
+
+.app-project-logo {
+    height: 40px;
+    margin: 4px;
+}
+
+.invert-logo {
+    filter: invert(1);
+}
+
+.content {
+    height: 100%;
+    padding: 0;
+}
+
+.rightsidebar-toggle {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+}
+</style>

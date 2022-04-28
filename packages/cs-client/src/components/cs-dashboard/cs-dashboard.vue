@@ -1,13 +1,138 @@
+<template>
+  <v-container fluid class="pa-0 flex-column full-height">
+  <template v-if="hasToolbar">      
+    <v-toolbar
+      v-if="dashboard.options.toolbarOptions"
+      :absolute="dashboard.options.toolbarOptions.absolute"
+      :prominent="dashboard.options.toolbarOptions.prominent"
+      :color="dashboard.options.toolbarOptions.backgroundColor"
+      :src="dashboard.options.toolbarOptions.backgroundImage"
+      :elevation="dashboard.options.toolbarOptions.elevation"
+      :dense="dashboard.options.toolbarOptions.dense"
+      :collapse="dashboard.options.toolbarOptions.collapse"
+      :flat="dashboard.options.toolbarOptions.flat"
+      :outlined="dashboard.options.toolbarOptions.outlined"
+    >
+      <v-icon
+        v-if="dashboard.options.icon && !dashboard.options.toolbarOptions.hideIcon"
+        class="pr-3"
+        >{{ dashboard.options.icon }}</v-icon
+      >
+      <v-toolbar-title
+        v-if="!dashboard.options.toolbarOptions || !dashboard.options.toolbarOptions.hideTitle"
+        >{{ $cs.Translate(dashboard.title) }}</v-toolbar-title
+      >
+    </v-toolbar>
+
+    <template
+      v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation === 'stepper-inline'"
+    >
+      <v-toolbar
+        :absolute="dashboard.parent.options.toolbarOptions.absolute"
+        :prominent="dashboard.parent.options.toolbarOptions.prominent"
+        :color="dashboard.parent.options.toolbarOptions.backgroundColor"
+        :elevation="dashboard.parent.options.toolbarOptions.elevation"
+        :dense="dashboard.parent.options.toolbarOptions.dense"
+        :collapse="dashboard.parent.options.toolbarOptions.collapse"
+        :flat="dashboard.parent.options.toolbarOptions.flat"
+        :outlined="dashboard.parent.options.toolbarOptions.outlined"
+      >
+        <v-stepper
+          :value="selectedStepper"
+          class="dashboard-stepper"
+          non-linear
+        >
+          <v-stepper-header>
+            <template v-for="(item, index) in dashboard.parent.dashboards">
+              <v-stepper-step
+                :key="index"
+                :step="index + 1"
+                editable
+                @click="selectStepperDashboard(item)"
+                >{{ $cs.Translate(item.title) }} </v-stepper-step
+              ><v-divider></v-divider
+            ></template>
+          </v-stepper-header>
+        </v-stepper>
+      </v-toolbar>
+    </template>
+
+    <template
+      v-if="dashboard.parent && dashboard.parent.options && dashboard.parent.options.toolbarOptions && dashboard.parent.options.toolbarOptions.navigation && dashboard.parent.options.toolbarOptions.navigation !== 'stepper-inline'"
+    >
+      <v-toolbar
+        :absolute="dashboard.parent.options.toolbarOptions.absolute"
+        :prominent="dashboard.parent.options.toolbarOptions.prominent"
+        :color="dashboard.parent.options.toolbarOptions.backgroundColor"
+        :elevation="dashboard.parent.options.toolbarOptions.elevation"
+        :dense="dashboard.parent.options.toolbarOptions.dense"
+        :collapse="dashboard.parent.options.toolbarOptions.collapse"
+        :flat="dashboard.parent.options.toolbarOptions.flat"
+        :outlined="dashboard.parent.options.toolbarOptions.outlined"
+      >
+        <template
+          v-if="dashboard.parent.options.toolbarOptions.navigation === 'stepper'"
+        >
+          <v-stepper
+            :value="selectedStepper"
+            class="dashboard-stepper"
+            non-linear
+          >
+            <v-stepper-header>
+              <template v-for="(item, index) in dashboard.parent.dashboards">
+                <v-stepper-step
+                  :key="index"
+                  :step="index + 1"
+                  editable
+                  @click="selectStepperDashboard(item)"
+                  >{{ $cs.Translate(item.title) }} </v-stepper-step
+                ><v-divider></v-divider
+              ></template>
+            </v-stepper-header>
+          </v-stepper>
+        </template>
+        <template
+          v-else-if="dashboard.parent.options.toolbarOptions.navigation=== 'tabs'"
+        >
+          <v-tabs v-model="selectedTab">
+            <v-tab
+              v-for="(item, index) in dashboard.parent.dashboards"
+              @click="selectStepperDashboard(item)"
+              :key="index"
+            >
+              <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+              {{ $cs.Translate(item.title) }}
+            </v-tab>
+          </v-tabs>
+        </template>
+      </v-toolbar>
+    </template>
+  </template>
+    <!--  -->
+    <component
+      v-show="!dashboard._loading"
+      :is="component"
+      :dashboard="dashboard"
+      :id="'dashboard-' + dashboard.id"
+      class="align-stretch dashboard-content"
+      :class="dashboard.options.class"          
+    ></component>
+  
+</v-container>
+
+</template>
+
+<script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Watch } from "vue-property-decorator";
+import { Watch, Prop } from "vue-property-decorator";
 import {
   IDashboard,
   IWidget,  
   MessageBusService,
   idGenerator,
 } from "@csnext/cs-core";
-import "./cs-dashboard.css";
+
 import {
   AppState,
   Logger,
@@ -18,14 +143,14 @@ import {
 import { LayoutComponent } from "../../layout/layout-component";
 
 @Component({
-  name: "cs-dashboard",
-  template: require("./cs-dashboard.html"),
-  components: { CsToolbarMenus },
-  props: {
-    dashboard: null,
-  },
-} as any)
-export class CsDashboard extends Vue {
+  name: "cs-dashboard",  
+  components: { CsToolbarMenus }  
+})
+export default class CsDashboard extends Vue {
+
+    private hasToolbar: boolean = false;
+
+@Prop({ default: null })
   public dashboard?: IDashboard;
   public selectedStepper: number = 1;
   public selectedTab: number = 0;
@@ -291,6 +416,10 @@ export class CsDashboard extends Vue {
           );
         });
     }
+
+    if (this.dashboard?.options?.toolbarOptions || this.dashboard?.parent?.options?.toolbarOptions) {
+        this.hasToolbar = true;
+    }
   }
 
   public created() {
@@ -363,3 +492,36 @@ export class CsDashboard extends Vue {
     return new Vue();
   }
 }
+
+</script>
+
+<style lang="css" scoped>
+
+
+.dashboard-content {
+  height: 100% !important;
+   /* overflow-y: hidden; */
+}
+
+.cs-dashboard {
+  height: 100%;
+}
+
+.dashboard-toolbar-flex {
+  max-height: 100% !important;
+  /* align-items: stretch; */
+}
+
+.cs-dashboard-col.col {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dashboard-stepper {
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+</style>
