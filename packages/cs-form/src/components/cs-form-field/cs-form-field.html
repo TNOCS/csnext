@@ -15,6 +15,8 @@
       :hint="field.hint"
       itemText="title"
       hide-no-data
+      :filled="field.filled"
+      :rounded="field.rounded"
       clearable
       :return-object="false"
       itemValue="image"
@@ -84,6 +86,8 @@
             <v-text-field
               v-model="DateValue"
               :disabled="field.readonly"
+              :filled="field.filled"
+              :rounded="field.rounded"
               :label="$cs.Translate(field.title)"
               @blur="fieldUpdated(field)"
               type="date"
@@ -109,6 +113,8 @@
               :disabled="field.readonly"
               :label="$cs.Translate(field.subTitle)"
               type="time"
+              :filled="field.filled"
+              :rounded="field.rounded"
               @blur="fieldUpdated(field);"
             ></v-text-field>
           </v-layout>
@@ -138,6 +144,8 @@
               :disabled="field.readonly"
               :label="$cs.Translate(field.title)"
               @blur="fieldUpdated(field)"
+              :filled="field.filled"
+              :rounded="field.rounded"
               type="date"
             ></v-text-field>
           </v-layout>
@@ -158,6 +166,8 @@
             <v-btn :disabled="field.readonly" icon v-on="on"><v-icon>mdi-clock-outline</v-icon></v-btn>
             <v-text-field
               v-model="TimeValue"
+              :filled="field.filled"
+      :rounded="field.rounded"
               :disabled="field.readonly"
               :label="$cs.Translate(field.subTitle)"
               type="time"
@@ -194,6 +204,8 @@
     <v-autocomplete
       v-if="field.array"
       :items="items"
+      :filled="field.filled"
+      :rounded="field.rounded"
       v-model="target[field._key]"
       multiple
       :search-input.sync="search"
@@ -207,6 +219,8 @@
       :items="items"
       v-model="target[field._key]"
       :label="field.title"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :itemText="field.keyText"
       :itemValue="field.keyValue"
       :disabled="field.readonly"
@@ -220,6 +234,8 @@
       v-model="target[field._key]"
       :label="$cs.Translate(field.title)"
       :hint="field.hint"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :persistentHint="field.persistentHint"
       :disabled="field.readonly"
       :append-outer-icon="field._appendIcon"
@@ -242,6 +258,8 @@
       :clearable="field.clearable"
       :disabled="field.readonly"
       :hint="field.hint"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :persistentHint="field.persistentHint"
       :return-object="false"
       @change="fieldUpdated(field)"
@@ -260,6 +278,8 @@
       :clearable="field.clearable"
       :disabled="field.readonly"
       :append-outer-icon="field._appendIcon"
+      :filled="field.filled"
+      :rounded="field.rounded"
       @input="fieldInput(field)"
       @click:append-outer="fieldUpdated(field)"
       @change="fieldUpdated(field)"
@@ -275,6 +295,8 @@
       :required="field.required"
       :clearable="field.clearable"
       :disabled="field.readonly"
+      :filled="field.filled"
+      :rounded="field.rounded"
       @change="fieldUpdated(field)"
     ></v-textarea>
   </template>
@@ -309,6 +331,8 @@
       inset
       :label="$cs.Translate(field.title)"
       :hint="field.hint"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :persistentHint="field.persistentHint"
       v-model="target[field._key]"
       :disabled="field.readonly"
@@ -323,6 +347,8 @@
         :key="option"
         :label="option"
         :value="option"
+        :filled="field.filled"
+        :rounded="field.rounded"
         @change="fieldUpdated(field)"
         :disabled="field.readonly"
         v-model="target[field._key]"
@@ -334,6 +360,8 @@
       v-if="field._key"
       v-model.number="target[field._key]"
       type="number"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :rules="[rules.valueMin, rules.valueMax, rules.required]"
       :label="$cs.Translate(field.title)"
       :clearable="field.clearable"
@@ -351,6 +379,8 @@
       :required="field.required"
       :clearable="field.clearable"
       :hint="field.hint"
+      :filled="field.filled"
+      :rounded="field.rounded"
       :persistentHint="field.persistentHint"
       :disabled="field.readonly"
       @change="fieldUpdated(field)"
