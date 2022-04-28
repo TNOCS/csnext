@@ -28,7 +28,7 @@ export default {
       a.editor.chain().focus().setTextSelection(a.range).setTextEntity(a.props).run();
       const source = a?.editor?.view?._props?.source;
       if (source && a?.editor?.view?._props?.document) {
-        DocUtils.syncEntities(a.editor.view._props.document as GraphDocument, source, undefined, true);
+        // DocUtils.syncEntities(a.editor.view._props.document as GraphDocument, source, undefined, true);
         await source.entityParser.callDocument(a.editor.view._props.document, source);
       }
     });

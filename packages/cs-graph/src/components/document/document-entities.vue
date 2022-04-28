@@ -1,21 +1,8 @@
 <template>
-  <simplebar
-    style="margin-left: 5px; margin-top: -25px; height: calc(100%-80px)"
-    v-if="source && document && nodeGroups"
-  >
+  <simplebar style="margin-left: 5px; margin-top: -25px; height: calc(100%-80px)" v-if="source && document && nodeGroups">
     <!-- <v-row v-masonry transition-duration="0.3s" cols="3"  column-width="300" item-selector=".group-column" style="margin-left: 5px; margin-right: 10px"> -->
-    <isotope
-      :options="getIsoOptions()"
-      ref="iso"
-      :list="nodeGroups"
-      
-      class="isotope-grid"
-    >
-      <div
-        v-for="(group, index) in nodeGroups"
-        :key="index"
-        class="group-column"
-      >
+    <isotope :options="getIsoOptions()" ref="iso" :list="nodeGroups" class="isotope-grid">
+      <div v-for="(group, index) in nodeGroups" :key="index" class="group-column">
         <div class="group-title">
           {{ group.title }}
           <v-btn
@@ -62,10 +49,7 @@
               </v-btn>
             </v-layout>
             <v-layout v-if="searchMode === 'new'">
-              <v-text-field
-                v-model="newCategory"
-                :label="'new ' + group.id"
-              ></v-text-field>
+              <v-text-field v-model="newCategory" :label="'new ' + group.id"></v-text-field>
               <v-btn @click.stop="linkNode(group)" fab x-small class="mt-4 primary">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
@@ -84,33 +68,43 @@
         </v-card>
 
         <template v-if="group">
-        <v-card          
-          outlined          
-          @click="selectNodeInfo(entity.node)"
-          @mouseenter="entity._hover = true; highlight(entity)"
-          @mouseleave="entity._hover = false; clearHighlight()"
-          :style="{
-            'background-color': !entity._approved
-              ? 'transparent'
-              : getEntityColor(entity.node),
-            'border-color': getEntityColor(entity.node),
-            'border-width': '3px',
-          }"
-          v-for="(entity, eindex) in group.entities"
-          :key="eindex"
-          class="entity-card mt-2"
-        >
+          <v-card
+            outlined
+            @click="selectNodeInfo(entity.node)"
+            @mouseenter="
+              entity._hover = true;
+              highlight(entity);
+            "
+            @mouseleave="
+              entity._hover = false;
+              clearHighlight();
+            "
+            :style="{
+              'background-color': !entity._linked ? 'transparent' : getEntityColor(entity.node),
+              'border-color': getEntityColor(entity.node),
+              'border-width': '3px',
+            }"
+            v-for="(entity, eindex) in group.entities"
+            :key="eindex"
+            class="entity-card mt-2"
+          >
+            <!-- <data-info-panel
+              v-if="entity.node"
+              :data="entity.node.properties"
+              :node="entity.node"
+              :featureType="entity.node._featureType"
+              panel="popup"
+            ></data-info-panel> -->
+            <component v-if="entity.node" :is="getElementCard(entity.node)" :source="source" :element="entity.node"></component>
 
-          <data-info-panel v-if="entity.node" :data="entity.node.properties" :node="entity.node" :featureType="entity.node._featureType" panel="popup" ></data-info-panel>
-          
-          <div v-else>          
-            {{entity.id}}
+            <div v-else>
+              {{ entity.id }}
             </div>
-          <!-- <v-img
+            <!-- <v-img
             v-if="entity.node"
             :src="entity.node.properties.flagimage"
           ></v-img> -->
-          <!-- <v-card-title class="pa-1">
+            <!-- <v-card-title class="pa-1">
             <span v-if="entity.node">
               {{ entity.node.title }}              
             </span>
@@ -118,58 +112,53 @@
               {{ entity.id }}
             </span>
           </v-card-title> -->
-          <div style="min-height: 36px">
-            
-            <span v-if="entity._hover">
-
-              <v-btn v-if="entity.instances.length>0" icon @click.stop="toggleApproveEntity(entity)"
-                ><v-icon v-if="entity._approved">mdi-minus</v-icon
-                ><v-icon v-else>mdi-plus</v-icon></v-btn
-              >
-              <v-btn v-if="entity.instances.length === 0" icon @click="deleteEntities(entity)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-              <v-btn
-                icon
-                v-if="!entity._approved"
-                @click="deleteEntities(entity)"
-                ><v-icon>mdi-delete</v-icon></v-btn
-              >
-              <v-btn
-                icon
-                v-if="!entity._approved"
-                @click="ignoreEntity(entity)"
-                ><v-icon>mdi-delete-sweep</v-icon></v-btn
-              >
-            </span>
-            <span style="float: right">
-              <v-btn v-if="entity._relations>0" @click="entity._togglemore = !entity._togglemore; updateLayout();" icon>{{ entity._relations }}<v-icon>view_headline</v-icon></v-btn>
-              <v-btn
-                v-if="entity.instances.length > 0"
-                icon                
-                @click="
-                  entity._togglemore = !entity._togglemore;
-                  updateLayout();"
-                >{{ entity.instances.length
-                }}<v-icon>mdi-message-bulleted</v-icon></v-btn
-              >                                        
-              <!-- <v-btn              
+            <div style="min-height: 36px">
+              <span>
+                <v-btn v-if="entity.instances.length > 0" icon @click.stop="toggleApproveEntity(entity)"
+                  ><v-icon v-if="entity._linked">mdi-minus</v-icon><v-icon v-else>mdi-plus</v-icon></v-btn
+                >
+                <v-btn v-if="entity.instances.length === 0" icon @click="deleteEntities(entity)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <!-- <v-btn icon v-if="!entity._linked" @click="deleteEntities(entity)"><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn icon v-if="!entity._linked" @click="ignoreEntity(entity)"><v-icon>mdi-delete-sweep</v-icon></v-btn> -->
+              </span>
+              <span style="float: right">
+                <v-btn
+                  v-if="entity._relations > 0"
+                  @click="
+                    entity._togglemore = !entity._togglemore;
+                    updateLayout();
+                  "
+                  icon
+                  >{{ entity._relations }}<v-icon>view_headline</v-icon></v-btn
+                >
+                <v-btn
+                  v-if="entity.instances.length > 0"
+                  icon
+                  @click="
+                    entity._togglemore = !entity._togglemore;
+                    updateLayout();
+                  "
+                  >{{ entity.instances.length }}<v-icon>mdi-message-bulleted</v-icon></v-btn
+                >
+                <!-- <v-btn              
                 v-if="entity.node"
                 @click="selectNodeInfo(entity.node)"
                 icon
                 ><v-icon>mdi-information-outline</v-icon></v-btn
               > -->
-            </span>
+              </span>
 
-            <!-- <v-btn v-if="!entity.node" icon><v-icon>link</v-icon></v-btn> -->
-          </div>
-          <div v-if="entity._togglemore">
-            <div v-for="e in entity.instances" :key="e.id">
-              {{ e.text }}
-              <span v-if="e._relations">{{ e._relations.length}}</span>
+              <!-- <v-btn v-if="!entity.node" icon><v-icon>link</v-icon></v-btn> -->
             </div>
-          </div>
-        </v-card>
+            <div v-if="entity._togglemore">
+              <div v-for="e in entity.instances" :key="e.id">
+                {{ e.text }}
+                <span v-if="e._relations">{{ e._relations.length }}</span>
+              </div>
+            </div>
+          </v-card>
         </template>
       </div>
     </isotope>
@@ -215,25 +204,29 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { WidgetBase } from "@csnext/cs-client";
+import { Component, Ref, Vue, Watch } from 'vue-property-decorator';
+import { WidgetBase } from '@csnext/cs-client';
 import { GraphElement } from '@csnext/cs-data';
-import { GraphDocument } from "./../../classes/document/graph-document";
-import { DocDatasource } from "../../datasources/doc-datasource";
-import { EntityList, NodeEntities } from "./node-entities";
-import simplebar from "simplebar-vue";
+import { GraphDocument } from './../../classes/document/graph-document';
+import { DocDatasource } from '../../datasources/doc-datasource';
+import { EntityList, NodeEntities } from './node-entities';
+import simplebar from 'simplebar-vue';
 
-import isotope from "vueisotope";
+import isotope from 'vueisotope';
 import { DataInfoPanel } from '@csnext/cs-map';
-require("isotope-packery");
+import { ElementCardManager } from '../data-grid/cards/element-card-manager';
+require('isotope-packery');
 
 @Component({
   components: { simplebar, isotope, DataInfoPanel },
 })
 export default class DocumentEntities extends WidgetBase {
   public nodeGroups: NodeEntities[] = [];
-  public searchMode = "KG";
-  public newEntityNode = { } as GraphElement;
+  public searchMode = 'KG';
+  public newEntityNode = {} as GraphElement;
+
+  @Ref('iso')
+  public iso?: any;
 
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
@@ -253,21 +246,18 @@ export default class DocumentEntities extends WidgetBase {
     if (this.document?._entities) {
       for (const entity of this.document._entities) {
         Vue.set(entity, '_highlight', false);
-        // entity._highlight = false;        
+        // entity._highlight = false;
       }
       this.source?.updateHighlights();
     }
-    
-    
   }
 
   public highlight(list: EntityList) {
     for (const entity of list.instances) {
       Vue.set(entity, '_highlight', true);
-      // entity._highlight = true;            
+      // entity._highlight = true;
     }
     this.source?.updateHighlights();
-
   }
 
   public linkNode(group: NodeEntities) {
@@ -276,9 +266,9 @@ export default class DocumentEntities extends WidgetBase {
         .addNewEdge({
           fromId: this.document?._node.id,
           toId: this.newEntityNode.id,
-          classId: "CONTAINS",
+          classId: 'CONTAINS',
         } as GraphElement)
-        .then(async (e) => {          
+        .then(async (e) => {
           this.updateGroups();
         })
         .catch((e) => {});
@@ -293,14 +283,14 @@ export default class DocumentEntities extends WidgetBase {
 
   public getIsoOptions() {
     return {
-      itemSelector: ".group-column",
-      layoutMode: "packery",
+      itemSelector: '.group-column',
+      layoutMode: 'packery',
       // percentPosition: true,
       // options for cellsByRow layout mode
 
       // options for masonry layout mode
       masonry: {
-        columnWidth: ".grid-sizer",
+        columnWidth: '.grid-sizer',
       },
     };
   }
@@ -315,7 +305,7 @@ export default class DocumentEntities extends WidgetBase {
     if (entity) {
       return GraphElement.getBackgroundColor(entity);
     } else {
-      return "gray";
+      return 'gray';
     }
   }
 
@@ -323,14 +313,14 @@ export default class DocumentEntities extends WidgetBase {
     if (!list?.node || !this.source || !this.document) {
       return;
     }
-    if (list._approved && list.node) {
-      list._approved = false;
+    if (list._linked && list.node) {
+      list._linked = false;
       await this.source.removeEntityListFromDocument(list, this.document);
       // this.source.removeEdge()
       // delete link
     } else {
-      list._approved = true;
-      await this.source.linkEntityListToDocument(list, this.document);      
+      list._linked = true;
+      await this.source.linkEntityListToDocument(list, this.document);
       // add link
     }
     this.updateGroups();
@@ -344,26 +334,29 @@ export default class DocumentEntities extends WidgetBase {
       this.source.updateSearchEntities();
       await this.deleteEntities(list);
     }
-    
   }
 
-  public deleteEntities(list: EntityList) : Promise<boolean> {    
+  public getElementCard(element: GraphElement) {
+    return ElementCardManager.getElementCard(element);
+  }
+
+  public deleteEntities(list: EntityList): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (!this.source || !this.document || !this.document._entities || !list.instances) {
         reject();
         return;
       }
-      
+
       await this.source.removeEntityListFromDocument(list, this.document, true);
       await this.source.saveDocument(this.document);
       this.updateGroups();
-      this.source!.bus.publish("document-entities", "update");
+      this.source!.bus.publish('document-entities', 'update');
       resolve(true);
-    })
+    });
   }
 
-  @Watch("document._entityTypes")
-  @Watch("document.properties.hide_unknowns")
+  @Watch('document._entityTypes')
+  @Watch('document._flat.show_all_entities')
   public updateGroups() {
     if (!this.source) {
       return;
@@ -372,57 +365,53 @@ export default class DocumentEntities extends WidgetBase {
       return;
     }
     let res: NodeEntities[] = [];
-    for (const entity of this.document._entities) {     
-      if (!this.document?.properties?.hide_unknowns || entity._node?._featureType)  {
-      const c = entity._node?.classId ?? entity.spacy_label;
-      if (c) {
-        let group = res.find((g) => g.id === c);
-        if (!group) {
-          group = {
-            id: c,
-            title: c.replace('_', ' '),
-            _adding: false,
-            _open: true,            
-            node: entity._node,
-            entities: [],
-          };
-          res.push(group);
-        }        
-        let entityId = entity._node?.id ?? entity.text;
-        const ent = group.entities.find((e) => e.id === entityId);
-
-        if (!ent) {
-          let edge = this.document._outgoing?.find(
-            (o) => o.toId === entityId
-          );
-          // console.log(this.document._node?._outgoing?.map(f => f.toId));
-          let el = {
-            id: entityId,
-            _hover: false,
-            _approved: edge !== undefined,
-            edge,
-            node: entity._node,
-            // _relations: entity._relations ? entity._relations.length : 0,
-            _togglemore: false,
-            instances: [entity],
-          } as EntityList;
-          if (edge !== undefined) {
-            // debugger;
+    for (const entity of this.document._entities) {
+      if (this.document._flat?.show_all_entities || entity._node?._featureType) {
+        const c = entity._node?.classId ?? entity.spacy_label;
+        if (c) {
+          let group = res.find((g) => g.id === c);
+          if (!group) {
+            group = {
+              id: c,
+              title: c.replace('_', ' '),
+              _adding: false,
+              _open: true,
+              node: entity._node,
+              entities: [],
+            };
+            res.push(group);
           }
-          group.entities.push(el);
-        } else {
-          ent.instances.push(entity);
-          // ent._relations+=entity._relations ? entity._relations.length : 0;
+          let entityId = entity._node?.id ?? entity.text;
+          const ent = group.entities.find((e) => e.id === entityId);
+
+          if (!ent) {
+            let edge = this.document._outgoing?.find((o) => o.toId === entityId);
+            // console.log(this.document._node?._outgoing?.map(f => f.toId));
+            let el = {
+              id: entityId,
+              _hover: false,
+              _linked: edge !== undefined,
+              edge,
+              node: entity._node,
+              // _relations: entity._relations ? entity._relations.length : 0,
+              _togglemore: false,
+              instances: [entity],
+            } as EntityList;
+            if (edge !== undefined) {
+              // debugger;
+            }
+            group.entities.push(el);
+          } else {
+            ent.instances.push(entity);
+            // ent._relations+=entity._relations ? entity._relations.length : 0;
+          }
         }
-      }
       }
     }
 
     // find all contains relations without entities
     if (this.document._outgoing) {
-      for (const relation of this.document._outgoing
-        .filter((r) => r.classId === "CONTAINS")
-        .map((r) => r)) {
+      for (const relation of this.document._outgoing.filter((r) => r.classId === 'CONTAINS').map((r) => r)) {
         if (relation && relation.to) {
           const entity = relation.to;
           // find group
@@ -438,19 +427,16 @@ export default class DocumentEntities extends WidgetBase {
             };
             res.push(group);
           }
-          if (
-            group &&
-            group.entities.findIndex((i) => i.id === entity.id) === -1
-          ) {
+          if (group && group.entities.findIndex((i) => i.id === entity.id) === -1) {
             group.entities.push({
               id: entity.id!,
-              edge: relation,              
+              edge: relation,
               node: entity,
-              instances: [],              
+              instances: [],
               _relations: 0,
               _hover: false,
-              _approved: true,
-              _togglemore: false,              
+              _linked: true,
+              _togglemore: false,
             });
           }
         }
@@ -462,8 +448,9 @@ export default class DocumentEntities extends WidgetBase {
       g.entities = g.entities.sort((a, b) => {
         return b.instances?.length - a.instances?.length;
       });
-    }    
-    Vue.set(this, "nodeGroups", res);
+    }
+    Vue.set(this, 'nodeGroups', res);
+    this.updateLayout();
   }
 
   public contentLoaded() {
@@ -473,19 +460,16 @@ export default class DocumentEntities extends WidgetBase {
         if (a === DocDatasource.ENTITIES_UPDATED) {
           this.updateGroups();
         }
-      })
+      });
     }
     //   alert('Content loaded');
   }
 
   public mounted() {
-    console.log("entities");
-    console.log(this.source);
-    this.updateGroups();
-  }
-
-  constructor() {
-    super();
+    setTimeout(() => {
+      this.updateGroups();
+      this.updateLayout();
+    }, 100);
   }
 }
 </script>

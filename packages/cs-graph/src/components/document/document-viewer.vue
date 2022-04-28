@@ -16,7 +16,7 @@
   </v-container>
 
   <div v-else-if="loaded && currentDocument" class="editor-grid" v-show="!startMenu">
-    <v-toolbar flat outlined class="graph-menu" v-if="currentDocument && !hideHeader">
+    <v-toolbar flat class="graph-menu" v-if="currentDocument && !hideHeader">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
@@ -54,30 +54,33 @@
           </v-layout>
         </template>
         <template v-else>
-          <v-layout v-if="currentDocument && currentDocument._entityTypes" class="drag-types-container">
-            <template v-for="(type, id) of currentDocument._entityTypes">
+          
+          <v-sheet class="document-entities-sheet">
+         <v-slide-group class="document-entities-group" show-arrows v-if="currentDocument && currentDocument._entityTypes" >
+            <v-slide-item v-for="(type, tid) of currentDocument._entityTypes" :key="tid">
               <v-chip
                 :outlined="!type._selected"
-                @click="type._selected = !type._selected"
-                :key="id"
+                @click="type._selected = !type._selected"                
                 :color="type.color"
-                class="ml-2 drag-type"
-                v-if="!currentDocument.properties.hide_unknowns || type._featureType"
+                small
+                class="ml-2"
+                v-if="currentDocument._flat.show_all_entities || type._featureType"
               >
-                <v-icon v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
+                <v-icon small v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
                 {{ type.title }}
                 <v-avatar right dark class="darken-4">
                   {{ type.count }}
                 </v-avatar>
               </v-chip>
-            </template>
-          </v-layout>
+            </v-slide-item>
+            </v-slide-group>
+        </v-sheet>
         </template>
         <v-spacer></v-spacer>
-        <!-- <v-switch v-model="currentDocument.properties.hide_unknowns"> </v-switch> -->
+        <v-switch v-model="currentDocument._flat.show_all_entities"> </v-switch>
 
-        <v-btn icon @click="selectDocumentTool(tool)" v-for="tool in documentToolsMenu" :key="tool.id">
-          <v-icon>{{ tool.icon }}</v-icon>
+        <v-btn icon @click="selectDocumentAction(action)" v-for="action in documentActionsMenu" :key="action.id">
+          <v-icon>{{ action.icon }}</v-icon>
         </v-btn>
         <v-btn @click="startMenu = !startMenu" icon>
           <v-icon>mdi-import</v-icon>
@@ -90,76 +93,81 @@
         </v-btn>
       </v-layout>
       <template v-slot:extension v-if="currentDocument.properties.editor_mode === 'EDIT'">
-        <div v-if="editor">
-          <v-slide-group show-arrows>
-            <v-btn-toggle dense group>
-              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
-              <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"
+        <v-sheet  v-if="editor" class="document-tools-sheet">
+          <v-slide-group show-arrows v-if="documentToolsMenu" class="document-tools-group">
+            <v-slide-item v-for="(tool, ti) in documentToolsMenu"  :key="ti" v-slot="{ active }">
+            <v-btn icon @click="selectDocumentTool(tool)" :class="{ 'is-active': tool.isActive }" :key="tool.id">
+              <v-icon>{{ tool.icon }}</v-icon>
+            </v-btn>
+            </v-slide-item>
+            <!-- <v-btn-toggle dense group> -->
+            <!-- <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn> -->
+            <!-- <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"
                 ><v-icon>mdi-pencil</v-icon></v-btn
-              >
-              <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn>
-              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                ><v-icon>mdi-format-paragraph</v-icon></v-btn
-              >
-              <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-                <v-icon>mdi-format-bold</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
-                <v-icon>mdi-format-italic</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
-                <v-icon>mdi-format-strikethrough</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleHighlight().run()" :class="{ 'is-active': editor.isActive('highlight') }">
-                <v-icon>mdi-marker</v-icon>
-              </v-btn>
+              > -->
+            <!-- <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn> -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <!-- <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
+              ><v-icon>mdi-format-paragraph</v-icon></v-btn
+            >
+            
 
-              <v-btn @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
-                <v-icon>mdi-segment</v-icon>
-              </v-btn>
-              <v-btn
-                @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-                :class="{
-                  'is-active': editor.isActive('heading', { level: 1 }),
-                }"
-              >
-                h1
-              </v-btn>
-              <v-btn
-                @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-                :class="{
-                  'is-active': editor.isActive('heading', { level: 2 }),
-                }"
-              >
-                h2
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
-                <v-icon>mdi-format-list-bulleted</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
-                <v-icon>mdi-format-list-numbered</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
-                <v-icon>mdi-code-tags</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
-                <v-icon>mdi-format-quote-close</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
-                <v-icon>mdi-reorder-horizontal</v-icon>
-              </v-btn>
-              <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
-              <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
-            </v-btn-toggle>
+            <v-btn @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
+              <v-icon>mdi-segment</v-icon>
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+              :class="{
+                'is-active': editor.isActive('heading', { level: 1 }),
+              }"
+            >
+              h1
+            </v-btn>
+            <v-btn
+              @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+              :class="{
+                'is-active': editor.isActive('heading', { level: 2 }),
+              }"
+            >
+              h2
+            </v-btn>
+            <v-btn @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+              <v-icon>mdi-format-list-bulleted</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
+              <v-icon>mdi-format-list-numbered</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
+              <v-icon>mdi-code-tags</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
+              <v-icon>mdi-format-quote-close</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
+              <v-icon>mdi-reorder-horizontal</v-icon>
+            </v-btn>
+            <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
+            <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn> -->
+            <!-- </v-btn-toggle> -->
           </v-slide-group>
-        </div>
+        </v-sheet>
       </template>
     </v-toolbar>
 
     <!-- <div > -->
 
-    <simplebar class="editor-row" v-if="currentDocument && currentDocument.properties">
+    <div class="editor-row" v-if="currentDocument && currentDocument.properties">
       <div class="document-container">
+        
         <div class="document-title">
           <v-layout>
             <v-btn icon @click="toggleTitle()">
@@ -217,7 +225,7 @@
           :editor="editor"
         />
       </div>
-    </simplebar>
+    </div>
     <!-- </div> -->
   </div>
 </template>
@@ -232,7 +240,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from '@tiptap/starter-kit';
 import { BubbleMenu, Editor, EditorContent, FloatingMenu, Node } from '@tiptap/vue-2';
-import simplebar from 'simplebar-vue';
+// import simplebar from 'simplebar-vue';
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import { IImportPlugin, suggestion } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
@@ -256,7 +264,7 @@ import { IMenu } from '@csnext/cs-core';
 
 @Component({
   components: {
-    simplebar,
+    // simplebar,
     EditorContent,
     BubbleMenu,
     FloatingMenu,
@@ -275,7 +283,12 @@ export default class DocumentViewer extends WidgetBase {
 
   public dragInitialized = false;
   public contextMenuitems: any[] = [];
+
+  // actions that apply to part of document (bold, heading, etc.)
   public documentToolsMenu: IMenu[] = [];
+
+  // tools that apply to whole document
+  public documentActionsMenu: IMenu[] = [];
 
   public set editor(value: Editor | undefined | null) {
     if (this.source) {
@@ -300,17 +313,73 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
+  public async selectDocumentAction(tool: IMenu) {
+    if (tool.action && this.currentDocument) {
+      await tool.action(tool);
+    }
+  }
+
+  public updateDocumentTools() {
+    this.documentToolsMenu = [
+      {
+        icon: 'mdi-label',
+        action: (m, a) => {
+          this.setTextEntity();
+        },
+        isActive: false,
+      },
+      {
+        icon: 'mdi-card',
+        action: () => {
+          this.setElementCard();
+        },
+      },
+      {
+        icon: 'mdi-format-bold',
+        action: () => {
+          this.editor!.chain().focus().toggleBold().run();
+        },
+        isActive: ()=> this.editor!.isActive('bold')
+      },
+      {
+        icon: 'mdi-format-italic',
+        action: () => {
+          this.editor!.chain().focus().toggleItalic().run();
+        },
+      },
+      {
+        icon: 'mdi-format-strikethrough',
+        action: () => {
+          this.editor!.chain().focus().toggleStrike().run();
+        },
+      },
+    ];
+  }
+
+  // <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+  //             <v-icon>mdi-format-bold</v-icon>
+  //           </v-btn>
+  //           <v-btn @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+  //             <v-icon>mdi-format-italic</v-icon>
+  //           </v-btn>
+  //           <v-btn @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+  //             <v-icon>mdi-format-strikethrough</v-icon>
+  //           </v-btn>
+  //           <v-btn @click="editor.chain().focus().toggleHighlight().run()" :class="{ 'is-active': editor.isActive('highlight') }">
+  //             <v-icon>mdi-marker</v-icon>
+  //           </v-btn>
+
   public updateDocumentActions() {
     if (!this.source?.tools || !this.currentDocument) {
       return;
     }
-    this.documentToolsMenu.splice(0, this.documentToolsMenu.length);
-    for (const tool of this.source.tools) {      
+    this.documentActionsMenu.splice(0, this.documentToolsMenu.length);
+    for (const tool of this.source.tools) {
       if (tool.documentActions && typeof tool.documentActions === 'function') {
         let actions = tool.documentActions(this.currentDocument);
         if (actions) {
           for (const mi of actions) {
-            this.documentToolsMenu.push(mi);
+            this.documentActionsMenu.push(mi);
           }
         }
       }
@@ -341,6 +410,8 @@ export default class DocumentViewer extends WidgetBase {
   // public highlight?: Highlight;
   public source: DocDatasource | undefined = undefined;
   public entityBubbleSelection: FeatureType | null = null;
+
+  public doc;
 
   public setEntity() {
     if (!this.source || !this.currentDocument || !this.editor || !this.entityBubbleSelection?.type) {
@@ -443,10 +514,12 @@ export default class DocumentViewer extends WidgetBase {
   public currentDocument: GraphDocument | undefined;
 
   public openElement(document: GraphDocument) {
-    this.loadDocument(document);
-    this.updateEditor();
-    this.updateContent();
-    this.initTools();
+    Vue.nextTick(()=> {
+      this.loadDocument(document);    
+      this.updateEditor();
+      this.updateContent();
+      this.initTools();
+    })
   }
 
   public testEntity() {
@@ -513,6 +586,7 @@ export default class DocumentViewer extends WidgetBase {
     }
     if (!this.editor) {
       this.editor = new Editor({
+        
         extensions: [
           StarterKit,
           // SmilieReplacer,
@@ -582,9 +656,13 @@ export default class DocumentViewer extends WidgetBase {
         };
       }
       this.currentDocument = doc;
-
       this.state.element = doc;
+      
+      // check if entities from document are also included in doc._entities
+      DocUtils.syncEntities(doc, this.source!, doc.properties.doc.content, false);    
 
+      // link doc._entities to graph entities
+      this.source.parseEntities(doc);
       this.loaded = true;
     }
   }
@@ -688,6 +766,7 @@ export default class DocumentViewer extends WidgetBase {
           this.currentDocument.properties!.doc = d.properties.doc;
           this.updateContent();
           DocUtils.syncEntities(this.currentDocument!, this.source!, this.currentDocument!.properties!.doc, true);
+          this.source!.parseEntities(this.currentDocument!);
         }
       });
     }
@@ -735,71 +814,74 @@ export default class DocumentViewer extends WidgetBase {
       return;
     }
     this.source = source;
-    this.updateContextMenu();
+        
     console.log('document content loaded');
     this.busManager.subscribe(this.source!.bus, DocDatasource.DOCUMENT_ENTITIES, (a: string, d: any) => {
       if (a === DocDatasource.ENTITIES_UPDATED) {
         console.log('document content updated from messagebus');
-        this.checkDocumentIdQuery();
-        this.updateEditor();
-        this.updateContent();
-        this.initTools();
-        this.$forceUpdate();
+        // this.checkDocumentIdQuery();        
       }
     });
     this.busManager.subscribe(this.source!.bus, 'document', (a: string, d: any) => {
-      this.updateEditor();
-      this.updateContent();
-      this.initTools();
+      console.log('document updated');
+      this.$forceUpdate();
+      // this.updateEditor();
+      // this.updateContent();
+      // this.initTools();
     });
     if (this.state && this.state.elementId) {
       const doc = this.source.getElement(this.state.elementId) as GraphDocument;
-      this.loadDocument(doc);
-      this.updateEditor();
-      this.updateContent();
-      this.initTools();
+      this.openElement(doc);      
+    } else if (this.checkDocumentIdQuery()) {
+      console.log('got from uri')
     } else {
-      this.checkDocumentIdQuery();
-      this.updateEditor();
-      this.updateContent();
-      this.initTools();
+      if (this.state?.element) {
+        this.openElement(this.state.element);
+      }
     }
+    
     // this.initTools();
     this.initDragging();
+    this.updateContextMenu();
   }
 
-  private checkDocumentIdQuery() {
+  private checkDocumentIdQuery() : boolean {
     if (!$cs.router || !this.source) {
-      return;
+      return false;
     }
 
-    if ($cs.router.currentRoute?.query?.id) {
-      if (this.currentDocument?.id !== $cs.router!.currentRoute?.query?.id) {
-        const doc = this.source.getElement($cs.router.currentRoute.query.id as string) as GraphDocument;
+    if ($cs.router.currentRoute?.query?.docid) {
+      if (this.currentDocument?.id !== $cs.router!.currentRoute?.query?.docid) {
+        const doc = this.source.getElement($cs.router.currentRoute.query.docid as string) as GraphDocument;
         if (doc) {
-          this.loadDocument(doc);
+          this.openElement(doc);
         }
       } else {
-        this.loadDocument(this.currentDocument);
+        this.openElement(this.currentDocument);
       }
-    } else {
-      let d: GraphDocument = (this.source.activeElement as GraphDocument) || this.currentDocument;
-      if (d) {
-        this.loadDocument(d);
-
-        const combined = {
-          ...$cs.router!.currentRoute.query,
-          ...{ id: d.id },
-        };
-        $cs.router.replace(
-          { path: $cs.router!.currentRoute.params[0], query: combined },
-          () => {},
-          () => {
-            // console.log(err);
-          }
-        );
-      }
+      return true;
+    } else { 
+      return false;
     }
+    
+    // else {
+    //   let d: GraphDocument = (this.source.activeElement as GraphDocument) || this.currentDocument;
+    //   if (d) {
+    //     this.openElement(d);
+
+    //     const combined = {
+    //       ...$cs.router!.currentRoute.query,
+    //       ...{ docid: d.id },
+    //     };
+    //     $cs.router.replace(
+    //       { path: $cs.router!.currentRoute.params[0], query: combined },
+    //       () => {},
+    //       () => {
+    //         // console.log(err);
+    //       }
+    //     );
+    //   }
+    
   }
 
   private dragMoveListener(event) {
@@ -917,9 +999,9 @@ export default class DocumentViewer extends WidgetBase {
           {
             icon: 'mdi-sim-outline',
             title: 'Entity Recognition',
-            action: async () => {
-              this.updateEntityTypes();
+            action: async () => {              
               await this.refresh();
+              this.updateEntityTypes();
             },
           },
         ];
@@ -935,6 +1017,7 @@ export default class DocumentViewer extends WidgetBase {
       },
     } as ITool);
     this.updateDocumentActions();
+    this.updateDocumentTools();
   }
 
   initDragging() {
@@ -1135,6 +1218,9 @@ ul[data-type='taskList'] {
 }
 
 .graph-menu {
+  border-bottom-style:solid;
+  border-bottom-width: 1px;
+  border-bottom-color: grey;
   /* position: absolute; */
 
   /* left: 0;
@@ -1195,7 +1281,7 @@ overflow-y: auto; */
 .ProseMirror {
   outline-style: none !important;
   padding: 5px;
-  font-size: 25px;
+  font-size: 18px;
   height: 100%;
 }
 
@@ -1249,6 +1335,10 @@ overflow-y: auto; */
 .document-editor {
   /* border: 1px solid black; */
   /* width: 50%; */
+      overflow-y: auto;
+    height: calc(100% - 200px);
+    
+    position: absolute;
 }
 
 .find {
@@ -1258,6 +1348,32 @@ overflow-y: auto; */
 .find:hover {
   border-color: black;
   background: yellow;
+}
+
+.document-tools-sheet {
+  position: relative;
+  width: 100%;
+  align-self: baseline;
+}
+
+.document-tools-group {
+   max-width: calc(100% - 10px);
+  position: absolute;  
+  padding-right: 5px;
+  top: -5px;
+}
+
+.document-entities-sheet {
+  position: relative;
+  width: 100%;
+  align-self: baseline;
+}
+
+.document-entities-group {
+  max-width: calc(100% - 10px);
+  position: absolute;  
+  padding-right: 5px;
+  top: 10px;
 }
 
 .details-description-editor {
@@ -1271,8 +1387,9 @@ overflow-y: auto; */
 }
 
 .is-active {
-  background: darkgray !important;
-  color: white !important;
+  /* background: darkgray !important; */
+  /* color: white !important; */
+  font-weight: 700;
 }
 
 .tooltip {

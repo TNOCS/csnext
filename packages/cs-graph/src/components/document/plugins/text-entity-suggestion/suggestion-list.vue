@@ -60,8 +60,9 @@ export default class MentionList extends Vue {
    }
 
     upHandler() {
-      
-      this.selectedIndex! = (this.selectedIndex! + this.items.length - 1) % this.items.length;
+      if (this.items && this.items.length > 0) {       
+        this.selectedIndex! = (this.selectedIndex! + this.items.length - 1) % this.items.length;
+      }
     }
 
     downHandler() {

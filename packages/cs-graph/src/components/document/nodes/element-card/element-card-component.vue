@@ -3,8 +3,8 @@
   >
    
    <v-layout>
-  <v-card class="element-card-component" elevation="2">
-    <component v-if="element !== null" :is="getComponentCard(element)" :element="element" :source="source" />
+  <v-card class="card-medium-size" elevation="2">
+    <component v-if="element !== null" :is="getComponentCard(element)" :element="element" :source="source" size="medium" />
     <v-autocomplete v-else :items="Object.values(source.graph)" item-text="properties.name" v-model="elementId" item-value="id" label="Select element" class="ma-5" @change="selectElement()" ></v-autocomplete>
     <!-- <v-btn class="primary">select - {{node.attrs.elementId}} {{elementId}}</v-btn>
      -->
@@ -22,12 +22,6 @@
 </template>
 
 <style scoped>
-.element-card-component
-{
-  min-width: 300px;
-  min-height: 200px;
-}
-
 .element-card-content {
   display: none;
 }
@@ -94,14 +88,8 @@ export default class ElementCardComponent extends Vue {
   }
 
    private getComponentCard(element: GraphElement) {
-    const id = element.classId;
-    if (id && ElementCardManager.cards?.hasOwnProperty(id)) {
-      return ElementCardManager.cards[id];
-    }
-    if (element.properties && element.properties.hasTimeseries) {
-      return ElementCardManager.cards['indicator'];
-    }
-    return 'default-element-card';
+    return ElementCardManager.getElementCard(element);
+    
   }
 
   private checkElement() {
@@ -110,11 +98,7 @@ export default class ElementCardComponent extends Vue {
     }
   }
 
-  mounted() {
-    console.log(this);
-    if (this.node?.attrs) {
-      console.log(this.node.attrs);
-    }
+  mounted() {    
     this.checkElement();
   }
 

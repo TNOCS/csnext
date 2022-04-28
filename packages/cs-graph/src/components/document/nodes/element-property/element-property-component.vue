@@ -91,8 +91,7 @@ if (this.document?.properties && this.key) {
       if (this.node?.attrs?.key && this.document && this.document?.properties && this.document.properties.hasOwnProperty(this.node.attrs.key)) {
         // this.value = this.document.properties[this.node.attrs.key];
         this.setStyle();
-      }
-      console.log(this.node.attrs);
+      }      
     }
 
     // const a = annotate( '.paragraph-content', { type: 'bracket', color:'blue'});

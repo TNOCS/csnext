@@ -6,7 +6,7 @@ export class EntityList {
   public edge?: GraphElement;
   public instances: TextEntity[] = [];
   public _hover = false;
-  public _approved = false;
+  public _linked = false;
   public _relations = 0;
   public _togglemore = false;
   

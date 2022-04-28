@@ -51,7 +51,7 @@ export default Paragraph.extend({
     addCommands() {
         return {     
             toggleElementProperty: attributes => ({ commands }) => {
-                return commands.setNode('element-property', attributes)
+                return commands.toggleNode('element-property', 'text', attributes)
               },       
               setElementProperty: (entity?: GraphElement, key?: string, value?: any) => ({ tr, dispatch }) => {
                 // debugger;
