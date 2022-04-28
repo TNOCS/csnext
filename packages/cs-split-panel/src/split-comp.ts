@@ -21,7 +21,7 @@ export class SplitComp extends Vue {
   @Prop({ default: null }) private dashboard?: IDashboard | null;
 
   public splitGridOptions = {
-    gutterSize: 3,
+    gutterSize: 5,
   };
 
   public allHidden(element: SplitPanelOptions) {
