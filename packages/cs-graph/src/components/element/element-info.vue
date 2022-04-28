@@ -52,7 +52,7 @@
         <v-icon>mdi-scatter-plot</v-icon>
       </v-btn> -->
 
-      <v-menu offset-y>
+      <v-menu offset-y :close-on-click="false" :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
           <v-btn depressed v-bind="attrs" icon elevation="0" v-on="on" @click="openContextMenu()">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -100,14 +100,14 @@
       </template>
     </v-toolbar>
 
-    <simplebar class="full-height">
+    
       <v-tabs-items v-model="tab" class="info-tab-items">
         <v-tab-item v-if="specialTab" value="tab-SPECIAL">
           <cs-widget v-if="specialTab.id" :widget="specialTab" :element="activeElement"></cs-widget>
           <component v-else :is="specialTab" :element="activeElement" :source="dataSource"></component>
         </v-tab-item>
 
-        <v-tab-item value="tab-PROPERTIES">
+        <v-tab-item value="tab-PROPERTIES" class="tab-content">
           <data-info-panel
             class="element-data-info-panel"
             :key="componentKey"
@@ -118,7 +118,7 @@
             panel="details"
           ></data-info-panel>
         </v-tab-item>
-        <v-tab-item value="tab-EDITOR">
+        <v-tab-item value="tab-EDITOR" class="tab-content">
           <cs-form :data="activeElement.properties" :formdef="formDef" class="pa-2" id="detailcsform" @saved="updateEntity"></cs-form>
         </v-tab-item>
         <v-tab-item value="tab-RELATIONS" class="full-height">
@@ -156,7 +156,7 @@
           </v-list>
         </v-tab-item>
       </v-tabs-items>
-    </simplebar>
+    
   </div>
 </template>
 
@@ -165,7 +165,7 @@
   margin: 14px;
 }
 .element-data-info-panel {
-  margin: 4px;
+  /* margin: 4px; */
 }
 
 .type-sub-title {
@@ -214,7 +214,9 @@
 .feature-property-value {
   font-size: 16px;
   text-align: right;
+  overflow: hidden;
   max-width: 66%;
+  font-weight: 600;;
   justify-content: flex-end;
 }
 
@@ -227,6 +229,12 @@
 
 .prop-key {
   font-weight: 700;
+}
+
+.tab-content {
+    overflow-y: auto;
+    padding-bottom: 50px;
+    height: calc(100vh - 120px);
 }
 
 .prop-value {
@@ -289,8 +297,8 @@ export default class ElementInfo extends WidgetBase {
   public showContextMenu = false;
   public contextMenuitems: IMenu[] = [];
 
-  @Ref('docWidget')
-  private docWidget: HTMLElement | null = null;
+  // @Ref('docWidget')
+  // private docWidget: HTMLElement | null = null;
 
   @Watch('activeElement')
   public async updateIndicatorResults() {
@@ -560,7 +568,7 @@ export default class ElementInfo extends WidgetBase {
   }
 
   public openDocument(id: string) {
-    $cs.router?.push(`/document?id=${id}`);
+    $cs.router?.push(`/document?docid=${id}`);
   }
 
   public getInstances(element: GraphElement): LinkInfo[] {
