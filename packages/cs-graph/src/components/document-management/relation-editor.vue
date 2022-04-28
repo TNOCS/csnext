@@ -13,6 +13,8 @@
         append-outer-icon="mdi-plus"
         @click:append-outer="createElement()"
         clearable
+        :filled="field.filled"
+        :rounded="field.rounded"
         item-text="element.properties.name"
         multiple
         return-object
@@ -114,6 +116,8 @@
         clearable
         @change="updateRelation()"
         return-object
+         :filled="field.filled"
+        :rounded="field.rounded"
         item-value="element.id"
         :persistentHint="field.persistentHint"
         :disabled="field.readonly"
@@ -150,15 +154,11 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
-import { WidgetBase } from '@csnext/cs-client';
 import { guidGenerator, idGenerator, IFormFieldOptions, IFormOptions } from '@csnext/cs-core';
-
-import simplebar from 'simplebar-vue';
-
 import { NodeLink, NodeChip, DataInfoPanel } from '@csnext/cs-map';
 import Vue from 'vue';
 import { DocDatasource } from '../../datasources/doc-datasource';
-import { FeatureType, RelationType } from '@csnext/cs-data';
+import { RelationType } from '@csnext/cs-data';
 import { LinkInfo, GraphElement } from '@csnext/cs-data';
 
 @Component({
@@ -166,7 +166,7 @@ import { LinkInfo, GraphElement } from '@csnext/cs-data';
     field: undefined,
     target: undefined,
   } as any,
-  components: { simplebar, NodeLink, NodeChip, DataInfoPanel },
+  components: { NodeLink, NodeChip, DataInfoPanel },
 })
 export default class RelationEditor extends Vue {
   public links: LinkInfo[] | null = null;
@@ -333,7 +333,7 @@ export default class RelationEditor extends Vue {
     }
     await this.graph.removeEdge(l.link).then((r) => {
       this.graph!.updateEdges();
-      this.graph!.parseEntities();
+      // this.graph!.parseEntities();
       this.setLinks();
       this.$forceUpdate();
     });

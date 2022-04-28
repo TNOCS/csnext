@@ -21,10 +21,13 @@ export * from './utils/graph-utils';
 export * from "./components/search/search-manager";
 export * from './classes/tool';
 export * from './components/element/element-actions'
+export * from './components/data-grid/suggestions/suggestions';
 
 import TextExtension from './components/document/nodes/text-entity/text-extension';
 import ParagraphExtension from './components/document/nodes/node-paragraph/paragraph-extension';
 import suggestion from './components/document/plugins/text-entity-suggestion/suggestion';
+
+import './assets/cards.css';
 
 
 import NetworkGraph from './components/graph/graph.vue';
