@@ -257,8 +257,8 @@ export default class TextEntityComponent extends Vue {
 }
 
 .icon-image {
-  max-width: 25px;
-  max-height: 25px;
+  max-width: 20px;
+  max-height: 20px;
 }
 
 .content {

@@ -113,12 +113,7 @@ export class GraphElement<T = BaseElementProperties> {
     e: GraphElement,
     activated?: boolean
   ): string {
-    if (e.backgroundColor !== undefined) {
-      if (activated !== null) {
-        if (!activated) {
-          return e.backgroundColor;
-        }
-      }
+    if (e.backgroundColor !== undefined) {      
       return e.backgroundColor;
     } else if (e._featureType?.color) {
       e.backgroundColor = e._featureType.color;
