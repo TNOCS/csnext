@@ -1,5 +1,5 @@
 import { GraphElement } from "@csnext/cs-data";
-import { DocDatasource } from "@csnext/cs-graph";
+import { DocDatasource } from '../../..';
 import { DataGridGridOptions } from '../data-grid-options';
 
 
