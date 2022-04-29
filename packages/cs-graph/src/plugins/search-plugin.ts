@@ -9,7 +9,7 @@ export interface ISearchPlugin {
     component?: any;
     image: string;
     options?: any;
-    actions(element: GraphElement, source: DocDatasource) : IMenu[];
+    actions?(element: GraphElement, source: DocDatasource) : IMenu[];
     callSearch?(text: string) : Promise<ISearchPluginResult>;
 }
 
