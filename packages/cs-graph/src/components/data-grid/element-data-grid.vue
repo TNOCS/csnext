@@ -148,7 +148,7 @@
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
         <v-btn
-          v-if="options.grouping && options.grouping.enabled && options.defaultView === 'cards'"
+          v-if="options.grouping && options.grouping.enabled"
           @click="toggleGrouping()"
           tile
           icon
@@ -221,11 +221,10 @@
         </v-btn>
 
         <template v-for="(view, vi) in source.gridPlugins">
-        <v-btn v-if="options.hasOwnProperty(view.optionsId)" :key="vi" :value="view.id" class="default-view-button">
-          <v-icon>{{view.icon}}</v-icon>
-        </v-btn>
+          <v-btn v-if="options.hasOwnProperty(view.optionsId)" :key="vi" :value="view.id" class="default-view-button">
+            <v-icon>{{ view.icon }}</v-icon>
+          </v-btn>
         </template>
-
       </v-btn-toggle>
 
       <v-btn class="ml-2 search-button" elevation="0" depressed v-if="options.canSort && sortOptions">
@@ -326,24 +325,29 @@
       <div class="data-grid-viewer">
         <v-expansion-panels v-if="suggestions && suggestions.length > 0" class="mr-5">
           <v-expansion-panel>
-            <v-expansion-panel-header><v-layout><v-icon>mdi-auto-fix</v-icon> Suggestions ({{ suggestions.length }})</v-layout></v-expansion-panel-header>
+            <v-expansion-panel-header
+              ><v-layout><v-icon>mdi-auto-fix</v-icon> Suggestions ({{ suggestions.length }})</v-layout></v-expansion-panel-header
+            >
             <v-expansion-panel-content>
               <v-container>
-                
-                  <v-row>
-                    <template v-for="(suggestion, index) in suggestions">
+                <v-row>
+                  <template v-for="(suggestion, index) in suggestions">
                     <v-col cols="4" v-if="suggestion" :key="index" class="suggestion-col">
                       <v-card outlined class="suggestion-card">
-                      <v-layout>
-                        <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon><span class="suggestion-text">{{ suggestion.text}}</span><v-spacer></v-spacer>
-                      <template v-if="suggestion.actions">
-                        <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon><v-icon>{{action.icon}}</v-icon></v-btn>
-                      </template>
-                      </v-layout>
+                        <v-layout>
+                          <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon
+                          ><span class="suggestion-text">{{ suggestion.text }}</span
+                          ><v-spacer></v-spacer>
+                          <template v-if="suggestion.actions">
+                            <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon
+                              ><v-icon>{{ action.icon }}</v-icon></v-btn
+                            >
+                          </template>
+                        </v-layout>
                       </v-card>
-                      </v-col>
-                    </template>
-                  </v-row>                
+                    </v-col>
+                  </template>
+                </v-row>
               </v-container>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -666,7 +670,6 @@
 
         <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">timeline vertical</div>
 
-        
         <div class="calendar-view" v-if="options.defaultView === 'calendar'">
           <v-toolbar flat>
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
@@ -790,17 +793,15 @@
               </template>
             </v-treeview>
           </div>
-
         </template>
 
         <template v-for="(view, vi) in source.gridPlugins">
           <div :key="vi" v-if="options.defaultView === view.id">
-            <component :is="view.component" :source="source" :grid="getGrid()"></component>            
+            <component :is="view.component" :source="source" :grid="getGrid()"></component>
           </div>
         </template>
 
         <div class="timeline" v-if="options.defaultView === 'timeline'">timeline</div>
-
       </div>
 
       <cs-widget v-if="options.splitWidget" :widget="options.splitWidget"></cs-widget>
@@ -829,7 +830,6 @@
 </template>
 
 <style lang="scss" scoped>
-
 .suggestion-col {
   padding: 4px !important;
 }
@@ -837,7 +837,6 @@
 .suggestion-text {
   align-self: center;
   margin-left: 4px;
-
 }
 
 .suggestion-card {
@@ -1166,6 +1165,7 @@ export class FilterPanel {
 }
 
 export class GridGroup {
+  id?: string;
   title?: string;
   items?: GraphElement[];
 }
@@ -1236,6 +1236,7 @@ export default class ElementDataGrid extends WidgetBase {
 
   public gridApi?: GridApi;
   public columnApi: any | null = null;
+  public linkedElement?: GraphElement;
 
   public rowData: any | null = [];
   public groups: GridGroup[] = [];
@@ -1287,6 +1288,12 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
+  private updateLinkedElement() {
+    if (this.source?.events && this.linkedElement) {
+        this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.linkedElement);
+      }
+  }
+
   private async unlinkElement(element: GraphElement) {
     if (this.source && this.options.linkOptions?.baseTypeId && this.options.linkOptions?.id && element._incomming) {
       // find base type
@@ -1295,12 +1302,12 @@ export default class ElementDataGrid extends WidgetBase {
       const id = AppState.parseStateValue(this.state, this.options.linkOptions.id);
 
       // find edge
-      let r = element._incomming.find(r => r.fromId === id);
+      let r = element._incomming.find((r) => r.fromId === id);
       if (r) {
         await this.source.removeEdge(r);
+        this.updateLinkedElement();
         this.updateEntities(true);
       }
-      
     }
   }
 
@@ -1311,7 +1318,7 @@ export default class ElementDataGrid extends WidgetBase {
         title: 'unlink',
         icon: 'mdi-link-off',
         action: async () => {
-          await this.unlinkElement(e);          
+          await this.unlinkElement(e);
           // alert('unlink');
         },
       });
@@ -1767,7 +1774,7 @@ export default class ElementDataGrid extends WidgetBase {
     alert('selected');
     if (!this.source) {
       return;
-    }    
+    }
   }
 
   public clickCalendarItem(e: any) {
@@ -2034,100 +2041,105 @@ export default class ElementDataGrid extends WidgetBase {
     this.$forceUpdate();
   }
 
-  public async addGroupItem(group: GridGroup) {
-    alert('not implemented');
+  public async addGroupItem(group: GridGroup) {    
+    if (this.featureType && this.options.grouping?.property) {
+      await this.addEntity(this.featureType, undefined, { [this.options.grouping.property]: group.id });
+    }    
   }
 
   public async linkElement() {
     if (this.source?.searchPlugins) {
-      let gs = this.source.searchPlugins.find(r => r.id === 'graph-search');
+      let gs = this.source.searchPlugins.find((r) => r.id === 'graph-search');
       if (gs && gs.createDialog) {
-        const dialog = gs.createDialog(this.source, undefined, { selectedTypes: [this.options.baseType] }, [{
+        const dialog = gs.createDialog(this.source, undefined, { selectedTypes: [this.options.baseType] }, [
+          {
             title: 'select',
             icon: 'mdi-check',
             action: async (i, dashboard, options) => {
               if (options?.element) {
                 await this.createLink(options.element);
-                this.updateEntities(true);
+                this.updateEntities(true);                
                 this.resize();
-              }              
-            }             
-          }]);
+              }
+            },
+          },
+        ]);
       }
-    } 
+    }
 
     // await $cs.triggerDialog({widget: { component: FindElement, datasource: this.widget.datasource } });
   }
 
-  public async createLink(e: GraphElement, parent?: GraphElement)  {
+  public async createLink(e: GraphElement, parent?: GraphElement) {
     if (this.source && parent && this.options.treeOptions?.parentProperty) {
+      try {
+        const parentEdge = await this.source.addNewEdge({
+          fromId: e.id,
+          toId: parent.id,
+          classId: this.options.treeOptions.parentProperty,
+        } as GraphElement);
+        if (parentEdge) {
+          try {
+            await this.source.addEdge(parentEdge);
+          } catch (e) {
+            console.log('Error adding parent edge');
+          }
+        }
+      } catch (e) {
+        console.log('Error adding parent edge edge');
+      }
+      // await this.source.updateEdges();
+    }
+
+    if (this.options.linkOptions?.key && this.options.linkOptions.id) {
+      if (!this.options.newRelations) {
+        this.options.newRelations = [];
+      }
+      this.options.newRelations.push({
+        fromId: AppState.parseStateValue(this.state, this.options.linkOptions.id),
+        key: this.options.linkOptions.key,
+      });
+    }
+
+    // check if new relations should be created
+    if (this.source && this.options.newRelations) {
+      for (const relation of this.options.newRelations) {
+        // new relation to other id
+        if (relation.toId && this.potentialProperties) {
+          if (this.potentialProperties.hasOwnProperty(relation.key) && this.potentialProperties[relation.key].relation?.type) {
             try {
-              const parentEdge = await this.source.addNewEdge({
-                fromId: e.id,
-                toId: parent.id,
-                classId: this.options.treeOptions.parentProperty,
-              } as GraphElement);
-              if (parentEdge) {
-                try {
-                  await this.source.addEdge(parentEdge);
-                } catch (e) {
-                  console.log('Error adding parent edge');
-                }
-              }
+              const newEdge = await this.source.addNewEdge(
+                {
+                  fromId: e.id,
+                  toId: relation.toId,
+                  classId: this.potentialProperties[relation.key].relation?.type,
+                } as GraphElement,
+                true
+              );
             } catch (e) {
-              console.log('Error adding parent edge edge');
+              console.log('Error adding relation edge');
             }
-            // await this.source.updateEdges();
           }
-
-          if (this.options.linkOptions?.key && this.options.linkOptions.id) {
-            if (!this.options.newRelations) {
-              this.options.newRelations = [];
-            }
-            this.options.newRelations.push({
-              fromId: AppState.parseStateValue(this.state, this.options.linkOptions.id),
-              key: this.options.linkOptions.key,
-            });
+        } else if (relation.fromId) {
+          // create relation from other id
+          const fromId = typeof relation.fromId === 'function' ? relation.fromId(this.state) : relation.fromId;
+          const fromNode = this.source.getElement(fromId);
+          if (fromNode?._featureType?.propertyMap && fromNode._featureType.propertyMap.hasOwnProperty(relation.key)) {
+            const prop = fromNode._featureType.propertyMap[relation.key];
+            const newEdge = await this.source.addNewEdge(
+              {
+                fromId: fromId,
+                toId: e.id,
+                classId: prop.relation?.type,
+              } as GraphElement,
+              true
+            );
           }
-
-          // check if new relations should be created
-          if (this.source && this.options.newRelations) {
-            for (const relation of this.options.newRelations) {
-              // new relation to other id
-              if (relation.toId && this.potentialProperties) {
-                if (this.potentialProperties.hasOwnProperty(relation.key) && this.potentialProperties[relation.key].relation?.type) {
-                  try {
-                    const newEdge = await this.source.addNewEdge(
-                      {
-                        fromId: e.id,
-                        toId: relation.toId,
-                        classId: this.potentialProperties[relation.key].relation?.type,
-                      } as GraphElement,
-                      true
-                    );
-                  } catch (e) {
-                    console.log('Error adding relation edge');
-                  }
-                }
-              } else if (relation.fromId) {
-                // create relation from other id
-                const fromId = typeof relation.fromId === 'function' ? relation.fromId(this.state) : relation.fromId;
-                const fromNode = this.source.getElement(fromId);
-                if (fromNode?._featureType?.propertyMap && fromNode._featureType.propertyMap.hasOwnProperty(relation.key)) {
-                  const prop = fromNode._featureType.propertyMap[relation.key];
-                  const newEdge = await this.source.addNewEdge(
-                    {
-                      fromId: fromId,
-                      toId: e.id,
-                      classId: prop.relation?.type,
-                    } as GraphElement,
-                    true
-                  );
-                }
-              }
-            }
-            await this.source.updateEdges();
-          }
+        }
+      }      
+      await this.source.updateEdges();
+      this.updateLinkedElement();      
+    }
   }
 
   public async callSuggestionAction(m: IMenu) {
@@ -2135,9 +2147,7 @@ export default class ElementDataGrid extends WidgetBase {
       await m.action(m);
       // await this.updateSuggestions();
       await this.updateEntities(true);
-
-    };
-
+    }
   }
 
   public async addEntity(type: FeatureType, parent?: GraphElement, properties?: any) {
@@ -2147,15 +2157,17 @@ export default class ElementDataGrid extends WidgetBase {
     let placeholder = `new ${type.title}`;
     let name = placeholder;
 
-    if (!this.options.editNewItem) {
-      name = properties?.name || (await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder));
+    if (this.options.askForName === true) {
+      name = await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder);
     }
 
-    
-    if (name && name.length > 0) {
+    // if (!this.options.editNewItem) {
+    //   name = properties?.name || (await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder));
+    // }
 
+    if (name && name.length > 0) {
       if (type.propertyMap?.hasOwnProperty('point_in_time') && (!properties || !properties.hasOwnProperty('point_in_time'))) {
-        properties = { ...{}, ...properties, ...{'point_in_time' : new Date().getTime()}};
+        properties = { ...{}, ...properties, ...{ point_in_time: new Date().getTime() } };
       }
 
       this.source
@@ -2170,6 +2182,9 @@ export default class ElementDataGrid extends WidgetBase {
           if (this.options.onAfterAdded) {
             await this.options.onAfterAdded(e);
           } else {
+            if (this.options.editNewItem) {
+              await this.editEntity(e);
+            }
             // this.source?.openElement(e);
           }
           return e;
@@ -2576,26 +2591,40 @@ export default class ElementDataGrid extends WidgetBase {
   public updateGroups() {
     if (this.items && this.options?.grouping?.enabled && this.showGroups) {
       const groups: { [key: string]: GridGroup } = {};
-      const addItem = (group, item) => {
-        if (group === null) {
-          group = 'unknown';
+      const addItem = (id, title, item) => {
+        if (id === null) {
+          id = 'unknown';
         }
-        if (!groups.hasOwnProperty(group)) {
-          groups[group] = { title: group, items: [] };
+        if (!groups.hasOwnProperty(id)) {
+          groups[id] = { id, title, items: [] };
         }
-        groups[group].items!.push(item);
+        groups[id].items!.push(item);
       };
       this.showGroups = true;
+
+      let propType: PropertyType | undefined = undefined; 
+
+      // find prop type
+      if (this.options.grouping.property && this.potentialProperties && this.potentialProperties.hasOwnProperty(this.options.grouping.property)) {
+        propType = this.potentialProperties[this.options.grouping.property];        
+      }
       for (const entity of this.items) {
         let value: string | null = null;
+        let id: string | null = null;
         if (this.options.grouping.property) {
           if (entity.properties && entity.properties.hasOwnProperty(this.options.grouping.property)) {
-            value = entity.properties[this.options.grouping.property];
+            if (propType?.type === 'element' && entity._elements && entity._elements.hasOwnProperty(this.options.grouping.property)) {
+              id = entity.properties[this.options.grouping.property] as string;
+              value = (entity._elements[this.options.grouping.property] as GraphElement).properties?.name ?? null;
+            } else {
+              value = entity.properties[this.options.grouping.property];
+            }
           }
         } else {
+          id = entity.classId;
           value = entity._featureType?.title || entity.classId!;
         }
-        addItem(value, entity);
+        addItem(id, value, entity);
       }
       this.groups = Object.values(groups);
     } else {
@@ -2603,18 +2632,18 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  public async updateSuggestions() : Promise<GridSuggestion[]> {
-    let res : GridSuggestion[] = [];
+  public async updateSuggestions(): Promise<GridSuggestion[]> {
+    let res: GridSuggestion[] = [];
     if (this.source && this.options?.suggestionEngine) {
       res = await this.options.suggestionEngine.getSuggestions(this.options, this.source, this);
     }
-    this.suggestions = res;    
+    this.suggestions = res;
     return Promise.resolve(res);
   }
 
   public async updateEntities(force = false) {
     this.showContextMenu = false;
-    
+
     if (!this.options || !this.source) {
       return;
     }
@@ -2738,6 +2767,10 @@ export default class ElementDataGrid extends WidgetBase {
           // find property type based on key
           const linkProperty = baseType.propertyMap[this.options.linkOptions.key];
           const linkId = AppState.parseStateValue(this.state, this.options.linkOptions.id);
+
+          if (linkId) {
+            this.linkedElement = this.source.getElement(linkId);
+          }
 
           switch (linkProperty.type) {
             case PropertyValueType.relation:

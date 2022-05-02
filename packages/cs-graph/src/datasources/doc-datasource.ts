@@ -1826,6 +1826,9 @@ export class DocDatasource extends GraphDatasource {
 
   public async parseEntities(doc : GraphDocument) : Promise<IDocumentPluginResult | undefined> {
     if (this.entityParser && doc) {
+      if (doc.properties?.doc?.content) {
+        DocUtils.syncEntities(doc, this, doc.properties?.content, true);
+      }
       return this.entityParser.callDocument(doc, this);      
     }
   }
@@ -1837,7 +1840,7 @@ export class DocDatasource extends GraphDatasource {
         reject();
       } else {
         $cs.data.activeDocument = doc?.id;
-        DocUtils.syncEntities(doc, this, doc.properties?.content, true);
+        
 
         await this.parseEntities(doc);
         this.bus.publish('document', 'activated', doc);

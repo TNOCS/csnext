@@ -294,6 +294,11 @@ export default class SelectionPopup extends WidgetBase {
     }
   }
 
+  @Watch("entity._linked")
+  private updateLinked() {
+    this.$forceUpdate();
+  }
+
   public async createEntity() {
     if (!this.source || !this.source.searchEntities || !this.document) {
       return;

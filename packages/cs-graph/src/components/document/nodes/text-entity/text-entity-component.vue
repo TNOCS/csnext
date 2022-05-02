@@ -3,8 +3,10 @@
     v-if="node"
     class="text-entity-component"
     :style="style"
-    :class="{ highlight: entity && entity._linked, excluded: entity && !entity._linked && !entity._highlight, hide: !visible }"
+    
   >
+<!-- :class="{ highlight: entity && entity._linked }" -->
+  <!-- excluded: entity && !entity._linked && !entity._highlight, hide: !visible -->
     <v-menu offset-y  v-model="openMenu" :close-on-content-click="false">
 
       <!-- open-on-hover open-delay="10" -->
@@ -16,7 +18,7 @@
           <img v-else-if="icon" :src="icon" class="icon-image" />
           <v-icon v-else-if="element && element._featureType.icon" small>{{ element._featureType.icon }}</v-icon>
           {{ node.attrs.text }}
-          : <span v-if="entity">{{ entity._linked}}</span>
+          <!-- : <span v-if="entity">{{ entity._linked}}</span> -->
 
           <!-- <span v-if="entity">   
               {{ entity._included}}      
@@ -85,7 +87,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { Editor, NodeViewWrapper } from '@tiptap/vue-2';
-import { GraphElement, TextEntity } from '@csnext/cs-data';
+import { GraphDatasource, GraphElement, TextEntity } from '@csnext/cs-data';
 import SelectionPopup from '../../selection-popup.vue';
 
 import { DocDatasource } from '../../../../datasources/doc-datasource';
@@ -172,34 +174,12 @@ export default class TextEntityComponent extends Vue {
     // }
   }
 
-  public mounted() {
-    const editor = (this as any).editor as Editor;
-    const node = (this as any).node;
-
-    this.source = (this as any).editor?.options?.editorProps?.source;
-    if (!this.source) {
-      return;
-    }
-    if ((editor?.options?.editorProps as any)?.document) {
-      // find document
-      if (!node?.attrs) {
-        return;
-      }
-
-      this.document = (editor?.options?.editorProps as any)?.document;
-
-      this.menuItems.push({
-        title: 'remove',
-        action: () => {
-          alert('remove');
-        },
-      });
-
-      // find entity
-      if (this.document?._entities && node.attrs.id) {        
-        this.entity = this.document._entities.find((e) => e.id === node.attrs.id);
-        if (!this.element && node?.attrs?.kg_id) {
-          this.element = this.source.getElement(node.attrs.kg_id);
+  private updateEntity() {
+    // find entity
+      if (this.source && this.document?._entities && this.node?.attrs.id) {        
+        this.entity = this.document._entities.find((e) => e.id === this.node.attrs.id);
+        if (!this.element && this.node?.attrs?.kg_id) {
+          this.element = this.source.getElement(this.node.attrs.kg_id);
         }
        
         if (this.entity?._node) {
@@ -216,6 +196,40 @@ export default class TextEntityComponent extends Vue {
       }
 
       this.setStyle();
+  }
+
+  public mounted() {
+    const editor = (this as any).editor as Editor;
+    const node = (this as any).node;
+
+    this.source = (this as any).editor?.options?.editorProps?.source;
+    if (!this.source) {
+      return;
+    }
+    if ((editor?.options?.editorProps as any)?.document) {
+      // find document
+      if (!node?.attrs) {
+        return;
+      }
+
+      this.document = (editor?.options?.editorProps as any)?.document;
+
+      this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
+        if (this.document?.id && a === GraphDatasource.ELEMENT_UPDATED && e.id === this.document.id) {
+          this.updateEntity();
+        }
+      }) 
+
+      this.menuItems.push({
+        title: 'remove',
+        action: () => {
+          alert('remove');
+        },
+      });
+
+      this.updateEntity();
+
+      
     }
   }
 }

@@ -1,5 +1,5 @@
 import { IMenu, IWidget, WidgetOptions, CardSize } from '@csnext/cs-core';
-import { GraphElement, GraphFilter, IGraphFilter, NodeRule } from '@csnext/cs-data';
+import { GraphElement, GraphFilter, IGraphFilter, NodeRule, PropertyType } from '@csnext/cs-data';
 import { DocDatasource, ISuggestionEngine } from '../..';
 
 export enum GridView {
@@ -95,6 +95,7 @@ export class DataGridTableOptions {
 export class GroupOptions {
   public enabled?: boolean;
   public property?: string;
+  public _propertyType?: PropertyType;
 }
 
 export class DataGridTreeOptions {
