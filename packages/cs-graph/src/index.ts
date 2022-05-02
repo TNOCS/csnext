@@ -51,13 +51,14 @@ import Management from './components/graph/management.vue';
 import GraphMap from './components/graph/graph-map.vue';
 import mdiFont from './assets/mdfont.json';
 import Suggestions from './components/insights/suggestions.vue';
+import FindElement from './components/element/find-element.vue';
 import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
 
 import SelectionPopup from './components/document/selection-popup.vue';
 import Search from "./components/search/search.vue";
 import ElementContextMenu from "./components/element/element-context-menu.vue"
-
+import BaseGridView from './components/data-grid/viewers/base-grid-view.vue'
 
 Vue.use(VueScrollStop);
 
@@ -98,5 +99,7 @@ export {
   ParagraphExtension,
   TextExtension,
   Search,
-  ElementContextMenu
+  FindElement,
+  ElementContextMenu,
+  BaseGridView
 };

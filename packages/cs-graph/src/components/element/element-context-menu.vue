@@ -33,10 +33,14 @@ import Vue from 'vue';
 import { DocDatasource } from '../../datasources/doc-datasource';
 import { ElementActions } from './element-actions'
 
+export type additionalItemsRequest = (e: GraphElement, s: DocDatasource) => IMenu[];
+
 @Component({
   components: {},
 })
 export default class ElementContextMenu extends Vue {
+
+  
   @Prop()
   public x!: number;
 
@@ -52,6 +56,9 @@ export default class ElementContextMenu extends Vue {
   @Prop()
   public showContextMenu!: boolean;
 
+  @Prop()
+  public additionalItems?: IMenu[] | additionalItemsRequest;
+
   @Emit('itemUpdated')
   public itemUpdated() {}
 
@@ -65,7 +72,6 @@ export default class ElementContextMenu extends Vue {
       await i.action(i);
     }
   }
-
   
   public async linkToTarget(target: GraphElement, type: string) {
     if (this.source && target.id && this.element?.id)
@@ -99,6 +105,14 @@ export default class ElementContextMenu extends Vue {
     this.contextMenuitems = ElementActions.getElementActions(this.element, this.source, undefined, (i,m) => {      
       this.listUpdated();
     });
+    if (this.additionalItems) {
+      if (typeof this.additionalItems === 'function') {
+        this.contextMenuitems = this.contextMenuitems.concat(this.additionalItems(this.element, this.source));        
+      } else {
+        this.additionalItems = this.contextMenuitems.concat(this.additionalItems);
+      }
+      
+    }
    
   }
 

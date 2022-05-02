@@ -1,6 +1,6 @@
 import { IMenu, IWidget, WidgetOptions, CardSize } from '@csnext/cs-core';
 import { GraphElement, GraphFilter, IGraphFilter, NodeRule } from '@csnext/cs-data';
-import { DocDatasource } from '../..';
+import { DocDatasource, ISuggestionEngine } from '../..';
 
 export enum GridView {
   list = 'list',
@@ -11,7 +11,8 @@ export enum GridView {
   news = 'news',
   grid = 'grid',
   kanban = 'kanban',  
-  timeline_vertical = 'timeline_vertical'
+  timeline_vertical = 'timeline_vertical',
+  timeline = 'timeline'
 }
 
 export enum SplitView {
@@ -37,6 +38,14 @@ export class DataGridRelationToggle {
 
 export class DataGridCalendarOptions {
   public type?: string;
+}
+
+export class LinkOptions {
+  public key?: string;
+  public id?: string;
+
+  // feature type id
+  public baseTypeId?: string;
 }
 
 export class DataGridNewsOptions {
@@ -135,12 +144,14 @@ export class DataGridOptions extends WidgetOptions {
   public tableOptions?: DataGridTableOptions;
   public checkboxProperty?: string;
   public syncMode?: 'normal' | 'follow' = 'normal';
+  public linkOptions?: LinkOptions;
   public newsOptions?: DataGridNewsOptions;
   public kanbanOptions?: DataGridKanbanOptions;
   public timelineOptions?: TimelineOptions;
   public treeOptions?: DataGridTreeOptions;
   public gridOptions?: DataGridGridOptions;
   public cardOptions?: DataGridCardsOptions;
+  
   
   public hideHeader?: boolean = false;
 
@@ -163,6 +174,9 @@ export class DataGridOptions extends WidgetOptions {
 
   // list of additional actions available within datagrid
   public additionalActions?: IMenu[] | getActions;
+
+  // engine that can suggest items for the datagrid
+  public suggestionEngine?: ISuggestionEngine;
 }
 
 export type getActions = (e: GraphElement, src: DocDatasource) => IMenu[];

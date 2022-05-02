@@ -1,4 +1,4 @@
-import { IMenu } from '@csnext/cs-core';
+import { IMenu, INotification } from '@csnext/cs-core';
 import { GraphElement } from '@csnext/cs-data';
 import { DocDatasource } from './..'
 
@@ -9,8 +9,9 @@ export interface ISearchPlugin {
     component?: any;
     image: string;
     options?: any;
-    actions?(element: GraphElement, source: DocDatasource) : IMenu[];
-    callSearch?(text: string) : Promise<ISearchPluginResult>;
+    createDialog?(source: DocDatasource, element?: GraphElement, options?: any, actions?: IMenu[]) : INotification;
+    actions?(element: GraphElement, source: DocDatasource, options?: any) : IMenu[];
+    callSearch?(text: string, source?: DocDatasource, options?: any) : Promise<ISearchPluginResult>;
 }
 
 export interface ISearchPluginResult {    

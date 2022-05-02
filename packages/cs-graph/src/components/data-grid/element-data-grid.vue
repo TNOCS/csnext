@@ -11,7 +11,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn depressed v-bind="attrs" class="ml-2 primary" elevation="0" v-on="on" @keydown.native.alt.78="addEntity(classTypes[0])">
             <v-icon>mdi-plus</v-icon>
-            {{ $cs.Translate('NEW_ITEM') }}
+            {{ $cs.Translate('CREATE_ITEM') }}
           </v-btn>
         </template>
         <v-list>
@@ -32,10 +32,10 @@
         elevation="0"
       >
         <v-icon>mdi-plus</v-icon>
-        {{ $cs.Translate('NEW_ITEM') }}
+        {{ $cs.Translate('CREATE_ITEM') }}
       </v-btn>
 
-      <v-btn @click="linkElement()" depressed class="ml-2 primary" elevation="0">
+      <v-btn v-if="options.linkOptions" @click="linkElement()" depressed class="ml-2 primary" elevation="0">
         <v-icon>mdi-link</v-icon>
         <!-- {{ $cs.Translate('_ITEM') }} -->
       </v-btn>
@@ -204,9 +204,9 @@
           <v-icon>mdi-calendar</v-icon>
         </v-btn>
 
-        <v-btn v-if="options.timelineOptions" value="timeline_vertical" class="default-view-button">
-          <v-icon>mdi-timeline</v-icon>
-        </v-btn>
+        <!-- <v-btn v-if="options.timelineOptions" value="timeline" class="default-view-button">
+          <v-icon>mdi-chart-gantt</v-icon>
+        </v-btn> -->
 
         <v-btn v-if="options.treeOptions" value="tree" class="default-view-button">
           <v-icon>mdi-file-tree</v-icon>
@@ -219,6 +219,13 @@
         <v-btn v-if="options.kanbanOptions" value="kanban" class="default-view-button">
           <v-icon>mdi-format-columns</v-icon>
         </v-btn>
+
+        <template v-for="(view, vi) in source.gridPlugins">
+        <v-btn v-if="options.hasOwnProperty(view.optionsId)" :key="vi" :value="view.id" class="default-view-button">
+          <v-icon>{{view.icon}}</v-icon>
+        </v-btn>
+        </template>
+
       </v-btn-toggle>
 
       <v-btn class="ml-2 search-button" elevation="0" depressed v-if="options.canSort && sortOptions">
@@ -317,41 +324,26 @@
         </v-expansion-panels>
       </v-navigation-drawer>
       <div class="data-grid-viewer">
-        <v-expansion-panels v-if="suggestions && suggestions.length > 0">
+        <v-expansion-panels v-if="suggestions && suggestions.length > 0" class="mr-5">
           <v-expansion-panel>
-            <v-expansion-panel-header> Suggestions ({{ suggestions.length }}) </v-expansion-panel-header>
+            <v-expansion-panel-header><v-layout><v-icon>mdi-auto-fix</v-icon> Suggestions ({{ suggestions.length }})</v-layout></v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-container>
-                <template v-for="(suggestion, index) in suggestions">
-                  <v-row :key="index" v-if="suggestion.relation">
-                    <v-col cols="4" v-if="suggestion.relation">
-                      <span v-if="suggestion.relation.from">
-                        <node-chip :node="suggestion.relation.from" :source="source"></node-chip>
-                      </span>
-                      <span v-else>
-                        {{ suggestion.reason }}
-                      </span>
-                    </v-col>
-                    <v-col cols="2">
-                      <span v-if="suggestion.relation.properties && options.edgeEditProperties">
-                        <span v-for="(p, pi) in options.edgeEditProperties" :key="pi">
-                          {{ suggestion.relation.properties[p] }}
-                        </span>
-                      </span>
-                    </v-col>
-                    <v-col cols="4">
-                      <span v-if="suggestion.relation.to">
-                        <node-chip :node="suggestion.relation.to" :source="source"></node-chip>
-                      </span>
-                      <span v-else>
-                        {{ suggestion.reason }}
-                      </span>
-                    </v-col>
-                    <v-col cols="1">
-                      <v-btn class="primary" @click="addSuggestion(suggestion)"> <v-icon>mdi-plus</v-icon>add </v-btn>
-                    </v-col>
-                  </v-row>
-                </template>
+                
+                  <v-row>
+                    <template v-for="(suggestion, index) in suggestions">
+                    <v-col cols="4" v-if="suggestion" :key="index" class="suggestion-col">
+                      <v-card outlined class="suggestion-card">
+                      <v-layout>
+                        <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon><span class="suggestion-text">{{ suggestion.text}}</span><v-spacer></v-spacer>
+                      <template v-if="suggestion.actions">
+                        <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon><v-icon>{{action.icon}}</v-icon></v-btn>
+                      </template>
+                      </v-layout>
+                      </v-card>
+                      </v-col>
+                    </template>
+                  </v-row>                
               </v-container>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -476,7 +468,14 @@
                   :data-elementid="element.id"
                   @contextmenu="openContextMenu"
                 >
-                  <component :is="getElementCard(element)" :showActionMenu="true" :actions="getActions(element)" :source="source" :element="element"></component>
+                  <component
+                    :is="getElementCard(element)"
+                    :cardSize="options.cardOptions.cardSize"
+                    :showActionMenu="true"
+                    :actions="getActions(element)"
+                    :source="source"
+                    :element="element"
+                  ></component>
                 </v-card>
               </template>
             </isotope>
@@ -667,6 +666,7 @@
 
         <div class="timeline-vertical-view" v-if="options.defaultView === 'timeline_vertical'">timeline vertical</div>
 
+        
         <div class="calendar-view" v-if="options.defaultView === 'calendar'">
           <v-toolbar flat>
             <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday"> Today </v-btn>
@@ -744,7 +744,7 @@
           selection-type="leaf" -->
               <template v-slot:append="{ item }">
                 <v-layout>
-                  <v-btn icon v-if="options.canDelete" @click.stop="removeEntity(item.entity)"><v-icon>mdi-delete</v-icon></v-btn>
+                  <v-btn icon v-if="options.canDelete" @click.stop="removeElement(item.entity)"><v-icon>mdi-delete</v-icon></v-btn>
                   <v-btn icon @click.stop="editEntity(item.entity)"><v-icon>mdi-pencil</v-icon></v-btn>
                   <!-- <v-btn v-if="options.canGraph" icon @click.stop="graphNode(item.entity)"><v-icon>mdi-scatter-plot</v-icon></v-btn> -->
                   <v-menu offset-y v-if="options.defaultView === 'tree'">
@@ -790,7 +790,17 @@
               </template>
             </v-treeview>
           </div>
+
         </template>
+
+        <template v-for="(view, vi) in source.gridPlugins">
+          <div :key="vi" v-if="options.defaultView === view.id">
+            <component :is="view.component" :source="source" :grid="getGrid()"></component>            
+          </div>
+        </template>
+
+        <div class="timeline" v-if="options.defaultView === 'timeline'">timeline</div>
+
       </div>
 
       <cs-widget v-if="options.splitWidget" :widget="options.splitWidget"></cs-widget>
@@ -808,6 +818,7 @@
       @listUpdated="updateEntities(true)"
       @itemUpdated="updateEntities(true)"
       :showContextMenu="showContextMenu"
+      :additionalItems="additionalContextMenuItems"
       v-if="source"
       :x="contextMenuX"
       :y="contextMenuY"
@@ -818,6 +829,27 @@
 </template>
 
 <style lang="scss" scoped>
+
+.suggestion-col {
+  padding: 4px !important;
+}
+
+.suggestion-text {
+  align-self: center;
+  margin-left: 4px;
+
+}
+
+.suggestion-card {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+}
+
+.suggestion-card:hover {
+  background-color: transparent;
+}
+
 .column-width {
   min-width: 320px;
   width: 320px;
@@ -1078,15 +1110,15 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 
 <script lang="ts">
 import { Component, Ref, Watch } from 'vue-property-decorator';
-import { WidgetBase } from '@csnext/cs-client';
+import { WidgetBase, AppState } from '@csnext/cs-client';
 import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
 
 // import { FeatureType } from "../../classes";
 import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import moment from 'moment';
-import { CardSize, guidGenerator, IMenu, IWidget } from '@csnext/cs-core';
+import { CardSize, guidGenerator, IDashboard, IMenu, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
-import { DocDatasource, DataGridOptions, GridView } from '../..';
+import { DocDatasource, DataGridOptions, GridView, FindElement } from '../..';
 import ElementContextMenu from '../element/element-context-menu.vue';
 import { PropValue } from '@csnext/cs-map';
 
@@ -1255,9 +1287,41 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  private openContextMenu(e: any) {
+  private async unlinkElement(element: GraphElement) {
+    if (this.source && this.options.linkOptions?.baseTypeId && this.options.linkOptions?.id && element._incomming) {
+      // find base type
+      const baseType = this.source.getFeatureTypeById(this.options.linkOptions.baseTypeId);
+
+      const id = AppState.parseStateValue(this.state, this.options.linkOptions.id);
+
+      // find edge
+      let r = element._incomming.find(r => r.fromId === id);
+      if (r) {
+        await this.source.removeEdge(r);
+        this.updateEntities(true);
+      }
+      
+    }
+  }
+
+  private additionalContextMenuItems(e: GraphElement, source: DocDatasource): IMenu[] {
+    const items: IMenu[] = [];
+    if (this.options?.linkOptions) {
+      items.push({
+        title: 'unlink',
+        icon: 'mdi-link-off',
+        action: async () => {
+          await this.unlinkElement(e);          
+          // alert('unlink');
+        },
+      });
+    }
+    return items;
+  }
+
+  public openContextMenu(e: any, elementId?: string) {
     e.preventDefault();
-    const elementId = e.currentTarget?.dataset.elementid || e.path[3].dataset.elementid;
+    elementId = e.currentTarget?.dataset.elementid || e.path[3].dataset.elementid || elementId;
     if (!elementId || !this.source?.graph || !this.source.graph.hasOwnProperty(elementId)) {
       return;
     }
@@ -1431,7 +1495,6 @@ export default class ElementDataGrid extends WidgetBase {
   public setToday() {
     this.focus = '';
   }
-
 
   public graphNode(element: GraphElement) {
     if (!this.source) {
@@ -1704,14 +1767,7 @@ export default class ElementDataGrid extends WidgetBase {
     alert('selected');
     if (!this.source) {
       return;
-    }
-    // if (selected) {
-    //   this.source.addElementToPreset(element);
-    // } else {
-    //   this.source.removeElementFromPreset(element);
-    // }
-
-    // alert('select');
+    }    
   }
 
   public clickCalendarItem(e: any) {
@@ -1752,7 +1808,7 @@ export default class ElementDataGrid extends WidgetBase {
       if (this.source && s === 'YES' && this.selectedElements) {
         const count = this.selectedElements.length;
         for (const el of this.selectedElements) {
-          await this.removeEntity(el, true, false);
+          await this.removeElement(el, true, false);
         }
         this.updateEntities(true);
         $cs.triggerNotification({ title: 'Selected deleted', text: `${count} items deleted` });
@@ -1870,7 +1926,7 @@ export default class ElementDataGrid extends WidgetBase {
             this.editEntity(row);
           },
           delete: (row: GraphElement) => {
-            this.removeEntity(row);
+            this.removeElement(row);
           },
         },
       });
@@ -1983,29 +2039,28 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   public async linkElement() {
-    // await $cs.triggerDialog({widget: })
+    if (this.source?.searchPlugins) {
+      let gs = this.source.searchPlugins.find(r => r.id === 'graph-search');
+      if (gs && gs.createDialog) {
+        const dialog = gs.createDialog(this.source, undefined, { selectedTypes: [this.options.baseType] }, [{
+            title: 'select',
+            icon: 'mdi-check',
+            action: async (i, dashboard, options) => {
+              if (options?.element) {
+                await this.createLink(options.element);
+                this.updateEntities(true);
+                this.resize();
+              }              
+            }             
+          }]);
+      }
+    } 
+
+    // await $cs.triggerDialog({widget: { component: FindElement, datasource: this.widget.datasource } });
   }
 
-  public async addEntity(type: FeatureType, parent?: GraphElement, properties?: any) {
-    if (!this.source) {
-      return;
-    }
-    let placeholder = `new ${type.title}`;
-    let name = placeholder;
-
-    if (!this.options.editNewItem) {
-      name = properties?.name || (await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder));
-    }
-
-    if (name && name.length > 0) {
-      this.source
-        ?.addNewNode({
-          id: `${type.type}-${guidGenerator()}`,
-          properties: { ...properties, ...this.options.newItem, classId: type.type, name },
-          classId: type.type,
-        })
-        .then(async (e) => {
-          if (this.source && parent && this.options.treeOptions?.parentProperty) {
+  public async createLink(e: GraphElement, parent?: GraphElement)  {
+    if (this.source && parent && this.options.treeOptions?.parentProperty) {
             try {
               const parentEdge = await this.source.addNewEdge({
                 fromId: e.id,
@@ -2024,6 +2079,17 @@ export default class ElementDataGrid extends WidgetBase {
             }
             // await this.source.updateEdges();
           }
+
+          if (this.options.linkOptions?.key && this.options.linkOptions.id) {
+            if (!this.options.newRelations) {
+              this.options.newRelations = [];
+            }
+            this.options.newRelations.push({
+              fromId: AppState.parseStateValue(this.state, this.options.linkOptions.id),
+              key: this.options.linkOptions.key,
+            });
+          }
+
           // check if new relations should be created
           if (this.source && this.options.newRelations) {
             for (const relation of this.options.newRelations) {
@@ -2062,6 +2128,44 @@ export default class ElementDataGrid extends WidgetBase {
             }
             await this.source.updateEdges();
           }
+  }
+
+  public async callSuggestionAction(m: IMenu) {
+    if (m.action) {
+      await m.action(m);
+      // await this.updateSuggestions();
+      await this.updateEntities(true);
+
+    };
+
+  }
+
+  public async addEntity(type: FeatureType, parent?: GraphElement, properties?: any) {
+    if (!this.source) {
+      return;
+    }
+    let placeholder = `new ${type.title}`;
+    let name = placeholder;
+
+    if (!this.options.editNewItem) {
+      name = properties?.name || (await $cs.triggerInputDialog(placeholder, 'enter new name', '', placeholder));
+    }
+
+    
+    if (name && name.length > 0) {
+
+      if (type.propertyMap?.hasOwnProperty('point_in_time') && (!properties || !properties.hasOwnProperty('point_in_time'))) {
+        properties = { ...{}, ...properties, ...{'point_in_time' : new Date().getTime()}};
+      }
+
+      this.source
+        ?.addNewNode({
+          id: `${type.type}-${guidGenerator()}`,
+          properties: { ...properties, ...this.options.newItem, classId: type.type, name },
+          classId: type.type,
+        })
+        .then(async (e) => {
+          await this.createLink(e, parent);
           this.updateEntities(true);
           if (this.options.onAfterAdded) {
             await this.options.onAfterAdded(e);
@@ -2083,7 +2187,7 @@ export default class ElementDataGrid extends WidgetBase {
     this.source.startEditElement(element);
   }
 
-  public removeEntity(entity: GraphElement, relations = true, notify = true) {
+  public removeElement(entity: GraphElement, relations = true, notify = true) {
     if (!this.source) {
       return;
     }
@@ -2361,6 +2465,11 @@ export default class ElementDataGrid extends WidgetBase {
     // console.log(this.kanbanColumns);
   }
 
+  public getGrid() {
+    console.log('get grid');
+    return this;
+  }
+
   public updateTree(
     treeItems: any[],
     // classTypes: string[],
@@ -2494,8 +2603,18 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  public updateEntities(force = false) {
+  public async updateSuggestions() : Promise<GridSuggestion[]> {
+    let res : GridSuggestion[] = [];
+    if (this.source && this.options?.suggestionEngine) {
+      res = await this.options.suggestionEngine.getSuggestions(this.options, this.source, this);
+    }
+    this.suggestions = res;    
+    return Promise.resolve(res);
+  }
+
+  public async updateEntities(force = false) {
     this.showContextMenu = false;
+    
     if (!this.options || !this.source) {
       return;
     }
@@ -2577,6 +2696,8 @@ export default class ElementDataGrid extends WidgetBase {
 
     this.checkQueryParams();
 
+    await this.updateSuggestions();
+
     if (this.options.filterProperty && this.potentialProperties.hasOwnProperty(this.options.filterProperty)) {
       // this.setFilterProperty(this.options.filterProperty);
       this.filterProperty = this.potentialProperties[this.options.filterProperty];
@@ -2607,7 +2728,32 @@ export default class ElementDataGrid extends WidgetBase {
       if (this.options?.filter?.hasObjectRelation === '{{activeElement}}') {
         this.options.filter.hasObjectRelation = this.source.activeElement?.id;
       }
-      this.items = this.source.getClassElements(baseType, true, this.options.filter, this.state);
+      let filter = this.options.filter ?? {};
+
+      // check for link options, if so add additional filter(s)
+      if (this.options.linkOptions?.key && this.options.linkOptions.id && this.options.linkOptions.baseTypeId) {
+        const baseType = this.source.getFeatureTypeById(this.options.linkOptions.baseTypeId);
+        // find feature type of base node
+        if (baseType?.propertyMap?.hasOwnProperty(this.options.linkOptions.key)) {
+          // find property type based on key
+          const linkProperty = baseType.propertyMap[this.options.linkOptions.key];
+          const linkId = AppState.parseStateValue(this.state, this.options.linkOptions.id);
+
+          switch (linkProperty.type) {
+            case PropertyValueType.relation:
+              if (linkProperty.relation?.type) {
+                filter.hasIncomingTypeRelation = {
+                  ...filter.hasIncomingTypeRelation,
+                  ...{
+                    [linkProperty.relation.type]: linkId,
+                  },
+                };
+              }
+              break;
+          }
+        }
+      }
+      this.items = this.source.getClassElements(baseType, true, filter, this.state);
 
       filterItems();
 
@@ -2824,10 +2970,12 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  private getActions(element: GraphElement) :IMenu[] {
-    let res : IMenu[] = [];
+  private getActions(element: GraphElement): IMenu[] {
+    let res: IMenu[] = [];
     if (this.source && this.options.additionalActions) {
-      res = res.concat((typeof this.options.additionalActions === 'function') ? this.options.additionalActions(element, this.source) : this.options.additionalActions);
+      res = res.concat(
+        typeof this.options.additionalActions === 'function' ? this.options.additionalActions(element, this.source) : this.options.additionalActions
+      );
     }
     return res;
   }
@@ -2870,7 +3018,9 @@ export default class ElementDataGrid extends WidgetBase {
   }
 
   beforeMount() {
-    if (!this.options.cardOptions) { this.options.cardOptions = { cardSize: 'medium'}};
+    if (!this.options.cardOptions) {
+      this.options.cardOptions = { cardSize: 'medium' };
+    }
     if (this.options.cardOptions && this.options.cardOptions.cardSize === undefined) {
       this.options.cardOptions.cardSize = 'medium';
     }
@@ -2880,7 +3030,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (!this.source && this.widget?.content) {
       this.source = this.widget.content;
     }
-    
+
     this.showGroups = this.options.grouping?.enabled;
     this.defaultColDef.filter = !this.options.hideFilter;
     this.defaultColDef.floatingFilter = !this.options.hideFilter;

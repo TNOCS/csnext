@@ -16,7 +16,7 @@
           <img v-else-if="icon" :src="icon" class="icon-image" />
           <v-icon v-else-if="element && element._featureType.icon" small>{{ element._featureType.icon }}</v-icon>
           {{ node.attrs.text }}
-          <!-- : <span v-if="entity">{{ entity._linked}}</span> -->
+          : <span v-if="entity">{{ entity._linked}}</span>
 
           <!-- <span v-if="entity">   
               {{ entity._included}}      

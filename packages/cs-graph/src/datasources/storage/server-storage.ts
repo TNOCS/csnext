@@ -153,6 +153,11 @@ export class ServerStorage implements IGraphStorage {
     return Promise.resolve(true);
   }
 
+  public async restoreGraph(kg: {[id:string]: GraphElement}): Promise<boolean> {    
+    const r = await Axios.post(`${this.base_url}/graph/restore`, kg);
+    return Promise.resolve(true);
+  }
+
   public useSocket() {
     if (AppState.Instance.socket?.connected) {
       AppState.Instance.socket.on('graphelement', (data: IGraphElementAction) => {

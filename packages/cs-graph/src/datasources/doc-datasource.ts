@@ -31,6 +31,7 @@ import Vue, { Component } from 'vue';
 import { ISearchPlugin } from '../plugins/search-plugin';
 import { ITool } from '../classes/tool';
 import { IActionPlugin } from '../plugins/action-plugin';
+import { IGridPlugin } from '../plugins/grid-plugin';
 
 export class DocDatasource extends GraphDatasource {
   public id = 'doc';
@@ -53,6 +54,7 @@ export class DocDatasource extends GraphDatasource {
 
   public documentPlugins: IDocumentPlugin[] = [];
   public searchPlugins: ISearchPlugin[] = [];
+  public gridPlugins: IGridPlugin[] = [];
   public importPlugins: IImportPlugin[] = [];
   public viewerPlugins: IDocumentViewerPlugin[] = [];
   public actionPlugins: IActionPlugin[] = [];

@@ -829,8 +829,8 @@ export default class DocumentViewer extends WidgetBase {
       // this.updateContent();
       // this.initTools();
     });
-    if (this.state && this.state.elementId) {
-      const doc = this.source.getElement(this.state.elementId) as GraphDocument;
+    if (this.state && this.state.elementid) {
+      const doc = this.source.getElement(this.state.elementid) as GraphDocument;
       this.openElement(doc);      
     } else if (this.checkDocumentIdQuery()) {
       console.log('got from uri')
