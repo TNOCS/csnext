@@ -27,7 +27,6 @@ export class FilesService extends AggregateRoot {
         }
         return(id);
     }
-
     
     public loadImage(url: string) : Promise<FileDefinition | undefined> {
         return new Promise((resolve, reject) => {
