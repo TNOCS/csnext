@@ -7,9 +7,9 @@
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator';
-import { DocDatasource } from '@csnext/cs-graph';
+
 import Vue from 'vue';
-import { ElementDataGrid } from '../../..';
+import { ElementDataGrid, DocDatasource } from '../../..';
 
 
 @Component({
