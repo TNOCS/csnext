@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager, IMenu } from '@csnext/cs-core';
+import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager, IMenu, SyncStore } from '@csnext/cs-core';
 import { Logger } from '../';
 
 @Component({

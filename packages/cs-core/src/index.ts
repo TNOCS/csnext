@@ -46,6 +46,7 @@ export * from './utils/guid';
 export * from './utils/function';
 export * from './utils/info';
 export * from './utils/loader';
+export * from './utils/sync-store';
 
 export * from './form/form-decorators';
 

@@ -22,7 +22,7 @@ export interface IMenu {
   method?: string;
   items?: IMenu[];
   isActive?: boolean | Function;
-  action?: (menu: IMenu, dashboard?: IDashboard) => void;
+  action?: (menu: IMenu, dashboard?: IDashboard, options?: any) => void;
   component?: any;
   plugin?: any;
   widget?: IWidget;

@@ -14,6 +14,7 @@ import {
   IMenu,
   INotificationOptions,
   idGenerator,
+  SyncStore
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
 import {
@@ -33,6 +34,8 @@ import io, { Socket } from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
+
+
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState extends AppStateBase {
@@ -61,6 +64,8 @@ export class AppState extends AppStateBase {
   public static FILE_UPLOAD = 'file-upload';
   public static FILE_UPLOAD_START = 'file-upload-start';
   public static LEFT_SIDEBAR_STATE = 'lsb';
+
+  
 
   /** used for singleton  */
   private static pInstance: AppState;
@@ -642,18 +647,18 @@ export class AppState extends AppStateBase {
     return new Promise((resolve) => {
       const cb = (action: string) => {
         resolve(
-          action === this.Translate(AppState.YES) ? AppState.YES : AppState.NO
+          action === this.translate(AppState.YES) ? AppState.YES : AppState.NO
         );
       };
       const d = {
         fullscreen: false,
         toolbar: true,
-        title: this.Translate(title),
-        text: this.Translate(text),
+        title: this.translate(title),
+        text: this.translate(text),
         visible: true,
         persistent: true,
         width: 400,
-        actions: [this.Translate(AppState.YES), this.Translate(AppState.NO)],
+        actions: [this.translate(AppState.YES), this.translate(AppState.NO)],
         actionCallback: cb,
       } as IDialog;
       this.triggerDialog(d);
@@ -668,12 +673,12 @@ export class AppState extends AppStateBase {
     const d = {
       fullscreen: false,
       toolbar: true,
-      title: this.Translate(title),
-      text: this.Translate(text),
+      title: this.translate(title),
+      text: this.translate(text),
       visible: true,
       persistent: true,
       width: 400,
-      actions: actions.map((a) => this.Translate(a)),
+      actions: actions.map((a) => this.translate(a)),
     } as IDialog;
     return this.triggerDialog(d);
   }
@@ -688,8 +693,8 @@ export class AppState extends AppStateBase {
       const d = {
         fullscreen: false,
         toolbar: true,
-        title: this.Translate(title),
-        text: this.Translate(text),
+        title: this.translate(title),
+        text: this.translate(text),
         visible: true,
         textInput: true,
         defaultText: defaultValue,
@@ -991,7 +996,32 @@ export class AppState extends AppStateBase {
     }
   }
 
+  public static parseStateValue(state: any, value: string) {
+    if (value?.startsWith('$state')) {
+      const stateValue = state[value.substring(7)];
+      if (stateValue) {
+        return stateValue;
+      }
+    }
+    return value;
+  }
+
+  public setState(store: SyncStore, key: string, value: any) {
+    switch (store) {
+      case 'global': {
+        $cs.data[key] = value;
+      }
+    }
+  }
+  
+  /**
+   * @deprecated use translate
+   */
   public Translate(textKey: string, values?: { [key: string]: any }): string {
+    return this.translate(textKey, values);
+  }
+
+  public translate(textKey: string, values?: { [key: string]: any }): string {
     if (this.i18n) {
       return this.i18n.t(textKey, values).toString();
     } else {
