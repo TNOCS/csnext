@@ -101,7 +101,8 @@ import Vuetify, { UserVuetifyPreset } from 'vuetify';
 import vuetifyEN from 'vuetify/es5/locale/en';
 import vuetifyNL from 'vuetify/es5/locale/nl';
 import Component from 'vue-class-component';
-import VueRouter from 'vue-router';
+import VueRouter, { Route } from 'vue-router';
+
 import VSnackbars from "v-snackbars";
 import {
   IDashboard,
@@ -110,7 +111,8 @@ import {
   IFooterOptions,
   IDialog,
   MessageBusManager,
-  Topics
+  Topics,
+  SyncStore
 } from '@csnext/cs-core';
 import { Ref, Watch } from 'vue-property-decorator';
 import { AppState, Logger, CsSettings } from '../../';
@@ -186,6 +188,12 @@ export default class CsApp extends Vue {
     this.$cs.i18n.mergeLocaleMessage('en', (en as any).default ? (en as any).default : en);
     this.$cs.i18n.mergeLocaleMessage('nl', (nl as any).default ? (nl as any).default : nl);
     this.InitNavigation();
+    if (router) {
+      router.beforeResolve((to, from, next) => {
+        this.parseQueryState(to);
+        next();
+      });
+    }
 
     this.busManager.subscribe(this.$cs.bus, 'right-sidebar', (action: string, data: any) => {
       switch (action) {
@@ -216,6 +224,17 @@ export default class CsApp extends Vue {
           break;
       }
     });
+  }
+  parseQueryState(to: Route) {
+    if (to.query) {
+      for (const key in to.query) {
+        if (Object.prototype.hasOwnProperty.call(to.query, key)) {
+          if (key.startsWith('sg-')) {
+            $cs.setState('global', key.substring(3, key.length), to.query[key]);
+          }          
+        }
+      }     
+    }    
   }
 
   public beforeDestroy() {
@@ -655,12 +674,6 @@ html {
     /** margin-left:5px; */
 }
 
-@media only screen and (max-width: 480px) {
-    .header-breadcrumbs {
-        display: none !important;
-    }
-}
-
 .notification-title {
     align-self: center;
     margin-left: 10px;
@@ -674,13 +687,7 @@ html {
     margin-right: 10px;
 }
 
-.header-breadcrumbs {
-    padding: 0 !important;
-}
 
-.header-breadcrumbs>li {
-    padding: 0 !important;
-}
 
 .floating {
     margin-top: -64px !important;

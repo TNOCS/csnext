@@ -2,6 +2,22 @@
     margin-left: 20px;
 }
 
+
+@media only screen and (max-width: 480px) {
+    .header-breadcrumbs {
+        display: none !important;
+    }
+}
+
+.header-breadcrumbs {
+    padding: 0 !important;
+}
+
+.header-breadcrumbs>li {
+    padding: 0 !important;
+}
+
+
 #main-toolbar {
     padding-right: 0px;
 }
