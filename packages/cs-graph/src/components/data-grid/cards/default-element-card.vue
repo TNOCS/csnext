@@ -1,5 +1,5 @@
 <template>
-  <div class="element-card">
+  <div class="element-card" :style="getImageStyle()">
     <template v-if="element._featureType && element._featureType.icon">
       <v-icon :color="element._featureType.color" class="element-icon">{{ element._featureType.icon }}</v-icon>
     </template>
@@ -36,9 +36,11 @@
   margin-top: 5px;
 }
 
-.element-title {
-  font-size: 26px;
+.element-title {  
+  font-size: 22px;
   font-weight: 600;
+  line-height: 95%;
+  margin-bottom: 5px;
 }
 
 .element-type {
@@ -65,7 +67,16 @@ export default class DefaultElementCard extends Vue {
   @Prop({ default: null })
   public element!: GraphElement | null;
 
-   public getImage() {
+  public getImageStyle() {
+    const style = {};
+    if (this.getImage) {
+      style['background-image'] = `url(${this.getImage()})`;
+      style['background-size'] = 'cover';
+    }
+    return style;
+  }
+
+   public getImage() : string | undefined {
     if (this.element?.properties?.image) {
       return this.element.properties.image;
     }   

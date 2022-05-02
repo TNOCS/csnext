@@ -30,9 +30,10 @@
                         </v-col>
                     </v-row>
                 </v-form>
-                <template v-if="optionalFields && optionalFields[0]">
-                    <v-chip v-for="(field, ci) in optionalFields[0].fields" :key="ci" outlined small class="ma-1" @click="addField(field)"><v-icon small>mdi-plus</v-icon>{{field.title || field._key}}</v-chip>
-                </template>
+                <div v-if="optionalFields && optionalFields[0]">
+                    <div class="optional-field-title"><v-icon>mdi-plus</v-icon> Add optional field</div>
+                    <v-chip v-for="(field, ci) in optionalFields[0].fields" :key="ci" small class="ma-1 optional-field" @click="addField(field)"><v-icon v-if="field.icon" small>{{field.icon}}</v-icon><v-icon v-else small>mdi-plus</v-icon>{{field.title || field._key}}</v-chip>
+                </div>
             </v-expansion-panel-content>
         </v-expansion-panel>
     </v-expansion-panels>

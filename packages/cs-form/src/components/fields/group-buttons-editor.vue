@@ -4,7 +4,7 @@
         v-model="target[field._key]"
         tile
         :hint="field.hint"
-
+        class="group-btn-toggle"
         @change="fieldUpdated(field)"
         group
       >
@@ -31,6 +31,9 @@
   </div>
 </template>
 <style scoped>
+.group-btn-toggle {
+  flex-wrap: wrap;
+}
 </style>
 <script lang="ts">
 import DefaultEditor from './default-editor.vue';

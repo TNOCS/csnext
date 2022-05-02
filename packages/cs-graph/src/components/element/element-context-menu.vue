@@ -33,10 +33,14 @@ import Vue from 'vue';
 import { DocDatasource } from '../../datasources/doc-datasource';
 import { ElementActions } from './element-actions'
 
+export type additionalItemsRequest = (e: GraphElement, s: DocDatasource) => IMenu[];
+
 @Component({
   components: {},
 })
 export default class ElementContextMenu extends Vue {
+
+  
   @Prop()
   public x!: number;
 
@@ -52,6 +56,9 @@ export default class ElementContextMenu extends Vue {
   @Prop()
   public showContextMenu!: boolean;
 
+  @Prop()
+  public additionalItems?: IMenu[] | additionalItemsRequest;
+
   @Emit('itemUpdated')
   public itemUpdated() {}
 
@@ -65,7 +72,6 @@ export default class ElementContextMenu extends Vue {
       await i.action(i);
     }
   }
-
   
   public async linkToTarget(target: GraphElement, type: string) {
     if (this.source && target.id && this.element?.id)
@@ -96,89 +102,18 @@ export default class ElementContextMenu extends Vue {
 
   public initMenu() {
     if (!this.source || !this.element) { return; }
-    this.contextMenuitems = ElementActions.getElementActions(this.element, this.source, undefined, (i,m) => {
-      // this.showContextMenu = false;
+    this.contextMenuitems = ElementActions.getElementActions(this.element, this.source, undefined, (i,m) => {      
       this.listUpdated();
     });
-    // this.contextMenuitems.push({
-    //   title: 'duplicate',
-    //   icon: 'mdi-plus-circle-multiple-outline',
-    //   action: async () => {
-    //     this.showContextMenu = false;
-    //     const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
-    //     await this.source.duplicateNode(this.element, name);
-    //     this.listUpdated();
-    //   },
-    // });
-    // this.contextMenuitems.push({
-    //   title: 'add to visualisation',
-    //   icon: 'mdi-playlist-plus',
-    //   action: async (i: IMenu) => {
-    //     i.items = [];
-    //     // this.showContextMenu = false;
-    //     let presets = this.source.getClassElements('graph_preset', true);
-    //     presets.forEach(p => {
-    //       i.items!.push({
-    //         title: p.properties?.name,
-    //         icon: p._featureType?.icon,
-    //         action: async () => {
-    //           FilterGraphElement.addElementRule(p as FilterGraphElement, this.element);
-    //           // alert(`add to ${p.properties.name}`)
-    //         }
-    //       });
-    //     })
-    //     console.log(presets);
-    //     // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
-    //     // await this.source.duplicateNode(this.element, name);
-    //     // this.listUpdated();
-    //   },
-    // });
-    // this.contextMenuitems.push({
-    //   title: 'link to',
-    //   icon: 'mdi-playlist-plus',
-    //   action: async (i: IMenu) => {
-    //     i.items = [];
-    //     // this.showContextMenu = false;
-    //     let targets = this.source.getClassElements('indicator', true);
-    //     targets.forEach(p => {
-    //       i.items!.push({
-    //         title: p.properties?.name,
-    //         icon: p._featureType?.icon,
-    //         action: async () => {
-    //           this.linkToTarget(p, 'supports');
-              
-    //           // FilterGraphElement.addElementRule(p as FilterGraphElement, this.element);
-    //           // alert(`add to ${p.properties.name}`)
-    //         }
-    //       });
-    //     })
-    //     console.log(targets);
-    //     // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${this.element.properties?.name} - copy`);
-    //     // await this.source.duplicateNode(this.element, name);
-    //     // this.listUpdated();
-    //   },
-    // });
-    // this.contextMenuitems.push({
-    //   title: 'rename',
-    //   icon: 'mdi-form-textbox',
-    //   action: async () => {
-    //     this.showContextMenu = false;
-    //     const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', this.element.properties?.name);
-    //     this.element.properties = { ... this.element.properties, ...{name}};
-    //     await this.source.saveNode(this.element);
-    //     this.itemUpdated();
-    //   },
-    // });
-    // this.contextMenuitems.push({
-    //   title: 'delete',
-    //   icon: 'mdi-delete',
-    //   color: '#eb4034',
-    //   action: async () => {
-    //     this.showContextMenu = false;
-    //     await this.source.removeNode(this.element);
-    //     this.listUpdated();
-    //   },
-    // });
+    if (this.additionalItems) {
+      if (typeof this.additionalItems === 'function') {
+        this.contextMenuitems = this.contextMenuitems.concat(this.additionalItems(this.element, this.source));        
+      } else {
+        this.additionalItems = this.contextMenuitems.concat(this.additionalItems);
+      }
+      
+    }
+   
   }
 
   mounted() {    

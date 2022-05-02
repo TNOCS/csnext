@@ -11,14 +11,12 @@ import {
   GraphFilterProperties,
   IGraphNodeDefinition,
   NodeRule,
-  GraphLayout,
-  GraphPreset,
-  PropertyType,
+  GraphLayout  
 } from '@csnext/cs-data';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
-import { IDocumentPlugin } from '../plugins/document-plugin';
-import { EntityParser } from '../plugins/EntityParser';
+import { IDocumentPlugin, IDocumentPluginResult } from '../plugins/document-plugin';
+import { EntityParser } from '../plugins/entity-parser';
 import { EntityList } from '../components/document/node-entities';
 import { TimeDataSource, IFormOptions, IWidget, idGenerator, IFormFieldOptions } from '@csnext/cs-core';
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
@@ -33,6 +31,7 @@ import Vue, { Component } from 'vue';
 import { ISearchPlugin } from '../plugins/search-plugin';
 import { ITool } from '../classes/tool';
 import { IActionPlugin } from '../plugins/action-plugin';
+import { IGridPlugin } from '../plugins/grid-plugin';
 
 export class DocDatasource extends GraphDatasource {
   public id = 'doc';
@@ -55,6 +54,7 @@ export class DocDatasource extends GraphDatasource {
 
   public documentPlugins: IDocumentPlugin[] = [];
   public searchPlugins: ISearchPlugin[] = [];
+  public gridPlugins: IGridPlugin[] = [];
   public importPlugins: IImportPlugin[] = [];
   public viewerPlugins: IDocumentViewerPlugin[] = [];
   public actionPlugins: IActionPlugin[] = [];
@@ -488,7 +488,7 @@ export class DocDatasource extends GraphDatasource {
   public getGraphPreset(id: string): FilterGraphElement | undefined {
     const preset = this.getElement<GraphFilterProperties>(id) as FilterGraphElement;
     if (preset) {
-      preset.classId = 'graph_preset';
+      // preset.classId = 'graph_preset';
       if (!preset.properties) {
         preset.properties = {};
       }
@@ -544,15 +544,15 @@ export class DocDatasource extends GraphDatasource {
     return preset;
   }
 
-  public updateRules(preset: FilterGraphElement, rule: NodeRule) {
+  public updateRules(preset: FilterGraphElement, rule: NodeRule, state: any) {
     if (preset.properties?.graphLayout?.nodeRules) {
       preset._visibleNodes = [];
-      this.applyGraphPresetRules(preset, preset.properties?.graphLayout?.nodeRules);
+      this.applyGraphPresetRules(preset, preset.properties?.graphLayout?.nodeRules, undefined, undefined, state);
       this.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, rule);
     }
   }
 
-  public applyGraphPresetRules(preset: FilterGraphElement, rules: NodeRule[], element?: GraphElement, list?: GraphElement[]) {
+  public applyGraphPresetRules(preset: FilterGraphElement, rules: NodeRule[], element?: GraphElement, list?: GraphElement[], state?: any) {
     if (!rules || rules.length === 0) {
       return;
     }
@@ -590,6 +590,11 @@ export class DocDatasource extends GraphDatasource {
     };
 
     for (const rule of rules) {
+      
+      const elementId = (rule.elementId === '$state.element' && state?.element?.id) ?  state?.element?.id : rule.elementId;
+
+
+      
       switch (rule.type) {
         case 'INCOMMING_TYPE':
           if (rule.featureType && !rule._featureType) {
@@ -603,7 +608,7 @@ export class DocDatasource extends GraphDatasource {
                   if (incomming.from?._featureType?._inheritedTypes && incomming.from._featureType._inheritedTypes.includes(rule.featureType)) {
                     this.addVisibleElement(preset, incomming.from);
                     if (rule.outgoingRules) {
-                      this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from);
+                      this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from, undefined,  state);
                     }
                   }
                 }
@@ -624,7 +629,7 @@ export class DocDatasource extends GraphDatasource {
                     if (el.classId === rule.featureType) {
                       this.addVisibleElement(preset, el);
                       if (rule.outgoingRules) {
-                        this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                        this.applyGraphPresetRules(preset, rule.outgoingRules, el, undefined, state);
                       }
                     }
                   }
@@ -636,7 +641,7 @@ export class DocDatasource extends GraphDatasource {
                   if (out.to?._featureType?._inheritedTypes && out.to._featureType._inheritedTypes.includes(rule.featureType)) {
                     this.addVisibleElement(preset, out.to);
                     if (rule.outgoingRules) {
-                      this.applyGraphPresetRules(preset, rule.outgoingRules, out.to);
+                      this.applyGraphPresetRules(preset, rule.outgoingRules, out.to, undefined, state);
                     }
                   }
                 }
@@ -646,7 +651,7 @@ export class DocDatasource extends GraphDatasource {
                 for (const el of elements) {
                   this.addVisibleElement(preset, el);
                   if (rule.outgoingRules) {
-                    this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, el, undefined, state);
                   }
                 }
               }
@@ -660,7 +665,7 @@ export class DocDatasource extends GraphDatasource {
                 if (o.classId === rule.relationType && o.from) {
                   this.addVisibleElement(preset, o.from);
                   if (rule.outgoingRules) {
-                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.from);
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.from, undefined, state);
                   }
                 }
               }
@@ -674,7 +679,7 @@ export class DocDatasource extends GraphDatasource {
                 if (o.classId === rule.relationType && o.to) {
                   this.addVisibleElement(preset, o.to);
                   if (rule.outgoingRules) {
-                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.to);
+                    this.applyGraphPresetRules(preset, rule.outgoingRules, o.to, undefined, state);
                   }
                 }
               }
@@ -682,8 +687,8 @@ export class DocDatasource extends GraphDatasource {
           }
           break;
         case 'DOCUMENT':
-          if (rule.elementId && !rule.disabled) {
-            let doc = (rule._element = this.getElement(rule.elementId) as GraphDocument);
+          if (elementId && !rule.disabled) {
+            let doc = (rule._element = this.getElement(elementId) as GraphDocument);
             if (!rule.hideSelf) {
               addElement(doc);
             }
@@ -710,8 +715,8 @@ export class DocDatasource extends GraphDatasource {
           }
           break;
         case 'INDICATOR':
-          if (rule.elementId && !rule.disabled) {
-            rule._element = this.getElement(rule.elementId);
+          if (elementId && !rule.disabled) {
+            rule._element = this.getElement(elementId);
             if (rule._element?._elements?.results_array) {
               for (const res of rule._element._elements.results_array as GraphElement[]) {
                 addElement(res, true);
@@ -722,14 +727,14 @@ export class DocDatasource extends GraphDatasource {
                 this.addVisibleElement(preset, rule._element);
               }
               if (rule.outgoingRules) {
-                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element);
+                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element, undefined, state);
               }
             }
           }
           break;
         case 'WORKSPACE':
-          if (rule.elementId && !rule.disabled) {
-            rule._element = this.getElement(rule.elementId);
+          if (elementId && !rule.disabled) {
+            rule._element = this.getElement(elementId);
             // find indicators
             if (rule._element?._outgoing) {
               for (const rel of rule._element._outgoing.filter((r) => r.classId === 'HAS_INDICATOR')) {
@@ -753,18 +758,18 @@ export class DocDatasource extends GraphDatasource {
               if (el) {
                 this.addVisibleElement(preset, el);
                 if (rule.outgoingRules) {
-                  this.applyGraphPresetRules(preset, rule.outgoingRules, el);
+                  this.applyGraphPresetRules(preset, rule.outgoingRules, el, undefined, state);
                 }
               }
             }
-          } else if (rule.elementId) {
-            rule._element = this.getElement(rule.elementId);
+          } else if (elementId) {
+            rule._element = this.getElement(elementId);
             if (rule._element) {
               if (!rule.hideSelf && !preset!._visibleNodes!.includes(rule._element)) {
                 this.addVisibleElement(preset, rule._element);
               }
               if (rule.outgoingRules) {
-                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element);
+                this.applyGraphPresetRules(preset, rule.outgoingRules, rule._element, undefined, state);
               }
             }
           }
@@ -786,7 +791,7 @@ export class DocDatasource extends GraphDatasource {
 
     if (newRules.length > 0 && preset.properties?.graphLayout?.nodeRules) {
       preset.properties.graphLayout.nodeRules = preset.properties.graphLayout.nodeRules.concat(newRules);
-      this.applyGraphPresetRules(preset, preset.properties.graphLayout.nodeRules, element, list);
+      this.applyGraphPresetRules(preset, preset.properties.graphLayout.nodeRules, element, list,state);
     }
     // this.activePreset!._visibleNodes = [...this.activePreset!._visibleNodes, ...nodes];
     // const toBeDeleted = this.activePreset._visibleNodes.filter(n => nodes.includes(n));
@@ -925,7 +930,8 @@ export class DocDatasource extends GraphDatasource {
         }
         this.linkDocumentEntities(doc);
         try {
-          await this.entityParser.callDocument(doc, this);
+          
+          await this.parseEntities(doc);
         } catch (e) {
           console.log('Error parsing entities');
           console.log(e);
@@ -1042,6 +1048,7 @@ export class DocDatasource extends GraphDatasource {
       for (const doc of docs) {
         this.initDocument(doc);
         this.updateDocumentOriginals(doc);
+        this.parseDocument(doc);
         // doc.updateOriginals();
       }
     }
@@ -1072,7 +1079,7 @@ export class DocDatasource extends GraphDatasource {
           e.to = entity._node;
           e.from = doc;
           await this.addEdge(e);
-          await this.parseEntities();
+          // await this.parseEntities(doc);
           // await this.updateEdges();
           await this.saveDocument(doc);
           resolve(entity);
@@ -1112,7 +1119,7 @@ export class DocDatasource extends GraphDatasource {
 
           await this.addEdge(e);
           await this.saveDocument(doc);
-          await this.parseEntities();
+          await this.parseEntities(doc);
           resolve(entity);
         })
         .catch(() => {
@@ -1140,7 +1147,7 @@ export class DocDatasource extends GraphDatasource {
       // remove all entities
 
       for (const ent of list.instances) {
-        ent._approved = false;
+        ent._linked = false;
         if (ent._edge) {
           delete ent._edge;
         }
@@ -1163,11 +1170,12 @@ export class DocDatasource extends GraphDatasource {
 
       doc._outgoing = doc._outgoing?.filter((r) => r.toId !== list.node?.id);
 
-      list._approved = false;
+      list._linked = false;
       list.edge = undefined;
 
-      await this.parseEntities();
-      this.updateEdges();
+      DocUtils.syncEntities(doc, this, doc.properties?.doc?.content, false);
+      await this.parseEntities(doc);
+      this.updateEdges(true);
       await this.saveDocument(doc);
 
       resolve(list);
@@ -1182,7 +1190,7 @@ export class DocDatasource extends GraphDatasource {
       }
       this.removeEdge(entity._edge)
         .then(async () => {
-          await this.parseEntities();
+          await this.parseEntities(doc);
           resolve(entity);
         })
         .catch((e) => {
@@ -1283,6 +1291,8 @@ export class DocDatasource extends GraphDatasource {
           let hint = pt.hint;
           let array = pt.array;
           let icon = pt.icon;
+          let filled = true;
+          const rounded = true;
 
           if (!editOnly || !pt.readonly) {
             switch (pt.type) {
@@ -1297,6 +1307,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1310,6 +1322,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   array,
                   hint,
+                  filled,
+                  rounded,
                   group,
                   section,
                   icon: pt._icon
@@ -1326,6 +1340,8 @@ export class DocDatasource extends GraphDatasource {
                   hint,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1340,6 +1356,8 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1365,6 +1383,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: et?.icon ||  pt._icon
                 });
                 break;
@@ -1380,6 +1400,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon,
                 });
                 break;
@@ -1395,6 +1417,8 @@ export class DocDatasource extends GraphDatasource {
                   group,
                   section,
                   icon,
+                  filled,
+                  rounded
                 });
                 break;
               case PropertyValueType.boolean:
@@ -1408,6 +1432,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1425,6 +1451,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1439,6 +1467,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1453,6 +1483,8 @@ export class DocDatasource extends GraphDatasource {
                   required,
                   group,
                   section,
+                  filled,
+                  rounded,
                   icon: pt._icon
                 });
                 break;
@@ -1476,6 +1508,8 @@ export class DocDatasource extends GraphDatasource {
                   array,
                   hint,
                   section,
+                  filled,
+                  rounded,
                   icon: ft?.icon || pt._icon
                 });
                 break;
@@ -1527,7 +1561,7 @@ export class DocDatasource extends GraphDatasource {
     if (q.hasOwnProperty('nodedetails')) {
       const node = this.getElement(q['nodedetails'] as string);
       if (node) {
-        this.openElement(node);
+        this.openElement(node, false);
       }
     }
   }
@@ -1595,7 +1629,7 @@ export class DocDatasource extends GraphDatasource {
   }
 
   public saveDocument(d: GraphDocument): Promise<GraphDocument> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let doc = { ...d } as GraphDocument;
       // if (!doc) { reject(); return; }
       if (!doc.properties) {
@@ -1605,19 +1639,15 @@ export class DocDatasource extends GraphDatasource {
         doc.properties.id = doc.id;
       }
 
-      // update document entities, store in graph
-      // if (doc._entities) {
-      //   doc.properties.entities = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
-      // }
-
-      // delete doc.doc;
-      if (doc.observations) {
-        doc.properties.observations = JSON.stringify(DocUtils.getSimplifiedEntities(doc));
-      }
+      DocUtils.syncEntities(d, this, d.properties?.doc?.content, false);
+      
       this.saveNode(doc)
         .then(async () => {
           await this.updateEdges(true);
+          DocUtils.syncEntities(d, this, d.properties?.doc?.content, false);
+          await this.parseEntities(d);
           this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, d);
+          this.triggerDocumentEntities();
           resolve(d);
         })
         .catch((e) => {
@@ -1627,23 +1657,6 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  public removeObservation(observation: FeatureType): Promise<boolean> {
-    return new Promise(async () => {
-      let element = observation._node;
-
-      if (element?._outgoing) {
-        for (const rel of element._outgoing) {
-          await this.removeEdge(rel);
-        }
-      }
-      if (element?._incomming) {
-        for (const rel of element._incomming) {
-          await this.removeEdge(rel);
-        }
-      }
-      this.parseEntities();
-    });
-  }
 
   public updateDocumentOriginals(doc: GraphDocument) {
     if (!doc._outgoing) {
@@ -1661,7 +1674,16 @@ export class DocDatasource extends GraphDatasource {
     });
   }
 
-  public removeNode(element: GraphElement, relations = false, notify = false): Promise<boolean> {
+  // public removeMultipleElements(ids: string[], relations = true, notify = false) : Promise<boolean> {
+  //   return new Promise(async (resolve, reject) => {
+  //     if (!this.storage) { reject(); return; }
+  //     this.storage.(ids, relations);
+  //     resolve(true);
+  //   })
+      
+  // }
+
+  public removeNode(element: GraphElement, relations = true, notify = false): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       if (element && element.id && this.storage) {
         // remove relations
@@ -1682,7 +1704,6 @@ export class DocDatasource extends GraphDatasource {
         $cs.loader.addLoader(`remove-${element.id}`);
         try {
           await this.storage.removeElement(element.id);
-
           await this.removeNodeById(element.id!, relations);
           this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_REMOVED, element);
           resolve(true);
@@ -1803,14 +1824,12 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public async parseEntities() {
-    if (this.activeDocument && this.entityParser) {
-      try {
-        await this.entityParser.callDocument(this.activeDocument, this);
-        // await this.relationParser.callDocument(this.activeDocument, this);
-      } catch (e) {
-        // console.log(e);
+  public async parseEntities(doc : GraphDocument) : Promise<IDocumentPluginResult | undefined> {
+    if (this.entityParser && doc) {
+      if (doc.properties?.doc?.content) {
+        DocUtils.syncEntities(doc, this, doc.properties?.content, true);
       }
+      return this.entityParser.callDocument(doc, this);      
     }
   }
 
@@ -1821,8 +1840,9 @@ export class DocDatasource extends GraphDatasource {
         reject();
       } else {
         $cs.data.activeDocument = doc?.id;
-        DocUtils.syncEntities(doc, this, doc.properties?.content, true);
-        await this.entityParser.callDocument(doc, this);
+        
+
+        await this.parseEntities(doc);
         this.bus.publish('document', 'activated', doc);
         resolve(doc);
       }
@@ -1870,7 +1890,7 @@ export class DocDatasource extends GraphDatasource {
               this.updateElementEdges(edge);
             } else {
               await this.updateEdges();
-              await this.parseEntities();
+              // await this.parseEntities(this.activeDocument!);
             }
           }
           this.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_ADDED, edge);

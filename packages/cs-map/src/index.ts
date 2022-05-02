@@ -10,7 +10,7 @@ import { GridLayer } from './layers/grid-layer';
 import { IWidget, guidGenerator } from '@csnext/cs-core';
 import { MapOptions } from './classes/map-options';
 import { MapboxOptions } from 'mapbox-gl';
-import { VNode } from 'vue/types/umd';
+import { VNode } from 'vue';
 
 // classes
 export * from './classes/map-options';

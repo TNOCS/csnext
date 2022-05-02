@@ -1,4 +1,6 @@
+import { IMenu, INotification } from '@csnext/cs-core';
 import { GraphElement } from '@csnext/cs-data';
+import { DocDatasource } from './..'
 
 export interface ISearchPlugin {
     id: string;
@@ -7,7 +9,9 @@ export interface ISearchPlugin {
     component?: any;
     image: string;
     options?: any;
-    callSearch?(text: string) : Promise<ISearchPluginResult>;
+    createDialog?(source: DocDatasource, element?: GraphElement, options?: any, actions?: IMenu[]) : INotification;
+    actions?(element: GraphElement, source: DocDatasource, options?: any) : IMenu[];
+    callSearch?(text: string, source?: DocDatasource, options?: any) : Promise<ISearchPluginResult>;
 }
 
 export interface ISearchPluginResult {    

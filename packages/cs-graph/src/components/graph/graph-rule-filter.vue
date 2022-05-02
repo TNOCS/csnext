@@ -91,19 +91,19 @@ export default class GraphRuleEditor extends Vue {
   public removeFilter() {
     if (this.rule?.filter) {
       this.rule.filter = undefined;
-      this.source.updateRules(this.preset, this.rule);
+      // this.source.updateRules(this.preset, this.rule);
     }    
   }
 
   public updateFilterProperty() {
     this.updateProperties(true);    
-    this.source.updateRules(this.preset, this.rule);
+    // this.source.updateRules(this.preset, this.rule);
   }
 
   public removeProperty(index: number) {
     if (this.source && this.rule?.filter?.hasObjectProperties) {
       this.rule.filter.hasObjectProperties.splice(index, 1);
-      this.source.updateRules(this.preset, this.rule);
+      // this.source.updateRules(this.preset, this.rule);
     }
   }
 

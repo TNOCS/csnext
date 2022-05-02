@@ -1,13 +1,14 @@
 <template v-if="source">
-  <div v-if="document.properties.editor_mode && document.properties.editor_mode === 'LEARN'" >
+  <!-- <div v-if="document.properties.editor_mode && document.properties.editor_mode === 'LEARN'" >
     <v-layout class="learn-popup" v-if="document.properties.learn_mode && document.properties.learn_mode === 'REVIEW'" >
     <v-btn style="background:green"><v-icon>mdi-check</v-icon></v-btn>
     <v-btn style="background:red"><v-icon>mdi-close</v-icon></v-btn>
     </v-layout>
     <v-layout v-else>
     </v-layout>
-  </div>
-  <v-card class="selection-popup" v-else>
+  </div> -->
+   <!-- v-else -->
+  <v-card class="selection-popup">
     <v-tabs vertical :value="viewtab">
       <v-tab>
         <v-icon left>mdi-tag-outline</v-icon>
@@ -29,35 +30,44 @@
         <div>
         <template v-if="entity">
           <div v-if="entity._node" class="entity-node">
+            <!-- <component :is="getComponentCard(entity._node)" cardSize="Small" :element="entity._node" :source="source" /> -->
             <data-info-panel
               :data="entity._node.properties"
               :featureType="entity._node._featureType"
               panel="popup"
             ></data-info-panel>
 
-            <div class="entity-node-actions">
-              <v-btn icon @click="graphNode(entity)"
+            <div class="mx-auto entity-node-actions">
+              <!-- <v-btn icon @click="graphNode(entity)"
                 ><v-icon>mdi-scatter-plot</v-icon></v-btn
+              > -->
+              <v-btn outlined @click="openNode(entity)"
+                ><v-icon>mdi-information-outline</v-icon>info</v-btn
               >
-              <v-btn icon @click="openNode(entity)"
-                ><v-icon>mdi-information-outline</v-icon></v-btn
-              >
-              <v-btn icon @click="deleteEntity()"
+              <!-- <v-btn icon @click="deleteEntity()"
                 ><v-icon>mdi-delete</v-icon></v-btn
-              >
+              > -->
 
-              <v-tooltip bottom v-if="entity._included">
+              <v-tooltip bottom v-if="entity._linked">
                 <template v-slot:activator="{ on }">
-                  <v-btn v-on="on" icon @click="excludeEntity()"
-                    ><v-icon>mdi-minus</v-icon></v-btn
+                  <v-btn depressed v-on="on" @click="excludeEntity()"
+                    ><v-icon>mdi-link-off</v-icon> unlink</v-btn
                   >
                 </template>
                 {{ $cs.Translate("UNLINK_ENTITY") }}
               </v-tooltip>
               <v-tooltip bottom v-else>
                 <template v-slot:activator="{ on }">
-                  <v-btn icon v-on="on" @click="includeEntity()"
-                    ><v-icon>mdi-plus</v-icon></v-btn
+                  <v-btn  v-on="on" class="primary" @click="includeEntity()"
+                    ><v-icon>mdi-link</v-icon> link</v-btn
+                  >
+                </template>
+                {{ $cs.Translate("LINK_ENTITY") }}
+              </v-tooltip>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn  v-on="on" class="primary" @click="removeEntity()"
+                    ><v-icon>mdi-delete</v-icon> delete</v-btn
                   >
                 </template>
                 {{ $cs.Translate("LINK_ENTITY") }}
@@ -67,42 +77,39 @@
           <div v-else>
             <v-card-title>{{ entity.text }}</v-card-title>
             <v-card-subtitle>{{ entity.spacy_label }}</v-card-subtitle>
+            <v-row>
+              <v-col cols="4">
             <span v-if="potentialTypes.length > 0"
-              >Add new:<v-chip
+              ><v-chip
                 small
                 outlined
+                class="ma-1"
                 v-for="ft in potentialTypes"
                 :key="ft.type"
                 @click="createNewNode(ft)"
-                >{{ ft.title }}</v-chip
-              ></span
-            >
-            <v-layout class="ma-3" style="margin-top: -20px">
-              <v-radio-group v-model="searchMode" class="add-node-mode">
-                <v-radio label="Existing" value="KG"></v-radio>
-                <v-radio label="New" value="new"></v-radio>
-              </v-radio-group>
-
-              <v-combobox
-                v-if="searchMode === 'KG'"
-                :items="Object.values(source.graph)"
-                v-model="newEntityNode"
-                item-text="properties.name"
-                label="node"
-                return-object
-              ></v-combobox>
-              <v-combobox
-                v-model="newCategory"
-                :items="Object.values(source.featureTypes)"
-                item-text="title"
-                return-object
-                v-if="searchMode === 'new'"
-                label="category"
-              ></v-combobox>
-              <v-btn @click="createNode()" fab x-small class="mt-4 primary">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
-            </v-layout>
+                ><v-icon small v-if="ft._icon">{{ft._icon}}</v-icon> {{ ft.title }}</v-chip
+              ></span>
+              </v-col>
+              <v-col cols="8" v-if="suggestions">
+                <v-layout v-for="(s, i) in suggestions.slice(0,5)" :key="i"><v-btn icon @click="useSuggestion(s.item)"><v-icon>mdi-link</v-icon></v-btn> <node-chip light   :node="s.item" :source="source" /></v-layout>
+                 <!-- <v-list dense>
+              <v-list-item @click="useSuggestion(s.item)"  v-for="(s, i) in suggestions.slice(0,5)" :key="i">
+                <v-list-item-avatar>
+                  <v-icon v-if="s.item._featureType.icon">{{s.item._featureType.icon}}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{s.item.properties.name}}
+                  </v-list-item-title>
+                
+                </v-list-item-content>
+                <v-list-item-action>
+          
+        </v-list-item-action>
+              </v-list-item>
+            </v-list> -->
+              </v-col>
+              </v-row>          
           </div>
         </template>
         <template v-else> no entity </template>
@@ -130,9 +137,7 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-          <!-- <v-btn icon>
-            <v-icon  color="grey lighten-1">mdi-link</v-icon>
-          </v-btn> -->
+       
         </v-list-item-action>
               </v-list-item>
             </v-list>
@@ -146,7 +151,7 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+      <!-- <v-tab-item>
         <v-card flat>
           <v-layout class="ma-4">
             <v-btn outlined @click="locateOnMap()">
@@ -159,147 +164,15 @@
             >
           </v-layout>
         </v-card>
-      </v-tab-item>
-      <v-tab-item>
+      </v-tab-item> -->
+      <v-tab-item v-if="entity">
         <v-card flat>
           <v-card-text>
             {{ entity._date }}
           </v-card-text>
         </v-card>
       </v-tab-item>
-    </v-tabs>
-    <!-- <v-tab value="entity"><v-icon>mdi-playlist-plus_check</v-icon></v-tab>
-        <v-tab value="observation"><v-icon>camera_enhance</v-icon></v-tab>
-        <v-tab value="note"><v-icon>note</v-icon></v-tab>     
-         <v-tab-item value="entity"><h1>entity</h1></v-tab-item>
-        <v-tab-item value="observation">observation</v-tab-item>
-        <v-tab-item value="note">note</v-tab-item>  
-      </v-tabs> -->
-
-    <!--     
-    
-    
-    <div v-if="entity.text">      
-      <v-card-title>{{ entity.text }}</v-card-title>
-      <v-card-subtitle>{{ entity.entity_class }}</v-card-subtitle>
-      <v-btn icon large class="search-button" @click="searchNode = true">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-container v-if="searchNode">
-        <v-radio-group v-model="searchMode" row>
-          <v-radio label="KG" value="KG"></v-radio>
-          <v-radio label="New" value="new"></v-radio>
-          <v-radio label="Online" value="online"></v-radio>
-        </v-radio-group>
-        <v-layout>
-          <v-combobox
-            v-if="searchMode === 'KG'"
-            :items="Object.values(source.graph)"
-            v-model="newEntityNode"
-            item-text="properties.name"
-            label="node"
-            return-object
-          ></v-combobox>
-          <v-combobox
-            v-model="newCategory"
-            :items="source.availableNodeTypes"
-            item-text="properties.name"
-            return-object
-            v-if="searchMode=== 'new'"
-            label="category"
-          ></v-combobox>
-          <v-combobox
-            v-if="searchMode === 'online'"
-            :items="Object.values(source.graph)"
-            v-model="searchOnline"
-            item-text="properties.name"
-            label="node"
-            return-object
-          ></v-combobox>
-
-          <v-btn @click="linkNode()" fab x-small class="mt-4 primary">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-layout>
-        <v-spacer></v-spacer>
-        
-      </v-container>
-    </div>    
-  </v-card> -->
-    <!-- <v-card v-else class="selection-popup">   
-    <div v-if="text">
-      
-       <v-layout >
-      <v-btn icon large  @click="addNote = true; searchNode = false">
-        <v-icon>note_mdi-plus</v-icon>
-      </v-btn>
-      <v-btn icon large  @click="searchNode = true; addNote = false">
-        <v-icon>mdi-playlist-plus</v-icon>
-      </v-btn>
-      </v-layout>
-      <v-container v-if="addNote">
-        <h2>indicator</h2>
-        <v-combobox
-            v-model="newNoteSource"
-            :items="source.getClassElements('source', true)"
-            item-text="properties.name"
-            return-object            
-            label="source"
-          ></v-combobox>
-          <v-combobox
-            v-model="newNoteEEI"
-            :items="source.getClassElements('eei', true)"
-            item-text="properties.name"
-            return-object            
-            label="EEI"
-          ></v-combobox>
-          <v-text-field
-            v-model="newNoteUrl"
-            label="Url"
-            single-line            
-          ></v-text-field>
-      </v-container>
-      <v-container v-if="searchNode">
-        <h2>entity</h2>
-        <v-radio-group v-model="searchMode" row>
-          <v-radio label="KG" value="KG"></v-radio>
-          <v-radio label="New" value="new"></v-radio>
-          <v-radio label="Online" value="online"></v-radio>
-        </v-radio-group>
-        <v-layout>
-          <v-combobox
-            v-if="searchMode === 'KG'"
-            :items="Object.values(source.graph)"
-            v-model="newEntityNode"
-            item-text="properties.name"
-            label="node"
-            return-object
-          ></v-combobox>
-          <v-combobox
-            v-model="newCategory"
-            :items="source.availableNodeTypes"
-            item-text="properties.name"
-            return-object
-            v-if="searchMode=== 'new'"
-            label="category"
-          ></v-combobox>
-          <v-combobox
-            v-if="searchMode === 'online'"
-            :items="Object.values(source.graph)"
-            v-model="searchOnline"
-            item-text="properties.name"
-            label="node"
-            return-object
-          ></v-combobox>
-
-          <v-btn @click="createNode()" fab x-small class="mt-4 primary">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-layout>
-        
-      </v-container>
-    </div>
-  </v-card> -->
+    </v-tabs>    
   </v-card>
 </template>
 
@@ -335,7 +208,7 @@
 .entity-node-actions {
   position: absolute;
   bottom: 0;
-  right: 0;
+  /* right: 0; */
 }
 
 .selection-popup {
@@ -358,14 +231,15 @@ import { TextEntity } from "@csnext/cs-data";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
-import { DataInfoPanel, NodeLink, NodeSpan } from "@csnext/cs-map";
+import { DataInfoPanel, NodeLink, NodeChip, NodeSpan } from "@csnext/cs-map";
 import { DocUtils } from '../../utils/doc-utils';
 import { FeatureType } from "@csnext/cs-data";
+import { ElementCardManager } from "../data-grid/cards/element-card-manager";
 // import turf from "@turf/turf";
 // import distance from "@turf/distance";
 
 @Component({
-  components: { DataInfoPanel, NodeLink, NodeSpan },
+  components: { DataInfoPanel, NodeLink, NodeSpan, NodeChip },
 })
 export default class SelectionPopup extends WidgetBase {
   @Prop()
@@ -403,11 +277,6 @@ export default class SelectionPopup extends WidgetBase {
   public to?: number;
 
   public newCategory: FeatureType | null = null;
-
-  public newNoteSource: GraphElement = { };
-  public newNoteEEI: GraphElement = { };
-  public newNoteUrl: string = "";
-
   public newEntityNode: GraphElement = { };
 
   public suggestions: any[] | null = null;
@@ -423,6 +292,11 @@ export default class SelectionPopup extends WidgetBase {
     if (this.entity) {
       this.updatePotentialTypes();
     }
+  }
+
+  @Watch("entity._linked")
+  private updateLinked() {
+    this.$forceUpdate();
   }
 
   public async createEntity() {
@@ -445,10 +319,19 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public updateSuggestions() {
+    console.log('update suggestions');
     if (this.entity?.text && this.source?.fuse) {
-      this.suggestions = this.source.fuse
-        .search(this.entity.text, { limit: 8})        
+      this.suggestions = this.source.searchFuse(this.entity.text, undefined, false);
+      // , { nlp: this.entity?.spacy_label}
+        // .search(this.entity.text, { limit: 8}).filter((x: GraphElement) => x.item._featureType.ba)        
     }
+  }
+
+  public getComponentCard() {
+    if (this.entity?._node) {
+      return ElementCardManager.getElementCard(this.entity._node);
+    }
+    return null;
   }
 
   public async createNewNode(ft: FeatureType) {
@@ -589,14 +472,14 @@ export default class SelectionPopup extends WidgetBase {
         description: entity.text,
         location: entity._location,
       },
-      _included: true,
+      // _linked: true,
     };
     entity._node = node;
     entity.kg_id = node.id;
     this.source.addNode(node);
     await this.source.saveNode(node);    
     await this.source.linkEntityToDocument(entity, this.document);
-    await this.source.parseEntities();
+    await this.source.parseEntities(this.document);
     this.publishChanges();
   }
 
@@ -643,7 +526,7 @@ export default class SelectionPopup extends WidgetBase {
             properties: {
               title: this.entity?.text ?? this.text,
             },
-            _included: true,
+            _linked: true,
           };
           this.source.addNode(node);
           this.entity._node = node;
@@ -718,19 +601,21 @@ export default class SelectionPopup extends WidgetBase {
         this.potentialTypes = Object.values(this.source.featureTypes).filter(
           (ft) => ft._inheritedTypes && ft._inheritedTypes.includes("location")
         );
-      }
+      
     } else if (this.source.featureTypes) {
       this.potentialTypes = Object.values(this.source.featureTypes).filter(
         (ft) =>
           ft.attributes &&
-          ft.attributes.hasOwnProperty("spacy_label") &&
-          ft.attributes["spacy_label"] === this.entity?.spacy_label
+          ft.attributes.hasOwnProperty("nlp:entity_class") &&
+          ft.attributes["nlp:entity_class"] === this.entity?.spacy_label
       );
+    }
       if (this.potentialTypes && this.potentialTypes.length > 0) {
         this.newCategory = this.potentialTypes[0];
       } else {
         this.newCategory = Object.values(this.source.featureTypes)[0];
       }
+    
     }
   }
 
@@ -751,11 +636,11 @@ export default class SelectionPopup extends WidgetBase {
     if (this.entity?.spacy_label === "location") {
       this.viewtab = 1;
     }
-    this.updateAgents();
-    this.updatePotentialTypes();
+    // this.updateAgents();
+    // this.updatePotentialTypes();
     this.updateSuggestions();
     if (!this.entity?._node && this.entity?.spacy_label && !['CARDINAL','DATE', 'ORDINAL', 'QUANTITY'].includes(this.entity.spacy_label) && this.suggestions && this.suggestions.length > 0) {
-      this.viewtab = 1;
+      // this.viewtab = 1;
     }
 
   }

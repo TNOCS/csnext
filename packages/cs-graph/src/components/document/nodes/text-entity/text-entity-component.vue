@@ -1,20 +1,24 @@
-<template>  
+<template>
   <node-view-wrapper
     v-if="node"
     class="text-entity-component"
     :style="style"
-    :class="{ highlight: entity && entity._highlight, excluded: entity && !entity._included && !entity._highlight, hide: !visible }"
+    
   >
- 
-    <v-menu offset-y open-on-hover v-model="openMenu" :close-on-content-click="false" open-delay="10">
+<!-- :class="{ highlight: entity && entity._linked }" -->
+  <!-- excluded: entity && !entity._linked && !entity._highlight, hide: !visible -->
+    <v-menu offset-y  v-model="openMenu" :close-on-content-click="false">
+
+      <!-- open-on-hover open-delay="10" -->
       <template v-slot:activator="{ on, attrs }">
         <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
         <span @click.stop="selectEntity()" class="content entity-drag" :id="'drag-' + node.attrs.id" v-bind="attrs" v-on="on">
           <v-icon v-if="node.attrs.type === 'DATE'" small>mdi-calendar-range</v-icon>
-          <v-icon v-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
-          <img v-if="icon" :src="icon" class="icon-image" />
-
+          <v-icon v-else-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
+          <img v-else-if="icon" :src="icon" class="icon-image" />
+          <v-icon v-else-if="element && element._featureType.icon" small>{{ element._featureType.icon }}</v-icon>
           {{ node.attrs.text }}
+          <!-- : <span v-if="entity">{{ entity._linked}}</span> -->
 
           <!-- <span v-if="entity">   
               {{ entity._included}}      
@@ -67,11 +71,14 @@
         </v-list> 
           </v-card>        -->
     </v-menu>
-
-  </node-view-wrapper>  
+  </node-view-wrapper>
 </template>
 
 <style scoped>
+.entity-available {
+  background-color: 'red' !important;
+}
+
 .draggable-entity {
   display: inline;
 }
@@ -80,18 +87,16 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { Editor, NodeViewWrapper } from '@tiptap/vue-2';
-import { GraphElement, TextEntity } from '@csnext/cs-data';
-import SelectionPopup from './../selection-popup.vue';
+import { GraphDatasource, GraphElement, TextEntity } from '@csnext/cs-data';
+import SelectionPopup from '../../selection-popup.vue';
 
-import { DocDatasource } from '../../../datasources/doc-datasource';
-import { GraphDocument } from '../../../classes/document/graph-document';
-import { DocUtils } from '../../../utils/doc-utils';
-
+import { DocDatasource } from '../../../../datasources/doc-datasource';
+import { GraphDocument } from '../../../../classes/document/graph-document';
 
 @Component({
   components: {
     NodeViewWrapper,
-    SelectionPopup
+    SelectionPopup,
   },
 })
 export default class TextEntityComponent extends Vue {
@@ -112,6 +117,7 @@ export default class TextEntityComponent extends Vue {
   public node?: any;
   public showPopup = false;
   private detailed = true;
+  public color: string = '#ffffff';
 
   public menuItems: any[] = [];
 
@@ -125,7 +131,7 @@ export default class TextEntityComponent extends Vue {
     // alert('select');
   }
 
-  @Watch('entity._included')
+  @Watch('entity._linked')
   updatedViewTypes() {
     this.setStyle();
   }
@@ -139,31 +145,57 @@ export default class TextEntityComponent extends Vue {
 
   @Watch('document.activeLearningType')
   @Watch('document.properties.learn_mode')
+  @Watch('entity._linked')
   public setStyle() {
     if (!this.source || !this.document) {
       return {} as CSSStyleDeclaration;
     }
+
     if (!this.element) {
       this.style = {
-        backgroundColor: 'lightgrey',
+        backgroundColor: 'transparent', // GraphElement.getBackgroundColor(this.element),
+        borderStyle: 'solid', //this.visible ? 'solid' : 'none',
+        borderColor: '#e0e0e0',
+      } as CSSStyleDeclaration;
+    } else {
+      this.style = {
+        backgroundColor: this.entity?._linked ? this.color : 'transparent', // GraphElement.getBackgroundColor(this.element),
+        borderStyle: 'solid', //this.visible ? 'solid' : 'none',
+        borderColor: this.color,
       } as CSSStyleDeclaration;
     }
-    // if (this.document.visibleEntityTypes.findIndex(vt => vt.id === this.entity?.spacy_label) >= 0) {
-    //   this.visible = true;
+    // if (
+    //   this.document?.properties?.editor_mode === 'LEARN' &&
+    //   this.document.properties.learn_mode === 'REVIEW' &&
+    //   this.document.activeLearningType !== this.element?.classId
+    // ) {
+    //   this.style.backgroundColor = 'blue';
+    //   this.$forceUpdate();
     // }
-    this.style = {
-      backgroundColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray',
-      borderStyle: this.visible ? 'solid' : 'none',
-      borderColor: this.element ? GraphElement.getBackgroundColor(this.element) : 'gray',
-    } as CSSStyleDeclaration;
-    if (
-      this.document?.properties?.editor_mode === 'LEARN' &&
-      this.document.properties.learn_mode === 'REVIEW' &&
-      this.document.activeLearningType !== this.element?.classId
-    ) {
-      this.style.backgroundColor = 'blue';
-      this.$forceUpdate();
-    }
+  }
+
+  private updateEntity() {
+    // find entity
+      if (this.source && this.document?._entities && this.node?.attrs.id) {        
+        this.entity = this.document._entities.find((e) => e.id === this.node.attrs.id);
+        if (!this.element && this.node?.attrs?.kg_id) {
+          this.element = this.source.getElement(this.node.attrs.kg_id);
+        }
+       
+        if (this.entity?._node) {
+          this.element = this.entity._node;
+          this.color = GraphElement.getBackgroundColor(this.element);
+        }
+
+        if (this.element?.properties && this.element._featureType?.infoPanels?.popup) {
+          const popup = this.element._featureType?.infoPanels?.popup;
+          if (popup && popup.iconImageProperty && this.element.properties.hasOwnProperty(popup.iconImageProperty)) {
+            this.icon = this.element.properties[popup.iconImageProperty];
+          }
+        }
+      }
+
+      this.setStyle();
   }
 
   public mounted() {
@@ -182,6 +214,12 @@ export default class TextEntityComponent extends Vue {
 
       this.document = (editor?.options?.editorProps as any)?.document;
 
+      this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
+        if (this.document?.id && a === GraphDatasource.ELEMENT_UPDATED && e.id === this.document.id) {
+          this.updateEntity();
+        }
+      }) 
+
       this.menuItems.push({
         title: 'remove',
         action: () => {
@@ -189,41 +227,9 @@ export default class TextEntityComponent extends Vue {
         },
       });
 
-      // find entity
-      if (this.document?._entities && node.attrs.id) {
-        this.entity = this.document._entities.find((e) => e.id === node.attrs.id);
-        if (!this.entity) {
-          console.log('Entity not found, sync them');
-          DocUtils.syncEntities(this.document, this.source, [{ ...node, ...{type: "text-entity"}}]);
-          this.entity = this.document._entities.find((e) => e.id === node.attrs.id);
-        }
-        if (!this.element && node?.attrs?.kg_id) {
-          this.element = this.source.getElement(node.attrs.kg_id);
-        }
-        // if (!this.entity &&) {
-        //   // this.entity = {
-        //   //   // id: guidGenerator(),
-        //   //   id: node.attrs.id,
-        //   //   text: node.text,
-        //   //   spacy_label: node.attrs.type
-        //   //   // class: node.attrs.type ?? 'node'
-        //   // };
-        //   this.entity =  node.attrs;
-        //   this.document._entities.push(this.entity)
-        // }
-        if (this.entity?._node) {
-          this.element = this.entity._node;
-        }
+      this.updateEntity();
 
-        if (this.element?.properties && this.element._featureType?.infoPanels?.popup) {
-          const popup = this.element._featureType?.infoPanels?.popup;
-          if (popup && popup.iconImageProperty && this.element.properties.hasOwnProperty(popup.iconImageProperty)) {
-            this.icon = this.element.properties[popup.iconImageProperty];
-          }
-        }
-      }
-
-      this.setStyle();
+      
     }
   }
 }
@@ -261,11 +267,12 @@ export default class TextEntityComponent extends Vue {
 }
 
 .excluded {
-  background-color: rgba(0, 0, 0, 0.06) !important;
+  /* background-color: rgba(0, 0, 0, 0.06) !important; */
 }
 
 .icon-image {
-  max-width: 30px;
+  max-width: 20px;
+  max-height: 20px;
 }
 
 .content {

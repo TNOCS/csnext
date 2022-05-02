@@ -41,48 +41,6 @@ export default class MentionList extends Vue {
     this.selectedIndex! = 0;
   }
   
-  // props: {
-  //   items: {
-  //     type: Array,
-  //     required: true,
-  //   },
-
-  //   command: {
-  //     type: Function,
-  //     required: true,
-  //   },
-  // },
-
-  // data() {
-  //   return {
-  //     selectedIndex: 0,
-  //   };
-  // },
-
-  // watch: {
-  //   items() {
-  //     this.selectedIndex! = 0;
-  //   },
-  // },
-  // methods: {
-  //   onKeyDown({ event }) {
-  //     if (event.key === 'ArrowUp') {
-  //       this.upHandler();        
-  //       return true;
-  //     }
-
-  //     if (event.key === 'ArrowDown') {
-  //       this.downHandler();        
-  //       return true;
-  //     }
-
-  //     if (event.key === 'Enter') {
-  //       this.enterHandler();
-  //       return true;
-  //     }
-
-  //     return false;
-  //   },
    private onKeyDown({event}) {
      if (event.key === 'ArrowUp') {
         this.upHandler();        
@@ -102,8 +60,9 @@ export default class MentionList extends Vue {
    }
 
     upHandler() {
-      
-      this.selectedIndex! = (this.selectedIndex! + this.items.length - 1) % this.items.length;
+      if (this.items && this.items.length > 0) {       
+        this.selectedIndex! = (this.selectedIndex! + this.items.length - 1) % this.items.length;
+      }
     }
 
     downHandler() {
@@ -116,67 +75,11 @@ export default class MentionList extends Vue {
     }
 
     selectItem(index) {
-      const item = this.items[index];
-      // this.$options.propsData.editor.chain().focus().setTextEntity({ spacy_label: this.entityBubbleSelection?.type }).run();
-      // setTextEntity({ spacy_label: this.entityBubbleSelection?.type });
-      // console.log(item);
+      const item = this.items[index];      
       if (item) {
         this.command({ name:'text-entity', id: `entity-${idGenerator()}`, label: item.item.properties.name, text: item.item.properties.name, spacy_label: item.item._featureType.type, kg_id: item.item.id });
       }
     }
-
-    //   public selectedIndex = 0;
-    //   public testitems = ['Foo', 'Bar', 'Fizz', 'Buzz'];
-
-    //  onKeyDown({ event }) {
-    //       if (event.key === 'ArrowUp') {
-    //         this.upHandler()
-    //         return true
-    //       }
-
-    //       if (event.key === 'ArrowDown') {
-    //         this.downHandler()
-    //         return true
-    //       }
-
-    //       if (event.key === 'Enter') {
-    //         this.enterHandler()
-    //         return true
-    //       }
-
-    //       return false
-    //     }
-
-    //     upHandler() {
-    //       this.selectedIndex! = ((this.selectedIndex! + this.items.length) - 1) % this.items.length
-    //     }
-
-    //     downHandler() {
-    //       this.selectedIndex! = (this.selectedIndex! + 1) % this.items.length
-    //     }
-
-    //     enterHandler() {
-    //       this.selectItem(this.selectedIndex!)
-    //     }
-
-    //     selectItem(index) {
-    //       const item = this.items[index]
-
-    //       // if (item) {
-    //       //   this.command({ id: item })
-    //       // }
-    //     }
-
-    //   mounted() {
-    //     console.log(this);
-
-    //     console.log(this.$options.propsData);
-    //     console.log('init mention list');
-    //     // setInterval(()=> {
-    //     //   this.$forceUpdate();
-    //     // }, 2000)
-    //     // alert('added');
-    //   }
   }
 
 </script>

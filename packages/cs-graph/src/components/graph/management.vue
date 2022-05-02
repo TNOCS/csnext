@@ -22,21 +22,21 @@
       <v-tab-item key="source" style="min-height: 500px">
         <v-container>
           <v-row>
-            <v-col cols="6">
+            <v-col cols="12">
               <v-card flat class="options-container">
                 <v-layout><v-icon class="storage-icon">mdi-web</v-icon><span class="storage-title">Server Knowledge Graph</span></v-layout>
                 <v-container>
                   <v-text-field label="Base Url" disabled v-if="source" v-model="source.base_url" placeholder="Placeholder"></v-text-field>
                 </v-container>
                 <v-layout class="action-buttons">
-                  <v-btn class="primary mr-4" @click="importkg()"><v-icon class="mr-2">mdi-import</v-icon>import</v-btn>
-                  <v-btn class="primary mr-4" @click="downloadkg()"><v-icon class="mr-2">mdi-download</v-icon>download</v-btn>
-                  <v-btn @click="openServer()" class="primary"><v-icon class="mr-2">mdi-web</v-icon></v-btn>
+                  <v-btn class="primary mr-4" @click="restorekg()"><v-icon class="mr-2">mdi-import</v-icon>restore</v-btn>
+                  <v-btn class="primary mr-4" @click="downloadkg()"><v-icon class="mr-2">mdi-download</v-icon>backup</v-btn>
+                  <!-- <v-btn @click="openServer()" class="primary"><v-icon class="mr-2">mdi-web</v-icon></v-btn> -->
                 </v-layout>
                 <!-- <v-card-text v-text="text"></v-card-text> -->
               </v-card>
             </v-col>
-            <v-col class="split-col" cols="6">
+            <!-- <v-col class="split-col" cols="0">
               <v-card flat class="options-container">
                 <v-layout><v-icon class="storage-icon">mdi-laptop</v-icon><span class="storage-title">Local Knowledge Graph</span></v-layout>
                 <v-list two-line v-if="recent">
@@ -63,7 +63,7 @@
 
                 <div v-if="deviceStorage">
                   <span v-if="deviceStorage && deviceStorage.databaseHandle">
-                    <!-- {{ deviceStorage.databaseHandle.name }} -->
+                    
                   </span>
                 </div>
 
@@ -80,7 +80,7 @@
                   >
                 </v-layout>
               </v-card>
-            </v-col>
+            </v-col> -->
           </v-row>
         </v-container>
       </v-tab-item>
@@ -134,7 +134,6 @@
 }
 </style>
 
-
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { WidgetBase } from '@csnext/cs-client';
@@ -172,25 +171,46 @@ export default class Management extends WidgetBase {
       this.source.openServerStorage();
     }
   }
-  
-  public downloadkg() {
+
+  public async downloadkg() {
     if (this.source) {
       const storage = DeviceStorage.getStorage(this.source);
       if (storage) {
-        $cs.triggerFileDownload('kg.json', JSON.stringify(storage), 'application/json').then(() => {
-          $cs.triggerNotification({ title: 'Downloaded', color: 'green', text: 'Downloaded Knowledge Graph', icon: 'mdi-download' });          
-        }).catch(()=> {
-          $cs.triggerNotification({ title: 'Error', color: 'red', text: 'Error downloading Knowledge Graph', icon: 'mdi-download' });          
-        })
+        try {
+          const name = await $cs.triggerInputDialog('Please enter a name for the file', 'file name', $cs.project?.title ?? 'kg');
+          if (name && name.length > 0) {
+            $cs
+              .triggerFileDownload(`${name}.json`, JSON.stringify(storage), 'application/json')
+              .then(() => {
+                $cs.triggerNotification({ title: 'Downloaded', color: 'green', text: 'Downloaded Knowledge Graph', icon: 'mdi-download' });
+              })
+              .catch(() => {
+                $cs.triggerNotification({ title: 'Error', color: 'red', text: 'Error downloading Knowledge Graph', icon: 'mdi-download' });
+              });
+          }
+        } catch (e) {
+          console.error(e);
+        }
       }
     }
-
   }
 
-  public importkg() {
-    if (!this.source) { return; }
-    // $cs.triggerFileUpload()
-    alert('import');
+  public restorekg() {
+    if (!this.source?.storage) {
+      return;
+    }
+    
+    $cs.triggerFileUpload('.json').then(async (f) => {
+      if (f && f.has('file')) {
+        const file = f?.get('file') as File;
+        const d = JSON.parse(await file.text());
+        $cs.triggerNotification({ title: 'Uploaded', color: 'green', text: 'Uploaded Knowledge Graph, processing ... ', icon: 'mdi-upload' });
+        if (this.source?.storage?.restoreGraph && d?.kg) {
+          await this.source.storage.restoreGraph(d.kg);
+          window.location.reload();
+        }        
+      }
+    });
   }
 
   private isSelected(db: any) {
@@ -279,7 +299,7 @@ export default class Management extends WidgetBase {
 
     // open file picker
     try {
-      const handle = await this.getFileHandle();      
+      const handle = await this.getFileHandle();
       if (this.source && handle) {
         await this.source.openDeviceStorage(handle);
       }

@@ -10,6 +10,8 @@
       :hint="field.hint"
       :persistentHint="field.persistentHint"
       :clearable="field.clearable"
+      :filled="field.filled"
+      :rounded="field.rounded"
       solo
       multiple
       text

@@ -1,0 +1,14 @@
+.card-small-size {
+  width: 200px;
+  height: 100px;
+}
+
+.card-medium-size {
+  width: 300px;
+  height: 120px;
+}
+
+.card-large-size {
+  width: 300px;
+  height: 200px;
+}

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager, IMenu } from '@csnext/cs-core';
+import { IWidget, IMessageBusService, IMessageBusCallback, MessageBusManager, IMenu, SyncStore } from '@csnext/cs-core';
 import { Logger } from '../';
 
 @Component({
@@ -19,9 +19,7 @@ export class WidgetBase extends Vue {
     super();
   }
 
-  public get state() : any {
-    console.log('get data')
-    console.log(this);
+  public get state() : any {    
     if (this.widget?.options?.sync) {
       switch (this.widget.options.sync) {
         case 'dashboard': return this.widget?._dashboard?.data;

@@ -143,70 +143,7 @@ export default class DocumentEditor extends WidgetBase {
       .map((o) => o.to);
   }
 
-  public get formDef2(): IFormOptions {
-    return {
-      showToolbar: false,
-      hideTitle: true,
-      isPanel: false,
-      optionalSupport: true,
-      fields: [
-        {
-          title: "ID",
-          _key: "id",
-          type: "string",
-          readonly: true,
-        },
-        {
-          title: "TITLE",
-          _key: "title",
-          type: "string",
-        },
-        {
-          title: "NOTE",
-          _key: "note",
-          type: "textarea",
-        },
-        // {
-        //   title: "SOURCE",
-        //   _key: "sourceId",
-        //   type: "combobox-objects",
-        //   keyText: "title",
-        //   keyValue: "id",
-        //   options: this.source!.sources,
-        // },
-        {
-          title: "RELIABILITY",
-          _key: "reliability",
-          type: "selection",
-          group: "score",
-          options: [
-            "Completely reliable",
-            "Usually reliable",
-            "Fairly reliable",
-            "Not usually reliable",
-            "Unreliable",
-            "Reliability cannot be judged",
-          ],
-        },
-        {
-          title: "CREDIBILITY",
-          _key: "credibility",
-          type: "selection",
-          group: "score",
-          options: [
-            "Confirmed by other sources",
-            "Probably True",
-            "Possibly True",
-            "Doubtful",
-            "Improbable",
-            "Truth cannot be judged",
-          ],
-        },
-      ],
-    } as IFormOptions;
-  }
-
-  public document?: GraphDocument | null = null;
+ public document?: GraphDocument | null = null;
 
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {

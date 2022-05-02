@@ -46,6 +46,10 @@ export class GraphLayout {
   unitRadius?: number;
   kr?: number;
   kg?: number;
+  /** node seperation for dagre layout in px */
+  nodesep?: number;
+  /** level seperation for dagre layout in px */
+  ranksep?: number;
   defaultEdgeType?: string;
   collideStrength?: number;
   alpha?: number;

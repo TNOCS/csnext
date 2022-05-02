@@ -9,7 +9,8 @@ import {
   Loader,
 } from "@csnext/cs-core";
 import { Prop, Watch } from "vue-property-decorator";
-import { AppState, CsApp, CsLanguageSwitch, CsSettings } from "../../";
+import { AppState, CsLanguageSwitch, Constants } from "../../";
+import CsApp from "../cs-app/cs-app.vue";
 import { CsToolbarMenus } from "../cs-toolbar-menus/cs-toolbar-menus";
 import "./cs-header.css";
 @Component({
@@ -44,7 +45,7 @@ export class CsHeader extends Vue {
     }
     if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
       this.loadingMenuIcon = {
-        id: CsApp.LOADING_MENU_ID,
+        id: Constants.LOADING_MENU_ID,
         icon: "autorenew",
         title: "LOADING",
         toolTip: "LOADING",
@@ -58,11 +59,11 @@ export class CsHeader extends Vue {
     ) {
       if (
         !this.$cs.project.menus.find(
-          (menu) => menu.id === CsApp.LANGUAGE_SWITCH_ID
+          (menu) => menu.id === Constants.LANGUAGE_SWITCH_ID
         )
       ) {
         this.languageSwitchMenu = {
-          id: CsApp.LANGUAGE_SWITCH_ID,
+          id: Constants.LANGUAGE_SWITCH_ID,
           icon: "translate",
           title: "LANGUAGE",
           type: "icon",

@@ -17,15 +17,17 @@ export * from './filters/cross-graph-options';
 export * from './components/data-grid/cards/element-card-manager';
 export * from './utils/doc-utils';
 export * from './utils/cache-requests';
-export * from './components/document/plugins/text-mention';
 export * from './utils/graph-utils';
 export * from "./components/search/search-manager";
 export * from './classes/tool';
 export * from './components/element/element-actions'
+export * from './components/data-grid/suggestions/suggestions';
 
-import TextExtension from './components/document/plugins/text-extension';
-import ParagraphExtension from './components/document/plugins/paragraph-extension';
+import TextExtension from './components/document/nodes/text-entity/text-extension';
+import ParagraphExtension from './components/document/nodes/node-paragraph/paragraph-extension';
 import suggestion from './components/document/plugins/text-entity-suggestion/suggestion';
+
+import './assets/cards.css';
 
 
 import NetworkGraph from './components/graph/graph.vue';
@@ -49,13 +51,14 @@ import Management from './components/graph/management.vue';
 import GraphMap from './components/graph/graph-map.vue';
 import mdiFont from './assets/mdfont.json';
 import Suggestions from './components/insights/suggestions.vue';
+import FindElement from './components/element/find-element.vue';
 import VueScrollStop from "vue-scroll-stop";
 import Vue from "vue";
 
 import SelectionPopup from './components/document/selection-popup.vue';
 import Search from "./components/search/search.vue";
 import ElementContextMenu from "./components/element/element-context-menu.vue"
-
+import BaseGridView from './components/data-grid/viewers/base-grid-view.vue'
 
 Vue.use(VueScrollStop);
 
@@ -96,5 +99,7 @@ export {
   ParagraphExtension,
   TextExtension,
   Search,
-  ElementContextMenu
+  FindElement,
+  ElementContextMenu,
+  BaseGridView
 };

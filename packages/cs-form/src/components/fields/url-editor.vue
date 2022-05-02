@@ -10,6 +10,8 @@
       :disabled="field.readonly"
       :placeholder="field.placeholder"
       append-outer-icon="mdi-open-in-new"
+      :filled="field.filled"
+      :rounded="field.rounded"
       @update:error="fieldError"
       @input="fieldInput(field)"
       :hint="field.hint"
@@ -24,6 +26,8 @@
       :required="field.required"
       :disabled="field.readonly"
       :clearable="field.clearable"
+      :filled="field.filled"
+      :rounded="field.rounded"
       @change="fieldUpdated(field)"
     ></v-text-field>
   </div>

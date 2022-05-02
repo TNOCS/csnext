@@ -20,7 +20,7 @@
           max-width="48"
           style="float: left; margin-right: 10px"
         ></v-img
-        >{{ props.item.title }}</span
+        >{{ props.item.properties.name }}</span
       >
     </template>
   </v-combobox>
@@ -33,7 +33,7 @@
 </style>
 <script lang="ts">
 import { GraphElement, PropertyType, RelationType } from '@csnext/cs-data';
-import { DocDatasource } from '../..';
+import { DocDatasource } from '../../..';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 

@@ -9,32 +9,27 @@ export default {
   name: 'text-action',
   char: '/',
   pluginKey: new PluginKey('text-action'),
-  items: (props) => {
-    const source = props.editor.view._props.source as DocDatasource;
-    const query = props.query;
-    let res: any[] = [];
-    if (query && source?.fuse) {
-      res = source.fuse.search(query).slice(0, 10);
-      console.log(res.length);
-      return res;
-    } else {
-      return [];
-    }
+
+  items: (props) => {    
+    return [];  
   },
 
   command: (a) => {
     console.log(a);
     Vue.nextTick(async () => {
-      a.editor.chain().focus().setTextSelection(a.range).setTextEntity(a.props).run();
-      const source = a?.editor?.view?._props?.source;
-      if (source && a?.editor?.view?._props?.document) {
-        DocUtils.syncEntities(a.editor.view._props.document as GraphDocument, source, undefined, true);
-        await source.entityParser.callDocument(a.editor.view._props.document, source);
-      }
+      
+      // a.editor.chain().focus().setTextSelection(a.range).setTextEntity(a.props).run();
+      // const source = a?.editor?.view?._props?.source;
+      // if (source && a?.editor?.view?._props?.document) {
+      //   DocUtils.syncEntities(a.editor.view._props.document as GraphDocument, source, undefined, true);
+      //   await source.entityParser.callDocument(a.editor.view._props.document, source);
+      // }
     });
 
     return;
   },
+
+  
 
   render: () => {
     let component: VueRenderer;
@@ -45,9 +40,12 @@ export default {
       onStart: (props) => {        
         source = props.editor.view._props.source as DocDatasource;
         props.source = source;
+        props.document = props.editor.view._props.document as GraphDocument;
+        
         component = new VueRenderer(ActionList, {
           parent: this,
           propsData: props,
+          $vuetify: $cs.vuetify
         });
 
         popup = tippy('body', {
@@ -62,7 +60,9 @@ export default {
       },
 
       onUpdate(props) {
-        component.updateProps(props);
+        if (component) {
+          component.updateProps(props);
+        }
 
         popup[0].setProps({
           getReferenceClientRect: props.clientRect,

@@ -75,7 +75,7 @@ export class CsSidebar extends Vue {
     }
   }
 
-  @Watch('sideBar.dashboard.options.sidebarTemporary')
+  // @Watch('sideBar.dashboard.options.sidebarTemporary')
   @Watch('sideBar.temporary')
   public get sidebarTemporary() {
     if (this.isExpanded) { return true; }

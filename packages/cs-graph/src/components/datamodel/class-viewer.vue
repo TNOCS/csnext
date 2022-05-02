@@ -28,6 +28,7 @@ import simplebar from 'simplebar-vue';
 
 import G6, { Graph, GraphData } from '@antv/g6';
 import { FeatureType, RelationType } from '@csnext/cs-data';
+import { GraphUtils } from '../..';
 
 @Component({
   components: { simplebar },
@@ -96,7 +97,7 @@ export default class ClassViewer extends WidgetBase {
       let node = {
         id: e.type,
         classId: e.type,
-        label: this.fittingString(e.title!, 50, 10),
+        label: GraphUtils.fittingString(e.title!, 80, 10),
         title: e.title,
         hidden: false,
         style: {
@@ -164,44 +165,14 @@ export default class ClassViewer extends WidgetBase {
     }
   }
 
-  private fittingString(str: string, maxWidth: number, fontSize: number) {
-    let currentWidth = 0;
-    let res = str;
-    const pattern = new RegExp('[ ]+'); // distinguish the Chinese charactors and letters
-    str.split('').forEach((letter, i) => {
-      if (currentWidth > maxWidth) return;
-      if (pattern.test(letter)) {
-        // Chinese charactors
-        currentWidth += fontSize;
-      } else {
-        // get the width of single letter according to the fontSize
-        currentWidth += G6.Util.getLetterWidth(letter, fontSize);
-      }
-      if (currentWidth > maxWidth) {
-        res = `${str.substr(0, i)}\n${str.substr(i)}`;
-      }
-    });
-    return res;
-  }
-
   public updateGraph() {
     if (!this.graphSource?.featureTypes || !this.graph) {
       return;
     }
-    // if (!this.data) {
     this.data = { nodes: [], edges: [] };
-    // this.graph.data(this.data);
-    // }
     for (const e of Object.values(this.graphSource.featureTypes)) {
       if (e.type && !e.isEdge) {
-        this.updateNode(e);
-        // if (e.class) {
-        // this.updateEdge({
-        //   source: e.id,
-        //   target: e.class.id,
-        //   label: "is",
-        // } as any);
-        // }
+        this.updateNode(e);  
       }
     }
 

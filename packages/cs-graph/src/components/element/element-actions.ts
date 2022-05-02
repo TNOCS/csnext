@@ -3,16 +3,25 @@ import { FilterGraphElement, GraphElement } from '@csnext/cs-data';
 import { DocDatasource } from '../..';
 
 export class ElementActions {
-  public static getElementActions(element: GraphElement, source: DocDatasource, beforeAction?: (m: IMenu, e: GraphElement)=> void, afterAction?: (m: IMenu, e: GraphElement)=>void) : IMenu[] {    
+  public static getElementActions(
+    element: GraphElement,
+    source: DocDatasource,
+    beforeAction?: (m: IMenu, e: GraphElement) => void,
+    afterAction?: (m: IMenu, e: GraphElement) => void
+  ): IMenu[] {
     let menuItems: IMenu[] = [];
 
     const callBefore = async (m) => {
-        if (beforeAction) { await beforeAction(m, element);}
-    }
+      if (beforeAction) {
+        await beforeAction(m, element);
+      }
+    };
 
     const callAfter = async (m) => {
-        if (afterAction) { await afterAction(m, element);}
-    }
+      if (afterAction) {
+        await afterAction(m, element);
+      }
+    };
 
     let showContextMenu = false;
     menuItems.push({
@@ -24,69 +33,100 @@ export class ElementActions {
         callAfter(i);
       },
     });
-    menuItems.push({
-      title: 'duplicate',
-      icon: 'mdi-plus-circle-multiple-outline',
-      action: async (i) => {
-        callBefore(i);
-        const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
-        await source.duplicateNode(element, name);
-        callAfter(i);
-      },
-    });
-    menuItems.push({
-      title: 'add to visualisation',
-      icon: 'mdi-playlist-plus',
-      action: async (i: IMenu) => {
-        callBefore(i);
-        i.items = [];
-        // showContextMenu = false;
-        let presets = source.getClassElements('graph_preset', true);
-        presets.forEach((p) => {
-          i.items!.push({
-            title: p.properties?.name,
-            icon: p._featureType?.icon,
-            action: async () => {
-              FilterGraphElement.addElementRule(p as FilterGraphElement, element);
-              callAfter(i);
-              // alert(`add to ${p.properties.name}`)
-            },
-          });
-        });
-        console.log(presets);
-       
-        // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
-        // await source.duplicateNode(element, name);
-        //
-      },
-    });
-    menuItems.push({
-      title: 'link to',
-      icon: 'mdi-playlist-plus',
-      action: async (i: IMenu) => {
-        callBefore(i);
-        i.items = [];
-        // showContextMenu = false;
-        let targets = source.getClassElements('indicator', true);
-        targets.forEach((p) => {
-          i.items!.push({
-            title: p.properties?.name,
-            icon: p._featureType?.icon,
-            action: async () => {
+    if (element.type === 'node') {
+      menuItems.push({
+        title: 'duplicate',
+        icon: 'mdi-plus-circle-multiple-outline',
+        action: async (i) => {
+          callBefore(i);
+          const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
+          await source.duplicateNode(element, name);
+          callAfter(i);
+        },
+      });
+      for (const tool of source.tools) {
+        if (tool.elementActions) {
+          const actions = tool.elementActions(element);
+          if (actions && actions.length > 0) {
+            menuItems = menuItems.concat(actions);
+          }
+        }
+      }
+      menuItems.push({
+        title: 'add to visualisation',
+        icon: 'mdi-playlist-plus',
+        action: async (i: IMenu) => {
+          callBefore(i);
+          i.items = [];
+          // showContextMenu = false;
+          let presets = source.getClassElements('graph_preset', true);
+          presets.forEach((p) => {
+            i.items!.push({
+              title: p.properties?.name,
+              icon: p._featureType?.icon,
+              action: async () => {
+                FilterGraphElement.addElementRule(p as FilterGraphElement, element);
                 callAfter(i);
-              //   this.linkToTarget(p, 'supports');
-              // FilterGraphElement.addElementRule(p as FilterGraphElement, element);
-              // alert(`add to ${p.properties.name}`)
-            },
+                // alert(`add to ${p.properties.name}`)
+              },
+            });
           });
+          console.log(presets);
+
+          // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
+          // await source.duplicateNode(element, name);
+          //
+        },
+      });
+      menuItems.push({
+        title: 'link to',
+        icon: 'mdi-playlist-plus',
+        action: async (i: IMenu) => {
+          callBefore(i);
+          i.items = [];
+          // showContextMenu = false;
+          let targets = source.getClassElements('indicator', true);
+          targets.forEach((p) => {
+            i.items!.push({
+              title: p.properties?.name,
+              icon: p._featureType?.icon,
+              action: async () => {
+                this.linkToTarget(element, p, 'supports', source);
+                callAfter(i);
+              },
+            });
+          });
+          console.log(targets);
+
+          // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
+          // await source.duplicateNode(element, name);
+          //
+        },
+      });
+    }
+
+    if (source.searchPlugins && source.searchPlugins.length > 0) {
+      let searchOptions: IMenu[] = [];
+
+      source.searchPlugins.forEach(async (p) => {
+        if (p.actions && typeof p.actions === 'function') {
+          let actions = p.actions(element, source);
+          for (const action of actions) {
+            searchOptions.push(action);
+          }
+        }
+      });
+      if (searchOptions.length === 1) {
+        menuItems.push(searchOptions[0]);
+      } else if (searchOptions.length > 1) {
+        menuItems.push({
+          title: 'search',
+          icon: 'mdi-magnify',
+          items: searchOptions,
         });
-        console.log(targets);
-    
-        // const name = await $cs.triggerInputDialog($cs.Translate('RENAME'), 'enter new name', `${element.properties?.name} - copy`);
-        // await source.duplicateNode(element, name);
-        //
-      },
-    });
+      }
+    }
+
     menuItems.push({
       title: 'rename',
       icon: 'mdi-form-textbox',
@@ -113,25 +153,23 @@ export class ElementActions {
     });
 
     return menuItems;
-
   }
 
-  //   public async linkToTarget(target: GraphElement, type: string) {
-  //     if (source && target.id && element.id)
-  //     {
-  //       const edge = {
-  //         fromId: element.id,
-  //         toId: target.id,
-  //         classId: 'LINKED_TO',
-  //         properties: {
-  //           "relation_type": type
-  //         }
-  //       } as GraphElement
-  //       try {
-  //         await source.addNewEdge(edge);
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
-
-  //     }
+  public static async linkToTarget(element: GraphElement, target: GraphElement, type: string, source: DocDatasource) {
+    if (source && target.id && element.id) {
+      const edge = {
+        fromId: element.id,
+        toId: target.id,
+        classId: 'LINKED_TO',
+        properties: {
+          relation_type: type,
+        },
+      } as GraphElement;
+      try {
+        await source.addNewEdge(edge);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 }

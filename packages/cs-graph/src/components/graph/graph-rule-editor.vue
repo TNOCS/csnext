@@ -184,7 +184,7 @@ export default class GraphRuleEditor extends Vue {
 
   public toggleRule(rule: NodeRule) {
     rule.disabled = !rule.disabled;
-    this.source.updateRules(this.activePreset, rule);
+    // this.source.updateRules(this.activePreset, rule);
     this.$forceUpdate();
     // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, rule);
   }
@@ -194,7 +194,7 @@ export default class GraphRuleEditor extends Vue {
       this.rule._editMode = false;
       this.rule._featureType = this.source.getFeatureTypeById(this.rule.featureType);
       // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
-      this.source.updateRules(this.activePreset, this.rule);
+      // this.source.updateRules(this.activePreset, this.rule);
       this.$forceUpdate();
     }
   }
@@ -226,14 +226,14 @@ export default class GraphRuleEditor extends Vue {
       this.rule._element = this.source.getElement(this.rule.elementId);
       // this.rule._featureType = this.source.getFeatureTypeById(this.rule.featureType);
       // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
-      this.source.updateRules(this.activePreset, this.rule);
+      // this.source.updateRules(this.activePreset, this.rule);
       this.$forceUpdate();
     }
   }
 
   public saveRelation() {
     this.rule._editMode = false;
-    this.source.updateRules(this.activePreset, this.rule);
+    // this.source.updateRules(this.activePreset, this.rule);
     this.$forceUpdate();
     // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
   }
@@ -252,7 +252,7 @@ export default class GraphRuleEditor extends Vue {
     if (this.activePreset?.properties?.graphLayout?.nodeRules) {
       this.activePreset.properties.graphLayout.nodeRules = this.activePreset.properties.graphLayout.nodeRules.filter((r) => r !== this.rule);
     }
-    this.source.updateRules(this.activePreset, this.rule);
+    // this.source.updateRules(this.activePreset, this.rule);
     // this.source.events.publish(IGraphFilter.GRAPH_FILTER, IGraphFilter.RULES_CHANGED, this.rule);
     this.$forceUpdate();
   }
@@ -316,7 +316,7 @@ export default class GraphRuleEditor extends Vue {
       value: undefined,
     } as GraphPropertyFilter);
 
-    this.source.updateRules(this.activePreset, this.rule);
+    // this.source.updateRules(this.activePreset, this.rule);
 
     this.$forceUpdate();
   }

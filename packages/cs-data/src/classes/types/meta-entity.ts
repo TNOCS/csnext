@@ -5,9 +5,10 @@ export class MetaEntity {
     public text?: string;    
     public id?: string;   
     public kg_id?: string;    
+    public source?: string;
     public _node?: GraphElement;
     public _edge?: GraphElement;
-    public _included?: boolean;
-    public _approved?: boolean;    
+    // public _included?: boolean;
+    public _linked?: boolean;    
     // public _relations?: TextRelation[];    
 }

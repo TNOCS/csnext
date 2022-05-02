@@ -1,0 +1,1 @@
+export type SyncStore = 'widget' | 'dashboard' | 'manager' | 'datasource' | 'global';

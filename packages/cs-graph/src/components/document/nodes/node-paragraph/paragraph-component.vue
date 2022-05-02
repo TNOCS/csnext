@@ -49,9 +49,8 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/vue-2';
-import { annotate } from "rough-notation"
 
 @Component({
   components: {
@@ -66,14 +65,6 @@ export default class ParagraphComponent extends Vue {
   @Prop()
   node: any;
 
-  mounted() {    
-    if (this.node?.attrs) {
-      console.log(this.node.attrs);
-    }
-
-    // const a = annotate( '.paragraph-content', { type: 'bracket', color:'blue'});
-    // a.show();
-  }
 }
 </script>
 

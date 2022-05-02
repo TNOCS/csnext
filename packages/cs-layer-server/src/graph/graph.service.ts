@@ -41,12 +41,16 @@ export class GraphService {
 
   public async loadDatabase() {}
 
-  async save(element: GraphElement, agentId?: string) : Promise<GraphElement | undefined> {
-    if (!this.db) { return Promise.reject(); }
-    if (!element.classId) {
-      element.classId = 'node'
+  async save(element: GraphElement, agentId?: string): Promise<GraphElement | undefined> {
+    if (!this.db) {
+      return Promise.reject();
     }
-    if (!element.type) { element.type = 'node'}
+    if (!element.classId) {
+      element.classId = 'node';
+    }
+    if (!element.type) {
+      element.type = 'node';
+    }
     if (!element.id) {
       element.id = `${element.classId}-${idGenerator()}`;
     }
@@ -56,7 +60,7 @@ export class GraphService {
 
       let result = await this.db.store(
         {
-          type: (element.type === 'node') ? 'n' : 'e',
+          type: element.type === 'node' ? 'n' : 'e',
           document: element.properties,
           id: element.id,
           class: element.classId,
@@ -65,10 +69,10 @@ export class GraphService {
         new Date().getTime()
       );
 
-      if (this.socket?.server) {          
-        this.socket.server.emit("graphelement",{
+      if (this.socket?.server) {
+        this.socket.server.emit('graphelement', {
           action: 'update',
-          elements: [GraphElement.getFlat(element)]            
+          elements: [GraphElement.getFlat(element)],
         } as IGraphElementAction);
       }
       this.source.triggerUpdateGraph(element);
@@ -124,13 +128,44 @@ export class GraphService {
   }
 
   public sendSocketUpdateForElements(elements: GraphElement<BaseElementProperties>[]) {
-    if (this.socket?.server) {          
-      console.log('sending socket updates', elements.length)
-      this.socket.server.emit("graphelement",{
+    if (this.socket?.server) {
+      console.log('sending socket updates', elements.length);
+      this.socket.server.emit('graphelement', {
         action: 'update',
-        elements: elements.map(e => GraphElement.getFlat(e))   
+        elements: elements.map((e) => GraphElement.getFlat(e)),
       } as IGraphElementAction);
     }
+  }
+
+  public removeMultipleIds(ids: string[]) {
+    return new Promise(async (resolve, reject) => {
+      if (this.db && this.source && ids && ids.length > 0) {
+        try {
+          for (const id of ids) {
+            // find element
+            const el = this.source.getElement(id);
+            if (el?.type) {
+              {
+                switch (el.type.toLowerCase()) {
+                  case 'node':
+                    await this.source.removeNodeById(el.id);
+                    break;
+                  case 'edge':
+                    await this.source.removeEdgeById(el.id);
+                    break;
+                }
+              }
+            }
+          }
+          await this.db.removeMultiple(ids);
+        } catch {
+          Logger.warn(`Remove multiple failed`);
+          reject();
+        }
+        resolve({ result: 'ok' });
+      }
+      reject();
+    });
   }
 
   public removeMultiple(body: any[]) {
@@ -149,7 +184,7 @@ export class GraphService {
               }
             }
           }
-          await this.db.removeMultiple(body.map(b => b.id));
+          await this.db.removeMultiple(body.map((b) => b.id));
         } catch {
           Logger.warn(`Remove multiple failed`);
           reject();
@@ -227,26 +262,26 @@ export class GraphService {
           this.storeWithIntervalData.length = 0;
         }
         this.storeWithIntervalInterval = setInterval(async () => {
-            for (let i = 0; i < burst; i++) {
-              let storeData = this.storeWithIntervalData.shift();
-              if (storeData) {
-                Logger.log(`Storing node ${storeData.node.id}`, 'graph-service');
-                await this.source.addNode(
-                  { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
-                  storeData.node.class,
-                  true
-                );
-                for (const edge of storeData.edges) {
-                  await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
-                }
-                await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
-              } else {
-                clearInterval(this.storeWithIntervalInterval);
-                this.storeWithIntervalInterval = undefined;
-                Logger.log('Stopped storing elements on interval', 'graph-service');
+          for (let i = 0; i < burst; i++) {
+            let storeData = this.storeWithIntervalData.shift();
+            if (storeData) {
+              Logger.log(`Storing node ${storeData.node.id}`, 'graph-service');
+              await this.source.addNode(
+                { id: storeData.node.id, classId: storeData.node.class, properties: storeData.node.document },
+                storeData.node.class,
+                true
+              );
+              for (const edge of storeData.edges) {
+                await this.source.addEdge({ id: edge.id, toId: edge.to, fromId: edge.from, classId: edge.class, properties: edge.document });
               }
+              await this.db.storeMultiple([storeData.node, ...storeData.edges], agentId, new Date().getTime());
+            } else {
+              clearInterval(this.storeWithIntervalInterval);
+              this.storeWithIntervalInterval = undefined;
+              Logger.log('Stopped storing elements on interval', 'graph-service');
             }
-            this.source.triggerUpdateGraph();
+          }
+          this.source.triggerUpdateGraph();
         }, intervalMillis);
         Logger.log(`Start storing elements on interval of ${intervalMillis}ms with burst of ${burst}`, 'graph-service');
         resolve({ result: 'ok' });
@@ -255,10 +290,11 @@ export class GraphService {
     });
   }
 
-  public static setupDB( databaseName?: string, folder?: string, socket?: DefaultWebSocketGateway): Promise<GraphService> {
+  public static setupDB(databaseName?: string, folder?: string, socket?: DefaultWebSocketGateway): Promise<GraphService> {
     return new Promise(async (resolve, reject) => {
       let graphService = new GraphService();
-      graphService.init(databaseName, folder)
+      graphService
+        .init(databaseName, folder)
         .then((e) => {
           resolve(graphService);
         })
@@ -274,7 +310,6 @@ export class GraphService {
       Logger.log('Socket initialized', 'graph-service');
     }
   }
-
 
   public async persist(): Promise<void> {
     if (!this.db) return;

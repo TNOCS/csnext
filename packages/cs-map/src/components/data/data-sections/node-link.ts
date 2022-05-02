@@ -55,7 +55,7 @@ export class NodeLink extends Vue {
   props: ['node', 'source', 'light'],
   components: {NodeSpan},    
   template: `<span>
-  <v-tooltip transition="undefined" open-delay="100" bottom color="transparent">
+  <v-tooltip transition="undefined" open-delay="100" v-if="node" bottom color="transparent">
       <template v-slot:activator="{ on }">
       <v-chip label :outlined="light" :color="color" @click.stop="activate()" v-on="on" class="link-chip"><v-icon small v-if="node._featureType.icon">{{node._featureType.icon}}</v-icon><span v-if="node.properties" class="node-name" >{{node.properties.name}}</span></v-chip>
       </template>

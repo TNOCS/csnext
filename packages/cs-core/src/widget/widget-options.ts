@@ -1,5 +1,6 @@
 import { IMenu, ToolbarOptions } from './../';
 import { FormField, Form } from '../form/form-decorators';
+import { SyncStore } from '../utils/sync-store';
 
 @Form({ title: 'Widget Options' })
 export class WidgetOptions {
@@ -50,5 +51,5 @@ export class WidgetOptions {
   public hideSidebarButton?: boolean;
   /** if using a cssgrid dashboard with area defintions, you can define the area defintition here */
   public area?: string;
-  public sync?: 'widget' | 'dashboard' | 'manager' | 'datasource' | 'global';
+  public sync?: SyncStore;
 }
