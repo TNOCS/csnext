@@ -4,7 +4,7 @@
       <v-autocomplete
         auto-select-first
         v-model="links"
-        :items="getItems()"
+        :items="items()"
         chips
         @change="updateLinks()"
         :label="$cs.Translate(field.title)"
@@ -107,12 +107,14 @@
     </div>
     <div v-else>
       <v-autocomplete
-        :items="getItems()"
+        :items="items"
+        :search-input.sync="search"
         v-model="activeRelation"
         :label="$cs.Translate(field.title) + ' (' + field.data.relation.type + ')'"
         :hint="field.hint"
         item-text="element.properties.name"
         hide-no-data
+        cache-items
         clearable
         @change="updateRelation()"
         return-object
@@ -153,7 +155,7 @@
 </style>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import { guidGenerator, idGenerator, IFormFieldOptions, IFormOptions } from '@csnext/cs-core';
 import { NodeLink, NodeChip, DataInfoPanel } from '@csnext/cs-map';
 import Vue from 'vue';
@@ -171,6 +173,16 @@ import { LinkInfo, GraphElement } from '@csnext/cs-data';
 export default class RelationEditor extends Vue {
   public links: LinkInfo[] | null = null;
   public linkIds: string[] = [];
+  public items: LinkInfo[] = [];
+  private search: string | null = null;
+  private itemsLoaded: boolean = false;
+
+  @Watch('search')
+  private updateItems() {
+    if (!this.itemsLoaded) {
+      this.items = this.getItems();
+    }    
+  }
 
   public createElement() {
     if (!this.graph?.featureTypes || !this.relation?.objectType || !this.graph.featureTypes.hasOwnProperty(this.relation.objectType)) {
@@ -245,7 +257,9 @@ export default class RelationEditor extends Vue {
   }
 
   public getItems(): LinkInfo[] {
+    console.log('relation editor - get items', this.relation.objectType);
     const res: LinkInfo[] = [];
+    this.itemsLoaded = true;
     if (this.graph && this.relation?.objectType) {
       const elements = this.graph!.getClassElements(this.relation.objectType, true);
       if (elements && this.node) {
@@ -276,6 +290,12 @@ export default class RelationEditor extends Vue {
     if (this.field?.data?.graph) {
       return this.field.data.graph as DocDatasource;
     }
+  }
+
+  @Watch('field.data')
+  private dataChanged() {
+    console.log('data changed');
+    this.getActiveRelation();
   }
 
   public async editLink(l: LinkInfo) {
@@ -386,8 +406,13 @@ export default class RelationEditor extends Vue {
     let rel = this.node?._outgoing?.find((r) => r.classId === this.relation?.type);
     if (rel) {
       this.activeRelation = { direction: 'to', link: rel, element: rel.to, color: rel.to ? GraphElement.getBackgroundColor(rel.to) : 'blue' };
+      if (!this.items.includes(this.activeRelation)) {
+        this.items.push(this.activeRelation);
+      }
 
       this.oldRelation = rel;
+    } else {
+      this.activeRelation = null;
     }
   }
 
