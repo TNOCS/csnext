@@ -226,7 +226,7 @@
 <script lang="ts">
 import { Component, Watch, Prop } from "vue-property-decorator";
 import { WidgetBase } from "@csnext/cs-client";
-import { GraphElement, WktUtils } from "@csnext/cs-data";
+import { GraphDatasource, GraphElement, WktUtils } from "@csnext/cs-data";
 import { TextEntity } from "@csnext/cs-data";
 import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
@@ -391,6 +391,7 @@ export default class SelectionPopup extends WidgetBase {
     delete this.entity._node;
     delete this.entity._edge;
     this.searchNode = true;
+    this.publishChanges();
     this.$forceUpdate();
   }
 
@@ -407,6 +408,7 @@ export default class SelectionPopup extends WidgetBase {
       return;
     }
     await this.source.removeEntityFromDocument(this.entity, this.document);
+    
     this.publishChanges();
   }
 
@@ -555,12 +557,7 @@ export default class SelectionPopup extends WidgetBase {
     if (!this.source?.activeDocument) {
       return;
     }
-    DocUtils.syncEntities(
-      this.source.activeDocument,
-      this.source,
-      this.source.activeDocument.properties!.doc!.content,
-      true
-    );
+    this.source.parseEntities(this.source.activeDocument);
     this.$forceUpdate();
   }
 
@@ -636,6 +633,14 @@ export default class SelectionPopup extends WidgetBase {
     if (this.entity?.spacy_label === "location") {
       this.viewtab = 1;
     }
+
+    this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
+        if (this.document?.id && a === GraphDatasource.ELEMENT_UPDATED && e.id === this.document?.id) {
+          this.$forceUpdate();
+        }
+      }) 
+
+      
     // this.updateAgents();
     // this.updatePotentialTypes();
     this.updateSuggestions();

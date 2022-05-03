@@ -76,6 +76,7 @@ export * from './extensions/wms-time-extension';
 
 // utils
 export * from './utils/conversion';
+export * from './utils/drag-utils';
 
 import './components/prop-value';
 import './assets/styles.css';

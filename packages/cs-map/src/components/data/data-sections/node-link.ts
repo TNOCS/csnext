@@ -2,7 +2,7 @@ import { IDatasource } from '@csnext/cs-core';
 import { Component, Vue } from "vue-property-decorator";
 import { GraphElement, MetaEntity } from '@csnext/cs-data';
 import { CsMap } from '../../cs-map/cs-map';
-
+import { DragUtils } from '../../../utils/drag-utils';
 
 
 @Component({
@@ -57,7 +57,7 @@ export class NodeLink extends Vue {
   template: `<span>
   <v-tooltip transition="undefined" open-delay="100" v-if="node" bottom color="transparent">
       <template v-slot:activator="{ on }">
-      <v-chip label :outlined="light" :color="color" @click.stop="activate()" v-on="on" class="link-chip"><v-icon small v-if="node._featureType.icon">{{node._featureType.icon}}</v-icon><span v-if="node.properties" class="node-name" >{{node.properties.name}}</span></v-chip>
+      <v-chip :draggable="true" @dragstart="dragstart_handler($event, node)" label :outlined="light" :color="color" @click.stop="activate()" v-on="on" class="link-chip"><v-icon small v-if="node._featureType.icon">{{node._featureType.icon}}</v-icon><span v-if="node.properties" class="node-name" >{{node.properties.name}}</span></v-chip>
       </template>
       <v-card outlined class="darker node-popup" v-if="node.properties">
         <data-info-panel :data="node.properties" :node="node" :featureType="node._featureType" panel="popup"></data-info-panel>        
@@ -71,7 +71,10 @@ export class NodeChip extends Vue {
   private source?: IDatasource;
   private light?: boolean;
 
-    
+  private dragstart_handler(evt : DragEvent, node: GraphElement) {    
+    DragUtils.setElementData(evt, node);
+  }
+
   private activate() {
     if (this.node && this.source?.events) {
       this.source.events.publish(CsMap.NODE, CsMap.NODE_SELECT, this.node);

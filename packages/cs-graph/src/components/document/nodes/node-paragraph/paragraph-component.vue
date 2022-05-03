@@ -1,5 +1,5 @@
 <template>
-  <node-view-wrapper class="paragraph-component">
+  <node-view-wrapper class="paragraph-component" @drop="onDrop">
     <v-menu offset-y >
       <template v-slot:activator="{ on, attrs }">
         <v-btn class="paragraph-menu" icon v-bind="attrs" elevation="0" v-on="on">
@@ -51,6 +51,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/vue-2';
+import { DragUtils } from '@csnext/cs-map';
 
 @Component({
   components: {
@@ -64,6 +65,14 @@ export default class ParagraphComponent extends Vue {
 
   @Prop()
   node: any;
+
+   public async onDrop(event: DragEvent) {
+    console.log(event);    
+    const {elementid, ft } = DragUtils.getElementData(event);
+    if (elementid) {
+      alert(elementid)
+    }    
+  }
 
 }
 </script>

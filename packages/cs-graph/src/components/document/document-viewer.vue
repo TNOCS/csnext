@@ -15,7 +15,7 @@
     </v-container>
   </v-container>
 
-  <div v-else-if="loaded && currentDocument" class="editor-grid" v-show="!startMenu">
+  <div v-else-if="loaded && currentDocument" class="editor-grid" dropzone="true" v-show="!startMenu">
     <v-toolbar flat class="graph-menu" v-if="currentDocument && !hideHeader">
       <v-layout id="dropdown-example-2" class="graph-toolbar-menu">
         <v-menu offset-y>
@@ -54,27 +54,26 @@
           </v-layout>
         </template>
         <template v-else>
-          
           <v-sheet class="document-entities-sheet">
-         <v-slide-group class="document-entities-group" show-arrows v-if="currentDocument && currentDocument._entityTypes" >
-            <v-slide-item v-for="(type, tid) of currentDocument._entityTypes" :key="tid">
-              <v-chip
-                :outlined="!type._selected"
-                @click="type._selected = !type._selected"                
-                :color="type.color"
-                small
-                class="ml-2"
-                v-if="currentDocument._flat.show_all_entities || type._featureType"
-              >
-                <v-icon small v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
-                {{ type.title }}
-                <v-avatar right dark class="darken-4">
-                  {{ type.count }}
-                </v-avatar>
-              </v-chip>
-            </v-slide-item>
+            <v-slide-group class="document-entities-group" show-arrows v-if="currentDocument && currentDocument._entityTypes">
+              <v-slide-item v-for="(type, tid) of currentDocument._entityTypes" :key="tid">
+                <v-chip
+                  :outlined="!type._selected"
+                  @click="type._selected = !type._selected"
+                  :color="type.color"
+                  small
+                  class="ml-2"
+                  v-if="currentDocument._flat.show_all_entities || type._featureType"
+                >
+                  <v-icon small v-if="type._featureType && type._featureType.icon" left>{{ type._featureType.icon }}</v-icon>
+                  {{ type.title }}
+                  <v-avatar right dark class="darken-4">
+                    {{ type.count }}
+                  </v-avatar>
+                </v-chip>
+              </v-slide-item>
             </v-slide-group>
-        </v-sheet>
+          </v-sheet>
         </template>
         <v-spacer></v-spacer>
         <v-switch v-model="currentDocument._flat.show_all_entities"> </v-switch>
@@ -93,12 +92,12 @@
         </v-btn>
       </v-layout>
       <template v-slot:extension v-if="currentDocument.properties.editor_mode === 'EDIT'">
-        <v-sheet  v-if="editor" class="document-tools-sheet">
+        <v-sheet v-if="editor" class="document-tools-sheet">
           <v-slide-group show-arrows v-if="documentToolsMenu" class="document-tools-group">
-            <v-slide-item v-for="(tool, ti) in documentToolsMenu"  :key="ti" v-slot="{ active }">
-            <v-btn icon @click="selectDocumentTool(tool)" :class="{ 'is-active': tool.isActive }" :key="tool.id">
-              <v-icon>{{ tool.icon }}</v-icon>
-            </v-btn>
+            <v-slide-item v-for="(tool, ti) in documentToolsMenu" :key="ti" v-slot="{ active }">
+              <v-btn icon @click="selectDocumentTool(tool)" :class="{ 'is-active': tool.isActive }" :key="tool.id">
+                <v-icon>{{ tool.icon }}</v-icon>
+              </v-btn>
             </v-slide-item>
             <!-- <v-btn-toggle dense group> -->
             <!-- <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn> -->
@@ -106,16 +105,7 @@
                 ><v-icon>mdi-pencil</v-icon></v-btn
               > -->
             <!-- <v-btn @click="setElementCard()" :class="{ 'is-active': editor.isActive('element-card') }"><v-icon>mdi-card</v-icon></v-btn> -->
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             <!-- <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
               ><v-icon>mdi-format-paragraph</v-icon></v-btn
             >
@@ -167,7 +157,6 @@
 
     <div class="editor-row" v-if="currentDocument && currentDocument.properties">
       <div class="document-container">
-        
         <div class="document-title">
           <v-layout>
             <v-btn icon @click="toggleTitle()">
@@ -220,6 +209,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
+          @drop="onDrop"
           v-scroll-stop="true"
           class="document-editor editor__content"
           :editor="editor"
@@ -233,7 +223,7 @@
 <script lang="ts">
 import { WidgetBase } from '@csnext/cs-client';
 import { DateUtils, FeatureType, TextEntity } from '@csnext/cs-data';
-import { SimpleRelationLineSection } from '@csnext/cs-map';
+import { DragUtils, SimpleRelationLineSection } from '@csnext/cs-map';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Mention from '@tiptap/extension-mention';
 import Highlight from '@tiptap/extension-highlight';
@@ -244,6 +234,7 @@ import { BubbleMenu, Editor, EditorContent, FloatingMenu, Node } from '@tiptap/v
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import { IImportPlugin, suggestion } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
+import { NodeSelection} from "prosemirror-state";
 import { DocDatasource, GraphDocument, ITool } from './../../';
 import Commands from './plugins/commands/commands';
 import commandSuggestion from './plugins/commands/commands-suggestion';
@@ -260,7 +251,7 @@ import textAction from './plugins/text-action/text-action';
 
 import TextExtension from './nodes/text-entity/text-extension';
 import SelectionPopup from './selection-popup.vue';
-import { IMenu } from '@csnext/cs-core';
+import { idGenerator, IMenu } from '@csnext/cs-core';
 
 @Component({
   components: {
@@ -339,7 +330,7 @@ export default class DocumentViewer extends WidgetBase {
         action: () => {
           this.editor!.chain().focus().toggleBold().run();
         },
-        isActive: ()=> this.editor!.isActive('bold')
+        isActive: () => this.editor!.isActive('bold'),
       },
       {
         icon: 'mdi-format-italic',
@@ -514,12 +505,12 @@ export default class DocumentViewer extends WidgetBase {
   public currentDocument: GraphDocument | undefined;
 
   public openElement(document: GraphDocument) {
-    Vue.nextTick(()=> {
-      this.loadDocument(document);    
+    Vue.nextTick(() => {
+      this.loadDocument(document);
       this.updateEditor();
       this.updateContent();
       this.initTools();
-    })
+    });
   }
 
   public testEntity() {
@@ -586,7 +577,6 @@ export default class DocumentViewer extends WidgetBase {
     }
     if (!this.editor) {
       this.editor = new Editor({
-        
         extensions: [
           StarterKit,
           // SmilieReplacer,
@@ -622,6 +612,51 @@ export default class DocumentViewer extends WidgetBase {
         editorProps: {
           document: this.currentDocument,
           source: this.source,
+          handleDOMEvents: {
+            drag: (f) => {
+              console.log(f);
+            },
+            drop: (view, event) => {
+              event.preventDefault();
+              console.log('drop DOM event:', event);
+              const { elementid } = DragUtils.getElementData(event);
+              if (elementid) {
+                const element = this.source.getElement(elementid);  
+                const coords = { left: event.clientX, top: event.clientY }   
+                const position = view.posAtCoords(coords);
+                event.stopImmediatePropagation();
+                // const newSelection = NodeSelection.create(view.state.doc, position.pos);
+                
+          // view.dispatch(tr.setSelection(newSelection).scrollIntoView())
+              // view.dispatch(this.editor.state.tr.setSelection(newSelection).scrollIntoView());
+                this.editor.chain().focus().insertContentAt(position.pos, {
+                  type: 'text-entity',
+                  attrs: {
+                    id: idGenerator(),
+                    type: element.classId,
+                    text: element.properties?.name,
+                    kg_id: element.id,
+                  }
+                  }
+
+                //   "attrs": {
+                //   "id": "eda69f24-089b-4437-b765-a208dc0f5944",
+                //   "type": "person",
+                //   "text": "MiG-29",
+                //   "kg_id": "Q130681",
+                //   "label": null,
+                //   "source": "document",
+                //   "spacy_label": "military_aircraft"
+                // }
+                  ).run();
+                  this.source.parseEntities(this.currentDocument);
+                  this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.currentDocument);
+                  
+                //   TextEntity
+                // }({kg_id: elementid, id: idGenerator(), text: element.properties?.name || ''}).run();
+              }              
+            },
+          },
           attributes: {
             spellcheck: 'false',
           },
@@ -657,9 +692,9 @@ export default class DocumentViewer extends WidgetBase {
       }
       this.currentDocument = doc;
       this.state.element = doc;
-      
+
       // check if entities from document are also included in doc._entities
-      DocUtils.syncEntities(doc, this.source!, doc.properties.doc.content, false);    
+      DocUtils.syncEntities(doc, this.source!, doc.properties.doc.content, false);
 
       // link doc._entities to graph entities
       this.source.parseEntities(doc);
@@ -809,17 +844,24 @@ export default class DocumentViewer extends WidgetBase {
     this.source.saveDocument(this.currentDocument);
   }
 
+  public onDrop(event: DragEvent) {
+    const { elementid, ft } = DragUtils.getElementData(event);
+    if (elementid) {
+      alert(elementid);
+    }
+  }
+
   public contentLoaded(source: DocDatasource) {
     if (this.source !== undefined || !source) {
       return;
     }
     this.source = source;
-        
+
     console.log('document content loaded');
     this.busManager.subscribe(this.source!.bus, DocDatasource.DOCUMENT_ENTITIES, (a: string, d: any) => {
       if (a === DocDatasource.ENTITIES_UPDATED) {
         console.log('document content updated from messagebus');
-        // this.checkDocumentIdQuery();        
+        // this.checkDocumentIdQuery();
       }
     });
     this.busManager.subscribe(this.source!.bus, 'document', (a: string, d: any) => {
@@ -831,21 +873,21 @@ export default class DocumentViewer extends WidgetBase {
     });
     if (this.state && this.state.elementid) {
       const doc = this.source.getElement(this.state.elementid) as GraphDocument;
-      this.openElement(doc);      
+      this.openElement(doc);
     } else if (this.checkDocumentIdQuery()) {
-      console.log('got from uri')
+      console.log('got from uri');
     } else {
       if (this.state?.element) {
         this.openElement(this.state.element);
       }
     }
-    
+
     // this.initTools();
     this.initDragging();
     this.updateContextMenu();
   }
 
-  private checkDocumentIdQuery() : boolean {
+  private checkDocumentIdQuery(): boolean {
     if (!$cs.router || !this.source) {
       return false;
     }
@@ -860,10 +902,10 @@ export default class DocumentViewer extends WidgetBase {
         this.openElement(this.currentDocument);
       }
       return true;
-    } else { 
+    } else {
       return false;
     }
-    
+
     // else {
     //   let d: GraphDocument = (this.source.activeElement as GraphDocument) || this.currentDocument;
     //   if (d) {
@@ -881,7 +923,6 @@ export default class DocumentViewer extends WidgetBase {
     //       }
     //     );
     //   }
-    
   }
 
   private dragMoveListener(event) {
@@ -999,7 +1040,7 @@ export default class DocumentViewer extends WidgetBase {
           {
             icon: 'mdi-sim-outline',
             title: 'Entity Recognition',
-            action: async () => {              
+            action: async () => {
               await this.refresh();
               this.updateEntityTypes();
             },
@@ -1218,7 +1259,7 @@ ul[data-type='taskList'] {
 }
 
 .graph-menu {
-  border-bottom-style:solid;
+  border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: grey;
   /* position: absolute; */
@@ -1335,10 +1376,10 @@ overflow-y: auto; */
 .document-editor {
   /* border: 1px solid black; */
   /* width: 50%; */
-      overflow-y: auto;
-    height: calc(100% - 200px);
-    
-    position: absolute;
+  overflow-y: auto;
+  height: calc(100% - 200px);
+
+  position: absolute;
 }
 
 .find {
@@ -1357,8 +1398,8 @@ overflow-y: auto; */
 }
 
 .document-tools-group {
-   max-width: calc(100% - 10px);
-  position: absolute;  
+  max-width: calc(100% - 10px);
+  position: absolute;
   padding-right: 5px;
   top: -5px;
 }
@@ -1371,7 +1412,7 @@ overflow-y: auto; */
 
 .document-entities-group {
   max-width: calc(100% - 10px);
-  position: absolute;  
+  position: absolute;
   padding-right: 5px;
   top: 10px;
 }

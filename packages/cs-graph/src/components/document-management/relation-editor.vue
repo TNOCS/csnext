@@ -1,10 +1,10 @@
 <template>
-  <div v-if="field">
+  <div v-if="field" :class="{ 'can-drop': startDrop }">
     <div v-if="field.data.relation.multiple">
       <v-autocomplete
         auto-select-first
         v-model="links"
-        :items="items()"
+        :items="items"
         chips
         @change="updateLinks()"
         :label="$cs.Translate(field.title)"
@@ -108,6 +108,9 @@
     <div v-else>
       <v-autocomplete
         :items="items"
+        @dragenter="onDragEnter"
+        @dragleave="onDragLeave"
+        @drop="onDrop"
         :search-input.sync="search"
         v-model="activeRelation"
         :label="$cs.Translate(field.title) + ' (' + field.data.relation.type + ')'"
@@ -118,7 +121,7 @@
         clearable
         @change="updateRelation()"
         return-object
-         :filled="field.filled"
+        :filled="field.filled"
         :rounded="field.rounded"
         item-value="element.id"
         :persistentHint="field.persistentHint"
@@ -143,6 +146,13 @@
   height: 100px;
 }
 
+.can-drop {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
 .relation-card-actions {
   position: absolute;
   bottom: -10px;
@@ -157,7 +167,7 @@
 <script lang="ts">
 import { Component, Watch } from 'vue-property-decorator';
 import { guidGenerator, idGenerator, IFormFieldOptions, IFormOptions } from '@csnext/cs-core';
-import { NodeLink, NodeChip, DataInfoPanel } from '@csnext/cs-map';
+import { NodeLink, NodeChip, DataInfoPanel, DragUtils } from '@csnext/cs-map';
 import Vue from 'vue';
 import { DocDatasource } from '../../datasources/doc-datasource';
 import { RelationType } from '@csnext/cs-data';
@@ -176,20 +186,52 @@ export default class RelationEditor extends Vue {
   public items: LinkInfo[] = [];
   private search: string | null = null;
   private itemsLoaded: boolean = false;
+  private startDrop: boolean = false;
 
   @Watch('search')
   private updateItems() {
     if (!this.itemsLoaded) {
       this.items = this.getItems();
-    }    
+    }
+  }
+
+  public onDragLeave(event: DragEvent) {
+    this.startDrop = false;
+  }
+
+  public onDragEnter(event: DragEvent) {
+    event.preventDefault();
+    console.log(event);
+    const elementid = event.dataTransfer.getData('text');
+    console.log(elementid);
+    
+
+    event.stopPropagation();
+  }
+
+  public async onDrop(event: DragEvent) {
+    console.log(event);    
+    const {elementid, ft } = DragUtils.getElementData(event);
+    if (elementid) {
+      this.updateItems();
+      let i = this.items.find(i => i.element?.id === elementid);
+      if (i) {
+        this.activeRelation = i;
+        await this.updateRelation();
+        this.$forceUpdate();
+      }
+    }  
+    event.stopImmediatePropagation();  
   }
 
   public createElement() {
     if (!this.graph?.featureTypes || !this.relation?.objectType || !this.graph.featureTypes.hasOwnProperty(this.relation.objectType)) {
       return;
     }
-    const ft = this.graph.featureTypes[this.relation.objectType];    
-    if (!ft?.title) { return; }
+    const ft = this.graph.featureTypes[this.relation.objectType];
+    if (!ft?.title) {
+      return;
+    }
     $cs.triggerInputDialog(ft.title, 'enter new name', '', ft.title).then((name) => {
       this.graph
         ?.addNewNode({
@@ -198,18 +240,13 @@ export default class RelationEditor extends Vue {
           classId: this.relation!.objectType,
         })
         .then(async (newNode) => {
-          this.graph!.addNewEdge(
-          {
+          this.graph!.addNewEdge({
             fromId: this.node!.id,
             toId: newNode.id,
             classId: this.relation!.type,
-          } as GraphElement
-        )
-          .then(async (e) => {
+          } as GraphElement).then(async (e) => {
             this.$forceUpdate();
           });
-
-          
         });
     });
   }
@@ -228,13 +265,11 @@ export default class RelationEditor extends Vue {
       if (!currentLink.link?.id || this.linkIds.indexOf(currentLink.link.id) === -1) {
         if (this.node && currentLink.element?.id) {
           try {
-            await this.graph.addNewEdge(
-              {
-                fromId: this.node!.id,
-                toId: currentLink.element.id,
-                classId: this.relation!.type,
-              } as GraphElement
-            );
+            await this.graph.addNewEdge({
+              fromId: this.node!.id,
+              toId: currentLink.element.id,
+              classId: this.relation!.type,
+            } as GraphElement);
           } catch {
           } finally {
             this.setLinks();
@@ -325,13 +360,11 @@ export default class RelationEditor extends Vue {
         obs.typeId = this.relation!.type;
         this.graph?.addNode(n);
 
-        this.graph!.addNewEdge(
-          {
-            fromId: this.node!.id,
-            toId: n.id,
-            classId: this.relation!.type,
-          } as GraphElement
-        )
+        this.graph!.addNewEdge({
+          fromId: this.node!.id,
+          toId: n.id,
+          classId: this.relation!.type,
+        } as GraphElement)
           .then(async (e) => {
             if (this.graph) {
               this.graph.openElement(n);
@@ -386,13 +419,11 @@ export default class RelationEditor extends Vue {
       return;
     }
     this.graph
-      .addNewEdge(
-        {
-          fromId: this.node.id,
-          toId: this.newRelation.id,
-          classId: this.relation.type,
-        } as GraphElement
-      )
+      .addNewEdge({
+        fromId: this.node.id,
+        toId: this.newRelation.id,
+        classId: this.relation.type,
+      } as GraphElement)
       .then(async (e) => {})
       .catch((e) => {})
       .finally(() => {

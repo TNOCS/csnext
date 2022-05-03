@@ -1,6 +1,7 @@
 <template>
   <node-view-wrapper
     v-if="node"
+     
     class="text-entity-component"
     :style="style"
     
@@ -12,7 +13,7 @@
       <!-- open-on-hover open-delay="10" -->
       <template v-slot:activator="{ on, attrs }">
         <!-- <drag tag="span" :transfer-data="{ node: node }"> -->
-        <span @click.stop="selectEntity()" class="content entity-drag" :id="'drag-' + node.attrs.id" v-bind="attrs" v-on="on">
+        <span  @click.stop="selectEntity()" class="content entity-drag" :id="'drag-' + node.attrs.id" v-bind="attrs" v-on="on">
           <v-icon v-if="node.attrs.type === 'DATE'" small>mdi-calendar-range</v-icon>
           <v-icon v-else-if="entity && entity._location" small>mdi-map-marker-outline</v-icon>
           <img v-else-if="icon" :src="icon" class="icon-image" />
@@ -92,6 +93,7 @@ import SelectionPopup from '../../selection-popup.vue';
 
 import { DocDatasource } from '../../../../datasources/doc-datasource';
 import { GraphDocument } from '../../../../classes/document/graph-document';
+import { DragUtils } from '@csnext/cs-map';
 
 @Component({
   components: {
@@ -125,6 +127,12 @@ export default class TextEntityComponent extends Vue {
     // this.updateAttributes({
     //   count: this.node.attrs.count + 1,
     // })
+  }
+
+  private dragstart_handler(evt : DragEvent) {
+    if (this.element) {
+      DragUtils.setElementData(evt, this.element);
+    }
   }
 
   public selectEntity() {

@@ -22,8 +22,6 @@ export class EntityParser implements IDocumentPlugin
             {
                 let ids : (string | undefined) [] = [];
 
-                console.log('entity parser');
-                
                 // clear entity types
                 Vue.set(doc, '_entityTypes', {})
                 
@@ -57,13 +55,7 @@ export class EntityParser implements IDocumentPlugin
 
                 for (const entity of doc._entities)
                 {
-
-                    
-                    Vue.set(entity, '_linked', (entity.id !== undefined) && ids.includes(entity.kg_id));
-                    if (entity._linked) {
-                        console.log(`${entity.text} ${entity._linked}`);
-                    }
-
+                    Vue.set(entity, '_linked', (entity.id !== undefined) && ids.includes(entity.kg_id));                    
                     if (entity._node?._featureType?.type)
                     {
                         entity.spacy_label = entity._node._featureType.type as string;

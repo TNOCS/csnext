@@ -288,7 +288,7 @@
     </v-menu> -->
     </v-layout>
 
-    <v-container fluid class="full-height px-0 d-flex flex-row" :class="'splitview-' + options.splitView">
+    <v-container fluid class="full-height px-0 d-flex flex-row" :class="'splitview-' + options.splitView" @drop="onDrop" @dragenter="onDragEnter">
       <v-navigation-drawer v-model="settingsOpen" class="mr-2" hide-overlay :width="settingsOpen ? 256 : 0">
         <v-list-item>
           <v-list-item-avatar>
@@ -448,7 +448,8 @@
                           :source="source"
                           :element="element"
                           :showActionMenu="true"
-                          :actions="getActions(element)"
+                          :prominentActions="options.prominentActions"
+                          :actions="getActions(element)"                          
                         ></component>
                       </v-card>
                     </template>
@@ -478,6 +479,7 @@
                     :showActionMenu="true"
                     :actions="getActions(element)"
                     :source="source"
+                    :prominentActions="options.prominentActions"
                     :element="element"
                   ></component>
                 </v-card>
@@ -505,7 +507,7 @@
                     :data-elementid="element.id"
                     @contextmenu="openContextMenu"
                   >
-                    <component :is="getElementCard(element)" :source="source" :element="element"></component>
+                    <component :is="getElementCard(element)" :source="source" :actions="getActions(element)" :prominentActions="options.prominentActions" :element="element"></component>
                   </v-card>
                 </div>
               </v-col>
@@ -650,6 +652,7 @@
                       v-if="options.kanbanOptions.componentView"
                       :is="getElementCard(element)"
                       :source="source"
+                      :prominentActions="options.prominentActions"
                       :element="element"
                     ></component>
                     <span v-else>{{ element.properties.name }}</span>
@@ -1110,14 +1113,14 @@ but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
 <script lang="ts">
 import { Component, Ref, Watch } from 'vue-property-decorator';
 import { WidgetBase, AppState } from '@csnext/cs-client';
-import { DataInfoPanel, NodeLink } from '@csnext/cs-map';
+import { DataInfoPanel, DragUtils, NodeLink } from '@csnext/cs-map';
 
 // import { FeatureType } from "../../classes";
 import { FeatureType, FilterGraphElement, GraphDatasource, GraphElement, IGraphFilter, PropertyType, PropertyValueType } from '@csnext/cs-data';
 import moment from 'moment';
-import { CardSize, guidGenerator, IDashboard, IMenu, IWidget } from '@csnext/cs-core';
+import { CardSize, guidGenerator, IMenu, IWidget } from '@csnext/cs-core';
 import Vue from 'vue';
-import { DocDatasource, DataGridOptions, GridView, FindElement } from '../..';
+import { DocDatasource, DataGridOptions, GridView } from '../..';
 import ElementContextMenu from '../element/element-context-menu.vue';
 import { PropValue } from '@csnext/cs-map';
 
@@ -1272,6 +1275,21 @@ export default class ElementDataGrid extends WidgetBase {
 
   public isLinked(element: GraphElement) {
     return true;
+  }
+
+   public onDragEnter(event: DragEvent) {
+    event.preventDefault();
+    console.log(event);
+    const elementid = event.dataTransfer.getData('text');
+    console.log(elementid);
+    event.stopPropagation();
+  }
+
+  public onDrop(event: DragEvent) {
+    const { elementid, ft} = DragUtils.getElementData(event);
+    if (elementid) {
+      alert(elementid);
+    }
   }
 
   private updateFilterPanels() {
@@ -2973,8 +2991,9 @@ export default class ElementDataGrid extends WidgetBase {
     this.registerWidgetConfig();
 
     if (this.source?.events) {
+      
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
-        if (action === GraphDatasource.ELEMENT_UPDATED) {
+        if (action === GraphDatasource.ELEMENT_UPDATED && el.id === this.linkedElement?.id) {
           this.updateEntities(true);
           this.$forceUpdate();
         }
@@ -3002,6 +3021,8 @@ export default class ElementDataGrid extends WidgetBase {
       // });
     }
   }
+
+  
 
   private getActions(element: GraphElement): IMenu[] {
     let res: IMenu[] = [];
