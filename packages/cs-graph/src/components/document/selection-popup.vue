@@ -634,11 +634,14 @@ export default class SelectionPopup extends WidgetBase {
       this.viewtab = 1;
     }
 
+    if (this.source?.events) {
+
     this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (a: string, e: GraphElement) => {
         if (this.document?.id && a === GraphDatasource.ELEMENT_UPDATED && e.id === this.document?.id) {
           this.$forceUpdate();
         }
       }) 
+    }
 
       
     // this.updateAgents();

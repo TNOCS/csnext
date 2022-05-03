@@ -1273,14 +1273,14 @@ export default class ElementDataGrid extends WidgetBase {
     return (this.widget?.options as DataGridOptions) || new DataGridOptions();
   }
 
+
   public isLinked(element: GraphElement) {
     return true;
   }
 
    public onDragEnter(event: DragEvent) {
     event.preventDefault();
-    console.log(event);
-    const elementid = event.dataTransfer.getData('text');
+    const { elementid} = DragUtils.getElementData(event);    
     console.log(elementid);
     event.stopPropagation();
   }
@@ -2639,7 +2639,7 @@ export default class ElementDataGrid extends WidgetBase {
             }
           }
         } else {
-          id = entity.classId;
+          id = entity.classId!;
           value = entity._featureType?.title || entity.classId!;
         }
         addItem(id, value, entity);

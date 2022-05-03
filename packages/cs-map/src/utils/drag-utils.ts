@@ -10,12 +10,18 @@ export class DragUtils {
     evt.dataTransfer.dropEffect = 'copy';
   }
 
-  public static getElementData(event: DragEvent): { elementid: string; ft: string } | undefined {
+  public static getElementData(event: DragEvent): { elementid?: string; ft?: string }  {
     if (event.dataTransfer) {
     const info = event.dataTransfer.getData('text');
     if (info.startsWith('{') && info.endsWith('}')) {
       const data = JSON.parse(info);
       return data;
+    }
+    else {
+      return {
+        elementid: undefined,
+        ft: undefined
+      }
     }
   }
   }

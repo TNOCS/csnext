@@ -201,9 +201,9 @@ export default class RelationEditor extends Vue {
 
   public onDragEnter(event: DragEvent) {
     event.preventDefault();
-    console.log(event);
-    const elementid = event.dataTransfer.getData('text');
-    console.log(elementid);
+    const { elementid} = DragUtils.getElementData(event);
+    
+    
     
 
     event.stopPropagation();
@@ -292,7 +292,7 @@ export default class RelationEditor extends Vue {
   }
 
   public getItems(): LinkInfo[] {
-    console.log('relation editor - get items', this.relation.objectType);
+    console.log('relation editor - get items', this.relation?.objectType);
     const res: LinkInfo[] = [];
     this.itemsLoaded = true;
     if (this.graph && this.relation?.objectType) {

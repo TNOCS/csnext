@@ -222,7 +222,7 @@
 
 <script lang="ts">
 import { WidgetBase } from '@csnext/cs-client';
-import { DateUtils, FeatureType, TextEntity } from '@csnext/cs-data';
+import { DateUtils, FeatureType, TextEntity, GraphDatasource } from '@csnext/cs-data';
 import { DragUtils, SimpleRelationLineSection } from '@csnext/cs-map';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import Mention from '@tiptap/extension-mention';
@@ -234,7 +234,6 @@ import { BubbleMenu, Editor, EditorContent, FloatingMenu, Node } from '@tiptap/v
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator';
 import { IImportPlugin, suggestion } from '../..';
 import { DocUtils } from '../../utils/doc-utils';
-import { NodeSelection} from "prosemirror-state";
 import { DocDatasource, GraphDocument, ITool } from './../../';
 import Commands from './plugins/commands/commands';
 import commandSuggestion from './plugins/commands/commands-suggestion';
@@ -620,7 +619,7 @@ export default class DocumentViewer extends WidgetBase {
               event.preventDefault();
               console.log('drop DOM event:', event);
               const { elementid } = DragUtils.getElementData(event);
-              if (elementid) {
+              if (this.source && elementid) {
                 const element = this.source.getElement(elementid);  
                 const coords = { left: event.clientX, top: event.clientY }   
                 const position = view.posAtCoords(coords);
@@ -629,15 +628,18 @@ export default class DocumentViewer extends WidgetBase {
                 
           // view.dispatch(tr.setSelection(newSelection).scrollIntoView())
               // view.dispatch(this.editor.state.tr.setSelection(newSelection).scrollIntoView());
+                if (element && this.editor && this.currentDocument) {
                 this.editor.chain().focus().insertContentAt(position.pos, {
                   type: 'text-entity',
                   attrs: {
                     id: idGenerator(),
-                    type: element.classId,
-                    text: element.properties?.name,
-                    kg_id: element.id,
+                    type: element.classId!,
+                    text: element.properties?.name!,
+                    kg_id: element.id!,
                   }
-                  }
+                }
+                  
+                
 
                 //   "attrs": {
                 //   "id": "eda69f24-089b-4437-b765-a208dc0f5944",
@@ -651,6 +653,7 @@ export default class DocumentViewer extends WidgetBase {
                   ).run();
                   this.source.parseEntities(this.currentDocument);
                   this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.currentDocument);
+                }
                   
                 //   TextEntity
                 // }({kg_id: elementid, id: idGenerator(), text: element.properties?.name || ''}).run();
