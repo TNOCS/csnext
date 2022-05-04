@@ -29,6 +29,7 @@ export class FeatureType {
     public typeId?: string;    
     public notification?: string;
     public array?: boolean;
+    public aliases?: string[];    
     public isEdge?: boolean;
     public descriptiveProperties?: string[];
     // public featureType?: string;

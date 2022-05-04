@@ -74,6 +74,7 @@ export class GraphDatasource extends DataSource {
         { name: 'properties.aliases', weight: 0.6 },
         { name: 'properties.motto_text', weight: 0.4 },
         { name: 'properties.wikipedia', weight: 0.3 },
+        { name: 'flat.alias', weight: 0.6 },
       ],
       includeScore: true,
     });
@@ -222,6 +223,8 @@ export class GraphDatasource extends DataSource {
       }
     }
 
+    if (!el._flat) { el._flat = {}}
+
     if (!el.properties) {
       el.properties = {};
     }
@@ -280,9 +283,6 @@ export class GraphDatasource extends DataSource {
         // console.log(el.properties['coordinate_location']);
       }
     }
-
-    
-
     if (el.properties.hasOwnProperty('coordinate') && !el.properties.hasOwnProperty('lat')) {      
       // only take first
       const cos = el.properties['coordinate'].split(',');
@@ -297,7 +297,16 @@ export class GraphDatasource extends DataSource {
         el.properties['lon'] = parseFloat(values[1]);
       } 
     }
-  }
+    }
+
+    if (el._featureType?.aliases && el._flat) {
+      el._flat.aliases = el._flat.aliases || '';
+      for (const alias of el._featureType.aliases) {
+        if (el.properties.hasOwnProperty(alias)) {
+          el._flat.aliases += `${el.properties[alias]} `;
+        }        
+      }
+    }
 
   }
 

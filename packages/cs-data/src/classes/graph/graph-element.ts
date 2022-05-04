@@ -49,6 +49,7 @@ export class GraphElement<T = BaseElementProperties> {
 
   public _flat?: {
     [key: string]: any;
+    aliases?: string;
   } = {};
 
   public _alternatives?: string[] = [];
