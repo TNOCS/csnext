@@ -321,7 +321,7 @@ export default class SelectionPopup extends WidgetBase {
   public updateSuggestions() {
     console.log('update suggestions');
     if (this.entity?.text && this.source?.fuse) {
-      this.suggestions = this.source.searchFuse(this.entity.text, undefined, false);
+      this.suggestions = this.source.searchFuse(this.entity.text, undefined, false).slice(0, 15);
       // , { nlp: this.entity?.spacy_label}
         // .search(this.entity.text, { limit: 8}).filter((x: GraphElement) => x.item._featureType.ba)        
     }
