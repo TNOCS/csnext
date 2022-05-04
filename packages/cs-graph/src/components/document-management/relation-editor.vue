@@ -119,6 +119,7 @@
         :hint="field.hint"
         item-text="element.properties.name"
         hide-no-data        
+        @focus="updateItems()"
         clearable
         @change="updateRelation()"
         return-object
@@ -127,7 +128,7 @@
         item-value="element.id"
         :persistentHint="field.persistentHint"
         :disabled="field.readonly"
-        :append-outer-icon="field._appendIcon"
+        :append-outer-icon="field._appendIcon"        
       >
         <!-- <template v-slot:item="props">
           <span v-if="props"
