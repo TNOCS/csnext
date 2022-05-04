@@ -317,8 +317,8 @@
         </v-expansion-panels>
       </v-navigation-drawer>
       <div class="data-grid-viewer">
-        <v-expansion-panels v-if="suggestionsAvailable && options.suggestionEngines" class="mr-5">
-          <v-expansion-panel v-for="(engine, si) in options.suggestionEngines" :key="si">
+        <v-expansion-panels v-if="options.suggestionEngines && options.suggestionEngines.length>0" class="mr-5">
+          <v-expansion-panel v-for="(engine, si) in options.suggestionEngines.filter(e => e.suggestions)" :key="si">
             <v-expansion-panel-header
               ><v-layout><v-icon>mdi-auto-fix</v-icon> {{ engine.title }} ({{ engine.suggestions.length }})</v-layout></v-expansion-panel-header
             >
@@ -2669,21 +2669,19 @@ export default class ElementDataGrid extends WidgetBase {
     }
     if (engine.getElementSuggestions && this.linkedElement) {
       await engine.getElementSuggestions(this.linkedElement, this.source!, this);
-    }
-    this.$forceUpdate();
+    }    
   }
 
-  public async updateSuggestions(): Promise<Suggestion[]> {
-    let res: Suggestion[] = [];
+  public async updateSuggestions(): Promise<boolean> {
     this.suggestionsAvailable = false;
 
     if (this.source && this.options?.suggestionEngines) {
       for (const engine of this.options.suggestionEngines) {
-        this.updateSuggestionEngine(engine);
+        await this.updateSuggestionEngine(engine);
       }
       this.suggestionsAvailable = this.options.suggestionEngines.some((e) => e.suggestions && e.suggestions.length > 0);
     }
-    return Promise.resolve(res);
+    return Promise.resolve(true);
   }
 
   public async updateEntities(force = false) {
@@ -2770,7 +2768,7 @@ export default class ElementDataGrid extends WidgetBase {
 
     this.checkQueryParams();
 
-    await this.updateSuggestions();
+    
 
     if (this.options.filterProperty && this.potentialProperties.hasOwnProperty(this.options.filterProperty)) {
       // this.setFilterProperty(this.options.filterProperty);
@@ -2967,6 +2965,7 @@ export default class ElementDataGrid extends WidgetBase {
     if (this.options.defaultView === 'table') {
       this.onGridSelection();
     }
+    await this.updateSuggestions();
     this.$forceUpdate();
   }
 
