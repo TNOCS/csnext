@@ -1079,7 +1079,7 @@ export class DocDatasource extends GraphDatasource {
           e.to = entity._node;
           e.from = doc;
           await this.addEdge(e);
-          // await this.parseEntities(doc);
+          await this.parseEntities(doc);
           // await this.updateEdges();
           await this.saveDocument(doc);
           resolve(entity);

@@ -177,7 +177,7 @@ export class DataGridOptions extends WidgetOptions {
   public additionalActions?: IMenu[] | getActions;
 
   // engine that can suggest items for the datagrid
-  public suggestionEngine?: ISuggestionEngine;
+  public suggestionEngines?: ISuggestionEngine[];
 }
 
 export type getActions = (e: GraphElement, src: DocDatasource) => IMenu[];

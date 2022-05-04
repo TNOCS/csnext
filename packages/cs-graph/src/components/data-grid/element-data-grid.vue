@@ -147,13 +147,7 @@
         <v-btn v-if="options.canSearch && !searchEnabled" @click="openSearch()" tile icon class="grid-action-button">
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
-        <v-btn
-          v-if="options.grouping && options.grouping.enabled"
-          @click="toggleGrouping()"
-          tile
-          icon
-          class="grid-action-button"
-        >
+        <v-btn v-if="options.grouping && options.grouping.enabled" @click="toggleGrouping()" tile icon class="grid-action-button">
           <v-icon>mdi-format-list-group</v-icon>
         </v-btn>
 
@@ -323,30 +317,36 @@
         </v-expansion-panels>
       </v-navigation-drawer>
       <div class="data-grid-viewer">
-        <v-expansion-panels v-if="suggestions && suggestions.length > 0" class="mr-5">
-          <v-expansion-panel>
+        <v-expansion-panels v-if="suggestionsAvailable && options.suggestionEngines" class="mr-5">
+          <v-expansion-panel v-for="(engine, si) in options.suggestionEngines" :key="si">
             <v-expansion-panel-header
-              ><v-layout><v-icon>mdi-auto-fix</v-icon> Suggestions ({{ suggestions.length }})</v-layout></v-expansion-panel-header
+              ><v-layout><v-icon>mdi-auto-fix</v-icon> {{ engine.title }} ({{ engine.suggestions.length }})</v-layout></v-expansion-panel-header
             >
             <v-expansion-panel-content>
               <v-container>
+                <v-row v-if="engine.options && engine.getSettingsForm">
+                  <v-col cols="12">
+                    <cs-form :data="engine.options" @saved="updateSuggestionEngine(engine)" :formdef="engine.getSettingsForm()"></cs-form>
+                  </v-col>
+                </v-row>
+
                 <v-row>
-                  <template v-for="(suggestion, index) in suggestions">
-                    <v-col cols="4" v-if="suggestion" :key="index" class="suggestion-col">
-                      <v-card outlined class="suggestion-card">
-                        <v-layout>
-                          <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon
-                          ><span class="suggestion-text">{{ suggestion.text }}</span
-                          ><v-spacer></v-spacer>
-                          <template v-if="suggestion.actions">
-                            <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon
-                              ><v-icon>{{ action.icon }}</v-icon></v-btn
-                            >
-                          </template>
-                        </v-layout>
-                      </v-card>
-                    </v-col>
-                  </template>
+                  <v-col cols="4" v-for="(suggestion, si) in engine.suggestions" :key="si" class="suggestion-col">
+                    <v-card outlined class="suggestion-card">
+                      <v-layout>
+                        <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon
+                        ><span class="suggestion-text">{{ suggestion.text }}</span
+                        ><v-spacer></v-spacer>
+                        <template v-if="suggestion.actions">
+                          <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon
+                            ><v-icon>{{ action.icon }}</v-icon></v-btn
+                          >
+                        </template>
+                      </v-layout>
+                      <!-- <span class="suggestion-subtext">{{ suggestion.subtext }}</span> -->
+                        
+                    </v-card>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-expansion-panel-content>
@@ -449,7 +449,7 @@
                           :element="element"
                           :showActionMenu="true"
                           :prominentActions="options.prominentActions"
-                          :actions="getActions(element)"                          
+                          :actions="getActions(element)"
                         ></component>
                       </v-card>
                     </template>
@@ -507,7 +507,13 @@
                     :data-elementid="element.id"
                     @contextmenu="openContextMenu"
                   >
-                    <component :is="getElementCard(element)" :source="source" :actions="getActions(element)" :prominentActions="options.prominentActions" :element="element"></component>
+                    <component
+                      :is="getElementCard(element)"
+                      :source="source"
+                      :actions="getActions(element)"
+                      :prominentActions="options.prominentActions"
+                      :element="element"
+                    ></component>
                   </v-card>
                 </div>
               </v-col>
@@ -837,8 +843,13 @@
   padding: 4px !important;
 }
 
+.suggestion-subtext {
+  font-size: 12px;
+}
+
 .suggestion-text {
   align-self: center;
+  font-weight: 500;
   margin-left: 4px;
 }
 
@@ -1135,6 +1146,7 @@ import isotope from 'vueisotope';
 import DefaultElementCard from './cards/default-element-card.vue';
 import { ElementCardManager } from './cards/element-card-manager';
 require('isotope-packery');
+import { CsForm } from '@csnext/cs-form';
 
 // table components
 import { AgGridVue } from 'ag-grid-vue';
@@ -1149,7 +1161,7 @@ import OptionsCellEditor from './table/options-cell-editor.vue';
 import NodeLinkCellEditor from './table/node-link-cell-editor.vue';
 import OptionsFilter from './table/options-filter.vue';
 import Papa from 'papaparse';
-import { GridSuggestion } from './suggestions/suggestions';
+import { ISuggestionEngine, Suggestion } from './suggestions/suggestions';
 
 export class KanBanColumn {
   title?: string;
@@ -1189,6 +1201,7 @@ export class GridGroup {
     MediaElement,
     isotope,
     draggable,
+    CsForm,
     ElementContextMenu,
     DefaultElementCard,
   },
@@ -1248,7 +1261,7 @@ export default class ElementDataGrid extends WidgetBase {
 
   public searchEnabled = false;
 
-  public suggestions: GridSuggestion[] | null = null;
+  public suggestionsAvailable = false;
 
   public typeToLabel = {
     month: 'Month',
@@ -1273,20 +1286,19 @@ export default class ElementDataGrid extends WidgetBase {
     return (this.widget?.options as DataGridOptions) || new DataGridOptions();
   }
 
-
   public isLinked(element: GraphElement) {
     return true;
   }
 
-   public onDragEnter(event: DragEvent) {
+  public onDragEnter(event: DragEvent) {
     event.preventDefault();
-    const { elementid} = DragUtils.getElementData(event);    
+    const { elementid } = DragUtils.getElementData(event);
     console.log(elementid);
     event.stopPropagation();
   }
 
   public onDrop(event: DragEvent) {
-    const { elementid, ft} = DragUtils.getElementData(event);
+    const { elementid, ft } = DragUtils.getElementData(event);
     if (elementid) {
       alert(elementid);
     }
@@ -1308,8 +1320,8 @@ export default class ElementDataGrid extends WidgetBase {
 
   private updateLinkedElement() {
     if (this.source?.events && this.linkedElement) {
-        this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.linkedElement);
-      }
+      this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.linkedElement);
+    }
   }
 
   private async unlinkElement(element: GraphElement) {
@@ -2059,10 +2071,10 @@ export default class ElementDataGrid extends WidgetBase {
     this.$forceUpdate();
   }
 
-  public async addGroupItem(group: GridGroup) {    
+  public async addGroupItem(group: GridGroup) {
     if (this.featureType && this.options.grouping?.property) {
       await this.addEntity(this.featureType, undefined, { [this.options.grouping.property]: group.id });
-    }    
+    }
   }
 
   public async linkElement() {
@@ -2076,7 +2088,7 @@ export default class ElementDataGrid extends WidgetBase {
             action: async (i, dashboard, options) => {
               if (options?.element) {
                 await this.createLink(options.element);
-                this.updateEntities(true);                
+                this.updateEntities(true);
                 this.resize();
               }
             },
@@ -2154,9 +2166,9 @@ export default class ElementDataGrid extends WidgetBase {
             );
           }
         }
-      }      
+      }
       await this.source.updateEdges();
-      this.updateLinkedElement();      
+      this.updateLinkedElement();
     }
   }
 
@@ -2620,11 +2632,11 @@ export default class ElementDataGrid extends WidgetBase {
       };
       this.showGroups = true;
 
-      let propType: PropertyType | undefined = undefined; 
+      let propType: PropertyType | undefined = undefined;
 
       // find prop type
       if (this.options.grouping.property && this.potentialProperties && this.potentialProperties.hasOwnProperty(this.options.grouping.property)) {
-        propType = this.potentialProperties[this.options.grouping.property];        
+        propType = this.potentialProperties[this.options.grouping.property];
       }
       for (const entity of this.items) {
         let value: string | null = null;
@@ -2650,12 +2662,27 @@ export default class ElementDataGrid extends WidgetBase {
     }
   }
 
-  public async updateSuggestions(): Promise<GridSuggestion[]> {
-    let res: GridSuggestion[] = [];
-    if (this.source && this.options?.suggestionEngine) {
-      res = await this.options.suggestionEngine.getSuggestions(this.options, this.source, this);
+  public async updateSuggestionEngine(engine: ISuggestionEngine) {
+    
+    if (engine.getGridSuggestions) {
+      await engine.getGridSuggestions(this.options!, this.source!, this);
     }
-    this.suggestions = res;
+    if (engine.getElementSuggestions && this.linkedElement) {
+      await engine.getElementSuggestions(this.linkedElement, this.source!, this);
+    }
+    this.$forceUpdate();
+  }
+
+  public async updateSuggestions(): Promise<Suggestion[]> {
+    let res: Suggestion[] = [];
+    this.suggestionsAvailable = false;
+
+    if (this.source && this.options?.suggestionEngines) {
+      for (const engine of this.options.suggestionEngines) {
+        this.updateSuggestionEngine(engine);
+      }
+      this.suggestionsAvailable = this.options.suggestionEngines.some((e) => e.suggestions && e.suggestions.length > 0);
+    }
     return Promise.resolve(res);
   }
 
@@ -2991,7 +3018,6 @@ export default class ElementDataGrid extends WidgetBase {
     this.registerWidgetConfig();
 
     if (this.source?.events) {
-      
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED && el.id === this.linkedElement?.id) {
           this.updateEntities(true);
@@ -3021,8 +3047,6 @@ export default class ElementDataGrid extends WidgetBase {
       // });
     }
   }
-
-  
 
   private getActions(element: GraphElement): IMenu[] {
     let res: IMenu[] = [];
