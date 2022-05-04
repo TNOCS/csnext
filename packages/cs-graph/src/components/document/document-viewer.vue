@@ -94,11 +94,70 @@
       <template v-slot:extension v-if="currentDocument.properties.editor_mode === 'EDIT'">
         <v-sheet v-if="editor" class="document-tools-sheet">
           <v-slide-group show-arrows v-if="documentToolsMenu" class="document-tools-group">
-            <v-slide-item v-for="(tool, ti) in documentToolsMenu" :key="ti" v-slot="{ active }">
+            <!-- <v-slide-item v-for="(tool, ti) in documentToolsMenu" :key="ti" v-slot="{ active }">
               <v-btn icon @click="selectDocumentTool(tool)" :class="{ 'is-active': tool.isActive }" :key="tool.id">
                 <v-icon>{{ tool.icon }}</v-icon>
               </v-btn>
-            </v-slide-item>
+
+            </v-slide-item> -->
+            
+            
+             <v-btn-toggle dense group>
+              <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+                <v-icon>mdi-format-bold</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+                <v-icon>mdi-format-italic</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+                <v-icon>mdi-format-strikethrough</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleHighlight().run()" :class="{ 'is-active': editor.isActive('highlight') }">
+                <v-icon>mdi-marker</v-icon>
+              </v-btn>
+
+              <v-btn @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
+                <v-icon>mdi-segment</v-icon>
+              </v-btn>
+              <v-btn
+                @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 1 }),
+                }"
+              >
+                h1
+              </v-btn>
+              <v-btn
+                @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+                :class="{
+                  'is-active': editor.isActive('heading', { level: 2 }),
+                }"
+              >
+                h2
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+                <v-icon>mdi-format-list-bulleted</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
+                <v-icon>mdi-format-list-numbered</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
+                <v-icon>mdi-code-tags</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
+                <v-icon>mdi-format-quote-close</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
+                <v-icon>mdi-reorder-horizontal</v-icon>
+              </v-btn>
+              <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
+              <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
+
+              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
+              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
+                ><v-icon>mdi-format-paragraph</v-icon></v-btn
+              >
+            </v-btn-toggle>
             <!-- <v-btn-toggle dense group> -->
             <!-- <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn> -->
             <!-- <v-btn @click="editor.chain().focus().toggleElementProperty().run()" :class="{ 'is-active': editor.isActive('element-property') }"
@@ -111,42 +170,7 @@
             >
             
 
-            <v-btn @click="editor.chain().focus().setParagraph().run()" :class="{ 'is-active': editor.isActive('paragraph') }">
-              <v-icon>mdi-segment</v-icon>
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-              :class="{
-                'is-active': editor.isActive('heading', { level: 1 }),
-              }"
-            >
-              h1
-            </v-btn>
-            <v-btn
-              @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-              :class="{
-                'is-active': editor.isActive('heading', { level: 2 }),
-              }"
-            >
-              h2
-            </v-btn>
-            <v-btn @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
-              <v-icon>mdi-format-list-bulleted</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
-              <v-icon>mdi-format-list-numbered</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().toggleCodeBlock().run()" :class="{ 'is-active': editor.isActive('codeBlock') }">
-              <v-icon>mdi-code-tags</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().toggleBlockquote().run()" :class="{ 'is-active': editor.isActive('blockquote') }">
-              <v-icon>mdi-format-quote-close</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().setHorizontalRule().run()">
-              <v-icon>mdi-reorder-horizontal</v-icon>
-            </v-btn>
-            <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
-            <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn> -->
+            -->
             <!-- </v-btn-toggle> -->
           </v-slide-group>
         </v-sheet>
