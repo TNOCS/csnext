@@ -3032,7 +3032,7 @@ export default class ElementDataGrid extends WidgetBase {
           this.updateEntities(true);
           this.$forceUpdate();
         }
-        if (this.items.findIndex(e => e.id === el.id) !== -1) {
+        if (this.items && this.items.findIndex(e => e.id === el.id) !== -1) {
           this.updateEntities(true);
           this.$forceUpdate();
         }
