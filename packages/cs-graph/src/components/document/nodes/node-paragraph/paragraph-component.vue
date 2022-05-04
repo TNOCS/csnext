@@ -2,8 +2,8 @@
   <node-view-wrapper class="paragraph-component" @drop="onDrop">
     <v-menu offset-y >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn class="paragraph-menu" icon v-bind="attrs" elevation="0" v-on="on">
-          <v-icon>mdi-dots-vertical</v-icon>
+        <v-btn dense class="paragraph-menu" icon v-bind="attrs" elevation="0" v-on="on">
+          <v-icon small>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
       <v-list>
@@ -90,7 +90,7 @@ export default class ParagraphComponent extends Vue {
   display: none;
   position: absolute;
 
-  left: -20px;
+  left: -30px;
   /* width: 24px;
   height: 24px;
   transform: translateX(-20px);

@@ -9,7 +9,9 @@
         @change="updateLinks()"
         :label="$cs.Translate(field.title)"
         :hint="field.hint"
+        @focus="updateItems()"
         :persistentHint="field.persistentHint"
+        :search-input.sync="search"
         append-outer-icon="mdi-plus"
         @click:append-outer="createElement()"
         clearable
@@ -116,8 +118,7 @@
         :label="$cs.Translate(field.title) + ' (' + field.data.relation.type + ')'"
         :hint="field.hint"
         item-text="element.properties.name"
-        hide-no-data
-        cache-items
+        hide-no-data        
         clearable
         @change="updateRelation()"
         return-object

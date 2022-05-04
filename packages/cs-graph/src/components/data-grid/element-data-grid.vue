@@ -343,7 +343,7 @@
                           >
                         </template>
                       </v-layout>
-                      <!-- <span class="suggestion-subtext">{{ suggestion.subtext }}</span> -->
+                      <span class="suggestion-subtext">{{ suggestion.subtext }}</span>
                         
                     </v-card>
                   </v-col>
@@ -844,19 +844,29 @@
 }
 
 .suggestion-subtext {
-  font-size: 12px;
+       font-size: 10px;
+    margin-left: 30px;
+    /* margin-top: -20px; */
+    text-overflow: clip;
+    overflow: hidden;
+    white-space: nowrap;
+  
 }
 
 .suggestion-text {
   align-self: center;
-  font-weight: 500;
+  font-weight: 600;
+  text-overflow: hidden;
+  white-space: nowrap;
   margin-left: 4px;
+  text-overflow: ellipsis;
 }
 
 .suggestion-card {
   width: 100%;
   height: 100%;
   padding: 2px;
+  overflow: hidden;
 }
 
 .suggestion-card:hover {
@@ -3019,6 +3029,10 @@ export default class ElementDataGrid extends WidgetBase {
     if (this.source?.events) {
       this.source.events.subscribe(GraphDatasource.GRAPH_EVENTS, (action: string, el: GraphElement) => {
         if (action === GraphDatasource.ELEMENT_UPDATED && el.id === this.linkedElement?.id) {
+          this.updateEntities(true);
+          this.$forceUpdate();
+        }
+        if (this.items.findIndex(e => e.id === el.id) !== -1) {
           this.updateEntities(true);
           this.$forceUpdate();
         }

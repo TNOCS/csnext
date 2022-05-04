@@ -100,9 +100,13 @@
               </v-btn>
 
             </v-slide-item> -->
-            
+           
             
              <v-btn-toggle dense group>
+                <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
+              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
+                ><v-icon>mdi-format-paragraph</v-icon></v-btn
+              >
               <v-btn @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
                 <v-icon>mdi-format-bold</v-icon>
               </v-btn>
@@ -153,10 +157,7 @@
               <v-btn @click="editor.chain().focus().undo().run()"><v-icon>mdi-undo</v-icon></v-btn>
               <v-btn @click="editor.chain().focus().redo().run()"><v-icon>mdi-redo</v-icon></v-btn>
 
-              <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn>
-              <v-btn @click="setNodeParagraph()" :class="{ 'is-active': editor.isActive('node-paragraph') }"
-                ><v-icon>mdi-format-paragraph</v-icon></v-btn
-              >
+              
             </v-btn-toggle>
             <!-- <v-btn-toggle dense group> -->
             <!-- <v-btn @click="setTextEntity()"><v-icon>mdi-label</v-icon></v-btn> -->
