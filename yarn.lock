@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@ag-grid-community/core@27.1.0":
-  version "27.1.0"
-  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-27.1.0.tgz#8f4cebc848235e84fa799826616eba4bf0de42a4"
-  integrity sha512-f7AgQwCQSlCwmNTI/h31+S/12pQqw4vln98XAFKRDplsDqzOoGFxB6au7Ky93E5iS+Bi7kHQTSMCqCzzsTHHsg==
+"@ag-grid-community/core@27.2.1":
+  version "27.2.1"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/core/-/core-27.2.1.tgz#9c89b9fae3237919c183403d0d0039431659bbac"
+  integrity sha512-ZR2n0Rki6+LG4yzjQ+nFW3gsh6s2Bc7Hj2Ct9G3M3628od7YZmwiT0A8d7szfEsp2o70cpp/QIRXjK5G0YJOmQ==
 
-"@ag-grid-community/vue@27.1.0":
-  version "27.1.0"
-  resolved "https://registry.yarnpkg.com/@ag-grid-community/vue/-/vue-27.1.0.tgz#62e91d96b5ce3bbfa8e2448a1f28fa741c50e6a9"
-  integrity sha512-vRTBvpoYdHgvsWTfa3avLsciM/Lo5n6dtDz/jw/PUByL63o45MWrInTbf+OIRVDhVscHV6BWfI91biuBnhyiRQ==
+"@ag-grid-community/vue@27.2.1":
+  version "27.2.1"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/vue/-/vue-27.2.1.tgz#736425d6922f227f294500a995b1488055342dd3"
+  integrity sha512-rLnTQBaRAC+8LXqfIvSHHFxNRJvkqFSYjUWNkDoL/Lg2kCwPvLnm8EI+UGQ/7DUI3jWxb74Bvs+F1QXPlNRXgA==
 
 "@ampproject/remapping@^2.1.0":
   version "2.1.2"
@@ -3036,10 +3036,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tiptap/core@^2.0.0-beta.174":
-  version "2.0.0-beta.174"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.174.tgz#cfdf16b7d7401e4b255dc69147d784f5f537b942"
-  integrity sha512-APQDto40PdvagG1HTwkKlieQS4Vp6GXNe7qgV1Qo2QCgJCLyxc/fXCTghtrOx0CQb+9JT7fjSLZxbSyUFXjx7Q==
+"@tiptap/core@^2.0.0-beta.175":
+  version "2.0.0-beta.175"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.175.tgz#d23f6e60308cde192451121e21df83c256bdcd92"
+  integrity sha512-dDf+2GtifskNLysn49kaCIz0o5hf6VDZ8J7jSQAfoPDEkEkfw9OKhWrR7NzWW6J34CSJreFDRiWkGt8Qz283Vg==
   dependencies:
     "@types/prosemirror-commands" "^1.0.4"
     "@types/prosemirror-keymap" "^1.0.4"
@@ -3066,10 +3066,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-bold/-/extension-bold-2.0.0-beta.26.tgz#aa1c7850df28cec8e0614fde437183bd4ae3e66b"
   integrity sha512-pnO0I5sEQM3pmowjMGQ74adLzvc6HqGyLyqMizaGMicPu9uTYlSdId+qckYEEgPwPMaEShtv2Vg+ZHs7KVqfcg==
 
-"@tiptap/extension-bubble-menu@2.0.0-beta.55", "@tiptap/extension-bubble-menu@^2.0.0-beta.55":
-  version "2.0.0-beta.55"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-bubble-menu/-/extension-bubble-menu-2.0.0-beta.55.tgz#a26ad892cea6af9eeada22235701b06d0921af48"
-  integrity sha512-v32/QnwwRbepdbrho8mTYru1/XNW/rJi3Mjrgo3rrIs67R86aEPmhmdzD3QEQUJhAJkduuwdw8zElmVWqIJQ9w==
+"@tiptap/extension-bubble-menu@2.0.0-beta.56", "@tiptap/extension-bubble-menu@^2.0.0-beta.56":
+  version "2.0.0-beta.56"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-bubble-menu/-/extension-bubble-menu-2.0.0-beta.56.tgz#d99cb673610a3af7e12444f4538463c7c58bfa04"
+  integrity sha512-nZozwauICdaNPmDPrSn1JFd/9/2rLtK8i2vBOcqxWHObVROvu8ZlJspnrJv23vS6P7/ZO3e/QLVHpnn+1yVq3g==
   dependencies:
     prosemirror-state "^1.3.4"
     prosemirror-view "^1.23.6"
@@ -3117,10 +3117,10 @@
     "@types/prosemirror-dropcursor" "^1.0.3"
     prosemirror-dropcursor "^1.4.0"
 
-"@tiptap/extension-floating-menu@2.0.0-beta.50", "@tiptap/extension-floating-menu@^2.0.0-beta.50":
-  version "2.0.0-beta.50"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-floating-menu/-/extension-floating-menu-2.0.0-beta.50.tgz#e8785d5f051a848ae053ce139581dce96b951a35"
-  integrity sha512-aQu1HtthMIYEPylr6kzioLxMiObLbcgwx9xZzF03KwNnkjQLbjZOeJX2RwSYVpiVgtfPBGOm3N/br6NSYec4yQ==
+"@tiptap/extension-floating-menu@2.0.0-beta.51", "@tiptap/extension-floating-menu@^2.0.0-beta.51":
+  version "2.0.0-beta.51"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-floating-menu/-/extension-floating-menu-2.0.0-beta.51.tgz#a1e53fd1c1d2ac00025d7f094d2b62eb08e81902"
+  integrity sha512-rEe7jADK9xr2n2LJsrGEN3Dz7sEGC1JT/7AdTdaZBxQRQvwxTjomqYGrt+LnX+v0MYggh6swMzj7upJosnKbBg==
   dependencies:
     prosemirror-state "^1.3.4"
     prosemirror-view "^1.23.6"
@@ -3174,12 +3174,12 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-list-item/-/extension-list-item-2.0.0-beta.20.tgz#7169528b226dee4590e013bdf6e5fc6d83729b0f"
   integrity sha512-5IPEspJt38t9ROj4xLUesOVEYlTT/R9Skd9meHRxJQZX1qrzBICs5PC/WRIsnexrvTBhdxpYgCYjpvpsJBlKuQ==
 
-"@tiptap/extension-mention@2.0.0-beta.95":
-  version "2.0.0-beta.95"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-mention/-/extension-mention-2.0.0-beta.95.tgz#b9e2302afa5ddd0d643bb76b93fba0c391dd3ae6"
-  integrity sha512-AiikYJa33APtMI7c6a4EpPhqAYxHHnub5b9hd62zM1peBp2D2aO1dEIL7cB7O2P8EBZ2pu2QN2mFcCbVlSi0Xw==
+"@tiptap/extension-mention@2.0.0-beta.96":
+  version "2.0.0-beta.96"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-mention/-/extension-mention-2.0.0-beta.96.tgz#cad04e4dc8bf276dd0e0a24b7677c73487e26c9a"
+  integrity sha512-dBlf4maaDX+b03wLDO0dG77uQblUljtUO9NJj1B4O64bmDiKmac5garkpg70ZwTU/+ESiqdB2Aytbtj7TzMSOA==
   dependencies:
-    "@tiptap/suggestion" "^2.0.0-beta.90"
+    "@tiptap/suggestion" "^2.0.0-beta.91"
     prosemirror-model "^1.16.1"
     prosemirror-state "^1.3.4"
 
@@ -3207,10 +3207,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-strike/-/extension-strike-2.0.0-beta.27.tgz#c5187bf3c28837f95a5c0c0617d0dd31c318353d"
   integrity sha512-2dmCgtesuDdivM/54Q+Y6Tc3JbGz1SkHP6c62piuqBiYLWg3xa16zChZOhfN8szbbQlBgLT6XRTDt3c2Ux+Dug==
 
-"@tiptap/extension-task-item@2.0.0-beta.31":
-  version "2.0.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-task-item/-/extension-task-item-2.0.0-beta.31.tgz#e73f2f1e264d64ac5902ddd13ad3b63cb043b2c9"
-  integrity sha512-9MCInLAf/l/wDD1N3GgOImemloFARi1l9AJ5acfo+sDjN52yfvaLb//lvLJ6IGz4xGepeAyCME8Qns8UGqG4RQ==
+"@tiptap/extension-task-item@2.0.0-beta.32":
+  version "2.0.0-beta.32"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-task-item/-/extension-task-item-2.0.0-beta.32.tgz#590efcf36143cf0afd0bbd7bc1d55bfb91025bf4"
+  integrity sha512-ogeZHDUBNZtlcV6on+I6zenlvsXHzjFcgQIVedK+o4h8icnURFf5m4D3m1hMuM8UGj1pIu4atFDDvAAVi7RLew==
 
 "@tiptap/extension-task-list@2.0.0-beta.26":
   version "2.0.0-beta.26"
@@ -3222,12 +3222,12 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-text/-/extension-text-2.0.0-beta.15.tgz#f08cff1b78f1c6996464dfba1fef8ec1e107617f"
   integrity sha512-S3j2+HyV2gsXZP8Wg/HA+YVXQsZ3nrXgBM9HmGAxB0ESOO50l7LWfip0f3qcw1oRlh5H3iLPkA6/f7clD2/TFA==
 
-"@tiptap/starter-kit@2.0.0-beta.183":
-  version "2.0.0-beta.183"
-  resolved "https://registry.yarnpkg.com/@tiptap/starter-kit/-/starter-kit-2.0.0-beta.183.tgz#35ff9f4b236bd321ffdd44c5061514959c1b4b9d"
-  integrity sha512-Lcms6lEfFfdL1oHoATcNKfu1C8+yhuZnI5Pq+U6o2zSslfnUSDf3jgmy6nSoZrrkqvFoXjQk4dxMDFg3giw2Kg==
+"@tiptap/starter-kit@2.0.0-beta.184":
+  version "2.0.0-beta.184"
+  resolved "https://registry.yarnpkg.com/@tiptap/starter-kit/-/starter-kit-2.0.0-beta.184.tgz#c621d51d9cb8a1b18cbec7af6080ce8288bdce72"
+  integrity sha512-FgF94i5RQzXiGAIkaubnXEaYwJfiZRbMPZcmarwNo8IyqPnLT34Q1yjw/qZ3nv7rDehWV5l/zenbrrNtPYVCkA==
   dependencies:
-    "@tiptap/core" "^2.0.0-beta.174"
+    "@tiptap/core" "^2.0.0-beta.175"
     "@tiptap/extension-blockquote" "^2.0.0-beta.26"
     "@tiptap/extension-bold" "^2.0.0-beta.26"
     "@tiptap/extension-bullet-list" "^2.0.0-beta.26"
@@ -3247,22 +3247,22 @@
     "@tiptap/extension-strike" "^2.0.0-beta.27"
     "@tiptap/extension-text" "^2.0.0-beta.15"
 
-"@tiptap/suggestion@2.0.0-beta.90", "@tiptap/suggestion@^2.0.0-beta.90":
-  version "2.0.0-beta.90"
-  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.0.0-beta.90.tgz#16b0cf8732c08ac57d5e7f6cc98b70b0a581bdc6"
-  integrity sha512-L5PPYRatY/75uJJRQx2o/Ce+gzcOkmd81TwLjio9sADV3bRf4DO4WYcQy0AtGe6uNSz78DTL0SUVw4204VjoBw==
+"@tiptap/suggestion@2.0.0-beta.91", "@tiptap/suggestion@^2.0.0-beta.91":
+  version "2.0.0-beta.91"
+  resolved "https://registry.yarnpkg.com/@tiptap/suggestion/-/suggestion-2.0.0-beta.91.tgz#57a6e24346ef811d5cc0ff40d8c0eda4b60c8bb2"
+  integrity sha512-G3TGwEsDadDL9eqHBI6PI3wczneEQ/P3JFeAvsPuSLlAo4ub9hXjoQz5KWwblLIH1xEQ0TgCPzITsdiF/e3XdQ==
   dependencies:
     prosemirror-model "^1.16.1"
     prosemirror-state "^1.3.4"
     prosemirror-view "^1.23.6"
 
-"@tiptap/vue-2@2.0.0-beta.77":
-  version "2.0.0-beta.77"
-  resolved "https://registry.yarnpkg.com/@tiptap/vue-2/-/vue-2-2.0.0-beta.77.tgz#d5e7b414bba45d0892e39513dc50387d629b95ca"
-  integrity sha512-/wMi7fkqLqfWGhOpcztiGgVyqiCmOPq7TZ2LFx+cokoMJ1HpM8T7vG12u6ezOubB5Ie7/kL6WBcLJ8hONTdX0Q==
+"@tiptap/vue-2@2.0.0-beta.78":
+  version "2.0.0-beta.78"
+  resolved "https://registry.yarnpkg.com/@tiptap/vue-2/-/vue-2-2.0.0-beta.78.tgz#34c5aea2be46914026d8d58638761f1a46b3dc88"
+  integrity sha512-YTgKk7qCTu+odAwEzAseAdE1apYZL4OU3dRvtZ/WAXrs0NpV4H33cjSNx/MqNxdclQEbCPwMj/cRybDuYu0atQ==
   dependencies:
-    "@tiptap/extension-bubble-menu" "^2.0.0-beta.55"
-    "@tiptap/extension-floating-menu" "^2.0.0-beta.50"
+    "@tiptap/extension-bubble-menu" "^2.0.0-beta.56"
+    "@tiptap/extension-floating-menu" "^2.0.0-beta.51"
     prosemirror-view "^1.23.6"
 
 "@turf/along@^6.5.0":
@@ -5327,24 +5327,24 @@
     vuepress-plugin-container "^2.0.2"
     vuepress-plugin-smooth-scroll "^0.0.3"
 
-"@vueuse/core@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.6.tgz#baf674acadd678b0429c60477213c6dab08ea9e0"
-  integrity sha512-fzlpM3B5oVe+UhCT1mXlhG1Zxdq2lq1Z2AvddSB8+RxrsSFzII7DKfsQEz8Vop7Lzc++4m8drTNbhPovYoFqHw==
+"@vueuse/core@8.4.2":
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.4.2.tgz#e5be73f40394150e6a1b6abd59e5adb7c6bb6c1f"
+  integrity sha512-dUVU96lii1ZdWoNJXauQNt+4QrHz1DKbuW+y6pDR2N10q7rGZJMDU7pQeMcC2XeosX7kMODfaBuqsF03NozzLg==
   dependencies:
-    "@vueuse/metadata" "8.2.6"
-    "@vueuse/shared" "8.2.6"
+    "@vueuse/metadata" "8.4.2"
+    "@vueuse/shared" "8.4.2"
     vue-demi "*"
 
-"@vueuse/metadata@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.6.tgz#0e649ff5c784ac73d35f44f9758fac33f62e3e3f"
-  integrity sha512-OBKtafCt+4RcEJlYDCjp1vl65pBCL2g4TmipEtdZ8/qphKlW6nakJbkY7XRN5grPmjqU99/ahJGtyGk5NHS2hw==
+"@vueuse/metadata@8.4.2":
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.4.2.tgz#b33e6b7bd5ca69e3f24ea41b149267118bcd566f"
+  integrity sha512-2BIj++7P0/I5dfMsEe8q7Kw0HqVAjVcyNOd9+G22/ILUC9TVLTeYOuJ1kwa1Gpr+0LWKHc6GqHiLWNL33+exoQ==
 
-"@vueuse/shared@8.2.6":
-  version "8.2.6"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.6.tgz#7cbf2bdd576f86d888014272982a7c84b7015d21"
-  integrity sha512-J/W4CMfdL8TahELuSOgtfVO4eQXTjhigp7dVWIBsLUVFCeY9d49gvHUcQN3y5xYLZ6iNP57TjTQjMMT/zhklkw==
+"@vueuse/shared@8.4.2":
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.4.2.tgz#5900f06ff78bd8b6df4cbf48f8ca82dd6d9747d1"
+  integrity sha512-hILXMEjL8YQhj1LHN/HZ49UThyfk8irTjhele2nW+L3N55ElFUBGB/f4w0rg8EW+/suhqv7kJJPTZzvHCqxlIw==
   dependencies:
     vue-demi "*"
 
@@ -5625,15 +5625,15 @@ after@0.8.2:
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
-ag-grid-community@27.1.0:
-  version "27.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-27.1.0.tgz#17f73173444a9efc4faea0f0cd6c5090e698f7ee"
-  integrity sha512-SWzIJTNa7C6Vinizelcoc1FAJQRt1pDn+A8XHQDO2GTQT+VjBnPL8fg94fLJy0EEvqaN5IhDybNS0nD07SKIQw==
+ag-grid-community@27.2.1:
+  version "27.2.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-27.2.1.tgz#7642cd0cd8451d1b4f8fc93ea2b46b1ee97d452d"
+  integrity sha512-MCnbqZHVDvd6KNRx1g6vjuz/X9tE8YUV7kaWKpRupFF1M1fPsAt+CqkfOr3X2ybOooorYao3Z/GGskRlGaHlFQ==
 
-ag-grid-vue@27.1.0:
-  version "27.1.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-vue/-/ag-grid-vue-27.1.0.tgz#7fd4cb00466251d97329fd10dee8095588fdc5fe"
-  integrity sha512-BgH29nwFiGhSWx3b/KGVdLQsYwxASz2uIionIBFd3mvcr28c72S8qRwcV3mknNwQMX5miL8IEJd+0ED+xiXBAw==
+ag-grid-vue@27.2.1:
+  version "27.2.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-vue/-/ag-grid-vue-27.2.1.tgz#8b979e4bcee867e30f23eb9b100e5675b6126402"
+  integrity sha512-qc5Oe3E7fsQn6Zj8wcjKj/iFVOUVaMtg1ABK1BoB0rQU8GZ+7q80BpIfQGnEd4UKqQ8/90SDHLvpEp8UNtB8OQ==
 
 agent-base@4, agent-base@^4.3.0:
   version "4.3.0"
@@ -18426,10 +18426,10 @@ uuid@^7.0.3:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
-v-snackbars@3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/v-snackbars/-/v-snackbars-3.2.4.tgz#d01be1ee8dc9a192280c29bcb03416dbbe005502"
-  integrity sha512-nlnUyoynTXhbpTB2pYi4LnlQkoIp9pu4zYEhJ6tLZA24lpbBTrL8joBx03MqWWwa8ub/OJ4XMojDuYss7gOmJA==
+v-snackbars@3.2.7:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/v-snackbars/-/v-snackbars-3.2.7.tgz#3eff0e6523302abf1e2fd21b6ce07128001d9a71"
+  integrity sha512-/91p4cf/HDlZNWm0CNBzG8LUOSEavrbwi/UhoElZJqrl1GWtfY08IL+7RF7b0Jn7Q2wCHiFzY0UScuWuR9kRhQ==
 
 valid-url@1.0.9:
   version "1.0.9"
@@ -19051,10 +19051,10 @@ vuepress@1.8.2:
     opencollective-postinstall "^2.0.2"
     update-notifier "^4.0.0"
 
-vuetify@2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.4.tgz#18052f77492d32856fea35c910755075ff32acc9"
-  integrity sha512-2wEzU/Gz39gQCxK93xoiWPKCHQUnyUKWd81wB7Q7hfYJWu5QOWQXYlF0X/BgUZzf8IOyHWKiSNEAfEe9OE3b4w==
+vuetify@2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.6.5.tgz#9db2a6660427ca34d5555c45934eaa151f74314d"
+  integrity sha512-3T7huTujf33PLPgVhUY1y+8YD7K6d8qsk3UGcG6RL6qWc7QcUDczLcri0KNXeX2BeyESXMFhU0jwiNbMbNX+Tg==
 
 w3c-keyname@^2.2.0:
   version "2.2.4"

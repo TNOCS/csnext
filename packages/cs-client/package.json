@@ -29,9 +29,9 @@
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
         "vue-router": "^3.5.3",
-        "vuetify": "2.6.4",
-        "v-snackbars": "3.2.4",
-        "@vueuse/core": "8.2.6"
+        "vuetify": "2.6.5",
+        "v-snackbars": "3.2.7",
+        "@vueuse/core": "8.4.2"
     },
     "devDependencies": {
         "base64-inline-loader": "^1.1.1",

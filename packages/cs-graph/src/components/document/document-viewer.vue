@@ -529,8 +529,8 @@ export default class DocumentViewer extends WidgetBase {
   public currentDocument: GraphDocument | undefined;
 
   public openElement(document: GraphDocument) {
-    Vue.nextTick(() => {
-      this.loadDocument(document);
+    Vue.nextTick(async () => {
+      await this.loadDocument(document);
       this.updateEditor();
       this.updateContent();
       this.initTools();
@@ -649,10 +649,6 @@ export default class DocumentViewer extends WidgetBase {
                 const coords = { left: event.clientX, top: event.clientY }   
                 const position = view.posAtCoords(coords);
                 event.stopImmediatePropagation();
-                // const newSelection = NodeSelection.create(view.state.doc, position.pos);
-                
-          // view.dispatch(tr.setSelection(newSelection).scrollIntoView())
-              // view.dispatch(this.editor.state.tr.setSelection(newSelection).scrollIntoView());
                 if (element && this.editor && this.currentDocument) {
                 this.editor.chain().focus().insertContentAt(position.pos, {
                   type: 'text-entity',
@@ -662,26 +658,11 @@ export default class DocumentViewer extends WidgetBase {
                     text: element.properties?.name!,
                     kg_id: element.id!,
                   }
-                }
-                  
-                
-
-                //   "attrs": {
-                //   "id": "eda69f24-089b-4437-b765-a208dc0f5944",
-                //   "type": "person",
-                //   "text": "MiG-29",
-                //   "kg_id": "Q130681",
-                //   "label": null,
-                //   "source": "document",
-                //   "spacy_label": "military_aircraft"
-                // }
+                }                  
                   ).run();
                   this.source.parseEntities(this.currentDocument);
                   this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.currentDocument);
-                }
-                  
-                //   TextEntity
-                // }({kg_id: elementid, id: idGenerator(), text: element.properties?.name || ''}).run();
+                }                  
               }              
             },
           },
@@ -697,7 +678,7 @@ export default class DocumentViewer extends WidgetBase {
     }
   }
 
-  public loadDocument(doc: GraphDocument) {
+  public async loadDocument(doc: GraphDocument) {
     if (this.source && doc) {
       if (!doc.properties) {
         doc.properties = {};
@@ -722,11 +703,12 @@ export default class DocumentViewer extends WidgetBase {
       this.state.element = doc;
 
       // check if entities from document are also included in doc._entities
-      DocUtils.syncEntities(doc, this.source!, doc.properties.doc.content, false);
+      // DocUtils.syncEntities(doc, this.source!, doc.properties.doc.content, false);
 
       // link doc._entities to graph entities
-      this.source.parseEntities(doc);
+      await this.source.parseEntities(doc);
       this.loaded = true;
+      this.source.triggerDocumentEntities();
     }
   }
 

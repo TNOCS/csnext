@@ -235,7 +235,10 @@ export default class TextEntityComponent extends Vue {
         },
       });
 
+      
       this.updateEntity();
+      
+      
 
       
     }

@@ -1639,12 +1639,11 @@ export class DocDatasource extends GraphDatasource {
         doc.properties.id = doc.id;
       }
 
-      DocUtils.syncEntities(d, this, d.properties?.doc?.content, false);
+      await this.parseEntities(doc);
       
       this.saveNode(doc)
         .then(async () => {
-          await this.updateEdges(true);
-          DocUtils.syncEntities(d, this, d.properties?.doc?.content, false);
+          await this.updateEdges(true);          
           await this.parseEntities(d);
           this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, d);
           this.triggerDocumentEntities();
