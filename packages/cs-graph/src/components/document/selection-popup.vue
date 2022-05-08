@@ -121,9 +121,9 @@
       </v-tab-item>
       <v-tab-item>
         <v-card flat>
-          <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title>
+          <!-- <v-card-title>{{ $cs.Translate("suggestions") }}</v-card-title> -->
           <v-card-text v-if="suggestions">
-            <v-list two-line>
+            <v-list dense two-line>
               <v-list-item @click="useSuggestion(s.item)"  v-for="(s, i) in suggestions" :key="i">
                 <v-list-item-avatar>
                   <v-icon v-if="s.item._featureType.icon">{{s.item._featureType.icon}}</v-icon>
@@ -320,6 +320,9 @@ export default class SelectionPopup extends WidgetBase {
 
   public updateSuggestions() {
     console.log('update suggestions');
+    if (this.entity?.spacy_label && ['DATE','TIME', 'CARDINAL'].includes(this.entity.spacy_label)) {
+      return;
+    }
     if (this.entity?.text && this.source?.fuse) {
       this.suggestions = this.source.searchFuse(this.entity.text, undefined, false).slice(0, 15);
       // , { nlp: this.entity?.spacy_label}
@@ -408,6 +411,7 @@ export default class SelectionPopup extends WidgetBase {
       return;
     }
     await this.source.removeEntityFromDocument(this.entity, this.document);
+    await this.source.saveDocument(this.document);
     
     this.publishChanges();
   }
@@ -558,6 +562,9 @@ export default class SelectionPopup extends WidgetBase {
       return;
     }
     this.source.parseEntities(this.source.activeDocument);
+    this.source.events.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.ELEMENT_UPDATED, this.source.activeDocument);
+    // this.source.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, this.source.activeDocument);
+    
     this.$forceUpdate();
   }
 
