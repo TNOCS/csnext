@@ -30,7 +30,7 @@
                         </v-col>
                     </v-row>
                 </v-form>
-                <div v-if="optionalFields && optionalFields[0]">
+                <div v-if="Form.optionalSupport && optionalFields && optionalFields[0]">
                     <div class="optional-field-title"><v-icon>mdi-plus</v-icon> Add optional field</div>
                     <v-chip v-for="(field, ci) in optionalFields[0].fields" :key="ci" small class="ma-1 optional-field" @click="addField(field)"><v-icon v-if="field.icon" small>{{field.icon}}</v-icon><v-icon v-else small>mdi-plus</v-icon>{{field.title || field._key}}</v-chip>
                 </div>
