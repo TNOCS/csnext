@@ -39,8 +39,7 @@ export class EntityParser implements IDocumentPlugin
                         // find entity
                         const entity = doc._entities.find(i => i.kg_id === entityEdge.toId);
                         if (entity) {                            
-                            entity._linked = true;
-                            console.log(`${entityEdge.to?.properties?.name} is linked`);
+                            entity._linked = true;                            
                             entity._edge = entityEdge;
                             entity._node = entityEdge.to;
                         }
@@ -89,8 +88,8 @@ export class EntityParser implements IDocumentPlugin
 
                     if (entity.spacy_label && entity._node?.properties?.location) {
                         entity._location = entity._node.properties.location;                        
-                      } else if (entity.spacy_label === 'location' && entity.converted) {
-                          entity._location = entity.converted;
+                      } else if (entity.spacy_label === 'geo' && entity.wkt) {
+                          entity._location = entity.wkt;
                       }                    
                     
 

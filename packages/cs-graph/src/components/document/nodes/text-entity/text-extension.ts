@@ -44,7 +44,8 @@ export default Text.extend({
             kg_id: { default: undefined },
             label: { default: null},
             source: { default: null},
-            spacy_label: { default: null}
+            spacy_label: { default: null},            
+            wkt: { default: undefined},
         }
     },
 

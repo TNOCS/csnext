@@ -336,14 +336,17 @@
                       <v-layout>
                         <v-icon v-if="suggestion.icon" :color="suggestion.color">{{ suggestion.icon }}</v-icon
                         ><span class="suggestion-text">{{ suggestion.text }}</span
-                        ><v-spacer></v-spacer>
+                        >
+                      </v-layout>
+                      <v-layout>
+                      <span class="suggestion-subtext">{{ suggestion.subtext }}</span>
+                      <v-spacer></v-spacer>
                         <template v-if="suggestion.actions">
                           <v-btn v-for="(action, ai) in suggestion.actions" @click="callSuggestionAction(action)" :key="ai" icon
                             ><v-icon>{{ action.icon }}</v-icon></v-btn
                           >
                         </template>
                       </v-layout>
-                      <span class="suggestion-subtext">{{ suggestion.subtext }}</span>
                         
                     </v-card>
                   </v-col>
@@ -3036,6 +3039,12 @@ export default class ElementDataGrid extends WidgetBase {
           this.updateEntities(true);
           this.$forceUpdate();
         }
+      });
+      this.source.events.subscribe(DocDatasource.DOCUMENT, (action: string, el: GraphElement) => {
+        if (action === DocDatasource.DOCUMENT_UPDATED && el.id === this.linkedElement?.id) {
+          this.updateEntities(true);
+          this.$forceUpdate();
+        }        
       });
     }
 

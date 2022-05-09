@@ -16,7 +16,7 @@
       <v-tab>
         <v-icon left>mdi-magnify</v-icon>
       </v-tab>       
-      <v-tab :disabled="!entity || !entity._location">
+      <v-tab :disabled="!entity">
         <v-icon left>mdi-map-marker-outline</v-icon>
       </v-tab>
       <v-tab :disabled="!entity || !entity._date">
@@ -151,9 +151,9 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <!-- <v-tab-item>
+      <v-tab-item>
         <v-card flat>
-          <v-layout class="ma-4">
+          <!-- <v-layout class="ma-4">
             <v-btn outlined @click="locateOnMap()">
               <v-icon large>mdi-crosshairs-gps</v-icon>
               {{ $cs.Translate("LOCATE_ON_MAP") }}</v-btn
@@ -162,9 +162,36 @@
               <v-icon large>mdi-map-marker</v-icon>
               {{ $cs.Translate("NEARBY") }}</v-btn
             >
-          </v-layout>
+          </v-layout> -->
+          <v-card-text v-if="nearbyElements">
+            <v-list dense two-line>
+              <v-list-item @click="useSuggestion(l.poi)"  v-for="(l, i) in nearbyElements" :key="i">
+                <v-list-item-avatar>
+                  <v-icon v-if="l.poi._featureType.icon">{{l.poi._featureType.icon}}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{l.poi.properties.name}} ({{ l.distance }}km)
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{l.poi._featureType.title}}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-action>
+       
+        </v-list-item-action>
+              </v-list-item>
+            </v-list>
+            <!-- <div class="suggestion-item" >
+              <v-layout
+                >{{ s.item.properties.name }} ({{getScore(s.score)}})<v-btn v-if="!entity._node" icon @click="useSuggestion(s.item)"
+                  ><v-icon>mdi-link-plus</v-icon></v-btn
+                ></v-layout
+              >
+            </div> -->
+          </v-card-text>
         </v-card>
-      </v-tab-item> -->
+      </v-tab-item>
       <v-tab-item v-if="entity">
         <v-card flat>
           <v-card-text>
@@ -232,11 +259,11 @@ import { DocDatasource } from "../../datasources/doc-datasource";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { guidGenerator } from "@csnext/cs-core";
 import { DataInfoPanel, NodeLink, NodeChip, NodeSpan } from "@csnext/cs-map";
-import { DocUtils } from '../../utils/doc-utils';
 import { FeatureType } from "@csnext/cs-data";
 import { ElementCardManager } from "../data-grid/cards/element-card-manager";
 // import turf from "@turf/turf";
-// import distance from "@turf/distance";
+import { point } from "@turf/helpers";
+import distance from "@turf/distance";
 
 @Component({
   components: { DataInfoPanel, NodeLink, NodeSpan, NodeChip },
@@ -271,6 +298,8 @@ export default class SelectionPopup extends WidgetBase {
 
   public searchMode = "KG";
 
+  
+
   @Prop()
   public from?: number;
   @Prop()
@@ -280,6 +309,7 @@ export default class SelectionPopup extends WidgetBase {
   public newEntityNode: GraphElement = { };
 
   public suggestions: any[] | null = null;
+  public nearbyElements: { distance: number, poi: GraphElement}[] = [];
 
   constructor() {
     super();
@@ -368,18 +398,24 @@ export default class SelectionPopup extends WidgetBase {
   }
 
   public nearby() {
-    if (!this.source || !this.entity?._location) {
+    if (!this.source || !this.entity?.wkt) {
       return;
     }
-    // const location = WktUtils.PointParser(this.entity._location);
-    // const point = turf.point([location[0], location[1]]);
-    // const pois = this.source.getClassElements("poi", true);
-    // for (const p of pois) {
-    //   if (p.properties?.lat && p.properties.lon) {
-    //     // const distance = turf.distance(point, turf.point([p.properties.lat, p.properties.lon]));
-    //     // console.log(p.properties.name + ' - ' + distance);
-    //   }
-    // }
+    const location = WktUtils.PointParser(this.entity.wkt);
+    if (!location || location.length !== 2) {
+      return;
+    }
+    const po = point([location[0], location[1]]);
+    const pois = this.source.getClassElements("poi", true);
+    for (const p of pois) {
+      if (p.properties?.lat && p.properties.lon) {
+        const d = distance(po, point([p.properties.lat, p.properties.lon]), 'kilometers');
+        if (d < 250)
+        this.nearbyElements.push({ distance: d, poi: p});
+        
+        // console.log(p.properties.name + ' - ' + distance);
+      }
+    }
   }
 
   public async unlinkEntity() {
@@ -414,6 +450,9 @@ export default class SelectionPopup extends WidgetBase {
     await this.source.saveDocument(this.document);
     
     this.publishChanges();
+  }
+
+  public async useLocation(target: GraphElement) {
   }
 
   public async useSuggestion(target: GraphElement) {
@@ -654,6 +693,7 @@ export default class SelectionPopup extends WidgetBase {
     // this.updateAgents();
     // this.updatePotentialTypes();
     this.updateSuggestions();
+    this.nearby();
     if (!this.entity?._node && this.entity?.spacy_label && !['CARDINAL','DATE', 'ORDINAL', 'QUANTITY'].includes(this.entity.spacy_label) && this.suggestions && this.suggestions.length > 0) {
       // this.viewtab = 1;
     }

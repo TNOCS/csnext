@@ -1635,11 +1635,9 @@ export class DocDatasource extends GraphDatasource {
       if (!doc.properties) {
         doc.properties = {};
       }
-      if (doc.id) {
-        doc.properties.id = doc.id;
-      }
-
-      await this.parseEntities(doc);
+      
+      // await this.parseEntities(doc);
+      // DocUtils.syncEntities(doc, this, doc.properties?.doc?.content, false);
       
       this.saveNode(doc)
         .then(async () => {
