@@ -20,6 +20,7 @@ export class TextEntity extends MetaEntity {
     public converted?: string;
     public suggested_by?: string;
     public suggested_time?: number;
+    public wkt?: string;
     public _highlight?: boolean;
     public _key?: string;    
     public _location?: string;

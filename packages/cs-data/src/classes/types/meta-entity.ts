@@ -5,7 +5,7 @@ export class MetaEntity {
     public text?: string;    
     public id?: string;   
     public kg_id?: string;    
-    public source?: string;
+    public source?: string;    
     public _node?: GraphElement;
     public _edge?: GraphElement;
     // public _included?: boolean;
