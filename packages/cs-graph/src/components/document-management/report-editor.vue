@@ -30,11 +30,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-
-      <!-- <v-card @click="openViewer(original)" v-for="original in document._originals" :key="original.id">
-            <v-card-title>{{original.properties.id}}</v-card-title>
-            <v-card-title>{{original.properties.format}}</v-card-title>
-          </v-card> -->
     </v-layout>
     <cs-form
       :data="document.properties"

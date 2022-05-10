@@ -25,7 +25,7 @@
           <v-chip
             v-bind="data.attrs"
             :input-value="data.selected"
-            close
+
             :color="data.item.color"
             @click="data.select"
             @click:close="remove(data.item)"

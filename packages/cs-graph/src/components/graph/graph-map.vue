@@ -207,14 +207,12 @@ import { AppState, WidgetBase } from '@csnext/cs-client';
 import mapboxgl, { MapboxOptions, GeoJSONSource, GeoJSONSourceRaw, SymbolLayer, LngLat } from 'mapbox-gl';
 import { ILayerStyle, MapboxStyleDefinition, MapboxStyleSwitcherControl, MapOptions } from '@csnext/cs-map';
 // import { GraphMapOptions, GraphSettings, ITool, DefaultElementCard, DocDatasource, ElementCardManager } from '@csnext/cs-graph';
-// import interact from 'interactjs';
 import GraphSettings from './graph-settings.vue';
 import { ITool, DefaultElementCard, ElementCardManager, DocDatasource, GraphMapOptions } from '../..';
 
 import Vue from 'vue';
 import { FilterGraphElement, GraphDatasource, GraphElement, GraphPreset, IGraphFilter } from '@csnext/cs-data';
 import { guidGenerator } from '@csnext/cs-core';
-// import ElementEditor from './element-editor.vue';
 import draggable from 'vuedraggable';
 
 @Component({
