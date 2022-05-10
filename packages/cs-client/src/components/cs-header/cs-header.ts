@@ -40,10 +40,10 @@ export class CsHeader extends Vue {
 
   @Watch("$cs.project.menus")
   public InitMenus() {
-    if (!this.$cs.project.menus) {
-      this.$cs.project.menus = [];
+    if (!AppState.Instance.project.menus) {
+      AppState.Instance.project.menus = [];
     }
-    if (this.$cs.project.header && this.$cs.project.header.showLoadingIcon) {
+    if (AppState.Instance.project.header && AppState.Instance.project.header.showLoadingIcon) {
       this.loadingMenuIcon = {
         id: Constants.LOADING_MENU_ID,
         icon: "autorenew",
@@ -51,14 +51,14 @@ export class CsHeader extends Vue {
         toolTip: "LOADING",
         hide: true,
       };
-      this.$cs.addMenu(this.loadingMenuIcon);
+      AppState.Instance.addMenu(this.loadingMenuIcon);
     }
     if (
-      this.$cs.project.languages &&
-      this.$cs.project.languages.showLanguageSwitchMenu
+      AppState.Instance.project.languages &&
+      AppState.Instance.project.languages.showLanguageSwitchMenu
     ) {
       if (
-        !this.$cs.project.menus.find(
+        !AppState.Instance.project.menus.find(
           (menu) => menu.id === Constants.LANGUAGE_SWITCH_ID
         )
       ) {
@@ -71,28 +71,28 @@ export class CsHeader extends Vue {
           component: CsLanguageSwitch,
           buttonClass: "sidebar-header-button",
         };
-        this.$cs.addMenu(this.languageSwitchMenu);
+        AppState.Instance.addMenu(this.languageSwitchMenu);
       }
     }
 
-    // this.allMenus = this.$cs.project.menus;
-    if (this.$cs.activeDashboard && this.$cs.activeDashboard.menus) {
-      for (const menu of this.$cs.activeDashboard.menus) {
+    // this.allMenus = AppState.Instance.project.menus;
+    if (AppState.Instance.activeDashboard && AppState.Instance.activeDashboard.menus) {
+      for (const menu of AppState.Instance.activeDashboard.menus) {
         if (!menu._dashboard) {
-          menu._dashboard = this.$cs.activeDashboard;
+          menu._dashboard = AppState.Instance.activeDashboard;
         }
       }
       Vue.set(this, "allMenus", [
-        ...this.$cs.project.menus,
-        ...this.$cs.activeDashboard.menus,
+        ...AppState.Instance.project.menus,
+        ...AppState.Instance.activeDashboard.menus,
       ]);
     } else {
-      Vue.set(this, "allMenus", this.$cs.project.menus);
+      Vue.set(this, "allMenus", AppState.Instance.project.menus);
     }
   }
 
   public openRightSidebar(key: string) {
-    this.$cs.toggleRightSidebar(key);
+    AppState.Instance.toggleRightSidebar(key);
   }
 
   public toggleRightSidebar() {
@@ -136,20 +136,25 @@ export class CsHeader extends Vue {
   public mounted() {
     this.InitMenus();
     this.updateVisibleSidebars();
+    this.busManager.subscribe(AppState.Instance.bus, AppState.RIGHTSIDEBAR, (a: string) => {
+      if (a === AppState.RIGHTSIDEBAR_BADGES_CHANGED) {
+        this.$forceUpdate();
+      }
+    });
     // listen to dashboard init events
-    this.busManager.subscribe(this.$cs.bus, AppState.DASHBOARD_MAIN, () => {
+    this.busManager.subscribe(AppState.Instance.bus, AppState.DASHBOARD_MAIN, () => {
       this.InitMenus();
       this.updateVisibleSidebars();
       // this.InitTitleWidget();
     });
     // menu list changed (e.g. if dashboard menu was updated)
-    this.busManager.subscribe(this.$cs.bus, "menus", () => {
+    this.busManager.subscribe(AppState.Instance.bus, "menus", () => {
       this.InitMenus();
     });
 
-    if (this.$cs.project.header) {
+    if (AppState.Instance.project.header) {
       this.busManager.subscribe(
-        this.$cs.bus,
+        AppState.Instance.bus,
         Loader.LOADERS,
         (a: string, loader: any) => {
           if (a === Loader.LOADER_ADDED && loader.notification) {
@@ -160,7 +165,7 @@ export class CsHeader extends Vue {
           }
           if (this.loadingMenuIcon) {
             this.loadingMenuIcon.hide =
-              Object.keys(this.$cs.loader.getLoaders()).length === 0;
+              Object.keys(AppState.Instance.loader.getLoaders()).length === 0;
           }
         }
       );

@@ -449,7 +449,7 @@ export default class CsDashboard extends Vue {
   }
 
   public beforeMount() {
-    this.startManager();
+    this.startManager();        
   }
 
   public stopManager() {

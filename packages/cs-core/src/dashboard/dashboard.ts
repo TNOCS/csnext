@@ -44,6 +44,9 @@ export interface IDashboard {
 
   badgeDot?: boolean;
 
+  // clear badge when dashboard is active
+  badgeClearOnOpen?: boolean;
+
   // id of default datasource
   datasource?: string;
 

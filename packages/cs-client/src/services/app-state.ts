@@ -14,19 +14,10 @@ import {
   IMenu,
   INotificationOptions,
   idGenerator,
-  SyncStore
+  SyncStore,
 } from '@csnext/cs-core';
 // tslint:disable-next-line:no-var-requires
-import {
-  CsApp,
-  CsDashboard,
-  Logger,
-  CsWidget,
-  HtmlWidget,
-  DatasourceManager,
-  LayoutManager,
-  DashboardManager,
-} from '../';
+import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, LayoutManager, DashboardManager } from '../';
 import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
@@ -34,8 +25,6 @@ import io, { Socket } from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
-
-
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState extends AppStateBase {
@@ -46,6 +35,7 @@ export class AppState extends AppStateBase {
   public static RIGHTSIDEBAR_REMOVED = 'rightsidebar-removed';
   public static RIGHTSIDEBAR_ADDED = 'rightsidebar-added';
   public static RIGHTSIDEBAR_CLOSED = 'rightsidebar-closed';
+  public static RIGHTSIDEBAR_BADGES_CHANGED = 'rightsidebar-badges-changed';
   public static DASHBOARD_MAIN = 'dashboard.main';
   public static DASHBOARD_CHANGED = 'dashboard-changed';
   public static APP_STATE = 'app-state';
@@ -65,8 +55,6 @@ export class AppState extends AppStateBase {
   public static FILE_UPLOAD_START = 'file-upload-start';
   public static LEFT_SIDEBAR_STATE = 'lsb';
 
-  
-
   /** used for singleton  */
   private static pInstance: AppState;
 
@@ -84,10 +72,7 @@ export class AppState extends AppStateBase {
   public serverUrl(url?: string): string {
     if (process.env.VUE_APP_SERVER_URL) {
       return process.env.VUE_APP_SERVER_URL;
-    } else if (
-      window.hasOwnProperty('_env') &&
-      (window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL')
-    ) {
+    } else if (window.hasOwnProperty('_env') && (window as any)._env.hasOwnProperty('VUE_APP_SERVER_URL')) {
       return (window as any)._env.VUE_APP_SERVER_URL;
     } else if (url !== undefined) {
       return url;
@@ -188,34 +173,17 @@ export class AppState extends AppStateBase {
   }
 
   public initSocket() {
-    if (
-      this.project &&
-      this.project.server &&
-      this.project.server.useSocket &&
-      this.project.server.socketServerUrl
-    ) {
+    if (this.project && this.project.server && this.project.server.useSocket && this.project.server.socketServerUrl) {
       this.socket = io(this.project.server.socketServerUrl, {});
 
       this.socket.on('connect', () => {
-        this.bus.publish(
-          AppState.SOCKET,
-          AppState.SOCKET_CONNECTED,
-          this.socket
-        );
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_CONNECTED, this.socket);
       });
       this.socket.on('reconnect', () => {
-        this.bus.publish(
-          AppState.SOCKET,
-          AppState.SOCKET_RECONNECTING,
-          this.socket
-        );
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_RECONNECTING, this.socket);
       });
       this.socket.on('disconnect', (e) => {
-        this.bus.publish(
-          AppState.SOCKET,
-          AppState.SOCKET_DISCONNECTED,
-          this.socket
-        );
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_DISCONNECTED, this.socket);
       });
     }
   }
@@ -232,10 +200,28 @@ export class AppState extends AppStateBase {
   }
 
   public get isBottomNavigation(): boolean {
-    return (
-      this.project?.navigation?.style === 'bottom' ||
-      (this.project?.navigation?.style === 'mobile-compact' && this.isMobile)
-    );
+    return this.project?.navigation?.style === 'bottom' || (this.project?.navigation?.style === 'mobile-compact' && this.isMobile);
+  }
+
+  public setSidebarBadge(id: string, dot: boolean, color: string, badgeType: 'none' | 'text' | 'icon', content: string, onlyIfClosed?: boolean ) {
+    if (
+      this.project?.rightSidebar?.sidebars &&
+      this.project.rightSidebar.sidebars.hasOwnProperty(id) &&
+      this.project.rightSidebar.sidebars[id] !== undefined
+    ) {
+      const dashboard = this.project.rightSidebar.sidebars[id] as IDashboard;
+      if (onlyIfClosed && this.project.rightSidebar.open) {
+        return;
+      }
+      dashboard.badgeDot = dot;
+      dashboard.badgeColor = color;
+      dashboard.badgeType = badgeType;
+      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_BADGES_CHANGED, this.project.rightSidebar);
+    }
+  }
+
+  public clearSidebarBadge(id: string) {
+    this.setSidebarBadge(id, false, '', 'none', '');
   }
 
   public copyToClipboard(str: string) {
@@ -274,11 +260,7 @@ export class AppState extends AppStateBase {
     // this.project = merge(DefaultProject, project);
     this.project = { ...DefaultProject, ...project };
 
-    if (
-      this.isMobile &&
-      this.project.navigation &&
-      this.project.navigation.autoMobileBottom
-    ) {
+    if (this.isMobile && this.project.navigation && this.project.navigation.autoMobileBottom) {
       this.project.navigation.style = 'bottom';
     }
 
@@ -290,10 +272,7 @@ export class AppState extends AppStateBase {
       if (project.languages.localeMessages) {
         const messages = Object.keys(project.languages.localeMessages);
         for (const lang of messages) {
-          this.i18n!.mergeLocaleMessage(
-            lang,
-            project.languages!.localeMessages![lang] as LocaleMessageObject
-          );
+          this.i18n!.mergeLocaleMessage(lang, project.languages!.localeMessages![lang] as LocaleMessageObject);
         }
       }
       this.i18n.locale = project.languages.defaultLanguage || 'en';
@@ -360,13 +339,7 @@ export class AppState extends AppStateBase {
         dash.parent = d;
         this.addDashboardRoute(dash);
       }
-      if (
-        d.options &&
-        d.options.toolbarOptions &&
-        d.options.toolbarOptions.navigation &&
-        d.dashboards &&
-        d.dashboards.length > 0
-      ) {
+      if (d.options && d.options.toolbarOptions && d.options.toolbarOptions.navigation && d.dashboards && d.dashboards.length > 0) {
         this.addDashboardRoute({ ...d.dashboards[0], ...{ path: d.path } });
       }
     } else if (d.path) {
@@ -479,11 +452,7 @@ export class AppState extends AppStateBase {
   }
 
   public removeSidebar(id: string) {
-    if (
-      !this.project.rightSidebar ||
-      !this.project.rightSidebar.sidebars ||
-      !this.project.rightSidebar.sidebars.hasOwnProperty(id)
-    ) {
+    if (!this.project.rightSidebar || !this.project.rightSidebar.sidebars || !this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
       return;
     }
     delete this.project.rightSidebar.sidebars[id];
@@ -493,12 +462,7 @@ export class AppState extends AppStateBase {
     if (!d) {
       d = this.activeDashboard;
     }
-    if (
-      d &&
-      this.project &&
-      this.project.header &&
-      this.project.header.breadcrumbs
-    ) {
+    if (d && this.project && this.project.header && this.project.header.breadcrumbs) {
       if (!this.project.header.breadcrumbItems || main) {
         Vue.set(this.project.header, 'breadcrumbItems', []);
         // this.project.header.breadcrumbItems = [];
@@ -562,11 +526,7 @@ export class AppState extends AppStateBase {
 
   public clearInfoWidget() {
     this.activeInfoWidget = undefined;
-    this.bus.publish(
-      AppState.INFO_WIDGET,
-      AppState.INFO_WIDGET_CLEARED,
-      undefined
-    );
+    this.bus.publish(AppState.INFO_WIDGET, AppState.INFO_WIDGET_CLEARED, undefined);
   }
 
   public TriggerNotification = this.triggerNotification;
@@ -596,22 +556,9 @@ export class AppState extends AppStateBase {
       ...notification,
     };
 
-    this.bus.publish(
-      AppState.NOTIFICATION,
-      AppState.NOTIFICATION_ADDED,
-      notification
-    );
-    if (
-      this.project.notifications &&
-      this.project.notifications.items &&
-      notification.remember
-    ) {
-      if (
-        !notification.group ||
-        this.project.notifications.items.findIndex(
-          (n) => n.text === notification.text
-        ) === -1
-      ) {
+    this.bus.publish(AppState.NOTIFICATION, AppState.NOTIFICATION_ADDED, notification);
+    if (this.project.notifications && this.project.notifications.items && notification.remember) {
+      if (!notification.group || this.project.notifications.items.findIndex((n) => n.text === notification.text) === -1) {
         this.project.notifications.items.push(notification);
       }
     }
@@ -640,15 +587,10 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public triggerYesNoQuestionDialog(
-    title: string,
-    text: string
-  ): Promise<string> {
+  public triggerYesNoQuestionDialog(title: string, text: string): Promise<string> {
     return new Promise((resolve) => {
       const cb = (action: string) => {
-        resolve(
-          action === this.translate(AppState.YES) ? AppState.YES : AppState.NO
-        );
+        resolve(action === this.translate(AppState.YES) ? AppState.YES : AppState.NO);
       };
       const d = {
         fullscreen: false,
@@ -665,11 +607,7 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public triggerQuestionDialog(
-    title: string,
-    text: string,
-    actions: string[]
-  ): Promise<string | undefined> {
+  public triggerQuestionDialog(title: string, text: string, actions: string[]): Promise<string | undefined> {
     const d = {
       fullscreen: false,
       toolbar: true,
@@ -683,12 +621,7 @@ export class AppState extends AppStateBase {
     return this.triggerDialog(d);
   }
 
-  public triggerInputDialog(
-    title: string,
-    text: string,
-    defaultValue?: string,
-    placeholder?: string
-  ): Promise<string> {
+  public triggerInputDialog(title: string, text: string, defaultValue?: string, placeholder?: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const d = {
         fullscreen: false,
@@ -724,10 +657,10 @@ export class AppState extends AppStateBase {
     });
   }
 
-  public triggerFileDownload(fileName: string, content: any, contentType: string): Promise<boolean> {    
+  public triggerFileDownload(fileName: string, content: any, contentType: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         const file = new Blob([content], { type: contentType });
         a.href = URL.createObjectURL(file);
         a.download = fileName;
@@ -736,22 +669,15 @@ export class AppState extends AppStateBase {
       } catch (e) {
         reject();
       }
-
     });
   }
 
   /** if rightsidebar exists, clear component and close */
   public clearRightSidebar() {
-    if (
-      this.project.rightSidebar &&
-      this.project.rightSidebar.dashboard &&
-      this.project.rightSidebar.dashboard.widgets
-    ) {
+    if (this.project.rightSidebar && this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.widgets) {
       while (this.project.rightSidebar.dashboard.widgets.length > 0) {
         if (this.project.rightSidebar.dashboard.widgets[0].id) {
-          this.closeRightSidebarWidget(
-            this.project.rightSidebar.dashboard.widgets[0].id
-          );
+          this.closeRightSidebarWidget(this.project.rightSidebar.dashboard.widgets[0].id);
         }
         this.project.rightSidebar.dashboard.widgets.shift();
       }
@@ -806,11 +732,7 @@ export class AppState extends AppStateBase {
   }
 
   public closeRightSidebarKey(id: string): boolean {
-    if (
-      this.project.rightSidebar &&
-      this.project.rightSidebar.sidebars &&
-      this.project.rightSidebar.sidebars.hasOwnProperty(id)
-    ) {
+    if (this.project.rightSidebar && this.project.rightSidebar.sidebars && this.project.rightSidebar.sidebars.hasOwnProperty(id)) {
       this.project.rightSidebar.sidebars[id].hide = true;
       return true;
     } else {
@@ -824,24 +746,11 @@ export class AppState extends AppStateBase {
 
   /** If a rightsidebar exists, it will remove a specific widget */
   public closeRightSidebarWidget(id: string): boolean {
-    if (
-      this.project.rightSidebar &&
-      this.project.rightSidebar.dashboard &&
-      this.project.rightSidebar.dashboard.widgets
-    ) {
-      const wi = this.project.rightSidebar.dashboard.widgets.findIndex(
-        (w) => w.id === id
-      );
+    if (this.project.rightSidebar && this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.widgets) {
+      const wi = this.project.rightSidebar.dashboard.widgets.findIndex((w) => w.id === id);
       if (wi >= 0) {
-        const widget = this.project.rightSidebar.dashboard.widgets.splice(
-          wi,
-          1
-        )[0];
-        this.bus.publish(
-          AppState.RIGHTSIDEBAR,
-          AppState.RIGHTSIDEBAR_REMOVED,
-          widget
-        );
+        const widget = this.project.rightSidebar.dashboard.widgets.splice(wi, 1)[0];
+        this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_REMOVED, widget);
         if (this.project.rightSidebar.dashboard.widgets.length === 0) {
           this.closeRightSidebar();
         }
@@ -853,7 +762,7 @@ export class AppState extends AppStateBase {
     return false;
   }
 
-  public addRightSidebarKey(key: string, open: boolean = false, expanded = false, tab : string | undefined = undefined) {
+  public addRightSidebarKey(key: string, open: boolean = false, expanded = false, tab: string | undefined = undefined) {
     if (this.project.rightSidebar) {
       if (!this.project.rightSidebar.sidebars) {
         this.project.rightSidebar.sidebars = {};
@@ -862,19 +771,19 @@ export class AppState extends AppStateBase {
         this.project.rightSidebar.sidebars[key] = { id: key, widgets: [] };
       }
       const d = this.project.rightSidebar.sidebars[key];
-    
+
       if (expanded) {
         if (!d.options) d.options = {};
         d.options.sidebarExpanded = expanded;
       }
-        d.hide = false;
+      d.hide = false;
       if (open) {
         this.openRightSidebar(d);
       }
     }
   }
 
-  public openRightSidebarKey(key: string, expanded = false, tab : string | undefined = undefined) {
+  public openRightSidebarKey(key: string, expanded = false, tab: string | undefined = undefined) {
     this.addRightSidebarKey(key, true);
   }
 
@@ -893,10 +802,7 @@ export class AppState extends AppStateBase {
 
     if (key && visible.hasOwnProperty(key)) {
       const d = visible[key];
-      if (
-        this.project.rightSidebar.dashboard &&
-        this.project.rightSidebar.dashboard.id === d.id
-      ) {
+      if (this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.id === d.id) {
         if (this.project.rightSidebar.open) {
           this.closeRightSidebar();
         } else {
@@ -915,23 +821,12 @@ export class AppState extends AppStateBase {
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public openRightSidebarWidget(
-    widget: IWidget,
-    options?: ISidebarOptions,
-    key = 'default',
-    replace = true
-  ) {
+  public openRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace = true) {
     this.addRightSidebarWidget(widget, options, key, replace, true);
   }
 
   /** If a rightsidebar exists, it will replaces all rightsidebar content with this specific widget */
-  public addRightSidebarWidget(
-    widget: IWidget,
-    options?: ISidebarOptions,
-    key = 'default',
-    replace: boolean = true,
-    open: boolean = false
-  ) {
+  public addRightSidebarWidget(widget: IWidget, options?: ISidebarOptions, key = 'default', replace: boolean = true, open: boolean = false) {
     if (
       !replace &&
       widget.id &&
@@ -948,19 +843,12 @@ export class AppState extends AppStateBase {
       } else {
         this.addRightSidebarKey(key);
         if (this.project.rightSidebar && this.project.rightSidebar.sidebars) {
-          if (
-            this.project.rightSidebar.sidebars.hasOwnProperty(key) &&
-            this.project.rightSidebar.sidebars[key].widgets
-          ) {
+          if (this.project.rightSidebar.sidebars.hasOwnProperty(key) && this.project.rightSidebar.sidebars[key].widgets) {
             this.project.rightSidebar.sidebars[key].widgets!.push(widget);
           }
         }
       }
-      if (
-        this.project.rightSidebar &&
-        this.project.rightSidebar.dashboard &&
-        this.project.rightSidebar.dashboard.widgets
-      ) {
+      if (this.project.rightSidebar && this.project.rightSidebar.dashboard && this.project.rightSidebar.dashboard.widgets) {
         this.project.rightSidebar.dashboard.widgets.push(widget);
         if (options) {
           if (options.open !== undefined) {
@@ -970,22 +858,11 @@ export class AppState extends AppStateBase {
             this.project.rightSidebar.width = options.width;
           }
         } else {
-          this.project.rightSidebar.open =
-            this.project.rightSidebar.open !== undefined
-              ? this.project.rightSidebar.open
-              : true;
+          this.project.rightSidebar.open = this.project.rightSidebar.open !== undefined ? this.project.rightSidebar.open : true;
         }
       }
-      this.bus.publish(
-        AppState.DASHBOARD_MAIN,
-        AppState.DASHBOARD_CHANGED,
-        AppState.Instance.activeDashboard
-      ); //To trigger the watch on visibleHeaders
-      this.bus.publish(
-        AppState.RIGHTSIDEBAR,
-        AppState.RIGHTSIDEBAR_ADDED,
-        widget
-      );
+      this.bus.publish(AppState.DASHBOARD_MAIN, AppState.DASHBOARD_CHANGED, AppState.Instance.activeDashboard); //To trigger the watch on visibleHeaders
+      this.bus.publish(AppState.RIGHTSIDEBAR, AppState.RIGHTSIDEBAR_ADDED, widget);
     });
     // }
   }
@@ -1013,7 +890,7 @@ export class AppState extends AppStateBase {
       }
     }
   }
-  
+
   /**
    * @deprecated use translate
    */
