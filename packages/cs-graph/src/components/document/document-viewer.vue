@@ -76,7 +76,7 @@
           </v-sheet>
         </template>
         <v-spacer></v-spacer>
-        <v-switch v-model="currentDocument._flat.show_all_entities"> </v-switch>
+        <!-- <v-switch v-model="currentDocument._flat.show_all_entities"> </v-switch> -->
 
         <v-btn icon @click="selectDocumentAction(action)" v-for="action in documentActionsMenu" :key="action.id">
           <v-icon>{{ action.icon }}</v-icon>
