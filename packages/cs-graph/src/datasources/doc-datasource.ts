@@ -72,7 +72,7 @@ export class DocDatasource extends GraphDatasource {
   public tools: ITool[] = [];
   public slideConfigs: IWidget[] = [];
 
-  constructor(public base_url: string, public timesourceId: string) {
+  constructor(public base_url?: string, public timesourceId?: string) {
     super();
   }
 
@@ -119,11 +119,13 @@ export class DocDatasource extends GraphDatasource {
         $cs.triggerDialog({ widget: $cs.project.header.titleWidget, width: '900px' });
       }
       // alert('device storage');
-    } else {
+    } else if (this.base_url) {
       this.storage = new ServerStorage(this.base_url);
     }
     try {
-      await this.storage.init(this);
+      if (this.storage) {
+        await this.storage.init(this);
+      }      
     } catch (e) {
       $cs.triggerNotification({ text: 'ERROR_INITIALIZING_STORAGE' });
     }
@@ -1981,6 +1983,9 @@ export class DocDatasource extends GraphDatasource {
     element._collapsed = !element._collapsed;
     if (open) {
       this.openElement(element, expanded, tab);
+    } else {
+      // show badge
+      AppState.Instance.setSidebarBadge('details', true, 'red', 'text','', true);
     }
     this.bus.publish('focus', 'element', element);
   }
@@ -2160,9 +2165,7 @@ export class DocDatasource extends GraphDatasource {
       this.importPlugins.push(new EmptyDocumentImport());
 
       if (this.timesourceId) {
-        AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then((ts) => {
-          // this.timesource = ts;
-          // this.initTimeDatasource();
+        AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then((ts) => {          
           resolve(this);
         });
       }

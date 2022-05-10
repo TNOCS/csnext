@@ -29,7 +29,6 @@ import suggestion from './components/document/plugins/text-entity-suggestion/sug
 
 import './assets/cards.css';
 
-
 import NetworkGraph from './components/graph/graph.vue';
 import GraphElements from './components/entity-management/graph-elements.vue';
 import RecentList from './components/entity-management/recent-list.vue';

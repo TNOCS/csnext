@@ -165,7 +165,7 @@
   margin: 14px;
 }
 .element-data-info-panel {
-  /* margin: 4px; */
+  margin: 4px;
 }
 
 .type-sub-title {
@@ -251,7 +251,7 @@
 
 <script lang="ts">
 import { Component, Ref, Vue, Watch } from 'vue-property-decorator';
-import { WidgetBase, IframeWidget } from '@csnext/cs-client';
+import { WidgetBase, IframeWidget, AppState } from '@csnext/cs-client';
 import { GraphDatasource, GraphElement, LinkInfo } from '@csnext/cs-data';
 import simplebar from 'simplebar-vue';
 import { PropertyType } from '@csnext/cs-data';
@@ -640,6 +640,7 @@ export default class ElementInfo extends WidgetBase {
 
   public mounted() {
     let qtab = $cs.getRouteQuery(this.elementInfoTab);
+    AppState.Instance.clearSidebarBadge('details');
     if (qtab && qtab !== this.tab) {
       this.tab = qtab;
     }
@@ -669,7 +670,7 @@ export default class ElementInfo extends WidgetBase {
       this.busManager.subscribe(this.dataSource.bus, 'focus', (a: string, data: any) => {
         this.activeElement = data;
         this.updateElement();
-        this.updateTabs();
+        this.updateTabs();        
       });
     }
     this.updateElement();
