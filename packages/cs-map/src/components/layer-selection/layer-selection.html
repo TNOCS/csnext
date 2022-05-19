@@ -27,14 +27,14 @@
                             {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                         </v-icon>
                         <v-icon v-else>
-                            layers
+                            mdi-layers
                         </v-icon>
                     </template>
                     <template v-slot:append="{ item, open }">
                         <v-menu>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn v-bind="attrs" icon v-on="on">
-                                    <v-icon>more_vert</v-icon>
+                                    <v-icon>mdi-dots-vertical</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -121,7 +121,7 @@
                                                 class="layer-options-button layer-opacity-button"
                                                 @click="toggleShowMore(layer)"
                                             >
-                                                <v-icon>opacity</v-icon>
+                                                <v-icon>mdi-opacity</v-icon>
                                             </v-btn>
                                             <v-menu
                                                 bottom
@@ -139,7 +139,7 @@
                                                         class="layer-options-button"
                                                     >
                                                         <v-icon
-                                                            >more_vert</v-icon
+                                                            >mdi-dots-vertical</v-icon
                                                         >
                                                     </v-btn>
                                                 </template>

@@ -2,14 +2,14 @@ import { IDatasource, MessageBusService, Topics } from '@csnext/cs-core';
 import { ILogItem } from '../..';
 import Axios from 'axios';
 import { AppState } from '../../services/app-state';
-import { Socket } from 'socket.io-client';
+import * as SocketIOClient from 'socket.io-client';
 
 export class LogDataSource implements IDatasource {
   public id = 'logdatasource';
   public items: ILogItem[] = [];
   public bus = new MessageBusService();
 
-  public get socket(): Socket | undefined {
+  public get socket(): SocketIOClient.Socket | undefined {
     return AppState.Instance.socket;
   }
 
