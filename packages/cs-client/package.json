@@ -24,18 +24,18 @@
         "@csnext/cs-core": "^0.0.131",
         "axios": "^0.26.1",
         "simplebar-vue": "1.6.8",
-        "socket.io-client": "^4.4.1",
+        "socket.io-client": "^2.4.0",
         "vue-i18n": "^8.27.1",
         "vue-mixin-decorator": "^1.2.0",
         "vue-resize-directive": "^1.2.0",
-        "vue-router": "^3.5.3",
-        "vuetify": "2.6.5",
+        "vue-router": "^3.5.4",
+        "vuetify": "2.6.6",
         "v-snackbars": "3.2.7",
         "@vueuse/core": "8.4.2"
     },
     "devDependencies": {
         "base64-inline-loader": "^1.1.1",
-        "@mdi/font": "6.6.96",
+        "@mdi/font": "6.7.96",
         "vue-template-compiler": "2.6.14"
     },
     "gitHead": "2dd8a401ccb96079185452d8413f26921fe2063e"
