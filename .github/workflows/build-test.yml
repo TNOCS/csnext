@@ -23,8 +23,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
           node-version: 16
-    - run: npm install
-    - run: npm run build
+    - run: yarn
+    - run: yarn build
     - run: git reset --hard
     - name: Authenticate with Registry
       run: |
