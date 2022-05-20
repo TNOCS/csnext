@@ -70,6 +70,7 @@ import simplebar from "simplebar-vue";
 import { GraphDocument } from "../../classes/document/graph-document";
 import { NodeLink } from "@csnext/cs-map";
 import { GraphElement } from "@csnext/cs-data";
+import { DataGridOptions } from "../data-grid/data-grid-options";
 
 @Component({
   components: { simplebar, NodeLink },
@@ -103,6 +104,12 @@ export default class DocumentEditor extends WidgetBase {
     }
   }
 
+  public selectElement(e: GraphElement, options?: DataGridOptions) {
+    this.document = e;        
+    this.updateForm();        
+    this.$forceUpdate();
+  }
+
   public updateDocument() {
     if (!this.source || !this.document) {
       return;
@@ -117,7 +124,7 @@ export default class DocumentEditor extends WidgetBase {
     //   // alert('source changed');
     // }
 
-    this.source.saveDocument(this.document);
+    this.source.saveDocument(this.document as GraphDocument);
   }
 
   public approvedObservations() {
@@ -138,7 +145,7 @@ export default class DocumentEditor extends WidgetBase {
       .map((o) => o.to);
   }
 
- public document?: GraphDocument | null = null;
+ public document?: GraphElement | null = null;
 
   public get source(): DocDatasource | undefined {
     if (this.widget?.content) {
@@ -151,7 +158,7 @@ export default class DocumentEditor extends WidgetBase {
 
   public updateForm() {
     if (!this.source || !this.document) { return; }
-    this.source.updateDocumentOriginals(this.document);    
+    this.source.updateDocumentOriginals(this.document as GraphDocument);    
     const form = this.source.elementEditorForm(this.document);
     Vue.set(this, "formDef", form);
     
@@ -174,10 +181,8 @@ export default class DocumentEditor extends WidgetBase {
     this.busManager.subscribe(
       this.source!.bus,
       DocDatasource.DOCUMENT,
-      (a: string, d: any) => {        
-        this.document = d;        
-        this.updateForm();        
-        this.$forceUpdate();
+      (a: string, d: any) => {    
+        this.selectElement(d);            
       }
     );        
   }

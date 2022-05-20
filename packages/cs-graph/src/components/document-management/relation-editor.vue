@@ -1,15 +1,14 @@
 <template>
   <div v-if="field" :class="{ 'can-drop': startDrop }">
     <div v-if="field.data.relation.multiple">
-      <v-autocomplete
-        auto-select-first
+      <v-autocomplete        
         v-model="links"
         :items="items"
         chips
         @change="updateLinks()"
         :label="$cs.Translate(field.title)"
         :hint="field.hint"
-        @focus="updateItems()"
+        @focus="loadAllItems()"
         :persistentHint="field.persistentHint"
         :search-input.sync="search"
         append-outer-icon="mdi-plus"
@@ -110,16 +109,14 @@
     <div v-else>
       <v-autocomplete
         :items="items"
-        @dragenter="onDragEnter"
-        @dragleave="onDragLeave"
-        @drop="onDrop"
+        
         :search-input.sync="search"
         v-model="activeRelation"
         :label="$cs.Translate(field.title) + ' (' + field.data.relation.type + ')'"
         :hint="field.hint"
         item-text="element.properties.name"
         hide-no-data        
-        @focus="updateItems()"
+        @focus="loadAllItems()"
         clearable
         @change="updateRelation()"
         return-object
@@ -191,7 +188,8 @@ export default class RelationEditor extends Vue {
   private startDrop: boolean = false;
 
   @Watch('search')
-  private updateItems() {
+  private loadAllItems() {
+    // load all items
     if (!this.itemsLoaded) {
       this.items = this.getItems();
     }
@@ -215,7 +213,7 @@ export default class RelationEditor extends Vue {
     console.log(event);    
     const {elementid, ft } = DragUtils.getElementData(event);
     if (elementid) {
-      this.updateItems();
+      this.loadAllItems();
       let i = this.items.find(i => i.element?.id === elementid);
       if (i) {
         this.activeRelation = i;
@@ -253,7 +251,7 @@ export default class RelationEditor extends Vue {
     });
   }
 
-  public async updateLinks(e: any) {
+  public async updateLinks() {
     if (!this.graph || !this.links) {
       return;
     }
@@ -293,8 +291,7 @@ export default class RelationEditor extends Vue {
     this.updateRelation();
   }
 
-  public getItems(): LinkInfo[] {
-    console.log('relation editor - get items', this.relation?.objectType);
+  public getItems(): LinkInfo[] {    
     const res: LinkInfo[] = [];
     this.itemsLoaded = true;
     if (this.graph && this.relation?.objectType) {
@@ -330,9 +327,9 @@ export default class RelationEditor extends Vue {
   }
 
   @Watch('field.data')
-  private dataChanged() {
-    console.log('data changed');
-    this.getActiveRelation();
+  private dataChanged() {    
+    this.getActiveRelation();    
+    this.setLinks();
   }
 
   public async editLink(l: LinkInfo) {
@@ -395,6 +392,9 @@ export default class RelationEditor extends Vue {
   }
 
   public setLinks() {
+    
+    if (!this.relation?.multiple) { return;}
+    console.log('set links', this.relation);
     if (!this.node?._outgoing || !this.relation) {
       this.links = null;
       return;
@@ -402,11 +402,17 @@ export default class RelationEditor extends Vue {
     let res: LinkInfo[] = [];
     for (const link of this.node._outgoing) {
       if (link.classId === this.relation.type) {
-        res.push({ direction: 'to', element: link.to, link, color: link.to ? GraphElement.getBackgroundColor(link.to) : 'blue' });
+        const r = { direction: 'to', element: link.to, link, color: link.to ? GraphElement.getBackgroundColor(link.to) : 'blue' } as LinkInfo;
+        res.push(r);
+
+        if (!this.items.includes(r)) {
+          this.items.push(r);
+        }
       }
     }
     this.links = res;
     this.linkIds = this.links!.filter((l) => l.link?.id).map((l) => l.link!.id!);
+    this.$forceUpdate();
   }
 
   public formDef: IFormOptions | null = null;
@@ -430,12 +436,14 @@ export default class RelationEditor extends Vue {
       .catch((e) => {})
       .finally(() => {
         this.newRelation = undefined;
-        this.setLinks();
-        this.$forceUpdate();
+        this.setLinks();        
       });
   }
 
   public getActiveRelation() {
+    
+    if (this.relation?.multiple) { return; }
+    console.log('get active relation', this.relation);
     let rel = this.node?._outgoing?.find((r) => r.classId === this.relation?.type);
     if (rel) {
       this.activeRelation = { direction: 'to', link: rel, element: rel.to, color: rel.to ? GraphElement.getBackgroundColor(rel.to) : 'blue' };
@@ -476,7 +484,7 @@ export default class RelationEditor extends Vue {
 
   mounted() {
     this.getActiveRelation();
-    this.setLinks();
+    this.setLinks();    
   }
 }
 </script>

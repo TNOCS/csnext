@@ -19,6 +19,7 @@ export class GraphLayout {
   focusDate?: Date;
   fitAll?: boolean = false;
   autoFocus? = true;
+  showImage? = false;
   showAllOnMap? = true;
   nodeSize?: number;
   radius?: number;
@@ -65,6 +66,11 @@ export class GraphLayout {
   nodes?: { [id: string] : IGraphNodeDefinition};
 }
 
+export class SemanticSearch {
+  nearText?: string;
+  nearEntities?: string[];
+}
+
 export class GraphFilterProperties extends BaseElementProperties {
     title?: string;
     showDataModel? = false;
@@ -72,6 +78,11 @@ export class GraphFilterProperties extends BaseElementProperties {
     graphLayout?: GraphLayout;    
     layers?: string[];
     geoFilter?: Number[][];    
+    languageFilter?: string[];
+    sourcesFilter?: string[];
+    timeFilter?: { start: number, end: number};
+    semanticSearch?: SemanticSearch;
+
   }
 
   

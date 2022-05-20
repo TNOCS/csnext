@@ -2,7 +2,7 @@
 export class RelationType
 {
     public type?: string;
-    public multipe?: boolean;
+    public multiple?: boolean;
     public objectType?: string;
     public subjectType?: string;
 }

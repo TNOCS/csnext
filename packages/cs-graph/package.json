@@ -21,8 +21,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@ag-grid-community/core": "27.2.1",
-        "@ag-grid-community/vue": "27.2.1",
+        "@ag-grid-community/core": "27.3.0",
+        "@ag-grid-community/vue": "27.3.0",
         "@antv/g6": "4.6.4",
         "@csnext/cs-client": "^0.0.131",
         "@csnext/cs-core": "^0.0.131",
@@ -43,8 +43,8 @@
         "@tiptap/suggestion": "2.0.0-beta.91",
         "@tiptap/vue-2": "2.0.0-beta.78",
         "@turf/distance": "^6.5.0",
-        "ag-grid-community": "27.2.1",
-        "ag-grid-vue": "27.2.1",
+        "ag-grid-community": "27.3.0",
+        "ag-grid-vue": "27.3.0",
         "global": "^4.4.0",
         "vue-scroll-stop": "0.1.5",
         "isotope-masonry-horizontal": "2.0.1",

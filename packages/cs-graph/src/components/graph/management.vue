@@ -13,7 +13,7 @@
         <v-tabs v-model="menuTab" align-with-title icons-and-text>
           <v-tabs-slider color="yellow"></v-tabs-slider>
           <v-tab key="source">source<v-icon>mdi-semantic-web</v-icon></v-tab>
-          <v-tab key="plugins">plugins<v-icon>mdi-hammer-wrench</v-icon></v-tab>
+          <!-- <v-tab key="plugins">plugins<v-icon>mdi-hammer-wrench</v-icon></v-tab> -->
         </v-tabs>
       </template>
     </v-toolbar>

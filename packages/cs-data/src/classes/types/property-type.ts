@@ -62,6 +62,7 @@ export class PropertyType {
     public dateFormat?: 'date' | 'time' | 'datetime';
     public title?: string;
     public optionsList?: string;
+    public list?: any[];
     public colorScheme?: string | string[];  
     public array?: boolean;
     public defaultLegendColor?: string;    
@@ -92,6 +93,8 @@ export class PropertyType {
     @FormField({ title: 'Key', type: 'string' })
     public key?: string;
     public attributes?: {[key: string]: string};
+    public keyValue?: string;
+    public keyText?: string;
 
     public _values?: any[]; 
     public _visible?: boolean;   

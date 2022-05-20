@@ -41,6 +41,7 @@ import DocumentViewer from './components/document/document-viewer.vue';
 import DocumentEditor from './components/document-management/document-editor.vue';
 import DocumentEntities from './components/document/document-entities.vue';
 import ReportEditor from './components/document-management/report-editor.vue';
+import ElementEditor from './components/document-management/element-editor.vue';
 import { AppState } from '@csnext/cs-client';
 import ElementValue from './components/data-grid/element-value.vue';
 import IndicatorElementCard from './components/data-grid/cards/indicator-element-card.vue';
@@ -87,6 +88,7 @@ export {
   NetworkGraph,
   GraphElements,
   ElementValue,
+  ElementEditor,
   GraphSettings,
   SelectionPopup,
   ClassOverview,

@@ -102,6 +102,7 @@ export class DataGridTreeOptions {
   public treeStructure?: string[];
   public parentProperty?: string;
   public baseTreeItem?: GraphElement;
+  public expandAll?: boolean;
 }
 
 export class DataGridCardsOptions {
@@ -117,21 +118,25 @@ export class DataGridOptions extends WidgetOptions {
   public splitView?: SplitView = SplitView.disabled;
   public splitWidget?: IWidget;
   public splitWidgetLocations?: string[];
+  public splitEditor?: boolean;
+
   
   public hideFilter? = false;
   public hideViewSwitch? = false;
   public onSelect?: (element: GraphElement) => void;
   public onAfterAdded?: (element: GraphElement) => Promise<any>;
-  public defaultView: GridView = GridView.table;
+  public defaultView: string | GridView = GridView.table;
   
   public graphPresetId?: string;
   public customSort?: (a: GraphElement, b: GraphElement) => number;
+  
   
   public grouping?: GroupOptions;
   
   public canDelete? = true;
   public canAdd?: boolean;
   public editNewItem?: boolean;
+  public openNewItem?: boolean;
   public editorDialog?: IWidget;
   public canEdit? = true;
   public canSearch? = true;
@@ -140,6 +145,7 @@ export class DataGridOptions extends WidgetOptions {
   public canSort? = false;
   public canGraph? = true;
   public canFilter? = false;
+  public selectFirst? = false;
   public relationToggle?: DataGridRelationToggle;
   public calendarOptions?: DataGridCalendarOptions;
   public tableOptions?: DataGridTableOptions;

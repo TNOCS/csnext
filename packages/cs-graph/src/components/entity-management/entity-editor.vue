@@ -27,6 +27,7 @@ export default class EntityEditor extends WidgetBase {
     // this.source?.
   }
 
+
    public get formDef(): IFormObject {
         return {                
             showToolbar: false,

@@ -244,7 +244,7 @@ export default class ClassViewer extends WidgetBase {
         speed: 500,
         gravity: 10,
         nodeStrength: 100,
-        alphaDecay: 0.5,
+        alphaDecay: 0.1,
         nodeSpacing: 150,
         nodeSize: 15,
         clustering: false,

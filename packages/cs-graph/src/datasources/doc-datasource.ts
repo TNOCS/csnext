@@ -11,7 +11,7 @@ import {
   GraphFilterProperties,
   IGraphNodeDefinition,
   NodeRule,
-  GraphLayout  
+  GraphLayout,
 } from '@csnext/cs-data';
 import { SearchEntity } from '../classes/document/search-entity';
 import EntityEditor from '../components/entity-management/entity-editor.vue';
@@ -22,6 +22,7 @@ import { TimeDataSource, IFormOptions, IWidget, idGenerator, IFormFieldOptions }
 import { CsMap, GeojsonPlusLayer, IMapLayer, MapLayers } from '@csnext/cs-map';
 import { FeatureCollection } from 'geojson';
 import RelationEditor from './../components/document-management/relation-editor.vue';
+import ElementPropEditor from './../components/document-management/element-prop-editor.vue';
 import { Editor } from '@tiptap/vue-2';
 import { AppState, HtmlWidget } from '@csnext/cs-client';
 import FeatureTypeEditor from './../components/datamodel/feature-type-editor.vue';
@@ -125,7 +126,7 @@ export class DocDatasource extends GraphDatasource {
     try {
       if (this.storage) {
         await this.storage.init(this);
-      }      
+      }
     } catch (e) {
       $cs.triggerNotification({ text: 'ERROR_INITIALIZING_STORAGE' });
     }
@@ -592,11 +593,8 @@ export class DocDatasource extends GraphDatasource {
     };
 
     for (const rule of rules) {
-      
-      const elementId = (rule.elementId === '$state.element' && state?.element?.id) ?  state?.element?.id : rule.elementId;
+      const elementId = rule.elementId === '$state.element' && state?.element?.id ? state?.element?.id : rule.elementId;
 
-
-      
       switch (rule.type) {
         case 'INCOMMING_TYPE':
           if (rule.featureType && !rule._featureType) {
@@ -610,7 +608,7 @@ export class DocDatasource extends GraphDatasource {
                   if (incomming.from?._featureType?._inheritedTypes && incomming.from._featureType._inheritedTypes.includes(rule.featureType)) {
                     this.addVisibleElement(preset, incomming.from);
                     if (rule.outgoingRules) {
-                      this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from, undefined,  state);
+                      this.applyGraphPresetRules(preset, rule.outgoingRules, incomming.from, undefined, state);
                     }
                   }
                 }
@@ -793,7 +791,7 @@ export class DocDatasource extends GraphDatasource {
 
     if (newRules.length > 0 && preset.properties?.graphLayout?.nodeRules) {
       preset.properties.graphLayout.nodeRules = preset.properties.graphLayout.nodeRules.concat(newRules);
-      this.applyGraphPresetRules(preset, preset.properties.graphLayout.nodeRules, element, list,state);
+      this.applyGraphPresetRules(preset, preset.properties.graphLayout.nodeRules, element, list, state);
     }
     // this.activePreset!._visibleNodes = [...this.activePreset!._visibleNodes, ...nodes];
     // const toBeDeleted = this.activePreset._visibleNodes.filter(n => nodes.includes(n));
@@ -932,7 +930,6 @@ export class DocDatasource extends GraphDatasource {
         }
         this.linkDocumentEntities(doc);
         try {
-          
           await this.parseEntities(doc);
         } catch (e) {
           console.log('Error parsing entities');
@@ -1246,8 +1243,6 @@ export class DocDatasource extends GraphDatasource {
 
   //#endregion
 
-  
-
   public async loadTypes(): Promise<boolean> {
     $cs.loader.addLoader('types', 'loading types');
     try {
@@ -1311,7 +1306,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.url:
@@ -1328,7 +1323,7 @@ export class DocDatasource extends GraphDatasource {
                   rounded,
                   group,
                   section,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.string:
@@ -1344,7 +1339,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.image:
@@ -1360,52 +1355,74 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
-                });
-                break;
-              case PropertyValueType.element:
-                const et = pt.elementType ? this.getFeatureTypeById(pt.elementType) : undefined;
-                form.fields?.push({
-                  title: pt.label!,
-                  _key: pt.key,
-                  type: 'selection',
-                  keyText: 'properties.name',
-                  keyValue: 'id',
-                  // selectedText: node!._elements![pt.key]!.properties?.name,
-                  options: () => {
-                    if (pt.elementType) {
-                      return this.getClassElements(pt.elementType, true);
-                    }
-                    return [];
-                  },
-                  readonly: pt.readonly,
-                  clearable: !required,
-                  hint,
-                  array,
-                  required,
-                  group,
-                  section,
-                  filled,
-                  rounded,
-                  icon: et?.icon ||  pt._icon
-                });
-                break;
-              case PropertyValueType.options:
-                form.fields?.push({
-                  title: pt.label!,
-                  _key: pt.key,
-                  type: (pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'selection') as any,
-                  options: pt.options,
-                  readonly: pt.readonly,
-                  hint,
-                  array,
-                  required,
-                  group,
-                  section,
-                  filled,
-                  rounded,
                   icon: pt._icon,
                 });
+                break;
+              // case PropertyValueType.element:
+              //   const et = pt.elementType ? this.getFeatureTypeById(pt.elementType) : undefined;
+              //   form.fields?.push({
+              //     title: pt.label!,
+              //     _key: pt.key,
+              //     type: 'selection',
+              //     keyText: 'properties.name',
+              //     keyValue: 'id',
+              //     // selectedText: node!._elements![pt.key]!.properties?.name,
+              //     options: () => {
+              //       if (pt.elementType) {
+              //         return this.getClassElements(pt.elementType, true);
+              //       }
+              //       return [];
+              //     },
+              //     readonly: pt.readonly,
+              //     clearable: !required,
+              //     hint,
+              //     array,
+              //     required,
+              //     group,
+              //     section,
+              //     filled,
+              //     rounded,
+              //     icon: et?.icon || pt._icon,
+              //   });
+              //   break;
+              case PropertyValueType.listitem:
+                  form.fields?.push({
+                    title: pt.label!,
+                    _key: pt.key,
+                    type: (pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'combobox-objects') as any,                    
+                    options: pt.list,
+                    readonly: pt.readonly,
+                    keyValue: pt.keyValue,
+                    keyText: pt.keyText,
+                    hint,
+                    array,
+                    required,
+                    group,
+                    section,
+                    filled,
+                    rounded,
+                    icon: pt._icon,
+                  });
+                 
+                break;
+              case PropertyValueType.options:
+                
+                  form.fields?.push({
+                    title: pt.label!,
+                    _key: pt.key,
+                    type: (pt.attributes?.hasOwnProperty('form:type') ? pt.attributes['form:type'] : 'selection') as any,
+                    options: pt.options,
+                    readonly: pt.readonly,
+                    hint,
+                    array,
+                    required,
+                    group,
+                    section,
+                    filled,
+                    rounded,
+                    icon: pt._icon,
+                  });
+                
                 break;
               case PropertyValueType.wkt:
                 form.fields?.push({
@@ -1420,7 +1437,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   icon,
                   filled,
-                  rounded
+                  rounded,
                 });
                 break;
               case PropertyValueType.boolean:
@@ -1436,7 +1453,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.number:
@@ -1455,7 +1472,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.tags:
@@ -1471,7 +1488,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.epoch:
@@ -1487,7 +1504,7 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: pt._icon
+                  icon: pt._icon,
                 });
                 break;
               case PropertyValueType.relation:
@@ -1512,7 +1529,33 @@ export class DocDatasource extends GraphDatasource {
                   section,
                   filled,
                   rounded,
-                  icon: ft?.icon || pt._icon
+                  icon: ft?.icon || pt._icon,
+                });
+                break;
+                case PropertyValueType.element:
+                const fet = pt.elementType ? this.getFeatureTypeById(pt.elementType) : undefined;
+                form.fields?.push({
+                  title: pt.label!,
+                  _key: pt.key,
+                  component: ElementPropEditor,
+                  type: 'component',
+                  data: {
+                    elementType: pt.elementType,
+                    prop: pt, 
+                    node: node,
+                    graph: this,
+                  },
+                  readonly: pt.readonly,
+                  keyText: 'properties.name',
+                  keyValue: 'id',
+                  required: required || (node._outgoing && node._outgoing.findIndex((r) => r.classId === pt.relation?.type) !== -1),
+                  group,
+                  array,
+                  hint,
+                  section,
+                  filled,
+                  rounded,
+                  icon: fet?.icon || pt._icon,
                 });
                 break;
             }
@@ -1585,8 +1628,7 @@ export class DocDatasource extends GraphDatasource {
           await this.loadGraph(loadGraph);
           this.updateEdges(true);
           await this.parseDocuments();
-          this.checkQueryParams();
-          console.log('publish graph loaded event');
+          this.checkQueryParams();          
           this.bus.publish(GraphDatasource.GRAPH_EVENTS, GraphDatasource.GRAPH_LOADED);
 
           // this.updateSearchEntities();
@@ -1637,13 +1679,13 @@ export class DocDatasource extends GraphDatasource {
       if (!doc.properties) {
         doc.properties = {};
       }
-      
+
       // await this.parseEntities(doc);
       // DocUtils.syncEntities(doc, this, doc.properties?.doc?.content, false);
-      
+
       this.saveNode(doc)
         .then(async () => {
-          await this.updateEdges(true);          
+          await this.updateEdges(true);
           await this.parseEntities(d);
           this.events.publish(DocDatasource.DOCUMENT, DocDatasource.DOCUMENT_UPDATED, d);
           this.triggerDocumentEntities();
@@ -1655,7 +1697,6 @@ export class DocDatasource extends GraphDatasource {
         });
     });
   }
-
 
   public updateDocumentOriginals(doc: GraphDocument) {
     if (!doc._outgoing) {
@@ -1679,7 +1720,7 @@ export class DocDatasource extends GraphDatasource {
   //     this.storage.(ids, relations);
   //     resolve(true);
   //   })
-      
+
   // }
 
   public removeNode(element: GraphElement, relations = true, notify = false): Promise<boolean> {
@@ -1823,12 +1864,12 @@ export class DocDatasource extends GraphDatasource {
     }
   }
 
-  public async parseEntities(doc : GraphDocument) : Promise<IDocumentPluginResult | undefined> {
+  public async parseEntities(doc: GraphDocument): Promise<IDocumentPluginResult | undefined> {
     if (this.entityParser && doc) {
       if (doc.properties?.doc?.content) {
         DocUtils.syncEntities(doc, this, doc.properties?.content, true);
       }
-      return this.entityParser.callDocument(doc, this);      
+      return this.entityParser.callDocument(doc, this);
     }
   }
 
@@ -1839,7 +1880,6 @@ export class DocDatasource extends GraphDatasource {
         reject();
       } else {
         $cs.data.activeDocument = doc?.id;
-        
 
         await this.parseEntities(doc);
         this.bus.publish('document', 'activated', doc);
@@ -1985,13 +2025,15 @@ export class DocDatasource extends GraphDatasource {
       this.openElement(element, expanded, tab);
     } else {
       // show badge
-      AppState.Instance.setSidebarBadge('details', true, 'red', 'text','', true);
+      AppState.Instance.setSidebarBadge('details', true, 'red', 'text', '', true);
     }
     this.bus.publish('focus', 'element', element);
   }
 
-  public startEditElement(element: GraphElement) {    
-    if (!element?.id) { return;}
+  public startEditElement(element: GraphElement) {
+    if (!element?.id) {
+      return;
+    }
     this.activeElement = element;
     $cs.updateRouteQuery({ nodedetails: element.id, eitab: 'tab-EDITOR' });
     this.bus.publish('element', 'edit-element', element);
@@ -2165,7 +2207,7 @@ export class DocDatasource extends GraphDatasource {
       this.importPlugins.push(new EmptyDocumentImport());
 
       if (this.timesourceId) {
-        AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then((ts) => {          
+        AppState.Instance.loadDatasource<TimeDataSource>(this.timesourceId).then((ts) => {
           resolve(this);
         });
       }

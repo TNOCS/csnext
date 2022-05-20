@@ -367,7 +367,7 @@ export default class NetworkGraph extends WidgetBase {
       this.graph!.setItemState(id, 'notsourcetarget', false);
       this.graph!.setItemState(id, 'sourcetarget', false);
       this.graph!.setItemState(id, 'source', false);
-      this.graph!.setItemState(id, 'target', false);
+      this.graph!.setItemState(id, 'target', false);      
     };
     this.graph.getNodes().forEach((node) => {
       clearItem(node.getID());
@@ -1703,7 +1703,9 @@ export default class NetworkGraph extends WidgetBase {
       return;
     }
 
-    // this.graph.getNodes(
+    // this.graph.getNodes().forEach((n) => {
+    //   this.graph.setItemState(n, 'notsearched', true);
+    // });
   }
 
   public getNodeStyle() {
