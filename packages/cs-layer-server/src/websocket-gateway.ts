@@ -26,7 +26,7 @@ export class DefaultWebSocketGateway
     }
 
     public handleConnection(client: Socket) {
-        Logger.log(`New connection from: ${client.id}`);
+        // Logger.log(`New connection from: ${client.id}`);
         this.wsClients.push(client);
     }
 

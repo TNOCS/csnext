@@ -19,6 +19,7 @@ export { TypesController } from './types/types.controller';
 export { FeatureController } from './features/features.controller';
 export { LogService } from './logs/log-service';
 export { LogController } from './logs/log-controller';
+export { ConfigController } from './config/config-controller';
 export * from './server/server-basic-auth-config';
 export * from './classes/layer-definition';
 export * from './classes/mapbox-style';

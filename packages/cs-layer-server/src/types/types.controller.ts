@@ -37,6 +37,19 @@ export class TypesController {
   }
 
   @ApiOperation({
+    summary: 'Reload datamodel',
+    description: 'Reloads datamodel from storage',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'None',
+  })
+  @Get('/reload')
+  public reload(): Promise<boolean> {
+    return this.layerService.reloadTypes();
+  }
+
+  @ApiOperation({
     summary: 'Get available feature types with their base types merged',
     description: 'Returns all available feature types',
   })
