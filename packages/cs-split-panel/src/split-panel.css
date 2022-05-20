@@ -7,6 +7,10 @@
     height: 100vh;
 }
 
+.vsg_area {
+    overflow: hidden;
+}
+
 .vsg_gutter {
     background-color: #cacaca78 !important;            
 }
