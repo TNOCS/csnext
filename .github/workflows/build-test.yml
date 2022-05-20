@@ -22,6 +22,21 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-          node-version: 14
+          node-version: 16
     - run: yarn
     - run: yarn build
+    - run: git reset --hard
+    - name: Authenticate with Registry
+      run: |
+        yarn logout
+        echo "registry=http://registry.npmjs.org/" >> .npmrc
+        echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+        npm whoami
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: git update-index --assume-unchanged .npmrc
+    - run: npm view @csnext/cs-client versions  --json
+      name: View all published @csnext versions
+    - run: npm run publish:alpha    
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

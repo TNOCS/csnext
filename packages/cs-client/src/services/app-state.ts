@@ -21,7 +21,7 @@ import { CsApp, CsDashboard, Logger, CsWidget, HtmlWidget, DatasourceManager, La
 import VueRouter, { RouteConfig } from 'vue-router';
 import VueI18n, { LocaleMessageObject } from 'vue-i18n';
 
-import io, { Socket } from 'socket.io-client';
+import io, * as SocketIOClient from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
@@ -44,6 +44,7 @@ export class AppState extends AppStateBase {
   public static SOCKET_CONNECTED = 'socket-connected';
   public static SOCKET_DISCONNECTED = 'socket-disconnected';
   public static SOCKET_RECONNECTING = 'socket-reconnecting';
+  public static SOCKET_ERROR = 'socket-error';
   public static YES = 'YES';
   public static NO = 'NO';
   public static INFO_WIDGET = 'info-widget';
@@ -102,7 +103,7 @@ export class AppState extends AppStateBase {
     }
   }
 
-  public socket?: Socket;
+  public socket?: SocketIOClient.Socket;
   /** Manages active project */
   // public projectManager?: ProjectManager;
   /** Logger */
@@ -190,7 +191,7 @@ export class AppState extends AppStateBase {
   }
 
   public initSocket() {
-    if (this.project && this.project.server && this.project.server.useSocket && this.project.server.socketServerUrl) {
+    if (this.project && this.project.server && this.project.server.useSocket && this.project.server.socketServerUrl && !this.socket) {
       this.socket = io(this.project.server.socketServerUrl, {});
 
       this.socket.on('connect', () => {
@@ -201,6 +202,9 @@ export class AppState extends AppStateBase {
       });
       this.socket.on('disconnect', (e) => {
         this.bus.publish(AppState.SOCKET, AppState.SOCKET_DISCONNECTED, this.socket);
+      });
+      this.socket.on('connect_error', (e) => {
+        this.bus.publish(AppState.SOCKET, AppState.SOCKET_ERROR, e);
       });
     }
   }

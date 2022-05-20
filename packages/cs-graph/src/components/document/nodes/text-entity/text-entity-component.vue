@@ -31,7 +31,7 @@
           <!-- <v-menu top          >
         <template v-slot:activator="{ on, attrs }">        
             <v-icon  v-bind="attrs"
-            v-on="on" small>more_vert</v-icon>        
+            v-on="on" small>mdi-dots-vertical</v-icon>        
         </template>
         <v-list>
           <v-list-item

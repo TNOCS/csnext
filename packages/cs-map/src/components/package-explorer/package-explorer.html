@@ -24,7 +24,7 @@
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="openInsights()" v-on="on" icon>
-                        <v-icon>dashboard</v-icon>
+                        <v-icon>mdi-view-dashboard</v-icon>
                     </v-btn>
                 </template> {{ $cs.Translate('INSIGHTS')}}
             </v-tooltip>
@@ -36,7 +36,7 @@
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="showTable()" v-on="on" icon>
-                        <v-icon>table_chart</v-icon>
+                        <v-icon>mdi-table</v-icon>
                     </v-btn>
                 </template> {{ $cs.Translate('TABLE')}}
             </v-tooltip>
@@ -44,14 +44,14 @@
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="shareState()" v-on="on" icon>
-                        <v-icon>share</v-icon>
+                        <v-icon>mdi-share</v-icon>
                     </v-btn>
                 </template> {{ $cs.Translate('SHARE')}}
             </v-tooltip>
             <v-tooltip v-if="data.mainLayer" bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn @click="toggleLayers()" v-on="on" icon>
-                        <v-icon>layers</v-icon>
+                        <v-icon>mdi-layers</v-icon>
                     </v-btn>
                 </template> {{ $cs.Translate('LAYERS')}}
             </v-tooltip>

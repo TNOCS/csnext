@@ -14,11 +14,11 @@ import {
 } from '..';
 import axios from 'axios';
 import { DataSource, FeatureTypes } from '@csnext/cs-data';
-import { Socket } from 'socket.io-client';
+import * as SocketIOClient from 'socket.io-client';
 
 export class LayerServerService implements ILayerService, IStartStopService {
 
-    public get socket(): Socket | undefined {
+    public get socket(): SocketIOClient.Socket | undefined {
         if (this.manager && this.manager.MapWidget) {
             return this.manager.MapWidget.$cs.socket;
         }
@@ -42,6 +42,7 @@ export class LayerServerService implements ILayerService, IStartStopService {
     public type = 'layer-server-service';
     public layers: IMapLayer[] = [];
     public manager?: MapDatasource;
+    public liveLayers: Record<string, IMapLayer> = {};
 
     constructor(init?: Partial<LayerServerService>) {
         Object.assign(this, init);
@@ -175,18 +176,26 @@ export class LayerServerService implements ILayerService, IStartStopService {
             this.socket.off('layer/' + gl.id);
             this.socket.off('layer/' + gl.id + '/features');
         }
+        if (this.liveLayers.hasOwnProperty(gl.id)) {
+            delete this.liveLayers[gl.id];
+        }
     }
 
     public initLayerSocket(gl: GeojsonPlusLayer) {
         if (this.socket && this.socket !== undefined) {
             if (gl.enabled) {
-                // listen to complete layer updates
-                this.socket.on('layer/' + gl.id, (data: any) => {
-                    this.updateLiveLayer(data, gl);
-                });
-                this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
-                    this.updateLiveLayerFeatures(data, gl, true);
-                });
+                if (!this.liveLayers.hasOwnProperty(gl.id)) {
+                    // listen to complete layer updates
+                    this.socket.on('layer/' + gl.id, (data: any) => {
+                        this.updateLiveLayer(data, gl);
+                    });
+                    this.socket.on('layer/' + gl.id + '/features', (data: { [fid: string]: IFeatureAction }) => {
+                        this.updateLiveLayerFeatures(data, gl, true);
+                    });
+                    this.liveLayers[gl.id] = gl;
+                } else {
+                    console.log(`Already connected to socket for layer ${gl.id}`);
+                }
             }
         }
     }
