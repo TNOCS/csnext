@@ -1,5 +1,6 @@
 // services
 import { AppState } from './services/app-state';
+import './assets/styles/styles.css';
 
 // services
 export * from './services/app-state';

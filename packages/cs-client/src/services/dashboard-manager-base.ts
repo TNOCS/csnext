@@ -7,6 +7,7 @@ export class DashboardManagerBase implements IDashboardManager {
     public busManager!: MessageBusManager;
     public dashboard!: IDashboard;
     public _contentHasBeenLoaded: boolean = false;
+    public data: any = {};
 
     public subscribe(bus: IMessageBusService | undefined, topic: string, callback: IMessageBusCallback, id?: string) {
         if (this.busManager) {
@@ -14,7 +15,7 @@ export class DashboardManagerBase implements IDashboardManager {
         }
     }
 
-    public start(dashboard: IDashboard) {
+    public start(dashboard: IDashboard) {        
         this.dashboard = dashboard;
         if (!this.busManager) {
             this.busManager = new MessageBusManager();

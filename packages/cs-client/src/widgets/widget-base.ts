@@ -23,7 +23,15 @@ export class WidgetBase extends Vue {
     if (this.widget?.options?.sync) {
       switch (this.widget.options.sync) {
         case 'dashboard': return this.widget?._dashboard?.data;
-        case 'manager': return this.widget?._dashboard?._manager?.data;
+        case 'manager': {          
+          if (this.widget?._dashboard?._manager) {
+            if (!this.widget._dashboard._manager.data) {
+              this.widget._dashboard._manager.data = {}
+            }
+            return this.widget._dashboard._manager.data;
+          }
+          
+        }
         case 'datasource': return this.widget?.content?.data;
         case 'global': return $cs.data;        
       }

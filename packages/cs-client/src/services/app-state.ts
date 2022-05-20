@@ -25,6 +25,7 @@ import io, { Socket } from 'socket.io-client';
 import { DefaultProject } from './default-project';
 import { KeyboardManager } from './keyboard-manager';
 import { Framework } from 'vuetify';
+import Axios from 'axios';
 
 /** AppState is a singleton class used for project defintion, keeping track of available dashboard managers and datasource handlers. It also includes a generic EventBus and logger instance */
 export class AppState extends AppStateBase {
@@ -67,6 +68,22 @@ export class AppState extends AppStateBase {
   public layoutManager: LayoutManager;
   public dashboardManager: DashboardManager;
   public activeInfoWidget?: IWidget;
+
+  public loadConfig() : Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      // if (process.env.NODE_ENV === 'production') {
+        Axios.get<any>('/config').then( r=> {
+          (window as any)._env = r.data;
+          resolve(true);
+        }).catch( e => {
+          resolve(false);
+        })
+       
+      // else {
+      // resolve(true);
+      // }
+    });       
+  }
 
   /** gets server url */
   public serverUrl(url?: string): string {

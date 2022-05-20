@@ -728,4 +728,9 @@ html {
     height: 20px;
     position: absolute;
 }
+
+.v-main {
+  height: 100%;
+}
+
 </style>
