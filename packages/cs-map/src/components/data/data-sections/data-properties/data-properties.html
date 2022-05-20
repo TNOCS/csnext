@@ -25,13 +25,13 @@
             class="feature-property"
             v-if="property.value && !property.type.hide && property.value !== undefined && property.value !== 'null'"
           >
-            <div>
+            
               <div
                 class="feature-property-key"
-                @click="clickPropertyKey(property)"
-                :disabled="!property.allowLegend"
+                @click="clickPropertyKey(property)"                
                 :class="{ 'feature-legend': property.legends.length>0, 'allow-feature-legend': property.allowLegend }"
               >
+              <!-- :disabled="!property.allowLegend" -->
                 <v-menu offset-y>
                   <template v-slot:activator="{ on }">
                     <v-btn small class="info-icon" icon v-on="on">
@@ -47,7 +47,7 @@
                 <prop-value :value="property.value" :proptype="property.type" :element="feature" :source="source"></prop-value>
               </div>
             </div>
-          </div>
+          
         </template>
       </v-expansion-panel-content>
     </v-expansion-panel>

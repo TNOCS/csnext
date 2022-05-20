@@ -82,7 +82,14 @@ export default Vue.extend({
             return createElement('span', chips);
           } 
           return createElement('span', '');
-
+        case PropertyValueType.listitem:
+          if (proptype.list && proptype.keyValue) {
+            const item = proptype.list.find(v => v.hasOwnProperty(proptype.keyValue) ? v[proptype.keyValue] === value : false);
+            if (item && item.hasOwnProperty(proptype.keyText)) {
+              return createElement('span',  { class: 'info-prop-text' }, item[proptype.keyText]);
+            }
+          }
+          return createElement('span', '');  
         case PropertyValueType.metalist:
             if (value && Array.isArray(value)) {
               const chips : VNode[] = [];              
