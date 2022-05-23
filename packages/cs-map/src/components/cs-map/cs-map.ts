@@ -707,7 +707,7 @@ export class CsMap extends WidgetBase {
             this.$cs.closeRightSidebarKey(SidebarKeys.LAYERS_SELECTION);
         }
         if (enabled) {
-            this.$cs.addSidebar(SidebarKeys.LAYERS_SELECTION, { icon: 'layers' });
+            this.$cs.addSidebar(SidebarKeys.LAYERS_SELECTION, { icon: 'mdi-layers' });
             this.$cs.addRightSidebarWidget(
                 {
                     component: LayerSelection,
