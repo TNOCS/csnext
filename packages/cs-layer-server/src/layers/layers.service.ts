@@ -393,7 +393,7 @@ export class LayerService extends AggregateRoot {
                     feature
                 };
             }).catch((e: Error) => {
-                Logger.error(`Error get lock for queuing feature update (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
+                Logger.error(`Error getting lock for queuing feature update (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
             })
         }
     }
@@ -408,7 +408,7 @@ export class LayerService extends AggregateRoot {
                     feature: feature
                 };
             }).catch((e: Error) => {
-                Logger.error(`Error get lock for queuing feature delete (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
+                Logger.error(`Error getting lock for queuing feature delete (${source.id} - ${feature.id}) ${e.message}`, 'layer-server');
             });
         }
     }
