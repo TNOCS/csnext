@@ -383,6 +383,10 @@ export class LayerService extends AggregateRoot {
         if (source) {
             if (!this.socketSources.hasOwnProperty(source.id)) { this.socketSources[source.id] = source; }
             if (!source._socketQueue) { source._socketQueue = {}; }
+            if (source._socketQueue !== this.socketSources[source.id]._socketQueue) {
+                source._socketQueue = Object.assign(source._socketQueue, this.socketSources[source.id]._socketQueue);
+                this.socketSources[source.id] = source;
+            }
             this.lock.acquire(source.id, () => {
                 source._socketQueue[feature.id] = {
                     action: 'update',
@@ -435,8 +439,15 @@ export class LayerService extends AggregateRoot {
                         }
                         source._socketQueue = {};
                     });
+                } else {
+                    Logger.log(`No waiting updates in queue for ${source.id}`, 'layer-server');
                 }
+            } else {
+                Logger.warn(`No source found for ${key}`, 'layer-server');
             }
+        }
+        if (Object.keys(this.socketSources).length === 0) {
+            Logger.warn(`No socketSources found for flushing queues`, 'layer-server');
         }
     }
 
